@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<entity>
+  <!--&quot;表示引号，#V#表示值-->
+  <column colName="COLUMN_NAME" notNull=".DBColName(&quot;#V#&quot;)" null="" />
+  <column colName="DATA_TYPE" notNull=".DBColType(&quot;#V#&quot;)" null="" />
+  <column colName="COLUMN_TYPE" notNull=".DBTypeSize(&quot;#V#&quot;)" null="" />  
+  <column colName="NUMERIC_PRECISION" notNull=".DBPrecision(#V#)" null="" />
+  <column colName="NUMERIC_SCALE" notNull=".DBScale(#V#)" null="" />
+  <column colName="NOTNULL" notNull=".NotNull()" null="" />
+  <column colName="COLUMN_KEY" notNull=".PK()" null="" />
+  <column colName="CHARACTER_MAXIMUM_LENGTH" notNull=".DBLen(#V#)" null="" />
+  <column colName="COLUMN_CN" notNull=".FieldName(&quot;#V#&quot;)" null="" />
+</entity>

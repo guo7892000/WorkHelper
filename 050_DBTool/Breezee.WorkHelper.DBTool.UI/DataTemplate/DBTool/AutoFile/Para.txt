@@ -1,0 +1,12 @@
+﻿1、空间名称：
+#NAME_SPACE_I#：空间名_业务逻辑接口
+#NAME_SPACE_B#：空间名_业务逻辑实现
+#NAME_SPACE_ID#：空间名_数据访问接口
+#NAME_SPACE_D#：空间名_数据访问实现
+#NAME_SPACE_UI#：空间名_界面UI
+2、类名
+#CLASS_NAME_I#：类名_业务逻辑接口
+#CLASS_NAME_B#：类名_业务逻辑实现
+#CLASS_NAME_ID#：类名_数据访问接口
+#CLASS_NAME_D#：类名_数据访问实现
+#CLASS_NAME_UI#：类名_界面UI

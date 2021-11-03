@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{85A8D661-4887-4F51-9F93-A879E25AA0E9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Breezee.WorkHelper.DBTool.Entity</RootNamespace>
+    <AssemblyName>Breezee.WorkHelper.DBTool.Entity</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Release\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Breezee.Framework.DataAccess.INF, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Release\Breezee.Framework.DataAccess.INF.dll</HintPath>
+    </Reference>
+    <Reference Include="Breezee.Framework.Interface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Release\Breezee.Framework.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="Breezee.Global.Entity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Release\Breezee.Global.Entity.dll</HintPath>
+    </Reference>
+    <Reference Include="Breezee.Global.IOC, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Release\Breezee.Global.IOC.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DBToolHelper.cs" />
+    <Compile Include="IDBToolModule.cs" />
+    <Compile Include="ExcelTableSQL\Column\ColAllInOne.cs" />
+    <Compile Include="AutoEntity\EntityInfo.cs" />
+    <Compile Include="ExcelTableSQL\Column\ColPostgreSqlTemplate.cs" />
+    <Compile Include="ExcelTableSQL\Column\ColSQLiteTemplate.cs" />
+    <Compile Include="ExcelTableSQL\Column\ColOracleTemplate.cs" />
+    <Compile Include="ExcelTableSQL\Column\ColMySqlTemplate.cs" />
+    <Compile Include="ExcelTableSQL\Column\ColSqlServerTemplate.cs" />
+    <Compile Include="ExcelTableSQL\Enum\TableSqlEnum.cs" />
+    <Compile Include="ExcelTableSQL\Column\ColCommon.cs" />
+    <Compile Include="ExcelTableSQL\DBDataType.cs" />
+    <Compile Include="ExcelTableSQL\EntCol.cs" />
+    <Compile Include="ExcelTableSQL\EntExcelSheet.cs" />
+    <Compile Include="ExcelTableSQL\EntTable.cs" />
+    <Compile Include="ExcelTableSQL\TableSqlCommon.cs" />
+    <Compile Include="Global\DBTGlobalValue.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Enum\SqlType.cs" />
+    <Compile Include="Table\DT_DBT_BD_COLUMN_DEFAULT.cs" />
+    <Compile Include="Table\DT_DBT_BD_DB_CONFIG.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
