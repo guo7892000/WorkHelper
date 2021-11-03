@@ -18,6 +18,7 @@ https://gitee.com/breezee2000/WorkHelper/releases
 1.  安装完成后，桌面会有一个WorkHelper快捷方式，双击打开即可。
 2.  默认的用户是xtadmin，密码是1。登录进去后，我们也可以修改。
 3.  每个功能都有操作说明。我们可以点击工具栏上的【问号书】或【帮助】菜单下的【用户手册】查看。
+![Image text](https://gitee.com/breezee2000/WorkHelper/blob/master/002_MiniFramework/Breezee.Framework.Mini.StartUp/Help/Html/Mini/Images/Mini.Main.001.jpg)
 
 #### 参与贡献
 
