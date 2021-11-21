@@ -128,7 +128,7 @@ namespace Breezee.Framework.Mini.StartUp
                 lblLoginTipInfo.Refresh();
                 //查询用户信息
                 IDictionary<string, object> dicResult = lg.Login(_dicString);
-                DataTable dtUser = UIHelper.SafeGetDictionaryTable(dicResult);
+                DataTable dtUser = dicResult.SafeGetDictionaryTable();
                 if (dtUser == null || dtUser.Rows.Count == 0)
                 {
                     ShowInfo("用户名不存在或密码错误！", "登录失败");

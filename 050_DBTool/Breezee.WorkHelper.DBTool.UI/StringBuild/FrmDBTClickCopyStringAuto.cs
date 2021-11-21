@@ -93,10 +93,10 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
 
                     CopyString cs = getCopyString(item);
                     if (cs == null) continue;
-                    if (cs.Ctrol.EqueryIgnorEmptyCase("RichTextBox"))
+                    if (cs.Ctrol.EqualsIgnorEmptyCase("RichTextBox"))
                     {
                         tb = new RichTextBox();
-                        if (cs.Type.EqueryIgnorEmptyCase("file"))
+                        if (cs.Type.EqualsIgnorEmptyCase("file"))
                         {
                             if (!string.IsNullOrWhiteSpace(cs.PathRel))
                             {
@@ -193,7 +193,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             CopyString cs = (sender as Button).Tag as CopyString;
             string sText = (cs.tbb as TextBoxBase).Text;
             Clipboard.SetText(sText);
-            if (cs.Type.EqueryIgnorEmptyCase("path") && ckbOpenPath.Checked)
+            if (cs.Type.EqualsIgnorEmptyCase("path") && ckbOpenPath.Checked)
             {
                 if (Directory.Exists(sText))
                 {

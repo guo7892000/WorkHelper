@@ -47,6 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Doc\Mini\01_DB\50_迷你框架_表列变更.xlsx" />
+    <None Include="Doc\Mini\20_Dev\学习笔记_WorkHelper.xlsx" />
+    <None Include="Doc\Mini\90_Setup\Setup.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Doc\Mini\01_DB\01_MySql\001_DBObjects\01_Table_All.sql" />

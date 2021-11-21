@@ -39,11 +39,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             dic_List.Add("1", "自定义拼接字符串");
             dic_List.Add("2", "UNION清单");
             dic_List.Add("3", "UNION ALL清单");
-            UIHelper.BindTypeValueDropDownList(cbbSqlType, dic_List.GetTextValueTable(false), false, true);
+            cbbSqlType.BindTypeValueDropDownList(dic_List.GetTextValueTable(false), false, true);
 
             //数据库类型
             DataTable dtDbType = DBToolUIHelper.GetBaseDataTypeTable();
-            UIHelper.BindTypeValueDropDownList(cbbDbType, dtDbType, false, true);
+            cbbDbType.BindTypeValueDropDownList(dtDbType, false, true);
 
             DataTable dtCopy = new DataTable();
             dtCopy.TableName = _strTableName;
@@ -72,7 +72,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     DataTable dtMain = (DataTable)GlobalValue.Instance.dicBindingSource[_strTableName].DataSource;
                     dtMain.Clear();
                     dtMain.Columns.Clear();
-                    StringHelper.GetStringTable(pasteText, ckbAutoColumnName.Checked, dtMain);
+                    pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain);
                 }
             }
             catch (Exception ex)

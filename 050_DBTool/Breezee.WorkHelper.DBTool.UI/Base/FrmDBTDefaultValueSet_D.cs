@@ -56,7 +56,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             else //修改
             {
-                UIHelper.SetControlValue(_listControlColumn, _drEdit);
+                _listControlColumn.SetControlValue(_drEdit);
             }
         }
         #endregion
@@ -88,7 +88,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             try
             {
                 #region 保存前判断
-                string strInfo = UIHelper.JudgeNotNull(_listControlColumn, true);
+                string strInfo = _listControlColumn.JudgeNotNull(true);
                 if (!string.IsNullOrEmpty(strInfo))
                 {
                     ShowInfo("保存失败！\n" + strInfo);
@@ -104,8 +104,8 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 List<string> coloumns = isAdd ? null : _listControlColumn.GetSaveColumnNameList();
                 dtSave = DBToolHelper.Instance.DataAccess.GetTableConstruct(DT_DBT_BD_COLUMN_DEFAULT.TName, coloumns);
-                UIHelper.SetTableColumnsDefaultValue(dtSave,_loginUser);
-                UIHelper.GetControlValue(_listControlColumn, dtSave, isAdd);
+                dtSave.SetTableColumnsDefaultValue(_loginUser);
+                _listControlColumn.GetControlValue(dtSave, isAdd);
                 if (isAdd)
                 {
                     dtSave.Rows[0][DT_DBT_BD_COLUMN_DEFAULT.SqlString.COL_DEFAULT_ID] = StringHelper.GetGUID();
@@ -118,7 +118,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 _dicObject[DT_ORG_EMPLOYEE.EMP_NAME] = _loginUser.EMP_NAME;
                 _dicObject[IDBDefaultValue.SaveDefaultValue_InDicKey.DT_TABLE] = dtSave;
                 //保存维修单
-                UIHelper.SafeGetDictionary(_IDBDefaultValue.SaveDefaultValue(_dicObject));
+                _IDBDefaultValue.SaveDefaultValue(_dicObject).SafeGetDictionary();
                 ShowInfo("保存成功！");
                 DialogResult = DialogResult.OK;
                 Close();

@@ -63,10 +63,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Add("100", "每100次提交");
             _dicString.Add("200", "每200次提交");
             _dicString.Add("500", "每500次提交");
-            UIHelper.BindTypeValueDropDownList(cbbCommitType, _dicString.GetTextValueTable(false), false, true);
+            cbbCommitType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
             //数据库类型
             DataTable dtDbType = DBToolUIHelper.GetBaseDataTypeTable();
-            UIHelper.BindTypeValueDropDownList(cbbTargetDbType, dtDbType, false, true);
+            cbbTargetDbType.BindTypeValueDropDownList(dtDbType, false, true);
             cbbTargetDbType.SelectedIndexChanged += cbbTargetDbType_SelectedIndexChanged;
             #endregion
 
@@ -734,7 +734,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     return;
                 }
                 //绑定下拉框
-                UIHelper.BindDropDownList(cbbTableName, uC_DbConnection1.UserTableList.Sort("TABLE_NAME"), "TABLE_NAME", "TABLE_NAME",false);
+                cbbTableName.BindDropDownList(uC_DbConnection1.UserTableList.Sort("TABLE_NAME"), "TABLE_NAME", "TABLE_NAME",false);
             }
             else
             {

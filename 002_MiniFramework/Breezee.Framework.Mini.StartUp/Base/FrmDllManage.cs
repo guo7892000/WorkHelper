@@ -27,7 +27,7 @@ namespace Breezee.Framework.Mini.StartUp
             SetTag();
             
             DataTable dtDll = _dllSet.LoadXMLFile();
-            UIHelper.BindDataGridView(dgvQuery, dtDll, true);
+            dgvQuery.BindDataGridView(dtDll, true);
             dgvQuery.AllowUserToAddRows = true;//允许新增行
         }
 
@@ -39,7 +39,7 @@ namespace Breezee.Framework.Mini.StartUp
             fdc.AddColumn("Code", "DLL名称", DataGridViewColumnTypeEnum.TextBox, true, 400, DataGridViewContentAlignment.MiddleLeft, true, 800);
             fdc.AddColumn("Name", "备注", DataGridViewColumnTypeEnum.TextBox, true, 400, DataGridViewContentAlignment.MiddleLeft, true, 800);
             dgvQuery.Tag = fdc.GetGridTagString();
-            UIHelper.BindDataGridView(dgvQuery, null, true);
+            dgvQuery.BindDataGridView(null, true);
         }
         #endregion
 

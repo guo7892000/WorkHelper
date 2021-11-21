@@ -74,6 +74,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Doc\DBTool\01_DB\50_数据库工具_表列变更.xlsx" />
+    <None Include="Doc\DBTool\20_Dev\学习笔记_DBTool.xlsx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -99,6 +100,7 @@
     <Folder Include="Doc\DBTool\01_DB\04_Oracle\001_DBObjects\" />
     <Folder Include="Doc\DBTool\01_DB\04_Oracle\002_DataScript\" />
     <Folder Include="Doc\DBTool\01_DB\05_SQLite\002_DataScript\" />
+    <Folder Include="Doc\DBTool\90_Setup\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Doc\DBTool\01_DB\01_MySql\001_DBObjects\01_Table_All.sql" />

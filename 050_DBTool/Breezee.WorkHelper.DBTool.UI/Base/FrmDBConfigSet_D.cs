@@ -56,12 +56,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             #region 绑定下拉框
             //数据库类型
             DataTable dtDbType = DBToolUIHelper.GetBaseDataTypeTable();
-            UIHelper.BindTypeValueDropDownList(cbbDatabaseType, dtDbType, false, true);
+            cbbDatabaseType.BindTypeValueDropDownList(dtDbType, false, true);
             //登录类型
             IDictionary<string, string> dicQuery = new Dictionary<string, string>();
             dicQuery.Add(((int)WindowsDBLoginMode.SQL).ToString(), "SQL身份验证");
             dicQuery.Add(((int)WindowsDBLoginMode.Windows).ToString(), "Windows身份验证");
-            UIHelper.BindTypeValueDropDownList(cbbLoginType, UIHelper.GetTextValueTable(dicQuery, false), false, true); 
+            cbbLoginType.BindTypeValueDropDownList(dicQuery.GetTextValueTable(false), false, true); 
             #endregion
 
             //设置控件关系
@@ -73,7 +73,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             else //修改
             {
-                UIHelper.SetControlValue(_listSupply, _drEdit);
+                _listSupply.SetControlValue(_drEdit);
             }
         }
         #endregion
@@ -104,7 +104,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             try
             {
                 #region 保存前判断
-                string strInfo = UIHelper.JudgeNotNull(_listSupply, true);
+                string strInfo = _listSupply.JudgeNotNull(true);
                 if (!string.IsNullOrEmpty(strInfo))
                 {
                     ShowInfo("保存失败！\n" + strInfo);
@@ -120,8 +120,8 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 List<string> coloumns = isAdd ? null : _listSupply.GetSaveColumnNameList();
                 dtSave = DBToolHelper.Instance.DataAccess.GetTableConstruct(DT_DBT_BD_DB_CONFIG.TName, coloumns);
-                UIHelper.SetTableColumnsDefaultValue(dtSave, _loginUser);
-                UIHelper.GetControlValue(_listSupply, dtSave, isAdd);
+                dtSave.SetTableColumnsDefaultValue(_loginUser);
+                _listSupply.GetControlValue(dtSave, isAdd);
                 if (isAdd)
                 {
                     dtSave.Rows[0][DT_DBT_BD_DB_CONFIG.SqlString.DB_CONFIG_ID] = StringHelper.GetGUID();
@@ -136,7 +136,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 _dicObject[DT_ORG_EMPLOYEE.EMP_NAME] = _loginUser.EMP_NAME;
                 _dicObject[IDBConfigSet.SaveDbConfig_InDicKey.DT_TABLE] = dtSave;
                 //保存维修单
-                UIHelper.SafeGetDictionary(_IDBConfigSet.SaveDbConfig(_dicObject));
+                _IDBConfigSet.SaveDbConfig(_dicObject).SafeGetDictionary();
                 ShowInfo("保存成功！");
                 DialogResult = DialogResult.OK;
                 Close();
@@ -159,7 +159,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void cbbDatabaseType_SelectedIndexChanged(object sender, EventArgs e)
         {
             //重置控件
-            UIHelper.ResetControl(txbServerIP, txbUserName, txbPassword, txbDbName, txbPortNO, txbSchemaName);
+            ResetControl(txbServerIP, txbUserName, txbPassword, txbDbName, txbPortNO, txbSchemaName);
             //默认不显示登录类型
             lblLoginType.Visible = false;
             cbbLoginType.Visible = false;
@@ -183,7 +183,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     lblLoginType.Visible = true;
                     cbbLoginType.Visible = true;
                     //
-                    txbServerIP.Text = ".";
+                    txbServerIP.Text = "localhost";
                     break;
                 case DataBaseType.Oracle:
                     lblServerAddr.Text = "TNS名称：";

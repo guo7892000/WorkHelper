@@ -51,7 +51,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             //生成数据库类型
             DataTable dtDbType = DBToolUIHelper.GetBaseDataTypeTable();
-            UIHelper.BindTypeValueDropDownList(cbbDbType, dtDbType, false, true);
+            cbbDbType.BindTypeValueDropDownList(dtDbType, false, true);
             //
             _dicString.Add("0", "全部提交");
             _dicString.Add("1", "单次提交");
@@ -60,7 +60,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Add("100", "每100次提交");
             _dicString.Add("200", "每200次提交");
             _dicString.Add("500", "每500次提交");
-            UIHelper.BindTypeValueDropDownList(cbbThree, _dicString.GetTextValueTable(false), false, true);
+            cbbThree.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
             //
             tsbAutoSQL.Enabled = false;
         } 

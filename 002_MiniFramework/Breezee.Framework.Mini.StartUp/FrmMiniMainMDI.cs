@@ -57,7 +57,7 @@ namespace Breezee.Framework.Mini.StartUp
 #endif
             tcMenu.Dock = DockStyle.Top;
 
-            UIHelper.SetFormBackGroupStyle(this, UserSet.Default.MainSkinType, UserSet.Default.MainSkinValue);//设置主窗体样式
+            this.SetFormBackGroupStyle(UserSet.Default.MainSkinType, UserSet.Default.MainSkinValue);//设置主窗体样式
             GlobalContext.Instance.MenuHelpList.Add(new EntMenuHelp(_FrameworkHelpPath, _FrameworkHelpName + " > 概述", _FrameworkHelpName));
             //加载菜单
             LoadMenu();
@@ -697,7 +697,7 @@ namespace Breezee.Framework.Mini.StartUp
             f.ShowGlobalMsg += ShowGlobalMsg_Click;//绑定全局信息提示
             if (f.ShowDialog() == DialogResult.OK)
             {
-                UIHelper.SetFormBackGroupStyle(this, UserSet.Default.MainSkinType, UserSet.Default.MainSkinValue);//设置主窗体样式
+                this.SetFormBackGroupStyle(UserSet.Default.MainSkinType, UserSet.Default.MainSkinValue);//设置主窗体样式
             }
         }
 

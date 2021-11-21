@@ -50,15 +50,15 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             DataTable dtDbType = DBToolUIHelper.GetBaseDataTypeTable();
             //目标数据库类型
-            UIHelper.BindTypeValueDropDownList(cbbTargetDbType, dtDbType, false, true);
+            cbbTargetDbType.BindTypeValueDropDownList(dtDbType, false, true);
             //导入数据库类型
-            UIHelper.BindTypeValueDropDownList(cbbImportDBType, dtDbType, false, true);
+            cbbImportDBType.BindTypeValueDropDownList(dtDbType, false, true);
             
             //创建方式
             _dicString.Add(((int)SQLCreateType.Create).ToString(), "不判断增加");
             _dicString.Add(((int)SQLCreateType.Drop_Create).ToString(), "先删后增加");
             _dicString.Add(((int)SQLCreateType.Drop).ToString(), "生成删除SQL");
-            UIHelper.BindTypeValueDropDownList(cbbCreateType, UIHelper.GetTextValueTable(_dicString, false), false, true);
+            cbbCreateType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
             _dicString.Clear();
             //设置表、列的删除提示
             lblTableData.Text = strTipInfo;

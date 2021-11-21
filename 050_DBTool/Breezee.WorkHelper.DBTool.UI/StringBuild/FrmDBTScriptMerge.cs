@@ -64,7 +64,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             //if (sDB.Equals("SqlServer") && sDrop.Equals("1")) isGenDropSql = true;
 
             XmlNodeList xmlList = XmlHelper.GetXmlNodeListByXpath(sConfigPath, ScriptMergeString.DBOClass.ClassPath);
-            string[] sqlFiles = Directory.GetFiles(sDir, "*.sql", SearchOption.AllDirectories);
+            string[] sqlFiles = Directory.GetFiles(sDir, "*.*", SearchOption.AllDirectories);
 
             foreach (XmlNode cla in xmlList)
             {
@@ -78,16 +78,16 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //得到有效的节点
                 foreach (XmlNode ch in cla.ChildNodes)
                 {
-                    string sFilePath = ch.InnerText.Trim();
+                    string sFilePath = ch.InnerText.Trim().ToLower();//2021-11-04文件名不区分大小写
                     if (string.IsNullOrEmpty(sFilePath)) continue;
-                    IEnumerable<string> exist = sqlFiles.ToList().Where(t => t.EndsWith(sFilePath));
+                    IEnumerable<string> exist = sqlFiles.ToList().Where(t => t.ToLower().EndsWith(sFilePath));
                     if (exist.Count() == 0) continue;
                     fileList.Add(exist.First());
                 }
 
                 if (fileList.Count == 0) continue;
 
-                using (StreamWriter writer = new StreamWriter(sFinalPath))
+                using (StreamWriter writer = new StreamWriter(sFinalPath,false, Encoding.UTF8))
                 {
                     foreach (string file in fileList)
                     {

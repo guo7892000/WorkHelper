@@ -8,6 +8,7 @@ using Breezee.WorkHelper.DBTool.Entity;
 using Breezee.Framework.BaseUI;
 using Breezee.Global.Entity;
 using Breezee.Framework.Interface;
+using Breezee.Framework.Tool;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -108,7 +109,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 dic.Add(((int)SqlType.Parameter).ToString(), "参数");
             }
             //初始化处理类型
-            DataTable dtDataSetType = UIHelper.GetTextValueTable(dic, false);
+            DataTable dtDataSetType = dic.GetTextValueTable(false);
             DataGridViewComboBoxColumn cmbUserType = new DataGridViewComboBoxColumn();
             cmbUserType.DisplayIndex = 0;
             cmbUserType.HeaderText = "处理类型";

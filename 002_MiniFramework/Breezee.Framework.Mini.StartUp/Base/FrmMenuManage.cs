@@ -37,14 +37,14 @@ namespace Breezee.Framework.Mini.StartUp
             _dicQuery.Add(((int)MenuTypeEnum.Modul).ToString(), "模块");
             _dicQuery.Add(((int)MenuTypeEnum.Class).ToString(), "菜单分类");
             _dicQuery.Add(((int)MenuTypeEnum.Menu).ToString(), "功能");
-            UIHelper.BindTypeValueDropDownList(cbbMenuType, _dicQuery.GetTextValueTable(false), false, true);
+            cbbMenuType.BindTypeValueDropDownList(_dicQuery.GetTextValueTable(false), false, true);
             //
             _dicQuery.Clear();
             foreach (var item in DDllFile.GetAllDll().Values)
             {
                 _dicQuery[item.Code] = item.Code;
             }
-            UIHelper.BindTypeValueDropDownList(cbbDLL, _dicQuery.GetTextValueTable(true), false, true);
+            cbbDLL.BindTypeValueDropDownList(_dicQuery.GetTextValueTable(true), false, true);
             //
             cbbMenuType.Enabled = false;
             LoadMenu();

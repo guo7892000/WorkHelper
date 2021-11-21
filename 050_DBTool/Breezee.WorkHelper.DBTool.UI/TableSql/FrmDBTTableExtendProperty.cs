@@ -55,7 +55,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             //数据库类型
             DataTable dtDbType = DBToolUIHelper.GetBaseDataTypeTable();
-            UIHelper.BindTypeValueDropDownList(cbbDbType, dtDbType, false, true);
+            cbbDbType.BindTypeValueDropDownList(dtDbType, false, true);
             //
             lblTableData.Text = "SQLite不支持注释。MySql只支持增加表注释，因为导入的信息不足以生成列注释！";
         }
@@ -199,7 +199,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     iTableExtend++;
                 }
                 //读取并替换
-                sbAllSql = File.ReadAllText(UIHelper.GetSystemFullPath(@"DataTemplate/DBTool/TableSQL/1.001_修改表列说明.sql"), Encoding.Default).Replace("#EXTEND_LIST#", strExtendList); 
+                sbAllSql = File.ReadAllText(GetSystemFullPath(@"DataTemplate/DBTool/TableSQL/1.001_修改表列说明.sql"), Encoding.Default).Replace("#EXTEND_LIST#", strExtendList); 
                 #endregion
             }
             else

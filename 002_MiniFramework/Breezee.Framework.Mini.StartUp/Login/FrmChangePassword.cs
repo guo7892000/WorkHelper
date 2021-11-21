@@ -48,7 +48,7 @@ namespace Breezee.Framework.Mini.StartUp
         private void btnSave_Click(object sender, EventArgs e)
         {
             //非空提示
-            string strInfo = UIHelper.JudgeNotNull(_dicSaveNotNullControl, true);
+            string strInfo = _dicSaveNotNullControl.JudgeNotNull(true);
             if (!string.IsNullOrEmpty(strInfo))
             {
                 ShowInfo("保存失败！具体信息见详细。\n", "提示", strInfo);

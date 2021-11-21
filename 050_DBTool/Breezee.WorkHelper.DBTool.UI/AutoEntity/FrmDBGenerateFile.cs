@@ -145,14 +145,14 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             tsbGenIBDFile.Enabled = false;
             //读取代码文件模板
-            txbIBLLFileContent.Text = File.ReadAllText(UIHelper.GetSystemFullPath(DBTGlobalValue.AutoFile.I));
-            txbBLLFileContent.Text = File.ReadAllText(UIHelper.GetSystemFullPath(DBTGlobalValue.AutoFile.B));
-            txbIDALFileContent.Text = File.ReadAllText(UIHelper.GetSystemFullPath(DBTGlobalValue.AutoFile.ID));
-            txbDALFileContent.Text = File.ReadAllText(UIHelper.GetSystemFullPath(DBTGlobalValue.AutoFile.D));
-            txbUIFileContent.Text = File.ReadAllText(UIHelper.GetSystemFullPath(DBTGlobalValue.AutoFile.Frm));
-            txbUIDesignFileContent.Text = File.ReadAllText(UIHelper.GetSystemFullPath(DBTGlobalValue.AutoFile.Frm_Designer));
+            txbIBLLFileContent.Text = File.ReadAllText(GetSystemFullPath(DBTGlobalValue.AutoFile.I));
+            txbBLLFileContent.Text = File.ReadAllText(GetSystemFullPath(DBTGlobalValue.AutoFile.B));
+            txbIDALFileContent.Text = File.ReadAllText(GetSystemFullPath(DBTGlobalValue.AutoFile.ID));
+            txbDALFileContent.Text = File.ReadAllText(GetSystemFullPath(DBTGlobalValue.AutoFile.D));
+            txbUIFileContent.Text = File.ReadAllText(GetSystemFullPath(DBTGlobalValue.AutoFile.Frm));
+            txbUIDesignFileContent.Text = File.ReadAllText(GetSystemFullPath(DBTGlobalValue.AutoFile.Frm_Designer));
             //参数说明
-            rtbPara.Text = File.ReadAllText(UIHelper.GetSystemFullPath(DBTGlobalValue.AutoFile.Para));
+            rtbPara.Text = File.ReadAllText(GetSystemFullPath(DBTGlobalValue.AutoFile.Para));
             rtbPara.ReadOnly = true;
             //文件生成路径默认为桌面
             txbIBDMainPath.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);

@@ -78,7 +78,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             DataTable dtMain = (DataTable)GlobalValue.Instance.dicBindingSource[_strTableName].DataSource;
             dtMain.Clear();
             dtMain.Columns.Clear();
-            StringHelper.GetStringTable(pasteText, ckbAutoColumnName.Checked, dtMain);
+            pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain);
         }
         #endregion
 

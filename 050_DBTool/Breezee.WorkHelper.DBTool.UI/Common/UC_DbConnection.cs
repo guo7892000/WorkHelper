@@ -47,12 +47,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             #region 绑定下拉框
             //数据库类型
             DataTable dtDbType = DBToolUIHelper.GetBaseDataTypeTable();
-            UIHelper.BindTypeValueDropDownList(cbbDatabaseType, dtDbType, false, true);
+            cbbDatabaseType.BindTypeValueDropDownList(dtDbType, false, true);
             //登录类型
             IDictionary<string, string> dicQuery = new Dictionary<string, string>();
             dicQuery.Add(((int)WindowsDBLoginMode.SQL).ToString(), "SQL身份验证");
             dicQuery.Add(((int)WindowsDBLoginMode.Windows).ToString(), "Windows身份验证");
-            UIHelper.BindTypeValueDropDownList(cbbLoginType, UIHelper.GetTextValueTable(dicQuery, false), false, true);
+            cbbLoginType.BindTypeValueDropDownList(dicQuery.GetTextValueTable(false), false, true);
             #endregion
             //数据库类型为只读
             cbbDatabaseType.Enabled = false;
@@ -162,7 +162,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             //数据库连接配置
             dtDbConn.Rows.InsertAt(dtDbConn.NewRow(), 0);//新增一个空行
-            UIHelper.BindDropDownList(cbbDbConnName, dtDbConn,DT_DBT_BD_DB_CONFIG.SqlString.DB_CONFIG_ID, DT_DBT_BD_DB_CONFIG.SqlString.DB_CONFIG_CODE, true);
+            cbbDbConnName.BindDropDownList(dtDbConn,DT_DBT_BD_DB_CONFIG.SqlString.DB_CONFIG_ID, DT_DBT_BD_DB_CONFIG.SqlString.DB_CONFIG_CODE, true);
         }
         #endregion
 

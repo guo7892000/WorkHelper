@@ -52,7 +52,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //saveDialog.OverwritePrompt = true;
                 if (saveDialog.ShowDialog() == DialogResult.OK)
                 {
-                    string fileName = UIHelper.GetSystemFullPath(sSourceFilePath);
+                    string fileName = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, sSourceFilePath);
                     string destFileName = saveDialog.FileName;
 
                     if (System.IO.File.Exists(fileName))
@@ -83,7 +83,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             dic_List.Add(((int)DataBaseType.MySql).ToString(), "MySql");
             dic_List.Add(((int)DataBaseType.SQLite).ToString(), "SQLite");
             dic_List.Add(((int)DataBaseType.PostgreSql).ToString(), "PostgreSql");
-            return UIHelper.GetTextValueTable(dic_List, false);
+            return dic_List.GetTextValueTable(false);
         } 
         #endregion
     }

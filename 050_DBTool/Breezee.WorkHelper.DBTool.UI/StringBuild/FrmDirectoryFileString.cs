@@ -38,13 +38,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Add("1", "仅文件");
             _dicString.Add("2", "仅目录");
             _dicString.Add("3", "目录和文件");
-            UIHelper.BindTypeValueDropDownList(cbbOutType, _dicString.GetTextValueTable(false), false, true);
+            cbbOutType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
             //
             _dicString.Clear();
             _dicString.Add("1", "全路径");
             _dicString.Add("2", "仅文件名");
             _dicString.Add("3", "相对路径");
-            UIHelper.BindTypeValueDropDownList(cbbPathType, _dicString.GetTextValueTable(false), false, true);
+            cbbPathType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
 
             if(!string.IsNullOrEmpty(strLastSelectedPath))
             {

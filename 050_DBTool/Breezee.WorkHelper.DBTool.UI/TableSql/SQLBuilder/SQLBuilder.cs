@@ -117,21 +117,15 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         public abstract void GenerateTableSQL(EntTable entTable);
         protected abstract void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue,DataBaseType impDbType);
-
-        #region 辅助方法
-        private readonly string _strNull = " NULL";   //可空
-        private readonly string _strNotNull = " NOT NULL"; //非空
         private static readonly string _strBlank = " "; //空格
 
+        #region 辅助方法
         /// <summary>
         /// 增加左边空格方法
         /// </summary>
         /// <param name="strColCode"></param>
         /// <returns></returns>
-        protected string AddLeftBand(string strColCode)
-        {
-            return _strBlank + strColCode;
-        }
+        protected string AddLeftBand(string strColCode) => _strBlank + strColCode;
 
         /// <summary>
         /// 增加右边空格方法

@@ -66,10 +66,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             uC_DbConnection1.SetDbConnComboBoxSource(dtConn);
             uC_DbConnection1.IsDbNameNotNull = false;
             //加载模板字符信息
-            rtbParamList.AppendText(File.ReadAllText(UIHelper.GetSystemFullPath(DBTGlobalValue.AutoEntity.Param),System.Text.Encoding.Default));
-            rtbTable.AppendText(File.ReadAllText(UIHelper.GetSystemFullPath(DBTGlobalValue.AutoEntity.Table), System.Text.Encoding.Default));
-            rtbColumnProp.AppendText(File.ReadAllText(UIHelper.GetSystemFullPath(DBTGlobalValue.AutoEntity.ColumnProp), System.Text.Encoding.Default));
-            rtbColumnStr.AppendText(File.ReadAllText(UIHelper.GetSystemFullPath(DBTGlobalValue.AutoEntity.ColumnStr), System.Text.Encoding.Default));
+            rtbParamList.AppendText(File.ReadAllText(GetSystemFullPath(DBTGlobalValue.AutoEntity.Param),System.Text.Encoding.Default));
+            rtbTable.AppendText(File.ReadAllText(GetSystemFullPath(DBTGlobalValue.AutoEntity.Table), System.Text.Encoding.Default));
+            rtbColumnProp.AppendText(File.ReadAllText(GetSystemFullPath(DBTGlobalValue.AutoEntity.ColumnProp), System.Text.Encoding.Default));
+            rtbColumnStr.AppendText(File.ReadAllText(GetSystemFullPath(DBTGlobalValue.AutoEntity.ColumnStr), System.Text.Encoding.Default));
             //表信息网格
             tvDataBaseInfo.Font = new Font("新宋体", 10f, FontStyle.Bold);
             dgvTableInfo.ReadOnly = true;
@@ -104,7 +104,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             new FlexGridColumn.Builder().DBName(AutoEntityString.Set.Col_Null).Name(AutoEntityString.Set.Col_Null).Caption("空值时").Type().Align().Width(300).Edit().Visible().MaxLen(100).Build()
             );
             dgvParamSet.Tag = fdc.GetGridTagString();
-            UIHelper.BindDataGridView(dgvParamSet, _dtSet, true);
+            dgvParamSet.BindDataGridView(_dtSet, true);
             dgvParamSet.AllowUserToAddRows = true;
             //生成实体网格
             _dtGen = new DataTable();
@@ -114,7 +114,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             new FlexGridColumn.Builder().DBName(sGenPath).Name(sGenPath).Caption("生成路径").Type().Align().Width(500).Visible().Build()
             );
             dgvEntityInfo.Tag = fdc.GetGridTagString();
-            UIHelper.BindDataGridView(dgvEntityInfo, _dtGen, true);
+            dgvEntityInfo.BindDataGridView(_dtGen, true);
 
         } 
         #endregion
@@ -352,11 +352,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                         _dbServer.Database = e.Node.Parent.Text;
                         _dataAccess.ModifyConnectString(_dbServer);
                         dtArr[1] = _dataAccess.GetSqlSchemaTableColumns(e.Node.Text);
-                        BindDataGridView(dgvTableInfo, dtArr[1]);
+                        dgvTableInfo.BindDataGridView(dtArr[1]);
                     }
                     else
                     {
-                        BindDataGridView(dgvTableInfo, dtArr[1]);
+                        dgvTableInfo.BindDataGridView(dtArr[1]);
                     }
                 }
             }

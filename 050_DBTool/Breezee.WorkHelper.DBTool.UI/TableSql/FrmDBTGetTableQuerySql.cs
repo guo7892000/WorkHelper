@@ -61,12 +61,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Add("2", "修改");
             _dicString.Add("3", "查询");
             _dicString.Add("4", "删除");
-            UIHelper.BindTypeValueDropDownList(cmbType, _dicString.GetTextValueTable(false), false, true);
+            cmbType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
             //
             _dicString.Clear();
             _dicString.Add("1", "左右#号");
             _dicString.Add("2", "SQL参数化");
-            UIHelper.BindTypeValueDropDownList(cbbParaType, _dicString.GetTextValueTable(false), false, true);
+            cbbParaType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
             #endregion
 
             #region 设置数据库连接控件
@@ -165,7 +165,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 new FlexGridColumn.Builder().Name(DBTableEntity.SqlString.Comments).Caption("备注").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(200).Edit(false).Visible().Build()
             );
             dgvTableList.Tag = fdc.GetGridTagString();
-            UIHelper.BindDataGridView(dgvTableList, dt, true);
+            dgvTableList.BindDataGridView(dt, true);
         }
 
         #region 设置Tag方法
@@ -203,7 +203,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 FlexGridColumn.NewHideCol(DBColumnEntity.SqlString.Extra)
             );
             dgvColList.Tag = fdc.GetGridTagString();
-            UIHelper.BindDataGridView(dgvColList, dtCols, true);
+            dgvColList.BindDataGridView(dtCols, true);
             //dgvColList.AllowUserToAddRows = true;//设置网格样式
         }
         #endregion
@@ -548,7 +548,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     return;
                 }
                 //绑定下拉框
-                UIHelper.BindDropDownList(cbbTableName, uC_DbConnection1.UserTableList.Sort("TABLE_NAME"), "TABLE_NAME", "TABLE_NAME", false);
+                cbbTableName.BindDropDownList(uC_DbConnection1.UserTableList.Sort("TABLE_NAME"), "TABLE_NAME", "TABLE_NAME", false);
             }
             else
             {

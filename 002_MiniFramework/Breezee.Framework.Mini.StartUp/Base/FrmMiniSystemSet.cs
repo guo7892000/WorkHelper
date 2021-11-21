@@ -33,7 +33,7 @@ namespace Breezee.Framework.Mini.StartUp
         private void TsbDBInit_Click(object sender, EventArgs e)
         {
             if (ShowOkCancel("数据库（Mini）将还原到首次登录时状态，请自行做好数据备份。确定继续？") != DialogResult.OK) return;
-            UIHelper.SafeGetDictionary(_IMiniSystem.InitDB(_dicQuery));
+            _IMiniSystem.InitDB(_dicQuery).SafeGetDictionary();
             ShowInfo("初始化成功！！");
         }
 

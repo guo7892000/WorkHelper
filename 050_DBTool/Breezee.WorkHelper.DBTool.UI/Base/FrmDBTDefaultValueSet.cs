@@ -52,7 +52,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 FlexGridColumn.NewHideCol(DT_DBT_BD_COLUMN_DEFAULT.SqlString.UPDATE_CONTROL_ID)
             );
             dgvQuery.Tag = fdc.GetGridTagString();
-            UIHelper.BindDataGridView(dgvQuery, null, true);
+            dgvQuery.BindDataGridView(null, true);
         }
         #endregion
         private void TsbQuery_Click(object sender, EventArgs e)

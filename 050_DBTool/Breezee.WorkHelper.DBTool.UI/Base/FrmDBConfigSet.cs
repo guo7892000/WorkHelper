@@ -49,7 +49,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             SetTag();//设置Tag
             //数据库类型
             DataTable dtDbType = DBToolUIHelper.GetBaseDataTypeTable();
-            UIHelper.BindTypeValueDropDownList(cbbDbType, dtDbType, true, true);
+            cbbDbType.BindTypeValueDropDownList(dtDbType, true, true);
             //
             _IDBConfigSet = ContainerContext.Container.Resolve<IDBConfigSet>();
         }
@@ -70,7 +70,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             fdc.AddColumn(DT_DBT_BD_DB_CONFIG.SqlString.REMARK, "备注", DataGridViewColumnTypeEnum.TextBox, true, 160, DataGridViewContentAlignment.MiddleLeft, false, 800);
             fdc.AddColumn(DT_DBT_BD_DB_CONFIG.SqlString.CREATE_TIME, "创建日期", DataGridViewColumnTypeEnum.TextBox, true, 100, DataGridViewContentAlignment.MiddleLeft, false, 800);
             dgvQuery.Tag = fdc.GetGridTagString();
-            UIHelper.BindDataGridView(dgvQuery, null, true);           
+            dgvQuery.BindDataGridView(null, true);           
         }
         #endregion
 

@@ -42,7 +42,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             IDictionary<string, string> dic_List = new Dictionary<string, string>();
             dic_List.Add("1", "IN清单");
             dic_List.Add("2", "自定义前后缀");
-            UIHelper.BindTypeValueDropDownList(cbbSqlType, dic_List.GetTextValueTable(false), false, true);
+            cbbSqlType.BindTypeValueDropDownList(dic_List.GetTextValueTable(false), false, true);
             //初始化网格
             DataTable dtIn = new DataTable();
             dtIn.Columns.Add("IN字段", typeof(string));

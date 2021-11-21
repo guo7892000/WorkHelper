@@ -67,7 +67,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Add(_sStringColumnList, "字符列名和集合"); 
             _dicString.Add(_sStringColumn, "字符列名");
             _dicString.Add(_sSimpleEntity, "简单实体");
-            UIHelper.BindTypeValueDropDownList(cbbEntityType, UIHelper.GetTextValueTable(_dicString, false), false, true);
+            cbbEntityType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
             cbbEntityType.SelectedIndex = 0;
             #endregion
 
