@@ -70,7 +70,7 @@ namespace Breezee.Framework.Mini.StartUp
             //设置菜单查找数据源
             tstbMenuSearch.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             tstbMenuSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            this.Text = string.Format("工作助手（Work Helper） v{0} 正式版  2021-10-26", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            this.Text = string.Format("工作助手（Work Helper） v{0} 正式版  2022-04-17", Assembly.GetExecutingAssembly().GetName().Version.ToString());
             tvLeftMenu.ExpandAll();
             tsslUserInfo.Text = GlobalContext.Instance.LoginUser.USER_CODE;
             //绑定事件

@@ -1,6 +1,7 @@
 ﻿using Breezee.Framework.Interface;
 using Breezee.Framework.Tool;
 using Breezee.Global.Entity;
+using Breezee.WorkHelper.DBTool.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,16 +11,18 @@ namespace Breezee.WorkHelper.DBTool.UI
 {
     public class DataBaseCommon
     {
-        private readonly string _strNull = " NULL";   //可空
-        private readonly string _strNotNull = " NOT NULL"; //非空
-        private string _strImportSuccessDealType = "0";//导入成功的功能处理类型
+        public static readonly string Null = " NULL";   //可空
+        public static readonly string NotNull = " NOT NULL"; //非空
+        //public static readonly string _strImportSuccessDealType = "0";//导入成功的功能处理类型
+        //public static readonly string strTableAliasAndDot = "";
+        public static readonly string Blank = " "; //空格
+        public static readonly string Tab = "\t"; //制表键
+        public static readonly string QuotationMark = "'";
+        public static readonly string Enpty = ""; //空白
+        public static readonly string Comma = ",";
+        public static readonly string NewLine = System.Environment.NewLine;
+
         private static string strTableAlias = "A"; //查询和修改中的表别名
-        private static string strTableAliasAndDot = "";
-        private static readonly string _strBlank = " "; //空格
-        private static readonly string _strTab = "\t"; //制表键
-        private static readonly string _strQuotationMark = "'";
-        private static readonly string strEnpty = ""; //空白
-        private static readonly string _strComma = ",";
 
         public static AutoClassInfo ClassInfo = new AutoClassInfo();
 
@@ -147,178 +150,17 @@ namespace Breezee.WorkHelper.DBTool.UI
         }
         #endregion
 
-        #region 生成增删改查SQL方法
-        /// <summary>
-        /// 设置表说明
-        /// </summary>
-        /// <param name="strTableCode"></param>
-        /// <param name="strColComments"></param>
-        /// <returns></returns>
-        public static string MakeTableComment(string strTableCode, string strColComments)
-        {
-            return AddLeftBand(strTableCode) + _strTab + "/*" + strColComments + "*/\n";
-        }
-
-        /// <summary>
-        /// 设置查询列说明
-        /// </summary>
-        /// <param name="strComma">为逗号或空</param>
-        /// <param name="strColCode">列编码</param>
-        /// <param name="strColComments">列说明</param>
-        /// <returns></returns>
-        public static string MakeQueryColumnComment(string strComma, string strColCode, string strColComments)
-        {
-            return _strTab + strColCode + strComma + _strTab + "/*" + strColComments + "*/\n";
-        }
-
-        /// <summary>
-        /// 设置新增列值说明方法
-        /// </summary>
-        /// <param name="strComma">为逗号或空</param>
-        /// <param name="strColCode">列编码</param>
-        /// <param name="strColValue">列值</param>
-        /// <param name="strColComments">列说明</param>
-        /// <param name="strColType">列数据类型</param>
-        /// <returns></returns>
-        public static string MakeAddValueColumnComment(string strComma, string strColCode, string strColValue, string strColComments, string strColType, bool isParmQuery)
-        {
-            string strColRemark = "/*" + strColCode + ":" + strColComments + "*/\n";
-            string strFixedValue = "#" + strColCode + "#";
-            if (isParmQuery)
-            {
-                strFixedValue = "@" + strColCode;
-            }
-            string strColRelValue = "";
-            if (string.IsNullOrEmpty(strColValue))
-            {
-                //列没有默认值则加引号
-                //列值为空时
-                if (strColType == "DATE")
-                {
-                    //如果是Oracle的时间类型DATE，则需要将字符转为时间格式，要不会报“文字与字符串格式不匹配”错误
-                    strColRelValue = "TO_DATE(" + _strQuotationMark + strFixedValue + _strQuotationMark + ",'YYYY-MM-DD')";
-                    if (isParmQuery)
-                    {
-                        strColRelValue = "TO_DATE(" + strFixedValue + ",'YYYY-MM-DD')";
-                    }
-                }
-                else
-                {
-                    strColRelValue = _strQuotationMark + strFixedValue + _strQuotationMark;
-                    if (isParmQuery)
-                    {
-                        strColRelValue = strFixedValue;
-                    }
-                }
-            }
-            else
-            {
-                //列有默认值则不加引号
-                strColRelValue = strColValue;
-            }
-            return _strTab + strColRelValue + strComma + _strTab + strColRemark;
-        }
-
-        /// <summary>
-        /// 设置修改列值说明方法
-        /// </summary>
-        /// <param name="strComma">为逗号或空</param>
-        /// <param name="strColCode">列编码</param>
-        /// <param name="strColValue">列值</param>
-        /// <param name="strColComments">列说明</param>
-        /// <param name="strColType">列数据类型</param>
-        /// <returns></returns>
-        public static string MakeUpdateColumnComment(string _strComma, string strColCode, string strColValue, string strColComments, string strColType, bool isParmQuery)
-        {
-            string strRemark = "\n";
-            if (!string.IsNullOrEmpty(strColComments))
-            {
-                //修改列只显示备注，不显示列名
-                strRemark = "/*" + strColComments + "*/\n";
-            }
-            string strColRelValue = "";
-            if (string.IsNullOrEmpty(strColValue))
-            {
-                //列值为空时
-                if (strColType == "DATE")
-                {
-                    //如果是Oracle的时间类型DATE，则需要将字符转为时间格式，要不会报“文字与字符串格式不匹配”错误
-                    strColRelValue = "TO_DATE(" + _strQuotationMark + "#" + strColCode + "#" + _strQuotationMark + ",'YYYY-MM-DD')";
-                    if (isParmQuery)
-                    {
-                        strColRelValue = "TO_DATE(@" + strColCode + ",'YYYY-MM-DD')";
-                    }
-                }
-                else
-                {
-                    strColRelValue = _strQuotationMark + "#" + strColCode + "#" + _strQuotationMark;
-                    if (isParmQuery)
-                    {
-                        strColRelValue = "@" + strColCode;
-                    }
-                }
-            }
-            else
-            {
-                //列值非空时
-                if (isParmQuery)
-                {
-                    strColRelValue = strColValue;
-                    if (!strColValue.Contains("@"))
-                    {
-                        strColRelValue = strColValue.Replace("#", "");
-                    }
-                }
-                else
-                {
-                    strColRelValue = strColValue;
-                }
-            }
-            return _strTab + strTableAliasAndDot + strColCode + "=" + strColRelValue + _strComma + _strTab + strRemark;
-        }
-
-        /// <summary>
-        /// 设置条件列说明
-        /// </summary>
-        /// <param name="strColCode">列编码</param>
-        /// <param name="strColValue">列值</param>
-        /// <param name="strColComments">列说明</param>
-        /// <returns></returns>
-        public static string MakeConditionColumnComment(string strColCode, string strColValue, string strColComments, bool isParmQuery,string sTableAliasAndDot)
-        {
-            string strRemark = "\n";
-            if (!string.IsNullOrEmpty(strColComments))
-            {
-                strRemark = "/*" + strColComments + "*/\n";
-            }
-            if (string.IsNullOrEmpty(strColValue))
-            {
-                if (isParmQuery)
-                {
-                    return sTableAliasAndDot + strColCode + " = @" + strColCode + _strTab + strRemark;
-                }
-                //列值为空时，设置为：'#列编码#'
-                return sTableAliasAndDot + strColCode + "=" + _strQuotationMark + "#" + strColCode + "#" + _strQuotationMark + _strTab + strRemark;
-            }
-            else
-            {
-                //有固定值时
-                return sTableAliasAndDot + strColCode + "=" + strColValue + _strTab + strRemark;
-            }
-        }
-        #endregion
-
         #region 增加左边空格方法
         public static string AddLeftBand(string strColCode)
         {
-            return _strBlank + strColCode;
+            return Blank + strColCode;
         }
         #endregion
 
         #region 增加右边空格方法
         public static string AddRightBand(string strColCode)
         {
-            return strColCode + _strBlank;
+            return strColCode + Blank;
         }
         #endregion
 
@@ -330,7 +172,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <returns></returns>
         public static string AddLeftRightBand(string strColCode)
         {
-            return _strBlank + strColCode + _strBlank;
+            return Blank + strColCode + Blank;
         }
         #endregion
 
@@ -368,5 +210,28 @@ namespace Breezee.WorkHelper.DBTool.UI
         public string ClassCode = string.Empty;
         public string ClassName = string.Empty;
 
+    }
+
+    /// <summary>
+    /// 参数格式类型
+    /// </summary>
+    public enum SqlParamFormatType
+    {
+        /// <summary>
+        /// 前后#号
+        /// </summary>
+        BeginEndHash,
+        /// <summary>
+        /// SQL参数化
+        /// </summary>
+        SqlParm,
+        /// <summary>
+        /// MyBaits格式：#{}
+        /// </summary>
+        MyBatis,
+        /// <summary>
+        /// 自定义格式
+        /// </summary>
+        UserDefine
     }
 }

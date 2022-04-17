@@ -48,11 +48,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             //数据库类型
             DataTable dtDbType = DBToolUIHelper.GetBaseDataTypeTable();
             cbbDatabaseType.BindTypeValueDropDownList(dtDbType, false, true);
-            //登录类型
-            IDictionary<string, string> dicQuery = new Dictionary<string, string>();
-            dicQuery.Add(((int)WindowsDBLoginMode.SQL).ToString(), "SQL身份验证");
-            dicQuery.Add(((int)WindowsDBLoginMode.Windows).ToString(), "Windows身份验证");
-            cbbLoginType.BindTypeValueDropDownList(dicQuery.GetTextValueTable(false), false, true);
             #endregion
             //数据库类型为只读
             cbbDatabaseType.Enabled = false;
@@ -73,7 +68,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 DataRow dr = (cbbDbConnName.SelectedItem as DataRowView).Row;
                 cbbDatabaseType.SelectedValue = dr["DB_TYPE"].ToString();//记得这个放第一位
-                cbbLoginType.SelectedValue = dr["LOGIN_TYPE"].ToString();
                 txbSchemaName.Text = dr["SCHEMA_NAME"].ToString();
                 txbServerIP.Text = dr["SERVER_IP"].ToString();
                 txbPortNO.Text = dr["PORT_NO"].ToString();
@@ -94,9 +88,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             //重置控件
             UIHelper.ResetControl(txbServerIP, txbUserName, txbPassword, txbDbName, txbPortNO, txbSchemaName);
-            //默认不显示登录类型
-            lblLoginType.Visible = false;
-            cbbLoginType.Visible = false;
             //默认显示端口号
             lblPortNO.Visible = true;
             txbPortNO.Visible = true;
@@ -113,9 +104,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             switch (selectDBType)
             {
                 case DataBaseType.SqlServer:
-                    //显示登录类型
-                    lblLoginType.Visible = true;
-                    cbbLoginType.Visible = true;
                     //
                     txbServerIP.Text = "localhost";
                     break;
@@ -173,7 +161,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 Database = txbDbName.Text.Trim(),
                 DatabaseType = (DataBaseType)int.Parse(cbbDatabaseType.SelectedValue.ToString()),
-                LoginMode = (cbbLoginType.SelectedValue == null || cbbLoginType.SelectedValue.ToString() == "1") ? WindowsDBLoginMode.SQL : WindowsDBLoginMode.Windows,
                 Password = txbPassword.Text.Trim(),
                 PortNo = txbPortNO.Text.Trim(),
                 SchemaName = txbSchemaName.Text.Trim(),
@@ -210,9 +197,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                             return null;
                         }
                     }
-                    //显示登录类型
-                    lblLoginType.Visible = true;
-                    cbbLoginType.Visible = true;
                     break;
                 case DataBaseType.Oracle:
                     if (string.IsNullOrEmpty(DbServer.ServerName))

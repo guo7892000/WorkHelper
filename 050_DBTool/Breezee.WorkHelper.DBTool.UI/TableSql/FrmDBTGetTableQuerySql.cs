@@ -31,7 +31,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         //常量
         private static string strTableAlias = "A"; //查询和修改中的表别名
         private static string strTableAliasAndDot = "";
-        private static readonly string _strComma = ",";
         private static readonly string _strUpdateCtrolColumnCode = "UPDATE_CONTROL_ID";
         private string _strAutoSqlSuccess = "生成成功，并已复制到了粘贴板。详细见“生成的SQL”页签！";
         private string _strImportSuccess = "导入成功！可点“生成SQL”按钮得到本次导入的变更SQL。";
@@ -42,6 +41,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private IDataAccess _dataAccess;
         private IDBDefaultValue _IDBDefaultValue;
         private DataTable _dtDefault = null;
+        DBSqlEntity sqlEntity;
         #endregion
 
         #region 构造函数
@@ -66,6 +66,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Clear();
             _dicString.Add("1", "左右#号");
             _dicString.Add("2", "SQL参数化");
+            _dicString.Add("3", "MyBatis参数");
+            _dicString.Add("4", "自定义");
             cbbParaType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
             #endregion
 
@@ -97,7 +99,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     txbParamPre.Text = "@";
                     break;
             }
-        } 
+        }
         #endregion
 
         #region 连接数据库事件
@@ -171,7 +173,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 设置Tag方法
         private void SetColTag()
         {
-           DataTable dtCols = _dataAccess.GetSqlSchemaTableColumns(cbbTableName.Text.Trim());
+            DataTable dtCols = _dataAccess.GetSqlSchemaTableColumns(cbbTableName.Text.Trim());
             //增加条件列
             DataColumn dcCondiction = new DataColumn(_sGridColumnCondition);
             dcCondiction.DefaultValue = "0";
@@ -216,6 +218,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             //取得数据源
             DataTable dtMain = dgvTableList.GetBindingTable();
             DataTable dtSec = dgvColList.GetBindingTable();
+            if (dtMain == null) return;
             //移除空行
             dtMain.DeleteNullRow();
             //得到变更后数据
@@ -225,41 +228,78 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 ShowInfo("请先查询！");
                 return;
-            } 
+            }
             #endregion
 
             #region 生成增删改查SQL
 
             #region 变量
+            sqlEntity = new DBSqlEntity();
+            sqlEntity.NewLine = ckbNewLine.Checked ? DataBaseCommon.NewLine : "";
+            sqlEntity.Tab = ckbNewLine.Checked ? DataBaseCommon.Tab : "";
+            sqlEntity.IsHasRemark = ckbUseRemark.Checked;
+            sqlEntity.IsUseGlobal = ckbUseDefaultConfig.Checked;
+            sqlEntity.IsFirstUpper = ckbFirstUpper.Checked;
+
             StringBuilder sbAllSql = new StringBuilder();
             StringBuilder sbWhereSql = new StringBuilder();
-            string strWhereFirst = "WHERE 1=1 \r";
-            string strWhereNoFirst = "WHERE ";
+            string strWhereFirst = ckbNewLine.Checked ? "WHERE 1=1 " + sqlEntity.NewLine : " WHERE 1=1 " + sqlEntity.NewLine;
+            string strWhereNoFirst = ckbNewLine.Checked ? "WHERE" : " WHERE ";
+
+
             string strAnd = " AND ";
-            bool _isQueryParm = cbbParaType.SelectedValue.ToString() == "2" ? true : false;//是否SQL参数化
+
+
+            switch (cbbParaType.SelectedValue.ToString())
+            {
+                case "1":
+                    sqlEntity.ParamType = SqlParamFormatType.BeginEndHash;
+                    break;
+                case "2":
+                    sqlEntity.ParamType = SqlParamFormatType.SqlParm;
+                    break;
+                case "3":
+                    sqlEntity.ParamType = SqlParamFormatType.MyBatis;
+                    break;
+                case "4":
+                    sqlEntity.ParamType = SqlParamFormatType.UserDefine;
+                    break;
+                default:
+                    throw new Exception("不支持的SqlParamType枚举类型：" + sqlEntity.ParamType.ToString());
+            }
+
             string sParamPre = txbParamPre.Text.Trim();
-            if (_isQueryParm && string.IsNullOrEmpty(sParamPre))
+            if (sqlEntity.ParamType == SqlParamFormatType.SqlParm && string.IsNullOrEmpty(sParamPre))
             {
                 ShowInfo("当选择参数化时，其后的参数化字符不能为空！");
                 txbParamPre.Focus();
                 return;
             }
 
-            string strTwoType = cmbType.SelectedValue.ToString();
-            SqlType sqlTypeNow = GetSqlType(); 
+            string sDefineFormat = txbDefineFormart.Text.Trim();
+            if (sqlEntity.ParamType == SqlParamFormatType.UserDefine)
+            {
+                if (string.IsNullOrEmpty(sParamPre) || string.IsNullOrEmpty(sDefineFormat))
+                {
+                    ShowInfo("当选择【自定义】时，【列名替代符】和【自定义格式】都不能为空！");
+                    txbParamPre.Focus();
+                    return;
+                }
+            }
+
+
+            sqlEntity.TableName = cbbTableName.Text.Trim();
+            sqlEntity.SqlType = GetSqlType();
             string strTSName = txbTableShortName.Text.Trim().Replace(".", "").Replace("'", "");
+            sqlEntity.TableAlias = string.IsNullOrEmpty(strTSName) ? " A" : " " + strTSName;//查询和修改中的别名:注前面的空格为必须
+            strTableAliasAndDot = sqlEntity.TableAlias + ".";
 
-            strTableAlias = string.IsNullOrEmpty(strTSName) ? " A" : " " + strTSName;//查询和修改中的别名:注前面的空格为必须
-            strTableAliasAndDot = strTableAlias + ".";
-
-            string sColumnSelectPre = strTableAliasAndDot;   //where条件中的列前缀
             string sColumnWherePre = strTableAliasAndDot;   //where条件中的列前缀
 
-            if (sqlTypeNow == SqlType.Insert || sqlTypeNow == SqlType.Update)
+            if (sqlEntity.SqlType == SqlType.Insert || sqlEntity.SqlType == SqlType.Update)
             {
-                strTableAlias = "";
+                sqlEntity.TableAlias = "";
                 strTableAliasAndDot = "";
-                sColumnSelectPre = "";
                 sColumnWherePre = "";
             }
             #endregion
@@ -285,7 +325,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             #region 得到条件
             string strNowAnd;
-            if (sqlTypeNow == SqlType.Delete || sqlTypeNow == SqlType.Update)
+            if (sqlEntity.SqlType == SqlType.Delete || sqlEntity.SqlType == SqlType.Update)
             {
                 sbWhereSql.Append(strWhereNoFirst); //删除和更新去掉1=1条件，是为了防止空条件时更新或删除全部数据；如空条件则会提示SQL不正确而导致执行失败。
                 strNowAnd = "";
@@ -301,55 +341,86 @@ namespace Breezee.WorkHelper.DBTool.UI
                 string strColCode = dtColumnCondition.Rows[i][DBColumnEntity.SqlString.Name].ToString().Trim().ToUpper();
                 string strColType = dtColumnCondition.Rows[i][DBColumnEntity.SqlString.DataType].ToString().Trim().ToUpper();
                 string strColFixedValue = dtColumnCondition.Rows[i][DBColumnEntity.SqlString.Default].ToString().Trim();//固定值
-                string strColComments = dtColumnCondition.Rows[i][DBColumnEntity.SqlString.Comments].ToString().Trim();//列说明
-                string strColCodeParm = "#" + strColCode + "#"; //加上#号的列编码
-                
-                if (_isQueryParm)
+                string strColComments = "";
+                if (sqlEntity.IsHasRemark)
                 {
-                    strColCodeParm = sParamPre + strColCode;
+                    strColComments = dtColumnCondition.Rows[i][DBColumnEntity.SqlString.Comments].ToString().Trim();//列说明                                                                                                                    
+                    strColComments = DataBaseCommon.GetColumnComment(strColCode, strColComments);//列空注释的处理
                 }
-                //列空注释的处理
-                strColComments = DataBaseCommon.GetColumnComment(strColCode, strColComments);
-                string sConditionColumn = strNowAnd + strTableAliasAndDot + strColCode;
-                
 
-                if (sqlTypeNow == SqlType.Query && (strColType == "DATE" || strColType == "DATETIME" || strColType.Contains("TIMESTAMP"))) //列为日期时间类型
+                string strColCodeParm = sqlEntity.IsFirstUpper ? FirstLetterUpper(strColCode) : strColCode;
+                switch (sqlEntity.ParamType)
+                {
+                    case SqlParamFormatType.BeginEndHash:
+                        strColCodeParm = "#" + strColCodeParm + "#"; //加上#号的列编码
+                        break;
+                    case SqlParamFormatType.SqlParm:
+                        strColCodeParm = sParamPre + strColCodeParm;
+                        break;
+                    case SqlParamFormatType.MyBatis:
+                        strColCodeParm = "#{" + strColCodeParm + "}";
+                        break;
+                    case SqlParamFormatType.UserDefine://自定义
+                        strColCodeParm = sDefineFormat.Replace(sParamPre, strColCodeParm);
+                        break;
+                }
+
+                string sConditionColumn = strNowAnd + strTableAliasAndDot + strColCode;
+
+
+                if (sqlEntity.SqlType == SqlType.Query && (strColType == "DATE" || strColType == "DATETIME" || strColType.Contains("TIMESTAMP"))) //列为日期时间类型
                 {
                     #region 查询的日期时间段处理
                     string strQueryWhereDateRange;
                     string strBeginDateParm = "#BEGIN_" + strColCode + "#";
                     string strEndDateParm = "#END_" + strColCode + "#";
-                    if (_isQueryParm)
+
+                    switch (sqlEntity.ParamType)
                     {
-                        strBeginDateParm = sParamPre + "BEGIN_" + strColCode;
-                        strEndDateParm = sParamPre + "END_" + strColCode;
+                        case SqlParamFormatType.BeginEndHash:
+                            strBeginDateParm = sParamPre + "BEGIN_" + strColCode;
+                            strEndDateParm = sParamPre + "END_" + strColCode;
+                            break;
+                        case SqlParamFormatType.SqlParm:
+                            strBeginDateParm = sParamPre + "BEGIN_" + strColCode;
+                            strEndDateParm = sParamPre + "END_" + strColCode;
+                            break;
+                        case SqlParamFormatType.MyBatis:
+                            strBeginDateParm = "#{" + "BEGIN_" + strColCode + "}";
+                            strEndDateParm = "#{" + "END_" + strColCode + "}";
+
+                            break;
+                        case SqlParamFormatType.UserDefine://自定义
+                            strBeginDateParm = sDefineFormat.Replace(sParamPre, "BEGIN_" + strColCode);
+                            strEndDateParm = sDefineFormat.Replace(sParamPre, "END_" + strColCode);
+                            break;
                     }
-                    
+
                     if (_dbServer.DatabaseType == DataBaseType.SqlServer)//SQL Server的时间范围
                     {
-                        strQueryWhereDateRange = sConditionColumn + " >='" + strBeginDateParm + "' \n" + sConditionColumn + " < '" + strBeginDateParm + "' \r"; //结束日期：注要传入界面结束时间的+1天。
+                        strQueryWhereDateRange = sConditionColumn + " >='" + strBeginDateParm + "' " + sqlEntity.NewLine + sConditionColumn + " < '" + strBeginDateParm + "' " + sqlEntity.NewLine; //结束日期：注要传入界面结束时间的+1天。
                     }
                     else
                     {
-                        strQueryWhereDateRange = sConditionColumn + " >= TO_DATE('" + strBeginDateParm + "','YYYY-MM-DD') \n" + sConditionColumn + " < TO_DATE('" + strEndDateParm + "','YYYY-MM-DD') + 1 \r"; //结束日期：注要传入界面结束时间的+1天
+                        strQueryWhereDateRange = sConditionColumn + " >= TO_DATE('" + strBeginDateParm + "','YYYY-MM-DD') " + sqlEntity.NewLine + sConditionColumn + " < TO_DATE('" + strEndDateParm + "','YYYY-MM-DD') + 1 " + sqlEntity.NewLine; //结束日期：注要传入界面结束时间的+1天
                     }
                     sbWhereSql.Append(strQueryWhereDateRange); //使用范围查询条件
                     #endregion
                 }
                 else
                 {
-                    string sColParam = _isQueryParm ? strColCodeParm : "'" + strColCodeParm + "'";
-                    sbWhereSql.Append(strNowAnd + DataBaseCommon.MakeConditionColumnComment(strColCode, sColParam, "", _isQueryParm, sColumnWherePre));
+                    string sColParam = sqlEntity.ParamType == SqlParamFormatType.BeginEndHash ? "'" + strColCodeParm + "'" : strColCodeParm;
+                    sbWhereSql.Append(strNowAnd + MakeConditionColumnComment(strColCode, sColParam, "", sqlEntity.ParamType, sColumnWherePre, strColCodeParm));
                 }
                 strNowAnd = strAnd;
             }
             #endregion
 
-            for(int i=0;i< dtMain.Rows.Count;i++)//针对表清单循环
+            for (int i = 0; i < dtMain.Rows.Count; i++)//针对表清单循环
             {
                 DataRow drTable = dtMain.Rows[i];
                 #region 变量声明
-                string strDataTableName = drTable[DBTableEntity.SqlString.Name].ToString().Trim(); 
+                string strDataTableName = drTable[DBTableEntity.SqlString.Name].ToString().Trim();
                 string strDataTableComment = drTable[DBTableEntity.SqlString.Comments].ToString().Trim();
 
                 StringBuilder sbSelect = new StringBuilder();
@@ -369,138 +440,153 @@ namespace Breezee.WorkHelper.DBTool.UI
                     string strColCode = drCol[DBColumnEntity.SqlString.Name].ToString().Trim().ToUpper();
                     string strColType = drCol[DBColumnEntity.SqlString.DataType].ToString().Trim().ToUpper();
                     string strColFixedValue = drCol[DBColumnEntity.SqlString.Default].ToString().Trim();//固定值
-                    string strColComments = drCol[DBColumnEntity.SqlString.Comments].ToString().Trim();//列说明
-                    string strColValue = ""; //列值 
-                    string strColCodeParm = "#" + strColCode + "#"; //加上#号的列编码
+                    string strColComments = "";//列说明
+
+                    if (sqlEntity.IsHasRemark)
+                    {
+                        strColComments = drCol[DBColumnEntity.SqlString.Comments].ToString().Trim();//列说明                                                                                                            
+                        strColComments = DataBaseCommon.GetColumnComment(strColCode, strColComments);//默认字段注释处理
+                    }
+                    string strColValue = ""; //列值  
                     string strNowComma = ","; //当前使用的逗号，最后一列的新增和修改是不用加逗号的，该值将会改为空值
                     #endregion
 
-                    strColComments = DataBaseCommon.GetColumnComment(strColCode, strColComments);//默认字段注释处理
-
+                    string strColCodeParm = sqlEntity.IsFirstUpper ? FirstLetterUpper(strColCode) : strColCode;
                     if (string.IsNullOrEmpty(strColFixedValue)) //没有输入固定值
                     {
-                        if (_isQueryParm)
+                        switch (sqlEntity.ParamType)
                         {
-                            strColValue = sParamPre + strColCodeParm.Replace("#", "");
+                            case SqlParamFormatType.BeginEndHash:
+                                strColCodeParm = "#" + strColCodeParm + "#"; //加上#号的列编码
+                                break;
+                            case SqlParamFormatType.SqlParm:
+                                strColCodeParm = sParamPre + strColCodeParm;
+                                break;
+                            case SqlParamFormatType.MyBatis:
+                                strColCodeParm = "#{" + strColCodeParm + "}";
+                                break;
+                            case SqlParamFormatType.UserDefine://自定义
+                                strColCodeParm = sDefineFormat.Replace(sParamPre, strColCodeParm);
+                                break;
                         }
-                        else if(strColType.Contains("CHAR")|| strColType.Contains("TEXT"))
-                        {
-                            strColValue = "'" + strColCodeParm + "'";
-                        }
-                        else
-                        {
-                            strColValue = strColCodeParm;
-                        }
-
                     }
                     else //网格输入了固定值
                     {
                         strColValue = strColFixedValue;
                     }
-                    
+
                     //生成SQL
-                    if (sqlTypeNow == SqlType.Insert)
+                    if (sqlEntity.SqlType == SqlType.Insert)
                     {
                         #region 新增(只能首尾分开拼接，没有条件)
+                        string sValues = ckbNewLine.Checked ? "VALUES" : " VALUES";
                         sbWhereSql.Clear();
                         strTableAlias = "";
+                        if ((j == 0 && j == iSelectLastNumber) || j == iSelectLastNumber)//只有一列
+                        {
+                            strNowComma = "";
+                        }
+
+                        string sColValueComment = MakeColumnValueComment(sqlEntity.SqlType, strNowComma, strColCode, strColValue, strColComments, strColType, sqlEntity.ParamType, strColCodeParm);
+
                         if (j == 0) //首行
                         {
                             if (j == iSelectLastNumber)//只有一列
                             {
-                                strNowComma = "";
-                                sbInsertColums.Append("INSERT INTO " + DataBaseCommon.MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment)
-                                        + "(\n" + "\t" + strTableAliasAndDot + strColCode + strNowComma + "\n)\n");
-                                sbInsertVale.Append("VALUES\n(\n" + DataBaseCommon.MakeAddValueColumnComment(strNowComma, strColCode, strColValue, strColComments, strColType, _isQueryParm) + "\n)\n");
+                                sbInsertColums.Append("INSERT INTO " + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment)
+                                        + "(" + sqlEntity.NewLine + sqlEntity.Tab + strTableAliasAndDot + strColCode + strNowComma + sqlEntity.NewLine + ")" + sqlEntity.NewLine);
+                                sbInsertVale.Append(sValues + sqlEntity.NewLine + "(" + sqlEntity.NewLine + sColValueComment + sqlEntity.NewLine + ")" + sqlEntity.NewLine);
                             }
                             else
                             {
-                                sbInsertColums.Append("INSERT INTO " + DataBaseCommon.MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment)
-                                        + "(\n" + "\t" + strTableAliasAndDot + strColCode + strNowComma + "\n");
-                                sbInsertVale.Append("VALUES\n(\n" + DataBaseCommon.MakeAddValueColumnComment(strNowComma, strColCode, strColValue, strColComments, strColType, _isQueryParm));
+                                sbInsertColums.Append("INSERT INTO " + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment)
+                                        + "(" + sqlEntity.NewLine + "" + sqlEntity.Tab + strTableAliasAndDot + strColCode + strNowComma + sqlEntity.NewLine);
+                                sbInsertVale.Append(sValues + sqlEntity.NewLine + "(" + sqlEntity.NewLine + "" + sColValueComment);
                             }
                         }
-                        else if (j != iSelectLastNumber) //非首行，并且非尾行
+                        else if (j != iSelectLastNumber) //中间行
                         {
-                            sbInsertColums.Append("\t" + strTableAliasAndDot + strColCode + _strComma + "\n"); 
-                            sbInsertVale.Append(DataBaseCommon.MakeAddValueColumnComment(strNowComma, strColCode, strColValue, strColComments, strColType, _isQueryParm));
+                            sbInsertColums.Append(sqlEntity.Tab + strTableAliasAndDot + strColCode + strNowComma + sqlEntity.NewLine);
+                            sbInsertVale.Append(sColValueComment);
                         }
                         else //尾行
                         {
-                            strNowComma = "";
-                            sbInsertColums.Append("\t" + strTableAliasAndDot + strColCode + "\n)\n");
+                            sbInsertColums.Append(sqlEntity.Tab + strTableAliasAndDot + strColCode + "" + sqlEntity.NewLine + ")" + sqlEntity.NewLine);
                             //最后一行不用加逗号
-                            sbInsertVale.Append(DataBaseCommon.MakeAddValueColumnComment(strNowComma, strColCode, strColValue, strColComments, strColType, _isQueryParm) + ")\n");
+                            sbInsertVale.Append(sColValueComment + ")" + sqlEntity.NewLine);
                         }
                         #endregion
                     }
-                    else if (sqlTypeNow == SqlType.Update)
+                    else if (sqlEntity.SqlType == SqlType.Update)
                     {
                         #region 修改（直接拼接，条件为独立拼接）
+                        if ((j == 0 && j == iSelectLastNumber) || j == iSelectLastNumber)//只有一列
+                        {
+                            strNowComma = "";
+                        }
+                        string sColValueComment = MakeColumnValueComment(sqlEntity.SqlType, strNowComma, strColCode, strColValue, strColComments, strColType, sqlEntity.ParamType, strColCodeParm);
+                        string sSet = ckbNewLine.Checked ? "SET " : " SET ";
+
                         if (j == 0) //首行
                         {
-                            if (j == iSelectLastNumber)//只有一列
-                            {
-                                strNowComma = "";
-                            }
-                            sbUpdate.Append("UPDATE " + DataBaseCommon.MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment)
-                                    + "SET " + DataBaseCommon.MakeUpdateColumnComment(strNowComma, strColCode, strColValue, strColComments, strColType, _isQueryParm));
+                            sbUpdate.Append("UPDATE " + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment) + sSet + sColValueComment);
                         }
                         else if (j != iSelectLastNumber) //中间行
                         {
-                            sbUpdate.Append(DataBaseCommon.MakeUpdateColumnComment(strNowComma, strColCode, strColValue, strColComments, strColType, _isQueryParm));
+                            sbUpdate.Append(sColValueComment);
                         }
                         else //尾行
                         {
-                            strNowComma = "";
-                            sbUpdate.Append(DataBaseCommon.MakeUpdateColumnComment(strNowComma, strColCode, strColValue, strColComments, strColType, _isQueryParm));
+                            sbUpdate.Append(sColValueComment);
                         }
-                        #endregion}
+                        #endregion
                     }
-                    else if (sqlTypeNow == SqlType.Query)
+                    else if (sqlEntity.SqlType == SqlType.Query)
                     {
                         #region 查询（直接拼接，条件为独立拼接）
+                        string sFrom = ckbNewLine.Checked ? "FROM " : " FROM ";
+                        if ((j == 0 && j == iSelectLastNumber) || j == iSelectLastNumber)//只有一列
+                        {
+                            strNowComma = "";
+                        }
+                        string sColValueComment = MakeQueryColumnComment(strNowComma, strTableAliasAndDot + strColCode, strColComments);
                         if (j == 0) //首行
                         {
                             if (j == iSelectLastNumber)//只有一列
                             {
-                                strNowComma = "";
-                                sbSelect.Append("SELECT " + DataBaseCommon.MakeQueryColumnComment(strNowComma, strTableAliasAndDot + strColCode, strColComments) + "FROM "
-                                + DataBaseCommon.MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment));
+                                sbSelect.Append("SELECT " + sColValueComment + sFrom + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment));
                             }
                             else
                             {
-                                sbSelect.Append("SELECT " + DataBaseCommon.MakeQueryColumnComment(strNowComma, strTableAliasAndDot + strColCode, strColComments));
+                                sbSelect.Append("SELECT " + sColValueComment);
                             }
                         }
                         else if (j != iSelectLastNumber) //中间行
                         {
-                            sbSelect.Append(DataBaseCommon.MakeQueryColumnComment(strNowComma, strTableAliasAndDot + strColCode, strColComments));
+                            sbSelect.Append(sColValueComment);
                         }
                         else //尾行
                         {
-                            strNowComma = "";
-                            sbSelect.Append(DataBaseCommon.MakeQueryColumnComment(strNowComma, strTableAliasAndDot + strColCode, strColComments) + "FROM "
-                                + DataBaseCommon.MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment));
+                            sbSelect.Append(sColValueComment + sFrom + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment));
                         }
                         #endregion
                     }
                 }
 
-                if(sqlTypeNow == SqlType.Insert)
+                if (sqlEntity.SqlType == SqlType.Insert)
                 {
                     strOneSql = sbInsertColums.ToString() + sbInsertVale.ToString();
                 }
-                else if (sqlTypeNow == SqlType.Delete)
+                else if (sqlEntity.SqlType == SqlType.Delete)
                 {
                     //最简单：使用表名和独立的条件拼接即可
-                    strOneSql = "DELETE FROM " + strDataTableName + DataBaseCommon.AddRightBand(strTableAlias) + "\n" + sbWhereSql.ToString();
+                    strOneSql = "DELETE FROM " + strDataTableName + DataBaseCommon.AddRightBand(strTableAlias) + sqlEntity.NewLine + sbWhereSql.ToString();
                 }
-                else if (sqlTypeNow == SqlType.Update)
+                else if (sqlEntity.SqlType == SqlType.Update)
                 {
                     strOneSql = sbUpdate.ToString() + sbWhereSql.ToString();
                 }
-                else if (sqlTypeNow == SqlType.Query)
+                else if (sqlEntity.SqlType == SqlType.Query)
                 {
                     strOneSql = sbSelect.ToString() + sbWhereSql.ToString();
                 }
@@ -513,7 +599,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 i++;//下一个表
             }
             rtbResult.Clear();
-            rtbResult.AppendText(sbAllSql.ToString() + "\n");
+            rtbResult.AppendText(sbAllSql.ToString() + sqlEntity.NewLine);
             Clipboard.SetData(DataFormats.UnicodeText, sbAllSql.ToString());
             tabControl1.SelectedTab = tpAutoSQL;
             //生成SQL成功后提示
@@ -521,13 +607,26 @@ namespace Breezee.WorkHelper.DBTool.UI
             return;
             #endregion
         }
+
+        private static string FirstLetterUpper(string strColCode)
+        {
+            strColCode = strColCode.ToLower();
+            string[] firstUpper = strColCode.Split('_');
+            StringBuilder sb = new StringBuilder();
+            foreach (var s in firstUpper)
+            {
+                sb.Append(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(s));
+            }
+            strColCode = sb.ToString();
+            return strColCode;
+        }
         #endregion
 
         #region 帮助按钮事件
         private void tsbHelp_Click(object sender, EventArgs e)
         {
 
-        } 
+        }
         #endregion
 
         #region 退出按钮事件
@@ -577,7 +676,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     return;
                 }
             }
-            
+
             string sDefaultColName;
             switch (_dbServer.DatabaseType)
             {
@@ -638,7 +737,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void CmbType_SelectedIndexChanged(object sender, EventArgs e)
         {
             SqlType sqlTypeNow = GetSqlType();
-            if (sqlTypeNow == SqlType.Insert || sqlTypeNow == SqlType.Parameter) 
+            if (sqlTypeNow == SqlType.Insert || sqlTypeNow == SqlType.Parameter)
             {
                 return;
             }
@@ -649,7 +748,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 return;
             }
 
-            if(sqlTypeNow == SqlType.Update)//只针对更新，其条件要加上并发控制ID
+            if (sqlTypeNow == SqlType.Update)//只针对更新，其条件要加上并发控制ID
             {
                 DataRow[] drUpdateControlColumn = dtSec.Select(DBColumnEntity.SqlString.Name + "='" + _strUpdateCtrolColumnCode + "'");//得到并发ID行
                 if (drUpdateControlColumn.Length == 0)
@@ -693,15 +792,194 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private void CbbParaType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(cbbParaType.SelectedValue !=null && cbbParaType.SelectedValue.ToString().Equals("2"))
+            if (cbbParaType.SelectedValue == null) return;
+            string sType = cbbParaType.SelectedValue.ToString();
+            switch (sType)
             {
-                txbParamPre.Visible = true;
+                case "1":
+                    lblParam.Visible = false;
+                    txbParamPre.Visible = false;
+                    lblDefineFormat.Visible = false;
+                    txbDefineFormart.Visible = false;
+                    break;
+                case "2":
+                    txbParamPre.Visible = true;
+                    lblParam.Visible = true;
+                    lblParam.Text = "参数前缀：";
+                    lblDefineFormat.Visible = false;
+                    txbDefineFormart.Visible = false;
+                    break;
+                case "3":
+                    lblParam.Visible = false;
+                    txbParamPre.Visible = false;
+                    lblDefineFormat.Visible = false;
+                    txbDefineFormart.Visible = false;
+                    break;
+                case "4":
+                    lblParam.Visible = true;
+                    lblParam.Text = "列名替代符：";
+                    txbParamPre.Visible = true;
+                    lblDefineFormat.Visible = true;
+                    txbDefineFormart.Visible = true;
+                    break;
+            }
+        }
+
+        #region 生成增删改查SQL方法
+        /// <summary>
+        /// 设置表说明
+        /// </summary>
+        /// <param name="strTableCode"></param>
+        /// <param name="strColComments"></param>
+        /// <returns></returns>
+        public string MakeTableComment(string strTableCode, string strColComments)
+        {
+            if (!string.IsNullOrEmpty(strColComments))
+            {
+                return DataBaseCommon.AddLeftBand(strTableCode) + sqlEntity.Tab + "/*" + strColComments + "*/" + sqlEntity.NewLine;
+            }
+            return DataBaseCommon.AddLeftBand(strTableCode) + sqlEntity.Tab + sqlEntity.NewLine;
+        }
+
+        /// <summary>
+        /// 设置查询列说明
+        /// </summary>
+        /// <param name="strComma">为逗号或空</param>
+        /// <param name="strColCode">列编码</param>
+        /// <param name="strColComments">列说明</param>
+        /// <returns></returns>
+        public string MakeQueryColumnComment(string strComma, string strColCode, string strColComments)
+        {
+            if (!string.IsNullOrEmpty(strColComments))
+            {
+                return sqlEntity.Tab + strColCode + strComma + sqlEntity.Tab + "/*" + strColComments + "*/" + sqlEntity.NewLine;
+            }
+            return sqlEntity.Tab + strColCode + strComma + sqlEntity.Tab + sqlEntity.NewLine;
+        }
+
+        /// <summary>
+        /// 设置列值说明方法
+        /// </summary>
+        /// <param name="strComma">为逗号或空</param>
+        /// <param name="strColCode">列编码</param>
+        /// <param name="strColValue">列值</param>
+        /// <param name="strColComments">列说明</param>
+        /// <param name="strColType">列数据类型</param>
+        /// <returns></returns>
+        private string MakeColumnValueComment(SqlType sqlTypeNow, string strComma, string strColCode, string strColValue, string strColComments, string strColType, SqlParamFormatType paramType, string colParam)
+        {
+            string strColRemark = "";
+
+            if (!string.IsNullOrEmpty(strColComments))
+            {
+                if (sqlTypeNow == SqlType.Insert)
+                {
+                    strColRemark = "/*" + strColCode + ":" + strColComments + "*/" + sqlEntity.NewLine;//新增显示列名和备注
+                }
+                else if (sqlTypeNow == SqlType.Update)
+                {
+                    strColRemark = "/*" + strColComments + "*/" + sqlEntity.NewLine; //修改不显示列名，只显示备注
+                }
+            }
+
+            string strColRelValue = "";
+            if (string.IsNullOrEmpty(strColValue)) //列没有默认值则加引号
+            {
+                //列值为空时
+                if (strColType == "DATE")
+                {
+                    //如果是Oracle的时间类型DATE，则需要将字符转为时间格式，要不会报“文字与字符串格式不匹配”错误
+                    strColRelValue = "TO_DATE(" + DataBaseCommon.QuotationMark + colParam + DataBaseCommon.QuotationMark + ",'YYYY-MM-DD')";
+                    if (paramType == SqlParamFormatType.SqlParm)
+                    {
+                        strColRelValue = "TO_DATE(" + colParam + ",'YYYY-MM-DD')";
+                    }
+                }
+                else
+                {
+                    strColRelValue = colParam;
+                    if (paramType == SqlParamFormatType.BeginEndHash)
+                    {
+                        strColRelValue = DataBaseCommon.QuotationMark + colParam + DataBaseCommon.QuotationMark;
+                    }
+                }
+            }
+            else //列有默认值则不加引号
+            {
+                strColRelValue = strColValue;
+            }
+
+            if (sqlTypeNow == SqlType.Insert)
+            {
+                return sqlEntity.Tab + strColRelValue + strComma + sqlEntity.Tab + strColRemark;
+            }
+            else //sqlTypeNow == SqlType.Update
+            {
+                return sqlEntity.Tab + strTableAliasAndDot + strColCode + "=" + strColRelValue + strComma + sqlEntity.Tab + strColRemark;
+            }
+        }
+
+
+        /// <summary>
+        /// 设置条件列说明
+        /// </summary>
+        /// <param name="strColCode">列编码</param>
+        /// <param name="strColValue">列值</param>
+        /// <param name="strColComments">列说明</param>
+        /// <returns></returns>
+        public string MakeConditionColumnComment(string strColCode, string strColValue, string strColComments, SqlParamFormatType paramType, string sTableAliasAndDot, string colParam)
+        {
+            string strRemark = sqlEntity.NewLine;
+            if (!string.IsNullOrEmpty(strColComments))
+            {
+                strRemark = "/*" + strColComments + "*/" + sqlEntity.NewLine + "";
+            }
+            if (string.IsNullOrEmpty(strColValue))
+            {
+                if (paramType == SqlParamFormatType.SqlParm)
+                {
+                    return sTableAliasAndDot + strColCode + " = " + colParam + sqlEntity.Tab + strRemark;
+                }
+                //列值为空时，设置为：'#列编码#'
+                return sTableAliasAndDot + strColCode + "=" + DataBaseCommon.QuotationMark + colParam + DataBaseCommon.QuotationMark + sqlEntity.Tab + strRemark;
             }
             else
             {
-                txbParamPre.Visible = false;
+                //有固定值时
+                return sTableAliasAndDot + strColCode + "=" + strColValue + sqlEntity.Tab + strRemark;
             }
         }
+        #endregion
+
+
+    }
+
+    public class DBSqlEntity
+    {
+        /// <summary>
+        /// 表名
+        /// </summary>
+        public string TableName { get; set; }
+        /// <summary>
+        /// 表别名
+        /// </summary>
+        public string TableAlias { get; set; }
+        /// <summary>
+        /// SQL类型
+        /// </summary>
+        public SqlType SqlType { get; set; }
+
+        /// <summary>
+        /// SQL参数格式类型
+        /// </summary>
+        public SqlParamFormatType ParamType { get; set; }
+        public string ParamCol { get; set; }
+
+        public bool IsHasRemark { get; set; }
+        public string NewLine { get; set; }
+        public string Tab { get; set; }
+        public bool IsUseGlobal { get; set; }
+        public bool IsFirstUpper { get; set; }
     }
 
 }
