@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>数据库数据拼接</title>
+</head>
+<body>
+    <div>
+        <h1>数据库数据拼接</h1>
+        <div>
+            <h2>一、功能概述</h2>
+            通过查询数据库某个表的数据，然后将其某些列数据拼接起来。
+        </div>
+        <div>
+            <h2>二、界面截图</h2>
+            主界面：<br>
+            <img src="Images\DataStringDBQuery.001.jpg" alt=""><br>
+        </div>
+
+        <div>
+            <h2>三、操作步骤</h2>
+            <b>1、选择【连接配置名】：</b>要连接哪个数据库。<br>
+            <b>2、输入【选项配置】相关信息：</b><br>
+            表名：下拉框，可以手工输入；也可以在勾中【获取表清单】复选框后下拉选择。<br>
+            获取表清单：复选框，当选中时会把表清单加载到【表名】下拉框中。<br>
+            Where条件：文本框，可输入筛选数据的条件，生成部分数据SQL。<br> 
+            拼接字符：文本框，输入要拼接字符的格式。请用#列名#作为参数配置！<br>          
+            <b>3、点击【生成】：</b>成功后会提示相应信息。<br>
+        </div>        
+        <div>
+            <h2>四、逻辑与业务规则</h2>
+            <div><b>【Where条件】：</b>
+                如表名不为空，那么Where条件作为表的过滤条件；如果表名为空，那么where条件可输入自定的SQL语句！<br>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

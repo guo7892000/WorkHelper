@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>表列扩展信息SQL生成</title>
+</head>
+<body>
+    <div>
+        <h1>表列扩展信息SQL生成</h1>
+        <div>
+            <h2>一、功能概述</h2>
+            为了更好地理解数据库表和列的含义，我们可以对其增加一些备注信息。但因为各种数据库差异，可能只有部分数据库类型支持。例如SQLite就不支持！
+        </div>
+        <div>
+            <h2>二、界面截图</h2>
+            主界面：<br>
+            <img src="Images\TableSqlRemark.001.jpg" alt=""><br>
+            导入模板：<br>
+            <img src="Images\TableSqlRemark.002.jpg" alt=""><br>
+        </div>
+
+        <div>
+            <h2>三、操作步骤</h2>
+            <b>1、【模板下载】：</b>下载后维护相关信息。<br>
+            表名：必填，针对哪个表。
+            列名：非必填。当其为空时，是针对表的注释；非空时是针对列的注释。
+            扩展属性说明：具体的注释内容。
+            <b>2、点击【导入】：</b>选择刚刚维护的模板文件，点击【打开】即可将结果导入到网格中。<br>
+            <b>3、选择【数据库类型】，包括SqlServer、Oracle、MySql、SQLite、PostgreSql<br>
+            <b>4、点击【生成】：</b><br>
+            生成成功后，会提示相关信息。<br>
+        </div>        
+        <div>
+            <h2>四、逻辑与业务规则</h2>
+            <div><b>无</b><br>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

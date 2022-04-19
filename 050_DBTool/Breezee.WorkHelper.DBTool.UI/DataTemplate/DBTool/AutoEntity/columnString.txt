@@ -1,0 +1,1 @@
+            public static string #COLUMN_NAME# = "#COLUMN_NAME#";

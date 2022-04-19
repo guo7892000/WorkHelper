@@ -1,0 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Breezee.Framework.DataAccess.INF;
+using Breezee.Framework.Tool;
+using Breezee.Global.IOC;
+using Breezee.Global.Entity;
+using #NAME_SPACE_I#;
+using #NAME_SPACE_ID#;
+
+namespace #NAME_SPACE_B#
+{
+	public class #CLASS_NAME_B# : #CLASS_NAME_I#
+	{
+		
+	}
+}

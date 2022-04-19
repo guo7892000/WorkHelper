@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>合并脚本</title>
+</head>
+<body>
+    <div>
+        <h1>合并脚本</h1>
+        <div>
+            <h2>一、功能概述</h2>
+            我们在创建数据库对象时，通常会为每一个对象（如存储过程）或每种对象类型（表变更SQL）创建一个独立的文件，方便维护；
+            而在执行时，我们又希望它们能合并为少量的几个文件，方便执行。本功能就是解决这类问题的。
+        </div>
+        <div>
+            <h2>二、界面截图</h2>
+            主界面：<br>
+            <img src="Images\CommonMergeScript.001.jpg" alt=""><br>
+            模板示例：<br>
+            <img src="Images\CommonMergeScript.002.jpg" alt=""><br>
+        </div>
+
+        <div>
+            <h2>三、操作步骤</h2>
+            <b>1、【模板下载】：</b>下载后维护相关信息。<br>
+            <b>2、维护【模板】中要合并的子脚本信息：</b><br>
+            configuration：根节点，包括db、drop两种属性及class子项：<br>
+                db：数据库类型，包括SqlServer、Oracle、MySql、SQLite、PostgreSql<br>
+                drop：1自动生成drop对象（倒序生成），0不生成<br>
+            class：分类，二级节点，包括type、name属性和item子项： 
+                type：包括t(表)、f(函数)、v(视图)、p(存储过程)、d(数据)。
+                name：输出文件名。
+            item：要合并的SQL文件名。注：只输入文件名即可，不需要相对路径，方便自行调整目录结构而不影响模板配置。   
+            <b>3、界面元素填写：</b><br>
+                配置文件选择：选择刚刚维护的模板文件。<br>
+                自动打开生成目录：如选中，在合并成功后会自动打开生成后的目录。<br>
+            <b>4、点击【合并】：</b><br>
+            合并成功后，会提示相关信息。【生成的文件清单】也会显示本次生成的所有文件。<br>
+        </div>        
+        <div>
+            <h2>四、逻辑与业务规则</h2>
+            <div>
+                <b>当【class】下的【item】为空时：</b>会忽略该分类。<br>
+                <b>当【item】配置的文件找不到时：</b>也会忽略该文件。<br>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1 @@
+        public BaseEntityField #COLUMN_NAME_VAR# = BaseEntityField.New()

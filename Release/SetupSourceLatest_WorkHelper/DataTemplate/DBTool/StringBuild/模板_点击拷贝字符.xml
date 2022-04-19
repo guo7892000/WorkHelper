@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--点击复制常用字符配置-->
+<!--根节点（strings）：max属性为group的默认每行项目数；
+二级节点（group）：分组。可以设置max属性，确定本分组的每行项目数，当不指定时则取根节点配置的max属性。-->
+<strings max="5">
+  <group text="示例_分组1" max="4">
+    <!--每个字符项的属性说明：
+    type：text文本；path路径；file是文件。
+    ctrol：TextBox是一般文本框；RichTextBox是富文件框，针对type为file的配置。
+    pwdchar：设置密码掩码字符，如复制的是密码，请设置其值为*。
+    tip：按钮的提示信息。
+    text：实际拷贝的内容
+    pathAbs：读取文本文件的绝对路径，针对type为file的配置。
+    pathRel：读取文本文件的相对路径，针对type为file的配置。-->
+    <string type="text" ctrol="TextBox" label="文本示例" text="文本2021" tip="这是文本示例" pwdchar=""></string>
+    <string type="text" ctrol="TextBox" label="密码示例" text="1122" tip="" pwdchar="*"></string>
+    <string type="path" ctrol="TextBox" label="路径示例" text="C:\Windows" tip="" pwdchar=""></string>
+    <string type="path" ctrol="TextBox" label="目录示例" text="D:\" tip="" pwdchar=""></string>
+    <string type="text" ctrol="TextBox" label="版权" text="@2021" tip="" pwdchar=""></string>
+    <string type="text" ctrol="TextBox" label="注释" text="这是注释" tip="" pwdchar=""></string>
+    
+  </group>
+  <group text="示例_分组2">
+    <!--自动加载文件内容示例：绝对路径、相对路径-->
+    <string type="file" ctrol="RichTextBox" label="绝对路径富文件" pathAbs="C:\Windows\System32\drivers\etc\protocol" tip="" pwdchar=""></string>
+    <string type="file" ctrol="RichTextBox" label="相对路径富文件" pathRel="DataTemplate\DBTool\AutoFile\I.txt" tip="" pwdchar=""></string>
+    <!--默认按钮事件是复制字符，但我们可以将该按钮事件绑定到其他按钮事件中，如下面的得到自1970-1-1以来的毫秒数-->
+    <string type="text" ctrol="TextBox" label="自1970-1-1以来的毫秒数" text="" tip="绑定当前类的其他点击事件到当前按钮（作用不大）" method="GetMillisecond_Click"></string>
+  </group>
+</strings>

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<xml>
+  <!--键值表-->
+  <key kid="RBG_VALUE" name ="RBG颜色(数值)">
+    <value vid="207,226,243" name="浅蓝"/>
+    <value vid="230,230,230" name="浅灰"/>
+    <value vid="235,246,167" name="米黄"/>
+    <value vid="216,246,255" name="淡蓝"/>
+    <value vid="190,243,201" name="浅绿"/>
+    <value vid="212,195,250" name="淡紫"/>
+    <value vid="156,170,193" name="深灰"/>
+    <value vid="243,242,231" name="浅白"/>
+  </key>
+  <key kid="RBG_NAME" name ="RBG颜色(名称)">
+    <value vid="Red" name="红色"/>
+    <value vid="Yellow" name="黄色"/>
+    <value vid="White" name="白色"/>
+  </key>
+  <key kid="FORM_SKIN_TYPE" name ="窗体皮肤类型">
+    <value vid="0" name="默认"/>
+    <value vid="1" name="选择颜色"/>
+    <value vid="2" name="选择图片"/>
+    <value vid="3" name="自定义颜色"/>
+  </key>
+  <key kid="SAVE_TIP" name ="保存提示类型">
+    <value vid="1" name="弹出提示"/>
+    <value vid="2" name="不弹出提示(仅显示)"/>
+  </key>
+
+</xml>  

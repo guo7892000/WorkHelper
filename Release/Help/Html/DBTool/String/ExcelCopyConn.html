@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>复制数据拼接</title>
+</head>
+<body>
+    <div>
+        <h1>复制数据拼接</h1>
+        <div>
+            <h2>一、功能概述</h2>
+            将粘贴进来的数据拼接成自定义格式的字符串，或UNION清单，或UNION ALL清单。
+        </div>
+        <div>
+            <h2>二、界面截图</h2>
+            主界面：操作文件生成<br>
+            <img src="Images\ExcelCopyConn.001.jpg" alt=""><br>
+        </div>
+
+        <div>
+            <h2>三、操作步骤</h2>
+            <b>1、复制粘贴数据：</b>在Excel复制一列数据，并粘贴到网格上。<br>
+            <b>2、界面元素输入或选择：</b><br>
+                【语句类型】：包括【自定义拼接字符串】、【UNION清单】、【UNION ALL清单】。<br>
+                【数据库类型】：包括五种数据库。只有当【语句类型】为【UNION清单】、【UNION ALL清单】时才显示。<br>
+                【自动字母列名】：可选，选中时列名显示为字母。<br>
+                【拼接字符】：文本框，输入要拼接字符的格式。请用#列名#作为参数配置！<br>
+            <b>3、点击【生成】：</b>生成成功后，会提示相关信息。<br>
+        </div> 
+        <div>
+            <h2>四、逻辑和业务规则</h2>
+            <div><b>关于参数：</b>
+                请用#列名#作为参数配置。我们也可以在网格中右击选择【加入】，将参数添加到拼接字符中。<br>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

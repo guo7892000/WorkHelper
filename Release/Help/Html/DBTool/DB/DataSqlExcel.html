@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>模板数据SQL生成</title>
+</head>
+<body>
+    <div>
+        <h1>模板数据SQL生成</h1>
+        <div>
+            <h2>一、功能概述</h2>
+            通过Excel模板导入来生成数据SQL。
+        </div>
+        <div>
+            <h2>二、界面截图</h2>
+            主界面：<br>
+            <img src="Images\DataSqlExcelImport.001.jpg" alt=""><br>
+            Excel模板：<br>
+            【表】：本次数据变更相关表信息，包括序号、数据库类型、类型、表名、数据Sheet名。<br>
+            <img src="Images\DataSqlExcelImport.002.jpg" alt=""><br>
+            【列】：本次变更中表的列信息，包括表名、列名、固定值、是否修改条件、是否不加引号、是否辅助列、日期格式。<br>
+            <img src="Images\DataSqlExcelImport.003.jpg" alt=""><br>
+            数据页签：本页签名在【表】页签中定义过，一个表对应一个数据页签，其配置值为【列】中定义的所有列的行数据。<br>
+            <img src="Images\DataSqlExcelImport.004.jpg" alt=""><br>
+        </div>
+
+        <div>
+            <h2>三、操作步骤</h2>
+            <b>1、【模板下载】：</b>下载后维护相关信息。<br>
+            <b>2、点击【导入】：</b>选择刚刚维护的模板文件，点击【打开】即可将结果导入到网格中。<br>
+            <b>3、点击【生成】：</b><br>
+            生成成功后，会提示相关信息，并跳转到【生成结果】页签，生成的内容默认会写到粘贴板中。<br>
+        </div>        
+        <div>
+            <h2>四、逻辑与业务规则</h2>
+            <div><b>关于【模板】：</b>
+                默认模板已有一些测试数据信息，请根据实际需要参照填写。<br>
+                <b>【表】：</b><br>
+                序号：排序使用<br>
+                数据库类型：包括SqlServer,Oracle,MySql,SQLite,PostgreSql。<br>
+                类型：包括新增、修改。<br>
+                表名：数据库中的表名。<br>
+                数据Sheet名：数据所在的Sheet页签名。<br>
+                <b>【列】：</b><br>
+                表名：为了筛选列名。<br>
+                列名：需要跟数据Sheet名中列名和个数一致。必须包括没有默认值，但又要求非空的值。<br>
+                固定值：某列固定的插入值，如是字符，请加上单引号。该固定值可以是序列、函数或子查询。如有参数，则其来源值必须是在数据SHEET中，且名为“#列名#”。那么系统自动把该列固定值替换成相应列值。<br>
+                是否修改条件：默认为“否”。当是修改，必须有一列为“是”，这样才知道根据什么条件来更新记录。<br>
+                是否不加引号：只针对数据SHEET中的值，默认为“否”，即会加上单引号。当不需要时，请设置“是否不加引号”列值为“是”。<br>
+                是否辅助列：默认为“否”。当为“否”时，更新或插入会包括该字段；为“是”的作用是替换语句中的参数为实际数据值，不会包括在更新或插入语句中。<br>
+                日期格式：包括DATE、TIMESTAMP。对Oracle的时间字符为必填<br>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
