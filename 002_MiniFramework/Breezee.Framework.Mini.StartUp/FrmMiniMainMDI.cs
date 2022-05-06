@@ -50,6 +50,8 @@ namespace Breezee.Framework.Mini.StartUp
         #region 加载事件
         private void FrmMainMDI_Load(object sender, EventArgs e)
         {
+            Text = string.Format("工作助手（Work Helper） v{0} 正式版  2022-05-05", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+
             iStartMenu = menuStrip.Items.IndexOfKey(tsbStartMenu.Name);
             this.WindowState = FormWindowState.Maximized;
 #if DEBUG
@@ -59,6 +61,7 @@ namespace Breezee.Framework.Mini.StartUp
 
             this.SetFormBackGroupStyle(UserSet.Default.MainSkinType, UserSet.Default.MainSkinValue);//设置主窗体样式
             GlobalContext.Instance.MenuHelpList.Add(new EntMenuHelp(_FrameworkHelpPath, _FrameworkHelpName + " > 概述", _FrameworkHelpName));
+            GlobalContext.Instance.MenuHelpList.Add(new EntMenuHelp("/Help/Html/Mini/ChangeHistory.html", _FrameworkHelpName + " > 变更历史", _FrameworkHelpName));
             //加载菜单
             LoadMenu();
             //增加快捷菜单
@@ -70,7 +73,7 @@ namespace Breezee.Framework.Mini.StartUp
             //设置菜单查找数据源
             tstbMenuSearch.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             tstbMenuSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            this.Text = string.Format("工作助手（Work Helper） v{0} 正式版  2022-04-17", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            
             tvLeftMenu.ExpandAll();
             tsslUserInfo.Text = GlobalContext.Instance.LoginUser.USER_CODE;
             //绑定事件

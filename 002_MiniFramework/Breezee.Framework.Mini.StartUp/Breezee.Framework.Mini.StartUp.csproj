@@ -315,6 +315,9 @@
     <Content Include="Config\Mini\SQL.Main.Mini.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Help\Html\Mini\ChangeHistory.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\Html\Mini\DllSet.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

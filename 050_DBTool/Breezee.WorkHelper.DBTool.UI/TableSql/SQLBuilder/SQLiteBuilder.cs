@@ -19,7 +19,17 @@ namespace Breezee.WorkHelper.DBTool.UI
             string strTableRemark = entTable.Remark;
             TableChangeType tableDealType = entTable.ChangeTypeEnum;
 
-            IEnumerable<EntCol> tableCols = entCols.Where(t => t.commonCol.TableCode == entTable.Code);
+            IEnumerable<EntCol> tableCols;
+
+            if (string.IsNullOrEmpty(entTable.CommonColumnTableCode))
+            {
+                tableCols = entCols.Where(t => t.commonCol.TableCode == entTable.Code);
+            }
+            else
+            {
+                //把通用列也加进去
+                tableCols = entCols.Where(t => t.commonCol.TableCode == entTable.Code).Union(entCols.Where(t => t.commonCol.TableCode == entTable.CommonColumnTableCode));
+            }
 
             string strPK = "";
             string strUqueList = "";

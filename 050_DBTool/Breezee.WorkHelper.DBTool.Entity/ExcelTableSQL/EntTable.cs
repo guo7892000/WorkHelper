@@ -11,7 +11,7 @@ namespace Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL
     /// </summary>
     public class EntTable
     {
-        /*序号	变更类型	表名称	表编码	备注*/
+        /*序号	变更类型 表名称	表编码 通用列的表名	备注*/
         public string Num;
 
         public string ChangeType;
@@ -20,6 +20,7 @@ namespace Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL
         public string Name;
         public string Code;
         public string Remark;
+        public string CommonColumnTableCode;
 
         public static EntTable GetEntity(DataRow dr)
         {
@@ -34,6 +35,7 @@ namespace Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL
             ent.Name = dr[ExcelTable.Name].ToString().Trim();
             ent.Code = dr[ExcelTable.Code].ToString().Trim();
             ent.Remark = dr[ExcelTable.Remark].ToString().Trim();
+            ent.CommonColumnTableCode = dr[ExcelTable.CommonColumnTableCode].ToString().Trim();
             return ent;
         }
 
@@ -48,6 +50,7 @@ namespace Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL
             public static string ChangeType = "变更类型";
             public static string Name = "表名称";
             public static string Code = "表编码";
+            public static string CommonColumnTableCode = "通用列的表名";
             public static string Remark = "备注";
         }
 

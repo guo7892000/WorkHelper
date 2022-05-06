@@ -96,7 +96,23 @@ namespace Breezee.WorkHelper.DBTool.UI
             foreach(DataRow rowTable in tableList.Rows)
             {
                 string tableCode = rowTable[EntTable.ExcelTable.Code].ToString();
-                DataRow[] rowColumns = columnList.Select(EntTable.ExcelTable.Code + "='" + tableCode + "'");
+                string commonColumn = rowTable[EntTable.ExcelTable.CommonColumnTableCode].ToString().Trim();
+                DataRow[] rowColumns;
+
+                if (string.IsNullOrEmpty(commonColumn))
+                {
+                    rowColumns = columnList.Select(EntTable.ExcelTable.Code + "='" + tableCode + "'");
+                }
+                else
+                {
+                    rowColumns = columnList.Select(EntTable.ExcelTable.Code + "='" + tableCode + "'");
+                    DataRow[] rowCommonColumns = columnList.Select(EntTable.ExcelTable.Code + "='" + commonColumn + "'");
+                    DataRow[] rowArr = new DataRow[rowColumns.Length + rowCommonColumns.Length];
+                    rowColumns.CopyTo(rowArr,0);
+                    rowCommonColumns.CopyTo(rowArr, rowColumns.Length);
+                    rowColumns = rowArr;
+                }
+
                 int index = 1;
                 StringBuilder columnBuilder = new StringBuilder();
                 foreach (DataRow row in rowColumns)
