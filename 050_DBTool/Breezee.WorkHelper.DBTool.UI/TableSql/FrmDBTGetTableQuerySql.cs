@@ -244,7 +244,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             StringBuilder sbAllSql = new StringBuilder();
             StringBuilder sbWhereSql = new StringBuilder();
             string strWhereFirst = ckbNewLine.Checked ? "WHERE 1=1 " + sqlEntity.NewLine : " WHERE 1=1 " + sqlEntity.NewLine;
-            string strWhereNoFirst = ckbNewLine.Checked ? "WHERE" : " WHERE ";
+            string strWhereNoFirst = ckbNewLine.Checked ? "WHERE " : " WHERE ";
 
 
             string strAnd = " AND ";

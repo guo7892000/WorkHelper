@@ -81,7 +81,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 foreach (EntCol drCol in tableCols)
                 {
                     //增加MySql列
-                    GeneratePostgreSqlColumn(TableChangeType.Create, strTableCode, drCol, ref strPK, ref j, ref strUqueList);
+                    GeneratePostgreSqlColumn(TableChangeType.Alter, strTableCode, drCol, ref strPK, ref j, ref strUqueList);
                 }
                 #endregion
             }
@@ -109,6 +109,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             string strColForgKeyCode = _isAllConvert ? drCol.allInOne.PostgreSql_FKName : drCol.postgreSqlCol.FKName;//外键名
 
             string strTable_Col = strTableCode + "_" + strColCode;//表编码+"_"+列编码
+            string sOneSql = "";
 
             #region 转换字段类型与默认值
             if (importDBType != targetDBType)
@@ -214,9 +215,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //生成删除列SQL脚本
                 if (createType ==  SQLCreateType.Drop || createType ==  SQLCreateType.Drop_Create)
                 {
-                    if (strColumnDealType ==  ColumnChangeType.Create)
+                    if (strColumnDealType ==  ColumnChangeType.Create || strColumnDealType == ColumnChangeType.Drop_Create)
                     {
-                        sbDelete.Append("alter table `" + strTableCode + "` drop column `" + strColCode + "`;\n");
+                        sbDelete.Append("alter table " + strTableCode + " drop column " + strColCode + ";\n");
                     }
                     //对于删除，直接下一个字段
                     if (createType == SQLCreateType.Drop)
@@ -226,12 +227,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
 
                 //类型处理
-                sbSql.Append(AddRightBand(strColCode) + sDataType_Full);
+                sbColSql.Append(AddRightBand(strColCode) + sDataType_Full);
 
                 #region 非空的处理
                 if (strColNoNull ==  YesNoType.Yes)
                 {
-                    sbSql.Append(sNotNull);
+                    sbColSql.Append(sNotNull);
                 }
                 //else
                 //{
@@ -243,7 +244,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (!string.IsNullOrEmpty(strColDefault))
                 {
                     //string strColDefaultName = "DF_" + strTableCode + "_" + strColCode;
-                    sbSql.Append(AddRightBand(" DEFAULT " + strColDefault + ""));
+                    sbColSql.Append(AddRightBand(" DEFAULT " + strColDefault + ""));
                 }
                 #endregion
 
@@ -255,21 +256,21 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (strColumnDealType ==  ColumnChangeType.Create)
                 {
                     //得到修改表增加列语句
-                    sbSql.Append("alter table `" + strTableCode + "` add " + AddRightBand(strColCode) + sbColSql.ToString());
+                    sbSql.AppendLine("alter table " + strTableCode + " add " + AddRightBand(strColCode) + sbColSql.ToString());
                 }
                 else if (strColumnDealType ==  ColumnChangeType.Alter)
                 {
-                    sbSql.Append("/*注：对修改字段，如要变更是否可空类型，则自己在最后加上NULL 或NOT NULL。对字段类型的变更，需要先清空该字段值或删除该列再新增*/\n");
-                    sbSql.Append("alter table `" + strTableCode + "` CHANGE " + AddRightBand(strColCode) + sbColSql.ToString());
+                    sbSql.AppendLine("/*注：对修改字段，如要变更是否可空类型，则自己在最后加上NULL 或NOT NULL。对字段类型的变更，需要先清空该字段值或删除该列再新增*/");
+                    sbSql.AppendLine("alter table " + strTableCode + " CHANGE " + AddRightBand(strColCode) + sbColSql.ToString());
                 }
                 else if (strColumnDealType ==  ColumnChangeType.Drop)
                 {
-                    sbSql.Append("alter table " + strTableCode + " drop column " + AddRightBand(strColCode) + ";\n");
+                    sbSql.AppendLine("alter table " + strTableCode + " drop column " + AddRightBand(strColCode) + ";");
                 }
                 else if (strColumnDealType ==  ColumnChangeType.Drop_Create)
                 {
                     //得到修改表增加列语句
-                    sbSql.Append("alter table " + strTableCode + " CHANGE " + AddRightBand(strColCode) + sbColSql.ToString());
+                    sbSql.AppendLine("alter table " + strTableCode + " add " + AddRightBand(strColCode) + sbColSql.ToString());
                 }
                 j++;
                 #endregion

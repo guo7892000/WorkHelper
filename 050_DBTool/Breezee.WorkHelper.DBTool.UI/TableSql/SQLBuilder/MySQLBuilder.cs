@@ -30,6 +30,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
 
             string strPK = "";
+            strTableCode = "`" + strTableCode + "`";
             if ((createType ==  SQLCreateType.Drop || createType ==  SQLCreateType.Drop_Create) && tableDealType == TableChangeType.Create)
             {
                 sbDelete = sbDelete.Insert(0, "DROP TABLE IF EXISTS " + strTableCode + ";\n");//倒着删除掉
@@ -38,9 +39,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 #region 新增处理
                 sbSql.Append("/*" + iCalNum.ToString() + "、新增表：" + strTableName + AddLeftRightKuoHao(strTableCode) + "*/\n");
-                sbSql.Append(AddRightBand("CREATE TABLE IF NOT EXISTS") + AddRightBand("`" + strTableCode + "`") + "(\n");
+                sbSql.Append(AddRightBand("CREATE TABLE IF NOT EXISTS") + AddRightBand(strTableCode) + "(\n");
                 //表说明SQL
-                sbRemark.Append(string.Format("ALTER TABLE `{0}` COMMENT '{1}';\n", strTableCode, strTableName + "：" + strTableRemark));
+                sbRemark.Append(string.Format("ALTER TABLE {0} COMMENT '{1}';\n", strTableCode, strTableName + "：" + strTableRemark));
 
                 int j = tableCols.Count();
                 //string strDefaultList = "";//默认值
@@ -110,7 +111,8 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             //数据类型(类型+长度+小数点)
             string sDataType_Full = GetFullTypeString(drCol, strColDataType, strColLen, strColDecimalDigits);
-
+            //列加上前后缀
+            strColCode = "`" + strColCode + "`";
             if (tableDealType == TableChangeType.Create)
             {
                 #region 新增表处理
@@ -183,14 +185,13 @@ namespace Breezee.WorkHelper.DBTool.UI
                 #region 修改表处理
                 string strDefault_Full = "";//默认值
 
-                StringBuilder sbColSql = new StringBuilder();//列的SQL
-
+                StringBuilder sbColSql = new StringBuilder();//列的SQL                
                 //生成删除列SQL脚本
                 if (createType ==  SQLCreateType.Drop || createType ==  SQLCreateType.Drop_Create)
                 {
-                    if (strColumnDealType ==  ColumnChangeType.Create)
+                    if (strColumnDealType ==  ColumnChangeType.Create || strColumnDealType == ColumnChangeType.Drop_Create)
                     {
-                        sbDelete.Append("alter table `" + strTableCode + "` drop column `" + strColCode + "`;\n");
+                        sbDelete.AppendLine("alter table " + strTableCode + " drop column " + strColCode + ";");
                     }
                     //对于删除，直接下一个字段
                     if (createType ==  SQLCreateType.Drop)
@@ -249,21 +250,21 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (strColumnDealType ==  ColumnChangeType.Create)
                 {
                     //得到修改表增加列语句
-                    sbSql.Append("alter table `" + strTableCode + "` add " + AddRightBand(strColCode) + sbColSql.ToString());
+                    sbSql.AppendLine("alter table " + strTableCode + " add " + AddRightBand(strColCode) + sbColSql.ToString());
                 }
                 else if (strColumnDealType ==  ColumnChangeType.Alter)
                 {
-                    sbSql.Append("/*注：对修改字段，如要变更是否可空类型，则自己在最后加上NULL 或NOT NULL。对字段类型的变更，需要先清空该字段值或删除该列再新增*/\n");
-                    sbSql.Append("alter table `" + strTableCode + "` CHANGE " + AddRightBand(strColCode) + sbColSql.ToString());
+                    sbSql.AppendLine("/*注：对修改字段，如要变更是否可空类型，则自己在最后加上NULL 或NOT NULL。对字段类型的变更，需要先清空该字段值或删除该列再新增*/");
+                    sbSql.AppendLine("alter table " + strTableCode + " CHANGE " + AddRightBand(strColCode) + sbColSql.ToString());
                 }
                 else if (strColumnDealType ==  ColumnChangeType.Drop)
                 {
-                    sbSql.Append("alter table " + strTableCode + " drop column " + AddRightBand(strColCode) + ";\n");
+                    sbSql.AppendLine("alter table " + strTableCode + " drop column " + AddRightBand(strColCode) + ";");
                 }
                 else if (strColumnDealType ==  ColumnChangeType.Drop_Create)
                 {
                     //得到修改表增加列语句
-                    sbSql.Append("alter table " + strTableCode + " CHANGE " + AddRightBand(strColCode) + sbColSql.ToString());
+                    sbSql.AppendLine("alter table " + strTableCode + " add " + AddRightBand(strColCode) + sbColSql.ToString());
                 }
                 j++;
                 #endregion

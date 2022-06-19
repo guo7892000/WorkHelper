@@ -239,9 +239,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                 #region 修改表处理
 
                 #region 删除列的处理
-                if (createType ==  SQLCreateType.Drop)
+                if (createType == SQLCreateType.Drop || createType == SQLCreateType.Drop_Create)
                 {
-                    if (strColumnDealType ==  ColumnChangeType.Create)
+                    if (strColumnDealType ==  ColumnChangeType.Create || strColumnDealType == ColumnChangeType.Drop_Create)
                     {
                         sbDelete.Insert(0, "IF EXISTS(SELECT 1 FROM SYSOBJECTS A,SYSCOLUMNS B \n" +
                             " WHERE A.ID = B.ID AND A.NAME = '" + strTableCode + "' AND B.NAME = '" + strColCode + "' AND A.TYPE = 'U') \n" +
@@ -249,7 +249,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                             "    ALTER TABLE " + strTableCode + " DROP COLUMN " + strColCode + "\n" +
                             " END\nGO\n");
                     }
-                    return;// continue;
+                    //对于删除，直接下一个字段
+                    if (createType == SQLCreateType.Drop)
+                    {
+                        return;//continue;
+                    }
                 }
                 #endregion
 

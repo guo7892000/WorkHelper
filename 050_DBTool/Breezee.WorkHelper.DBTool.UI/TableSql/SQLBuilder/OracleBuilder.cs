@@ -85,7 +85,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 int j = 1;
                 foreach (EntCol drCol in tableCols)
                 {
-                    GenerateOracleColumn(TableChangeType.Create, strTableCode, drCol, ref strPK, ref j, ref strSequence);
+                    GenerateOracleColumn(TableChangeType.Alter, strTableCode, drCol, ref strPK, ref j, ref strSequence);
                 }
                 //sbSql.Append("/\n");
                 #endregion
@@ -259,7 +259,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //生成删除列SQL脚本
                 if (createType ==  SQLCreateType.Drop || createType ==  SQLCreateType.Drop_Create)
                 {
-                    if (strColumnDealType ==  ColumnChangeType.Create)
+                    if (strColumnDealType ==  ColumnChangeType.Create || strColumnDealType == ColumnChangeType.Drop_Create)
                     {
                         //strDeleteSql += "alter table " + strTableCode + " drop column " + strColCode + ";\n";
                         sbDelete.Append("declare iCount number;\n"
