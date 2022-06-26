@@ -111,8 +111,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             #endregion
 
-            //数据类型(类型+长度+小数点)
-            string sDataType_Full = GetFullTypeString(drCol, strColDataType, strColLen, strColDecimalDigits);
+            //数据类型(类型+长度+小数点)、
+            string sDataType_Full = (_isAllConvert && !String.IsNullOrEmpty(drCol.allInOne.SQLite_FullDataType)) ? drCol.allInOne.SQLite_FullDataType : GetFullTypeString(drCol, strColDataType, strColLen, strColDecimalDigits);
 
             if (tableDealType == TableChangeType.Create)
             {
@@ -199,7 +199,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     if (strColumnDealType ==  ColumnChangeType.Create || strColumnDealType == ColumnChangeType.Drop_Create)
                     {
-                        sbDelete.AppendLine("alter table " + strTableCode + " drop column " + strColCode + ";");
+                        sbDelete.AppendLine("ALTER TABLE " + strTableCode + " DROP COLUMN " + strColCode + ";");
                     }
                     //对于删除，直接下一个字段
                     if (createType == SQLCreateType.Drop)
@@ -246,26 +246,29 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 //备注
                 //sbColSql.Append(" COMMENT " + "'" + strColName + ":" + strColRemark + "';");
-
-                if (strColumnDealType ==  ColumnChangeType.Create)
+                if (strColumnDealType == ColumnChangeType.Create)
                 {
                     //得到修改表增加列语句
-                    sbSql.AppendLine("alter table " + strTableCode + " add " + AddRightBand(strColCode) + sbColSql.ToString());
+                    sbSql.AppendLine("ALTER TABLE " + strTableCode + " ADD " + AddRightBand(strColCode) + sbColSql.ToString());
                 }
                 else if (strColumnDealType == ColumnChangeType.Alter)
                 {
-                    sbSql.AppendLine("/*注：对修改字段，如要变更是否可空类型，则自己在最后加上NULL 或NOT NULL。对字段类型的变更，需要先清空该字段值或删除该列再新增*/");
-                    sbSql.AppendLine("alter table " + strTableCode + " CHANGE " + AddRightBand(strColCode) + sbColSql.ToString());
+                    //改变表名： ALTER TABLE 旧表名 RENAME TO 新表名
+                    //增加一列：ALTER TABLE 表名 ADD COLUMN 列名 数据类型 限定符
+                    sbSql.AppendLine("/*注：SQLite不支持修改列类型等。*/");
+                    //sbSql.AppendLine("ALTER TABLE " + strTableCode + " CHANGE " + AddRightBand(strColCode) + sbColSql.ToString());
                 }
                 else if (strColumnDealType == ColumnChangeType.Drop)
                 {
-                    sbSql.AppendLine("alter table " + strTableCode + " drop column " + AddRightBand(strColCode) + ";");
+                    sbSql.AppendLine("/*注：SQlite不支持DROP COLUMN。*/");
+                    //sbSql.AppendLine("ALTER TABLE " + strTableCode + " DROP COLUMN " + AddRightBand(strColCode) + ";");
                 }
                 else if (strColumnDealType == ColumnChangeType.Drop_Create)
                 {
-                    //得到修改表增加列语句
-                    sbSql.AppendLine("alter table " + strTableCode + " add " + AddRightBand(strColCode) + sbColSql.ToString());
+                    sbSql.AppendLine("/*注：SQlite不支持DROP COLUMN。*/");
+                    sbSql.AppendLine("ALTER TABLE " + strTableCode + " ADD " + AddRightBand(strColCode) + sbColSql.ToString());
                 }
+
                 j++;
                 #endregion
             }

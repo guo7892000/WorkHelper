@@ -85,6 +85,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             cbbTableName.KeyDown += new System.Windows.Forms.KeyEventHandler(cbbTableName_KeyDown);
             
             tsbExport.Enabled = false;
+            //设置下拉框查找数据源
+            cbbTableName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            cbbTableName.AutoCompleteSource = AutoCompleteSource.CustomSource;
         }
         #endregion
 
@@ -476,8 +479,18 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void tsbAutoSQL_Click(object sender, EventArgs e)
         {
             #region 数据库表数据导入处理
-            string strWhere = string.IsNullOrEmpty(rtbWhere.Text.Trim()) == true ? "" : " WHERE " + rtbWhere.Text.Trim();
-
+            string strWhere = "";
+            if (!string.IsNullOrEmpty(rtbWhere.Text.Trim()))
+            {
+                if (rtbWhere.Text.Trim().ToLower().StartsWith("where"))
+                {
+                    strWhere = " " + rtbWhere.Text.Trim();
+                }
+                else
+                {
+                    strWhere = " WHERE " + rtbWhere.Text.Trim();
+                }
+            }
             //取得数据源
             DataTable dtMain = (DataTable)GlobalValue.Instance.dicBindingSource[_strTableName].DataSource;
             DataTable dtSec = (DataTable)GlobalValue.Instance.dicBindingSource[_strColName].DataSource;
@@ -735,6 +748,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 //绑定下拉框
                 cbbTableName.BindDropDownList(uC_DbConnection1.UserTableList.Sort("TABLE_NAME"), "TABLE_NAME", "TABLE_NAME",false);
+                //查找自动完成数据源
+                cbbTableName.AutoCompleteCustomSource.AddRange(uC_DbConnection1.UserTableList.AsEnumerable().Select(x => x.Field<string>("TABLE_NAME")).ToArray());
             }
             else
             {

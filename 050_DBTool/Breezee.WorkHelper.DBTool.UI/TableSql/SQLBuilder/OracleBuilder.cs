@@ -10,6 +10,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 {
     public class OracleBuilder : SQLBuilder
     {
+        string strUqueList = "";//唯一性
         public override void GenerateTableSQL(EntTable entTable)
         {
             string strTableCode = entTable.Code;
@@ -30,6 +31,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
 
             string strPK = "";
+            strUqueList = "";
+
             if ((createType ==  SQLCreateType.Drop || createType ==  SQLCreateType.Drop_Create) && strTableDealType ==  TableChangeType.Create)
             {
                 //strDeleteSql = strDeleteSql.Insert(0, "DROP TABLE " + strTableCode + ";\n");//倒着删除掉
@@ -59,7 +62,6 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 int j = tableCols.Count();
                 //string strDefaultList = "";//默认值
-                string strUqueList = "";
 
                 foreach (EntCol drCol in tableCols)
                 {
@@ -118,7 +120,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             string strTable_Col = strTableCode + "_" + strColCode;//表编码+"_"+列编码
             string strCanNull = "";//是否可空
             string strDefault_Full = "";//默认值
-            string strUqueList = "";//唯一性
 
             #region 转换字段类型与默认值
             if (importDBType != targetDBType)
@@ -128,7 +129,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             #endregion
 
             //数据类型(类型+长度+小数点)
-            string sDataType_Full = GetFullTypeString(drCol, strColDataType, strColLen, strColDecimalDigits);
+            string sDataType_Full = (_isAllConvert && !String.IsNullOrEmpty(drCol.allInOne.Oracle_FullDataType)) ? drCol.allInOne.Oracle_FullDataType : GetFullTypeString(drCol, strColDataType, strColLen, strColDecimalDigits);
 
             if (tableDealType == TableChangeType.Create)
             {
@@ -330,39 +331,39 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (strColumnDealType ==  ColumnChangeType.Create)
                 {
                     //得到修改表增加列语句
-                    sbSql.Append("alter table " + strTableCode + " add " + AddRightBand(strColCode) + sDataType_Full + strDefault_Full + strCanNull + ";\n");
+                    sbSql.Append("ALTER TABLE " + strTableCode + " ADD " + AddRightBand(strColCode) + sDataType_Full + strDefault_Full + strCanNull + ";\n");
                     //增加注解
                     if (string.IsNullOrEmpty(strColRemark))
                     {
-                        sbSql.Append("comment on column " + strTableCode + "." + strColCode + " is '" + strColName + "';\n");
+                        sbSql.Append("COMMENT ON COLUMN " + strTableCode + "." + strColCode + " IS '" + strColName + "';\n");
                     }
                     else
                     {
-                        sbSql.Append("comment on column " + strTableCode + "." + strColCode + " is '" + strColName + "：" + strColRemark + "';\n");
+                        sbSql.Append("COMMENT ON COLUMN " + strTableCode + "." + strColCode + " IS '" + strColName + "：" + strColRemark + "';\n");
                     }
                 }
                 else if (strColumnDealType ==  ColumnChangeType.Alter)
                 {
                     sbSql.Append("/*注：对修改字段，如要变更是否可空类型，则自己在最后加上NULL 或NOT NULL。对字段类型的变更，需要先清空该字段值或删除该列再新增*/\n");
-                    sbSql.Append("alter table " + strTableCode + " modify " + AddRightBand(strColCode) + sDataType_Full + strDefault_Full + ";\n");
+                    sbSql.Append("ALTER TABLE " + strTableCode + " MODIFY " + AddRightBand(strColCode) + sDataType_Full + strDefault_Full + ";\n");
                 }
                 else if (strColumnDealType ==  ColumnChangeType.Drop)
                 {
-                    sbSql.Append("alter table " + strTableCode + " drop column " + AddRightBand(strColCode) + ";\n");
+                    sbSql.Append("ALTER TABLE " + strTableCode + " DROP COLUMN " + AddRightBand(strColCode) + ";\n");
                 }
                 else if (strColumnDealType ==  ColumnChangeType.Drop_Create)
                 {
-                    sbSql.Append("alter table " + strTableCode + " drop column " + AddRightBand(strColCode) + ";\n");
+                    sbSql.Append("ALTER TABLE " + strTableCode + " DROP COLUMN " + AddRightBand(strColCode) + ";\n");
                     //得到修改表增加列语句
-                    sbSql.Append("alter table " + strTableCode + " add " + AddRightBand(strColCode) + sDataType_Full + strDefault_Full + strCanNull + ";\n");
+                    sbSql.Append("ALTER TABLE " + strTableCode + " ADD " + AddRightBand(strColCode) + sDataType_Full + strDefault_Full + strCanNull + ";\n");
                     //增加注解
                     if (string.IsNullOrEmpty(strColRemark))
                     {
-                        sbSql.Append("comment on column " + strTableCode + "." + strColCode + " is '" + strColName + "';\n");
+                        sbSql.Append("COMMENT ON COLUMN " + strTableCode + "." + strColCode + " IS '" + strColName + "';\n");
                     }
                     else
                     {
-                        sbSql.Append("comment on column " + strTableCode + "." + strColCode + " is '" + strColName + "：" + strColRemark + "';\n");
+                        sbSql.Append("COMMENT ON COLUMN " + strTableCode + "." + strColCode + " IS '" + strColName + "：" + strColRemark + "';\n");
                     }
                 }
                 j++;

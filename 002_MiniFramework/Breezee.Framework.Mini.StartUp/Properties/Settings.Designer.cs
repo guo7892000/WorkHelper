@@ -25,7 +25,7 @@ namespace Breezee.Framework.Mini.StartUp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("xtadmin")]
         public string LastLoginUserName {
             get {
                 return ((string)(this["LastLoginUserName"]));
@@ -37,7 +37,7 @@ namespace Breezee.Framework.Mini.StartUp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool IsRememberUserName {
             get {
                 return ((bool)(this["IsRememberUserName"]));
@@ -61,7 +61,7 @@ namespace Breezee.Framework.Mini.StartUp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool IsRememberPwd {
             get {
                 return ((bool)(this["IsRememberPwd"]));
@@ -73,7 +73,7 @@ namespace Breezee.Framework.Mini.StartUp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public string LastLoginPwd {
             get {
                 return ((string)(this["LastLoginPwd"]));

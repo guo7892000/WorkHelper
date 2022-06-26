@@ -10,8 +10,8 @@ namespace Breezee.WorkHelper.DBTool.UI
 {
     public class SQLServerBuilder : SQLBuilder
     {
-        private string _tableColumnAroundChar_Left = "[";//围绕表或列名的左字符，例如SqlServer的[
-        private string _tableColumnAroundChar_Right = "]";//围绕表或列名的左字符，例如SqlServer的]
+        //private string _tableColumnAroundChar_Left = "[";//围绕表或列名的左字符，例如SqlServer的[
+        //private string _tableColumnAroundChar_Right = "]";//围绕表或列名的左字符，例如SqlServer的]
         private bool _isSqlServerDefaultValueNameAuto = false;
         public override void GenerateTableSQL(EntTable entTable)
         {
@@ -97,8 +97,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void GenerateSqlServerColumn(TableChangeType tableDealType, string strTableCode, EntCol drCol, ref string strPK, ref int j, string strTableName)
         {
             //公共字段
-            //列处理类型，当为空时表示新增
-            ColumnChangeType strColumnDealType = drCol.commonCol.ChangeTypeEnum;
+            ColumnChangeType strColumnDealType = drCol.commonCol.ChangeTypeEnum;//列处理类型，当为空时表示新增
             ColKeyType strKey = drCol.commonCol.KeyTypeEnum;//["键"].ToString().ToUpper().Trim();
             string strColCode = drCol.commonCol.Code;//["列编码"].ToString();
             string strColName = drCol.commonCol.Name;//["列名称"].ToString();
@@ -106,7 +105,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             string strColLen = drCol.commonCol.DataLength;//["长度"].ToString().Trim();
             string strColDecimalDigits = drCol.commonCol.DataDotLength;//["小数位"].ToString().Trim();
             string strColDefault = drCol.commonCol.Default; //["默认值"].ToString().Trim().Replace("'", "");
-            ////其他独有字段
+            //其他独有字段
             YesNoType strColUnique = _isAllConvert ? drCol.allInOne.SqlServer_Unique : drCol.sqlServerCol.Unique;
             string strColAddNum = _isAllConvert ? drCol.allInOne.SqlServer_AutoNum : drCol.sqlServerCol.AutoNum;
             string strColForgKey = _isAllConvert ? drCol.allInOne.SqlServer_FK : drCol.sqlServerCol.FK;
@@ -125,7 +124,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             #endregion
 
             //数据类型(类型+长度+小数点)
-            string sDataType_Full = GetFullTypeString(drCol, strColDataType, strColLen, strColDecimalDigits);
+            string sDataType_Full = (_isAllConvert && !String.IsNullOrEmpty(drCol.allInOne.SqlServer_FullDataType))? drCol.allInOne.SqlServer_FullDataType : GetFullTypeString(drCol, strColDataType, strColLen, strColDecimalDigits);
+
 
             if (tableDealType == TableChangeType.Create)
             {
@@ -196,7 +196,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 #endregion
                 //唯一性处理
-                if (strColUnique == YesNoType.Yes)
+                if (strColUnique == YesNoType.Yes && strKey == ColKeyType.Empty)
                 {
                     sbSql.Append(AddRightBand("CONSTRAINT " + " UQ_" + strTable_Col + " UNIQUE"));
                 }

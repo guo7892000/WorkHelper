@@ -52,6 +52,7 @@
             this.ckbUseDefaultConfig = new System.Windows.Forms.CheckBox();
             this.ckbUseRemark = new System.Windows.Forms.CheckBox();
             this.ckbNewLine = new System.Windows.Forms.CheckBox();
+            this.ckbFirstUpper = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpImport = new System.Windows.Forms.TabPage();
             this.grbColumn = new System.Windows.Forms.GroupBox();
@@ -63,7 +64,6 @@
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
-            this.ckbFirstUpper = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.grbOrcNet.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -226,11 +226,13 @@
             // cbbTableName
             // 
             this.cbbTableName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbbTableName.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cbbTableName.FormattingEnabled = true;
             this.cbbTableName.Location = new System.Drawing.Point(182, 3);
             this.cbbTableName.Name = "cbbTableName";
             this.cbbTableName.Size = new System.Drawing.Size(246, 20);
             this.cbbTableName.TabIndex = 2;
+            this.cbbTableName.SelectedIndexChanged += new System.EventHandler(this.cbbTableName_SelectedIndexChanged);
             // 
             // label19
             // 
@@ -343,6 +345,17 @@
             this.ckbNewLine.TabIndex = 3;
             this.ckbNewLine.Text = "换行";
             this.ckbNewLine.UseVisualStyleBackColor = true;
+            // 
+            // ckbFirstUpper
+            // 
+            this.ckbFirstUpper.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.ckbFirstUpper.AutoSize = true;
+            this.ckbFirstUpper.Location = new System.Drawing.Point(595, 32);
+            this.ckbFirstUpper.Name = "ckbFirstUpper";
+            this.ckbFirstUpper.Size = new System.Drawing.Size(96, 16);
+            this.ckbFirstUpper.TabIndex = 3;
+            this.ckbFirstUpper.Text = "首字母大写键";
+            this.ckbFirstUpper.UseVisualStyleBackColor = true;
             // 
             // tabControl1
             // 
@@ -467,17 +480,6 @@
             this.uC_DbConnection1.Name = "uC_DbConnection1";
             this.uC_DbConnection1.Size = new System.Drawing.Size(1022, 78);
             this.uC_DbConnection1.TabIndex = 35;
-            // 
-            // ckbFirstUpper
-            // 
-            this.ckbFirstUpper.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.ckbFirstUpper.AutoSize = true;
-            this.ckbFirstUpper.Location = new System.Drawing.Point(595, 32);
-            this.ckbFirstUpper.Name = "ckbFirstUpper";
-            this.ckbFirstUpper.Size = new System.Drawing.Size(96, 16);
-            this.ckbFirstUpper.TabIndex = 3;
-            this.ckbFirstUpper.Text = "首字母大写键";
-            this.ckbFirstUpper.UseVisualStyleBackColor = true;
             // 
             // FrmDBTGetTableQuerySql
             // 

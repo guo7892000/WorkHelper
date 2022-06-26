@@ -78,6 +78,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             uC_DbConnection1.IsDbNameNotNull = true;
             uC_DbConnection1.DBType_SelectedIndexChanged += cbbDatabaseType_SelectedIndexChanged;//数据库类型下拉框变化事件
             #endregion
+
+            //设置下拉框查找数据源
+            cbbTableName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            cbbTableName.AutoCompleteSource = AutoCompleteSource.CustomSource;
         }
         #endregion
 
@@ -648,6 +652,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 //绑定下拉框
                 cbbTableName.BindDropDownList(uC_DbConnection1.UserTableList.Sort("TABLE_NAME"), "TABLE_NAME", "TABLE_NAME", false);
+                //查找自动完成数据源
+                cbbTableName.AutoCompleteCustomSource.AddRange(uC_DbConnection1.UserTableList.AsEnumerable().Select(x => x.Field<string>("TABLE_NAME")).ToArray());
             }
             else
             {
@@ -949,9 +955,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                 return sTableAliasAndDot + strColCode + "=" + strColValue + sqlEntity.Tab + strRemark;
             }
         }
+
         #endregion
 
-
+        private void cbbTableName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(cbbTableName.Text.Trim())) return;
+            tsbImport.PerformClick();
+        }
     }
 
     public class DBSqlEntity

@@ -106,5 +106,17 @@ namespace Breezee.WorkHelper.DBTool.UI.Properties {
                 this["ExcelCol2Row_EachDataRowCount"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ClickCopyPath {
+            get {
+                return ((string)(this["ClickCopyPath"]));
+            }
+            set {
+                this["ClickCopyPath"] = value;
+            }
+        }
     }
 }

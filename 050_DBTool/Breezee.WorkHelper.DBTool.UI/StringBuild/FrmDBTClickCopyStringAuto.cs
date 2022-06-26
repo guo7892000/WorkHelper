@@ -11,6 +11,7 @@ using System.Xml;
 using Breezee.Framework.Tool;
 using System.IO;
 using Breezee.WorkHelper.DBTool.Entity;
+using Setting = Breezee.WorkHelper.DBTool.UI.Properties.Settings;
 
 namespace Breezee.WorkHelper.DBTool.UI.StringBuild
 {
@@ -26,7 +27,14 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
 
         private void FrmDBTClickCopyStringAuto_Load(object sender, EventArgs e)
         {
-            txbXmlPath.Text = Path.Combine(DBTGlobalValue.AppPath,DBTGlobalValue.StringBuild.Xml_CopyString);
+            if (string.IsNullOrEmpty(Setting.Default.ClickCopyPath))
+            {
+                txbXmlPath.Text = Path.Combine(DBTGlobalValue.AppPath, DBTGlobalValue.StringBuild.Xml_CopyString);
+            }
+            else
+            {
+                txbXmlPath.Text = Setting.Default.ClickCopyPath;
+            }
             GenerateControls();
         }
 
@@ -278,6 +286,8 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             {
                 txbXmlPath.Text = dia.FileName;
                 GenerateControls();
+                Setting.Default.ClickCopyPath = txbXmlPath.Text;
+                Setting.Default.Save();
             }
         }
 

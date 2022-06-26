@@ -3,19 +3,19 @@
   <Profiles />
   <Settings>
     <Setting Name="LastLoginUserName" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">xtadmin</Value>
     </Setting>
     <Setting Name="IsRememberUserName" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="BrandCode" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="IsRememberPwd" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="LastLoginPwd" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="AutoCompleteUserList" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

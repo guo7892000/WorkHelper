@@ -57,6 +57,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             uC_DbConnection1.IsDbNameNotNull = false;
             //
             lblTableWhereInfo.Text = "表名不为空时，Where条件作为表的过滤条件；表为空时，Where条件为自定义SQL。";
+            //设置下拉框查找数据源
+            cbbTableName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            cbbTableName.AutoCompleteSource = AutoCompleteSource.CustomSource;
         } 
         #endregion
 
@@ -67,7 +70,18 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 //非空判断
                 string strTableName = cbbTableName.Text.Trim();
-                string strWhere = rtbWhere.Text.Trim();
+                string strWhere = "";
+                if (!string.IsNullOrEmpty(rtbWhere.Text.Trim()))
+                {
+                    if (rtbWhere.Text.Trim().ToLower().StartsWith("where"))
+                    {
+                        strWhere = " " + rtbWhere.Text.Trim();
+                    }
+                    else
+                    {
+                        strWhere = " WHERE " + rtbWhere.Text.Trim();
+                    }
+                }
                 if (string.IsNullOrEmpty(strTableName) && string.IsNullOrEmpty(strWhere))
                 {
                     ShowErr("表名和Where条件不能同时为空！");
@@ -94,7 +108,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 else //表名和Where条件都不为空，那么拼接语句
                 {
-                    _strMainSql = "SELECT *  FROM " + strTableName + " WHERE " + strWhere;
+                    _strMainSql = "SELECT *  FROM " + strTableName + strWhere;
                 }
                 //查询数据
                 DataTable dtMain = dataAccess.QueryHadParamSqlData(_strMainSql,_dicQuery);
@@ -180,6 +194,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 //绑定下拉框
                 cbbTableName.BindDropDownList(uC_DbConnection1.UserTableList.Sort("TABLE_NAME"), "TABLE_NAME", "TABLE_NAME", false);
+                //查找自动完成数据源
+                cbbTableName.AutoCompleteCustomSource.AddRange(uC_DbConnection1.UserTableList.AsEnumerable().Select(x => x.Field<string>("TABLE_NAME")).ToArray());
             }
             else
             {
@@ -200,5 +216,53 @@ namespace Breezee.WorkHelper.DBTool.UI
             int iCurCol = dgvTableList.CurrentCell.ColumnIndex;
             rtbConString.AppendText(string.Format("#{0}#",dgvTableList.Columns[iCurCol].Name));
         }
+
+        private void cbbTableName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(cbbTableName.Text.Trim())) return;
+            tsbConnect.PerformClick();
+        }
+
+        #region 网格右键事件
+        private void AppendCondition(string sPre, string sLikeEqual, string sValue = "''")
+        {
+            if (dgvTableList.CurrentCell == null) return;
+            string sColName = dgvTableList.Columns[dgvTableList.CurrentCell.ColumnIndex].Name;
+
+            if (string.IsNullOrEmpty(rtbWhere.Text.Trim()))
+            {
+                sPre = "";
+            }
+            rtbWhere.AppendText(string.Format("{0}{1}{2}{3}", sPre, sColName, sLikeEqual, sValue));
+        }
+        private void TsmiAndLike_Click(object sender, EventArgs e)
+        {
+            AppendCondition(" AND ", " Like ", "'%%'");
+        }
+
+        private void TsmiAndEqual_Click(object sender, EventArgs e)
+        {
+            AppendCondition(" AND ", " = ");
+        }
+
+        private void TsmiOrEqual_Click(object sender, EventArgs e)
+        {
+            AppendCondition(" OR ", " = ");
+        }
+
+        private void TsmiOrLike_Click(object sender, EventArgs e)
+        {
+            AppendCondition(" OR ", " Like ", "'%%'");
+        }
+        private void TsmiAndIn_Click(object sender, EventArgs e)
+        {
+            AppendCondition(" AND ", " in ", "('','','')");
+        }
+
+        private void TsmiOrIn_Click(object sender, EventArgs e)
+        {
+            AppendCondition(" OR ", " in ", "('','','')");
+        }
+        #endregion
     }
 }
