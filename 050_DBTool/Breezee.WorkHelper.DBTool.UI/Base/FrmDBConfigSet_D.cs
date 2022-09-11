@@ -91,7 +91,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.PORT_NO, txbPortNO));
             _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.DB_NAME, txbDbName));
             _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.SCHEMA_NAME, txbSchemaName));
-            _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.LOGIN_TYPE, cbbLoginType));
+            //_listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.LOGIN_TYPE, cbbLoginType));
             _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.USER_NAME, txbUserName));
             _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.USER_PASSWORD, txbPassword));
             _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.REMARK, txbRemark));
@@ -180,8 +180,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 case DataBaseType.SqlServer:
                     //显示登录类型
-                    lblLoginType.Visible = true;
-                    cbbLoginType.Visible = true;
+                    //lblLoginType.Visible = true;
+                    //cbbLoginType.Visible = true;
                     //
                     txbServerIP.Text = "localhost";
                     break;

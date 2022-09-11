@@ -50,8 +50,6 @@
             this.txbPortNO = new System.Windows.Forms.TextBox();
             this.txbSchemaName = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.lblLoginType = new System.Windows.Forms.Label();
-            this.cbbLoginType = new System.Windows.Forms.ComboBox();
             this.btnSelectDbFile = new System.Windows.Forms.Button();
             this.txbID = new System.Windows.Forms.TextBox();
             this.txbUPDATE_CONTROL_ID = new System.Windows.Forms.TextBox();
@@ -59,6 +57,8 @@
             this.txbRemark = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txbDBConfigName = new System.Windows.Forms.TextBox();
+            this.lblLoginType = new System.Windows.Forms.Label();
+            this.cbbLoginType = new System.Windows.Forms.ComboBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -72,7 +72,7 @@
             this.tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(796, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(597, 27);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -81,7 +81,7 @@
             this.tsbSave.Image = ((System.Drawing.Image)(resources.GetObject("tsbSave.Image")));
             this.tsbSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbSave.Name = "tsbSave";
-            this.tsbSave.Size = new System.Drawing.Size(82, 24);
+            this.tsbSave.Size = new System.Drawing.Size(71, 24);
             this.tsbSave.Text = "保存(&S)";
             this.tsbSave.Click += new System.EventHandler(this.tsbSave_Click);
             // 
@@ -90,7 +90,7 @@
             this.tsbExit.Image = ((System.Drawing.Image)(resources.GetObject("tsbExit.Image")));
             this.tsbExit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbExit.Name = "tsbExit";
-            this.tsbExit.Size = new System.Drawing.Size(83, 24);
+            this.tsbExit.Size = new System.Drawing.Size(72, 24);
             this.tsbExit.Text = "退出(&X)";
             this.tsbExit.Click += new System.EventHandler(this.tsbExit_Click);
             // 
@@ -99,10 +99,8 @@
             this.groupBox2.Controls.Add(this.tableLayoutPanel1);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 27);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(796, 214);
+            this.groupBox2.Size = new System.Drawing.Size(597, 166);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "编辑";
@@ -112,12 +110,12 @@
             this.tableLayoutPanel1.ColumnCount = 8;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.txbDBConfigCode, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbbDatabaseType, 1, 1);
@@ -144,8 +142,7 @@
             this.tableLayoutPanel1.Controls.Add(this.label3, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.txbDBConfigName, 5, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(4, 22);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 6;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -153,8 +150,8 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(788, 189);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(591, 151);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // label1
@@ -162,10 +159,9 @@
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.Red;
-            this.label1.Location = new System.Drawing.Point(19, 9);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(15, 7);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(82, 15);
+            this.label1.Size = new System.Drawing.Size(65, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "配置编码：";
             // 
@@ -173,19 +169,17 @@
             // 
             this.txbDBConfigCode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.SetColumnSpan(this.txbDBConfigCode, 3);
-            this.txbDBConfigCode.Location = new System.Drawing.Point(109, 4);
-            this.txbDBConfigCode.Margin = new System.Windows.Forms.Padding(4);
+            this.txbDBConfigCode.Location = new System.Drawing.Point(86, 3);
             this.txbDBConfigCode.Name = "txbDBConfigCode";
-            this.txbDBConfigCode.Size = new System.Drawing.Size(256, 25);
+            this.txbDBConfigCode.Size = new System.Drawing.Size(193, 21);
             this.txbDBConfigCode.TabIndex = 0;
             // 
             // cbbDatabaseType
             // 
             this.cbbDatabaseType.FormattingEnabled = true;
-            this.cbbDatabaseType.Location = new System.Drawing.Point(109, 37);
-            this.cbbDatabaseType.Margin = new System.Windows.Forms.Padding(4);
+            this.cbbDatabaseType.Location = new System.Drawing.Point(86, 30);
             this.cbbDatabaseType.Name = "cbbDatabaseType";
-            this.cbbDatabaseType.Size = new System.Drawing.Size(132, 23);
+            this.cbbDatabaseType.Size = new System.Drawing.Size(100, 20);
             this.cbbDatabaseType.TabIndex = 2;
             this.cbbDatabaseType.SelectedIndexChanged += new System.EventHandler(this.cbbDatabaseType_SelectedIndexChanged);
             // 
@@ -194,10 +188,9 @@
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(4, 42);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(3, 34);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(97, 15);
+            this.label2.Size = new System.Drawing.Size(77, 12);
             this.label2.TabIndex = 0;
             this.label2.Text = "数据库类型：";
             // 
@@ -206,19 +199,17 @@
             this.lblServerAddr.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lblServerAddr.AutoSize = true;
             this.lblServerAddr.ForeColor = System.Drawing.Color.Red;
-            this.lblServerAddr.Location = new System.Drawing.Point(18, 77);
-            this.lblServerAddr.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblServerAddr.Location = new System.Drawing.Point(15, 62);
             this.lblServerAddr.Name = "lblServerAddr";
-            this.lblServerAddr.Size = new System.Drawing.Size(83, 15);
+            this.lblServerAddr.Size = new System.Drawing.Size(65, 12);
             this.lblServerAddr.TabIndex = 0;
             this.lblServerAddr.Text = "服务器IP：";
             // 
             // txbServerIP
             // 
-            this.txbServerIP.Location = new System.Drawing.Point(109, 70);
-            this.txbServerIP.Margin = new System.Windows.Forms.Padding(4);
+            this.txbServerIP.Location = new System.Drawing.Point(86, 57);
             this.txbServerIP.Name = "txbServerIP";
-            this.txbServerIP.Size = new System.Drawing.Size(132, 25);
+            this.txbServerIP.Size = new System.Drawing.Size(100, 21);
             this.txbServerIP.TabIndex = 5;
             // 
             // label5
@@ -226,10 +217,9 @@
             this.label5.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label5.AutoSize = true;
             this.label5.ForeColor = System.Drawing.Color.Red;
-            this.label5.Location = new System.Drawing.Point(34, 112);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label5.Location = new System.Drawing.Point(27, 90);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(67, 15);
+            this.label5.Size = new System.Drawing.Size(53, 12);
             this.label5.TabIndex = 0;
             this.label5.Text = "用户名：";
             // 
@@ -238,28 +228,25 @@
             this.label6.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label6.AutoSize = true;
             this.label6.ForeColor = System.Drawing.Color.Red;
-            this.label6.Location = new System.Drawing.Point(313, 112);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label6.Location = new System.Drawing.Point(238, 90);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(52, 15);
+            this.label6.Size = new System.Drawing.Size(41, 12);
             this.label6.TabIndex = 0;
             this.label6.Text = "密码：";
             // 
             // txbUserName
             // 
-            this.txbUserName.Location = new System.Drawing.Point(109, 107);
-            this.txbUserName.Margin = new System.Windows.Forms.Padding(4);
+            this.txbUserName.Location = new System.Drawing.Point(86, 86);
             this.txbUserName.Name = "txbUserName";
-            this.txbUserName.Size = new System.Drawing.Size(132, 25);
+            this.txbUserName.Size = new System.Drawing.Size(100, 21);
             this.txbUserName.TabIndex = 8;
             // 
             // txbPassword
             // 
-            this.txbPassword.Location = new System.Drawing.Point(373, 107);
-            this.txbPassword.Margin = new System.Windows.Forms.Padding(4);
+            this.txbPassword.Location = new System.Drawing.Point(285, 86);
             this.txbPassword.Name = "txbPassword";
             this.txbPassword.PasswordChar = '*';
-            this.txbPassword.Size = new System.Drawing.Size(132, 25);
+            this.txbPassword.Size = new System.Drawing.Size(100, 21);
             this.txbPassword.TabIndex = 9;
             // 
             // lblDbName
@@ -267,19 +254,17 @@
             this.lblDbName.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lblDbName.AutoSize = true;
             this.lblDbName.ForeColor = System.Drawing.Color.Red;
-            this.lblDbName.Location = new System.Drawing.Point(298, 42);
-            this.lblDbName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDbName.Location = new System.Drawing.Point(226, 34);
             this.lblDbName.Name = "lblDbName";
-            this.lblDbName.Size = new System.Drawing.Size(67, 15);
+            this.lblDbName.Size = new System.Drawing.Size(53, 12);
             this.lblDbName.TabIndex = 0;
             this.lblDbName.Text = "数据库：";
             // 
             // txbDbName
             // 
-            this.txbDbName.Location = new System.Drawing.Point(373, 37);
-            this.txbDbName.Margin = new System.Windows.Forms.Padding(4);
+            this.txbDbName.Location = new System.Drawing.Point(285, 30);
             this.txbDbName.Name = "txbDbName";
-            this.txbDbName.Size = new System.Drawing.Size(132, 25);
+            this.txbDbName.Size = new System.Drawing.Size(100, 21);
             this.txbDbName.TabIndex = 3;
             // 
             // lblPortNO
@@ -287,27 +272,24 @@
             this.lblPortNO.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lblPortNO.AutoSize = true;
             this.lblPortNO.ForeColor = System.Drawing.Color.Red;
-            this.lblPortNO.Location = new System.Drawing.Point(298, 77);
-            this.lblPortNO.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblPortNO.Location = new System.Drawing.Point(226, 62);
             this.lblPortNO.Name = "lblPortNO";
-            this.lblPortNO.Size = new System.Drawing.Size(67, 15);
+            this.lblPortNO.Size = new System.Drawing.Size(53, 12);
             this.lblPortNO.TabIndex = 0;
             this.lblPortNO.Text = "端口号：";
             // 
             // txbPortNO
             // 
-            this.txbPortNO.Location = new System.Drawing.Point(373, 70);
-            this.txbPortNO.Margin = new System.Windows.Forms.Padding(4);
+            this.txbPortNO.Location = new System.Drawing.Point(285, 57);
             this.txbPortNO.Name = "txbPortNO";
-            this.txbPortNO.Size = new System.Drawing.Size(132, 25);
+            this.txbPortNO.Size = new System.Drawing.Size(100, 21);
             this.txbPortNO.TabIndex = 6;
             // 
             // txbSchemaName
             // 
-            this.txbSchemaName.Location = new System.Drawing.Point(603, 70);
-            this.txbSchemaName.Margin = new System.Windows.Forms.Padding(4);
+            this.txbSchemaName.Location = new System.Drawing.Point(462, 57);
             this.txbSchemaName.Name = "txbSchemaName";
-            this.txbSchemaName.Size = new System.Drawing.Size(132, 25);
+            this.txbSchemaName.Size = new System.Drawing.Size(100, 21);
             this.txbSchemaName.TabIndex = 7;
             // 
             // label9
@@ -315,41 +297,17 @@
             this.label9.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label9.AutoSize = true;
             this.label9.ForeColor = System.Drawing.Color.Black;
-            this.label9.Location = new System.Drawing.Point(513, 77);
-            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label9.Location = new System.Drawing.Point(391, 62);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(82, 15);
+            this.label9.Size = new System.Drawing.Size(65, 12);
             this.label9.TabIndex = 0;
             this.label9.Text = "架构名称：";
             // 
-            // lblLoginType
-            // 
-            this.lblLoginType.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.lblLoginType.AutoSize = true;
-            this.lblLoginType.ForeColor = System.Drawing.Color.Black;
-            this.lblLoginType.Location = new System.Drawing.Point(513, 42);
-            this.lblLoginType.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblLoginType.Name = "lblLoginType";
-            this.lblLoginType.Size = new System.Drawing.Size(82, 15);
-            this.lblLoginType.TabIndex = 0;
-            this.lblLoginType.Text = "登录方式：";
-            // 
-            // cbbLoginType
-            // 
-            this.cbbLoginType.FormattingEnabled = true;
-            this.cbbLoginType.Location = new System.Drawing.Point(603, 37);
-            this.cbbLoginType.Margin = new System.Windows.Forms.Padding(4);
-            this.cbbLoginType.Name = "cbbLoginType";
-            this.cbbLoginType.Size = new System.Drawing.Size(132, 23);
-            this.cbbLoginType.TabIndex = 4;
-            this.cbbLoginType.SelectedIndexChanged += new System.EventHandler(this.cbbDatabaseType_SelectedIndexChanged);
-            // 
             // btnSelectDbFile
             // 
-            this.btnSelectDbFile.Location = new System.Drawing.Point(249, 70);
-            this.btnSelectDbFile.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSelectDbFile.Location = new System.Drawing.Point(192, 57);
             this.btnSelectDbFile.Name = "btnSelectDbFile";
-            this.btnSelectDbFile.Size = new System.Drawing.Size(19, 29);
+            this.btnSelectDbFile.Size = new System.Drawing.Size(14, 23);
             this.btnSelectDbFile.TabIndex = 3;
             this.btnSelectDbFile.Text = "...";
             this.btnSelectDbFile.UseVisualStyleBackColor = true;
@@ -357,19 +315,17 @@
             // 
             // txbID
             // 
-            this.txbID.Location = new System.Drawing.Point(773, 37);
-            this.txbID.Margin = new System.Windows.Forms.Padding(4);
+            this.txbID.Location = new System.Drawing.Point(587, 30);
             this.txbID.Name = "txbID";
-            this.txbID.Size = new System.Drawing.Size(12, 25);
+            this.txbID.Size = new System.Drawing.Size(10, 21);
             this.txbID.TabIndex = 1;
             this.txbID.Visible = false;
             // 
             // txbUPDATE_CONTROL_ID
             // 
-            this.txbUPDATE_CONTROL_ID.Location = new System.Drawing.Point(773, 4);
-            this.txbUPDATE_CONTROL_ID.Margin = new System.Windows.Forms.Padding(4);
+            this.txbUPDATE_CONTROL_ID.Location = new System.Drawing.Point(587, 3);
             this.txbUPDATE_CONTROL_ID.Name = "txbUPDATE_CONTROL_ID";
-            this.txbUPDATE_CONTROL_ID.Size = new System.Drawing.Size(12, 25);
+            this.txbUPDATE_CONTROL_ID.Size = new System.Drawing.Size(10, 21);
             this.txbUPDATE_CONTROL_ID.TabIndex = 1;
             this.txbUPDATE_CONTROL_ID.Visible = false;
             // 
@@ -378,10 +334,9 @@
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label4.AutoSize = true;
             this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(49, 150);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Location = new System.Drawing.Point(39, 122);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(52, 15);
+            this.label4.Size = new System.Drawing.Size(41, 12);
             this.label4.TabIndex = 0;
             this.label4.Text = "备注：";
             // 
@@ -389,11 +344,10 @@
             // 
             this.txbRemark.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.SetColumnSpan(this.txbRemark, 6);
-            this.txbRemark.Location = new System.Drawing.Point(109, 140);
-            this.txbRemark.Margin = new System.Windows.Forms.Padding(4);
+            this.txbRemark.Location = new System.Drawing.Point(86, 113);
             this.txbRemark.Multiline = true;
             this.txbRemark.Name = "txbRemark";
-            this.txbRemark.Size = new System.Drawing.Size(656, 36);
+            this.txbRemark.Size = new System.Drawing.Size(495, 30);
             this.txbRemark.TabIndex = 10;
             // 
             // label3
@@ -401,10 +355,9 @@
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label3.AutoSize = true;
             this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(423, 9);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(320, 7);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(82, 15);
+            this.label3.Size = new System.Drawing.Size(65, 12);
             this.label3.TabIndex = 0;
             this.label3.Text = "配置名称：";
             // 
@@ -412,21 +365,42 @@
             // 
             this.txbDBConfigName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.SetColumnSpan(this.txbDBConfigName, 2);
-            this.txbDBConfigName.Location = new System.Drawing.Point(513, 4);
-            this.txbDBConfigName.Margin = new System.Windows.Forms.Padding(4);
+            this.txbDBConfigName.Location = new System.Drawing.Point(391, 3);
             this.txbDBConfigName.Name = "txbDBConfigName";
-            this.txbDBConfigName.Size = new System.Drawing.Size(252, 25);
+            this.txbDBConfigName.Size = new System.Drawing.Size(190, 21);
             this.txbDBConfigName.TabIndex = 1;
+            // 
+            // lblLoginType
+            // 
+            this.lblLoginType.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.lblLoginType.AutoSize = true;
+            this.lblLoginType.ForeColor = System.Drawing.Color.Black;
+            this.lblLoginType.Location = new System.Drawing.Point(391, 34);
+            this.lblLoginType.Name = "lblLoginType";
+            this.lblLoginType.Size = new System.Drawing.Size(65, 12);
+            this.lblLoginType.TabIndex = 0;
+            this.lblLoginType.Text = "登录方式：";
+            this.lblLoginType.Visible = false;
+            // 
+            // cbbLoginType
+            // 
+            this.cbbLoginType.FormattingEnabled = true;
+            this.cbbLoginType.Location = new System.Drawing.Point(462, 30);
+            this.cbbLoginType.Name = "cbbLoginType";
+            this.cbbLoginType.Size = new System.Drawing.Size(100, 20);
+            this.cbbLoginType.TabIndex = 4;
+            this.cbbLoginType.Visible = false;
+            this.cbbLoginType.SelectedIndexChanged += new System.EventHandler(this.cbbDatabaseType_SelectedIndexChanged);
             // 
             // FrmDBConfigSet_D
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(796, 241);
+            this.ClientSize = new System.Drawing.Size(597, 193);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(5);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FrmDBConfigSet_D";
@@ -465,8 +439,6 @@
         private System.Windows.Forms.TextBox txbPortNO;
         private System.Windows.Forms.TextBox txbSchemaName;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label lblLoginType;
-        private System.Windows.Forms.ComboBox cbbLoginType;
         private System.Windows.Forms.Button btnSelectDbFile;
         private System.Windows.Forms.TextBox txbID;
         private System.Windows.Forms.TextBox txbUPDATE_CONTROL_ID;
@@ -474,5 +446,7 @@
         private System.Windows.Forms.TextBox txbDBConfigName;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txbRemark;
+        private System.Windows.Forms.Label lblLoginType;
+        private System.Windows.Forms.ComboBox cbbLoginType;
     }
 }

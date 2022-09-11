@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Setting = Breezee.WorkHelper.DBTool.UI.Properties.Settings;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -53,6 +54,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             //
             lblTableData.Text = "可在Excel中复制数据后，点击网格后按ctrl + v粘贴即可。注：第一行为列名！";
             ckbAutoColumnName.Checked = true;
+            rtbConString.Text = Setting.Default.ExcelCopyDataConnect;
         }
         #endregion
 
@@ -104,7 +106,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         string strOneData = rtbConString.Text.Trim();
                         for (int j = 0; j < dtMain.Columns.Count; j++)
                         {
-                            string strData = dtMain.Rows[i][j].ToString().Trim();
+                            string strData = ckbTrim.Checked ? dtMain.Rows[i][j].ToString().Trim(): dtMain.Rows[i][j].ToString();
                             //将数据中的列名替换为单元格中的数据
                             strOneData = strOneData.Replace("#" + dtMain.Columns[j].ColumnName + "#", strData);
                         }
@@ -133,7 +135,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         string strOneData = "";
                         for (int j = 0; j < dtMain.Columns.Count; j++)
                         {
-                            string strData = dtMain.Rows[i][j].ToString().Trim();
+                            string strData = ckbTrim.Checked ? dtMain.Rows[i][j].ToString().Trim() : dtMain.Rows[i][j].ToString();
                             if (i == 0)
                             {
                                 #region 第一行定义列名
@@ -217,6 +219,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //ShowInfo("生成成功");
                 lblInfo.Text = _strAutoSqlSuccess;
                 rtbResult.Select(0, 0); //返回到第一
+
+                Setting.Default.ExcelCopyDataConnect = rtbConString.Text;
+                Setting.Default.Save();
             }
             catch (Exception ex)
             {
