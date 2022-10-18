@@ -46,7 +46,8 @@
     <Class Guid="7908BFA7-5A14-4AA7-B7AC-53FA2A4F7C79" Name="Excel字符" Code="" DLLName="" FormName="" ShortCutKey="">
       <Menu Guid="3252D790-C9AD-47F2-8B56-F690D0F6BBE1" Name="复制数据拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTCopyData"  HelpPath="/Help/Html/DBTool/String/ExcelCopyConn.html"/>
       <Menu Guid="3F455E07-ABF6-4B4E-BA18-900C4CCF78DA" Name="Excel列转行" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTExcelCol2Row" ShortCutKey=""  HelpPath="/Help/Html/DBTool/String/ExcelColumn2Row.html"/>
-    </Class>
+	  <Menu Guid="751BE4A5-A3B8-4521-8C80-B7A18AC4382C" Name="两个Excel合并" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTMergeData" ShortCutKey=""  HelpPath="/Help/Html/DBTool/String/TowExcelMerge.html"/>
+	</Class>
     <Class Guid="9D1E9003-C19A-4137-B191-28358AB9B459" Name="字符拼接" Code="" DLLName="" FormName="" ShortCutKey="">
       <Menu Guid="57C49904-07F5-41C7-AE6A-86915CEFD282" Name="IN清单拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTInList"  HelpPath="/Help/Html/DBTool/DB/DataStringIn.html"/>
       <Menu Guid="9D9AB487-ACAD-4791-995E-1DBE6F62A502" Name="左右交换字符" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.StringBuild.FrmDBTExchangeStringPlace" ShortCutKey=""  HelpPath="/Help/Html/DBTool/String/StringConnChange.html"/>
