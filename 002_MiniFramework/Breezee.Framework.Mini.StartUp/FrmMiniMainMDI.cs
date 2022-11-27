@@ -50,7 +50,7 @@ namespace Breezee.Framework.Mini.StartUp
         #region 加载事件
         private void FrmMainMDI_Load(object sender, EventArgs e)
         {
-            Text = string.Format("工作助手（Work Helper） v{0} 正式版  2022-10-18", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            Text = string.Format("工作助手（Work Helper） v{0} 正式版  2022-11-27", Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
             iStartMenu = menuStrip.Items.IndexOfKey(tsbStartMenu.Name);
             this.WindowState = FormWindowState.Maximized;

@@ -366,9 +366,6 @@
     <Content Include="Help\Html\Mini\Images\Mini.ModifyPassword.001.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Help\Html\Mini\Images\Mini.Support.001.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Help\Html\Mini\MenuManage.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
