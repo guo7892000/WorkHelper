@@ -268,7 +268,7 @@
             this.cbbParaType.FormattingEnabled = true;
             this.cbbParaType.Location = new System.Drawing.Point(595, 3);
             this.cbbParaType.Name = "cbbParaType";
-            this.cbbParaType.Size = new System.Drawing.Size(96, 20);
+            this.cbbParaType.Size = new System.Drawing.Size(112, 20);
             this.cbbParaType.TabIndex = 8;
             this.cbbParaType.SelectedIndexChanged += new System.EventHandler(this.CbbParaType_SelectedIndexChanged);
             // 
@@ -276,7 +276,7 @@
             // 
             this.lblParam.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lblParam.AutoSize = true;
-            this.lblParam.Location = new System.Drawing.Point(697, 7);
+            this.lblParam.Location = new System.Drawing.Point(713, 7);
             this.lblParam.Name = "lblParam";
             this.lblParam.Size = new System.Drawing.Size(65, 12);
             this.lblParam.TabIndex = 7;
@@ -284,7 +284,7 @@
             // 
             // txbParamPre
             // 
-            this.txbParamPre.Location = new System.Drawing.Point(768, 3);
+            this.txbParamPre.Location = new System.Drawing.Point(784, 3);
             this.txbParamPre.Name = "txbParamPre";
             this.txbParamPre.Size = new System.Drawing.Size(32, 21);
             this.txbParamPre.TabIndex = 9;
@@ -294,7 +294,7 @@
             // 
             this.lblDefineFormat.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lblDefineFormat.AutoSize = true;
-            this.lblDefineFormat.Location = new System.Drawing.Point(806, 7);
+            this.lblDefineFormat.Location = new System.Drawing.Point(822, 7);
             this.lblDefineFormat.Name = "lblDefineFormat";
             this.lblDefineFormat.Size = new System.Drawing.Size(77, 12);
             this.lblDefineFormat.TabIndex = 7;
@@ -303,7 +303,7 @@
             // txbDefineFormart
             // 
             this.txbDefineFormart.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txbDefineFormart.Location = new System.Drawing.Point(889, 3);
+            this.txbDefineFormart.Location = new System.Drawing.Point(905, 3);
             this.txbDefineFormart.Name = "txbDefineFormart";
             this.txbDefineFormart.Size = new System.Drawing.Size(100, 21);
             this.txbDefineFormart.TabIndex = 6;
@@ -352,7 +352,7 @@
             this.ckbFirstUpper.AutoSize = true;
             this.ckbFirstUpper.Location = new System.Drawing.Point(595, 32);
             this.ckbFirstUpper.Name = "ckbFirstUpper";
-            this.ckbFirstUpper.Size = new System.Drawing.Size(96, 16);
+            this.ckbFirstUpper.Size = new System.Drawing.Size(112, 16);
             this.ckbFirstUpper.TabIndex = 3;
             this.ckbFirstUpper.Text = "首字母大写键";
             this.ckbFirstUpper.UseVisualStyleBackColor = true;

@@ -28,6 +28,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private readonly string _sGridColumnCondition = "IsCondition";
         private readonly string _sGridColumnSelect = "IsSelect";
+        private readonly string _sGridColumnDynamic = "IsDynamic";
         //常量
         private static string strTableAlias = "A"; //查询和修改中的表别名
         private static string strTableAliasAndDot = "";
@@ -67,7 +68,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Add("1", "左右#号");
             _dicString.Add("2", "SQL参数化");
             _dicString.Add("3", "MyBatis参数");
-            _dicString.Add("4", "自定义");
+            _dicString.Add("4", "MyBatis动态参数");
+            _dicString.Add("10", "自定义");
+            
             cbbParaType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
             #endregion
 
@@ -186,14 +189,18 @@ namespace Breezee.WorkHelper.DBTool.UI
             DataColumn dcSelected = new DataColumn(_sGridColumnSelect);
             dcSelected.DefaultValue = "1";
             dtCols.Columns.Add(dcSelected);
+            //增加MyBatis动态列
+            DataColumn dcDynamic = new DataColumn(_sGridColumnDynamic);
+            dcDynamic.DefaultValue = "1";
+            dtCols.Columns.Add(dcDynamic);
             dtCols.TableName = _strColName;
-
             //查询结果
             FlexGridColumnDefinition fdc = new FlexGridColumnDefinition();
             fdc.AddColumn(
                 FlexGridColumn.NewRowNoCol(),
                 new FlexGridColumn.Builder().Name(_sGridColumnSelect).Caption("选择").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(40).Edit().Visible().Build(),
                 new FlexGridColumn.Builder().Name(_sGridColumnCondition).Caption("条件").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(40).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(_sGridColumnDynamic).Caption("MyBatis动态列").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(80).Edit().Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.Default).Caption("固定值").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit().Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.Name).Caption("列名").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.DataTypeFull).Caption("类型").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
@@ -266,6 +273,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                     sqlEntity.ParamType = SqlParamFormatType.MyBatis;
                     break;
                 case "4":
+                    sqlEntity.ParamType = SqlParamFormatType.MyBatisDynamicColoumn;
+                    break;
+                case "10":
                     sqlEntity.ParamType = SqlParamFormatType.UserDefine;
                     break;
                 default:
@@ -300,7 +310,8 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             string sColumnWherePre = strTableAliasAndDot;   //where条件中的列前缀
 
-            if (sqlEntity.SqlType == SqlType.Insert || sqlEntity.SqlType == SqlType.Update)
+            //if (sqlEntity.SqlType == SqlType.Insert || sqlEntity.SqlType == SqlType.Update)
+            if (sqlEntity.SqlType == SqlType.Insert)
             {
                 sqlEntity.TableAlias = "";
                 strTableAliasAndDot = "";
@@ -311,6 +322,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             #region 得到有效的数据
             DataTable dtColumnSelect = dtSec.Clone();
             DataTable dtColumnCondition = dtSec.Clone();
+            DataTable dtColumnDynamic = dtSec.Clone();
 
             //得到【选择】选中的列
             string sFiter = string.Format("{0}='1'", _sGridColumnSelect);
@@ -324,6 +336,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             foreach (DataRow dr in dtSec.Select(sFiter))
             {
                 dtColumnCondition.ImportRow(dr);//对非修改，不是排除列就导入
+            }
+
+            //得到【MyBatis动态列】选中的列
+            sFiter = string.Format("{0}='1'", _sGridColumnDynamic);
+            foreach (DataRow dr in dtSec.Select(sFiter))
+            {
+                dtColumnDynamic.ImportRow(dr);
             }
             #endregion
 
@@ -353,6 +372,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
 
                 string strColCodeParm = sqlEntity.IsFirstUpper ? FirstLetterUpper(strColCode) : strColCode;
+                bool bDynamicCol = false;
+
                 switch (sqlEntity.ParamType)
                 {
                     case SqlParamFormatType.BeginEndHash:
@@ -363,6 +384,13 @@ namespace Breezee.WorkHelper.DBTool.UI
                         break;
                     case SqlParamFormatType.MyBatis:
                         strColCodeParm = "#{" + strColCodeParm + "}";
+                        break;
+                    case SqlParamFormatType.MyBatisDynamicColoumn:
+                        strColCodeParm = "#{param." + strColCodeParm + "}";
+                        if (dtColumnDynamic.Select(DBColumnEntity.SqlString.Name + "='" + strColCode + "'").Length > 0)
+                        {
+                            bDynamicCol = true;
+                        }
                         break;
                     case SqlParamFormatType.UserDefine://自定义
                         strColCodeParm = sDefineFormat.Replace(sParamPre, strColCodeParm);
@@ -392,7 +420,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                         case SqlParamFormatType.MyBatis:
                             strBeginDateParm = "#{" + "BEGIN_" + strColCode + "}";
                             strEndDateParm = "#{" + "END_" + strColCode + "}";
-
+                            break;
+                        case SqlParamFormatType.MyBatisDynamicColoumn:
+                            strBeginDateParm = "BEGIN_" + strColCode;
+                            strEndDateParm = "END_" + strColCode;
                             break;
                         case SqlParamFormatType.UserDefine://自定义
                             strBeginDateParm = sDefineFormat.Replace(sParamPre, "BEGIN_" + strColCode);
@@ -408,13 +439,27 @@ namespace Breezee.WorkHelper.DBTool.UI
                     {
                         strQueryWhereDateRange = sConditionColumn + " >= TO_DATE('" + strBeginDateParm + "','YYYY-MM-DD') " + sqlEntity.NewLine + sConditionColumn + " < TO_DATE('" + strEndDateParm + "','YYYY-MM-DD') + 1 " + sqlEntity.NewLine; //结束日期：注要传入界面结束时间的+1天
                     }
+                    if (bDynamicCol)
+                    {
+                        string sColBeginDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} !=null and {0} !=''\">{4}{1}>=#{2}{0}{3} <if>", sDefineFormat + strBeginDateParm, strTableAliasAndDot + strColCode, "{", "}", strNowAnd) + sqlEntity.NewLine;
+                        string sColEndDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} !=null and {0} !=''\">AND {1}< #{2}{0}{3} + 1 <if>", sDefineFormat + strEndDateParm, strTableAliasAndDot + strColCode, "{", "}") + sqlEntity.NewLine;
+                        strQueryWhereDateRange = sColBeginDynamic + sColEndDynamic;
+                    }
                     sbWhereSql.Append(strQueryWhereDateRange); //使用范围查询条件
                     #endregion
                 }
                 else
                 {
-                    string sColParam = sqlEntity.ParamType == SqlParamFormatType.BeginEndHash ? "'" + strColCodeParm + "'" : strColCodeParm;
-                    sbWhereSql.Append(strNowAnd + MakeConditionColumnComment(strColCode, sColParam, "", sqlEntity.ParamType, sColumnWherePre, strColCodeParm));
+                    if (bDynamicCol)
+                    {
+                        string sColValueDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} !=null and {0} !=''\">{4}{1}=#{2}{0}{3}<if>", sDefineFormat + strColCode, strTableAliasAndDot + strColCode, "{", "}", strNowAnd) + sqlEntity.NewLine;
+                        sbWhereSql.Append(sColValueDynamic);
+                    }
+                    else
+                    {
+                        string sColParam = sqlEntity.ParamType == SqlParamFormatType.BeginEndHash ? "'" + strColCodeParm + "'" : strColCodeParm;
+                        sbWhereSql.Append(strNowAnd + MakeConditionColumnComment(strColCode, sColParam, "", sqlEntity.ParamType, sColumnWherePre, strColCodeParm));
+                    }
                 }
                 strNowAnd = strAnd;
             }
@@ -445,6 +490,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                     string strColType = drCol[DBColumnEntity.SqlString.DataType].ToString().Trim().ToUpper();
                     string strColFixedValue = drCol[DBColumnEntity.SqlString.Default].ToString().Trim();//固定值
                     string strColComments = "";//列说明
+                    bool bDynamicCol = false;
+
 
                     if (sqlEntity.IsHasRemark)
                     {
@@ -469,6 +516,13 @@ namespace Breezee.WorkHelper.DBTool.UI
                             case SqlParamFormatType.MyBatis:
                                 strColCodeParm = "#{" + strColCodeParm + "}";
                                 break;
+                            case SqlParamFormatType.MyBatisDynamicColoumn:
+                                strColCodeParm = "#{param." + strColCodeParm + "}";
+                                if (dtColumnDynamic.Select(DBColumnEntity.SqlString.Name + "='" + strColCode + "'").Length > 0)
+                                {
+                                    bDynamicCol = true;
+                                }
+                                break;
                             case SqlParamFormatType.UserDefine://自定义
                                 strColCodeParm = sDefineFormat.Replace(sParamPre, strColCodeParm);
                                 break;
@@ -490,34 +544,47 @@ namespace Breezee.WorkHelper.DBTool.UI
                         {
                             strNowComma = "";
                         }
+                        string sColInsert = strTableAliasAndDot + strColCode + strNowComma + sqlEntity.NewLine;
+                        string sColInsertDynamic = string.Format("<if test=\"{0} != null and {0} != ''\">{1},<if>", sDefineFormat + strColCode, strTableAliasAndDot + strColCode) + sqlEntity.NewLine;
 
                         string sColValueComment = MakeColumnValueComment(sqlEntity.SqlType, strNowComma, strColCode, strColValue, strColComments, strColType, sqlEntity.ParamType, strColCodeParm);
+                        string sColValueDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} != null and {0} != ''\">#{1}{0}{2},<if>", sDefineFormat + strColCode, "{","}");
 
                         if (j == 0) //首行
                         {
                             if (j == iSelectLastNumber)//只有一列
                             {
                                 sbInsertColums.Append("INSERT INTO " + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment)
-                                        + "(" + sqlEntity.NewLine + sqlEntity.Tab + strTableAliasAndDot + strColCode + strNowComma + sqlEntity.NewLine + ")" + sqlEntity.NewLine);
+                                        + "(" + sqlEntity.NewLine + sqlEntity.Tab + sColInsert + ")" + sqlEntity.NewLine);
                                 sbInsertVale.Append(sValues + sqlEntity.NewLine + "(" + sqlEntity.NewLine + sColValueComment + sqlEntity.NewLine + ")" + sqlEntity.NewLine);
                             }
                             else
                             {
+                                if(bDynamicCol)
+                                {
+                                    sColInsert = sColInsertDynamic;
+                                    sColValueComment = sColValueDynamic;
+                                }
                                 sbInsertColums.Append("INSERT INTO " + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment)
-                                        + "(" + sqlEntity.NewLine + "" + sqlEntity.Tab + strTableAliasAndDot + strColCode + strNowComma + sqlEntity.NewLine);
-                                sbInsertVale.Append(sValues + sqlEntity.NewLine + "(" + sqlEntity.NewLine + "" + sColValueComment);
+                                        + "(" + sqlEntity.NewLine + "" + sqlEntity.Tab + sColInsert);
+                                sbInsertVale.Append(sValues + sqlEntity.NewLine + "(" + sqlEntity.NewLine + "" + sColValueComment + sqlEntity.NewLine);
                             }
                         }
                         else if (j != iSelectLastNumber) //中间行
                         {
-                            sbInsertColums.Append(sqlEntity.Tab + strTableAliasAndDot + strColCode + strNowComma + sqlEntity.NewLine);
-                            sbInsertVale.Append(sColValueComment);
+                            if (bDynamicCol)
+                            {
+                                sColInsert = sColInsertDynamic;
+                                sColValueComment = sColValueDynamic;
+                            }
+                            sbInsertColums.Append(sqlEntity.Tab + sColInsert);
+                            sbInsertVale.Append(sColValueComment + sqlEntity.NewLine);
                         }
                         else //尾行
                         {
                             sbInsertColums.Append(sqlEntity.Tab + strTableAliasAndDot + strColCode + "" + sqlEntity.NewLine + ")" + sqlEntity.NewLine);
                             //最后一行不用加逗号
-                            sbInsertVale.Append(sColValueComment + ")" + sqlEntity.NewLine);
+                            sbInsertVale.Append(sColValueComment + sqlEntity.NewLine + ")" + sqlEntity.NewLine);
                         }
                         #endregion
                     }
@@ -528,7 +595,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                         {
                             strNowComma = "";
                         }
-                        string sColValueComment = MakeColumnValueComment(sqlEntity.SqlType, strNowComma, strColCode, strColValue, strColComments, strColType, sqlEntity.ParamType, strColCodeParm);
+                        strTableAlias = sqlEntity.TableAlias;
+                        string sColValueComment = MakeColumnValueComment(sqlEntity.SqlType, strNowComma, strColCode, strColValue, strColComments, strColType, sqlEntity.ParamType, strColCodeParm) + sqlEntity.NewLine;
+                        string sColValueDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} != null and {0} !=''\">{1}=#{2}{0}{3},<if>", sDefineFormat + strColCode, strTableAliasAndDot + strColCode, "{", "}") + sqlEntity.NewLine;
                         string sSet = ckbNewLine.Checked ? "SET " : " SET ";
 
                         if (j == 0) //首行
@@ -537,6 +606,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                         }
                         else if (j != iSelectLastNumber) //中间行
                         {
+                            if (bDynamicCol)
+                            {
+                                sColValueComment = sColValueDynamic;
+                            }
                             sbUpdate.Append(sColValueComment);
                         }
                         else //尾行
@@ -553,7 +626,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                         {
                             strNowComma = "";
                         }
-                        string sColValueComment = MakeQueryColumnComment(strNowComma, strTableAliasAndDot + strColCode, strColComments);
+                        string sColValueComment = MakeQueryColumnComment(strNowComma, strTableAliasAndDot + strColCode, strColComments) + sqlEntity.NewLine;
+                        strTableAlias = sqlEntity.TableAlias;
                         if (j == 0) //首行
                         {
                             if (j == iSelectLastNumber)//只有一列
@@ -583,6 +657,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 else if (sqlEntity.SqlType == SqlType.Delete)
                 {
+                    strTableAlias = sqlEntity.TableAlias;
                     //最简单：使用表名和独立的条件拼接即可
                     strOneSql = "DELETE FROM " + strDataTableName + DataBaseCommon.AddRightBand(strTableAlias) + sqlEntity.NewLine + sbWhereSql.ToString();
                 }
@@ -818,15 +893,28 @@ namespace Breezee.WorkHelper.DBTool.UI
                 case "3":
                     lblParam.Visible = false;
                     txbParamPre.Visible = false;
+                    lblDefineFormat.Text = "参数格式：";
                     lblDefineFormat.Visible = false;
                     txbDefineFormart.Visible = false;
+                    txbDefineFormart.Text = "#{@}";
                     break;
                 case "4":
                     lblParam.Visible = true;
                     lblParam.Text = "列名替代符：";
                     txbParamPre.Visible = true;
+                    lblDefineFormat.Text = "字典参数前缀：";
                     lblDefineFormat.Visible = true;
                     txbDefineFormart.Visible = true;
+                    txbDefineFormart.Text = "param.";
+                    break;
+                case "10":
+                    lblParam.Visible = true;
+                    lblParam.Text = "列名替代符：";
+                    txbParamPre.Visible = true;
+                    lblDefineFormat.Text = "自定义格式：";
+                    lblDefineFormat.Visible = true;
+                    txbDefineFormart.Visible = true;
+                    txbDefineFormart.Text = "";
                     break;
             }
         }
@@ -858,9 +946,9 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             if (!string.IsNullOrEmpty(strColComments))
             {
-                return sqlEntity.Tab + strColCode + strComma + sqlEntity.Tab + "/*" + strColComments + "*/" + sqlEntity.NewLine;
+                return sqlEntity.Tab + strColCode + strComma + sqlEntity.Tab + "/*" + strColComments + "*/";
             }
-            return sqlEntity.Tab + strColCode + strComma + sqlEntity.Tab + sqlEntity.NewLine;
+            return sqlEntity.Tab + strColCode + strComma;
         }
 
         /// <summary>
@@ -880,11 +968,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 if (sqlTypeNow == SqlType.Insert)
                 {
-                    strColRemark = "/*" + strColCode + ":" + strColComments + "*/" + sqlEntity.NewLine;//新增显示列名和备注
+                    strColRemark = "/*" + strColCode + ":" + strColComments + "*/";//新增显示列名和备注
                 }
                 else if (sqlTypeNow == SqlType.Update)
                 {
-                    strColRemark = "/*" + strColComments + "*/" + sqlEntity.NewLine; //修改不显示列名，只显示备注
+                    strColRemark = "/*" + strColComments + "*/"; //修改不显示列名，只显示备注
                 }
             }
 

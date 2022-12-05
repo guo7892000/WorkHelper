@@ -230,6 +230,10 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// </summary>
         MyBatis,
         /// <summary>
+        /// MyBaits动态列：#{param.}
+        /// </summary>
+        MyBatisDynamicColoumn,
+        /// <summary>
         /// 自定义格式
         /// </summary>
         UserDefine
