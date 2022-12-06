@@ -29,6 +29,9 @@ namespace Breezee.WorkHelper.DBTool.UI
         private readonly string _sGridColumnCondition = "IsCondition";
         private readonly string _sGridColumnSelect = "IsSelect";
         private readonly string _sGridColumnDynamic = "IsDynamic";
+        private bool _allSelect = false;//默认全选，这里取反
+        private bool _allCondition = true;//默认全不选，这里取反
+        private bool _allDynamic = false;//默认全选，这里取反
         //常量
         private static string strTableAlias = "A"; //查询和修改中的表别名
         private static string strTableAliasAndDot = "";
@@ -1051,6 +1054,34 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (string.IsNullOrEmpty(cbbTableName.Text.Trim())) return;
             tsbImport.PerformClick();
         }
+
+        private void dgvColList_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if(e.ColumnIndex == dgvColList.Columns[_sGridColumnSelect].Index)
+            {
+                foreach (DataGridViewRow item in dgvColList.Rows)
+                {
+                    item.Cells[_sGridColumnSelect].Value = _allSelect?"1":"0";
+                }
+                _allSelect = !_allSelect;
+            }else if(e.ColumnIndex == dgvColList.Columns[_sGridColumnCondition].Index)
+            {
+                foreach (DataGridViewRow item in dgvColList.Rows)
+                {
+                    item.Cells[_sGridColumnCondition].Value = _allCondition ? "1" : "0";
+                }
+                _allCondition = !_allCondition;
+            }
+            else if (e.ColumnIndex == dgvColList.Columns[_sGridColumnDynamic].Index)
+            {
+                foreach (DataGridViewRow item in dgvColList.Rows)
+                {
+                    item.Cells[_sGridColumnDynamic].Value = _allDynamic ? "1" : "0";
+                }
+                _allDynamic = !_allDynamic;
+            }
+        }
+
     }
 
     public class DBSqlEntity

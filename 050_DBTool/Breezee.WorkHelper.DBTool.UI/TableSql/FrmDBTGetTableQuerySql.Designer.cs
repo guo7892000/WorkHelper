@@ -415,6 +415,7 @@
             this.dgvColList.RowTemplate.Height = 23;
             this.dgvColList.Size = new System.Drawing.Size(1002, 209);
             this.dgvColList.TabIndex = 0;
+            this.dgvColList.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvColList_ColumnHeaderMouseDoubleClick);
             // 
             // grbTable
             // 
