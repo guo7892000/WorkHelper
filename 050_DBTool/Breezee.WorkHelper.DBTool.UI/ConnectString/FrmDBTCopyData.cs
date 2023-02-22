@@ -42,6 +42,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             dic_List.Add("3", "UNION ALL清单");
             cbbSqlType.BindTypeValueDropDownList(dic_List.GetTextValueTable(false), false, true);
 
+            dic_List = new Dictionary<string, string>();
+            dic_List.Add("0", "无");
+            dic_List.Add("1", "驼峰式");
+            dic_List.Add("2", "首字母大写");
+            cbbWordConvert.BindTypeValueDropDownList(dic_List.GetTextValueTable(false), false, true);
+
             //数据库类型
             DataTable dtDbType = DBToolUIHelper.GetBaseDataTypeTable();
             cbbDbType.BindTypeValueDropDownList(dtDbType, false, true);
@@ -104,9 +110,28 @@ namespace Breezee.WorkHelper.DBTool.UI
                     {
                         //初始化单条数据为书写的文本
                         string strOneData = rtbConString.Text.Trim();
+                        string sConvert = cbbWordConvert.SelectedValue.ToString();
+                        StringBuilder sb = new StringBuilder();
                         for (int j = 0; j < dtMain.Columns.Count; j++)
                         {
-                            string strData = ckbTrim.Checked ? dtMain.Rows[i][j].ToString().Trim(): dtMain.Rows[i][j].ToString();
+                            string strData = ckbTrim.Checked ? dtMain.Rows[i][j].ToString().Trim() : dtMain.Rows[i][j].ToString();
+                            if ("1".Equals(sConvert) || "2".Equals(sConvert))
+                            {
+                                string[] arrSplit = strData.ToLower().Split('_');
+                                for (int k = 0; k < arrSplit.Length; k++)
+                                {
+                                    if (k == 0)
+                                    {
+                                        sb.Append("2".Equals(sConvert) ? arrSplit[k][0].ToString().ToUpper() + arrSplit[k].Substring(1) : arrSplit[k]);
+                                    }
+                                    else
+                                    {
+                                        sb.Append(arrSplit[k][0].ToString().ToUpper() + arrSplit[k].Substring(1));
+                                    }
+                                }
+                                strData = sb.ToString();
+                            }
+
                             //将数据中的列名替换为单元格中的数据
                             strOneData = strOneData.Replace("#" + dtMain.Columns[j].ColumnName + "#", strData);
                         }
@@ -238,12 +263,14 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 grbConSting.Visible = true;
                 cbbDbType.Visible = false;
+                cbbWordConvert.Visible = true;
                 lblDbType.Visible = false;
             }
             else
             {
                 grbConSting.Visible = false;
                 cbbDbType.Visible = true;
+                cbbWordConvert.Visible = false;
                 lblDbType.Visible = true;
             }
         }

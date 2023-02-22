@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>两个Excel合并</title>
+</head>
+<body>
+    <div>
+        <h1>两个Excel合并</h1>
+        <div>
+            <h2>一、功能概述</h2>
+            将两个有关联条件的Excel网格内容，关联合并为一个网格。
+        </div>
+        <div>
+            <h2>二、界面截图</h2>
+            主界面：操作文件生成<br>
+            <img src="Images\TowExcelMerge.png" alt=""><br>
+        </div>
+
+        <div>
+            <h2>三、操作步骤</h2>
+            <b>1、复制粘贴数据1：</b>在Excel复制一列数据，并粘贴到网格Excel1上。<br>
+            <b>2、复制粘贴数据2：</b>在Excel复制一列数据，并粘贴到网格Excel2上。<br>
+            <b>3、【合并类型】：</b>包括交集、左集、右集、全集。<br>
+            <b>4、修改【关联条件】输入框里的信息为Excel1和Excel2关联的条件，格式为：A=A1。其中A为Excel1中的列名，A1为Excel2中的列名。<br>
+            <b>4、点击【生成】：</b><br>生成成功后，会提示相关信息。<br>
+</div>        
+        <div>
+            <h2>四、逻辑与业务规则</h2>
+            <div><b>关于从Excel中复制与粘贴：</b>
+                复制的第一行必须为列头信息，否则第一行数据会被过滤掉。在网格中按Ctrl + v 即可粘贴数据。
+            </div>
+        </div>
+    </div>
+</body>
+</html>

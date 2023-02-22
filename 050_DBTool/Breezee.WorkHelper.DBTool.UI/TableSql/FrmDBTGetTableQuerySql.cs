@@ -75,6 +75,14 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Add("10", "自定义");
             
             cbbParaType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
+
+            IDictionary<string, string> dic_List = new Dictionary<string, string>
+            {
+                { "0", "无" },
+                { "1", "驼峰式" },
+                { "2", "首字母大写" }
+            };
+            cbbWordConvert.BindTypeValueDropDownList(dic_List.GetTextValueTable(false), false, true);
             #endregion
 
             #region 设置数据库连接控件
@@ -248,12 +256,30 @@ namespace Breezee.WorkHelper.DBTool.UI
             #region 生成增删改查SQL
 
             #region 变量
+            string sWordConvert = cbbWordConvert.SelectedValue.ToString();
+            string sBegin = "BEGIN_";
+            string sEnd = "END_";
             sqlEntity = new DBSqlEntity();
             sqlEntity.NewLine = ckbNewLine.Checked ? DataBaseCommon.NewLine : "";
             sqlEntity.Tab = ckbNewLine.Checked ? DataBaseCommon.Tab : "";
             sqlEntity.IsHasRemark = ckbUseRemark.Checked;
             sqlEntity.IsUseGlobal = ckbUseDefaultConfig.Checked;
-            sqlEntity.IsFirstUpper = ckbFirstUpper.Checked;
+            if ("1".Equals(sWordConvert))
+            {
+                sqlEntity.WordUpperType = WordUpperType.FirstUpperSecond;
+                sBegin = "begin";
+                sEnd = "end";
+            }
+            else if ("2".Equals(sWordConvert))
+            {
+                sqlEntity.WordUpperType = WordUpperType.FirstUpperAll;
+                sBegin = "Begin";
+                sEnd = "End";
+            }
+            else
+            {
+                sqlEntity.WordUpperType = WordUpperType.None;
+            }
 
             StringBuilder sbAllSql = new StringBuilder();
             StringBuilder sbWhereSql = new StringBuilder();
@@ -367,6 +393,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 string strColCode = dtColumnCondition.Rows[i][DBColumnEntity.SqlString.Name].ToString().Trim().ToUpper();
                 string strColType = dtColumnCondition.Rows[i][DBColumnEntity.SqlString.DataType].ToString().Trim().ToUpper();
                 string strColFixedValue = dtColumnCondition.Rows[i][DBColumnEntity.SqlString.Default].ToString().Trim();//固定值
+                string strColDynamic = dtColumnCondition.Rows[i][_sGridColumnDynamic].ToString().Trim();//固定值
                 string strColComments = "";
                 if (sqlEntity.IsHasRemark)
                 {
@@ -374,7 +401,16 @@ namespace Breezee.WorkHelper.DBTool.UI
                     strColComments = DataBaseCommon.GetColumnComment(strColCode, strColComments);//列空注释的处理
                 }
 
-                string strColCodeParm = sqlEntity.IsFirstUpper ? FirstLetterUpper(strColCode) : strColCode;
+                //转换列的编码
+                string strColCodeParm = strColCode;
+                if (sqlEntity.WordUpperType == WordUpperType.FirstUpperSecond)
+                {
+                    strColCodeParm = FirstLetterUpper(strColCode, false);
+                }
+                else if (sqlEntity.WordUpperType == WordUpperType.FirstUpperAll)
+                {
+                    strColCodeParm = FirstLetterUpper(strColCode);
+                }
                 bool bDynamicCol = false;
 
                 switch (sqlEntity.ParamType)
@@ -386,10 +422,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                         strColCodeParm = sParamPre + strColCodeParm;
                         break;
                     case SqlParamFormatType.MyBatis:
-                        strColCodeParm = "#{" + strColCodeParm + "}";
+                        strColCodeParm = sDefineFormat.Replace(sParamPre, strColCodeParm);//#{param.参数}";
                         break;
                     case SqlParamFormatType.MyBatisDynamicColoumn:
-                        strColCodeParm = "#{param." + strColCodeParm + "}";
+                        //strColCodeParm = sDefineFormat + strColCodeParm; //param.参数
                         if (dtColumnDynamic.Select(DBColumnEntity.SqlString.Name + "='" + strColCode + "'").Length > 0)
                         {
                             bDynamicCol = true;
@@ -407,30 +443,32 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     #region 查询的日期时间段处理
                     string strQueryWhereDateRange;
-                    string strBeginDateParm = "#BEGIN_" + strColCode + "#";
-                    string strEndDateParm = "#END_" + strColCode + "#";
+
+                    string strBeginDateParm = "#" + sBegin  + strColCode + "#";
+                    string strEndDateParm = "#" + sEnd + strColCode + "#";
 
                     switch (sqlEntity.ParamType)
                     {
                         case SqlParamFormatType.BeginEndHash:
-                            strBeginDateParm = sParamPre + "BEGIN_" + strColCode;
-                            strEndDateParm = sParamPre + "END_" + strColCode;
+                            strBeginDateParm = sParamPre + sBegin + strColCode;
+                            strEndDateParm = sParamPre + sEnd + strColCode;
                             break;
                         case SqlParamFormatType.SqlParm:
-                            strBeginDateParm = sParamPre + "BEGIN_" + strColCode;
-                            strEndDateParm = sParamPre + "END_" + strColCode;
+                            strBeginDateParm = sParamPre + sBegin + strColCode;
+                            strEndDateParm = sParamPre + sEnd + strColCode;
                             break;
                         case SqlParamFormatType.MyBatis:
-                            strBeginDateParm = "#{" + "BEGIN_" + strColCode + "}";
-                            strEndDateParm = "#{" + "END_" + strColCode + "}";
+                            strBeginDateParm = "#{" + sBegin + strColCode + "}";
+                            strEndDateParm = "#{" + sEnd + strColCode + "}";
                             break;
                         case SqlParamFormatType.MyBatisDynamicColoumn:
-                            strBeginDateParm = "BEGIN_" + strColCode;
-                            strEndDateParm = "END_" + strColCode;
+                            strBeginDateParm = sBegin + strColCode;
+                            strEndDateParm = sEnd + strColCode;
+
                             break;
                         case SqlParamFormatType.UserDefine://自定义
-                            strBeginDateParm = sDefineFormat.Replace(sParamPre, "BEGIN_" + strColCode);
-                            strEndDateParm = sDefineFormat.Replace(sParamPre, "END_" + strColCode);
+                            strBeginDateParm = sDefineFormat.Replace(sParamPre, sBegin + strColCode);
+                            strEndDateParm = sDefineFormat.Replace(sParamPre, sEnd + strColCode);
                             break;
                     }
 
@@ -438,14 +476,19 @@ namespace Breezee.WorkHelper.DBTool.UI
                     {
                         strQueryWhereDateRange = sConditionColumn + " >='" + strBeginDateParm + "' " + sqlEntity.NewLine + sConditionColumn + " < '" + strBeginDateParm + "' " + sqlEntity.NewLine; //结束日期：注要传入界面结束时间的+1天。
                     }
-                    else
+                    else if (_dbServer.DatabaseType == DataBaseType.SqlServer)//Oracle的时间范围
                     {
                         strQueryWhereDateRange = sConditionColumn + " >= TO_DATE('" + strBeginDateParm + "','YYYY-MM-DD') " + sqlEntity.NewLine + sConditionColumn + " < TO_DATE('" + strEndDateParm + "','YYYY-MM-DD') + 1 " + sqlEntity.NewLine; //结束日期：注要传入界面结束时间的+1天
                     }
+                    else
+                    {
+                        strQueryWhereDateRange = sConditionColumn + " >= '" + strBeginDateParm + "' " + sqlEntity.NewLine + sConditionColumn + " < '" + strEndDateParm + "' " + sqlEntity.NewLine; //结束日期：注要传入界面结束时间的+1天
+                    }
+
                     if (bDynamicCol)
                     {
-                        string sColBeginDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} !=null and {0} !=''\">{4}{1}>=#{2}{0}{3} <if>", sDefineFormat + strBeginDateParm, strTableAliasAndDot + strColCode, "{", "}", strNowAnd) + sqlEntity.NewLine;
-                        string sColEndDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} !=null and {0} !=''\">AND {1}< #{2}{0}{3} + 1 <if>", sDefineFormat + strEndDateParm, strTableAliasAndDot + strColCode, "{", "}") + sqlEntity.NewLine;
+                        string sColBeginDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} !=null and {0} !=''\">{4}{1}>=#{2}{0}{3} </if>", sDefineFormat + strBeginDateParm, strTableAliasAndDot + strColCodeParm, "{", "}", strNowAnd) + sqlEntity.NewLine;
+                        string sColEndDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} !=null and {0} !=''\">AND {1}< #{2}{0}{3} + 1 </if>", sDefineFormat + strEndDateParm, strTableAliasAndDot + strColCodeParm, "{", "}") + sqlEntity.NewLine;
                         strQueryWhereDateRange = sColBeginDynamic + sColEndDynamic;
                     }
                     sbWhereSql.Append(strQueryWhereDateRange); //使用范围查询条件
@@ -455,8 +498,16 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     if (bDynamicCol)
                     {
-                        string sColValueDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} !=null and {0} !=''\">{4}{1}=#{2}{0}{3}<if>", sDefineFormat + strColCode, strTableAliasAndDot + strColCode, "{", "}", strNowAnd) + sqlEntity.NewLine;
-                        sbWhereSql.Append(sColValueDynamic);
+                        if ("1".Equals(strColDynamic))
+                        {
+                            string sColValueDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} !=null and {0} !=''\">{4}{1}=#{2}{0}{3}</if>", sDefineFormat + strColCodeParm, strTableAliasAndDot + strColCodeParm, "{", "}", strNowAnd) + sqlEntity.NewLine;
+                            sbWhereSql.Append(sColValueDynamic);
+                        }
+                        else
+                        {
+                            string sColValueDynamic = sqlEntity.Tab + string.Format("{4}{1}=#{2}{0}{3}", sDefineFormat + strColCodeParm, strTableAliasAndDot + strColCodeParm, "{", "}", strNowAnd) + sqlEntity.NewLine;
+                            sbWhereSql.Append(sColValueDynamic);
+                        }
                     }
                     else
                     {
@@ -505,7 +556,17 @@ namespace Breezee.WorkHelper.DBTool.UI
                     string strNowComma = ","; //当前使用的逗号，最后一列的新增和修改是不用加逗号的，该值将会改为空值
                     #endregion
 
-                    string strColCodeParm = sqlEntity.IsFirstUpper ? FirstLetterUpper(strColCode) : strColCode;
+                    //转换列的编码
+                    string strColCodeParm = strColCode;
+                    if (sqlEntity.WordUpperType == WordUpperType.FirstUpperSecond)
+                    {
+                        strColCodeParm = FirstLetterUpper(strColCode, false);
+                    }
+                    else if (sqlEntity.WordUpperType == WordUpperType.FirstUpperAll)
+                    {
+                        strColCodeParm = FirstLetterUpper(strColCode);
+                    }
+                    
                     if (string.IsNullOrEmpty(strColFixedValue)) //没有输入固定值
                     {
                         switch (sqlEntity.ParamType)
@@ -517,10 +578,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                                 strColCodeParm = sParamPre + strColCodeParm;
                                 break;
                             case SqlParamFormatType.MyBatis:
-                                strColCodeParm = "#{" + strColCodeParm + "}";
+                                strColCodeParm = sDefineFormat.Replace(sParamPre, strColCodeParm);//strColCodeParm = "#{" + strColCodeParm + "}";
                                 break;
                             case SqlParamFormatType.MyBatisDynamicColoumn:
-                                strColCodeParm = "#{param." + strColCodeParm + "}";
+                                //strColCodeParm = sDefineFormat.Replace(sParamPre, strColCodeParm);
                                 if (dtColumnDynamic.Select(DBColumnEntity.SqlString.Name + "='" + strColCode + "'").Length > 0)
                                 {
                                     bDynamicCol = true;
@@ -548,10 +609,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                             strNowComma = "";
                         }
                         string sColInsert = strTableAliasAndDot + strColCode + strNowComma + sqlEntity.NewLine;
-                        string sColInsertDynamic = string.Format("<if test=\"{0} != null and {0} != ''\">{1},<if>", sDefineFormat + strColCode, strTableAliasAndDot + strColCode) + sqlEntity.NewLine;
+                        string sColInsertDynamic = string.Format("<if test=\"{0} != null and {0} != ''\">{1},</if>", sDefineFormat + strColCodeParm, strTableAliasAndDot + strColCode) + sqlEntity.NewLine;
 
                         string sColValueComment = MakeColumnValueComment(sqlEntity.SqlType, strNowComma, strColCode, strColValue, strColComments, strColType, sqlEntity.ParamType, strColCodeParm);
-                        string sColValueDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} != null and {0} != ''\">#{1}{0}{2},<if>", sDefineFormat + strColCode, "{","}");
+                        string sColValueDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} != null and {0} != ''\">#{1}{0}{2},</if>", sDefineFormat + strColCodeParm, "{","}");
 
                         if (j == 0) //首行
                         {
@@ -600,7 +661,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         }
                         strTableAlias = sqlEntity.TableAlias;
                         string sColValueComment = MakeColumnValueComment(sqlEntity.SqlType, strNowComma, strColCode, strColValue, strColComments, strColType, sqlEntity.ParamType, strColCodeParm) + sqlEntity.NewLine;
-                        string sColValueDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} != null and {0} !=''\">{1}=#{2}{0}{3},<if>", sDefineFormat + strColCode, strTableAliasAndDot + strColCode, "{", "}") + sqlEntity.NewLine;
+                        string sColValueDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} != null and {0} !=''\">{1}=#{2}{0}{3},</if>", sDefineFormat + strColCodeParm, strTableAliasAndDot + strColCodeParm, "{", "}") + sqlEntity.NewLine;
                         string sSet = ckbNewLine.Checked ? "SET " : " SET ";
 
                         if (j == 0) //首行
@@ -690,14 +751,23 @@ namespace Breezee.WorkHelper.DBTool.UI
             #endregion
         }
 
-        private static string FirstLetterUpper(string strColCode)
+        private static string FirstLetterUpper(string strColCode, bool isFirstWorldUpper = true)
         {
             strColCode = strColCode.ToLower();
             string[] firstUpper = strColCode.Split('_');
             StringBuilder sb = new StringBuilder();
+            int i = 0;
             foreach (var s in firstUpper)
             {
-                sb.Append(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(s));
+                if (i == 0 && !isFirstWorldUpper)
+                {
+                    sb.Append(s);
+                }
+                else
+                {
+                    sb.Append(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(s));
+                }
+                i++;
             }
             strColCode = sb.ToString();
             return strColCode;
@@ -897,9 +967,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                     lblParam.Visible = false;
                     txbParamPre.Visible = false;
                     lblDefineFormat.Text = "参数格式：";
-                    lblDefineFormat.Visible = false;
-                    txbDefineFormart.Visible = false;
-                    txbDefineFormart.Text = "#{@}";
+                    lblDefineFormat.Visible = true;
+                    txbDefineFormart.Visible = true;
+                    txbDefineFormart.Text = "#{param.@}";
                     break;
                 case "4":
                     lblParam.Visible = true;
@@ -1109,7 +1179,25 @@ namespace Breezee.WorkHelper.DBTool.UI
         public string NewLine { get; set; }
         public string Tab { get; set; }
         public bool IsUseGlobal { get; set; }
-        public bool IsFirstUpper { get; set; }
+        public WordUpperType WordUpperType { get; set; }
+
+
+    }
+
+    public enum WordUpperType
+    {
+        /// <summary>
+        /// 所有单词首字母转换大写，如SqlType
+        /// </summary>
+        FirstUpperAll,
+        /// <summary>
+        /// 首字母大写（除了第一个）
+        /// </summary>
+        FirstUpperSecond,
+        /// <summary>
+        /// 不做转换
+        /// </summary>
+        None,
     }
 
 }
