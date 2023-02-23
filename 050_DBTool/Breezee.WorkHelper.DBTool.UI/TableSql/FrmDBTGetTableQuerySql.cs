@@ -393,7 +393,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 string strColCode = dtColumnCondition.Rows[i][DBColumnEntity.SqlString.Name].ToString().Trim().ToUpper();
                 string strColType = dtColumnCondition.Rows[i][DBColumnEntity.SqlString.DataType].ToString().Trim().ToUpper();
                 string strColFixedValue = dtColumnCondition.Rows[i][DBColumnEntity.SqlString.Default].ToString().Trim();//固定值
-                string strColDynamic = dtColumnCondition.Rows[i][_sGridColumnDynamic].ToString().Trim();//固定值
+                string strColDynamic = dtColumnCondition.Rows[i][_sGridColumnDynamic].ToString().Trim();//动态列复选框
                 string strColComments = "";
                 if (sqlEntity.IsHasRemark)
                 {
@@ -488,7 +488,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     if (bDynamicCol)
                     {
                         string sColBeginDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} !=null and {0} !=''\">{4}{1}>=#{2}{0}{3} </if>", sDefineFormat + strBeginDateParm, strTableAliasAndDot + strColCodeParm, "{", "}", strNowAnd) + sqlEntity.NewLine;
-                        string sColEndDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} !=null and {0} !=''\">AND {1}< #{2}{0}{3} + 1 </if>", sDefineFormat + strEndDateParm, strTableAliasAndDot + strColCodeParm, "{", "}") + sqlEntity.NewLine;
+                        string sColEndDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} !=null and {0} !=''\">AND {1}< #{2}{0}{3} </if>", sDefineFormat + strEndDateParm, strTableAliasAndDot + strColCodeParm, "{", "}") + sqlEntity.NewLine;
                         strQueryWhereDateRange = sColBeginDynamic + sColEndDynamic;
                     }
                     sbWhereSql.Append(strQueryWhereDateRange); //使用范围查询条件

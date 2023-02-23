@@ -51,6 +51,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             #endregion
             //数据库类型为只读
             cbbDatabaseType.Enabled = false;
+            txbDBConString.ReadOnly= true;
 
             this.cbbDatabaseType.SelectedIndexChanged += new System.EventHandler(this.cbbDatabaseType_SelectedIndexChanged);
             this.cbbDbConnName.SelectedIndexChanged += new System.EventHandler(this.cbbDbConnName_SelectedIndexChanged);
@@ -63,11 +64,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (cbbDbConnName.SelectedValue == null || string.IsNullOrEmpty(cbbDbConnName.SelectedValue.ToString()))
             {
                 cbbDatabaseType.SelectedIndex = 0;
+                cbbDatabaseType.Enabled=true;
             }
             else
             {
                 DataRow dr = (cbbDbConnName.SelectedItem as DataRowView).Row;
                 cbbDatabaseType.SelectedValue = dr["DB_TYPE"].ToString();//记得这个放第一位
+                cbbDatabaseType.Enabled = false;
                 txbSchemaName.Text = dr["SCHEMA_NAME"].ToString();
                 txbServerIP.Text = dr["SERVER_IP"].ToString();
                 txbPortNO.Text = dr["PORT_NO"].ToString();
@@ -87,7 +90,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void cbbDatabaseType_SelectedIndexChanged(object sender, EventArgs e)
         {
             //重置控件
-            UIHelper.ResetControl(txbServerIP, txbUserName, txbPassword, txbDbName, txbPortNO, txbSchemaName);
+            UIHelper.ResetControl(txbServerIP, txbUserName, txbPassword, txbDbName, txbPortNO, txbSchemaName,txbDBConString);
             //默认显示端口号
             lblPortNO.Visible = true;
             txbPortNO.Visible = true;
@@ -97,6 +100,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             //
             lblServerAddr.Text = "服务器地址：";
             btnSelectDbFile.Visible = false;
+            ckbUseConString.Checked= false;
 
             int iDbType = int.Parse(cbbDatabaseType.SelectedValue.ToString());
             DataBaseType selectDBType = (DataBaseType)iDbType;
@@ -166,84 +170,94 @@ namespace Breezee.WorkHelper.DBTool.UI
                 SchemaName = txbSchemaName.Text.Trim(),
                 ServerName = txbServerIP.Text.Trim(),
                 UserName = txbUserName.Text.Trim(),
+                UseConnString = ckbUseConString.Checked,
+                ConnString = txbDBConString.Text.Trim(),
             };
 
             int iDbType = int.Parse(cbbDatabaseType.SelectedValue.ToString());
             DataBaseType selectDBType = (DataBaseType)iDbType;
 
-            if(selectDBType != DataBaseType.Oracle && selectDBType!= DataBaseType.SQLite)
+            if (!ckbUseConString.Checked)
             {
-                if (IsDbNameNotNull && string.IsNullOrEmpty(DbServer.Database))
+                if (selectDBType != DataBaseType.Oracle && selectDBType != DataBaseType.SQLite)
                 {
-                    MsgHelper.ShowErr("数据库名称不能为空！");
-                    return null;
-                }
-            }
-
-            switch (selectDBType)
-            {
-                case DataBaseType.SqlServer:
-                    if (string.IsNullOrEmpty(DbServer.ServerName))
+                    if (IsDbNameNotNull && string.IsNullOrEmpty(DbServer.Database))
                     {
-                        MsgHelper.ShowErr("服务器地址不能为空！");
+                        MsgHelper.ShowErr("数据库名称不能为空！");
                         return null;
                     }
+                }
 
-                    if (DbServer.LoginMode == WindowsDBLoginMode.SQL)
-                    {
+                switch (selectDBType)
+                {
+                    case DataBaseType.SqlServer:
+                        if (string.IsNullOrEmpty(DbServer.ServerName))
+                        {
+                            MsgHelper.ShowErr("服务器地址不能为空！");
+                            return null;
+                        }
+
                         if (string.IsNullOrEmpty(DbServer.UserName) || string.IsNullOrEmpty(DbServer.Password))
                         {
                             MsgHelper.ShowErr("用户名和密码都不能为空！");
                             return null;
                         }
-                    }
-                    break;
-                case DataBaseType.Oracle:
-                    if (string.IsNullOrEmpty(DbServer.ServerName))
-                    {
-                        MsgHelper.ShowErr("TNS名称不能为空！");
-                        return null;
-                    }
-                    if (string.IsNullOrEmpty(DbServer.UserName) || string.IsNullOrEmpty(DbServer.Password))
-                    {
-                        MsgHelper.ShowErr("用户名和密码都不能为空！");
-                        return null;
-                    }
-                    break;
-                case DataBaseType.MySql:
-                    if (string.IsNullOrEmpty(DbServer.ServerName))
-                    {
-                        MsgHelper.ShowErr("服务器地址不能为空！");
-                        return null;
-                    }
-                    if (string.IsNullOrEmpty(DbServer.UserName) || string.IsNullOrEmpty(DbServer.Password))
-                    {
-                        MsgHelper.ShowErr("用户名和密码都不能为空！");
-                        return null;
-                    }
-                    break;
-                case DataBaseType.SQLite:
-                    if (string.IsNullOrEmpty(DbServer.ServerName))
-                    {
-                        MsgHelper.ShowErr("数据库文件路径不能为空！");
-                        return null;
-                    }
-                    break;
-                case DataBaseType.PostgreSql:
-                    if (string.IsNullOrEmpty(DbServer.ServerName))
-                    {
-                        MsgHelper.ShowErr("服务器地址不能为空！");
-                        return null;
-                    }
-                    if (string.IsNullOrEmpty(DbServer.UserName) || string.IsNullOrEmpty(DbServer.Password))
-                    {
-                        MsgHelper.ShowErr("用户名和密码都不能为空！");
-                        return null;
-                    }
-                    break;
-                default:
-                    throw new Exception("暂不支持该数据库类型！");
-                    //break;
+                        break;
+                    case DataBaseType.Oracle:
+                        if (string.IsNullOrEmpty(DbServer.ServerName))
+                        {
+                            MsgHelper.ShowErr("TNS名称不能为空！");
+                            return null;
+                        }
+                        if (string.IsNullOrEmpty(DbServer.UserName) || string.IsNullOrEmpty(DbServer.Password))
+                        {
+                            MsgHelper.ShowErr("用户名和密码都不能为空！");
+                            return null;
+                        }
+                        break;
+                    case DataBaseType.MySql:
+                        if (string.IsNullOrEmpty(DbServer.ServerName))
+                        {
+                            MsgHelper.ShowErr("服务器地址不能为空！");
+                            return null;
+                        }
+                        if (string.IsNullOrEmpty(DbServer.UserName) || string.IsNullOrEmpty(DbServer.Password))
+                        {
+                            MsgHelper.ShowErr("用户名和密码都不能为空！");
+                            return null;
+                        }
+                        break;
+                    case DataBaseType.SQLite:
+                        if (string.IsNullOrEmpty(DbServer.ServerName))
+                        {
+                            MsgHelper.ShowErr("数据库文件路径不能为空！");
+                            return null;
+                        }
+                        break;
+                    case DataBaseType.PostgreSql:
+                        if (string.IsNullOrEmpty(DbServer.ServerName))
+                        {
+                            MsgHelper.ShowErr("服务器地址不能为空！");
+                            return null;
+                        }
+                        if (string.IsNullOrEmpty(DbServer.UserName) || string.IsNullOrEmpty(DbServer.Password))
+                        {
+                            MsgHelper.ShowErr("用户名和密码都不能为空！");
+                            return null;
+                        }
+                        break;
+                    default:
+                        throw new Exception("暂不支持该数据库类型！");
+                        //break;
+                }
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(DbServer.ConnString))
+                {
+                    MsgHelper.ShowErr("连接字符串不能为空！");
+                    return null;
+                }
             }
             //得到数据库访问对象
             ICustomDataAccess CustomDac = ContainerContext.Container.Resolve<ICustomDataAccess>();
@@ -279,6 +293,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             cbbDatabaseType.Enabled = false;
         }
         #endregion
+
+        private void ckbUseConString_CheckedChanged(object sender, EventArgs e)
+        {
+            txbDBConString.ReadOnly = ckbUseConString.Checked == false ? true : false;
+        }
     }
 
     public class DBTypeSelectedChangeEventArgs: EventArgs

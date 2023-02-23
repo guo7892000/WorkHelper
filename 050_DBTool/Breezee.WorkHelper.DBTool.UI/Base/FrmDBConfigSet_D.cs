@@ -57,11 +57,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             //数据库类型
             DataTable dtDbType = DBToolUIHelper.GetBaseDataTypeTable();
             cbbDatabaseType.BindTypeValueDropDownList(dtDbType, false, true);
-            //登录类型
-            IDictionary<string, string> dicQuery = new Dictionary<string, string>();
-            dicQuery.Add(((int)WindowsDBLoginMode.SQL).ToString(), "SQL身份验证");
-            dicQuery.Add(((int)WindowsDBLoginMode.Windows).ToString(), "Windows身份验证");
-            cbbLoginType.BindTypeValueDropDownList(dicQuery.GetTextValueTable(false), false, true); 
             #endregion
 
             //设置控件关系

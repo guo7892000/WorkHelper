@@ -39,13 +39,15 @@
             this.label5 = new System.Windows.Forms.Label();
             this.btnSelectDbFile = new System.Windows.Forms.Button();
             this.lblPortNO = new System.Windows.Forms.Label();
-            this.txbPortNO = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.txbUserName = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.txbPassword = new System.Windows.Forms.TextBox();
-            this.txbSchemaName = new System.Windows.Forms.TextBox();
+            this.txbPortNO = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.txbSchemaName = new System.Windows.Forms.TextBox();
+            this.ckbUseConString = new System.Windows.Forms.CheckBox();
+            this.txbDBConString = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -108,7 +110,7 @@
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 13;
+            this.tableLayoutPanel1.ColumnCount = 14;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -120,8 +122,9 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 108F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbbDbConnName, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label5, 2, 0);
@@ -130,15 +133,17 @@
             this.tableLayoutPanel1.Controls.Add(this.txbServerIP, 5, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnSelectDbFile, 6, 0);
             this.tableLayoutPanel1.Controls.Add(this.lblPortNO, 7, 0);
-            this.tableLayoutPanel1.Controls.Add(this.txbPortNO, 8, 0);
             this.tableLayoutPanel1.Controls.Add(this.lblDbName, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.txbDbName, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label6, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.txbUserName, 3, 1);
             this.tableLayoutPanel1.Controls.Add(this.label7, 4, 1);
             this.tableLayoutPanel1.Controls.Add(this.txbPassword, 5, 1);
-            this.tableLayoutPanel1.Controls.Add(this.txbSchemaName, 8, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 6, 1);
+            this.tableLayoutPanel1.Controls.Add(this.txbPortNO, 8, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 9, 0);
+            this.tableLayoutPanel1.Controls.Add(this.txbSchemaName, 10, 0);
+            this.tableLayoutPanel1.Controls.Add(this.ckbUseConString, 6, 1);
+            this.tableLayoutPanel1.Controls.Add(this.txbDBConString, 8, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -146,7 +151,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(792, 60);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(886, 60);
             this.tableLayoutPanel1.TabIndex = 9;
             // 
             // cbbDbConnName
@@ -183,19 +188,11 @@
             // 
             this.lblPortNO.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lblPortNO.AutoSize = true;
-            this.lblPortNO.Location = new System.Drawing.Point(594, 8);
+            this.lblPortNO.Location = new System.Drawing.Point(621, 8);
             this.lblPortNO.Name = "lblPortNO";
             this.lblPortNO.Size = new System.Drawing.Size(53, 12);
             this.lblPortNO.TabIndex = 5;
             this.lblPortNO.Text = "端口号：";
-            // 
-            // txbPortNO
-            // 
-            this.txbPortNO.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbPortNO.Location = new System.Drawing.Point(653, 4);
-            this.txbPortNO.Name = "txbPortNO";
-            this.txbPortNO.Size = new System.Drawing.Size(127, 21);
-            this.txbPortNO.TabIndex = 6;
             // 
             // label6
             // 
@@ -234,24 +231,53 @@
             this.txbPassword.Size = new System.Drawing.Size(99, 21);
             this.txbPassword.TabIndex = 6;
             // 
-            // txbSchemaName
+            // txbPortNO
             // 
-            this.txbSchemaName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbSchemaName.Location = new System.Drawing.Point(653, 32);
-            this.txbSchemaName.Name = "txbSchemaName";
-            this.txbSchemaName.Size = new System.Drawing.Size(127, 21);
-            this.txbSchemaName.TabIndex = 6;
+            this.txbPortNO.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbPortNO.Location = new System.Drawing.Point(680, 4);
+            this.txbPortNO.Name = "txbPortNO";
+            this.txbPortNO.Size = new System.Drawing.Size(52, 21);
+            this.txbPortNO.TabIndex = 6;
             // 
             // label2
             // 
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label2.AutoSize = true;
-            this.tableLayoutPanel1.SetColumnSpan(this.label2, 2);
-            this.label2.Location = new System.Drawing.Point(582, 36);
+            this.label2.Location = new System.Drawing.Point(738, 8);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 12);
+            this.label2.Size = new System.Drawing.Size(41, 12);
             this.label2.TabIndex = 7;
-            this.label2.Text = "架构名称：";
+            this.label2.Text = "架构：";
+            // 
+            // txbSchemaName
+            // 
+            this.txbSchemaName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbSchemaName.Location = new System.Drawing.Point(785, 4);
+            this.txbSchemaName.Name = "txbSchemaName";
+            this.txbSchemaName.Size = new System.Drawing.Size(98, 21);
+            this.txbSchemaName.TabIndex = 6;
+            // 
+            // ckbUseConString
+            // 
+            this.ckbUseConString.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbUseConString.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.ckbUseConString, 2);
+            this.ckbUseConString.Location = new System.Drawing.Point(578, 34);
+            this.ckbUseConString.Name = "ckbUseConString";
+            this.ckbUseConString.Size = new System.Drawing.Size(96, 16);
+            this.ckbUseConString.TabIndex = 10;
+            this.ckbUseConString.Text = "使用连接字符";
+            this.ckbUseConString.UseVisualStyleBackColor = true;
+            this.ckbUseConString.CheckedChanged += new System.EventHandler(this.ckbUseConString_CheckedChanged);
+            // 
+            // txbDBConString
+            // 
+            this.txbDBConString.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.SetColumnSpan(this.txbDBConString, 3);
+            this.txbDBConString.Location = new System.Drawing.Point(680, 32);
+            this.txbDBConString.Name = "txbDBConString";
+            this.txbDBConString.Size = new System.Drawing.Size(203, 21);
+            this.txbDBConString.TabIndex = 6;
             // 
             // groupBox1
             // 
@@ -260,7 +286,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(798, 80);
+            this.groupBox1.Size = new System.Drawing.Size(892, 79);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "数据库连接";
@@ -271,7 +297,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox1);
             this.Name = "UC_DbConnection";
-            this.Size = new System.Drawing.Size(798, 80);
+            this.Size = new System.Drawing.Size(892, 79);
             this.Load += new System.EventHandler(this.UC_DbConnection_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
@@ -302,5 +328,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txbSchemaName;
         private System.Windows.Forms.Button btnSelectDbFile;
+        private System.Windows.Forms.CheckBox ckbUseConString;
+        private System.Windows.Forms.TextBox txbDBConString;
     }
 }
