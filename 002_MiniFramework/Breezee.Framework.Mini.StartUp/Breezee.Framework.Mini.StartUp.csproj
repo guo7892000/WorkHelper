@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Breezee.Framework.Mini.StartUp</RootNamespace>
-    <AssemblyName>WorkHelper</AssemblyName>
+    <AssemblyName>Breezee.Framework.Mini.StartUp</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>

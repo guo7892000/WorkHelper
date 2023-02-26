@@ -155,9 +155,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             //重置控件
             ResetControl(txbServerIP, txbUserName, txbPassword, txbDbName, txbPortNO, txbSchemaName);
-            //默认不显示登录类型
-            lblLoginType.Visible = false;
-            cbbLoginType.Visible = false;
             //默认显示端口号
             lblPortNO.Visible = true;
             txbPortNO.Visible = true;
@@ -179,6 +176,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     //cbbLoginType.Visible = true;
                     //
                     txbServerIP.Text = "localhost";
+                    //txbPortNO.Text = "1433";
                     break;
                 case DataBaseType.Oracle:
                     lblServerAddr.Text = "TNS名称：";
@@ -190,6 +188,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     txbDbName.Visible = false;
                     break;
                 case DataBaseType.MySql:
+                    txbPortNO.Text = "3306";
                     break;
                 case DataBaseType.SQLite:
                     lblServerAddr.Text = "数据库文件路径：";
@@ -205,6 +204,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 case DataBaseType.PostgreSql:
                     lblPortNO.Visible = true;
                     txbPortNO.Visible = true;
+                    txbPortNO.Text = "5432"; 
                     break;
                 default:
                     throw new Exception("暂不支持该数据库类型！");
