@@ -140,6 +140,12 @@
     <Compile Include="Common\UC_DbConnection.Designer.cs">
       <DependentUpon>UC_DbConnection.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConnectString\FrmDBTTableColumnString.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConnectString\FrmDBTTableColumnString.Designer.cs">
+      <DependentUpon>FrmDBTTableColumnString.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConnectString\FrmDBTMergeData.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -329,6 +335,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Common\UC_DbConnection.resx">
       <DependentUpon>UC_DbConnection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConnectString\FrmDBTTableColumnString.resx">
+      <DependentUpon>FrmDBTTableColumnString.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConnectString\FrmDBTMergeData.resx">
       <DependentUpon>FrmDBTMergeData.cs</DependentUpon>

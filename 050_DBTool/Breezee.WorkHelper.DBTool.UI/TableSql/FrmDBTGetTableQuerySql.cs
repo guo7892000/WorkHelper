@@ -152,13 +152,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                 DataRow dr = dtTable.NewRow();
                 dr[DBTableEntity.SqlString.Owner] = drArr[0][DBTableEntity.SqlString.Owner].ToString();
                 dr[DBTableEntity.SqlString.Name] = drArr[0][DBTableEntity.SqlString.Name].ToString();
+                dr[DBTableEntity.SqlString.Schema] = drArr[0][DBTableEntity.SqlString.Schema].ToString();
                 dr[DBTableEntity.SqlString.Comments] = drArr[0][DBTableEntity.SqlString.Comments].ToString();
                 dtTable.Rows.Add(dr);
             }
             dtTable.TableName = _strTableName;
             //设置Tag
             SetTableTag(dtTable);
-            SetColTag();
+            SetColTag(dtTable);
             //查询全局的默认值配置
             _dicQuery[DT_DBT_BD_COLUMN_DEFAULT.SqlString.IS_ENABLED] = "1";
             _dtDefault = _IDBDefaultValue.QueryDefaultValue(_dicQuery).SafeGetDictionaryTable(); //获取默认值、排除列配置信息
@@ -189,9 +190,14 @@ namespace Breezee.WorkHelper.DBTool.UI
         }
 
         #region 设置Tag方法
-        private void SetColTag()
+        private void SetColTag(DataTable dtTable)
         {
-            DataTable dtCols = _dataAccess.GetSqlSchemaTableColumns(cbbTableName.Text.Trim());
+            string sSchema = "";
+            if (dtTable.Rows.Count > 0)
+            {
+                sSchema = dtTable.Rows[0][DBTableEntity.SqlString.Schema].ToString();
+            }
+            DataTable dtCols = _dataAccess.GetSqlSchemaTableColumns(cbbTableName.Text.Trim(), sSchema);
             //增加条件列
             DataColumn dcCondiction = new DataColumn(_sGridColumnCondition);
             dcCondiction.DefaultValue = "0";
@@ -334,8 +340,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             sqlEntity.TableName = cbbTableName.Text.Trim();
             sqlEntity.SqlType = GetSqlType();
             string strTSName = txbTableShortName.Text.Trim().Replace(".", "").Replace("'", "");
-            sqlEntity.TableAlias = string.IsNullOrEmpty(strTSName) ? " A" : " " + strTSName;//查询和修改中的别名:注前面的空格为必须
-            strTableAliasAndDot = sqlEntity.TableAlias + ".";
+            sqlEntity.TableAlias = string.IsNullOrEmpty(strTSName) ? " " : " " + strTSName;//查询和修改中的别名:注前面的空格为必须
+            strTableAliasAndDot = string.IsNullOrEmpty(strTSName) ? " " : sqlEntity.TableAlias + ".";
 
             string sColumnWherePre = strTableAliasAndDot;   //where条件中的列前缀
 
@@ -355,7 +361,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             //得到【选择】选中的列
             string sFiter = string.Format("{0}='1'", _sGridColumnSelect);
-            foreach (DataRow dr in dtSec.Select(sFiter))
+            foreach (DataRow dr in dtSec.Select(sFiter, DBColumnEntity.SqlString.SortNum + " ASC"))
             {
                 dtColumnSelect.ImportRow(dr); //对非修改，不是排除列就导入
             }
@@ -964,9 +970,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                     txbDefineFormart.Visible = false;
                     break;
                 case "3":
-                    lblParam.Visible = false;
-                    txbParamPre.Visible = false;
-                    lblDefineFormat.Text = "参数格式：";
+                    lblParam.Visible = true;
+                    txbParamPre.Visible = true;
+                    lblDefineFormat.Text = "列名替代符：";
                     lblDefineFormat.Visible = true;
                     txbDefineFormart.Visible = true;
                     txbDefineFormart.Text = "#{param.@}";
