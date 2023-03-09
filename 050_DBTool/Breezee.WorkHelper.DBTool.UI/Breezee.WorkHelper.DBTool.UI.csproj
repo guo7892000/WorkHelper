@@ -682,6 +682,9 @@
     <None Include="Config\DBTool\SqlServer\SQL.SqlServer.DBTool.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="DataTemplate\DBTool\AutoFile\模板_生成代码文件.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="DataTemplate\DBTool\DataSQL\模板_生成数据.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

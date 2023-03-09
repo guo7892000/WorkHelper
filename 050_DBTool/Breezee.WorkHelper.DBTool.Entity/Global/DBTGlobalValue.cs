@@ -47,6 +47,7 @@ namespace Breezee.WorkHelper.DBTool.Entity
 
         public static class AutoFile
         {
+            public static string Excel_Code = AutoFile_Pre + "模板_生成代码文件.xlsx";
             public static string Excel_IBD = AutoFile_Pre + "模板_生成IBD文件.xlsx";
             public static string I = AutoFile_Pre + "I.txt";
             public static string B = AutoFile_Pre + "B.txt";
