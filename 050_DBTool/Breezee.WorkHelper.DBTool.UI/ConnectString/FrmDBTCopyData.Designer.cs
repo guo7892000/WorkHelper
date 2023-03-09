@@ -41,6 +41,8 @@
             this.cbbSqlType = new System.Windows.Forms.ComboBox();
             this.ckbAutoColumnName = new System.Windows.Forms.CheckBox();
             this.ckbTrim = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cbbWordConvert = new System.Windows.Forms.ComboBox();
             this.grbConSting = new System.Windows.Forms.GroupBox();
             this.label21 = new System.Windows.Forms.Label();
             this.rtbConString = new System.Windows.Forms.RichTextBox();
@@ -54,8 +56,7 @@
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.lblInfo = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cbbWordConvert = new System.Windows.Forms.ComboBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -66,6 +67,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableList)).BeginInit();
             this.cmsGird.SuspendLayout();
             this.tpAutoSQL.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -206,15 +211,35 @@
             this.ckbTrim.Text = "去掉前后空格";
             this.ckbTrim.UseVisualStyleBackColor = true;
             // 
+            // label2
+            // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.Color.Red;
+            this.label2.Location = new System.Drawing.Point(453, 7);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(53, 12);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "大小写：";
+            // 
+            // cbbWordConvert
+            // 
+            this.cbbWordConvert.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cbbWordConvert.FormattingEnabled = true;
+            this.cbbWordConvert.Location = new System.Drawing.Point(512, 3);
+            this.cbbWordConvert.Name = "cbbWordConvert";
+            this.cbbWordConvert.Size = new System.Drawing.Size(142, 20);
+            this.cbbWordConvert.TabIndex = 3;
+            // 
             // grbConSting
             // 
             this.grbConSting.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
             this.grbConSting.Controls.Add(this.label21);
             this.grbConSting.Controls.Add(this.rtbConString);
-            this.grbConSting.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grbConSting.Location = new System.Drawing.Point(0, 83);
+            this.grbConSting.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grbConSting.Location = new System.Drawing.Point(0, 0);
             this.grbConSting.Name = "grbConSting";
-            this.grbConSting.Size = new System.Drawing.Size(921, 66);
+            this.grbConSting.Size = new System.Drawing.Size(921, 122);
             this.grbConSting.TabIndex = 26;
             this.grbConSting.TabStop = false;
             this.grbConSting.Text = "拼接字符";
@@ -237,7 +262,7 @@
             this.rtbConString.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbConString.Location = new System.Drawing.Point(3, 17);
             this.rtbConString.Name = "rtbConString";
-            this.rtbConString.Size = new System.Drawing.Size(915, 46);
+            this.rtbConString.Size = new System.Drawing.Size(915, 102);
             this.rtbConString.TabIndex = 5;
             this.rtbConString.Text = "";
             // 
@@ -246,10 +271,10 @@
             this.tabControl1.Controls.Add(this.tpImport);
             this.tabControl1.Controls.Add(this.tpAutoSQL);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 149);
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(921, 374);
+            this.tabControl1.Size = new System.Drawing.Size(921, 314);
             this.tabControl1.TabIndex = 27;
             // 
             // tpImport
@@ -287,7 +312,6 @@
             this.dgvTableList.RowTemplate.Height = 23;
             this.dgvTableList.Size = new System.Drawing.Size(901, 322);
             this.dgvTableList.TabIndex = 0;
-            this.dgvTableList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvTableList_KeyDown);
             // 
             // cmsGird
             // 
@@ -324,7 +348,7 @@
             this.tpAutoSQL.Location = new System.Drawing.Point(4, 22);
             this.tpAutoSQL.Name = "tpAutoSQL";
             this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3);
-            this.tpAutoSQL.Size = new System.Drawing.Size(781, 348);
+            this.tpAutoSQL.Size = new System.Drawing.Size(913, 288);
             this.tpAutoSQL.TabIndex = 1;
             this.tpAutoSQL.Text = "生成结果";
             // 
@@ -333,7 +357,7 @@
             this.rtbResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbResult.Location = new System.Drawing.Point(3, 3);
             this.rtbResult.Name = "rtbResult";
-            this.rtbResult.Size = new System.Drawing.Size(775, 342);
+            this.rtbResult.Size = new System.Drawing.Size(907, 282);
             this.rtbResult.TabIndex = 3;
             this.rtbResult.Text = "";
             // 
@@ -347,34 +371,31 @@
             this.lblInfo.TabIndex = 28;
             this.lblInfo.Text = "提示信息";
             // 
-            // label2
+            // splitContainer1
             // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label2.AutoSize = true;
-            this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(453, 7);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 12);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "大小写：";
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 83);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // cbbWordConvert
+            // splitContainer1.Panel1
             // 
-            this.cbbWordConvert.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.cbbWordConvert.FormattingEnabled = true;
-            this.cbbWordConvert.Location = new System.Drawing.Point(512, 3);
-            this.cbbWordConvert.Name = "cbbWordConvert";
-            this.cbbWordConvert.Size = new System.Drawing.Size(142, 20);
-            this.cbbWordConvert.TabIndex = 3;
+            this.splitContainer1.Panel1.Controls.Add(this.grbConSting);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
+            this.splitContainer1.Size = new System.Drawing.Size(921, 440);
+            this.splitContainer1.SplitterDistance = 122;
+            this.splitContainer1.TabIndex = 29;
             // 
             // FrmDBTCopyData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(921, 523);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.lblInfo);
-            this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.grbConSting);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
@@ -396,6 +417,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableList)).EndInit();
             this.cmsGird.ResumeLayout(false);
             this.tpAutoSQL.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -429,5 +454,6 @@
         private System.Windows.Forms.CheckBox ckbTrim;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cbbWordConvert;
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }

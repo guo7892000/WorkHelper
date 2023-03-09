@@ -92,6 +92,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoEntity\AutoEntityString.cs" />
+    <Compile Include="AutoEntity\FrmDBTAutoCodeFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AutoEntity\FrmDBTAutoCodeFile.Designer.cs">
+      <DependentUpon>FrmDBTAutoCodeFile.cs</DependentUpon>
+    </Compile>
     <Compile Include="AutoEntity\Old\AutoEntityBiz.cs" />
     <Compile Include="AutoEntity\FrmDBAutoEntityTemplate.cs">
       <SubType>Form</SubType>
@@ -317,6 +323,9 @@
   <ItemGroup>
     <EmbeddedResource Include="AutoEntity\FrmDBAutoEntityTemplate.resx">
       <DependentUpon>FrmDBAutoEntityTemplate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoEntity\FrmDBTAutoCodeFile.resx">
+      <DependentUpon>FrmDBTAutoCodeFile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AutoEntity\Old\FrmDBAutoEntity.resx">
       <DependentUpon>FrmDBAutoEntity.cs</DependentUpon>

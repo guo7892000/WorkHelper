@@ -35,8 +35,9 @@
     
     <Class Guid="29EB1BE0-21D8-4FB6-93C7-3B85E60BB5B5" Name="程序开发" Code="M_DB_TOOL_APP_DEV" ShortCutKey="">
       <!--实体生成-->
-      <Menu Guid="8D1C89B3-FBD1-44A3-8CE4-A60D98C659AB" Name="实体类生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBAutoEntityTemplate"  HelpPath="/Help/Html/DBTool/DB/AutoEntity.html"/>
-      <Menu Guid="495617C4-CB3B-4F66-9791-F2E5D292B4C5" Name="程序文件生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBGenerateFile"  HelpPath="/Help/Html/DBTool/DB/AutoFile.html"/>
+	  <Menu Guid="89205F44-3EF5-4A0B-A4CD-04DD8145F99E" Name="代码文件生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTAutoCodeFile"  HelpPath="/Help/Html/DBTool/DB/AutoFile.html"/>
+	  <Menu Guid="8D1C89B3-FBD1-44A3-8CE4-A60D98C659AB" Name="实体类生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBAutoEntityTemplate"  HelpPath="/Help/Html/DBTool/DB/AutoEntity.html"/>
+	  <!--<Menu Guid="495617C4-CB3B-4F66-9791-F2E5D292B4C5" Name="程序文件生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBGenerateFile"  HelpPath="/Help/Html/DBTool/DB/AutoFile.html"/>-->
     </Class>
     <Class Guid="07A30998-9277-4AC7-96AA-108AA04F1AF2" Name="综合" Code="M_DB_TOOL_ALL" ShortCutKey="">
       <Menu Guid="FAC4990F-07F5-41C7-AE6A-86915CEFD282" Name="合并脚本" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTScriptMerge"  HelpPath="/Help/Html/DBTool/DB/MergeScript.html"/>
