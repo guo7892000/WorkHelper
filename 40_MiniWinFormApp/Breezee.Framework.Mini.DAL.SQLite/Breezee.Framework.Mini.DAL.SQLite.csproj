@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F3DF6FC6-DD7E-462C-A11F-C7801228B984}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Breezee.Framework.Mini.DAL.SQLite</RootNamespace>
+    <AssemblyName>Breezee.Framework.Mini.DAL.SQLite</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Release\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\..\bin\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\..\bin\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\DMiniDBInitializer.cs" />
+    <Compile Include="Common\DMiniLogin.cs" />
+    <Compile Include="Common\DMiniSystem.cs" />
+    <Compile Include="MiniDalSQLiteIocInstallerCastle.cs" />
+    <Compile Include="MiniDalSQLiteIocModuleAutofac.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Config\Mini\SQL\Mini.SQL.SQLite.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\01_BreezeeCore\Breezee.Core.Interface\Breezee.Core.Interface.csproj">
+      <Project>{1CADC5E8-A5A0-4EB2-BD6B-5C5F67CA0456}</Project>
+      <Name>Breezee.Core.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\01_BreezeeCore\Breezee.Core\Breezee.Core.csproj">
+      <Project>{56A30012-16A2-40E5-8F61-BCC7781AF675}</Project>
+      <Name>Breezee.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\20_AutoSQLExcutor\Breezee.AutoSQLExecutor.Common\Breezee.AutoSQLExecutor.Common.csproj">
+      <Project>{7728BC8B-39DF-4ECB-89F9-7AC34C2EA416}</Project>
+      <Name>Breezee.AutoSQLExecutor.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\20_AutoSQLExcutor\Breezee.AutoSQLExecutor.Core\Breezee.AutoSQLExecutor.Core.csproj">
+      <Project>{A975AFED-639E-40AA-9698-9A6F0FCD7421}</Project>
+      <Name>Breezee.AutoSQLExecutor.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.Framework.Mini.DAL\Breezee.Framework.Mini.DAL.csproj">
+      <Project>{730b34e4-fffa-4075-a8da-a49811d1020a}</Project>
+      <Name>Breezee.Framework.Mini.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.Framework.Mini.Entity\Breezee.Framework.Mini.Entity.csproj">
+      <Project>{86FC7217-A202-4750-9F05-BAC76CC77C22}</Project>
+      <Name>Breezee.Framework.Mini.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.Framework.Mini.IDAL\Breezee.Framework.Mini.IDAL.csproj">
+      <Project>{F4F320F3-F0E1-45B9-A763-EB784C0D2C27}</Project>
+      <Name>Breezee.Framework.Mini.IDAL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

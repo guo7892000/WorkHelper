@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <BaseOutputPath>..\..\bin</BaseOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\001_BreezeeCore.Net\Breezee.Core.Tool\Breezee.Core.Tool.csproj" />
+    <ProjectReference Include="..\Breezee.WorkHelper.DBTool.IBLL\Breezee.WorkHelper.DBTool.IBLL.csproj" />
+    <ProjectReference Include="..\Breezee.WorkHelper.DBTool.IDAL\Breezee.WorkHelper.DBTool.IDAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7728BC8B-39DF-4ECB-89F9-7AC34C2EA416}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Breezee.AutoSQLExecutor.Common</RootNamespace>
+    <AssemblyName>Breezee.AutoSQLExecutor.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=7.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AutoSqlExecutorIocInstallerCastle.cs" />
+    <Compile Include="AutoSqlExecutorIocModuleAutofac.cs" />
+    <Compile Include="AutoSQLExecutors.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Breezee.AutoSQLExecutor.Core\Breezee.AutoSQLExecutor.Core.csproj">
+      <Project>{A975AFED-639E-40AA-9698-9A6F0FCD7421}</Project>
+      <Name>Breezee.AutoSQLExecutor.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.AutoSQLExecutor.MySql\Breezee.AutoSQLExecutor.MySql.csproj">
+      <Project>{81297014-27AD-4371-8AA8-E0CBE741CF6D}</Project>
+      <Name>Breezee.AutoSQLExecutor.MySql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.AutoSQLExecutor.Oracle\Breezee.AutoSQLExecutor.Oracle.csproj">
+      <Project>{27E89968-C24E-447A-97D7-E67CAD57CD13}</Project>
+      <Name>Breezee.AutoSQLExecutor.Oracle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.AutoSQLExecutor.PostgreSQL\Breezee.AutoSQLExecutor.PostgreSQL.csproj">
+      <Project>{4C1A002B-F0DB-4A72-B160-69134082BCAD}</Project>
+      <Name>Breezee.AutoSQLExecutor.PostgreSQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.AutoSQLExecutor.SQLite\Breezee.AutoSQLExecutor.SQLite.csproj">
+      <Project>{62A500E0-7044-4866-B4F3-509EAD4EB9E0}</Project>
+      <Name>Breezee.AutoSQLExecutor.SQLite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.AutoSQLExecutor.SqlServer\Breezee.AutoSQLExecutor.SqlServer.csproj">
+      <Project>{1854E0EB-8B88-4C58-94AE-09612914191F}</Project>
+      <Name>Breezee.AutoSQLExecutor.SqlServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\01_BreezeeCore\Breezee.Core.Interface\Breezee.Core.Interface.csproj">
+      <Project>{1CADC5E8-A5A0-4EB2-BD6B-5C5F67CA0456}</Project>
+      <Name>Breezee.Core.Interface</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

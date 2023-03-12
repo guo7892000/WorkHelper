@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <BaseOutputPath>..\..\bin</BaseOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="app.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\001_BreezeeCore.Net\Breezee.Core.Adapter.BLL\Breezee.Core.Adapter.BLL.csproj" />
+    <ProjectReference Include="..\..\001_BreezeeCore.Net\Breezee.Core.Entity\Breezee.Core.Entity.csproj" />
+    <ProjectReference Include="..\..\001_BreezeeCore.Net\Breezee.Core.Interface\Breezee.Core.Interface.csproj" />
+    <ProjectReference Include="..\..\001_BreezeeCore.Net\Breezee.Core.IOC\Breezee.Core.IOC.csproj" />
+    <ProjectReference Include="..\..\001_BreezeeCore.Net\Breezee.Core.Tool\Breezee.Core.Tool.csproj" />
+    <ProjectReference Include="..\..\001_BreezeeCore.Net\Breezee.Core.WinFormUI\Breezee.Core.WinFormUI.csproj" />
+    <ProjectReference Include="..\..\001_BreezeeCore.Net\Breezee.Core\Breezee.Core.csproj" />
+    <ProjectReference Include="..\..\003_AutoSQLExecutor.Net\Breezee.AutoSQLExecutor.Common\Breezee.AutoSQLExecutor.Common.csproj" />
+    <ProjectReference Include="..\..\003_AutoSQLExecutor.Net\Breezee.AutoSQLExecutor.Core\Breezee.AutoSQLExecutor.Core.csproj" />
+    <ProjectReference Include="..\..\003_AutoSQLExecutor.Net\Breezee.AutoSQLExecutor.MySql\Breezee.AutoSQLExecutor.MySql.csproj" />
+    <ProjectReference Include="..\..\003_AutoSQLExecutor.Net\Breezee.AutoSQLExecutor.Oracle\Breezee.AutoSQLExecutor.Oracle.csproj" />
+    <ProjectReference Include="..\..\003_AutoSQLExecutor.Net\Breezee.AutoSQLExecutor.PostgreSQL\Breezee.AutoSQLExecutor.PostgreSQL.csproj" />
+    <ProjectReference Include="..\..\003_AutoSQLExecutor.Net\Breezee.AutoSQLExecutor.SQLite\Breezee.AutoSQLExecutor.SQLite.csproj" />
+    <ProjectReference Include="..\..\003_AutoSQLExecutor.Net\Breezee.AutoSQLExecutor.SqlServer\Breezee.AutoSQLExecutor.SqlServer.csproj" />
+    <ProjectReference Include="..\..\004_MyPeach.Net\MyPeachNet\MyPeachNet.csproj" />
+    <ProjectReference Include="..\..\050_DBTool\Breezee.WorkHelper.DBTool.BLL\Breezee.WorkHelper.DBTool.BLL.csproj" />
+    <ProjectReference Include="..\..\050_DBTool\Breezee.WorkHelper.DBTool.DAL.MySql\Breezee.WorkHelper.DBTool.DAL.MySql.csproj" />
+    <ProjectReference Include="..\..\050_DBTool\Breezee.WorkHelper.DBTool.DAL.Oracle\Breezee.WorkHelper.DBTool.DAL.Oracle.csproj" />
+    <ProjectReference Include="..\..\050_DBTool\Breezee.WorkHelper.DBTool.DAL.PostgreSql\Breezee.WorkHelper.DBTool.DAL.PostgreSql.csproj" />
+    <ProjectReference Include="..\..\050_DBTool\Breezee.WorkHelper.DBTool.DAL.SQLite\Breezee.WorkHelper.DBTool.DAL.SQLite.csproj" />
+    <ProjectReference Include="..\..\050_DBTool\Breezee.WorkHelper.DBTool.DAL.SqlServer\Breezee.WorkHelper.DBTool.DAL.SqlServer.csproj" />
+    <ProjectReference Include="..\..\050_DBTool\Breezee.WorkHelper.DBTool.DAL\Breezee.WorkHelper.DBTool.DAL.csproj" />
+    <ProjectReference Include="..\..\050_DBTool\Breezee.WorkHelper.DBTool.Entity\Breezee.WorkHelper.DBTool.Entity.csproj" />
+    <ProjectReference Include="..\Breezee.Framework.Mini.BLL\Breezee.Framework.Mini.BLL.csproj" />
+    <ProjectReference Include="..\Breezee.Framework.Mini.DAL.MySql\Breezee.Framework.Mini.DAL.MySql.csproj" />
+    <ProjectReference Include="..\Breezee.Framework.Mini.DAL.Oracle\Breezee.Framework.Mini.DAL.Oracle.csproj" />
+    <ProjectReference Include="..\Breezee.Framework.Mini.DAL.PostgreSql\Breezee.Framework.Mini.DAL.PostgreSql.csproj" />
+    <ProjectReference Include="..\Breezee.Framework.Mini.DAL.SQLite\Breezee.Framework.Mini.DAL.SQLite.csproj" />
+    <ProjectReference Include="..\Breezee.Framework.Mini.DAL.SqlServer\Breezee.Framework.Mini.DAL.SqlServer.csproj" />
+    <ProjectReference Include="..\Breezee.Framework.Mini.DAL\Breezee.Framework.Mini.DAL.csproj" />
+    <ProjectReference Include="..\Breezee.Framework.Mini.Entity\Breezee.Framework.Mini.Entity.csproj" />
+    <ProjectReference Include="..\Breezee.Framework.Mini.IBLL\Breezee.Framework.Mini.IBLL.csproj" />
+  </ItemGroup>
+
+</Project>

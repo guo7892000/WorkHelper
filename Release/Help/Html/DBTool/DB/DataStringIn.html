@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>IN清单拼接</title>
+</head>
+<body>
+    <div>
+        <h1>IN清单拼接</h1>
+        <div>
+            <h2>一、功能概述</h2>
+            将粘贴进来的列数据拼接成in语句或自定义的前后缀。
+        </div>
+        <div>
+            <h2>二、界面截图</h2>
+            主界面：操作文件生成<br>
+            <img src="Images\DataStringIn.001.jpg" alt=""><br>
+        </div>
+
+        <div>
+            <h2>三、操作步骤</h2>
+            <b>1、复制粘贴数据：</b>在Excel复制一列数据，并粘贴到网格上。<br>
+            <b>2、【语句类型】：</b>包括IN清单、自定义前后缀。<br>
+            <b>3、修改【输入前后字符】下的信息：<br>
+                前缀：要添加的前缀。<br>
+                后缀：要添加的后缀。<br>
+                连接字符：字符间的连接字符。<br>
+                换行：复选框，如选中，则生成时会自动换行。
+            <b>4、点击【生成】：</b><br>
+            生成成功后，会提示相关信息。<br>
+        </div>        
+        <div>
+            <h2>四、逻辑与业务规则</h2>
+            <div><b>关于从Excel中复制与粘贴：</b>
+                复制的第一行必须为列头信息，否则第一行数据会被过滤掉。在网格中按Ctrl + v 即可粘贴数据。
+            </div>
+        </div>
+    </div>
+</body>
+</html>

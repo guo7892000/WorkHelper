@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8A94EE59-5030-47C6-AFB5-EDC3048C0B63}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Breezee.WorkHelper.DBTool.Doc</RootNamespace>
+    <AssemblyName>Breezee.WorkHelper.DBTool.Doc</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Release\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Doc\DBTool\01_DB\50_数据库工具_表列变更.xlsx" />
+    <None Include="Doc\DBTool\20_Dev\学习笔记_DBTool.xlsx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Doc\DBTool\01_DB\01_MySql\001_DBObjects\01_Table_All.sql" />
+    <Content Include="Doc\DBTool\01_DB\02_PostgreSql\001_DBObjects\01_Table_All.sql" />
+    <Content Include="Doc\DBTool\01_DB\02_PostgreSql\50_DBTool_01_Table_DBT_PostgreSql_Auto_OK.sql" />
+    <Content Include="Doc\DBTool\01_DB\03_SqlServer\001_DBObjects\01_Table_All.sql" />
+    <Content Include="Doc\DBTool\01_DB\04_Oracle\001_DBObjects\01_Table_All.sql" />
+    <Content Include="Doc\DBTool\01_DB\05_SQLite\001_DBObjects\01_Table_All.sql" />
+    <Content Include="Doc\DBTool\01_DB\05_SQLite\002_DataScript\DBT_BD_DB_CONFIG.data.sql" />
+    <Content Include="Doc\DBTool\01_DB\05_SQLite\002_DataScript\Test\DBT_BD_DB_CONFIG.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Doc\DBTool\01_DB\01_MySql\002_DataScript\" />
+    <Folder Include="Doc\DBTool\01_DB\02_PostgreSql\002_DataScript\" />
+    <Folder Include="Doc\DBTool\01_DB\03_SqlServer\002_DataScript\" />
+    <Folder Include="Doc\DBTool\01_DB\04_Oracle\002_DataScript\" />
+    <Folder Include="Doc\DBTool\90_Setup\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

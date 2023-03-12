@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A5BB9051-4319-453D-B873-D75FB2043A4C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Breezee.WorkHelper.DBTool.DAL</RootNamespace>
+    <AssemblyName>Breezee.WorkHelper.DBTool.DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Release\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=7.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Castle.Core.4.3.1\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Castle.Windsor.5.0.0\lib\net45\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\DDBConfigSet.cs" />
+    <Compile Include="Common\DDBDefaultValue.cs" />
+    <Compile Include="Common\DDBTDBInitializer.cs" />
+    <Compile Include="DBToolDalIocInstallerCastle.cs" />
+    <Compile Include="DBToolDalIocModuleAutofac.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\01_BreezeeCore\Breezee.Core.Interface\Breezee.Core.Interface.csproj">
+      <Project>{1cadc5e8-a5a0-4eb2-bd6b-5c5f67ca0456}</Project>
+      <Name>Breezee.Core.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\01_BreezeeCore\Breezee.Core.IOC\Breezee.Core.IOC.csproj">
+      <Project>{4E2C2D56-DACD-48F1-846B-82B2A92855ED}</Project>
+      <Name>Breezee.Core.IOC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\01_BreezeeCore\Breezee.Core.Tool\Breezee.Core.Tool.csproj">
+      <Project>{b6c2c089-6b55-44af-b4c1-632668af76a4}</Project>
+      <Name>Breezee.Core.Tool</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\01_BreezeeCore\Breezee.Core\Breezee.Core.csproj">
+      <Project>{56A30012-16A2-40E5-8F61-BCC7781AF675}</Project>
+      <Name>Breezee.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\20_AutoSQLExcutor\Breezee.AutoSQLExecutor.Core\Breezee.AutoSQLExecutor.Core.csproj">
+      <Project>{A975AFED-639E-40AA-9698-9A6F0FCD7421}</Project>
+      <Name>Breezee.AutoSQLExecutor.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.WorkHelper.DBTool.Entity\Breezee.WorkHelper.DBTool.Entity.csproj">
+      <Project>{2B001D7A-B4AC-441D-BB58-DD2004EF568E}</Project>
+      <Name>Breezee.WorkHelper.DBTool.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.WorkHelper.DBTool.IDAL\Breezee.WorkHelper.DBTool.IDAL.csproj">
+      <Project>{0407C1C9-B469-48C7-9BAE-D883CAD9CCD0}</Project>
+      <Name>Breezee.WorkHelper.DBTool.IDAL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Config\DBTool\Common\SQL.Common.DBTool.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\DBTool\MySql\SQL.MySql.DBTool.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\DBTool\Oracle\SQL.Oracle.DBTool.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\DBTool\PostgreSql\SQL.PostgreSql.DBTool.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\DBTool\SQL.Main.DBTool.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\DBTool\SQLite\SQL.SQLite.DBTool.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\DBTool\SqlServer\IOC.DAL.SqlServer.DBTool.config" />
+    <None Include="Config\DBTool\SqlServer\SQL.SqlServer.DBTool.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

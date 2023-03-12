@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<config>
+	<!--键值对-->
+	<data key="LastLoginUserName" value="xtadmin" comment ="最后登录用户名" />
+	<data key="IsRememberUserName" value="1" comment ="是否记住用户名"/>
+	<data key="BrandCode" value=""  comment =""/>
+	<data key="IsRememberPwd" value="1"  comment ="是否记住密码"/>
+	<data key="LastLoginPwd" value="1" comment ="最后登录密码" />
+	<data key="AutoCompleteUserList" value="" comment ="自动完成用户清单" />
+
+</config>  

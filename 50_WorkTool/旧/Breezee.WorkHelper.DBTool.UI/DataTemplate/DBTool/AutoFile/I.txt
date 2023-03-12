@@ -1,0 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Breezee.AutoSQLExecutor.Core;
+
+namespace #NAME_SPACE_I#
+{
+	public abstract class #CLASS_NAME_I# : BaseBUS
+	{
+	
+	}
+}

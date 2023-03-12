@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<xml>
+  <!--DLL清单-->
+  <Dll Guid="2DAF784F-6853-4198-B9D6-F92CBFE01864" Name ="数据库工具UI" Code="Breezee.WorkHelper.DBTool.UI.dll"/>
+  <Dll Guid="e0cb474f-4542-4a9e-b752-ba4edff21cfe" Name="迷你主框架" Code="Breezee.Framework.Mini.StartUp.dll" />
+</xml>  

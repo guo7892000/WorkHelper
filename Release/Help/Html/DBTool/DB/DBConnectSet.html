@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>数据库连接配置</title>
+</head>
+<body>
+    <div>
+        <h1>数据库连接配置</h1>
+        <div>
+            <h2>一、功能概述</h2>
+            查询和维护本工具用到的所有数据库连接。
+        </div>
+        <div>
+            <h2>二、界面截图</h2>
+            查询界面：<br>
+            <img src="Images\DBConnectSet.001.jpg" alt=""><br>
+            编辑页面：<br>
+            <img src="Images\DBConnectSet.002.jpg" alt=""><br>
+        </div>
+
+        <div>
+            <h2>三、操作步骤</h2>
+            <b>主页面：</b>
+            <b>【查询】：</b>可以查询当前已维护好的所有数据库连接信息。<br>
+            <b>【新增】：</b>弹出【数据库连接明细】窗体。<br>
+            <b>【编辑】：</b>需要选择一行数据，然后双击或点【编辑】按钮，则会弹出【数据库连接明细】窗体。<br>
+
+            <b>编辑页面：</b>
+            <b>1、填写数据库连接相关信息：</b><br>
+            配置编码：必填<br>
+            配置名称：非必填。<br>
+            数据库类型：必填。包括本工具常支持的五种数据库类型：SqlServer、Oracle、MySql、PostgreSql、SQLite<br>
+            数据库：数据库名，非必填。<br>
+            登录方式：包括SQL身份验证、Windows身份验证。该选项只针对Sql Server。<br>
+            服务器地址：IP地址或电脑名称。<br>
+            端口号：数据库端口号<br>
+            架构名：非必填。<br>
+            用户名：非必填。<br>
+            密码：非必填。<br>
+            备注：非必填。<br>
+            <b>2、点击【保存】：</b><br>
+            保存成功后，会提示相关信息。<br>
+        </div>        
+        <div>
+            <h2>四、逻辑与业务规则</h2>
+            配置编码和数据库类型为公共的必填项。<br>
+            <div><b>其他项：针对不同的【数据库类型】，其必填项和显示的名称会有不同：</b>
+                SqlServer：数据库、登录方式、服务器地址、用户名、密码<br>
+                Oracle：TNS名称、用户名、密码<br>
+                MySql：数据库、服务器地址、端口号、用户名、密码<br>
+                PostgreSql：数据库、服务器地址、端口号、用户名、密码<br>
+                SQLite：数据库文件路径<br>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0BCC26FF-032E-4295-9929-8637BFFB65F1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Breezee.Core.WinFormUI</RootNamespace>
+    <AssemblyName>Breezee.Core.WinFormUI</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.2.0.246, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.1.2.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.150.1537.0\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.150.1537.0\lib\net40\Microsoft.ReportViewer.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Design, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.150.1537.0\lib\net40\Microsoft.ReportViewer.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.150.1537.0\lib\net40\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebDesign, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.150.1537.0\lib\net40\Microsoft.ReportViewer.WebDesign.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.150.1537.0\lib\net40\Microsoft.ReportViewer.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.WinForms.10.0.40219.1\lib\Microsoft.ReportViewer.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Types.14.0.314.76\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetCore.NPOI.Core.1.2.3\lib\net461\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetCore.NPOI.1.2.3\lib\net461\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetCore.NPOI.OpenXml4Net.1.2.3\lib\net461\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetCore.NPOI.OpenXmlFormats.1.2.3\lib\net461\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Common, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.4.5.0\lib\net461\System.Drawing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encoding.CodePages, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.4.5.0\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="zxing, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.9\lib\net48\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.9\lib\net48\zxing.presentation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseForm.Designer.cs">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\FrmMenuHtmlHelp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\FrmMenuHtmlHelp.Designer.cs">
+      <DependentUpon>FrmMenuHtmlHelp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\FrmPrintView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\FrmPrintView.Designer.cs">
+      <DependentUpon>FrmPrintView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\GlobalForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\GlobalValue.cs" />
+    <Compile Include="Common\MsgBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\MsgBox.Designer.cs">
+      <DependentUpon>MsgBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\ShowGlobalMsgEventArgs.cs" />
+    <Compile Include="Config\WinFormConfig.cs" />
+    <Compile Include="DataBind\DBColumnControlRelation.cs" />
+    <Compile Include="DataGrid\DGVColumnYMDay.cs" />
+    <Compile Include="DataGrid\DGVColumnYMDHMinute.cs" />
+    <Compile Include="DataGrid\DGVColumnYMDHMSecond.cs" />
+    <Compile Include="DataGrid\FlexGridColumn.cs" />
+    <Compile Include="DataGrid\FlexGridColumnDefinition.cs" />
+    <Compile Include="DataGrid\FlexGridRelateComboBox.cs" />
+    <Compile Include="DataGrid\GridPager.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DataGrid\GridPager.Designer.cs">
+      <DependentUpon>GridPager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataGrid\StoreProducePage.cs" />
+    <Compile Include="Entity\EntMenuHelp.cs" />
+    <Compile Include="Entity\LoginUserInfo.cs" />
+    <Compile Include="Enum\DataGridViewColumnTypeEnum.cs" />
+    <Compile Include="Enum\FormOpenStatusEnum.cs" />
+    <Compile Include="Extension\ComboBoxExtension.cs" />
+    <Compile Include="Extension\ControlExtension.cs" />
+    <Compile Include="Extension\DataGridViewExtend.cs" />
+    <Compile Include="Extension\DataTableExtension.cs" />
+    <Compile Include="Extension\DateExtension.cs" />
+    <Compile Include="Extension\FormExtension.cs" />
+    <Compile Include="Extension\IDictionaryExtension.cs" />
+    <Compile Include="Extension\IListExtension.cs" />
+    <Compile Include="Extension\TreeViewExtension.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormCross\DllNameAttribute.cs" />
+    <Compile Include="FormCross\DllNameConstants.cs" />
+    <Compile Include="FormCross\FormCrossResolver.cs" />
+    <Compile Include="FormCross\IFormCross.cs" />
+    <Compile Include="FormCross\ModuleCross\IFICommonFormCross.cs" />
+    <Compile Include="FormCross\ModuleCross\IGDCommonFormCross.cs" />
+    <Compile Include="FormCross\ModuleCross\ILMCommonFormCross.cs" />
+    <Compile Include="FormCross\ModuleCross\IMainCommonFormCross.cs" />
+    <Compile Include="FormCross\ModuleCross\IMDCommonFormCross.cs" />
+    <Compile Include="FormCross\ModuleCross\IMECommonFormCross.cs" />
+    <Compile Include="FormCross\ModuleCross\IPACommonFormCross.cs" />
+    <Compile Include="FormCross\ModuleCross\IPMCommonFormCross.cs" />
+    <Compile Include="FormCross\ModuleCross\ISECommonFormCross.cs" />
+    <Compile Include="FormCross\ModuleCross\ISYSCommonFormCross.cs" />
+    <Compile Include="FormCross\ModuleCross\IUCCommonFormCross.cs" />
+    <Compile Include="FormCross\ModuleCross\IVECommonFormCross.cs" />
+    <Compile Include="FormCross\PublicFormList.cs" />
+    <Compile Include="FTP\AttachmentItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FTP\AttachmentItem.Designer.cs">
+      <DependentUpon>AttachmentItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FTP\AttachmentList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FTP\AttachmentList.Designer.cs">
+      <DependentUpon>AttachmentList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FTP\FtpServerHelper.cs" />
+    <Compile Include="FTP\SystemModelEnum.cs" />
+    <Compile Include="Helper\ExportHelper.cs" />
+    <Compile Include="Helper\MsgHelper.cs" />
+    <Compile Include="Helper\PictureHelper.cs" />
+    <Compile Include="Helper\PrintHelper.cs" />
+    <Compile Include="Helper\VerificationCodeHelper.cs" />
+    <Compile Include="IMainForm.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs" />
+    <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="UIHelper.cs" />
+    <Compile Include="WinFormContext.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BaseForm.resx">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\FrmMenuHtmlHelp.resx">
+      <DependentUpon>FrmMenuHtmlHelp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\FrmPrintView.resx">
+      <DependentUpon>FrmPrintView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\GlobalForm.resx">
+      <DependentUpon>GlobalForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MsgBox.resx">
+      <DependentUpon>MsgBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataGrid\GridPager.resx">
+      <DependentUpon>GridPager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FTP\AttachmentItem.resx">
+      <DependentUpon>AttachmentItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FTP\AttachmentList.resx">
+      <DependentUpon>AttachmentList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\Data\FormStyle.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NOTICE.TXT" />
+    <Content Include="Resources\get_his.png" />
+    <Content Include="Resources\loading.gif" />
+    <Content Include="Resources\loading_01.gif" />
+    <Content Include="Resources\MsgBoxError.png" />
+    <Content Include="Resources\MsgBoxInformation.png" />
+    <Content Include="Resources\MsgBoxQuestion.png" />
+    <Content Include="Resources\record_his.png" />
+    <Content Include="SqlServerTypes\readme.htm" />
+    <Content Include="SqlServerTypes\x64\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x64\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Breezee.Core.Adapter.IBLL\Breezee.Core.Adapter.IBLL.csproj">
+      <Project>{9660A40D-8F0D-481A-94FC-718065F078FE}</Project>
+      <Name>Breezee.Core.Adapter.IBLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.Core.Entity\Breezee.Core.Entity.csproj">
+      <Project>{E76F9589-408B-4963-92F2-CFB0A8985051}</Project>
+      <Name>Breezee.Core.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.Core.Interface\Breezee.Core.Interface.csproj">
+      <Project>{1CADC5E8-A5A0-4EB2-BD6B-5C5F67CA0456}</Project>
+      <Name>Breezee.Core.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.Core.Tool\Breezee.Core.Tool.csproj">
+      <Project>{b6c2c089-6b55-44af-b4c1-632668af76a4}</Project>
+      <Name>Breezee.Core.Tool</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

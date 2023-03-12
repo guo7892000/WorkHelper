@@ -1,0 +1,386 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{29797A04-3A89-4455-AD02-AAD3D818E1A2}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Breezee.Framework.Mini.StartUp</RootNamespace>
+    <AssemblyName>Breezee.Framework.Mini.StartUp</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Release\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\DLLSet.cs" />
+    <Compile Include="Base\FrmDllManage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Base\FrmDllManage.Designer.cs">
+      <DependentUpon>FrmDllManage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Base\FrmMenuManage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Base\FrmMenuManage.Designer.cs">
+      <DependentUpon>FrmMenuManage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Base\FrmMiniSystemSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Base\FrmMiniSystemSet.Designer.cs">
+      <DependentUpon>FrmMiniSystemSet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\AboutAuthor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\AboutAuthor.Designer.cs">
+      <DependentUpon>AboutAuthor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\FrmSupport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\FrmSupport.Designer.cs">
+      <DependentUpon>FrmSupport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\FrmUserEnvironmentSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\FrmUserEnvironmentSet.Designer.cs">
+      <DependentUpon>FrmUserEnvironmentSet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\LgoinConfig.cs" />
+    <Compile Include="Common\SystemMenuHelper.cs" />
+    <Compile Include="FrmMiniMainMDI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMiniMainMDI.Designer.cs">
+      <DependentUpon>FrmMiniMainMDI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\FrmChangePassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\FrmChangePassword.Designer.cs">
+      <DependentUpon>FrmChangePassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\FrmMiniLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\FrmMiniLogin.Designer.cs">
+      <DependentUpon>FrmMiniLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\LockForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\LockForm.Designer.cs">
+      <DependentUpon>LockForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs" />
+    <Compile Include="ShortCutMenu\ShortCutItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ShortCutMenu\ShortCutItem.Designer.cs">
+      <DependentUpon>ShortCutItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ShortCutMenu\ShortCutList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ShortCutMenu\ShortCutList.Designer.cs">
+      <DependentUpon>ShortCutList.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Help\Html\Mini\ChangeHistory.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\Mini\DllSet.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\Mini\Images\DllSet.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\Mini\Images\MenuManage.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\Mini\Images\Mini.About.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\Mini\Images\Mini.Desktop.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\Mini\Images\Mini.Desktop.002.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\Mini\Images\Mini.Desktop.003.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\Mini\Images\Mini.Env.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\Mini\Images\Mini.Env.002.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\Mini\Images\Mini.Help.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\Mini\Images\Mini.Lock.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\Mini\Images\Mini.Login.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\Mini\Images\Mini.Main.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\Mini\Images\Mini.Menu.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\Mini\Images\Mini.Menu.002.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\Mini\Images\Mini.Menu.List.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\Mini\Images\Mini.ModifyPassword.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\Mini\MenuManage.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\Mini\WorkHelper.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Image\ShortCut_In.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Image\ShortCut_Out.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Image\保存.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Image\修改.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Image\删除.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Image\导入.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Image\导出.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Image\打印.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Image\新建.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Image\查询.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Image\清空.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Image\确认.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Image\编辑.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Image\退出.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Image\重置.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MyWeixinGatherMin.jpg" />
+    <Content Include="Resources\WorkHelp.Logo.png" />
+    <Content Include="WorkTool.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Base\FrmDllManage.resx">
+      <DependentUpon>FrmDllManage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Base\FrmMenuManage.resx">
+      <DependentUpon>FrmMenuManage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Base\FrmMiniSystemSet.resx">
+      <DependentUpon>FrmMiniSystemSet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\AboutAuthor.resx">
+      <DependentUpon>AboutAuthor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\FrmSupport.resx">
+      <DependentUpon>FrmSupport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\FrmUserEnvironmentSet.resx">
+      <DependentUpon>FrmUserEnvironmentSet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMiniMainMDI.resx">
+      <DependentUpon>FrmMiniMainMDI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\FrmChangePassword.resx">
+      <DependentUpon>FrmChangePassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\FrmMiniLogin.resx">
+      <DependentUpon>FrmMiniLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\LockForm.resx">
+      <DependentUpon>LockForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx" />
+    <EmbeddedResource Include="ShortCutMenu\ShortCutItem.resx">
+      <DependentUpon>ShortCutItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ShortCutMenu\ShortCutList.resx">
+      <DependentUpon>ShortCutList.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\01_BreezeeCore\Breezee.Core.Adapter.BLL\Breezee.Core.Adapter.BLL.csproj">
+      <Project>{7f3625fa-dc5e-4b66-9da9-279fad777059}</Project>
+      <Name>Breezee.Core.Adapter.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\01_BreezeeCore\Breezee.Core.Adapter.IBLL\Breezee.Core.Adapter.IBLL.csproj">
+      <Project>{9660a40d-8f0d-481a-94fc-718065f078fe}</Project>
+      <Name>Breezee.Core.Adapter.IBLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\01_BreezeeCore\Breezee.Core.Entity\Breezee.Core.Entity.csproj">
+      <Project>{e76f9589-408b-4963-92f2-cfb0a8985051}</Project>
+      <Name>Breezee.Core.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\01_BreezeeCore\Breezee.Core.Interface\Breezee.Core.Interface.csproj">
+      <Project>{1cadc5e8-a5a0-4eb2-bd6b-5c5f67ca0456}</Project>
+      <Name>Breezee.Core.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\01_BreezeeCore\Breezee.Core.IOC\Breezee.Core.IOC.csproj">
+      <Project>{4e2c2d56-dacd-48f1-846b-82b2a92855ed}</Project>
+      <Name>Breezee.Core.IOC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\01_BreezeeCore\Breezee.Core.Tool\Breezee.Core.Tool.csproj">
+      <Project>{b6c2c089-6b55-44af-b4c1-632668af76a4}</Project>
+      <Name>Breezee.Core.Tool</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\01_BreezeeCore\Breezee.Core.WinFormUI\Breezee.Core.WinFormUI.csproj">
+      <Project>{0bcc26ff-032e-4295-9929-8637bffb65f1}</Project>
+      <Name>Breezee.Core.WinFormUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\01_BreezeeCore\Breezee.Core\Breezee.Core.csproj">
+      <Project>{56a30012-16a2-40e5-8f61-bcc7781af675}</Project>
+      <Name>Breezee.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\10_MyPeachNet\MyPeach.Net\MyPeach.Net.csproj">
+      <Project>{ffa388f6-518f-411f-b50d-3389bbaee380}</Project>
+      <Name>MyPeach.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\20_AutoSQLExcutor\Breezee.AutoSQLExecutor.Common\Breezee.AutoSQLExecutor.Common.csproj">
+      <Project>{7728bc8b-39df-4ecb-89f9-7ac34c2ea416}</Project>
+      <Name>Breezee.AutoSQLExecutor.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\20_AutoSQLExcutor\Breezee.AutoSQLExecutor.Core\Breezee.AutoSQLExecutor.Core.csproj">
+      <Project>{a975afed-639e-40aa-9698-9a6f0fcd7421}</Project>
+      <Name>Breezee.AutoSQLExecutor.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\20_AutoSQLExcutor\Breezee.AutoSQLExecutor.MySql\Breezee.AutoSQLExecutor.MySql.csproj">
+      <Project>{81297014-27ad-4371-8aa8-e0cbe741cf6d}</Project>
+      <Name>Breezee.AutoSQLExecutor.MySql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\20_AutoSQLExcutor\Breezee.AutoSQLExecutor.Oracle\Breezee.AutoSQLExecutor.Oracle.csproj">
+      <Project>{27e89968-c24e-447a-97d7-e67cad57cd13}</Project>
+      <Name>Breezee.AutoSQLExecutor.Oracle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\20_AutoSQLExcutor\Breezee.AutoSQLExecutor.PostgreSQL\Breezee.AutoSQLExecutor.PostgreSQL.csproj">
+      <Project>{4c1a002b-f0db-4a72-b160-69134082bcad}</Project>
+      <Name>Breezee.AutoSQLExecutor.PostgreSQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\20_AutoSQLExcutor\Breezee.AutoSQLExecutor.SQLite\Breezee.AutoSQLExecutor.SQLite.csproj">
+      <Project>{62a500e0-7044-4866-b4f3-509ead4eb9e0}</Project>
+      <Name>Breezee.AutoSQLExecutor.SQLite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\20_AutoSQLExcutor\Breezee.AutoSQLExecutor.SqlServer\Breezee.AutoSQLExecutor.SqlServer.csproj">
+      <Project>{1854e0eb-8b88-4c58-94ae-09612914191f}</Project>
+      <Name>Breezee.AutoSQLExecutor.SqlServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.Framework.Mini.BLL\Breezee.Framework.Mini.BLL.csproj">
+      <Project>{f985f965-cfd2-4d51-93ea-ea634fdcc53a}</Project>
+      <Name>Breezee.Framework.Mini.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.Framework.Mini.DAL.MySql\Breezee.Framework.Mini.DAL.MySql.csproj">
+      <Project>{7434ad40-7a3a-4b27-90cb-93581ffbb1ba}</Project>
+      <Name>Breezee.Framework.Mini.DAL.MySql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.Framework.Mini.DAL.Oracle\Breezee.Framework.Mini.DAL.Oracle.csproj">
+      <Project>{9693554b-699c-40d2-a7aa-bb1dc1a819db}</Project>
+      <Name>Breezee.Framework.Mini.DAL.Oracle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.Framework.Mini.DAL.PostgreSql\Breezee.Framework.Mini.DAL.PostgreSql.csproj">
+      <Project>{387efd97-63ca-42c5-9a81-57d3afe952d5}</Project>
+      <Name>Breezee.Framework.Mini.DAL.PostgreSql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.Framework.Mini.DAL.SQLite\Breezee.Framework.Mini.DAL.SQLite.csproj">
+      <Project>{f3df6fc6-dd7e-462c-a11f-c7801228b984}</Project>
+      <Name>Breezee.Framework.Mini.DAL.SQLite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.Framework.Mini.DAL.SqlServer\Breezee.Framework.Mini.DAL.SqlServer.csproj">
+      <Project>{3e874903-a4c0-4733-888d-223e5ac5df8e}</Project>
+      <Name>Breezee.Framework.Mini.DAL.SqlServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.Framework.Mini.DAL\Breezee.Framework.Mini.DAL.csproj">
+      <Project>{730b34e4-fffa-4075-a8da-a49811d1020a}</Project>
+      <Name>Breezee.Framework.Mini.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.Framework.Mini.Entity\Breezee.Framework.Mini.Entity.csproj">
+      <Project>{86FC7217-A202-4750-9F05-BAC76CC77C22}</Project>
+      <Name>Breezee.Framework.Mini.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.Framework.Mini.IBLL\Breezee.Framework.Mini.IBLL.csproj">
+      <Project>{4C714227-B695-4D4B-ACC1-A742C48887BC}</Project>
+      <Name>Breezee.Framework.Mini.IBLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.Framework.Mini.IDAL\Breezee.Framework.Mini.IDAL.csproj">
+      <Project>{f4f320f3-f0e1-45b9-a763-eb784c0d2c27}</Project>
+      <Name>Breezee.Framework.Mini.IDAL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

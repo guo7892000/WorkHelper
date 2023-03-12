@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--db：数据库类型，包括SqlServer、Oracle、MySql、SQLite、PostgreSql-->
+<configuration db="SqlServer">
+  <!--class：分类。每种分类生成一个文件。type中t(表)、f(函数)、v(视图)、p(存储过程)、d(数据)。name属性就是输出文件名-->
+  <!--item：文件名，不需要相对路径-->
+  <!--创建表-->
+  <class type="t" name="01_table_all.sql">
+    <item></item>
+  </class>
+
+  <!--创建函数-->
+  <class type="f" name="02_function_all.sql">
+    <item>F_COMMON_GET_PY.sql</item>
+    <item>F_COMMON_GET_SPLIT_STRING.sql</item>
+    <item>F_SYS_GET_WORD_SEQUENCE_NO.sql</item>
+  </class>
+
+  <!--创建视图-->
+  <class type="v" name="03_view_all.sql">
+    <item>V_COM_PROVICE_CITY.sql</item>
+    <item>V_ORG_INFO.sql</item>
+    <item>V_SYS_AND_MENU.sql</item>
+    <item>V_SYS_MENU_FULL_PATH.sql</item>
+    <item>V_SYS_RECEIVER_GROUP_USER_EMP.sql</item>
+    <item>V_SYS_MENU_BUTTON.sql</item>
+    <item>V_SYS_MENU_COMMON_BUTTON.sql</item>
+    <item>V_USER_MENU.sql</item>
+    <item>V_USER_MENU_BUTTON.sql</item>
+  </class>
+
+  <!--创建存储过程-->
+  <class type="p" name="04_produce_all.sql">
+    <item>P_COMM_GET_FORM_CODE.sql</item>
+  </class>
+
+  <!--初始化数据-->
+  <class type="d" name="05_data_all.sql">
+    <item></item>
+  </class>
+
+</configuration>
