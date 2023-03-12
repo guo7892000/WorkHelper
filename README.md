@@ -10,8 +10,8 @@
 UI组件一般就是使用微软自带的。
 
 ## 开发调试
-* 1.下截源码后，设置【Breezee.Framework.Mini.StartUp】为启动项目，并保证该项目引用了以下项目：
-  <img src="Mini启动项目需要引用的项目.png" width="50" height="50" />
+* 1.下截源码后，设置【Breezee.Framework.Mini.StartUp】为启动项目，并保证该项目引用了以下项目：<br>
+  <img src="Mini启动项目需要引用的项目.png"/>
 ## 下载使用
 * 1.打开发布包链接，下载软件：  
     [发布包下载](https://gitee.com/breezee2000/WorkHelper/releases)  
