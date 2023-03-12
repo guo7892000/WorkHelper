@@ -5,10 +5,13 @@
 用于生成数据库变更脚本等相关操作。当然，也包括一些常用的字符拼接、复制等功能，适用于任何使用电脑的人员！！
 
 ## 软件架构
-使用C# + WinForm开发，支持SqlServer、Oracle、MySql、SQLite、PostgreSql五种数据库类型。因为是工具类，默认使用简单易用的SQLite数据库。
-本软件基于Mini框架，实现模块化，目前只有一个数据库工具子模块。项目也使用了一些开源框架，如IOC使用Castle.Windsor，Excel导入导出使用NPOI。
+使用基于.Net Framework 4.8的C# + WinForm 开发，支持SqlServer、Oracle、MySql、SQLite、PostgreSql五种数据库类型。因为是工具类，默认使用简单易用的SQLite数据库。
+本软件基于个人的MiniWinFormApp框架，实现模块化，目前只有一个数据库工具子模块。项目也使用了一些开源框架，如IOC使用Castle.Windsor，Excel导入导出使用NPOI。
 UI组件一般就是使用微软自带的。
 
+## 开发调试
+* 1.下截源码后，设置【Breezee.Framework.Mini.StartUp】为启动项目，并保证该项目引用了以下项目：
+    Mini启动项目需要引用的项目.png
 
 ## 下载使用
 * 1.打开发布包链接，下载软件：  
