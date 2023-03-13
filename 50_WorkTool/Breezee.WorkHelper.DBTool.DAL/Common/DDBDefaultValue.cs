@@ -15,7 +15,7 @@ namespace Breezee.WorkHelper.DBTool.DAL
     {
         public override DataTable QueryDefaultValue(IDictionary<string, string> dicQuery)
         {
-            return DataAccess.QueryDataFromConfigPath(@"SQL/DBTool/DefaultValue/QueryDefaultValue", dicQuery);
+            return DataAccess.QueryAutoParamConfigPathData(@"SQL/DBTool/DefaultValue/QueryDefaultValue", dicQuery);
         }
 
         #region 查询是否存在

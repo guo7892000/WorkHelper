@@ -14,7 +14,7 @@ namespace Breezee.AutoSQLExecutor.PostgreSQL
     public class BPostgreSqlDataAccess : IDataAccess
     {
         #region 属性
-        public override DataBaseType UseDataBaseType
+        public override DataBaseType DataBaseType
         {
             get { return DataBaseType.PostgreSql; }
         }
@@ -72,12 +72,12 @@ namespace Breezee.AutoSQLExecutor.PostgreSQL
         public override void ModifyConnectString(DbServerInfo server)
         {
             //连接字符串示例：User ID=postgres;Password=sa;Host=localhost;Port=5432;Database=AprilSpring;Pooling=true
-            _ConnectionString = string.Format("Host={0};Port={1};User ID={2};Password={3};Database={4};Pooling=true", server.ServerName, "5432", server.UserName, server.Password, server.Database);
+            _ConnectionString = server.UseConnString ? server.ConnString : string.Format("Host={0};Port={1};User ID={2};Password={3};Database={4};Pooling=true", server.ServerName, server.PortNo, server.UserName, server.Password, server.Database);
         }
         #endregion
 
         #region 实现字典转换为DB服务器方法
-        protected override DbServerInfo Dict2DbServer(Dictionary<string, string> dic)
+        protected override DbServerInfo Dic2DbServer(Dictionary<string, string> dic)
         {
             DbServerInfo server = new DbServerInfo();
             server.DatabaseType = DataBaseType.MySql;
@@ -196,7 +196,7 @@ namespace Breezee.AutoSQLExecutor.PostgreSQL
         /// </summary>
         /// <param name="strSql">要执行的SQL</param>
         /// <returns>返回影响记录条数</returns>
-        public override int ExecuteNonQueryHadParam(string sHadParaSql, List<FuncParam> listParam = null, DbConnection conn = null, DbTransaction dbTran = null)
+        public override int ExecuteNonQueryHadParamSql(string sHadParaSql, List<FuncParam> listParam = null, DbConnection conn = null, DbTransaction dbTran = null)
         {
             //数据库连接是否为空
             if (conn == null)
@@ -731,7 +731,7 @@ namespace Breezee.AutoSQLExecutor.PostgreSQL
                 AND B.RELNAME ='#TABLE_NAME#'";
                 IDictionary<string, string> dic = new Dictionary<string, string>();
                 dic["TABLE_NAME"] = sTableName;
-                DataTable dtPK = QueryAutoParamData(sSql, dic);
+                DataTable dtPK = QueryAutoParamSqlData(sSql, dic);
                 bool isPKOK = false;
 
                 DataTable dtSource = con.GetSchema(DBSchemaString.Columns, new string[] { null, null, sTableName });//使用通用的获取架构方法
@@ -790,7 +790,7 @@ namespace Breezee.AutoSQLExecutor.PostgreSQL
             
             dic["TABLE_SCHEMA"] = sSchema;
             dic["TABLE_NAME"] = sTableName;
-            DataTable dtSource = QueryAutoParamData(sSql, dic);
+            DataTable dtSource = QueryAutoParamSqlData(sSql, dic);
             DataTable dtReturn = DT_SchemaTable;
             foreach (DataRow drS in dtSource.Rows)
             {
@@ -844,7 +844,7 @@ namespace Breezee.AutoSQLExecutor.PostgreSQL
 
             IDictionary<string, string> dic = new Dictionary<string, string>();
             dic["TABLE_NAME"] = sTableName;
-            DataTable dtSource = QueryAutoParamData(sSql, dic);
+            DataTable dtSource = QueryAutoParamSqlData(sSql, dic);
             DataTable dtReturn = DT_SchemaTableColumn;
             foreach (DataRow drS in dtSource.Rows)
             {

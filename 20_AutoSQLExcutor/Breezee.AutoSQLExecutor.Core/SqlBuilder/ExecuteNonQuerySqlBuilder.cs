@@ -39,7 +39,7 @@ namespace Breezee.AutoSQLExecutor.Core
                 List<FuncParam> realParam;
                 GetSqlParam(listParam, out sSql, out realParam);
                 //调用接口方法
-                return DataAccess.ExecuteNonQueryHadParam(sSql, realParam, conn, dbTran); 
+                return DataAccess.ExecuteNonQueryHadParamSql(sSql, realParam, conn, dbTran); 
             }
             catch (Exception ex)
             {
@@ -64,7 +64,7 @@ namespace Breezee.AutoSQLExecutor.Core
                 List<FuncParam> realParam;
                 GetSqlParam(dicQuery, out sSql, out realParam);
                 //调用接口方法
-                return DataAccess.ExecuteNonQueryHadParam(sSql, realParam, conn, dbTran);
+                return DataAccess.ExecuteNonQueryHadParamSql(sSql, realParam, conn, dbTran);
             }
             catch (Exception ex)
             {
@@ -98,7 +98,7 @@ namespace Breezee.AutoSQLExecutor.Core
                     }
                 }
                 //调用接口方法
-                return DataAccess.ExecuteNonQueryHadParam(sSql, realParam, conn, dbTran);
+                return DataAccess.ExecuteNonQueryHadParamSql(sSql, realParam, conn, dbTran);
             }
             catch (Exception ex)
             {

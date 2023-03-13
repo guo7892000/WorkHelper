@@ -7,7 +7,6 @@ using System.Xml;
 using System.Collections;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
-using System.IO;
 
 /***********************************************************
  * 对象名称：Sql配置类
@@ -91,7 +90,7 @@ namespace Breezee.AutoSQLExecutor.Core
                         XmlDataDocument dmsXml = new XmlDataDocument();
                         try
                         {
-                            dmsXml.Load(Path.Combine(sConfigPath, "Config",sFileNAme));
+                            dmsXml.Load(sConfigPath + "Config\\" + sFileNAme);
                         }
                         catch (Exception ex)
                         {
@@ -150,7 +149,7 @@ namespace Breezee.AutoSQLExecutor.Core
                         InitConfigPath();
                     }
                     //以下为配置根文件路径，必须保证有以下文件
-                    dmsXml.Load(Path.Combine(sConfigPath,SqlMainConfigPath)); //所有SQL的主配置文件
+                    dmsXml.Load(sConfigPath + SqlMainConfigPath); //所有SQL的主配置文件
                     string sXMLPath = dmsXml.DocumentElement.Name;
 
                     for (int i = 0; i < dmsXml.DocumentElement.ChildNodes.Count; i++)

@@ -27,7 +27,7 @@ namespace Breezee.Framework.Mini.DAL.SQLite
 
         public override void DropObject()
         {
-            DataAccess.ExecuteNonQueryHadParam(@"
+            DataAccess.ExecuteNonQueryHadParamSql(@"
             DROP TABLE IF EXISTS ""SYS_USER"" ;
             DROP TABLE IF EXISTS ""SYS_LOG"" ;
             ", new Dictionary<string, string>());
@@ -46,12 +46,12 @@ namespace Breezee.Framework.Mini.DAL.SQLite
         public override void InitTableData()
         {
             string sSql = @"INSERT INTO ""main"".""SYS_USER"" (""USER_ID"", ""USER_CODE"", ""EMP_ID"", ""USER_NAME"", ""USER_NAME_EN"", ""USER_PASSWORD"", ""USER_TYPE"", ""ENCRYPT_SALT"", ""PIN_YIN"", ""LAST_LOGIN_TIME"", ""LOGIN_STATE"", ""TICKET_ID"", ""DESCRIPTION"", ""ACTIVE_TIME"", ""DISABLE_TIME"", ""SORT_ID"", ""REMARK"", ""CREATE_TIME"", ""CREATOR_ID"", ""CREATOR"", ""MODIFIER_ID"", ""MODIFIER"", ""LAST_UPDATED_TIME"", ""IS_ENABLED"", ""IS_SYSTEM"", ""ORG_ID"", ""UPDATE_CONTROL_ID"", ""TFLAG"", ""ROWID"") VALUES ('B0C0AB05-3680-48BF-83D7-92A1AE2584BE', 'xtadmin', '', '系统管理员', 'admin', '1000:ZABU9kVvhaDIQ9iytGv3wifttihEHNrU:l9E/XP0BgNr0YIZ6pfTuXhGuzE3YFA1Z', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2015-04-19 20:21:48', '2042-09-04 20:21:48', 1, '', '2015-04-19 20:21:48', 1, 'SYSTEM', 1, 'SYSTEM', '2015-04-19 20:21:48', 1, 0, 1, 'D053D241-4B34-4F92-8E2F-868E0FB4CEC1', 0, 3);";
-            DataAccess.ExecuteNonQueryHadParam(sSql, new Dictionary<string, string>());
+            DataAccess.ExecuteNonQueryHadParamSql(sSql, new Dictionary<string, string>());
         }
 
         public override void InitTableStruct()
         {
-            DataAccess.ExecuteNonQueryHadParam(@"
+            DataAccess.ExecuteNonQueryHadParamSql(@"
             /***********************************************************************************
             * 脚本描述: 新增修改表
             * 创建作者: 

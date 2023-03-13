@@ -3,7 +3,6 @@ using org.breezee.MyPeachNet;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Text;
 
 namespace Breezee.AutoSQLExecutor.Core
@@ -46,7 +45,7 @@ namespace Breezee.AutoSQLExecutor.Core
         public BaseSqlBuilder()
         {
             //DataAccess = ContainerContext.Container.Resolve<IDataAccess>(CFGDataBase.DefaultDbName);//未实现？？？
-            UseDataBaseType = DataAccess.UseDataBaseType;
+            UseDataBaseType = DataAccess.DataBaseType;
 
             ListSqlSegment = new List<SqlSegment>();
         }
@@ -57,7 +56,7 @@ namespace Breezee.AutoSQLExecutor.Core
         public BaseSqlBuilder(IDataAccess iDataAccess)
         {
             DataAccess = iDataAccess;
-            UseDataBaseType = iDataAccess.UseDataBaseType;
+            UseDataBaseType = iDataAccess.DataBaseType;
 
             ListSqlSegment = new List<SqlSegment>();
         }

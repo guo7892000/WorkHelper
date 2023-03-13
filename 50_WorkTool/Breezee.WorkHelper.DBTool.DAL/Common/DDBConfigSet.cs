@@ -12,7 +12,7 @@ namespace Breezee.WorkHelper.DBTool.DAL
     {
         public override DataTable QueryDbConfig(IDictionary<string, string> dicQuery)
         {
-            return DataAccess.QueryDataFromConfigPath(@"SQL/DBTool/DBConfigSet/QueryDBConfig", dicQuery);
+            return DataAccess.QueryHadParamConfigPathData(@"SQL/DBTool/DBConfigSet/QueryDBConfig", dicQuery);
         }
 
         #region 查询供应商是否存在

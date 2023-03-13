@@ -50,6 +50,7 @@
     <Compile Include="Enum\EntityFieldType.cs" />
     <Compile Include="Enum\EntityType.cs" />
     <Compile Include="Enum\PercentSignStyle.cs" />
+    <Compile Include="Enum\SqlStringType.cs" />
     <Compile Include="Enum\TableCoulnmDefaultType.cs" />
     <Compile Include="IDataAccess.cs" />
     <Compile Include="ISqlDifferent.cs" />

@@ -44,6 +44,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoEntity\AutoEntityString.cs" />
+    <Compile Include="AutoEntity\FrmDBAutoEntity.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AutoEntity\FrmDBAutoEntity.Designer.cs">
+      <DependentUpon>FrmDBAutoEntity.cs</DependentUpon>
+    </Compile>
     <Compile Include="AutoEntity\FrmDBAutoEntityTemplate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -241,6 +247,9 @@
     <None Include="SQLite_DBTool.db" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AutoEntity\FrmDBAutoEntity.resx">
+      <DependentUpon>FrmDBAutoEntity.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AutoEntity\FrmDBAutoEntityTemplate.resx">
       <DependentUpon>FrmDBAutoEntityTemplate.cs</DependentUpon>
     </EmbeddedResource>

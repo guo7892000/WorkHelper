@@ -11,7 +11,7 @@ namespace Breezee.WorkHelper.DBTool.DAL.SQLite
     {
         public override void DropObject()
         {
-            DataAccess.ExecuteNonQueryHadParam(@"
+            DataAccess.ExecuteNonQueryHadParamSql(@"
             DROP TABLE IF EXISTS ""DBT_BD_DB_CONFIG"" ;
             DROP TABLE IF EXISTS ""DBT_BD_COLUMN_DEFAULT"" ;
             ", new Dictionary<string, string>());
@@ -44,7 +44,7 @@ namespace Breezee.WorkHelper.DBTool.DAL.SQLite
         /// </summary>
         public override void InitTableStruct()
         {
-            DataAccess.ExecuteNonQueryHadParam(@"
+            DataAccess.ExecuteNonQueryHadParamSql(@"
             /***********************************************************************************
             * 脚本描述: 新增修改表
             * 创建作者: 

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Data;
 using Breezee.Core.Interface;
+using System.Collections.Generic;
 
 namespace Breezee.AutoSQLExecutor.Core
 {
