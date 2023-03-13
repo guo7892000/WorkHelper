@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Collections;
 using System.Data.Common;
 using System.Xml;
 using Breezee.AutoSQLExecutor.Core;
 using Breezee.Core.Interface;
+using System.Data.SqlClient;
 
 namespace Breezee.AutoSQLExecutor.SqlServer
 {

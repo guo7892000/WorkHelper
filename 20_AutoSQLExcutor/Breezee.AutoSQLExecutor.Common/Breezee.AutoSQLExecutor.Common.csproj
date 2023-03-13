@@ -75,13 +75,13 @@
       <Project>{62A500E0-7044-4866-B4F3-509EAD4EB9E0}</Project>
       <Name>Breezee.AutoSQLExecutor.SQLite</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Breezee.AutoSQLExecutor.SqlServer\Breezee.AutoSQLExecutor.SqlServer.csproj">
-      <Project>{1854E0EB-8B88-4C58-94AE-09612914191F}</Project>
-      <Name>Breezee.AutoSQLExecutor.SqlServer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\01_BreezeeCore\Breezee.Core.Interface\Breezee.Core.Interface.csproj">
       <Project>{1CADC5E8-A5A0-4EB2-BD6B-5C5F67CA0456}</Project>
       <Name>Breezee.Core.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.AutoSQLExecutor.SqlServer\Breezee.AutoSQLExecutor.SqlServer.csproj">
+      <Project>{8FD60D3C-DC4E-4606-8139-B1561B854F80}</Project>
+      <Name>Breezee.AutoSQLExecutor.SqlServer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
