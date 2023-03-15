@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoEntity\AutoModuleString.cs" />
     <Compile Include="AutoEntity\AutoEntityString.cs" />
     <Compile Include="AutoEntity\FrmDBAutoEntity.cs">
       <SubType>Form</SubType>

@@ -263,30 +263,13 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             #region 变量
             string sWordConvert = cbbWordConvert.SelectedValue.ToString();
-            string sBegin = "BEGIN_";
-            string sEnd = "END_";
+            string sBegin = "_BEGIN";
+            string sEnd = "_END";
             sqlEntity = new DBSqlEntity();
             sqlEntity.NewLine = ckbNewLine.Checked ? DataBaseCommon.NewLine : "";
             sqlEntity.Tab = ckbNewLine.Checked ? DataBaseCommon.Tab : "";
             sqlEntity.IsHasRemark = ckbUseRemark.Checked;
             sqlEntity.IsUseGlobal = ckbUseDefaultConfig.Checked;
-            if ("1".Equals(sWordConvert))
-            {
-                sqlEntity.WordUpperType = WordUpperType.FirstUpperSecond;
-                sBegin = "begin";
-                sEnd = "end";
-            }
-            else if ("2".Equals(sWordConvert))
-            {
-                sqlEntity.WordUpperType = WordUpperType.FirstUpperAll;
-                sBegin = "Begin";
-                sEnd = "End";
-            }
-            else
-            {
-                sqlEntity.WordUpperType = WordUpperType.None;
-            }
-
 
             StringBuilder sbAllSql = new StringBuilder();
             StringBuilder sbWhereSql = new StringBuilder();
@@ -295,7 +278,6 @@ namespace Breezee.WorkHelper.DBTool.UI
 
 
             string strAnd = " AND ";
-
 
             switch (cbbParaType.SelectedValue.ToString())
             {
@@ -316,6 +298,17 @@ namespace Breezee.WorkHelper.DBTool.UI
                     break;
                 default:
                     throw new Exception("不支持的SqlParamType枚举类型：" + sqlEntity.ParamType.ToString());
+            }
+
+            switch (sWordConvert)
+            {
+                case "1":
+                    sqlEntity.WordUpperType = WordUpperType.FirstUpperSecond; break;
+                case "2":
+                    sqlEntity.WordUpperType = WordUpperType.FirstUpperAll; break;
+                default:
+                    sqlEntity.WordUpperType = WordUpperType.None;
+                    break;
             }
 
             string sParamPre = txbParamPre.Text.Trim();
@@ -452,37 +445,49 @@ namespace Breezee.WorkHelper.DBTool.UI
                     #region 查询的日期时间段处理
                     string strQueryWhereDateRange;
 
-                    string strBeginDateParm = "#" + sBegin + strColCode + "#";
-                    string strEndDateParm = "#" + sEnd + strColCode + "#";
+                    string strBeginDateParm = "#"  + strColCode + sBegin + "#";
+                    string strEndDateParm = "#" + strColCode + sEnd + "#";
 
                     switch (sqlEntity.ParamType)
                     {
                         case SqlParamFormatType.BeginEndHash:
-                            strBeginDateParm = sParamPre + sBegin + strColCode;
-                            strEndDateParm = sParamPre + sEnd + strColCode;
+                            strBeginDateParm =  "#"  + strColCode + sBegin + "#";
+                            strEndDateParm = "#" + strColCode + sEnd + "#";
                             break;
                         case SqlParamFormatType.SqlParm:
-                            strBeginDateParm = sParamPre + sBegin + strColCode;
-                            strEndDateParm = sParamPre + sEnd + strColCode;
+                            strBeginDateParm = sParamPre + strColCode + sBegin;
+                            strEndDateParm = sParamPre + strColCode + sEnd;
                             break;
                         case SqlParamFormatType.MyBatis:
-                            strBeginDateParm = "#{" + sBegin + strColCode + "}";
-                            strEndDateParm = "#{" + sEnd + strColCode + "}";
+                            strBeginDateParm = sDefineFormat.Replace(sParamPre, strColCode + sBegin); ;
+                            strEndDateParm = sDefineFormat.Replace(sParamPre, strColCode + sEnd);
                             break;
                         case SqlParamFormatType.MyBatisDynamicColoumn:
-                            strBeginDateParm = sBegin + strColCode;
-                            strEndDateParm = sEnd + strColCode;
+                            strBeginDateParm = strColCode + sBegin;
+                            strEndDateParm =  strColCode + sEnd;
 
                             break;
                         case SqlParamFormatType.UserDefine://自定义
-                            strBeginDateParm = sDefineFormat.Replace(sParamPre, sBegin + strColCode);
-                            strEndDateParm = sDefineFormat.Replace(sParamPre, sEnd + strColCode);
+                            strBeginDateParm = sDefineFormat.Replace(sParamPre, strColCode + sBegin);
+                            strEndDateParm = sDefineFormat.Replace(sParamPre, strColCode + sEnd);
                             break;
+                    }
+
+                    //大小写转换
+                    if (sqlEntity.WordUpperType == WordUpperType.FirstUpperSecond)
+                    {
+                        strBeginDateParm = FirstLetterUpper(strBeginDateParm, false);
+                        strEndDateParm = FirstLetterUpper(strEndDateParm, false);
+                    }
+                    else if (sqlEntity.WordUpperType == WordUpperType.FirstUpperAll)
+                    {
+                        strBeginDateParm = FirstLetterUpper(strBeginDateParm);
+                        strEndDateParm = FirstLetterUpper(strEndDateParm);
                     }
 
                     if (_dbServer.DatabaseType == DataBaseType.SqlServer)//SQL Server的时间范围
                     {
-                        strQueryWhereDateRange = sConditionColumn + " >='" + strBeginDateParm + "' " + sqlEntity.NewLine + sConditionColumn + " < '" + strBeginDateParm + "' " + sqlEntity.NewLine; //结束日期：注要传入界面结束时间的+1天。
+                        strQueryWhereDateRange = sConditionColumn + " >='" + strBeginDateParm + "' " + sqlEntity.NewLine + sConditionColumn + " < '" + strEndDateParm + "' " + sqlEntity.NewLine; //结束日期：注要传入界面结束时间的+1天。
                     }
                     else if (_dbServer.DatabaseType == DataBaseType.SqlServer)//Oracle的时间范围
                     {

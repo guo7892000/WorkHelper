@@ -353,20 +353,20 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 //得到实体相关
                 _dicString = new Dictionary<string, string>();
-                _dicString[AutoFileSysParam.EntName] = param["EntityName"]; 
-                _dicString[AutoFileSysParam.EntNameCn] = param["EntityNameCn"];
-                _dicString[AutoFileSysParam.EntNameFirstLower] = param["EntityName"].Substring(0, 1).ToLower() + param["EntityName"].Substring(1);
-                _dicString[AutoFileSysParam.DateNow] = DateTime.Now.ToString("yyyy-MM-dd");
+                _dicString[AutoImportModuleString.AutoFileSysParam.EntName] = param["EntityName"]; 
+                _dicString[AutoImportModuleString.AutoFileSysParam.EntNameCn] = param["EntityNameCn"];
+                _dicString[AutoImportModuleString.AutoFileSysParam.EntNameFirstLower] = param["EntityName"].Substring(0, 1).ToLower() + param["EntityName"].Substring(1);
+                _dicString[AutoImportModuleString.AutoFileSysParam.DateNow] = DateTime.Now.ToString("yyyy-MM-dd");
 
                 //自定义变量中固定值的处理
                 DataTable dtMyDefine = dgvMyDefine.GetBindingTable();
                 if (dtMyDefine != null && dtMyDefine.Rows.Count > 0)
                 {
-                    DataRow[] drArrMy = dtMyDefine.Select(ImportSheetColumnNameMyParam.ChangeType + "='1'");
+                    DataRow[] drArrMy = dtMyDefine.Select(AutoImportModuleString.ColumnNameMyParam.ChangeType + "='1'");
 
                     foreach (DataRow dr in drArrMy)
                     {
-                        string sContne = dr[ImportSheetColumnNameMyParam.ParamContent].ToString();
+                        string sContne = dr[AutoImportModuleString.ColumnNameMyParam.ParamContent].ToString();
                         Regex regex = new Regex(@"#\w+#", RegexOptions.IgnoreCase);
                         MatchCollection mc = regex.Matches(sContne);
                         foreach (Match item in mc)
@@ -376,7 +376,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                                 sContne = item.Value.Replace(item.Value, _dicString[item.Value]);
                             }
                         }
-                        _dicString[dr[ImportSheetColumnNameMyParam.ParamName].ToString()] = sContne;
+                        _dicString[dr[AutoImportModuleString.ColumnNameMyParam.ParamName].ToString()] = sContne;
                     }
 
                 }
@@ -399,7 +399,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     StringBuilder sbEntity = new StringBuilder();
                     StringBuilder sbMap = new StringBuilder();
                     //得到表名
-                    _dicString[AutoFileSysParam.TableDbName] = cbbTableName.Text.Trim();
+                    _dicString[AutoImportModuleString.AutoFileSysParam.TableDbName] = cbbTableName.Text.Trim();
                     DataTable dtConvert = dgvTypeConvert.GetBindingTable();
                     foreach (DataRow dr in dtSec.Rows)
                     {
@@ -407,10 +407,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                         //查询入参的API说明
                         string sColApi;
                         DataTable dtSysParam = dgvSysParam.GetBindingTable();
-                        DataRow[] drArr = dtSysParam.Select(ImportSheetColumnNameSysParam.ParamName + "='"+ AutoFileSysParam.ColQueryIn + "'");
-                        if (drArr.Length > 0 && !string.IsNullOrEmpty(drArr[0][ImportSheetColumnNameSysParam.ParamContent].ToString()))
+                        DataRow[] drArr = dtSysParam.Select(AutoImportModuleString.ColumnNameSysParam.ParamName + "='"+ AutoImportModuleString.AutoFileSysParam.ColQueryIn + "'");
+                        if (drArr.Length > 0 && !string.IsNullOrEmpty(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString()))
                         {
-                            sColApi = GetFinalString(drArr[0][ImportSheetColumnNameSysParam.ParamContent].ToString(),dr);
+                            sColApi = GetFinalString(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString(),dr);
                             if ("1".Equals(dr[_sGridColumnQueryInParam].ToString()))
                             {
                                 sbQueryIn.Append(sColApi);
@@ -418,10 +418,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                             }
                         }
                         //查询出参的API说明
-                        drArr = dtSysParam.Select(ImportSheetColumnNameSysParam.ParamName + "='"+ AutoFileSysParam.ColQueryOut +"'");
-                        if (drArr.Length > 0 && !string.IsNullOrEmpty(drArr[0][ImportSheetColumnNameSysParam.ParamContent].ToString()))
+                        drArr = dtSysParam.Select(AutoImportModuleString.ColumnNameSysParam.ParamName + "='"+ AutoImportModuleString.AutoFileSysParam.ColQueryOut +"'");
+                        if (drArr.Length > 0 && !string.IsNullOrEmpty(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString()))
                         {
-                            sColApi = GetFinalString(drArr[0][ImportSheetColumnNameSysParam.ParamContent].ToString(), dr);
+                            sColApi = GetFinalString(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString(), dr);
                             if ("1".Equals(dr[_sGridColumnQueryOutParam].ToString()))
                             {
                                 sbQueryOut.Append(sColApi);
@@ -429,10 +429,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                             }
                         }
                         //保存入参的API说明
-                        drArr = dtSysParam.Select(ImportSheetColumnNameSysParam.ParamName + "='"+ AutoFileSysParam.ColSaveIn + "'");
-                        if (drArr.Length > 0 && !string.IsNullOrEmpty(drArr[0][ImportSheetColumnNameSysParam.ParamContent].ToString()))
+                        drArr = dtSysParam.Select(AutoImportModuleString.ColumnNameSysParam.ParamName + "='"+ AutoImportModuleString.AutoFileSysParam.ColSaveIn + "'");
+                        if (drArr.Length > 0 && !string.IsNullOrEmpty(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString()))
                         {
-                            sColApi = GetFinalString(drArr[0][ImportSheetColumnNameSysParam.ParamContent].ToString(), dr);
+                            sColApi = GetFinalString(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString(), dr);
 
                             if ("1".Equals(dr[_sGridColumnSaveInParam].ToString()))
                             {
@@ -442,15 +442,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                         }
 
                         //MyBatis的实体定义：这里有类型替换
-                        drArr = dtSysParam.Select(ImportSheetColumnNameSysParam.ParamName + "='"+ AutoFileSysParam.ColEntNote + "'");
-                        DataRow[] drArrType = dtConvert.Select(ImportSheetColumnNameTypeConvert.DbType + "='" + dr[DBColumnEntity.SqlString.DataType].ToString() + "'");
+                        drArr = dtSysParam.Select(AutoImportModuleString.ColumnNameSysParam.ParamName + "='"+ AutoImportModuleString.AutoFileSysParam.ColEntNote + "'");
+                        DataRow[] drArrType = dtConvert.Select(AutoImportModuleString.ColumnNameTypeConvert.DbType + "='" + dr[DBColumnEntity.SqlString.DataType].ToString() + "'");
                         
-                        if (drArr.Length > 0 && !string.IsNullOrEmpty(drArr[0][ImportSheetColumnNameSysParam.ParamContent].ToString()))
+                        if (drArr.Length > 0 && !string.IsNullOrEmpty(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString()))
                         {
-                            sColApi = GetFinalString(drArr[0][ImportSheetColumnNameSysParam.ParamContent].ToString(), dr);
+                            sColApi = GetFinalString(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString(), dr);
                             if (drArrType.Length > 0)
                             {
-                                sColApi = sColApi.Replace(ImportSheetColumnNameSysParam.ChangeType, drArrType[0][ImportSheetColumnNameTypeConvert.DevLangType].ToString());
+                                sColApi = sColApi.Replace(AutoImportModuleString.ColumnNameSysParam.ChangeType, drArrType[0][AutoImportModuleString.ColumnNameTypeConvert.DevLangType].ToString());
                             }
 
                             if ("PK".Equals(dr[DBColumnEntity.SqlString.KeyType].ToString()))
@@ -465,10 +465,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                             }
                         }
                         //MyBatis的Map定义
-                        drArr = dtSysParam.Select(ImportSheetColumnNameSysParam.ParamName + "='"+ AutoFileSysParam.ColMapNode + "'");
-                        if (drArr.Length > 0 && !string.IsNullOrEmpty(drArr[0][ImportSheetColumnNameSysParam.ParamContent].ToString()))
+                        drArr = dtSysParam.Select(AutoImportModuleString.ColumnNameSysParam.ParamName + "='"+ AutoImportModuleString.AutoFileSysParam.ColMapNode + "'");
+                        if (drArr.Length > 0 && !string.IsNullOrEmpty(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString()))
                         {
-                            sColApi = GetFinalString(drArr[0][ImportSheetColumnNameSysParam.ParamContent].ToString(), dr);
+                            sColApi = GetFinalString(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString(), dr);
                             if ("PK".Equals(dr[DBColumnEntity.SqlString.KeyType].ToString()))
                             {
                                 sbMap.Append(sColApi.Replace("<result", "<id"));
@@ -483,25 +483,25 @@ namespace Breezee.WorkHelper.DBTool.UI
                     }
 
                     //得到所有拼接的动态字符
-                    _dicString[AutoFileSysParam.ColDbNameAll] = sbAllCol.ToString();
-                    _dicString[AutoFileSysParam.ColQueryIn] = sbQueryIn.ToString();
-                    _dicString[AutoFileSysParam.ColQueryOut] = sbQueryOut.ToString();
-                    _dicString[AutoFileSysParam.ColSaveIn] = sbSaveIn.ToString();
-                    _dicString[AutoFileSysParam.ColEntNote] = sbEntity.ToString();
-                    _dicString[AutoFileSysParam.ColMapNode] = sbMap.ToString();
+                    _dicString[AutoImportModuleString.AutoFileSysParam.ColDbNameAll] = sbAllCol.ToString();
+                    _dicString[AutoImportModuleString.AutoFileSysParam.ColQueryIn] = sbQueryIn.ToString();
+                    _dicString[AutoImportModuleString.AutoFileSysParam.ColQueryOut] = sbQueryOut.ToString();
+                    _dicString[AutoImportModuleString.AutoFileSysParam.ColSaveIn] = sbSaveIn.ToString();
+                    _dicString[AutoImportModuleString.AutoFileSysParam.ColEntNote] = sbEntity.ToString();
+                    _dicString[AutoImportModuleString.AutoFileSysParam.ColMapNode] = sbMap.ToString();
                 }
 
                 //自定义变量中动态值的处理
                 DataTable dtMyDefineDynamic = dgvMyDefine.GetBindingTable();
                 if (dtMyDefineDynamic != null && dtMyDefineDynamic.Rows.Count > 0)
                 {
-                    DataRow[] drArrMy = dtMyDefineDynamic.Select(ImportSheetColumnNameMyParam.ChangeType + "='2'");
+                    DataRow[] drArrMy = dtMyDefineDynamic.Select(AutoImportModuleString.ColumnNameMyParam.ChangeType + "='2'");
                     StringBuilder sbMy = new StringBuilder();
                     //循环动态值
                     foreach (DataRow drDynamic in drArrMy)
                     {
                         //取出变量内容
-                        string sContne = drDynamic[ImportSheetColumnNameMyParam.ParamContent].ToString();
+                        string sContne = drDynamic[AutoImportModuleString.ColumnNameMyParam.ParamContent].ToString();
                         Regex regex = new Regex(@"#\w+#", RegexOptions.IgnoreCase);
                         MatchCollection mc = regex.Matches(sContne);
 
@@ -526,10 +526,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                                 }
                                 sbMy.AppendLine(sContne);
                                 //还原为初始值
-                                sContne = drDynamic[ImportSheetColumnNameMyParam.ParamContent].ToString();
+                                sContne = drDynamic[AutoImportModuleString.ColumnNameMyParam.ParamContent].ToString();
                             }
                             //得到最终动态值
-                            _dicString[drDynamic[ImportSheetColumnNameMyParam.ParamName].ToString()] = sbMy.ToString();
+                            _dicString[drDynamic[AutoImportModuleString.ColumnNameMyParam.ParamName].ToString()] = sbMy.ToString();
                         }
                         else
                         {
@@ -543,7 +543,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                                 }
                             }
                             //得到最终动态值
-                            _dicString[drDynamic[ImportSheetColumnNameMyParam.ParamName].ToString()] = sContne;
+                            _dicString[drDynamic[AutoImportModuleString.ColumnNameMyParam.ParamName].ToString()] = sContne;
                         }
                         
                     }
@@ -554,16 +554,16 @@ namespace Breezee.WorkHelper.DBTool.UI
                 foreach (DataRow drFile in _dtFileSelect.Rows)
                 {
                     //
-                    string sFilePath = Path.Combine(param["SavePath"], drFile[ImportSheetColumnNameClass.Path].ToString());
+                    string sFilePath = Path.Combine(param["SavePath"], drFile[AutoImportModuleString.ColumnNameClass.Path].ToString());
                     sFilePath = ReplaceParamKeyByValue(sFilePath);//FilePath中也可能包含变量，所以这里也要替换
 
-                    string sPackName = drFile[ImportSheetColumnNameClass.PackName].ToString();
+                    string sPackName = drFile[AutoImportModuleString.ColumnNameClass.PackName].ToString();
                     sPackName = ReplaceParamKeyByValue(sPackName);//PackName中也可能包含变量，所以这里也要替换
                     //得到后终值
-                    drFile[ImportSheetColumnNameClass.FinalPath] = sFilePath;
-                    drFile[ImportSheetColumnNameClass.FinalPackName] = sPackName;
+                    drFile[AutoImportModuleString.ColumnNameClass.FinalPath] = sFilePath;
+                    drFile[AutoImportModuleString.ColumnNameClass.FinalPackName] = sPackName;
                     //将包路径或空间名加入全局变量中
-                    string sPackNameKey = drFile[ImportSheetColumnNameClass.PackNameKey].ToString();
+                    string sPackNameKey = drFile[AutoImportModuleString.ColumnNameClass.PackNameKey].ToString();
                     if (!string.IsNullOrEmpty(sPackNameKey) && !string.IsNullOrEmpty(sPackName))
                     {
                         _dicString[sPackNameKey] = sPackName;
@@ -581,14 +581,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //循环文件处理
                 foreach (DataRow drFile in _dtFileSelect.Rows)
                 {
-                    string sFileContent = drFile[ImportSheetColumnNameClass.FileContent].ToString();
-                    string sFilePath = drFile[ImportSheetColumnNameClass.FinalPath].ToString();
-                    string sPackName = drFile[ImportSheetColumnNameClass.FinalPackName].ToString();
+                    string sFileContent = drFile[AutoImportModuleString.ColumnNameClass.FileContent].ToString();
+                    string sFilePath = drFile[AutoImportModuleString.ColumnNameClass.FinalPath].ToString();
+                    string sPackName = drFile[AutoImportModuleString.ColumnNameClass.FinalPackName].ToString();
                     //文件名：前缀+实体名+后缀
-                    string sFileName = drFile[ImportSheetColumnNameClass.BeginString].ToString() + param["EntityName"] + drFile[ImportSheetColumnNameClass.EndString].ToString();
+                    string sFileName = drFile[AutoImportModuleString.ColumnNameClass.BeginString].ToString() + param["EntityName"] + drFile[AutoImportModuleString.ColumnNameClass.EndString].ToString();
                     
                     //替换包路径
-                    sFileContent = sFileContent.Replace(AutoFileSysParam.PackPath, sPackName);
+                    sFileContent = sFileContent.Replace(AutoImportModuleString.AutoFileSysParam.PackPath, sPackName);
                     if (!Directory.Exists(sFilePath))
                     {
                         Directory.CreateDirectory(sFilePath);
@@ -639,19 +639,19 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private string GetFinalString(string sIn,DataRow dr)
         {
-            string sColApi = sIn.Trim().Replace(AutoFileSysParam.ColName, dr[_ColumnFirstUpper].ToString())
-              .Replace(AutoFileSysParam.ColNameFirstLower, dr[_ColumnFirstLower].ToString())
-              .Replace(AutoFileSysParam.ColNameCn, dr[DBColumnEntity.SqlString.NameCN].ToString())
-              .Replace(AutoFileSysParam.ColDbName, dr[DBColumnEntity.SqlString.Name].ToString());
+            string sColApi = sIn.Trim().Replace(AutoImportModuleString.AutoFileSysParam.ColName, dr[_ColumnFirstUpper].ToString())
+              .Replace(AutoImportModuleString.AutoFileSysParam.ColNameFirstLower, dr[_ColumnFirstLower].ToString())
+              .Replace(AutoImportModuleString.AutoFileSysParam.ColNameCn, dr[DBColumnEntity.SqlString.NameCN].ToString())
+              .Replace(AutoImportModuleString.AutoFileSysParam.ColDbName, dr[DBColumnEntity.SqlString.Name].ToString());
 
-            DataRow[] drArr = _dsExcel.Tables[ImportSheetName.DbTypeConvert].Select(ImportSheetColumnNameTypeConvert.DbType + "='"+ dr[DBColumnEntity.SqlString.DataType].ToString() + "'");
-            if (drArr.Length > 0 && !string.IsNullOrEmpty(drArr[0][ImportSheetColumnNameTypeConvert.DevLangType].ToString()))
+            DataRow[] drArr = _dsExcel.Tables[AutoImportModuleString.SheetName.DbTypeConvert].Select(AutoImportModuleString.ColumnNameTypeConvert.DbType + "='"+ dr[DBColumnEntity.SqlString.DataType].ToString() + "'");
+            if (drArr.Length > 0 && !string.IsNullOrEmpty(drArr[0][AutoImportModuleString.ColumnNameTypeConvert.DevLangType].ToString()))
             {
-                sColApi = sColApi.Replace(AutoFileSysParam.ColEntType, drArr[0][ImportSheetColumnNameTypeConvert.DevLangType].ToString());
+                sColApi = sColApi.Replace(AutoImportModuleString.AutoFileSysParam.ColEntType, drArr[0][AutoImportModuleString.ColumnNameTypeConvert.DevLangType].ToString());
             }
             else
             {
-                sColApi = sColApi.Replace(AutoFileSysParam.ColEntType, "String");
+                sColApi = sColApi.Replace(AutoImportModuleString.AutoFileSysParam.ColEntType, "String");
             }
             return sColApi;
         }
@@ -764,23 +764,23 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void btnImportPath_Click(object sender, EventArgs e)
         {
             _dicString.Clear();
-            _dicString[ImportSheetName.ClassFile] = ImportSheetName.ClassFile;
-            _dicString[ImportSheetName.MyParam] = ImportSheetName.MyParam;
-            _dicString[ImportSheetName.DbTypeConvert] = ImportSheetName.DbTypeConvert;
-            _dicString[ImportSheetName.SysParam] = ImportSheetName.SysParam;
+            _dicString[AutoImportModuleString.SheetName.ClassFile] = AutoImportModuleString.SheetName.ClassFile;
+            _dicString[AutoImportModuleString.SheetName.MyParam] = AutoImportModuleString.SheetName.MyParam;
+            _dicString[AutoImportModuleString.SheetName.DbTypeConvert] = AutoImportModuleString.SheetName.DbTypeConvert;
+            _dicString[AutoImportModuleString.SheetName.SysParam] = AutoImportModuleString.SheetName.SysParam;
             _dsExcel = ExportHelper.GetExcelDataSet(_dicString);//导入模板
             if (_dsExcel != null)
             {
                 _bsFileList = new BindingSource();
-                DataTable dt = _dsExcel.Tables[ImportSheetName.ClassFile];
+                DataTable dt = _dsExcel.Tables[AutoImportModuleString.SheetName.ClassFile];
                 DataColumn dcSelected = new DataColumn(_sGridIsSelect);
                 dcSelected.DefaultValue = "1";
                 dt.Columns.Add(dcSelected);
 
                 //增加两列表示最终值
-                dcSelected = new DataColumn(ImportSheetColumnNameClass.FinalPath);
+                dcSelected = new DataColumn(AutoImportModuleString.ColumnNameClass.FinalPath);
                 dt.Columns.Add(dcSelected);
-                dcSelected = new DataColumn(ImportSheetColumnNameClass.FinalPackName);
+                dcSelected = new DataColumn(AutoImportModuleString.ColumnNameClass.FinalPackName);
                 dt.Columns.Add(dcSelected);
                 //绑定数据源
                 _bsFileList.DataSource = dt;
@@ -790,13 +790,13 @@ namespace Breezee.WorkHelper.DBTool.UI
                 fdc.AddColumn(
                     FlexGridColumn.NewRowNoCol(),
                     new FlexGridColumn.Builder().Name(_sGridIsSelect).Caption("选择").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(40).Edit().Visible().Build(),
-                    new FlexGridColumn.Builder().Name(ImportSheetColumnNameClass.SortNum).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                    new FlexGridColumn.Builder().Name(ImportSheetColumnNameClass.Path).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                    new FlexGridColumn.Builder().Name(ImportSheetColumnNameClass.PackName).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                    new FlexGridColumn.Builder().Name(ImportSheetColumnNameClass.PackNameKey).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                    new FlexGridColumn.Builder().Name(ImportSheetColumnNameClass.BeginString).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                    new FlexGridColumn.Builder().Name(ImportSheetColumnNameClass.EndString).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                    new FlexGridColumn.Builder().Name(ImportSheetColumnNameClass.FileContent).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
+                    new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameClass.SortNum).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                    new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameClass.Path).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                    new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameClass.PackName).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                    new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameClass.PackNameKey).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                    new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameClass.BeginString).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                    new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameClass.EndString).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                    new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameClass.FileContent).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
 
                 );
                 dgvModule.Tag = fdc.GetGridTagString();
@@ -806,31 +806,31 @@ namespace Breezee.WorkHelper.DBTool.UI
                 fdc = new FlexGridColumnDefinition();
                 fdc.AddColumn(
                     FlexGridColumn.NewRowNoCol(),
-                    new FlexGridColumn.Builder().Name(ImportSheetColumnNameMyParam.ParamName).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                    new FlexGridColumn.Builder().Name(ImportSheetColumnNameMyParam.ParamContent).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                    new FlexGridColumn.Builder().Name(ImportSheetColumnNameMyParam.ParamValueInfo).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
+                    new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameMyParam.ParamName).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                    new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameMyParam.ParamContent).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                    new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameMyParam.ParamValueInfo).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
                 );
                 dgvMyDefine.Tag = fdc.GetGridTagString();
-                dgvMyDefine.BindDataGridView(_dsExcel.Tables[ImportSheetName.MyParam], true);
+                dgvMyDefine.BindDataGridView(_dsExcel.Tables[AutoImportModuleString.SheetName.MyParam], true);
                 //绑定系统变量网格
                 fdc = new FlexGridColumnDefinition();
                 fdc.AddColumn(
                     FlexGridColumn.NewRowNoCol(),
-                    new FlexGridColumn.Builder().Name(ImportSheetColumnNameSysParam.ParamName).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                    new FlexGridColumn.Builder().Name(ImportSheetColumnNameSysParam.ParamValueInfo).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                    new FlexGridColumn.Builder().Name(ImportSheetColumnNameSysParam.Example).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
+                    new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameSysParam.ParamName).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                    new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameSysParam.ParamValueInfo).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                    new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameSysParam.Example).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
                 );
                 dgvSysParam.Tag = fdc.GetGridTagString();
-                dgvSysParam.BindDataGridView(_dsExcel.Tables[ImportSheetName.SysParam], true);
+                dgvSysParam.BindDataGridView(_dsExcel.Tables[AutoImportModuleString.SheetName.SysParam], true);
                 //绑定类型转换网格
                 fdc = new FlexGridColumnDefinition();
                 fdc.AddColumn(
                     FlexGridColumn.NewRowNoCol(),
-                    new FlexGridColumn.Builder().Name(ImportSheetColumnNameTypeConvert.DbType).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                    new FlexGridColumn.Builder().Name(ImportSheetColumnNameTypeConvert.DevLangType).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
+                    new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameTypeConvert.DbType).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                    new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameTypeConvert.DevLangType).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
                 );
                 dgvTypeConvert.Tag = fdc.GetGridTagString();
-                dgvTypeConvert.BindDataGridView(_dsExcel.Tables[ImportSheetName.DbTypeConvert], true);
+                dgvTypeConvert.BindDataGridView(_dsExcel.Tables[AutoImportModuleString.SheetName.DbTypeConvert], true);
 
                 lblInfo.Text = "导入成功！";
                 tsbAutoSQL.Enabled = true;
@@ -897,84 +897,5 @@ namespace Breezee.WorkHelper.DBTool.UI
         }
     }
 
-    /// <summary>
-    /// 导入模板的Sheet名称
-    /// </summary>
-    public class ImportSheetName
-    {
-        public static readonly string ClassFile = "类文件";
-        public static readonly string MyParam = "自定义变量";
-        public static readonly string DbTypeConvert = "类型转换";
-        public static readonly string SysParam = "系统变量";
-    }
-    /// <summary>
-    /// 导入模板的中【类文件】Sheet中的列名
-    /// </summary>
-    public class ImportSheetColumnNameClass
-    {
-        public static readonly string SortNum = "序号";
-        public static readonly string Path = "路径";
-        public static readonly string PackName = "包名";
-        public static readonly string PackNameKey = "包名键";
-        public static readonly string BeginString = "前缀";
-        public static readonly string EndString = "后缀";
-        public static readonly string FileContent = "文件内容";
-        //不在导入模板中，是替换变量后的实际值
-        public static readonly string FinalPath = "最终路径";
-        public static readonly string FinalPackName = "最终包名";
-    }
-    /// <summary>
-    /// 导入模板的中【自定义变量】Sheet中的列名
-    /// </summary>
-    public class ImportSheetColumnNameMyParam
-    {
-        public static readonly string ChangeType = "变化类型";
-        public static readonly string ParamName = "变量名";
-        public static readonly string ParamContent = "变量内容";
-        public static readonly string ParamValueInfo = "变量值说明";
-    }
-    /// <summary>
-    /// 导入模板的中【系统变量】Sheet中的列名
-    /// </summary>
-    public class ImportSheetColumnNameSysParam
-    {
-        public static readonly string ChangeType = "变化类型";
-        public static readonly string ParamName = "变量名";
-        public static readonly string ParamContent = "变量内容";
-        public static readonly string ParamValueInfo = "变量值说明";
-        public static readonly string Example = "示例";
-    }
-    /// <summary>
-    /// 导入模板的中【类型转换】Sheet中的列名
-    /// </summary>
-    public class ImportSheetColumnNameTypeConvert
-    {
-        public static readonly string DbType = "数据库类型";
-        public static readonly string DevLangType = "开发语言类型";
-    }
-    /// <summary>
-    /// 导入模板的中【系统变量】Sheet中所有定义的系统变量键
-    /// </summary>
-    public class AutoFileSysParam
-    {
-        public static readonly string DateNow = "#DATE_NOW#";
-        public static readonly string PackPath = "#PACK_PATH#";
-        public static readonly string TableDbName = "#TABLE_DB_NAME#";
-        public static readonly string EntName = "#ENT_NAME#";
-        public static readonly string EntNameFirstLower = "#ENT_NAME_FL#";
-        public static readonly string EntNameCn = "#ENT_NAME_CN#";
-        public static readonly string ColName = "#COL_NAME#";
-        public static readonly string ColNameFirstLower = "#COL_NAME_FL#";
-        public static readonly string ColNameCn = "#COL_NAME_CN#";
-        public static readonly string ColDbName = "#COL_DB_NAME#";
-        public static readonly string ColEntType = "#COL_ENT_TYPE#";
-        public static readonly string ColDbNameAll = "#COL_DB_NAME_ALL#";
-        public static readonly string ColQueryIn = "#COL_QUERY_IN#";
-        public static readonly string ColQueryOut = "#COL_QUERY_OUT#";
-        public static readonly string ColSaveIn = "#COL_SAVE_IN#";
-        public static readonly string ColEntNote = "#COL_ENT_NOTE#";
-        public static readonly string ColMapNode = "#COL_MAP_NODE#";
-
-
-    }
+    
 }

@@ -57,6 +57,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.txbPassword = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.tsbConnetTest = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -67,6 +68,7 @@
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbSave,
+            this.tsbConnetTest,
             this.tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
@@ -113,7 +115,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 34F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 45F));
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.txbDBConfigCode, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbbDatabaseType, 1, 1);
@@ -366,6 +368,15 @@
             this.label9.TabIndex = 0;
             this.label9.Text = "架构名称：";
             // 
+            // tsbConnetTest
+            // 
+            this.tsbConnetTest.Image = ((System.Drawing.Image)(resources.GetObject("tsbConnetTest.Image")));
+            this.tsbConnetTest.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbConnetTest.Name = "tsbConnetTest";
+            this.tsbConnetTest.Size = new System.Drawing.Size(56, 24);
+            this.tsbConnetTest.Text = "测试";
+            this.tsbConnetTest.Click += new System.EventHandler(this.tsbConnetTest_Click);
+            // 
             // FrmDBConfigSet_D
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -374,7 +385,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FrmDBConfigSet_D";
@@ -420,5 +431,6 @@
         private System.Windows.Forms.TextBox txbDBConfigName;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txbRemark;
+        private System.Windows.Forms.ToolStripButton tsbConnetTest;
     }
 }

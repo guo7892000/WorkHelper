@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Breezee.AutoSQLExecutor.Core;
+using Breezee.AutoSQLExecutor.Common;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -231,7 +232,103 @@ namespace Breezee.WorkHelper.DBTool.UI
                 txbServerIP.Text = ofd.FileName;
                 //txbServerIP.Text = ofd.SafeFileName;
             }
-        } 
+        }
         #endregion
+
+        private void tsbConnetTest_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var DbServer = new DbServerInfo()
+                {
+                    Database = txbDbName.Text.Trim(),
+                    DatabaseType = (DataBaseType)int.Parse(cbbDatabaseType.SelectedValue.ToString()),
+                    Password = txbPassword.Text.Trim(),
+                    PortNo = txbPortNO.Text.Trim(),
+                    SchemaName = txbSchemaName.Text.Trim(),
+                    ServerName = txbServerIP.Text.Trim(),
+                    UserName = txbUserName.Text.Trim(),
+                    UseConnString = false,
+                    ConnString = "",
+                };
+
+                int iDbType = int.Parse(cbbDatabaseType.SelectedValue.ToString());
+                DataBaseType selectDBType = (DataBaseType)iDbType;
+
+                if (selectDBType != DataBaseType.Oracle && selectDBType != DataBaseType.SQLite)
+                {
+                    if (IsDbNameNotNull && string.IsNullOrEmpty(DbServer.Database))
+                    {
+                        MsgHelper.ShowErr("数据库名称不能为空！");
+                        return;
+                    }
+                }
+
+                switch (selectDBType)
+                {
+                    case DataBaseType.SqlServer:
+                        if (string.IsNullOrEmpty(DbServer.ServerName))
+                        {
+                            MsgHelper.ShowErr("服务器地址不能为空！");
+                            return;
+                        }
+                        break;
+                    case DataBaseType.Oracle:
+                        if (string.IsNullOrEmpty(DbServer.ServerName))
+                        {
+                            MsgHelper.ShowErr("TNS名称不能为空！");
+                            return;
+                        }
+                        if (string.IsNullOrEmpty(DbServer.UserName) || string.IsNullOrEmpty(DbServer.Password))
+                        {
+                            MsgHelper.ShowErr("用户名和密码都不能为空！");
+                            return;
+                        }
+                        break;
+                    case DataBaseType.MySql:
+                        if (string.IsNullOrEmpty(DbServer.ServerName))
+                        {
+                            MsgHelper.ShowErr("服务器地址不能为空！");
+                            return;
+                        }
+                        if (string.IsNullOrEmpty(DbServer.UserName) || string.IsNullOrEmpty(DbServer.Password))
+                        {
+                            MsgHelper.ShowErr("用户名和密码都不能为空！");
+                            return;
+                        }
+                        break;
+                    case DataBaseType.SQLite:
+                        if (string.IsNullOrEmpty(DbServer.ServerName))
+                        {
+                            MsgHelper.ShowErr("数据库文件路径不能为空！");
+                            return;
+                        }
+                        break;
+                    case DataBaseType.PostgreSql:
+                        if (string.IsNullOrEmpty(DbServer.ServerName))
+                        {
+                            MsgHelper.ShowErr("服务器地址不能为空！");
+                            return;
+                        }
+                        if (string.IsNullOrEmpty(DbServer.UserName) || string.IsNullOrEmpty(DbServer.Password))
+                        {
+                            MsgHelper.ShowErr("用户名和密码都不能为空！");
+                            return;
+                        }
+                        break;
+                    default:
+                        throw new Exception("暂不支持该数据库类型！");
+                        //break;
+                }
+                //得到数据库访问对象
+                IDataAccess _dataAccess = AutoSQLExecutors.Connect(DbServer);
+                DataTable UserTableList = _dataAccess.GetSchemaTables();
+                MsgBox.Show("连接成功！");
+            }
+            catch(Exception ex)
+            {
+                MsgHelper.ShowErr("连接失败，请检查！具体错误："+ex.Message);
+            }
+        }
     }
 }
