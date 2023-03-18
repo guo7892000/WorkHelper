@@ -25,7 +25,7 @@ namespace Breezee.WorkHelper.DBTool.UI
     /// <summary>
     /// 自动生成Java文件
     /// </summary>
-    public partial class FrmDBTAutoCodeFile : BaseForm
+    public partial class FrmDBTDBAutoCodeFile : BaseForm
     {
         #region 变量
         private readonly string _strTableName = "变更表清单";
@@ -61,17 +61,14 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         string _TableFirstUpper = "";
         string _TableFirstLower = "";
-        string _ColumnFirstUpper = "";
-        string _ColumnFirstLower = "";
         string _ColumnSortInterge = "";
-        IDictionary<string, string> _keyParamColRel = new Dictionary<string, string>();
 
         DataSet _dsExcel;
         BindingSource _bsFileList;
         #endregion
 
         #region 构造函数
-        public FrmDBTAutoCodeFile()
+        public FrmDBTDBAutoCodeFile()
         {
             InitializeComponent();
         }
@@ -80,11 +77,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 加载事件
         private void FrmGetOracleSql_Load(object sender, EventArgs e)
         {
-            _IDBDefaultValue = ContainerContext.Container.Resolve<IDBDefaultValue>();
-
-            //_dicString.Add("1", "Mybatis实体");
-            //_dicString.Add("2", "自定义");
-            //cbbModule.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), true, true);            
+            _IDBDefaultValue = ContainerContext.Container.Resolve<IDBDefaultValue>();          
 
             #region 设置数据库连接控件
             _IDBConfigSet = ContainerContext.Container.Resolve<IDBConfigSet>();
@@ -99,13 +92,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             //设置下拉框查找数据源
             cbbTableName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cbbTableName.AutoCompleteSource = AutoCompleteSource.CustomSource;
-
             tsbAutoSQL.Enabled = false;
-            //初始化导入模板中的动态系统变量与表列关系
-            _keyParamColRel["#COL_NAME#"] = _ColumnFirstUpper;
-            _keyParamColRel["#COL_NAME_FL#"] = _ColumnFirstLower;
-            _keyParamColRel["#COL_NAME_CN#"] = DBColumnEntity.SqlString.NameCN;
-            _keyParamColRel["#COL_DB_NAME#"] = DBColumnEntity.SqlString.Name;
+
             //以下为测试使用
             txbEntityName.Text= "BaseConfig";
             txbEntityNameCN.Text = "基础配置";
@@ -178,11 +166,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             
             if (!string.IsNullOrEmpty(txbRemoveTablePre.Text.Trim()))
             {
-                txbEntityName.Text = FirstLetterUpper(cbbTableName.Text.Trim().ToUpper().Replace(txbRemoveTablePre.Text.Trim().ToUpper(), ""));
+                txbEntityName.Text = cbbTableName.Text.Trim().ToUpper().Replace(txbRemoveTablePre.Text.Trim().ToUpper(), "").FirstLetterUpper();
             }
             else
             {
-                txbEntityName.Text = FirstLetterUpper(cbbTableName.Text.Trim());
+                txbEntityName.Text = cbbTableName.Text.Trim().FirstLetterUpper();
             }
             
             //设置Tag
@@ -224,29 +212,17 @@ namespace Breezee.WorkHelper.DBTool.UI
                 sSchema = dtTable.Rows[0][DBTableEntity.SqlString.Schema].ToString();
             }
             //表名、列名大小写的列名
-            _TableFirstUpper = DBColumnEntity.SqlString.TableName + "_FU";
-            _TableFirstLower = DBColumnEntity.SqlString.TableName + "_FL";
-            _ColumnFirstUpper = DBColumnEntity.SqlString.Name + "_FU";
-            _ColumnFirstLower = DBColumnEntity.SqlString.Name + "_FL";
             _ColumnSortInterge = DBColumnEntity.SqlString.SortNum + "_INT";
 
             DataTable dtCols = _dataAccess.GetSqlSchemaTableColumns(cbbTableName.Text.Trim(), sSchema);
             DataTable dtColsNew = dtCols.Copy();
             dtColsNew.Columns.AddRange(new DataColumn[] {
-            //new DataColumn(_TableFirstUpper),
-            //new DataColumn(_TableFirstLower),
-            new DataColumn(_ColumnFirstUpper),
-            new DataColumn(_ColumnFirstLower),
             new DataColumn(_ColumnSortInterge,typeof(Int32)),
             });
             foreach (DataRow dr in dtColsNew.Rows)
             {
                 string sTableName = dr[DBColumnEntity.SqlString.TableName].ToString();//表名
                 string sColName = dr[DBColumnEntity.SqlString.Name].ToString();//列名
-                //dr[_TableFirstUpper] = FirstLetterUpper(sTableName);//表名首字母大写
-                //dr[_TableFirstLower] = FirstLetterUpper(sTableName, false);//表名首字母大写（第一个除外）
-                dr[_ColumnFirstUpper] = FirstLetterUpper(sColName);//列名首字母大写
-                dr[_ColumnFirstLower] = FirstLetterUpper(sColName, false);//列名首字母大写
                 dr[_ColumnSortInterge] = Int32.Parse(dr[DBColumnEntity.SqlString.SortNum].ToString());
             }
             //增加查询入参
@@ -297,6 +273,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void tsbAutoSQL_Click(object sender, EventArgs e)
         {
             #region 判断并取得数据
+            txbEntityName.Focus();
             //取得数据源
             DataTable dtFile = dgvModule.GetBindingTable();
             StringBuilder sbAllSql = new StringBuilder();
@@ -331,6 +308,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             //移除空行
             dtFile.DeleteNullRow();
             dtFile.AcceptChanges();//得到变更后数据
+
             _dtFileSelect = dtFile.Clone();
             sFiter = string.Format("{0}='1'", _sGridIsSelect);
             foreach (DataRow dr in dtFile.Select(sFiter))
@@ -345,43 +323,25 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
 
             DataTable dtMain = dgvTableList.GetBindingTable();
-            DataTable dtSec = dgvColList.GetBindingTable();
+            DataTable dtColumnList = dgvColList.GetBindingTable();
             //DataTable dtColumnAll;
             #endregion
 
             try
             {
-                //得到实体相关
                 _dicString = new Dictionary<string, string>();
-                _dicString[AutoImportModuleString.AutoFileSysParam.EntName] = param["EntityName"]; 
+                //系统变量中固定值处理
+                _dicString[AutoImportModuleString.AutoFileSysParam.EntName] = param["EntityName"];
                 _dicString[AutoImportModuleString.AutoFileSysParam.EntNameCn] = param["EntityNameCn"];
-                _dicString[AutoImportModuleString.AutoFileSysParam.EntNameFirstLower] = param["EntityName"].Substring(0, 1).ToLower() + param["EntityName"].Substring(1);
+                _dicString[AutoImportModuleString.AutoFileSysParam.EntNameLcc] = param["EntityName"].Substring(0, 1).ToLower() + param["EntityName"].Substring(1);
                 _dicString[AutoImportModuleString.AutoFileSysParam.DateNow] = DateTime.Now.ToString("yyyy-MM-dd");
 
                 //自定义变量中固定值的处理
                 DataTable dtMyDefine = dgvMyDefine.GetBindingTable();
-                if (dtMyDefine != null && dtMyDefine.Rows.Count > 0)
-                {
-                    DataRow[] drArrMy = dtMyDefine.Select(AutoImportModuleString.ColumnNameMyParam.ChangeType + "='1'");
+                AutoFileUtil.DealMyFixParam(_dicString, dtMyDefine);
+                DataTable dtSysParam = dgvSysParam.GetBindingTable();
 
-                    foreach (DataRow dr in drArrMy)
-                    {
-                        string sContne = dr[AutoImportModuleString.ColumnNameMyParam.ParamContent].ToString();
-                        Regex regex = new Regex(@"#\w+#", RegexOptions.IgnoreCase);
-                        MatchCollection mc = regex.Matches(sContne);
-                        foreach (Match item in mc)
-                        {
-                            if (_dicString.ContainsKey(item.Value))
-                            {
-                                sContne = item.Value.Replace(item.Value, _dicString[item.Value]);
-                            }
-                        }
-                        _dicString[dr[AutoImportModuleString.ColumnNameMyParam.ParamName].ToString()] = sContne;
-                    }
-
-                }
-
-                if (dtSec == null || dtSec.Rows.Count == 0)
+                if (dtColumnList == null || dtColumnList.Rows.Count == 0)
                 {
                     if (ShowYesNo("目前没有查询数据库的列数据，确定继续生成代码？") == DialogResult.No)
                     {
@@ -390,7 +350,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 else
                 {
-                    dtSec.AcceptChanges();
+                    dtColumnList.AcceptChanges();
 
                     StringBuilder sbAllCol = new StringBuilder();
                     StringBuilder sbQueryIn = new StringBuilder();
@@ -398,41 +358,45 @@ namespace Breezee.WorkHelper.DBTool.UI
                     StringBuilder sbSaveIn = new StringBuilder();
                     StringBuilder sbEntity = new StringBuilder();
                     StringBuilder sbMap = new StringBuilder();
-                    //得到表名
-                    _dicString[AutoImportModuleString.AutoFileSysParam.TableDbName] = cbbTableName.Text.Trim();
+                    //系统变量中动态列的处理
+                    _dicString[AutoImportModuleString.AutoFileSysParam.TableDbName] = cbbTableName.Text.Trim();//得到表名
                     DataTable dtConvert = dgvTypeConvert.GetBindingTable();
-                    foreach (DataRow dr in dtSec.Rows)
+
+                    foreach (DataRow dr in dtColumnList.Rows)
                     {
-                        sbAllCol.Append(dr[DBColumnEntity.SqlString.Name].ToString()+",");
-                        //查询入参的API说明
+                        sbAllCol.Append(dr[DBColumnEntity.SqlString.Name].ToString() + ",");
+
                         string sColApi;
-                        DataTable dtSysParam = dgvSysParam.GetBindingTable();
-                        DataRow[] drArr = dtSysParam.Select(AutoImportModuleString.ColumnNameSysParam.ParamName + "='"+ AutoImportModuleString.AutoFileSysParam.ColQueryIn + "'");
+                        //查询入参的API说明：过滤选中的项
+                        DataRow[] drArr = dtSysParam.Select(AutoImportModuleString.ColumnNameSysParam.ParamName + "='" + AutoImportModuleString.AutoFileSysParam.ColQueryIn + "'");
                         if (drArr.Length > 0 && !string.IsNullOrEmpty(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString()))
                         {
-                            sColApi = GetFinalString(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString(),dr);
+                            //替换列变量
+                            sColApi = AutoFileUtil.GetFinalString(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString(), dr, dtSysParam, _dicString, dtConvert);
                             if ("1".Equals(dr[_sGridColumnQueryInParam].ToString()))
                             {
                                 sbQueryIn.Append(sColApi);
                                 sbQueryIn.Append(Environment.NewLine);
                             }
                         }
-                        //查询出参的API说明
-                        drArr = dtSysParam.Select(AutoImportModuleString.ColumnNameSysParam.ParamName + "='"+ AutoImportModuleString.AutoFileSysParam.ColQueryOut +"'");
+                        //查询出参的API说明：过滤选中的项
+                        drArr = dtSysParam.Select(AutoImportModuleString.ColumnNameSysParam.ParamName + "='" + AutoImportModuleString.AutoFileSysParam.ColQueryOut + "'");
                         if (drArr.Length > 0 && !string.IsNullOrEmpty(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString()))
                         {
-                            sColApi = GetFinalString(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString(), dr);
+                            //替换列变量
+                            sColApi = AutoFileUtil.GetFinalString(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString(), dr, dtSysParam, _dicString, dtConvert);
                             if ("1".Equals(dr[_sGridColumnQueryOutParam].ToString()))
                             {
                                 sbQueryOut.Append(sColApi);
                                 sbQueryOut.Append(Environment.NewLine);
                             }
                         }
-                        //保存入参的API说明
-                        drArr = dtSysParam.Select(AutoImportModuleString.ColumnNameSysParam.ParamName + "='"+ AutoImportModuleString.AutoFileSysParam.ColSaveIn + "'");
+                        //保存入参的API说明：过滤选中的项
+                        drArr = dtSysParam.Select(AutoImportModuleString.ColumnNameSysParam.ParamName + "='" + AutoImportModuleString.AutoFileSysParam.ColSaveIn + "'");
                         if (drArr.Length > 0 && !string.IsNullOrEmpty(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString()))
                         {
-                            sColApi = GetFinalString(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString(), dr);
+                            //替换列变量
+                            sColApi = AutoFileUtil.GetFinalString(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString(), dr, dtSysParam, _dicString, dtConvert);
 
                             if ("1".Equals(dr[_sGridColumnSaveInParam].ToString()))
                             {
@@ -442,17 +406,19 @@ namespace Breezee.WorkHelper.DBTool.UI
                         }
 
                         //MyBatis的实体定义：这里有类型替换
-                        drArr = dtSysParam.Select(AutoImportModuleString.ColumnNameSysParam.ParamName + "='"+ AutoImportModuleString.AutoFileSysParam.ColEntNote + "'");
+                        drArr = dtSysParam.Select(AutoImportModuleString.ColumnNameSysParam.ParamName + "='" + AutoImportModuleString.AutoFileSysParam.ColEntNote + "'");
                         DataRow[] drArrType = dtConvert.Select(AutoImportModuleString.ColumnNameTypeConvert.DbType + "='" + dr[DBColumnEntity.SqlString.DataType].ToString() + "'");
-                        
+
                         if (drArr.Length > 0 && !string.IsNullOrEmpty(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString()))
                         {
-                            sColApi = GetFinalString(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString(), dr);
+                            //替换列变量
+                            sColApi = AutoFileUtil.GetFinalString(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString(), dr, dtSysParam, _dicString, dtConvert);
+                            //替换类型转换
                             if (drArrType.Length > 0)
                             {
                                 sColApi = sColApi.Replace(AutoImportModuleString.ColumnNameSysParam.ChangeType, drArrType[0][AutoImportModuleString.ColumnNameTypeConvert.DevLangType].ToString());
                             }
-
+                            //主键字符替换
                             if ("PK".Equals(dr[DBColumnEntity.SqlString.KeyType].ToString()))
                             {
                                 sbEntity.Append(sColApi.Replace("@TableField", "@TableId"));
@@ -465,10 +431,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                             }
                         }
                         //MyBatis的Map定义
-                        drArr = dtSysParam.Select(AutoImportModuleString.ColumnNameSysParam.ParamName + "='"+ AutoImportModuleString.AutoFileSysParam.ColMapNode + "'");
+                        drArr = dtSysParam.Select(AutoImportModuleString.ColumnNameSysParam.ParamName + "='" + AutoImportModuleString.AutoFileSysParam.ColMapNode + "'");
                         if (drArr.Length > 0 && !string.IsNullOrEmpty(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString()))
                         {
-                            sColApi = GetFinalString(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString(), dr);
+                            sColApi = AutoFileUtil.GetFinalString(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString(), dr, dtSysParam, _dicString, dtConvert);
+                            //主键字符替换
                             if ("PK".Equals(dr[DBColumnEntity.SqlString.KeyType].ToString()))
                             {
                                 sbMap.Append(sColApi.Replace("<result", "<id"));
@@ -483,7 +450,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     }
 
                     //得到所有拼接的动态字符
-                    _dicString[AutoImportModuleString.AutoFileSysParam.ColDbNameAll] = sbAllCol.ToString();
+                    _dicString[AutoImportModuleString.AutoFileSysParam.ColDbNameAll] = sbAllCol.ToString().Substring(0, sbAllCol.ToString().Length-1);
                     _dicString[AutoImportModuleString.AutoFileSysParam.ColQueryIn] = sbQueryIn.ToString();
                     _dicString[AutoImportModuleString.AutoFileSysParam.ColQueryOut] = sbQueryOut.ToString();
                     _dicString[AutoImportModuleString.AutoFileSysParam.ColSaveIn] = sbSaveIn.ToString();
@@ -493,62 +460,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 //自定义变量中动态值的处理
                 DataTable dtMyDefineDynamic = dgvMyDefine.GetBindingTable();
-                if (dtMyDefineDynamic != null && dtMyDefineDynamic.Rows.Count > 0)
-                {
-                    DataRow[] drArrMy = dtMyDefineDynamic.Select(AutoImportModuleString.ColumnNameMyParam.ChangeType + "='2'");
-                    StringBuilder sbMy = new StringBuilder();
-                    //循环动态值
-                    foreach (DataRow drDynamic in drArrMy)
-                    {
-                        //取出变量内容
-                        string sContne = drDynamic[AutoImportModuleString.ColumnNameMyParam.ParamContent].ToString();
-                        Regex regex = new Regex(@"#\w+#", RegexOptions.IgnoreCase);
-                        MatchCollection mc = regex.Matches(sContne);
-
-                        if (dtSec != null)
-                        {
-                            //循环列清单
-                            foreach (DataRow dr in dtSec.Rows)
-                            {
-                                //得到##匹配值
-                                foreach (Match item in mc)
-                                {
-                                    //如果包含全局公共值，先替换
-                                    if (_dicString.ContainsKey(item.Value))
-                                    {
-                                        sContne = sContne.Replace(item.Value, _dicString[item.Value].ToString());
-                                    }
-                                    else
-                                    {
-                                        //否则以当前行的值数据来替换
-                                        sContne = sContne.Replace(item.Value, dr[_keyParamColRel[item.Value]].ToString());
-                                    }
-                                }
-                                sbMy.AppendLine(sContne);
-                                //还原为初始值
-                                sContne = drDynamic[AutoImportModuleString.ColumnNameMyParam.ParamContent].ToString();
-                            }
-                            //得到最终动态值
-                            _dicString[drDynamic[AutoImportModuleString.ColumnNameMyParam.ParamName].ToString()] = sbMy.ToString();
-                        }
-                        else
-                        {
-                            //得到##匹配值
-                            foreach (Match item in mc)
-                            {
-                                //如果包含全局公共值，先替换
-                                if (_dicString.ContainsKey(item.Value))
-                                {
-                                    sContne = sContne.Replace(item.Value, _dicString[item.Value].ToString());
-                                }
-                            }
-                            //得到最终动态值
-                            _dicString[drDynamic[AutoImportModuleString.ColumnNameMyParam.ParamName].ToString()] = sContne;
-                        }
-                        
-                    }
-
-                }
+                AutoFileUtil.FixMyDynamicParam(_dicString, dtMyDefineDynamic, dtColumnList, dtSysParam,true);
 
                 //循环文件，处理文件名和空间名
                 foreach (DataRow drFile in _dtFileSelect.Rows)
@@ -574,7 +486,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 rtbResult.AppendText("最终得到的参数如下：\n");
                 foreach (string sKey in _dicString.Keys)
                 {
-                    rtbResult.AppendText(sKey + "：" + _dicString[sKey]+"\n");
+                    rtbResult.AppendText(sKey + "：" + _dicString[sKey] + "\n");
                 }
                 rtbResult.Select(0, 0); //返回到第一行
                 tabControl1.SelectedTab = tpAutoSQL;
@@ -586,7 +498,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     string sPackName = drFile[AutoImportModuleString.ColumnNameClass.FinalPackName].ToString();
                     //文件名：前缀+实体名+后缀
                     string sFileName = drFile[AutoImportModuleString.ColumnNameClass.BeginString].ToString() + param["EntityName"] + drFile[AutoImportModuleString.ColumnNameClass.EndString].ToString();
-                    
+
                     //替换包路径
                     sFileContent = sFileContent.Replace(AutoImportModuleString.AutoFileSysParam.PackPath, sPackName);
                     if (!Directory.Exists(sFilePath))
@@ -607,13 +519,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //生成SQL成功后提示
                 //ShowInfo(strInfo);
                 lblInfo.Text = _strAutoSqlSuccess;
-                
+
             }
             catch (Exception ex)
             {
                 ShowErr(ex.Message);
             }
         }
+
+        
 
         /// <summary>
         /// 替换字符中的键为实际值
@@ -637,46 +551,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             return sPackName;
         }
 
-        private string GetFinalString(string sIn,DataRow dr)
-        {
-            string sColApi = sIn.Trim().Replace(AutoImportModuleString.AutoFileSysParam.ColName, dr[_ColumnFirstUpper].ToString())
-              .Replace(AutoImportModuleString.AutoFileSysParam.ColNameFirstLower, dr[_ColumnFirstLower].ToString())
-              .Replace(AutoImportModuleString.AutoFileSysParam.ColNameCn, dr[DBColumnEntity.SqlString.NameCN].ToString())
-              .Replace(AutoImportModuleString.AutoFileSysParam.ColDbName, dr[DBColumnEntity.SqlString.Name].ToString());
+        
 
-            DataRow[] drArr = _dsExcel.Tables[AutoImportModuleString.SheetName.DbTypeConvert].Select(AutoImportModuleString.ColumnNameTypeConvert.DbType + "='"+ dr[DBColumnEntity.SqlString.DataType].ToString() + "'");
-            if (drArr.Length > 0 && !string.IsNullOrEmpty(drArr[0][AutoImportModuleString.ColumnNameTypeConvert.DevLangType].ToString()))
-            {
-                sColApi = sColApi.Replace(AutoImportModuleString.AutoFileSysParam.ColEntType, drArr[0][AutoImportModuleString.ColumnNameTypeConvert.DevLangType].ToString());
-            }
-            else
-            {
-                sColApi = sColApi.Replace(AutoImportModuleString.AutoFileSysParam.ColEntType, "String");
-            }
-            return sColApi;
-        }
-
-        private static string FirstLetterUpper(string strColCode, bool isFirstWorldUpper = true)
-        {
-            strColCode = strColCode.ToLower();
-            string[] firstUpper = strColCode.Split('_');
-            StringBuilder sb = new StringBuilder();
-            int i = 0;
-            foreach (var s in firstUpper)
-            {
-                if (i == 0 && !isFirstWorldUpper)
-                {
-                    sb.Append(s);
-                }
-                else
-                {
-                    sb.Append(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(s));
-                }
-                i++;
-            }
-            strColCode = sb.ToString();
-            return strColCode;
-        }
         #endregion
 
         #region 帮助按钮事件
@@ -753,18 +629,18 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             if (!string.IsNullOrEmpty(txbRemoveTablePre.Text.Trim()))
             {
-                txbEntityName.Text = FirstLetterUpper(cbbTableName.Text.Trim().ToUpper().Replace(txbRemoveTablePre.Text.Trim().ToUpper(), ""));
+                txbEntityName.Text = cbbTableName.Text.Trim().ToUpper().Replace(txbRemoveTablePre.Text.Trim().ToUpper(), "").FirstLetterUpper();
             }
             else
             {
-                txbEntityName.Text = FirstLetterUpper(cbbTableName.Text.Trim());
+                txbEntityName.Text = cbbTableName.Text.Trim().FirstLetterUpper();
             }
         }
 
         private void btnImportPath_Click(object sender, EventArgs e)
         {
             _dicString.Clear();
-            _dicString[AutoImportModuleString.SheetName.ClassFile] = AutoImportModuleString.SheetName.ClassFile;
+            _dicString[AutoImportModuleString.SheetName.CodeModule] = AutoImportModuleString.SheetName.CodeModule;
             _dicString[AutoImportModuleString.SheetName.MyParam] = AutoImportModuleString.SheetName.MyParam;
             _dicString[AutoImportModuleString.SheetName.DbTypeConvert] = AutoImportModuleString.SheetName.DbTypeConvert;
             _dicString[AutoImportModuleString.SheetName.SysParam] = AutoImportModuleString.SheetName.SysParam;
@@ -772,7 +648,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (_dsExcel != null)
             {
                 _bsFileList = new BindingSource();
-                DataTable dt = _dsExcel.Tables[AutoImportModuleString.SheetName.ClassFile];
+                DataTable dt = _dsExcel.Tables[AutoImportModuleString.SheetName.CodeModule];
+                if (dt == null)
+                {
+                    MsgHelper.ShowInfo("导入模板错误，请重新导入！");
+                    return;
+                }
                 DataColumn dcSelected = new DataColumn(_sGridIsSelect);
                 dcSelected.DefaultValue = "1";
                 dt.Columns.Add(dcSelected);
@@ -808,6 +689,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     FlexGridColumn.NewRowNoCol(),
                     new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameMyParam.ParamName).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                     new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameMyParam.ParamContent).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                    new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameMyParam.ConcatString).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                     new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameMyParam.ParamValueInfo).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
                 );
                 dgvMyDefine.Tag = fdc.GetGridTagString();
@@ -817,6 +699,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 fdc.AddColumn(
                     FlexGridColumn.NewRowNoCol(),
                     new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameSysParam.ParamName).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                    new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameSysParam.ParamContent).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                     new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameSysParam.ParamValueInfo).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                     new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameSysParam.Example).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
                 );

@@ -19,7 +19,7 @@
       <!--表SQL生成-->
       <Menu Guid="04FC80B7-1DE5-4717-A7FF-E948BCD230CD" Name="表结构SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTExcelGenerateTableSQL"  HelpPath="/Help/Html/DBTool/DB/SqlTableConstuct.html"/>
       <Menu Guid="629E907C-7790-4897-9126-37E43CE5F80A" Name="增删改查SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTGetTableQuerySql"  HelpPath="/Help/Html/DBTool/DB/SqlDBQuery.html"/>
-      <Menu Guid="0DF72AF9-7BF1-44E0-B68C-A209572C5B90" Name="表列扩展信息SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTTableExtendProperty"  HelpPath="/Help/Html/DBTool/DB/SqlTableColumnRemark.html"/>
+      <Menu Guid="0DF72AF9-7BF1-44E0-B68C-A209572C5B90" Name="表列注释SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTTableExtendProperty"  HelpPath="/Help/Html/DBTool/DB/SqlTableColumnRemark.html"/>
     </Class>
     
     <Class Guid="A72D3A5E-F499-468C-884A-B506004A459D" Name="数据SQL生成" Code="M_DB_TOOL_DATA_SQL" ShortCutKey="">
@@ -30,14 +30,13 @@
     <Class Guid="FF32364F-3832-48F7-8B32-B473DC48401D" Name="数据拼接" Code="M_DB_TOOL_STR_CONN" ShortCutKey="">
       <!--字符拼接-->
       <Menu Guid="05AF975A-6814-4538-953E-CE4F2E294172" Name="数据库数据拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTReadDataBaseString"  HelpPath="/Help/Html/DBTool/DB/DataStringDBQuery.html"/>
-	  <Menu Guid="8FD50BB4-B9AC-4846-9261-732EDF6CF49A" Name="表列字符拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTTableColumnString"  HelpPath="/Help/Html/DBTool/DB/DataStringDBQuery.html"/>
+	  <Menu Guid="8FD50BB4-B9AC-4846-9261-732EDF6CF49A" Name="表列字符拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTTableColumnString"  HelpPath="/Help/Html/DBTool/DB/DBColumnStringConn.html"/>
     </Class>
     
     <Class Guid="29EB1BE0-21D8-4FB6-93C7-3B85E60BB5B5" Name="程序开发" Code="M_DB_TOOL_APP_DEV" ShortCutKey="">
       <!--实体生成-->
-	  <Menu Guid="89205F44-3EF5-4A0B-A4CD-04DD8145F99E" Name="代码文件生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTAutoCodeFile"  HelpPath="/Help/Html/DBTool/DB/AutoFile.html"/>
-	  <Menu Guid="8D1C89B3-FBD1-44A3-8CE4-A60D98C659AB" Name="实体类生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBAutoEntityTemplate"  HelpPath="/Help/Html/DBTool/DB/AutoEntity.html"/>
-      <!--<Menu Guid="495617C4-CB3B-4F66-9791-F2E5D292B4C5" Name="程序文件生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBGenerateFile"  HelpPath="/Help/Html/DBTool/DB/AutoFile.html"/>-->
+	  <Menu Guid="89205F44-3EF5-4A0B-A4CD-04DD8145F99E" Name="代码文件生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTDBAutoCodeFile"  HelpPath="/Help/Html/DBTool/DB/AutoFile.html"/>
+	  <Menu Guid="6DD928D5-B5A6-4E65-97AF-C894B2DF92DA" Name="实体文件生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTDBAutoEntityFile"  HelpPath="/Help/Html/DBTool/DB/AutoEntity.html"/>
     </Class>
     <Class Guid="07A30998-9277-4AC7-96AA-108AA04F1AF2" Name="综合" Code="M_DB_TOOL_ALL" ShortCutKey="">
       <Menu Guid="FAC4990F-07F5-41C7-AE6A-86915CEFD282" Name="合并脚本" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTScriptMerge"  HelpPath="/Help/Html/DBTool/DB/MergeScript.html"/>

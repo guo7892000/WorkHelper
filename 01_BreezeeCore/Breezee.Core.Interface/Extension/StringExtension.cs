@@ -277,5 +277,29 @@ namespace Breezee.Core.Interface
             }
             return dt;
         }
+
+        public static string FirstLetterUpper(this string strColCode, bool isFirstWorldUpper = true)
+        {
+            strColCode = strColCode.ToLower();
+            string[] firstUpper = strColCode.Split('_');
+            StringBuilder sb = new StringBuilder();
+            int i = 0;
+            foreach (var s in firstUpper)
+            {
+                if (i == 0 && !isFirstWorldUpper)
+                {
+                    sb.Append(s);
+                }
+                else
+                {
+                    sb.Append(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(s));
+                }
+                i++;
+            }
+            strColCode = sb.ToString();
+            return strColCode;
+        }
+
+
     }
 }

@@ -156,12 +156,6 @@
     <Compile Include="Extension\IDictionaryExtension.cs" />
     <Compile Include="Extension\IListExtension.cs" />
     <Compile Include="Extension\TreeViewExtension.cs" />
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormCross\DllNameAttribute.cs" />
     <Compile Include="FormCross\DllNameConstants.cs" />
     <Compile Include="FormCross\FormCrossResolver.cs" />
@@ -223,9 +217,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataGrid\GridPager.resx">
       <DependentUpon>GridPager.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FTP\AttachmentItem.resx">
       <DependentUpon>AttachmentItem.cs</DependentUpon>

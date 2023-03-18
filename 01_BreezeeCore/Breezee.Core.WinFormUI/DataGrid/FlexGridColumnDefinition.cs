@@ -10,7 +10,7 @@ using Breezee.Core.Entity;
  * 对象类别：接口		
  * 创建作者：黄国辉		
  * 创建日期：2022/11/5 22:29:28		
- * 对象说明：		
+ * 对象说明：样式文件保存路径：C:\ProgramData\Peach\Config\FormStyles		
  * 电邮地址：guo7892000@126.com		
  * 微 信 号：BreezeeHui		
  * 修改历史：		

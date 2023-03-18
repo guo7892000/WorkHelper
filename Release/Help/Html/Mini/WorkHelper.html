@@ -11,10 +11,11 @@
         <h1>工作助手框架</h1>
         <div>
             <h2>一、框架简述</h2>
-            这是一个简化型的迷你式框架，只有简单的用户登录，没有角色授权、组织管理等，适用于一些工具类项目，如本软件【工作助手】。<br>
+            这是一个简化的迷你式WinForm框架，只有简单的用户登录，没有角色授权、组织管理等，适用于一些工具类项目。<br>
             【工作助手】小工具，主要针对软件开发和设计、数据库开发与运维、测试人员等使用，用于生成数据库变更脚本等相关操作。<br>
-            当然，也包括一些常用的字符拼接、复制等功能，适用于任何使用电脑的人员！！如果你有希望增加的功能，可以联系我，<br>
-            我会考虑在日后的版本中增加。感谢你的支持与反馈！！<br>
+            也包括一些常用的字符拼接、复制等功能，适用于任何使用电脑的人员！！如本工具有问题，请联系作者，感谢你的支持与反馈！！<br>
+            最新绿色版下载地址：<br>
+            https://gitee.com/breezee2000/WorkHelper/releases
         </div>
         <div>
             <h2>二、界面截图</h2>
@@ -64,17 +65,18 @@
         <div>
             <h2>四、逻辑与业务规则</h2>
             <div>
-                <b>1、数据库文件：</b><br>
+                <b>1、SQLite数据库文件：</b><br>
                 框架数据库：SQLite_Mini.db<br>
                 数据库工具：SQLite_DBTool.db<br>
-                卸载软件时，上述文件不会被卸载。<br>
+                上述文件保存连接的数据库信息，请自行备份，在更换新版本后，请用原版本中数据库文件替换。<br>
                 <b>2、配置文件（Config目录）：</b>这里只列比较重要的<br>
                 菜单配置：\Config\Mini\Data\MenuList.xml<br>
                 值列表配置：\Config\Mini\Data\KeyValue.xml<br>
                 DLL配置：\Config\Mini\Data\DLLList.xml<br>
-                IOC主配置：\Config\Mini\IOC.Main.Mini.config<br>
-                SQL主配置：\Config\Mini\SQL.Main.Mini.config<br>
-                卸载软件时，上述文件会被卸载，如有修改，请自行做好备份。<br>
+                SQL主配置：\Config\SQL.Main.config<br>
+                IoC使用Castle.Windsor或Autofac，在每个子模块中继承它们的安装类，再加载其所在的DLL，实现接口与实现的注入。<br>
+                摒弃了以前使用XML的方式，那样不容易在编译阶段发现错误！<br>
+                上述文件如有自定义的功能，请自行备份，在更换新版本后，自行追加。<br>
                 <b>3、模板目录（DataTemplate）：</b>功能中所有下载的模板都来自于该目录。<br>
                 <b>4、帮助目录（Help）：</b>所有功能的帮助文件html都在该目录下。<br>
             </div>

@@ -12,6 +12,9 @@ using Breezee.Core.Interface;
 
 namespace Breezee.Framework.Mini.StartUp
 {
+    /// <summary>
+    /// 快捷菜单项
+    /// </summary>
     public partial class ShortCutItem : UserControl
     {
         public EventHandler<ShortCutItemClickEventArgs> ShortCutItemClick;

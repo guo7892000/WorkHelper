@@ -26,6 +26,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void FrmDBTScriptMerge_Load(object sender, EventArgs e)
         {
             ckbAutoOpen.Checked = true;
+            lblMergeInfo.Text= "请保证所有要合并的文件在配置文件所在目录（或子目录）下，并且文件的格式为UTF-8格式（可通过另存为UTF-8保证），否则合并后可能会有乱码";
         }
         private void BtnSelectFile_Click(object sender, EventArgs e)
         {

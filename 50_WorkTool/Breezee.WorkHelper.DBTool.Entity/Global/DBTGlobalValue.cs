@@ -47,24 +47,11 @@ namespace Breezee.WorkHelper.DBTool.Entity
 
         public static class AutoFile
         {
-            public static string Excel_IBD = AutoFile_Pre + "模板_生成IBD文件.xlsx";
             public static string Excel_Code = AutoFile_Pre + "模板_生成代码文件.xlsx";
-            public static string I = AutoFile_Pre + "I.txt";
-            public static string B = AutoFile_Pre + "B.txt";
-            public static string D = AutoFile_Pre + "D.txt";
-            public static string ID = AutoFile_Pre + "ID.txt";
-            public static string Frm = AutoFile_Pre + "Frm.txt";
-            public static string Frm_Designer = AutoFile_Pre + "Frm.designer.txt";
-            public static string Para = AutoFile_Pre + "Para.txt";
         }
         public static class AutoEntity
         {
-            public static string Param = AutoEntity_Pre + "param.txt";
-            public static string Table = AutoEntity_Pre + "table.txt";
-            public static string ColumnProp = AutoEntity_Pre + "columnProperty.txt";
-            public static string ColumnStr = AutoEntity_Pre + "columnString.txt";
-            public static string Xml_Column = AutoEntity_Pre + "ColumnConfig.xml";
-
+            public static string Excel_Code = AutoEntity_Pre + "模板_生成实体.xlsx";
         }
 
         public static class DataSQL

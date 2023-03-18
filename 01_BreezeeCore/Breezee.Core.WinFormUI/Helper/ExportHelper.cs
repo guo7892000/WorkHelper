@@ -635,7 +635,6 @@ namespace Breezee.Core.WinFormUI
 
             for (int i = headerRow.FirstCellNum; i < cellCount; i++)
             {
-                //DataColumn column = new DataColumn(headerRow.GetCell(i).StringCellValue); //列为数值1,2,3等，此段代码报错 2014-6-20 廖凌峰
                 DataColumn column = new DataColumn(headerRow.GetCell(i).ToString().ToUpper());
                 dt.Columns.Add(column);
             }

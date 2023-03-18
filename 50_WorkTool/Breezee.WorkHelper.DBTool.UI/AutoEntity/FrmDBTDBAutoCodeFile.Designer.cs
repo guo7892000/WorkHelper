@@ -1,6 +1,6 @@
 ﻿namespace Breezee.WorkHelper.DBTool.UI
 {
-    partial class FrmDBTAutoCodeFile
+    partial class FrmDBTDBAutoCodeFile
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDBTAutoCodeFile));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDBTDBAutoCodeFile));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbImport = new System.Windows.Forms.ToolStripButton();
             this.tsbAutoSQL = new System.Windows.Forms.ToolStripButton();
@@ -69,6 +69,8 @@
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.rtbConString = new System.Windows.Forms.RichTextBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnUpdate = new System.Windows.Forms.Button();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dgvMyDefine = new System.Windows.Forms.DataGridView();
@@ -77,8 +79,6 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.dgvTypeConvert = new System.Windows.Forms.DataGridView();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.btnUpdate = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpImport.SuspendLayout();
@@ -105,6 +105,7 @@
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMyDefine)).BeginInit();
@@ -112,7 +113,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSysParam)).BeginInit();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTypeConvert)).BeginInit();
-            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -394,7 +394,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer3);
             this.splitContainer1.Size = new System.Drawing.Size(1070, 278);
-            this.splitContainer1.SplitterDistance = 636;
+            this.splitContainer1.SplitterDistance = 558;
             this.splitContainer1.TabIndex = 15;
             // 
             // dgvModule
@@ -404,7 +404,7 @@
             this.dgvModule.Location = new System.Drawing.Point(0, 82);
             this.dgvModule.Name = "dgvModule";
             this.dgvModule.RowTemplate.Height = 23;
-            this.dgvModule.Size = new System.Drawing.Size(636, 196);
+            this.dgvModule.Size = new System.Drawing.Size(558, 196);
             this.dgvModule.TabIndex = 1;
             this.dgvModule.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvModule_CellClick);
             this.dgvModule.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvModule_ColumnHeaderMouseDoubleClick);
@@ -416,7 +416,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(636, 82);
+            this.groupBox1.Size = new System.Drawing.Size(558, 82);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "生成文件模板导入";
@@ -443,14 +443,14 @@
             this.tableLayoutPanel1.Controls.Add(this.txbSavePath, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnSavePath, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnImportPath, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnExport, 7, 1);
+            this.tableLayoutPanel1.Controls.Add(this.btnExport, 5, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(630, 62);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(552, 62);
             this.tableLayoutPanel1.TabIndex = 14;
             // 
             // label2
@@ -507,7 +507,7 @@
             this.txbEntityNameCN.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txbEntityNameCN.Location = new System.Drawing.Point(405, 30);
             this.txbEntityNameCN.Name = "txbEntityNameCN";
-            this.txbEntityNameCN.Size = new System.Drawing.Size(170, 21);
+            this.txbEntityNameCN.Size = new System.Drawing.Size(135, 21);
             this.txbEntityNameCN.TabIndex = 10;
             // 
             // txbSavePath
@@ -521,6 +521,7 @@
             // 
             // btnSavePath
             // 
+            this.btnSavePath.ForeColor = System.Drawing.Color.Red;
             this.btnSavePath.Location = new System.Drawing.Point(86, 3);
             this.btnSavePath.Name = "btnSavePath";
             this.btnSavePath.Size = new System.Drawing.Size(68, 20);
@@ -544,7 +545,7 @@
             // btnExport
             // 
             this.btnExport.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnExport.Location = new System.Drawing.Point(581, 30);
+            this.btnExport.Location = new System.Drawing.Point(405, 3);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(45, 20);
             this.btnExport.TabIndex = 8;
@@ -578,8 +579,8 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.tabControl2);
-            this.splitContainer3.Size = new System.Drawing.Size(430, 278);
-            this.splitContainer3.SplitterDistance = 182;
+            this.splitContainer3.Size = new System.Drawing.Size(508, 278);
+            this.splitContainer3.SplitterDistance = 215;
             this.splitContainer3.TabIndex = 20;
             // 
             // groupBox2
@@ -589,7 +590,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(182, 278);
+            this.groupBox2.Size = new System.Drawing.Size(215, 278);
             this.groupBox2.TabIndex = 18;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "模板内容";
@@ -599,9 +600,30 @@
             this.rtbConString.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbConString.Location = new System.Drawing.Point(3, 54);
             this.rtbConString.Name = "rtbConString";
-            this.rtbConString.Size = new System.Drawing.Size(176, 221);
+            this.rtbConString.Size = new System.Drawing.Size(209, 221);
             this.rtbConString.TabIndex = 14;
             this.rtbConString.Text = "";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.btnUpdate);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox3.Location = new System.Drawing.Point(3, 17);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(209, 37);
+            this.groupBox3.TabIndex = 15;
+            this.groupBox3.TabStop = false;
+            // 
+            // btnUpdate
+            // 
+            this.btnUpdate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnUpdate.Location = new System.Drawing.Point(6, 11);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(55, 20);
+            this.btnUpdate.TabIndex = 8;
+            this.btnUpdate.Text = "更新";
+            this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // tabControl2
             // 
@@ -612,7 +634,7 @@
             this.tabControl2.Location = new System.Drawing.Point(0, 0);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(244, 278);
+            this.tabControl2.Size = new System.Drawing.Size(289, 278);
             this.tabControl2.TabIndex = 19;
             // 
             // tabPage1
@@ -621,7 +643,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(236, 252);
+            this.tabPage1.Size = new System.Drawing.Size(281, 252);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "自定义变量";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -633,7 +655,7 @@
             this.dgvMyDefine.Location = new System.Drawing.Point(3, 3);
             this.dgvMyDefine.Name = "dgvMyDefine";
             this.dgvMyDefine.RowTemplate.Height = 23;
-            this.dgvMyDefine.Size = new System.Drawing.Size(230, 246);
+            this.dgvMyDefine.Size = new System.Drawing.Size(275, 246);
             this.dgvMyDefine.TabIndex = 2;
             // 
             // tabPage2
@@ -685,28 +707,7 @@
             this.uC_DbConnection1.Size = new System.Drawing.Size(1070, 72);
             this.uC_DbConnection1.TabIndex = 35;
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.btnUpdate);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox3.Location = new System.Drawing.Point(3, 17);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(176, 37);
-            this.groupBox3.TabIndex = 15;
-            this.groupBox3.TabStop = false;
-            // 
-            // btnUpdate
-            // 
-            this.btnUpdate.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnUpdate.Location = new System.Drawing.Point(6, 11);
-            this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(55, 20);
-            this.btnUpdate.TabIndex = 8;
-            this.btnUpdate.Text = "更新";
-            this.btnUpdate.UseVisualStyleBackColor = true;
-            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
-            // 
-            // FrmDBTAutoCodeFile
+            // FrmDBTDBAutoCodeFile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -717,7 +718,7 @@
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "FrmDBTAutoCodeFile";
+            this.Name = "FrmDBTDBAutoCodeFile";
             this.Text = "代码文件生成";
             this.Load += new System.EventHandler(this.FrmGetOracleSql_Load);
             this.toolStrip1.ResumeLayout(false);
@@ -752,6 +753,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvMyDefine)).EndInit();
@@ -759,7 +761,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSysParam)).EndInit();
             this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvTypeConvert)).EndInit();
-            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -43,25 +43,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoEntity\AutoFileUtil.cs" />
     <Compile Include="AutoEntity\AutoModuleString.cs" />
     <Compile Include="AutoEntity\AutoEntityString.cs" />
-    <Compile Include="AutoEntity\FrmDBAutoEntity.cs">
+    <Compile Include="AutoEntity\FrmDBTDBAutoEntityFile.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AutoEntity\FrmDBAutoEntity.Designer.cs">
-      <DependentUpon>FrmDBAutoEntity.cs</DependentUpon>
+    <Compile Include="AutoEntity\FrmDBTDBAutoEntityFile.Designer.cs">
+      <DependentUpon>FrmDBTDBAutoEntityFile.cs</DependentUpon>
     </Compile>
-    <Compile Include="AutoEntity\FrmDBAutoEntityTemplate.cs">
+    <Compile Include="AutoEntity\FrmDBTDBAutoCodeFile.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AutoEntity\FrmDBAutoEntityTemplate.Designer.cs">
-      <DependentUpon>FrmDBAutoEntityTemplate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AutoEntity\FrmDBTAutoCodeFile.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AutoEntity\FrmDBTAutoCodeFile.Designer.cs">
-      <DependentUpon>FrmDBTAutoCodeFile.cs</DependentUpon>
+    <Compile Include="AutoEntity\FrmDBTDBAutoCodeFile.Designer.cs">
+      <DependentUpon>FrmDBTDBAutoCodeFile.cs</DependentUpon>
     </Compile>
     <Compile Include="Base\FrmDBConfigSet.cs">
       <SubType>Form</SubType>
@@ -172,6 +167,11 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs" />
     <Compile Include="StringBuild\FrmDBTClickCopyStringAuto.cs">
       <SubType>Form</SubType>
@@ -232,6 +232,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="DataTemplate\DBTool\AutoEntity\模板_生成实体.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="DataTemplate\DBTool\AutoFile\模板_生成代码文件.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -248,14 +251,11 @@
     <None Include="SQLite_DBTool.db" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AutoEntity\FrmDBAutoEntity.resx">
-      <DependentUpon>FrmDBAutoEntity.cs</DependentUpon>
+    <EmbeddedResource Include="AutoEntity\FrmDBTDBAutoEntityFile.resx">
+      <DependentUpon>FrmDBTDBAutoEntityFile.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AutoEntity\FrmDBAutoEntityTemplate.resx">
-      <DependentUpon>FrmDBAutoEntityTemplate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoEntity\FrmDBTAutoCodeFile.resx">
-      <DependentUpon>FrmDBTAutoCodeFile.cs</DependentUpon>
+    <EmbeddedResource Include="AutoEntity\FrmDBTDBAutoCodeFile.resx">
+      <DependentUpon>FrmDBTDBAutoCodeFile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Base\FrmDBConfigSet.resx">
       <DependentUpon>FrmDBConfigSet.cs</DependentUpon>
@@ -308,6 +308,10 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="StringBuild\FrmDBTClickCopyStringAuto.resx">
       <DependentUpon>FrmDBTClickCopyStringAuto.cs</DependentUpon>
     </EmbeddedResource>
@@ -334,21 +338,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DataTemplate\DBTool\AutoEntity\ColumnConfig.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DataTemplate\DBTool\AutoEntity\columnProperty.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DataTemplate\DBTool\AutoEntity\columnString.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DataTemplate\DBTool\AutoEntity\param.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DataTemplate\DBTool\AutoEntity\table.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="DataTemplate\DBTool\StringBuild\模板_合并脚本配置.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -385,6 +374,9 @@
     <Content Include="Help\Html\DBTool\DB\DataStringIn.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Help\Html\DBTool\DB\DBColumnStringConn.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\Html\DBTool\DB\DBConnectSet.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -398,6 +390,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\DB\Images\AutoEntity.003.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\DB\Images\AutoEntity.004.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\DB\Images\AutoEntity.005.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\DB\Images\AutoEntity.006.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\DB\Images\AutoEntity.007.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\DB\Images\AutoFile.001.02.jpg">
@@ -449,6 +453,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\DB\Images\DataStringIn.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\DB\Images\DBColumnStringConn.001.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\DB\Images\DBConnectSet.001.jpg">
