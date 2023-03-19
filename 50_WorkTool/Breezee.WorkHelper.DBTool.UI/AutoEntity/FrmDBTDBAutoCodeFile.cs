@@ -450,7 +450,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     }
 
                     //得到所有拼接的动态字符
-                    _dicString[AutoImportModuleString.AutoFileSysParam.ColDbNameAll] = sbAllCol.ToString().Substring(0, sbAllCol.ToString().Length-1);
+                    //_dicString[AutoImportModuleString.AutoFileSysParam.ColDbNameAll] = sbAllCol.ToString().Substring(0, sbAllCol.ToString().Length-1);
                     _dicString[AutoImportModuleString.AutoFileSysParam.ColQueryIn] = sbQueryIn.ToString();
                     _dicString[AutoImportModuleString.AutoFileSysParam.ColQueryOut] = sbQueryOut.ToString();
                     _dicString[AutoImportModuleString.AutoFileSysParam.ColSaveIn] = sbSaveIn.ToString();
@@ -466,7 +466,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 foreach (DataRow drFile in _dtFileSelect.Rows)
                 {
                     //
-                    string sFilePath = Path.Combine(param["SavePath"], drFile[AutoImportModuleString.ColumnNameClass.Path].ToString());
+                    string sFilePath = Path.Combine(param["SavePath"], "AutoCodeFiles", drFile[AutoImportModuleString.ColumnNameClass.Path].ToString());
                     sFilePath = ReplaceParamKeyByValue(sFilePath);//FilePath中也可能包含变量，所以这里也要替换
 
                     string sPackName = drFile[AutoImportModuleString.ColumnNameClass.PackName].ToString();

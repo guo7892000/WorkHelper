@@ -40,6 +40,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicQuery[AutoImportModuleString.AutoFileSysParam.ColDbRemark] = ent.Comments;
             //替换参数值
             SetEntityColumnNotNullValue(AutoImportModuleString.AutoFileSysParam.SetEntColDbName,dtSysDefine, _dicQuery);
+            SetEntityColumnNotNullValue(AutoImportModuleString.AutoFileSysParam.SetEntColDbType, dtSysDefine, _dicQuery);
             SetEntityColumnNotNullValue(AutoImportModuleString.AutoFileSysParam.SetEntColDbLength, dtSysDefine, _dicQuery);
             SetEntityColumnNotNullValue(AutoImportModuleString.AutoFileSysParam.SetEntColDbDecimalBegin, dtSysDefine, _dicQuery);
             SetEntityColumnNotNullValue(AutoImportModuleString.AutoFileSysParam.SetEntColDbDecimalEnd, dtSysDefine, _dicQuery);
@@ -57,9 +58,63 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (drArr.Length > 0)
             {
                 //取出变量内容
-                string sContne = drArr[0][AutoImportModuleString.ColumnNameMyParam.ParamContent].ToString();
+                string sContne = drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString();
+                string sContneWhere = drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContentWhere].ToString();
+                string[] whereArr = sContneWhere.Split(',');
                 Regex regex = new Regex(@"#\w+#", RegexOptions.IgnoreCase);
                 MatchCollection mc = regex.Matches(sContne);
+                bool isReplace = true;//默认是要替换
+                if (whereArr != null && whereArr.Length == 3)
+                {
+                    isReplace = false;//有条件，先改为不替换
+
+                    string sColKey = whereArr[0];
+                    string sOperate = whereArr[1];
+                    string sValue = whereArr[2];
+                    if (sOperate == "=")
+                    {
+                        if (whereArr[2] == "null")
+                        {
+                            //不包含键则为空值；或空值
+                            if (!_dicQuery.ContainsKey(sColKey) || string.IsNullOrEmpty(_dicQuery[sColKey]))
+                            {
+                                isReplace = true;
+                            }
+                        }
+                        else
+                        {
+                            //包含键且值相等
+                            if (_dicQuery.ContainsKey(sColKey) && _dicQuery[sColKey].Equals(sValue))
+                            {
+                                isReplace = true;
+                            }
+                        }
+                    }
+                    else if (sOperate == "!=" || sOperate == "<>")
+                    {
+                        if (whereArr[2] == "null")
+                        {
+                            //必须包含键且不是空值
+                            if (_dicQuery.ContainsKey(sColKey) && !string.IsNullOrEmpty(_dicQuery[sColKey]))
+                            {
+                                isReplace = true;
+                            }
+                        }
+                        else
+                        {
+                            //必须包含键且值不相等
+                            if (_dicQuery.ContainsKey(sColKey) && !_dicQuery[sColKey].Equals(sValue))
+                            {
+                                isReplace = true;
+                            }
+                        }
+                    }
+                    if (!isReplace)
+                    {
+                        _dicQuery[sKey] = ""; //不符合条件，那么最终替换值为空
+                        sContne = "";
+                    }
+                }
                 //得到##匹配值
                 foreach (Match item in mc)
                 {
@@ -75,6 +130,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         public static string GetFinalString(string sIn, DataRow dr,DataTable dtSysParam,IDictionary<string, string> _dicQuery, DataTable dtConvert)
         {
+            //确定系统动态变量
             FixSysDynamicParam(dr, dtSysParam, _dicQuery);
             string sColApi = sIn.Trim();
             foreach (string key in _dicQuery.Keys)
@@ -162,7 +218,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         }
                         //得到最终动态值
                         _dicString[drDynamic[AutoImportModuleString.ColumnNameMyParam.ParamName].ToString()] = sContne;
-                        return;
+                        continue;
                     }
 
                     //循环列清单

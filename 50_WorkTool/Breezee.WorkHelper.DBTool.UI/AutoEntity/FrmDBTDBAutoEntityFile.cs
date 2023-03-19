@@ -156,15 +156,43 @@ namespace Breezee.WorkHelper.DBTool.UI
                 DataTable dtColumn = _dataAccess.GetSqlSchemaTableColumns(sTableName);
 
                 StringBuilder sbAllCol = new StringBuilder();
+                StringBuilder sbEntity = new StringBuilder();
+
                 //循环表的列清单
                 foreach (DataRow dr in dtColumn.Rows)
                 {
                     sbAllCol.Append(dr[DBColumnEntity.SqlString.Name].ToString() + ",");
+                    //MyBatis的实体定义：这里有类型替换
+                    DataRow[] drArr = dtSysParam.Select(AutoImportModuleString.ColumnNameSysParam.ParamName + "='" + AutoImportModuleString.AutoFileSysParam.ColEntNote + "'");
+                    DataRow[] drArrType = dtConvert.Select(AutoImportModuleString.ColumnNameTypeConvert.DbType + "='" + dr[DBColumnEntity.SqlString.DataType].ToString() + "'");
+
+                    if (drArr.Length > 0 && !string.IsNullOrEmpty(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString()))
+                    {
+                        //替换列变量
+                        string sColApi = AutoFileUtil.GetFinalString(drArr[0][AutoImportModuleString.ColumnNameSysParam.ParamContent].ToString(), dr, dtSysParam, _dicString, dtConvert);
+                        //替换类型转换
+                        if (drArrType.Length > 0)
+                        {
+                            sColApi = sColApi.Replace(AutoImportModuleString.ColumnNameSysParam.ChangeType, drArrType[0][AutoImportModuleString.ColumnNameTypeConvert.DevLangType].ToString());
+                        }
+                        //主键字符替换
+                        if ("PK".Equals(dr[DBColumnEntity.SqlString.KeyType].ToString()))
+                        {
+                            sbEntity.Append(sColApi.Replace("@TableField", "@TableId"));
+                            sbEntity.Append(Environment.NewLine);
+                        }
+                        else
+                        {
+                            sbEntity.Append(sColApi);
+                            sbEntity.Append(Environment.NewLine);
+                        }
+                    }
 
                 }
 
                 //得到所有拼接的动态字符
-                _dicString[AutoImportModuleString.AutoFileSysParam.ColDbNameAll] = sbAllCol.ToString().Substring(0, sbAllCol.ToString().Length - 1);
+                //_dicString[AutoImportModuleString.AutoFileSysParam.ColDbNameAll] = sbAllCol.ToString().Substring(0, sbAllCol.ToString().Length - 1);
+                _dicString[AutoImportModuleString.AutoFileSysParam.ColEntNote] = sbEntity.ToString();
 
                 //自定义变量中动态值的处理
                 DataTable dtMyDefineDynamic = dgvMyDefine.GetBindingTable();
@@ -172,7 +200,13 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 //替换模板内容
                 string sFileContent = rtbEntityTemplate.Text;
-                string sFilePath = Path.Combine(txtPath.Text.Trim(), _dicString[AutoImportModuleString.AutoFileSysParam.EntNameClass] + ".cs");
+                string sFilePath = Path.Combine(txtPath.Text.Trim(), "AutoEntityFiles");
+                if (!Directory.Exists(sFilePath))
+                {
+                    Directory.CreateDirectory(sFilePath);
+                }
+                //最终文件路径：包含文件
+                sFilePath = Path.Combine(sFilePath, _dicString[AutoImportModuleString.AutoFileSysParam.EntNameClass] + ".cs");
                 foreach (string sKey in _dicString.Keys)
                 {
                     sFileContent = sFileContent.Replace(sKey, _dicString[sKey]);
@@ -184,6 +218,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
             }
             //保存属性
+            Setting.Default.AutoEntity_Path = txtPath.Text;
             Setting.Default.Save();
             ShowInfo("实体成功生成！");
         }

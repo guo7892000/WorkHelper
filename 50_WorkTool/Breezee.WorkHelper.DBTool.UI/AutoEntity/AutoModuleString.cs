@@ -63,6 +63,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             public static readonly string ChangeType = "变化类型";
             public static readonly string ParamName = "变量名";
             public static readonly string ParamContent = "变量内容";
+            public static readonly string ParamContentWhere = "变量内容条件";
             public static readonly string ParamValueInfo = "变量值说明";
             public static readonly string Example = "示例";
         }
@@ -119,7 +120,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             public static readonly string SetEntColDbRemark = "#SET_ENT_COL_EXT#";//列扩展信息
 
 
-            public static readonly string ColDbNameAll = "#COL_DB_NAME_ALL#";//逗号分隔所有字符
+            //public static readonly string ColDbNameAll = "#COL_DB_NAME_ALL#";//逗号分隔所有字符
 
             //生成代码中的实体相关
             public static readonly string ColEntType = "#COL_ENT_TYPE#";
