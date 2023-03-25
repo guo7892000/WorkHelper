@@ -357,7 +357,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             string sFiter = string.Format("{0}='1'", _sGridColumnSelect);
             foreach (DataRow dr in dtSec.Select(sFiter, DBColumnEntity.SqlString.SortNum + " ASC"))
             {
-                dtColumnSelect.ImportRow(dr); //对非修改，不是排除列就导入
+                if(!(sqlEntity.SqlType == SqlType.Update && "PK".Equals(dr[DBColumnEntity.SqlString.KeyType].ToString())))
+                {
+                    dtColumnSelect.ImportRow(dr); //对更新语句的主键列，就导入
+                }
             }
 
             //得到【条件】选中的列
@@ -549,6 +552,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 #region 生成SQL
                 int iSelectLastNumber = dtColumnSelect.Rows.Count - 1; //选择列的最后一行数值
+
                 for (int j = 0; j < dtColumnSelect.Rows.Count; j++)//针对列清单循环：因为只有一个表，所以第二个网格是该表的全部列
                 {
                     DataRow drCol = dtColumnSelect.Rows[j];
@@ -919,17 +923,22 @@ namespace Breezee.WorkHelper.DBTool.UI
                 return;
             }
 
-            if (sqlTypeNow == SqlType.Update)//只针对更新，其条件要加上并发控制ID
+            if (sqlTypeNow == SqlType.Update || sqlTypeNow == SqlType.Delete)//只针对更新和删除，其条件要默认加上主键ID和并发控制ID
             {
+                bool isReturn = false;
                 DataRow[] drUpdateControlColumn = dtSec.Select(DBColumnEntity.SqlString.Name + "='" + _strUpdateCtrolColumnCode + "'");//得到并发ID行
-                if (drUpdateControlColumn.Length == 0)
-                {
-                    return;
-                }
-                if (drUpdateControlColumn[0][_sGridColumnCondition].ToString().Equals("0"))//
+                if (drUpdateControlColumn.Length > 0)
                 {
                     drUpdateControlColumn[0][_sGridColumnCondition] = "1";
+                    isReturn = true;
                 }
+                drUpdateControlColumn = dtSec.Select(DBColumnEntity.SqlString.KeyType + "='PK'");//得到主键ID
+                if (drUpdateControlColumn.Length > 0)
+                {
+                    drUpdateControlColumn[0][_sGridColumnCondition] = "1";
+                    isReturn = true;
+                }
+                if (isReturn) return;
             }
 
             if (ckbUseDefaultConfig.Checked)

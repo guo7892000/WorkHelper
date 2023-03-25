@@ -14,6 +14,8 @@ using Breezee.AutoSQLExecutor.Core;
 using Breezee.Core.IOC;
 using Breezee.AutoSQLExecutor.Common;
 using Breezee.Core.Tool;
+using System.Text.RegularExpressions;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -45,6 +47,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private IDBDefaultValue _IDBDefaultValue;
         private DataTable _dtDefault = null;
         DBSqlEntity sqlEntity;
+        String _sColumnList = "#COL_LIST#";
         #endregion
 
         #region 构造函数
@@ -75,6 +78,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             //设置下拉框查找数据源
             cbbTableName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cbbTableName.AutoCompleteSource = AutoCompleteSource.CustomSource;
+
+            //
+            SetTableTag();
+            SetColTag();
         }
         #endregion
 
@@ -133,9 +140,21 @@ namespace Breezee.WorkHelper.DBTool.UI
                 dtTable.Rows.Add(dr);
             }
             dtTable.TableName = _strTableName;
-            //设置Tag
-            SetTableTag(dtTable);
-            SetColTag(dtTable);
+            dgvTableList.BindDataGridView(dtTable);
+            //查询列数据
+            DataTable dtCols = _dataAccess.GetSqlSchemaTableColumns(sTableName, drArr[0][DBTableEntity.SqlString.Schema].ToString());
+            DataTable dtColsNew = dgvColList.GetBindingTable();
+            dtColsNew.Clear();
+            foreach (DataRow dr in dtCols.Rows)
+            {
+                DBColumnEntity entity = DBColumnEntity.GetEntity(dr);
+
+                DataTable dt = DBColumnSimpleEntity.GetDataRow(new List<DBColumnEntity> { entity });
+                if (dt.Rows.Count > 0)
+                {
+                    dtColsNew.ImportRow(dt.Rows[0]);
+                }
+            }
             //查询全局的默认值配置
             _dicQuery[DT_DBT_BD_COLUMN_DEFAULT.SqlString.IS_ENABLED] = "1";
             _dtDefault = _IDBDefaultValue.QueryDefaultValue(_dicQuery).SafeGetDictionaryTable(); //获取默认值、排除列配置信息
@@ -147,8 +166,9 @@ namespace Breezee.WorkHelper.DBTool.UI
         }
         #endregion
 
-        private void SetTableTag(DataTable dt)
+        private void SetTableTag()
         {
+            DataTable dt = DBTableEntity.GetTableStruct();
             //查询结果
             FlexGridColumnDefinition fdc = new FlexGridColumnDefinition();
             fdc.AddColumn(
@@ -165,53 +185,9 @@ namespace Breezee.WorkHelper.DBTool.UI
         }
 
         #region 设置Tag方法
-        private void SetColTag(DataTable dtTable)
+        private void SetColTag()
         {
-            string sSchema = "";
-            if (dtTable.Rows.Count > 0)
-            {
-                sSchema = dtTable.Rows[0][DBTableEntity.SqlString.Schema].ToString();
-            }
-            DataTable dtCols = _dataAccess.GetSqlSchemaTableColumns(cbbTableName.Text.Trim(), sSchema);
-            DataTable dtColsNew = new DataTable();
-            dtColsNew.Columns.AddRange(new DataColumn[] {
-            new DataColumn("T1"),new DataColumn("T2"),new DataColumn("T3"),
-            new DataColumn("A1"),new DataColumn("A2"),new DataColumn("A3"),
-            new DataColumn("B"),
-            new DataColumn("C"),
-            new DataColumn("D"),
-            new DataColumn("E"),
-            new DataColumn("F"),
-            new DataColumn("G"),
-            new DataColumn("H"),
-            new DataColumn("I"),
-            new DataColumn("J"),
-            new DataColumn("K"),
-            new DataColumn("L"),
-            });
-            foreach (DataRow dr in dtCols.Rows)
-            {
-                DataRow drNew = dtColsNew.NewRow();
-                string sTableName = dr[DBColumnEntity.SqlString.TableName].ToString();//表名
-                string sColName = dr[DBColumnEntity.SqlString.Name].ToString();//列名
-                drNew["T1"] = sTableName;
-                drNew["T2"] = FirstLetterUpper(sTableName);//表名首字母大写
-                drNew["T3"] = FirstLetterUpper(sTableName,false);//表名首字母大写（第一个除外）
-                drNew["A1"] = sColName;
-                drNew["A2"] = FirstLetterUpper(sColName);//列名首字母大写
-                drNew["A3"] = FirstLetterUpper(sColName, false);//列名首字母大写
-                drNew["B"] = dr[DBColumnEntity.SqlString.NameCN];
-                drNew["C"] = dr[DBColumnEntity.SqlString.DataType];
-                drNew["D"] = dr[DBColumnEntity.SqlString.DataLength];
-                drNew["E"] = dr[DBColumnEntity.SqlString.DataPrecision];
-                drNew["F"] = dr[DBColumnEntity.SqlString.DataScale];
-                drNew["G"] = dr[DBColumnEntity.SqlString.DataTypeFull];
-                drNew["H"] = dr[DBColumnEntity.SqlString.KeyType];
-                drNew["I"] = dr[DBColumnEntity.SqlString.NotNull];
-                drNew["J"] = dr[DBColumnEntity.SqlString.SortNum];
-                drNew["K"] = dr[DBColumnEntity.SqlString.Comments];
-                dtColsNew.Rows.Add(drNew);
-            }
+            DataTable dtColsNew = DBColumnSimpleEntity.GetTableStruct();
             //增加选择列
             DataColumn dcSelected = new DataColumn(_sGridColumnSelect);
             dcSelected.DefaultValue = "1";
@@ -221,22 +197,23 @@ namespace Breezee.WorkHelper.DBTool.UI
             fdc.AddColumn(
                 FlexGridColumn.NewRowNoCol(),
                 new FlexGridColumn.Builder().Name(_sGridColumnSelect).Caption("选择").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(40).Edit().Visible().Build(),
-                new FlexGridColumn.Builder().Name("T1").Caption("T1").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name("T2").Caption("T2").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name("T3").Caption("T3").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name("A1").Caption("A1").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name("A2").Caption("A2").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name("A3").Caption("A3").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name("B").Caption("B").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name("C").Caption("C").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name("D").Caption("D").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name("E").Caption("E").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name("F").Caption("F").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name("G").Caption("G").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name("H").Caption("H").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name("I").Caption("I").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name("J").Caption("J").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name("K").Caption("K").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.Name).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameCN).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameUpper).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameLower).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.DataType).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.DataLength).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.DataPrecision).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.DataScale).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.DataTypeFull).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.SortNum).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NotNull).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.Default).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.KeyType).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.Comments).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.TableName).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.TableNameCN).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.TableNameUpper).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
             );
             dgvColList.Tag = fdc.GetGridTagString();
             dgvColList.BindDataGridView(dtColsNew, true);
@@ -291,14 +268,22 @@ namespace Breezee.WorkHelper.DBTool.UI
                 for (int i = 0; i < dtColumnSelect.Rows.Count; i++)
                 {
                     string strOneData = rtbConString.Text;
-                    foreach (DataColumn dc in dtColumnSelect.Columns)
+
+                    Regex regex = new Regex(@"#\w+#", RegexOptions.IgnoreCase);
+                    MatchCollection mc = regex.Matches(strOneData);
+                    //得到##匹配值
+                    foreach (Match item in mc)
                     {
-                        string strData = dtColumnSelect.Rows[i][dc.ColumnName].ToString();
-                        //将数据中的列名替换为单元格中的数据
-                        strOneData = strOneData.Replace("#" + dc.ColumnName + "#", strData);
-                        
+                        //如果包含全局公共值，先替换
+                        string sColName = item.Value.Replace("#", "");
+                        if (dtColumnSelect.Columns.Contains(sColName))
+                        {
+                            //将数据中的列名替换为单元格中的数据
+                            strOneData = strOneData.Replace(item.Value, dtColumnSelect.Rows[i][sColName].ToString());
+                        }
                     }
-                    if ("PK".Equals(dtColumnSelect.Rows[i]["H"].ToString()))
+
+                    if ("PK".Equals(dtColumnSelect.Rows[i][DBColumnSimpleEntity.SqlString.KeyType].ToString()))
                     {
                         strOneData = strOneData.Replace("@TableField", "@TableId");
                     }
@@ -310,11 +295,23 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //保存属性
                 if ("1".Equals(sModule))
                 {
-                    //Mybatis实体拼接
-                    string strEntity = rtbOther.Text.Replace("#T1#", dtColumnSelect.Rows[0]["T1"].ToString())
-                            .Replace("#T2#", dtColumnSelect.Rows[0]["T2"].ToString())
-                            .Replace("#T3#", dtColumnSelect.Rows[0]["T3"].ToString())
-                            .Replace("#COL_LIST#", sbAllSql.ToString() + "\n");
+                    string strEntity = rtbOther.Text;
+                    //替换表名相关
+                    Regex regex = new Regex(@"#\w+#", RegexOptions.IgnoreCase);
+                    MatchCollection mc = regex.Matches(strEntity);
+                    //得到##匹配值
+                    foreach (Match item in mc)
+                    {
+                        //如果包含全局公共值，先替换
+                        string sColName = item.Value.Replace("#", "");
+                        if (dtColumnSelect.Columns.Contains(sColName) && dtColumnSelect.Rows.Count>0)
+                        {
+                            //将数据中的列名替换为单元格中的数据
+                            strEntity = strEntity.Replace(item.Value, dtColumnSelect.Rows[0][sColName].ToString());
+                        }
+                    }
+                    //替换所有列的动态字符
+                    strEntity = strEntity.Replace(_sColumnList, sbAllSql.ToString() + "\n");
                     rtbResult.AppendText(strEntity);
                 }
                 else
@@ -333,28 +330,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 ShowErr(ex.Message);
             }
-        }
-
-        private static string FirstLetterUpper(string strColCode, bool isFirstWorldUpper = true)
-        {
-            strColCode = strColCode.ToLower();
-            string[] firstUpper = strColCode.Split('_');
-            StringBuilder sb = new StringBuilder();
-            int i = 0;
-            foreach (var s in firstUpper)
-            {
-                if (i == 0 && !isFirstWorldUpper)
-                {
-                    sb.Append(s);
-                }
-                else
-                {
-                    sb.Append(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(s));
-                }
-                i++;
-            }
-            strColCode = sb.ToString();
-            return strColCode;
         }
         #endregion
 
@@ -563,23 +538,25 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     rtbOther.Visible = true;
                     rtbConString.Clear();
-                    rtbConString.AppendText(@"@ApiModelProperty(""#B#"")
-@TableField(""#A1#"")
-private String #A3#;
-");
-                    rtbOther.AppendText(@"@TableName(""#T1#"")
-public class #T2# implements Serializable{
-	private static final long serialVersionUID = 1L;
+                    rtbConString.AppendText(string.Format(@"    @ApiModelProperty(""#{0}#"")
+    @TableField(""#{1}#"")
+    private String #{2}#;
+", DBColumnSimpleEntity.SqlString.NameCN, DBColumnSimpleEntity.SqlString.Name, DBColumnSimpleEntity.SqlString.NameUpper));
 
-	#COL_LIST#
-}");
-                }else if ("2".Equals(sModule))
+                    rtbOther.AppendText("@TableName(\"#" + DBColumnSimpleEntity.SqlString.TableName + "#\")" + System.Environment.NewLine);
+                    rtbOther.AppendText("@ApiModel(value = \"#" + DBColumnSimpleEntity.SqlString.TableNameCN + "#对象\"" + ", description = \"#" + DBColumnSimpleEntity.SqlString.TableNameCN + "#\")" + System.Environment.NewLine);
+                    rtbOther.AppendText("public class #" + DBColumnSimpleEntity.SqlString.TableNameUpper + "# implements Serializable {" + System.Environment.NewLine);
+                    rtbOther.AppendText("   private static final long serialVersionUID = 1L;" + System.Environment.NewLine);
+                    rtbOther.AppendText(_sColumnList);
+                    rtbOther.AppendText("}" + System.Environment.NewLine);
+                }
+                else if ("2".Equals(sModule))
                 {
                     rtbOther.Visible = false;
                     rtbConString.Clear();
-                    rtbConString.AppendText(@"@ApiModelProperty(""#B#"")
-private String #A3#;
-");
+                    rtbConString.AppendText(string.Format(@"@ApiModelProperty(""#{0}#"")
+private String #{1}#;
+", DBColumnSimpleEntity.SqlString.NameCN, DBColumnSimpleEntity.SqlString.NameUpper));
                 }
                 else
                 {
@@ -587,5 +564,6 @@ private String #A3#;
                 }
             }
         }
+
     }
 }

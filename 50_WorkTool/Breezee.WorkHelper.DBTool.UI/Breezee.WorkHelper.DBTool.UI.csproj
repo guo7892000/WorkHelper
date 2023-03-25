@@ -105,7 +105,6 @@
       <DependentUpon>FrmVersionInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\KeyValue.cs" />
-    <Compile Include="Common\MiniXmlCommon.cs" />
     <Compile Include="Common\UC_DbConnection.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -142,6 +141,12 @@
     <Compile Include="ConnectString\FrmDBTReadDataBaseString.Designer.cs">
       <DependentUpon>FrmDBTReadDataBaseString.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConnectString\FrmDBTTableColumnDictionary.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConnectString\FrmDBTTableColumnDictionary.Designer.cs">
+      <DependentUpon>FrmDBTTableColumnDictionary.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConnectString\FrmDBTTableColumnString.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,19 +165,17 @@
     <Compile Include="DataSql\FrmDBTReadDBData.Designer.cs">
       <DependentUpon>FrmDBTReadDBData.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Settings.Designer.cs" />
+    <Compile Include="Properties\Settings1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="StringBuild\FrmDBTClickCopyStringAuto.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -247,7 +250,10 @@
     <None Include="DataTemplate\DBTool\TableSQL\模板_表列结构.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Properties\Settings.settings" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
+    </None>
     <None Include="SQLite_DBTool.db" />
   </ItemGroup>
   <ItemGroup>
@@ -296,6 +302,9 @@
     <EmbeddedResource Include="ConnectString\FrmDBTReadDataBaseString.resx">
       <DependentUpon>FrmDBTReadDataBaseString.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ConnectString\FrmDBTTableColumnDictionary.resx">
+      <DependentUpon>FrmDBTTableColumnDictionary.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ConnectString\FrmDBTTableColumnString.resx">
       <DependentUpon>FrmDBTTableColumnString.cs</DependentUpon>
     </EmbeddedResource>
@@ -304,9 +313,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataSql\FrmDBTReadDBData.resx">
       <DependentUpon>FrmDBTReadDBData.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

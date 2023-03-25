@@ -72,6 +72,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Breezee.Framework.Mini.IDAL", "40_MiniWinFormApp\Breezee.Framework.Mini.IDAL\Breezee.Framework.Mini.IDAL.csproj", "{F4F320F3-F0E1-45B9-A763-EB784C0D2C27}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Breezee.Framework.Mini.StartUp", "40_MiniWinFormApp\Breezee.Framework.Mini.StartUp\Breezee.Framework.Mini.StartUp.csproj", "{29797A04-3A89-4455-AD02-AAD3D818E1A2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8FD60D3C-DC4E-4606-8139-B1561B854F80} = {8FD60D3C-DC4E-4606-8139-B1561B854F80}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Breezee.WorkHelper.DBTool.BLL", "50_WorkTool\Breezee.WorkHelper.DBTool.BLL\Breezee.WorkHelper.DBTool.BLL.csproj", "{7A1A6B2F-B7F2-42A8-915C-67DA5DEC4594}"
 EndProject

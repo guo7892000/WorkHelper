@@ -90,7 +90,7 @@ namespace Breezee.AutoSQLExecutor.Core
         {
             ConnectionString = sConstr;
             DbServer = ConnString2Server(sConstr);
-            SqlParsers = new SqlParsers(new MyPeachNetProperties());
+            SqlParsers = new SqlParsers(new MyPeachNetProperties());          
         }
 
         public IDataAccess(DbServerInfo server)

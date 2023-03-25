@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Oracle.ManagedDataAccess.Client;
 using System.Data;
 using System.Collections;
 using System.Data.Common;
 using System.Xml;
 using Breezee.AutoSQLExecutor.Core;
 using Breezee.Core.Interface;
+using Oracle.ManagedDataAccess.Client;
 
 namespace Breezee.AutoSQLExecutor.Oracle
 {
@@ -46,10 +46,11 @@ namespace Breezee.AutoSQLExecutor.Oracle
         public BOracleDataAccess(string sConstr) : base(sConstr)
         {
             _ConnectionString = sConstr;
+            SqlParsers.properties.ParamPrefix = ":"; //注：Oracle是使用冒号作为参数前缀
         }
         public BOracleDataAccess(DbServerInfo server) : base(server)
         {
-
+            SqlParsers.properties.ParamPrefix = ":"; //注：Oracle是使用冒号作为参数前缀
         }
         #endregion
 
@@ -271,25 +272,25 @@ namespace Breezee.AutoSQLExecutor.Oracle
                     #region 动态固定值处理
                     if (dc.ExtendedProperties[StaticConstant.FRA_TABLE_EXTEND_PROPERTY_COLUMNS_FIX_VALUE] != null)
                     {
-                        TableCoulnmDefaultType tcy;
+                        DbDefaultValueType tcy;
                         try
                         {
-                            tcy = (TableCoulnmDefaultType)dc.ExtendedProperties[StaticConstant.FRA_TABLE_EXTEND_PROPERTY_COLUMNS_FIX_VALUE];
+                            tcy = (DbDefaultValueType)dc.ExtendedProperties[StaticConstant.FRA_TABLE_EXTEND_PROPERTY_COLUMNS_FIX_VALUE];
                         }
                         catch (Exception exTans)
                         {
                             throw new Exception("请保证表列的扩展属性“动态固定值”为TableCoulnmDefaultType枚举类型！" + exTans.Message);
                         }
                         DataTable dtFixValue = new DataTable();
-                        if (tcy == TableCoulnmDefaultType.DateTime)
+                        if (tcy == DbDefaultValueType.DateTime)
                         {
                             dtFixValue = QueryHadParamSqlData("SELECT SYSDATE FROM DUAL", new Dictionary<string, string>());
                         }
-                        else if (tcy == TableCoulnmDefaultType.TimeStamp)
+                        else if (tcy == DbDefaultValueType.TimeStamp)
                         {
                             dtFixValue = QueryHadParamSqlData("SELECT SYSTIMESTAMP FROM DUAL", new Dictionary<string, string>());
                         }
-                        else if (tcy == TableCoulnmDefaultType.Guid)
+                        else if (tcy == DbDefaultValueType.Guid)
                         {
                             dtFixValue = QueryHadParamSqlData("SELECT TO_SINGLE_BYTE(SYS_GUID()) FROM DUAL", new Dictionary<string, string>());
                         }

@@ -51,10 +51,10 @@
     <Compile Include="Enum\EntityType.cs" />
     <Compile Include="Enum\PercentSignStyle.cs" />
     <Compile Include="Enum\SqlStringType.cs" />
-    <Compile Include="Enum\TableCoulnmDefaultType.cs" />
     <Compile Include="IDataAccess.cs" />
     <Compile Include="ISqlDifferent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schema\DBColumnSimpleEntity.cs" />
     <Compile Include="Schema\DBColumnEntity.cs" />
     <Compile Include="Schema\DBDataBaseEntity.cs" />
     <Compile Include="Schema\DBSchemaCommon.cs" />

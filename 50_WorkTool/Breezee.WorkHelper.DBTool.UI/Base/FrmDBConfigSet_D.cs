@@ -115,13 +115,13 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 List<string> coloumns = isAdd ? null : _listSupply.GetSaveColumnNameList();
                 dtSave = DBToolHelper.Instance.DataAccess.GetTableConstruct(DT_DBT_BD_DB_CONFIG.TName, coloumns);
-                dtSave.DefaultValue(_loginUser);
+                dtSave.DefaultValue(_loginUser);//设置登录用户的默认值
                 _listSupply.GetControlValue(dtSave, isAdd);
                 if (isAdd)
                 {
                     dtSave.Rows[0][DT_DBT_BD_DB_CONFIG.SqlString.DB_CONFIG_ID] = StringHelper.GetGUID();
-                    //dtSave.Columns[DT_DBT_BD_DB_CONFIG.SqlString.CREATE_TIME].ExtProp(TableCoulnmDefaultType.DateTime);
-                    //dtSave.Columns[DT_DBT_BD_DB_CONFIG.SqlString.LAST_UPDATED_TIME].ExtProp(TableCoulnmDefaultType.DateTime);
+                    dtSave.Columns[DT_DBT_BD_DB_CONFIG.SqlString.CREATE_TIME].ExtProp(DbDefaultValueType.DateTime);
+                    dtSave.Columns[DT_DBT_BD_DB_CONFIG.SqlString.LAST_UPDATED_TIME].ExtProp(DbDefaultValueType.DateTime);
                 }
                 #endregion
                 //保存传入参数处理

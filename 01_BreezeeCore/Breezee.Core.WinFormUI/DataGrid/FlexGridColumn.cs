@@ -143,7 +143,7 @@ namespace Breezee.Core.WinFormUI
         public static FlexGridColumn NewRowNoCol()
         {
             FlexGridColumn column = new FlexGridColumn.Builder().Name(StaticConstant.FRA_GRID_ROWNO_STR).Caption("序号").Type(DataGridViewColumnTypeEnum.TextBox)
-                .Visible(true).Width(40).Align(DataGridViewContentAlignment.MiddleRight).Edit(false).Build();
+                .Visible(true).Width(30).Align(DataGridViewContentAlignment.MiddleRight).Edit(false).Build();
             return column;
         }
 

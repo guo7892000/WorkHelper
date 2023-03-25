@@ -5,10 +5,8 @@ using System.Data;
 using System.Xml.Linq;
 using System.IO;
 using Breezee.Core.Entity;
-using Breezee.Core.Interface;
-using Breezee.WorkHelper.DBTool.Entity;
 
-namespace Breezee.WorkHelper.DBTool.UI
+namespace Breezee.Core.Tool
 {
     /// <summary>
     /// 对象名称：迷你XML通用类
@@ -19,7 +17,9 @@ namespace Breezee.WorkHelper.DBTool.UI
     /// </summary>
     public class MiniXmlCommon
     {
+        private string _sDirectory;
         private string _sFileName;
+        private string _sFullFileName;
         private string _sRoot; //根节点
         private string _sElement; //子节点
         private XmlConfigSaveType _saveType;
@@ -29,19 +29,22 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="sPath">XML文件路径</param>
-        /// <param name="column">属性名或子项名数组：第一个作为主键</param>
+        /// <param name="sDirectory">XML配置所在的目录</param>
+        /// <param name="sFileName">XML配置文件名</param>
+        /// <param name="column">属性名或子项名数组</param>
+        /// <param name="sPK">主键</param>
         /// <param name="sRoot">根目录名</param>
         /// <param name="sChild">子目录名</param>
         /// <param name="saveType">XML配置保存类型：属性或者子项</param>
-        public MiniXmlCommon(string sPath,List<string> lstCol, string sPK, string sRoot="items",string sChild="item", XmlConfigSaveType saveType = XmlConfigSaveType.Attribute)
+        public MiniXmlCommon(string sDirectory, string sFileName,List<string> lstCol, string sPK, string sRoot="items",string sChild="item", XmlConfigSaveType saveType = XmlConfigSaveType.Attribute)
         {
-            if(string.IsNullOrEmpty(sPath) || lstCol == null || lstCol.Count==0)
+            if(string.IsNullOrEmpty(sDirectory) || string.IsNullOrEmpty(sDirectory) || lstCol == null || lstCol.Count==0)
             {
-                throw new Exception("传参错误，路径、列集合不能为空！");
+                throw new Exception("传参错误，目录、文件名、列集合不能为空！");
             }
-
-            _sFileName = sPath;
+            _sDirectory = sDirectory;
+            _sFileName = sFileName;
+            _sFullFileName = Path.Combine(_sDirectory, sFileName);
             _lstCol = lstCol;
             if(!_lstCol.Contains(sPK))
             {
@@ -57,26 +60,36 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// 获取配置文件方法
         /// </summary>
         /// <returns></returns>
+        public string GetFullFileName()
+        {
+            return _sFullFileName;
+        }
+
         public string GetFileName()
         {
             return _sFileName;
         }
-        
+
+        public string GetDirectory()
+        {
+            return _sDirectory;
+        }
+
         /// <summary>
         /// 加载文件
         /// </summary>
         /// <returns></returns>
-        public DataTable LoadXMLFile()
+        public DataTable Load()
         {
             DataTable dt = GenerateDataStruct();
-            if (!File.Exists(_sFileName))
+            if (!File.Exists(_sFullFileName))
             {
                 return dt;
             }
-            FileInfo f = new FileInfo(_sFileName);
+            FileInfo f = new FileInfo(_sFullFileName);
             f.Attributes = FileAttributes.Normal;//去掉文件的的只读属性
 
-            XDocument doc = XDocument.Load(_sFileName);
+            XDocument doc = XDocument.Load(_sFullFileName);
             if (_saveType == XmlConfigSaveType.Element)
             {
                 foreach (XElement ele in doc.Root.Elements(_sElement))
@@ -132,7 +145,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// 保存XML文件方法
         /// </summary>
         /// <param name="dtItems"></param>
-        public void SaveXMLFile(DataTable dtItems, string strFileName)
+        public void Save(DataTable dtItems)
         {
             if (dtItems == null)
             {
@@ -165,7 +178,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
 
             XElement ele = new XElement(_sRoot, keyItems);
-            ele.Save(strFileName);
+            if (!Directory.Exists(_sDirectory))
+            {
+                Directory.CreateDirectory(_sDirectory);
+            }
+            ele.Save(_sFullFileName);
         }
     }
 

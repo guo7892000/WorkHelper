@@ -377,6 +377,18 @@ namespace Breezee.Core.Tool
                     nnum++;
                 }
             }
+            //返回的数据
+            Object[,] data;
+            //如果只有一个数据
+            if (strReplace.IndexOf("\n")<0)
+            {
+                data = new object[1,1];//定义一个二维数组
+                data[0,0] = strReplace;
+                iRow = 1;
+                iColumn = 1;
+                return data;
+            }
+
             //获得当前剪贴板内容的列数：以第一行为准确定列数
             string strCols = strReplace.Substring(0, strReplace.IndexOf("\n"));
             for (int i = 0; i < strCols.Length - 1; i++)
@@ -386,7 +398,7 @@ namespace Breezee.Core.Tool
                     tnum++;
                 }
             }
-            Object[,] data;
+            
             //粘贴板上的数据来自于EXCEL时，每行末都有\n，在DATAGRIDVIEW内复制时，最后一行末没有\n
             if (pasteText.Substring(pasteText.Length - 1, 1) == "\n")
             {

@@ -55,6 +55,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\10_MyPeachNet\MyPeach.Net\MyPeach.Net.csproj">
+      <Project>{FFA388F6-518F-411F-B50D-3389BBAEE380}</Project>
+      <Name>MyPeach.Net</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Breezee.AutoSQLExecutor.Core\Breezee.AutoSQLExecutor.Core.csproj">
       <Project>{A975AFED-639E-40AA-9698-9A6F0FCD7421}</Project>
       <Name>Breezee.AutoSQLExecutor.Core</Name>

@@ -34,53 +34,53 @@ namespace Breezee.Core.WinFormUI
         /// <returns></returns>
         public static DataTable DefaultValue(this DataTable dt, LoginUserInfo loginUser = null)
         {
-            //if (dt.Columns.Contains(DT_SYS_USER.CREATE_TIME))
-            //{
-            //    dt.Columns[DT_SYS_USER.CREATE_TIME].ExtProp(TableCoulnmDefaultType.DateTime);
-            //}
-            //if (dt.Columns.Contains(DT_SYS_USER.LAST_UPDATED_TIME))
-            //{
-            //    dt.Columns[DT_SYS_USER.LAST_UPDATED_TIME].ExtProp(TableCoulnmDefaultType.DateTime);
-            //}
-            //if (dt.Columns.Contains(DT_SYS_USER.UPDATE_CONTROL_ID))
-            //{
-            //    dt.Columns[DT_SYS_USER.UPDATE_CONTROL_ID].ExtProp(TableCoulnmDefaultType.Guid);
-            //}
-            //if (dt.Columns.Contains(DT_SYS_USER.IS_ENABLED))
-            //{
-            //    dt.Columns[DT_SYS_USER.IS_ENABLED].DefaultValue = "1";
-            //}
-            //if (dt.Columns.Contains(DT_SYS_USER.IS_SYSTEM))
-            //{
-            //    dt.Columns[DT_SYS_USER.IS_SYSTEM].DefaultValue = "0";
-            //}
-            //if (dt.Columns.Contains(DT_SYS_USER.TFLAG))
-            //{
-            //    dt.Columns[DT_SYS_USER.TFLAG].DefaultValue = "0";
-            //}
-            //if (loginUser != null)
-            //{
-            //    if (dt.Columns.Contains(DT_SYS_USER.ORG_ID))
-            //    {
-            //        dt.Columns[DT_SYS_USER.ORG_ID].DefaultValue = loginUser.ORG_ID;
-            //    }
-            //    if (dt.Columns.Contains(DT_SYS_USER.CREATOR_ID))
-            //    {
-            //        dt.Columns[DT_SYS_USER.CREATOR_ID].DefaultValue = loginUser.USER_ID;
-            //    }
-            //    if (dt.Columns.Contains(DT_SYS_USER.MODIFIER_ID))
-            //    {
-            //        dt.Columns[DT_SYS_USER.MODIFIER_ID].DefaultValue = loginUser.USER_ID;
-            //    }
-            //    if (dt.Columns.Contains(DT_SYS_USER.CREATOR))
-            //    {
-            //        dt.Columns[DT_SYS_USER.CREATOR].DefaultValue = loginUser.USER_NAME;
-            //    }
-            //    if (dt.Columns.Contains(DT_SYS_USER.MODIFIER))
-            //    {
-            //        dt.Columns[DT_SYS_USER.MODIFIER].DefaultValue = loginUser.USER_NAME;
-            //    }
-            //}
+            if (dt.Columns.Contains(DT_SYS_USER.CREATE_TIME))
+            {
+                dt.Columns[DT_SYS_USER.CREATE_TIME].ExtProp(DbDefaultValueType.DateTime);
+            }
+            if (dt.Columns.Contains(DT_SYS_USER.LAST_UPDATED_TIME))
+            {
+                dt.Columns[DT_SYS_USER.LAST_UPDATED_TIME].ExtProp(DbDefaultValueType.DateTime);
+            }
+            if (dt.Columns.Contains(DT_SYS_USER.UPDATE_CONTROL_ID))
+            {
+                dt.Columns[DT_SYS_USER.UPDATE_CONTROL_ID].ExtProp(DbDefaultValueType.Guid);
+            }
+            if (dt.Columns.Contains(DT_SYS_USER.IS_ENABLED))
+            {
+                dt.Columns[DT_SYS_USER.IS_ENABLED].DefaultValue = "1";
+            }
+            if (dt.Columns.Contains(DT_SYS_USER.IS_SYSTEM))
+            {
+                dt.Columns[DT_SYS_USER.IS_SYSTEM].DefaultValue = "0";
+            }
+            if (dt.Columns.Contains(DT_SYS_USER.TFLAG))
+            {
+                dt.Columns[DT_SYS_USER.TFLAG].DefaultValue = "0";
+            }
+            if (loginUser != null)
+            {
+                if (dt.Columns.Contains(DT_SYS_USER.ORG_ID))
+                {
+                    dt.Columns[DT_SYS_USER.ORG_ID].DefaultValue = loginUser.ORG_ID;
+                }
+                if (dt.Columns.Contains(DT_SYS_USER.CREATOR_ID))
+                {
+                    dt.Columns[DT_SYS_USER.CREATOR_ID].DefaultValue = loginUser.USER_ID;
+                }
+                if (dt.Columns.Contains(DT_SYS_USER.MODIFIER_ID))
+                {
+                    dt.Columns[DT_SYS_USER.MODIFIER_ID].DefaultValue = loginUser.USER_ID;
+                }
+                if (dt.Columns.Contains(DT_SYS_USER.CREATOR))
+                {
+                    dt.Columns[DT_SYS_USER.CREATOR].DefaultValue = loginUser.USER_NAME;
+                }
+                if (dt.Columns.Contains(DT_SYS_USER.MODIFIER))
+                {
+                    dt.Columns[DT_SYS_USER.MODIFIER].DefaultValue = loginUser.USER_NAME;
+                }
+            }
             return dt;
         }
         #endregion

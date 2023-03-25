@@ -45,11 +45,12 @@ namespace Breezee.AutoSQLExecutor.MySql
         public BMySqlDataAccess(string sConstr) : base(sConstr)
         {
             _ConnectionString = sConstr;
+            SqlParsers.properties.ParamPrefix = "@"; //注：MySql是使用@作为参数前缀
         }
 
         public BMySqlDataAccess(DbServerInfo server):base(server)
         {
-
+            SqlParsers.properties.ParamPrefix = "@"; //注：MySql是使用@作为参数前缀
         }
         #endregion
 
@@ -286,26 +287,26 @@ namespace Breezee.AutoSQLExecutor.MySql
                         * 即例如：@CREATE_TIME 可被 getdate() 替代*/
                     if (dc.ExtendedProperties[StaticConstant.FRA_TABLE_EXTEND_PROPERTY_COLUMNS_FIX_VALUE] != null)
                     {
-                        TableCoulnmDefaultType tcy;
+                        DbDefaultValueType tcy;
                         try
                         {
-                            tcy = (TableCoulnmDefaultType)dc.ExtendedProperties[StaticConstant.FRA_TABLE_EXTEND_PROPERTY_COLUMNS_FIX_VALUE];
+                            tcy = (DbDefaultValueType)dc.ExtendedProperties[StaticConstant.FRA_TABLE_EXTEND_PROPERTY_COLUMNS_FIX_VALUE];
                         }
                         catch (Exception exTans)
                         {
                             throw new Exception("请保证表列的扩展属性“动态固定值”为TableCoulnmDefaultType枚举类型！" + exTans.Message);
                         }
-                        if (tcy == TableCoulnmDefaultType.DateTime)
+                        if (tcy == DbDefaultValueType.DateTime)
                         {
                             strInsertEnd.Append(sDouHao + "NOW()");
                             strUpdate.Append(sUpdateDouHao + dc.ColumnName + "=NOW()");
                         }
-                        else if (tcy == TableCoulnmDefaultType.TimeStamp)
+                        else if (tcy == DbDefaultValueType.TimeStamp)
                         {
                             strInsertEnd.Append(sDouHao + "@@DBTS");
                             strUpdate.Append(sUpdateDouHao + dc.ColumnName + "=@@DBTS");
                         }
-                        else if (tcy == TableCoulnmDefaultType.Guid)
+                        else if (tcy == DbDefaultValueType.Guid)
                         {
                             strInsertEnd.Append(sDouHao + "UUID()");
                             strUpdate.Append(sUpdateDouHao + dc.ColumnName + "=UUID()");

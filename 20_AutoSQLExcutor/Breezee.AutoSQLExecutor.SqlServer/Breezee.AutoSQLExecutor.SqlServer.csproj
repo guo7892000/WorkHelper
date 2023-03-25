@@ -57,6 +57,10 @@
       <Project>{1CADC5E8-A5A0-4EB2-BD6B-5C5F67CA0456}</Project>
       <Name>Breezee.Core.Interface</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\10_MyPeachNet\MyPeach.Net\MyPeach.Net.csproj">
+      <Project>{FFA388F6-518F-411F-B50D-3389BBAEE380}</Project>
+      <Name>MyPeach.Net</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Breezee.AutoSQLExecutor.Core\Breezee.AutoSQLExecutor.Core.csproj">
       <Project>{A975AFED-639E-40AA-9698-9A6F0FCD7421}</Project>
       <Name>Breezee.AutoSQLExecutor.Core</Name>
