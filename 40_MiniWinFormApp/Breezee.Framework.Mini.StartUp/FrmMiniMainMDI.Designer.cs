@@ -50,6 +50,7 @@
             this.helpMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiUserManual = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiOpenLatestDownURL = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.tstbMenuSearch = new System.Windows.Forms.ToolStripTextBox();
@@ -100,8 +101,8 @@
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.MdiWindowListItem = this.windowsMenu;
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
-            this.menuStrip.Size = new System.Drawing.Size(1474, 25);
+            this.menuStrip.Padding = new System.Windows.Forms.Padding(6, 1, 0, 1);
+            this.menuStrip.Size = new System.Drawing.Size(1263, 24);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "MenuStrip";
             // 
@@ -116,7 +117,7 @@
             this.tsbExitMenu});
             this.tsbStartMenu.ImageTransparentColor = System.Drawing.SystemColors.ActiveBorder;
             this.tsbStartMenu.Name = "tsbStartMenu";
-            this.tsbStartMenu.Size = new System.Drawing.Size(60, 21);
+            this.tsbStartMenu.Size = new System.Drawing.Size(60, 22);
             this.tsbStartMenu.Text = "开始(&B)";
             // 
             // tsbRestartMenu
@@ -166,7 +167,7 @@
             this.toolBarToolStripMenuItem,
             this.statusBarToolStripMenuItem});
             this.viewMenu.Name = "viewMenu";
-            this.viewMenu.Size = new System.Drawing.Size(60, 21);
+            this.viewMenu.Size = new System.Drawing.Size(60, 22);
             this.viewMenu.Text = "视图(&V)";
             // 
             // toolBarToolStripMenuItem
@@ -198,7 +199,7 @@
             this.closeAllToolStripMenuItem,
             this.arrangeIconsToolStripMenuItem});
             this.windowsMenu.Name = "windowsMenu";
-            this.windowsMenu.Size = new System.Drawing.Size(64, 21);
+            this.windowsMenu.Size = new System.Drawing.Size(64, 22);
             this.windowsMenu.Text = "窗口(&W)";
             // 
             // cascadeToolStripMenuItem
@@ -240,9 +241,10 @@
             // 
             this.helpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiUserManual,
-            this.aboutToolStripMenuItem});
+            this.aboutToolStripMenuItem,
+            this.tsmiOpenLatestDownURL});
             this.helpMenu.Name = "helpMenu";
-            this.helpMenu.Size = new System.Drawing.Size(61, 21);
+            this.helpMenu.Size = new System.Drawing.Size(61, 22);
             this.helpMenu.Text = "帮助(&H)";
             // 
             // tsmiUserManual
@@ -259,6 +261,13 @@
             this.aboutToolStripMenuItem.Text = "关于(&A) ";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // tsmiOpenLatestDownURL
+            // 
+            this.tsmiOpenLatestDownURL.Name = "tsmiOpenLatestDownURL";
+            this.tsmiOpenLatestDownURL.Size = new System.Drawing.Size(180, 22);
+            this.tsmiOpenLatestDownURL.Text = "复制下载地址";
+            this.tsmiOpenLatestDownURL.Click += new System.EventHandler(this.tsmiOpenLatestDownURL_Click);
+            // 
             // toolStrip
             // 
             this.toolStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -272,9 +281,9 @@
             this.printPreviewToolStripButton,
             this.toolStripSeparator2,
             this.tsbHelp});
-            this.toolStrip.Location = new System.Drawing.Point(0, 25);
+            this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(1474, 27);
+            this.toolStrip.Size = new System.Drawing.Size(1263, 27);
             this.toolStrip.TabIndex = 1;
             this.toolStrip.Text = "ToolStrip";
             // 
@@ -286,8 +295,9 @@
             // 
             // tstbMenuSearch
             // 
+            this.tstbMenuSearch.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
             this.tstbMenuSearch.Name = "tstbMenuSearch";
-            this.tstbMenuSearch.Size = new System.Drawing.Size(175, 27);
+            this.tstbMenuSearch.Size = new System.Drawing.Size(151, 27);
             this.tstbMenuSearch.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tstbMenuSearch_KeyUp);
             // 
             // tsbAutoGuid
@@ -357,10 +367,10 @@
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsslUserInfo});
-            this.statusStrip.Location = new System.Drawing.Point(0, 861);
+            this.statusStrip.Location = new System.Drawing.Point(0, 601);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 17, 0);
-            this.statusStrip.Size = new System.Drawing.Size(1474, 22);
+            this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 15, 0);
+            this.statusStrip.Size = new System.Drawing.Size(1263, 22);
             this.statusStrip.TabIndex = 2;
             this.statusStrip.Text = "StatusStrip";
             // 
@@ -373,10 +383,10 @@
             // tvLeftMenu
             // 
             this.tvLeftMenu.Dock = System.Windows.Forms.DockStyle.Left;
-            this.tvLeftMenu.Location = new System.Drawing.Point(0, 52);
-            this.tvLeftMenu.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tvLeftMenu.Location = new System.Drawing.Point(0, 51);
+            this.tvLeftMenu.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tvLeftMenu.Name = "tvLeftMenu";
-            this.tvLeftMenu.Size = new System.Drawing.Size(204, 809);
+            this.tvLeftMenu.Size = new System.Drawing.Size(175, 550);
             this.tvLeftMenu.TabIndex = 4;
             this.tvLeftMenu.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.tvLeftMenu_ItemDrag);
             this.tvLeftMenu.DoubleClick += new System.EventHandler(this.tvLeftMenu_DoubleClick);
@@ -385,19 +395,19 @@
             // 
             this.pnlLeftMenu.Controls.Add(this.btnHideTree);
             this.pnlLeftMenu.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pnlLeftMenu.Location = new System.Drawing.Point(204, 52);
-            this.pnlLeftMenu.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pnlLeftMenu.Location = new System.Drawing.Point(175, 51);
+            this.pnlLeftMenu.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnlLeftMenu.Name = "pnlLeftMenu";
-            this.pnlLeftMenu.Size = new System.Drawing.Size(15, 809);
+            this.pnlLeftMenu.Size = new System.Drawing.Size(13, 550);
             this.pnlLeftMenu.TabIndex = 5;
             // 
             // btnHideTree
             // 
             this.btnHideTree.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnHideTree.Location = new System.Drawing.Point(-1, 405);
-            this.btnHideTree.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnHideTree.Location = new System.Drawing.Point(-1, 276);
+            this.btnHideTree.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnHideTree.Name = "btnHideTree";
-            this.btnHideTree.Size = new System.Drawing.Size(17, 33);
+            this.btnHideTree.Size = new System.Drawing.Size(15, 23);
             this.btnHideTree.TabIndex = 0;
             this.btnHideTree.Text = "<";
             this.btnHideTree.UseVisualStyleBackColor = true;
@@ -407,10 +417,10 @@
             // 
             this.pnlMenuNavigate.Controls.Add(this.tableLayoutPanel1);
             this.pnlMenuNavigate.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlMenuNavigate.Location = new System.Drawing.Point(219, 52);
-            this.pnlMenuNavigate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pnlMenuNavigate.Location = new System.Drawing.Point(188, 51);
+            this.pnlMenuNavigate.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnlMenuNavigate.Name = "pnlMenuNavigate";
-            this.pnlMenuNavigate.Size = new System.Drawing.Size(1255, 33);
+            this.pnlMenuNavigate.Size = new System.Drawing.Size(1075, 23);
             this.pnlMenuNavigate.TabIndex = 6;
             // 
             // tableLayoutPanel1
@@ -419,17 +429,18 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 122F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 105F));
             this.tableLayoutPanel1.Controls.Add(this.txbGlobalMsg, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.txbMenuPath, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1255, 33);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1075, 23);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // txbGlobalMsg
@@ -437,21 +448,20 @@
             this.txbGlobalMsg.BackColor = System.Drawing.SystemColors.Control;
             this.txbGlobalMsg.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txbGlobalMsg.ForeColor = System.Drawing.Color.Red;
-            this.txbGlobalMsg.Location = new System.Drawing.Point(460, 5);
-            this.txbGlobalMsg.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txbGlobalMsg.Location = new System.Drawing.Point(399, 4);
+            this.txbGlobalMsg.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txbGlobalMsg.Name = "txbGlobalMsg";
             this.txbGlobalMsg.ReadOnly = true;
-            this.txbGlobalMsg.Size = new System.Drawing.Size(760, 16);
+            this.txbGlobalMsg.Size = new System.Drawing.Size(651, 14);
             this.txbGlobalMsg.TabIndex = 3;
             // 
             // label1
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 4);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(3, 5);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(68, 17);
+            this.label1.Size = new System.Drawing.Size(65, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "菜单导航：";
             // 
@@ -460,10 +470,10 @@
             this.txbMenuPath.BackColor = System.Drawing.SystemColors.Control;
             this.txbMenuPath.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txbMenuPath.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.txbMenuPath.Location = new System.Drawing.Point(80, 5);
-            this.txbMenuPath.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txbMenuPath.Location = new System.Drawing.Point(74, 4);
+            this.txbMenuPath.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txbMenuPath.Name = "txbMenuPath";
-            this.txbMenuPath.Size = new System.Drawing.Size(372, 16);
+            this.txbMenuPath.Size = new System.Drawing.Size(319, 14);
             this.txbMenuPath.TabIndex = 1;
             // 
             // tcMenu
@@ -472,11 +482,11 @@
             this.tcMenu.ContextMenuStrip = this.cmsMenuSheet;
             this.tcMenu.Controls.Add(this.tpgDesktop);
             this.tcMenu.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tcMenu.Location = new System.Drawing.Point(219, 827);
-            this.tcMenu.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tcMenu.Location = new System.Drawing.Point(188, 577);
+            this.tcMenu.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tcMenu.Name = "tcMenu";
             this.tcMenu.SelectedIndex = 0;
-            this.tcMenu.Size = new System.Drawing.Size(1255, 34);
+            this.tcMenu.Size = new System.Drawing.Size(1075, 24);
             this.tcMenu.TabIndex = 7;
             this.tcMenu.SelectedIndexChanged += new System.EventHandler(this.tcMenu_SelectedIndexChanged);
             this.tcMenu.DoubleClick += new System.EventHandler(this.TcMenu_DoubleClick);
@@ -515,9 +525,9 @@
             // tpgDesktop
             // 
             this.tpgDesktop.Location = new System.Drawing.Point(4, 4);
-            this.tpgDesktop.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tpgDesktop.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tpgDesktop.Name = "tpgDesktop";
-            this.tpgDesktop.Size = new System.Drawing.Size(1247, 4);
+            this.tpgDesktop.Size = new System.Drawing.Size(1067, 0);
             this.tpgDesktop.TabIndex = 0;
             this.tpgDesktop.Text = "桌面";
             this.tpgDesktop.UseVisualStyleBackColor = true;
@@ -526,17 +536,17 @@
             // 
             this.pnlDestop.AccessibleDescription = "";
             this.pnlDestop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlDestop.Location = new System.Drawing.Point(219, 85);
-            this.pnlDestop.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pnlDestop.Location = new System.Drawing.Point(188, 74);
+            this.pnlDestop.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnlDestop.Name = "pnlDestop";
-            this.pnlDestop.Size = new System.Drawing.Size(1255, 67);
+            this.pnlDestop.Size = new System.Drawing.Size(1075, 47);
             this.pnlDestop.TabIndex = 8;
             // 
             // FrmMiniMainMDI
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1474, 883);
+            this.ClientSize = new System.Drawing.Size(1263, 623);
             this.Controls.Add(this.pnlDestop);
             this.Controls.Add(this.tcMenu);
             this.Controls.Add(this.pnlMenuNavigate);
@@ -548,7 +558,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip;
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FrmMiniMainMDI";
             this.Text = "主窗体";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMainMDI_FormClosing);
@@ -621,6 +631,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiMenuSheetTop;
         private System.Windows.Forms.ToolStripMenuItem tsmiMenuSheetBottom;
         private System.Windows.Forms.ToolStripMenuItem tsmiCloseMenu;
+        private System.Windows.Forms.ToolStripMenuItem tsmiOpenLatestDownURL;
     }
 }
 

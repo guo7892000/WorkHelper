@@ -31,7 +31,7 @@
       <!--字符拼接-->
       <Menu Guid="05AF975A-6814-4538-953E-CE4F2E294172" Name="数据库数据拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTReadDataBaseString"  HelpPath="/Help/Html/DBTool/DB/DataStringDBQuery.html"/>
 	  <Menu Guid="8FD50BB4-B9AC-4846-9261-732EDF6CF49A" Name="表列字符拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTTableColumnString"  HelpPath="/Help/Html/DBTool/DB/DBColumnStringConn.html"/>
-	  <Menu Guid="2550828A-4382-457C-8E84-2089E7D03E17" Name="数据字典" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTTableColumnDictionary"  HelpPath="/Help/Html/DBTool/DB/DBColumnStringConn.html"/>
+	  <Menu Guid="2550828A-4382-457C-8E84-2089E7D03E17" Name="数据字典" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTTableColumnDictionary"  HelpPath="/Help/Html/DBTool/DB/DBColumnDictionary.html"/>
 	</Class>
     
     <Class Guid="29EB1BE0-21D8-4FB6-93C7-3B85E60BB5B5" Name="程序开发" Code="M_DB_TOOL_APP_DEV" ShortCutKey="">

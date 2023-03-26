@@ -121,14 +121,13 @@
     <value>欢迎使用工作助手，希望能给你的工作带来便利！如有问题，请反馈给我们，谢谢！
 Email：guo7892000@126.com 
 微信号：BreezeeHui
-QQ：6455879</value>
+QQ：6455879
+最新版下载地址：
+https://gitee.com/breezee2000/WorkHelper/releases</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="MyWeixinGatherMin" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MyWeixinGatherMin.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Support_Remark" xml:space="preserve">
-    <value>本软件靠个人兴趣维持，但也花了很多时间和精力。如果您觉得本软件对您很有帮助，可考虑在您经济能力范围内给作者一点打赏支持，谢谢！！</value>
   </data>
   <data name="WorkHelp_Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WorkHelp.Logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("Breezee.Framework.Mini.StartUp")]
+[assembly: AssemblyTitle("工作助手")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Organization")]
-[assembly: AssemblyProduct("Breezee.Framework.Mini.StartUp")]
-[assembly: AssemblyCopyright("Copyright © Organization 2023")]
+[assembly: AssemblyCompany("BreezeeHui")]
+[assembly: AssemblyProduct("Work Helper")]
+[assembly: AssemblyCopyright("Copyright © BreezeeHui 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 //可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值
 //通过使用 "*"，如下所示:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.2.1.0")]
-[assembly: AssemblyFileVersion("1.2.1.0")]
+[assembly: AssemblyVersion("1.2.2.0")]
+[assembly: AssemblyFileVersion("1.2.2.0")]

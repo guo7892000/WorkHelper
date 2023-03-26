@@ -51,7 +51,7 @@ namespace Breezee.Framework.Mini.StartUp
         #region 加载事件
         private void FrmMainMDI_Load(object sender, EventArgs e)
         {
-            Text = string.Format("工作助手（Work Helper） v{0} 正式版  2023-03-25", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            Text = string.Format("工作助手（Work Helper） v{0} 正式版  2023-03-26", Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
             iStartMenu = menuStrip.Items.IndexOfKey(tsbStartMenu.Name);
             this.WindowState = FormWindowState.Maximized;
@@ -757,5 +757,12 @@ namespace Breezee.Framework.Mini.StartUp
             WinFormContext.Instance.CurrentForm.Close();
         }
         #endregion
+
+        private void tsmiOpenLatestDownURL_Click(object sender, EventArgs e)
+        {
+            //System.Diagnostics.Process.Start("https://gitee.com/breezee2000/WorkHelper/releases");
+            Clipboard.SetData(DataFormats.UnicodeText, "https://gitee.com/breezee2000/WorkHelper/releases");
+            MsgHelper.ShowInfo("已成功复制【工作助手】的下载链接地址，请粘贴到浏览器地址栏上打开链接，选择最新版下载！");
+        }
     }
 }
