@@ -138,11 +138,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             //new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.TableNameCN).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
             //new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.TableNameUpper).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
             );
+            //
             dgvCommonCol.Tag = fdc.GetGridTagString();
             dgvCommonCol.BindDataGridView(dtCommonCol, true);
-            //已选择列网格跟通用列网格结构一样
-            dgvSelect.Tag = fdc.GetGridTagString();
-            dgvSelect.BindDataGridView(dtCommonCol.Clone(), true);
+            
         }
 
         private void cbbConnName_SelectedIndexChanged(object sender, EventArgs e)
@@ -194,7 +193,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             //,new FlexGridColumn.Builder().Name(DBTableEntity.SqlString.Comments).Caption("备注").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(200).Edit(false).Visible().Build()
             );
             dgvTableList.Tag = fdc.GetGridTagString();
-            dgvTableList.BindDataGridView(dtTable, true);           
+            dgvTableList.BindDataGridView(dtTable, true);
         }
         #endregion
 
@@ -211,7 +210,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             FlexGridColumnDefinition fdc = new FlexGridColumnDefinition();
             fdc.AddColumn(
                 FlexGridColumn.NewRowNoCol(),
-                //new FlexGridColumn.Builder().Name(_sGridColumnSelect).Caption("选择").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(40).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(_sGridColumnSelect).Caption("选择").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(40).Edit().Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.TableName).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.Name).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameCN).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
@@ -232,8 +231,14 @@ namespace Breezee.WorkHelper.DBTool.UI
             );
 
             dgvColList.Tag = fdc.GetGridTagString();
-            dgvColList.BindDataGridView(dtColsNew, true);
+            dgvColList.BindDataGridView(dtColsNew, true);        
             //dgvColList.AllowUserToAddRows = true;//设置网格样式
+            //已选择列网格跟通用列网格结构一样
+            dgvSelect.Tag = fdc.GetGridTagString();
+            dgvSelect.BindDataGridView(dtColsNew.Clone(), true);
+
+            //设置所有列不显示选择框
+            dgvColList.Columns[_sGridColumnSelect].Visible = false;
         }
 
         private void AddTableCols(DataRow drTable)

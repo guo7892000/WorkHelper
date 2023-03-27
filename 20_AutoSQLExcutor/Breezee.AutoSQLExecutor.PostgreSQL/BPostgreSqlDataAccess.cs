@@ -779,10 +779,12 @@ namespace Breezee.AutoSQLExecutor.PostgreSQL
             if (string.IsNullOrEmpty(sSchema)) sSchema = "public";
 
             string sSql = @"SELECT A.TABLENAME AS TABLE_NAME,A.SCHEMANAME AS TABLE_SCHEMA,A.TABLEOWNER AS TABLE_OWNER,
-                    CAST(OBJ_DESCRIPTION(RELFILENODE,'PG_CLASS') AS VARCHAR) AS TABLE_COMMENT
+                    d.description AS TABLE_COMMENT
                 FROM PG_TABLES A
                 LEFT JOIN PG_CLASS B
                   ON A.TABLENAME = B.RELNAME
+				LEFT JOIN pg_description d 
+				  ON d.objoid = B.oid AND d.objsubid = '0'
                 WHERE 1=1 AND POSITION('_2' IN A.TABLENAME)=0
                 AND SCHEMANAME = '#TABLE_SCHEMA#'
                 AND TABLENAME = '#TABLE_NAME#'

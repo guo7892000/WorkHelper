@@ -95,8 +95,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             tsbAutoSQL.Enabled = false;
 
             //以下为测试使用
-            txbEntityName.Text= "BaseConfig";
-            txbEntityNameCN.Text = "基础配置";
+            //txbEntityName.Text= "BaseConfig";
+            //txbEntityNameCN.Text = "基础配置";
         }
 
         private void cbbConnName_SelectedIndexChanged(object sender, EventArgs e)
@@ -158,9 +158,13 @@ namespace Breezee.WorkHelper.DBTool.UI
                 DataRow dr = dtTable.NewRow();
                 dr[DBTableEntity.SqlString.Owner] = drArr[0][DBTableEntity.SqlString.Owner].ToString();
                 dr[DBTableEntity.SqlString.Name] = drArr[0][DBTableEntity.SqlString.Name].ToString();
+                dr[DBTableEntity.SqlString.NameCN] = drArr[0][DBTableEntity.SqlString.NameCN].ToString();
                 dr[DBTableEntity.SqlString.Schema] = drArr[0][DBTableEntity.SqlString.Schema].ToString();
                 dr[DBTableEntity.SqlString.Comments] = drArr[0][DBTableEntity.SqlString.Comments].ToString();
                 dtTable.Rows.Add(dr);
+
+                //给实体账值
+                txbEntityNameCN.Text = dr[DBTableEntity.SqlString.NameCN].ToString();
             }
             dtTable.TableName = _strTableName;
             

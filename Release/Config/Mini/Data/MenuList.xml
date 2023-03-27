@@ -2,62 +2,58 @@
 <xml>
   <!--模块-->
   <Model Guid="C628C5BD-5B96-401D-B69B-FB5DAF66DB8B" Name="系统管理" Code="MODEL_SYSTEM" ShortCutKey="S">
-    <Class Guid="9B38C7AF-A3DA-4C79-8F96-0C3574619B28" Name="基础数据" Code="" ShortCutKey="">
-      <Menu Guid="59D1EA9B-E422-4F22-88D8-A0509B14EC0F" Name="菜单管理" Code="" ShortCutKey="M" DLLName="Breezee.Framework.Mini.StartUp.exe" FormName="Breezee.Framework.Mini.StartUp.FrmMenuManage" HelpPath="/Help/Html/Mini/MenuManage.html"/>
-      <Menu Guid="1216E107-2405-4496-BA26-E64E6DA54AB6" Name="界面程序集维护" Code="" ShortCutKey="D" DLLName="Breezee.Framework.Mini.StartUp.exe" FormName="Breezee.Framework.Mini.StartUp.FrmDllManage" HelpPath="/Help/Html/Mini/DllSet.html"/>
+    <Class Guid="9B38C7AF-A3DA-4C79-8F96-0C3574619B28" Name="基础数据" Code="" ShortCutKey="" DLLName="" FormName="" HelpPath="">
+      <Menu Guid="59D1EA9B-E422-4F22-88D8-A0509B14EC0F" Name="菜单管理" Code="" ShortCutKey="M" DLLName="Breezee.Framework.Mini.StartUp.exe" FormName="Breezee.Framework.Mini.StartUp.FrmMenuManage" HelpPath="/Help/Html/Mini/MenuManage.html" />
+      <Menu Guid="1216E107-2405-4496-BA26-E64E6DA54AB6" Name="界面程序集维护" Code="" ShortCutKey="D" DLLName="Breezee.Framework.Mini.StartUp.exe" FormName="Breezee.Framework.Mini.StartUp.FrmDllManage" HelpPath="/Help/Html/Mini/DllSet.html" />
     </Class>
   </Model>
-  
   <Model Guid="R1150CDC-502C-40F7-9D0C-90CE7CCA66BA" Name="数据库工具" Code="MODEL_DB_TOOL" ShortCutKey="T">
     <!--菜单分类1.3-->
     <Class Guid="AD8E21CB-D718-417B-8F62-7270E2220150" Name="基础数据" Code="" ShortCutKey="">
       <!--基础数据-->
-      <Menu Guid="B2EEFDDA-62F9-46AD-BA58-6C5DC057AF61" Name="数据库连接配置" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBConfigSet" HelpPath="/Help/Html/DBTool/DB/DBConnectSet.html"/>
-      <Menu Guid="8D1C89B3-FBD1-44A3-8CE4-A60D98C659AB" Name="字段默认值与条件配置" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTDefaultValueSet"  HelpPath="/Help/Html/DBTool/DB/DefaultValueSet.html"/>
+      <Menu Guid="B2EEFDDA-62F9-46AD-BA58-6C5DC057AF61" Name="数据库连接配置" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBConfigSet" HelpPath="/Help/Html/DBTool/DB/DBConnectSet.html" />
+      <Menu Guid="8D1C89B3-FBD1-44A3-8CE4-A60D98C659AB" Name="字段默认值与条件配置" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTDefaultValueSet" HelpPath="/Help/Html/DBTool/DB/DefaultValueSet.html" />
     </Class>
     <Class Guid="TD73F5C5-5E16-4B59-B468-070D16956F80" Name="表SQL生成" Code="M_DB_TOOL_TABLE_STRUCT" ShortCutKey="">
       <!--表SQL生成-->
-      <Menu Guid="04FC80B7-1DE5-4717-A7FF-E948BCD230CD" Name="表结构SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTExcelGenerateTableSQL"  HelpPath="/Help/Html/DBTool/DB/SqlTableConstuct.html"/>
-      <Menu Guid="629E907C-7790-4897-9126-37E43CE5F80A" Name="增删改查SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTGetTableQuerySql"  HelpPath="/Help/Html/DBTool/DB/SqlDBQuery.html"/>
-      <Menu Guid="0DF72AF9-7BF1-44E0-B68C-A209572C5B90" Name="表列注释SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTTableExtendProperty"  HelpPath="/Help/Html/DBTool/DB/SqlTableColumnRemark.html"/>
+      <Menu Guid="04FC80B7-1DE5-4717-A7FF-E948BCD230CD" Name="表结构SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTExcelGenerateTableSQL" HelpPath="/Help/Html/DBTool/DB/SqlTableConstuct.html" />
+      <Menu Guid="629E907C-7790-4897-9126-37E43CE5F80A" Name="增删改查SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTGetTableQuerySql" HelpPath="/Help/Html/DBTool/DB/SqlDBQuery.html" />
+      <Menu Guid="0DF72AF9-7BF1-44E0-B68C-A209572C5B90" Name="表列注释SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTTableExtendProperty" HelpPath="/Help/Html/DBTool/DB/SqlTableColumnRemark.html" />
     </Class>
-    
     <Class Guid="A72D3A5E-F499-468C-884A-B506004A459D" Name="数据SQL生成" Code="M_DB_TOOL_DATA_SQL" ShortCutKey="">
       <!--数据SQL生成-->
-      <Menu Guid="62718AB5-E92B-4E1B-BA35-4FBB707F7192" Name="模板数据SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTExcelImportData"  HelpPath="/Help/Html/DBTool/DB/DataSqlExcel.html"/>
-      <Menu Guid="68E159DA-4239-4183-A9B0-677C511E053C" Name="数据库数据SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTReadDBData"  HelpPath="/Help/Html/DBTool/DB/DataSqlDBQuery.html"/>
+      <Menu Guid="62718AB5-E92B-4E1B-BA35-4FBB707F7192" Name="模板数据SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTExcelImportData" HelpPath="/Help/Html/DBTool/DB/DataSqlExcel.html" />
+      <Menu Guid="68E159DA-4239-4183-A9B0-677C511E053C" Name="数据库数据SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTReadDBData" HelpPath="/Help/Html/DBTool/DB/DataSqlDBQuery.html" />
     </Class>
     <Class Guid="FF32364F-3832-48F7-8B32-B473DC48401D" Name="数据拼接" Code="M_DB_TOOL_STR_CONN" ShortCutKey="">
       <!--字符拼接-->
-      <Menu Guid="05AF975A-6814-4538-953E-CE4F2E294172" Name="数据库数据拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTReadDataBaseString"  HelpPath="/Help/Html/DBTool/DB/DataStringDBQuery.html"/>
-	  <Menu Guid="8FD50BB4-B9AC-4846-9261-732EDF6CF49A" Name="表列字符拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTTableColumnString"  HelpPath="/Help/Html/DBTool/DB/DBColumnStringConn.html"/>
-	  <Menu Guid="2550828A-4382-457C-8E84-2089E7D03E17" Name="数据字典" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTTableColumnDictionary"  HelpPath="/Help/Html/DBTool/DB/DBColumnDictionary.html"/>
-	</Class>
-    
+      <Menu Guid="05AF975A-6814-4538-953E-CE4F2E294172" Name="数据库数据拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTReadDataBaseString" HelpPath="/Help/Html/DBTool/DB/DataStringDBQuery.html" />
+      <Menu Guid="8FD50BB4-B9AC-4846-9261-732EDF6CF49A" Name="表列字符拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTTableColumnString" HelpPath="/Help/Html/DBTool/DB/DBColumnStringConn.html" />
+      <Menu Guid="2550828A-4382-457C-8E84-2089E7D03E17" Name="数据字典" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTTableColumnDictionary" HelpPath="/Help/Html/DBTool/DB/DBColumnDictionary.html" />
+    </Class>
     <Class Guid="29EB1BE0-21D8-4FB6-93C7-3B85E60BB5B5" Name="程序开发" Code="M_DB_TOOL_APP_DEV" ShortCutKey="">
       <!--实体生成-->
-	  <Menu Guid="89205F44-3EF5-4A0B-A4CD-04DD8145F99E" Name="代码文件生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTDBAutoCodeFile"  HelpPath="/Help/Html/DBTool/DB/AutoFile.html"/>
-	  <Menu Guid="6DD928D5-B5A6-4E65-97AF-C894B2DF92DA" Name="实体文件生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTDBAutoEntityFile"  HelpPath="/Help/Html/DBTool/DB/AutoEntity.html"/>
+      <Menu Guid="89205F44-3EF5-4A0B-A4CD-04DD8145F99E" Name="代码文件生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTDBAutoCodeFile" HelpPath="/Help/Html/DBTool/DB/AutoFile.html" />
+      <Menu Guid="6DD928D5-B5A6-4E65-97AF-C894B2DF92DA" Name="实体文件生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTDBAutoEntityFile" HelpPath="/Help/Html/DBTool/DB/AutoEntity.html" />
     </Class>
     <Class Guid="07A30998-9277-4AC7-96AA-108AA04F1AF2" Name="综合" Code="M_DB_TOOL_ALL" ShortCutKey="">
-      <Menu Guid="FAC4990F-07F5-41C7-AE6A-86915CEFD282" Name="合并脚本" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTScriptMerge"  HelpPath="/Help/Html/DBTool/DB/MergeScript.html"/>
+      <Menu Guid="FAC4990F-07F5-41C7-AE6A-86915CEFD282" Name="合并脚本" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTScriptMerge" HelpPath="/Help/Html/DBTool/DB/MergeScript.html" />
     </Class>
   </Model>
-  
   <Model Guid="F0BB1849488147B0970762238A77E620" Name="字符处理" Code="" DLLName="" FormName="" ShortCutKey="C">
     <Class Guid="7908BFA7-5A14-4AA7-B7AC-53FA2A4F7C79" Name="Excel字符" Code="" DLLName="" FormName="" ShortCutKey="">
-      <Menu Guid="3252D790-C9AD-47F2-8B56-F690D0F6BBE1" Name="复制数据拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTCopyData"  HelpPath="/Help/Html/DBTool/String/ExcelCopyConn.html"/>
-      <Menu Guid="3F455E07-ABF6-4B4E-BA18-900C4CCF78DA" Name="Excel列转行" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTExcelCol2Row" ShortCutKey=""  HelpPath="/Help/Html/DBTool/String/ExcelColumn2Row.html"/>
-	  <Menu Guid="751BE4A5-A3B8-4521-8C80-B7A18AC4382C" Name="两个Excel合并" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTMergeData" ShortCutKey=""  HelpPath="/Help/Html/DBTool/String/TowExcelMerge.html"/>
-	</Class>
+      <Menu Guid="3252D790-C9AD-47F2-8B56-F690D0F6BBE1" Name="复制数据拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTCopyData" HelpPath="/Help/Html/DBTool/String/ExcelCopyConn.html" />
+      <Menu Guid="3F455E07-ABF6-4B4E-BA18-900C4CCF78DA" Name="Excel列转行" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTExcelCol2Row" ShortCutKey="" HelpPath="/Help/Html/DBTool/String/ExcelColumn2Row.html" />
+      <Menu Guid="751BE4A5-A3B8-4521-8C80-B7A18AC4382C" Name="两个Excel合并" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTMergeData" ShortCutKey="" HelpPath="/Help/Html/DBTool/String/TowExcelMerge.html" />
+    </Class>
     <Class Guid="9D1E9003-C19A-4137-B191-28358AB9B459" Name="字符拼接" Code="" DLLName="" FormName="" ShortCutKey="">
-      <Menu Guid="57C49904-07F5-41C7-AE6A-86915CEFD282" Name="IN清单拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTInList"  HelpPath="/Help/Html/DBTool/DB/DataStringIn.html"/>
-      <Menu Guid="9D9AB487-ACAD-4791-995E-1DBE6F62A502" Name="左右交换字符" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.StringBuild.FrmDBTExchangeStringPlace" ShortCutKey=""  HelpPath="/Help/Html/DBTool/String/StringConnChange.html"/>
-      <Menu Guid="641651C7-1497-4129-A2F7-61EFF811654B" Name="字符分割拼接" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.StringBuild.FrmDBTSplitString" ShortCutKey=""  HelpPath="/Help/Html/DBTool/String/StringConnSplit.html"/>      
+      <Menu Guid="57C49904-07F5-41C7-AE6A-86915CEFD282" Name="IN清单拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTInList" HelpPath="/Help/Html/DBTool/DB/DataStringIn.html" />
+      <Menu Guid="9D9AB487-ACAD-4791-995E-1DBE6F62A502" Name="左右交换字符" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.StringBuild.FrmDBTExchangeStringPlace" ShortCutKey="" HelpPath="/Help/Html/DBTool/String/StringConnChange.html" />
+      <Menu Guid="641651C7-1497-4129-A2F7-61EFF811654B" Name="字符分割拼接" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.StringBuild.FrmDBTSplitString" ShortCutKey="" HelpPath="/Help/Html/DBTool/String/StringConnSplit.html" />
     </Class>
     <Class Guid="8CEE1701-C80A-46C1-871D-8AF519F75239" Name="字符工具" Code="" DLLName="" FormName="" ShortCutKey="">
-      <Menu Guid="D8993FE6FF1244A990EC37206A87C694" Name="点击复制字符" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.StringBuild.FrmDBTClickCopyStringAuto" ShortCutKey=""  HelpPath="/Help/Html/DBTool/String/CommonCopyString.html"/>
-      <Menu Guid="FGC49904-07F5-41C7-AE6A-86915CEFD282" Name="目录字符生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDirectoryFileString"  HelpPath="/Help/Html/DBTool/String/StringConnDirectory.html"/>
+      <Menu Guid="D8993FE6FF1244A990EC37206A87C694" Name="点击复制字符" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.StringBuild.FrmDBTClickCopyStringAuto" ShortCutKey="" HelpPath="/Help/Html/DBTool/String/CommonCopyString.html" />
+      <Menu Guid="FGC49904-07F5-41C7-AE6A-86915CEFD282" Name="目录字符生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDirectoryFileString" HelpPath="/Help/Html/DBTool/String/StringConnDirectory.html" />
     </Class>
   </Model>
 </xml>

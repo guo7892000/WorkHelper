@@ -340,6 +340,10 @@
       <Project>{62a500e0-7044-4866-b4f3-509ead4eb9e0}</Project>
       <Name>Breezee.AutoSQLExecutor.SQLite</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\20_AutoSQLExcutor\Breezee.AutoSQLExecutor.SqlServer\Breezee.AutoSQLExecutor.SqlServer.csproj">
+      <Project>{8fd60d3c-dc4e-4606-8139-b1561b854f80}</Project>
+      <Name>Breezee.AutoSQLExecutor.SqlServer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Breezee.Framework.Mini.BLL\Breezee.Framework.Mini.BLL.csproj">
       <Project>{f985f965-cfd2-4d51-93ea-ea634fdcc53a}</Project>
       <Name>Breezee.Framework.Mini.BLL</Name>

@@ -261,7 +261,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             //得到数据库访问对象
             _dataAccess = AutoSQLExecutors.Connect(DbServer);
             //所有用户表：GetSqlSchemaTables 和 GetSqlSchemaTables
-            UserTableList = _dataAccess.GetSchemaTables();
+            //UserTableList = _dataAccess.GetSchemaTables();
+            UserTableList = _dataAccess.GetSqlSchemaTables();
             //返回
             return DbServer;
         }
