@@ -130,5 +130,29 @@ namespace Breezee.WorkHelper.DBTool.UI.Properties {
                 this["ExcelCopyDataConnect"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DbGetSql_ParamType {
+            get {
+                return ((string)(this["DbGetSql_ParamType"]));
+            }
+            set {
+                this["DbGetSql_ParamType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DbGetSql_FirstWordType {
+            get {
+                return ((string)(this["DbGetSql_FirstWordType"]));
+            }
+            set {
+                this["DbGetSql_FirstWordType"] = value;
+            }
+        }
     }
 }

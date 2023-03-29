@@ -14,6 +14,7 @@ using Breezee.AutoSQLExecutor.Core;
 using Breezee.Core.IOC;
 using Breezee.AutoSQLExecutor.Common;
 using Breezee.Core.Tool;
+using Setting = Breezee.WorkHelper.DBTool.UI.Properties.Settings;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -29,6 +30,14 @@ namespace Breezee.WorkHelper.DBTool.UI
         private readonly string _sGridColumnCondition = "IsCondition";
         private readonly string _sGridColumnSelect = "IsSelect";
         private readonly string _sGridColumnDynamic = "IsDynamic";
+        //
+        private readonly string _sGridColumnGlobalValue = "GlobalValue";
+        private readonly string _sGridColumnGlobalValueInsert = "GlobalValueInsertUsed";
+        private readonly string _sGridColumnGlobalValueUpdate = "GlobalValueUpdateUsed";
+        private readonly string _sGridColumnIsUpdateCondition = "GlobalIsUpdateCondtion";
+        private readonly string _sGridColumnIsDeleteCondition = "GlobalIsDeleteCondtion";
+        private readonly string _sGridColumnIsQueryCondition = "GlobalIsQueryCondtion";
+        private readonly string _sGridColumnDefault = "DefaultVlue2";
         private bool _allSelect = false;//默认全选，这里取反
         private bool _allCondition = true;//默认全不选，这里取反
         private bool _allDynamic = false;//默认全选，这里取反
@@ -96,6 +105,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             //设置下拉框查找数据源
             cbbTableName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cbbTableName.AutoCompleteSource = AutoCompleteSource.CustomSource;
+
+            cbbParaType.SelectedValue = Setting.Default.DbGetSql_ParamType;
+            cbbWordConvert.SelectedValue = Setting.Default.DbGetSql_FirstWordType;
         }
         #endregion
 
@@ -158,16 +170,18 @@ namespace Breezee.WorkHelper.DBTool.UI
                 dtTable.Rows.Add(dr);
             }
             dtTable.TableName = _strTableName;
-            //设置Tag
-            SetTableTag(dtTable);
-            SetColTag(dtTable);
+
             //查询全局的默认值配置
             _dicQuery[DT_DBT_BD_COLUMN_DEFAULT.SqlString.IS_ENABLED] = "1";
             _dtDefault = _IDBDefaultValue.QueryDefaultValue(_dicQuery).SafeGetDictionaryTable(); //获取默认值、排除列配置信息
+            //设置Tag
+            SetTableTag(dtTable);
+            SetColTag(dtTable);
+            
             //导入成功后处理
             tsbAutoSQL.Enabled = true;
             tabControl1.SelectedTab = tpImport;
-            SetDefaultValue(null);
+            SetGlobalCondition();
             //导入成功提示
             lblInfo.Text = _strImportSuccess;
         }
@@ -211,7 +225,75 @@ namespace Breezee.WorkHelper.DBTool.UI
             DataColumn dcDynamic = new DataColumn(_sGridColumnDynamic);
             dcDynamic.DefaultValue = "1";
             dtCols.Columns.Add(dcDynamic);
+            //全局配置值
+            dcDynamic = new DataColumn(_sGridColumnGlobalValue);
+            dtCols.Columns.Add(dcDynamic);
+            dcDynamic = new DataColumn(_sGridColumnGlobalValueInsert);
+            dcDynamic.DefaultValue = "0";
+            dtCols.Columns.Add(dcDynamic);
+            dcDynamic = new DataColumn(_sGridColumnGlobalValueUpdate);
+            dcDynamic.DefaultValue = "0";
+            dtCols.Columns.Add(dcDynamic);
+
+            dcDynamic = new DataColumn(_sGridColumnIsUpdateCondition);
+            dcDynamic.DefaultValue = "0";
+            dtCols.Columns.Add(dcDynamic);
+            dcDynamic = new DataColumn(_sGridColumnIsDeleteCondition);
+            dcDynamic.DefaultValue = "0";
+            dtCols.Columns.Add(dcDynamic);
+            dcDynamic = new DataColumn(_sGridColumnIsQueryCondition);
+            dcDynamic.DefaultValue = "0";
+            dtCols.Columns.Add(dcDynamic);
+
+            dcDynamic = new DataColumn(_sGridColumnDefault);//增加一个备份的默认值
+            dtCols.Columns.Add(dcDynamic);
+
+
+            
             dtCols.TableName = _strColName;
+
+            foreach (DataRow dr in dtCols.Rows)
+            {
+                //备份默认值
+                dr[_sGridColumnDefault] = dr[DBColumnEntity.SqlString.Default];
+                if(_dtDefault!=null && _dtDefault.Rows.Count > 0)
+                {
+                    string sDefaultColName;
+                    switch (_dbServer.DatabaseType)
+                    {
+                        case DataBaseType.SqlServer:
+                            sDefaultColName = DT_DBT_BD_COLUMN_DEFAULT.SqlString.DEFAULT_SQLSERVER;
+                            break;
+                        case DataBaseType.Oracle:
+                            sDefaultColName = DT_DBT_BD_COLUMN_DEFAULT.SqlString.DEFAULT_ORACLE;
+                            break;
+                        case DataBaseType.MySql:
+                            sDefaultColName = DT_DBT_BD_COLUMN_DEFAULT.SqlString.DEFAULT_MYSQL;
+                            break;
+                        case DataBaseType.SQLite:
+                            sDefaultColName = DT_DBT_BD_COLUMN_DEFAULT.SqlString.DEFAULT_SQLITE;
+                            break;
+                        case DataBaseType.PostgreSql:
+                            sDefaultColName = DT_DBT_BD_COLUMN_DEFAULT.SqlString.DEFAULT_POSTGRESQL;
+                            break;
+                        default:
+                            throw new Exception("暂不支持该数据库类型！！");
+                    }
+                    //过滤数据
+                    string sFiter = string.Format("{0}='{1}'", DT_DBT_BD_COLUMN_DEFAULT.SqlString.COLUMN_NAME, dr[DBColumnEntity.SqlString.Name].ToString());
+                    var drArr = _dtDefault.Select(sFiter);
+                    if (drArr.Length > 0)
+                    {
+                        dr[_sGridColumnGlobalValue] = drArr[0][sDefaultColName];//使用全局配置中的默认值
+                        dr[_sGridColumnGlobalValueInsert] = drArr[0][DT_DBT_BD_COLUMN_DEFAULT.SqlString.IS_USED_ADD];//默认值是否新增使用
+                        dr[_sGridColumnGlobalValueUpdate] = drArr[0][DT_DBT_BD_COLUMN_DEFAULT.SqlString.IS_USED_UPDATE];//默认值是否修改使用
+
+                        dr[_sGridColumnIsUpdateCondition] = drArr[0][DT_DBT_BD_COLUMN_DEFAULT.SqlString.IS_CONDITION_UPDATE];//是否修改条件
+                        dr[_sGridColumnIsDeleteCondition] = drArr[0][DT_DBT_BD_COLUMN_DEFAULT.SqlString.IS_CONDITION_DELETE];//是否删除条件
+                        dr[_sGridColumnIsQueryCondition] = drArr[0][DT_DBT_BD_COLUMN_DEFAULT.SqlString.IS_CONDITION_QUERY];//是否查询条件
+                    }
+                }
+            }
             //查询结果
             FlexGridColumnDefinition fdc = new FlexGridColumnDefinition();
             fdc.AddColumn(
@@ -230,6 +312,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.DataPrecision).Caption("精度").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.DataScale).Caption("尺度").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.Comments).Caption("备注").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(200).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(_sGridColumnGlobalValue).Caption("全局配置值").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Visible().Build(),
                 FlexGridColumn.NewHideCol(DBColumnEntity.SqlString.NameCN),
                 FlexGridColumn.NewHideCol(DBColumnEntity.SqlString.Extra)
             );
@@ -561,6 +644,16 @@ namespace Breezee.WorkHelper.DBTool.UI
                     string strColCode = drCol[DBColumnEntity.SqlString.Name].ToString().Trim().ToUpper();
                     string strColType = drCol[DBColumnEntity.SqlString.DataType].ToString().Trim().ToUpper();
                     string strColFixedValue = drCol[DBColumnEntity.SqlString.Default].ToString().Trim();//固定值
+                    string sColGlobalFixedValue = drCol[_sGridColumnGlobalValue].ToString().Trim();
+                    string sColGlobalAdd = drCol[_sGridColumnGlobalValueInsert].ToString().Trim();//新增语句是否使用默认值
+                    string sColGlobalUpdate = drCol[_sGridColumnGlobalValueUpdate].ToString().Trim();//修改语句是否使用默认值
+                    //
+                    if (ckbUseDefaultConfig.Checked && !string.IsNullOrEmpty(sColGlobalFixedValue))
+                    {
+                        if(("1".Equals(sColGlobalAdd) && sqlEntity.SqlType == SqlType.Insert) || ("1".Equals(sColGlobalUpdate) && sqlEntity.SqlType == SqlType.Update))
+                        strColFixedValue = sColGlobalFixedValue;
+                    }
+
                     string strColComments = "";//列说明
                     bool bDynamicCol = false;
 
@@ -767,6 +860,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             rtbResult.AppendText(sbAllSql.ToString() + sqlEntity.NewLine);
             Clipboard.SetData(DataFormats.UnicodeText, sbAllSql.ToString());
             tabControl1.SelectedTab = tpAutoSQL;
+            //保存配置
+            Setting.Default.DbGetSql_ParamType = cbbParaType.SelectedValue.ToString();
+            Setting.Default.DbGetSql_FirstWordType = cbbWordConvert.SelectedValue.ToString();
+            Setting.Default.Save();
             //生成SQL成功后提示
             ShowInfo(_strAutoSqlSuccess);
             return;
@@ -834,49 +931,41 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private void CkbUseDefaultConfig_CheckedChanged(object sender, EventArgs e)
         {
-            SetDefaultValue(null);
+            SetGlobalCondition();
         }
 
-        private void SetDefaultValue(DataTable dtSec)
+        private void SetGlobalCondition()
         {
-            if (dtSec == null)
+            if (!ckbUseDefaultConfig.Checked || _dbServer == null || _dtDefault == null || _dtDefault.Rows.Count == 0)
             {
-                if (!ckbUseDefaultConfig.Checked || _dbServer == null || _dtDefault == null || _dtDefault.Rows.Count == 0)
-                {
-                    return;
-                }
-                txbTableShortName.Focus();
-                dtSec = dgvColList.GetBindingTable();
-                if (dtSec.Rows.Count == 0)
-                {
-                    return;
-                }
+                return;
             }
 
-            string sDefaultColName;
-            switch (_dbServer.DatabaseType)
+            txbTableShortName.Focus();
+            DataTable dtSec = dgvColList.GetBindingTable();
+            if (dtSec.Rows.Count == 0)
             {
-                case DataBaseType.SqlServer:
-                    sDefaultColName = DT_DBT_BD_COLUMN_DEFAULT.SqlString.DEFAULT_SQLSERVER;
-                    break;
-                case DataBaseType.Oracle:
-                    sDefaultColName = DT_DBT_BD_COLUMN_DEFAULT.SqlString.DEFAULT_ORACLE;
-                    break;
-                case DataBaseType.MySql:
-                    sDefaultColName = DT_DBT_BD_COLUMN_DEFAULT.SqlString.DEFAULT_MYSQL;
-                    break;
-                case DataBaseType.SQLite:
-                    sDefaultColName = DT_DBT_BD_COLUMN_DEFAULT.SqlString.DEFAULT_SQLITE;
-                    break;
-                case DataBaseType.PostgreSql:
-                    sDefaultColName = DT_DBT_BD_COLUMN_DEFAULT.SqlString.DEFAULT_POSTGRESQL;
-                    break;
-                default:
-                    throw new Exception("暂不支持该数据库类型！！");
+                return;
             }
 
-            string sConditionColName = "";
             SqlType sqlTypeNow = GetSqlType();
+            //只针对更新和删除，其条件要默认加上主键ID和并发控制ID
+            if (sqlTypeNow == SqlType.Update || sqlTypeNow == SqlType.Delete)
+            {
+                DataRow[] drUpdateControlColumn = dtSec.Select(DBColumnEntity.SqlString.Name + "='" + _strUpdateCtrolColumnCode + "'");//得到并发ID行
+                if (drUpdateControlColumn.Length > 0)
+                {
+                    drUpdateControlColumn[0][_sGridColumnCondition] = "1";
+                }
+                drUpdateControlColumn = dtSec.Select(DBColumnEntity.SqlString.KeyType + "='PK'");//得到主键ID
+                if (drUpdateControlColumn.Length > 0)
+                {
+                    drUpdateControlColumn[0][_sGridColumnCondition] = "1";
+                }
+            }
+
+            //全局配置中的条件
+            string sConditionColName = "";
             switch (sqlTypeNow)
             {
                 case SqlType.Insert:
@@ -901,9 +990,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 string sColCode = drD[DT_DBT_BD_COLUMN_DEFAULT.SqlString.COLUMN_NAME].ToString().Trim().ToUpper();
                 string sFiter = string.Format("{0}='{1}'", DBColumnEntity.SqlString.Name, sColCode);
                 var drArr = dtSec.Select(sFiter);
-                if (drArr.Length == 0) return;
+                if (drArr.Length == 0) continue;
 
-                drArr[0][DBColumnEntity.SqlString.Default] = drD[sDefaultColName];//使用全局配置中的默认值
                 if (string.IsNullOrEmpty(sConditionColName)) return;
                 drArr[0][_sGridColumnCondition] = drD[sConditionColName];//选择为条件
 
@@ -912,39 +1000,9 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private void CmbType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SqlType sqlTypeNow = GetSqlType();
-            if (sqlTypeNow == SqlType.Insert || sqlTypeNow == SqlType.Parameter)
-            {
-                return;
-            }
-
-            DataTable dtSec = dgvColList.GetBindingTable();
-            if (_dbServer == null || dtSec == null || dtSec.Rows.Count == 0)
-            {
-                return;
-            }
-
-            if (sqlTypeNow == SqlType.Update || sqlTypeNow == SqlType.Delete)//只针对更新和删除，其条件要默认加上主键ID和并发控制ID
-            {
-                bool isReturn = false;
-                DataRow[] drUpdateControlColumn = dtSec.Select(DBColumnEntity.SqlString.Name + "='" + _strUpdateCtrolColumnCode + "'");//得到并发ID行
-                if (drUpdateControlColumn.Length > 0)
-                {
-                    drUpdateControlColumn[0][_sGridColumnCondition] = "1";
-                    isReturn = true;
-                }
-                drUpdateControlColumn = dtSec.Select(DBColumnEntity.SqlString.KeyType + "='PK'");//得到主键ID
-                if (drUpdateControlColumn.Length > 0)
-                {
-                    drUpdateControlColumn[0][_sGridColumnCondition] = "1";
-                    isReturn = true;
-                }
-                if (isReturn) return;
-            }
-
             if (ckbUseDefaultConfig.Checked)
             {
-                SetDefaultValue(dtSec);
+                SetGlobalCondition();
             }
         }
 

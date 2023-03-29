@@ -106,8 +106,12 @@ namespace Breezee.Framework.Mini.StartUp
         private void okButton_Click(object sender, EventArgs e)
         {
             Close();
-        } 
+        }
         #endregion
 
+        private void btnOpenDownLoad_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://gitee.com/breezee2000/WorkHelper/releases");
+        }
     }
 }

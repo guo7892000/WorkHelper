@@ -62,6 +62,8 @@
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.dgvSelect = new System.Windows.Forms.DataGridView();
+            this.cmsRemoveSelect = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiRemoveSelect = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -73,9 +75,9 @@
             this.rtbConString = new System.Windows.Forms.RichTextBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.btnMatch = new System.Windows.Forms.Button();
-            this.cmsRemoveSelect = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tsmiRemoveSelect = new System.Windows.Forms.ToolStripMenuItem();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
+            this.cbbModuleString = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpAllTableCol.SuspendLayout();
@@ -91,6 +93,7 @@
             this.tpAutoSQL.SuspendLayout();
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSelect)).BeginInit();
+            this.cmsRemoveSelect.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -109,7 +112,6 @@
             this.splitContainer2.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox8.SuspendLayout();
-            this.cmsRemoveSelect.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -225,12 +227,12 @@
             this.cmsAddCommon.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiAddCommonCol});
             this.cmsAddCommon.Name = "contextMenuStrip1";
-            this.cmsAddCommon.Size = new System.Drawing.Size(181, 48);
+            this.cmsAddCommon.Size = new System.Drawing.Size(125, 26);
             // 
             // tsmiAddCommonCol
             // 
             this.tsmiAddCommonCol.Name = "tsmiAddCommonCol";
-            this.tsmiAddCommonCol.Size = new System.Drawing.Size(180, 22);
+            this.tsmiAddCommonCol.Size = new System.Drawing.Size(124, 22);
             this.tsmiAddCommonCol.Text = "加入字典";
             this.tsmiAddCommonCol.Click += new System.EventHandler(this.tsmiAddCommonCol_Click);
             // 
@@ -448,6 +450,20 @@
             this.dgvSelect.Size = new System.Drawing.Size(275, 253);
             this.dgvSelect.TabIndex = 0;
             // 
+            // cmsRemoveSelect
+            // 
+            this.cmsRemoveSelect.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiRemoveSelect});
+            this.cmsRemoveSelect.Name = "cmsRemove";
+            this.cmsRemoveSelect.Size = new System.Drawing.Size(101, 26);
+            // 
+            // tsmiRemoveSelect
+            // 
+            this.tsmiRemoveSelect.Name = "tsmiRemoveSelect";
+            this.tsmiRemoveSelect.Size = new System.Drawing.Size(100, 22);
+            this.tsmiRemoveSelect.Text = "移除";
+            this.tsmiRemoveSelect.Click += new System.EventHandler(this.tsmiRemoveSelect_Click);
+            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -571,8 +587,11 @@
             // 
             // groupBox8
             // 
+            this.groupBox8.Controls.Add(this.label3);
+            this.groupBox8.Controls.Add(this.cbbModuleString);
             this.groupBox8.Controls.Add(this.btnMatch);
             this.groupBox8.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox8.ForeColor = System.Drawing.Color.Black;
             this.groupBox8.Location = new System.Drawing.Point(3, 17);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(275, 43);
@@ -589,20 +608,6 @@
             this.btnMatch.UseVisualStyleBackColor = true;
             this.btnMatch.Click += new System.EventHandler(this.btnMatch_Click);
             // 
-            // cmsRemoveSelect
-            // 
-            this.cmsRemoveSelect.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiRemoveSelect});
-            this.cmsRemoveSelect.Name = "cmsRemove";
-            this.cmsRemoveSelect.Size = new System.Drawing.Size(101, 26);
-            // 
-            // tsmiRemoveSelect
-            // 
-            this.tsmiRemoveSelect.Name = "tsmiRemoveSelect";
-            this.tsmiRemoveSelect.Size = new System.Drawing.Size(100, 22);
-            this.tsmiRemoveSelect.Text = "移除";
-            this.tsmiRemoveSelect.Click += new System.EventHandler(this.tsmiRemoveSelect_Click);
-            // 
             // uC_DbConnection1
             // 
             this.uC_DbConnection1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -610,6 +615,25 @@
             this.uC_DbConnection1.Name = "uC_DbConnection1";
             this.uC_DbConnection1.Size = new System.Drawing.Size(1054, 78);
             this.uC_DbConnection1.TabIndex = 35;
+            // 
+            // cbbModuleString
+            // 
+            this.cbbModuleString.FormattingEnabled = true;
+            this.cbbModuleString.Location = new System.Drawing.Point(148, 16);
+            this.cbbModuleString.Name = "cbbModuleString";
+            this.cbbModuleString.Size = new System.Drawing.Size(121, 20);
+            this.cbbModuleString.TabIndex = 4;
+            this.cbbModuleString.SelectedIndexChanged += new System.EventHandler(this.cbbModuleString_SelectedIndexChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.Color.Black;
+            this.label3.Location = new System.Drawing.Point(101, 20);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(41, 12);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "模板：";
             // 
             // FrmDBTTableColumnDictionary
             // 
@@ -644,6 +668,7 @@
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSelect)).EndInit();
+            this.cmsRemoveSelect.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -662,7 +687,7 @@
             this.splitContainer2.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox8.ResumeLayout(false);
-            this.cmsRemoveSelect.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -716,5 +741,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiRemoveCommon;
         private System.Windows.Forms.ContextMenuStrip cmsRemoveSelect;
         private System.Windows.Forms.ToolStripMenuItem tsmiRemoveSelect;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cbbModuleString;
     }
 }

@@ -126,9 +126,6 @@ QQ：6455879
 https://gitee.com/breezee2000/WorkHelper/releases</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="MyWeixinGatherMin" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MyWeixinGatherMin.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="WorkHelp_Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WorkHelp.Logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

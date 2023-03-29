@@ -234,7 +234,6 @@
     <Content Include="Image\重置.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\MyWeixinGatherMin.jpg" />
     <Content Include="Resources\WorkHelp.Logo.png" />
     <Content Include="WorkTool.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -271,7 +270,9 @@
     <EmbeddedResource Include="Login\LockForm.resx">
       <DependentUpon>LockForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="ShortCutMenu\ShortCutItem.resx">
       <DependentUpon>ShortCutItem.cs</DependentUpon>
     </EmbeddedResource>

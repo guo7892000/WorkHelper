@@ -77,6 +77,9 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             SetColTag();
 
+            _dicString.Add("1", "YAPI参数格式");
+            cbbModuleString.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), true, true);
+
             //初始化网格
             DataTable dtIn = new DataTable();
             dtIn.Columns.Add(_sInputColCode, typeof(string));
@@ -739,6 +742,22 @@ namespace Breezee.WorkHelper.DBTool.UI
             DataTable dt = dgvSelect.GetBindingTable();
             DataRow dataRow = dgvSelect.GetCurrentRow();
             dt.Rows.Remove(dataRow);
+        }
+
+        private void cbbModuleString_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbbModuleString.SelectedValue != null && !string.IsNullOrEmpty(cbbModuleString.SelectedValue.ToString()))
+            {
+                string sModule = cbbModuleString.SelectedValue.ToString();
+                if ("1".Equals(sModule))
+                {
+                    rtbConString.Clear();
+                    rtbConString.AppendText(@"""#C3#"":{
+    ""type"":""string"",
+    ""description"":""#C1#""
+    },");
+                }
+            }
         }
     }
 }
