@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Breezee.Core.Interface;
+using Breezee.AutoSQLExecutor.Core;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -19,14 +20,13 @@ namespace Breezee.WorkHelper.DBTool.UI
     public partial class FrmDBTInList : BaseForm
     {
         #region 变量
-        //
-        private BindingSource bsTable = new BindingSource();
-        private BindingSource bsCos = new BindingSource();//
-        private BindingSource bsThree = new BindingSource();//
         //常量
         private string _strAutoSqlSuccess = "生成成功，并已复制到了粘贴板。详细见“生成的SQL”页签！";
         public IDictionary<string, BindingSource> dicBindingSource = new Dictionary<string, BindingSource>();
 
+        private readonly string _sColIn = "IN字段";
+        private readonly string _sColUpper = "ColumnUpper";
+        private readonly string _sColLower = "ColumnLower";
         #endregion
 
         #region 构造函数
@@ -43,12 +43,26 @@ namespace Breezee.WorkHelper.DBTool.UI
             IDictionary<string, string> dic_List = new Dictionary<string, string>();
             dic_List.Add("1", "IN清单");
             dic_List.Add("2", "自定义前后缀");
+            dic_List.Add("3", "驼峰式");
             cbbSqlType.BindTypeValueDropDownList(dic_List.GetTextValueTable(false), false, true);
             //初始化网格
             DataTable dtIn = new DataTable();
-            dtIn.Columns.Add("IN字段", typeof(string));
-            bsTable.DataSource = dtIn;
-            dgvTableList.DataSource = bsTable;
+            dtIn.Columns.AddRange(new DataColumn[]
+                {
+                    new DataColumn(_sColIn),
+                    new DataColumn(_sColUpper),
+                    new DataColumn(_sColLower)
+                });
+            //设置Tag
+            FlexGridColumnDefinition fdc = new FlexGridColumnDefinition();
+            fdc.AddColumn(
+                new FlexGridColumn.Builder().Name(_sColIn).Caption("IN字段").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(150).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(_sColUpper).Caption("小驼峰").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(100).Edit().Visible(false).Build(),
+                new FlexGridColumn.Builder().Name(_sColLower).Caption("大驼峰").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit().Visible(false).Build()
+            );
+            dgvTableList.Tag = fdc.GetGridTagString();
+            dgvTableList.BindDataGridView(dtIn, true);
+
             lblInfo.Text = "请在Excel中复制一列内容，然后点击网格后按ctrl + v粘贴即可。";
         }
         #endregion
@@ -65,7 +79,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                     {
                         return;
                     }
-                    DataTable dtMain = (DataTable)bsTable.DataSource;
+                    DataTable dtMain = dgvTableList.GetBindingTable();
+                    
                     int iRow = 0;
                     int iColumn = 0;
                     Object[,] data = StringHelper.GetStringArray(ref pasteText, ref iRow, ref iColumn);
@@ -112,7 +127,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void tsbAutoSQL_Click(object sender, EventArgs e)
         {
             //取得数据源
-            DataTable dtMain = (DataTable)bsTable.DataSource;
+            DataTable dtMain = dgvTableList.GetBindingTable();
             string strSqlType = cbbSqlType.SelectedValue.ToString();
             string strPreStr = txbPreString.Text;
             string strEndStr = txbEndString.Text;
@@ -125,6 +140,18 @@ namespace Breezee.WorkHelper.DBTool.UI
                 ShowInfo("没有可生成的数据！");
                 return;
             }
+            if (strSqlType == "3")
+            {
+                foreach (DataRow dr in dtMain.Rows)
+                {
+                    dr[_sColLower] = dr[_sColIn].ToString().FirstLetterUpper(false);
+                    dr[_sColUpper] = dr[_sColIn].ToString().FirstLetterUpper();
+                }
+                dgvTableList.Columns[_sColLower].Visible = true;
+                dgvTableList.Columns[_sColUpper].Visible = true;
+                return;
+            }
+     
             string sbAllSql = "";
             string sbAllSqlEnd = "";
             if (strSqlType == "1")
@@ -136,7 +163,15 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 string strData = drTable[0].ToString().Trim();
                 if (string.IsNullOrEmpty(strData)) continue;
-                sbAllSql = sbAllSql + strPreStr + strData + strEndStr + strConnStr + strReturnStr;
+                if ("3".Equals(strSqlType) || "4".Equals(strSqlType))
+                {
+                    bool isUpper = "4".Equals(strSqlType);
+                    sbAllSql = sbAllSql + strData.FirstLetterUpper(isUpper);
+                }
+                else
+                {
+                    sbAllSql = sbAllSql + strPreStr + strData + strEndStr + strConnStr + strReturnStr;
+                }
             }
             sbAllSql = sbAllSql.Substring(0, sbAllSql.Length - 1) + sbAllSqlEnd;
             rtbResult.Clear();
@@ -154,6 +189,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void cbbSqlType_SelectedIndexChanged(object sender, EventArgs e)
         {
             string strSqlType = cbbSqlType.SelectedValue.ToString();
+            if (dgvTableList.Columns.Contains(_sColLower))
+            {
+                dgvTableList.Columns[_sColLower].Visible = false;
+                dgvTableList.Columns[_sColUpper].Visible = false;
+            }
             if (strSqlType == "1")
             {
                 txbPreString.Text = "'";

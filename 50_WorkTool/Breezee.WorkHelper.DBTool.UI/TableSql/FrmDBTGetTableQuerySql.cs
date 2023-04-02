@@ -302,7 +302,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 new FlexGridColumn.Builder().Name(_sGridColumnCondition).Caption("条件").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(40).Edit().Visible().Build(),
                 new FlexGridColumn.Builder().Name(_sGridColumnDynamic).Caption("MyBatis动态列").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(80).Edit().Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.Default).Caption("固定值").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit().Visible().Build(),
-                new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.Name).Caption("列名").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.Name).Caption("列编码").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.NameCN).Caption("列名称").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.DataTypeFull).Caption("类型").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.SortNum).Caption("排序号").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(40).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.KeyType).Caption("主键").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
@@ -313,7 +314,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.DataScale).Caption("尺度").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.Comments).Caption("备注").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(200).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(_sGridColumnGlobalValue).Caption("全局配置值").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Visible().Build(),
-                FlexGridColumn.NewHideCol(DBColumnEntity.SqlString.NameCN),
                 FlexGridColumn.NewHideCol(DBColumnEntity.SqlString.Extra)
             );
             dgvColList.Tag = fdc.GetGridTagString();
@@ -518,6 +518,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                         {
                             bDynamicCol = true;
                         }
+                        else
+                        {
+                            //针对没有选中的列，还是按MyBatis参数化的方式赋值
+                            strColCodeParm = "#{" + sDefineFormat + strColCodeParm + "}";
+                        }
                         break;
                     case SqlParamFormatType.UserDefine://自定义
                         strColCodeParm = sDefineFormat.Replace(sParamPre, strColCodeParm);
@@ -648,6 +653,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                     string sColGlobalAdd = drCol[_sGridColumnGlobalValueInsert].ToString().Trim();//新增语句是否使用默认值
                     string sColGlobalUpdate = drCol[_sGridColumnGlobalValueUpdate].ToString().Trim();//修改语句是否使用默认值
                     //
+                    if(ckbSkipFixNull.Checked && "NULL".Equals(strColFixedValue, StringComparison.OrdinalIgnoreCase))
+                    {
+                        strColFixedValue = "";//清空默认值
+                    }
                     if (ckbUseDefaultConfig.Checked && !string.IsNullOrEmpty(sColGlobalFixedValue))
                     {
                         if(("1".Equals(sColGlobalAdd) && sqlEntity.SqlType == SqlType.Insert) || ("1".Equals(sColGlobalUpdate) && sqlEntity.SqlType == SqlType.Update))
@@ -700,6 +709,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                                 if (dtColumnDynamic.Select(DBColumnEntity.SqlString.Name + "='" + strColCode + "'").Length > 0)
                                 {
                                     bDynamicCol = true;
+                                }
+                                else
+                                {
+                                    //针对没有选中的列，还是按MyBatis参数化的方式赋值
+                                    strColCodeParm = "#{" + sDefineFormat + strColCodeParm + "}";
                                 }
                                 break;
                             case SqlParamFormatType.UserDefine://自定义
@@ -929,14 +943,14 @@ namespace Breezee.WorkHelper.DBTool.UI
         }
         #endregion
 
-        private void CkbUseDefaultConfig_CheckedChanged(object sender, EventArgs e)
+        private void ckbUseDefaultConfig_CheckedChanged(object sender, EventArgs e)
         {
-            SetGlobalCondition();
+            SetGlobalCondition(ckbUseDefaultConfig.Checked);
         }
 
-        private void SetGlobalCondition()
+        private void SetGlobalCondition(bool isUseGlobalConfig =false)
         {
-            if (!ckbUseDefaultConfig.Checked || _dbServer == null || _dtDefault == null || _dtDefault.Rows.Count == 0)
+            if (_dbServer == null)
             {
                 return;
             }
@@ -962,6 +976,13 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     drUpdateControlColumn[0][_sGridColumnCondition] = "1";
                 }
+            }
+
+            //不使用全局配置，就退出
+            if (!isUseGlobalConfig) return;
+            if (_dtDefault == null || _dtDefault.Rows.Count == 0)
+            {
+                return;
             }
 
             //全局配置中的条件
@@ -1000,10 +1021,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private void CmbType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ckbUseDefaultConfig.Checked)
-            {
-                SetGlobalCondition();
-            }
+            SetGlobalCondition(ckbUseDefaultConfig.Checked);
         }
 
         private SqlType GetSqlType()

@@ -95,7 +95,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 BindingSource bs = (BindingSource)dgvQuery.DataSource;
                 if (bs == null)
                 {
-                    ShowInfo("没有选择一个客户，请先查询！");
+                    ShowInfo("没有选择一条数据，请先查询！");
                     return;
                 }
                 bs.EndEdit();
@@ -113,7 +113,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 if (dtSelect.Rows.Count == 0)
                 {
-                    ShowInfo("请至少选择一个客户！");
+                    ShowInfo("请至少选择一条数据！");
                     return;
                 }
                 Tag = dtSelect;
@@ -171,7 +171,24 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void dgvQuery_DoubleClick(object sender, EventArgs e)
         {
             tsbEdit.PerformClick();
-        } 
+        }
         #endregion
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            DataRow drSelect = dgvQuery.GetCurrentRow();
+            if (drSelect == null)
+            {
+                ShowErr("请选择一条数据！");
+                return;
+            }
+            if (MsgHelper.ShowYesNo("确定要删除该配置？") == DialogResult.Yes)
+            {
+                _dicString[IDBConfigSet.DeleteDbConfig_InDicKey.DB_CONFIG_ID] = drSelect[DT_DBT_BD_DB_CONFIG.SqlString.DB_CONFIG_ID].ToString();
+                _IDBConfigSet.DeleteDbConfig(_dicString).SafeGetDictionary();
+                ShowInfo("删除成功！");
+                tsbQuery.PerformClick();
+            }
+        }
     }
 }

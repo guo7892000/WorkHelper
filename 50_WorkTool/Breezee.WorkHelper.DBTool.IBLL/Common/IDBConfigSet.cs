@@ -26,6 +26,8 @@ namespace Breezee.WorkHelper.DBTool.IBLL
         public abstract IDictionary<string, object> SaveDbConfig(IDictionary<string, object> dicQuery);
         #endregion
 
+        public abstract IDictionary<string, object> DeleteDbConfig(IDictionary<string, string> dicQuery);
+
         public static class QueryDbConfig_InDicKey
         {
             public static readonly string DB_CONFIG_ID = "DB_CONFIG_ID";
@@ -38,6 +40,11 @@ namespace Breezee.WorkHelper.DBTool.IBLL
         public static class SaveDbConfig_InDicKey
         {
             public static readonly string DT_TABLE = "DT_TABLE_DB_CONFIG";
+        }
+
+        public static class DeleteDbConfig_InDicKey
+        {
+            public static readonly string DB_CONFIG_ID = "DB_CONFIG_ID";
         }
     }
 

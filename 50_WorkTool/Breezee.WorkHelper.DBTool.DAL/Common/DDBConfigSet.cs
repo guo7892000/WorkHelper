@@ -15,7 +15,7 @@ namespace Breezee.WorkHelper.DBTool.DAL
             return DataAccess.QueryAutoParamConfigPathData(@"SQL/DBTool/DBConfigSet/QueryDBConfig", dicQuery);
         }
 
-        #region 查询供应商是否存在
+        #region 查询是否存在
         public override DataTable QueryDbConfigExist(IDictionary<string, string> dicQuery)
         {
             //查询并返回结果
@@ -28,6 +28,16 @@ namespace Breezee.WorkHelper.DBTool.DAL
             querySqlBuilder.Sql("DB_CONFIG_ID", "AND A.DB_CONFIG_ID <> @DB_CONFIG_ID");
             querySqlBuilder.Sql("DB_CONFIG_CODE", ""); //此处必须添加
             return querySqlBuilder.Query(dicQuery);
+        }
+        #endregion
+
+        #region 删除
+        public override bool DeleteDbConfig(IDictionary<string, string> dicQuery)
+        {
+            //查询并返回结果
+            string sSql = @"DELETE FROM DBT_BD_DB_CONFIG WHERE DB_CONFIG_ID = '#DB_CONFIG_ID#' ";
+            int iUpdate = DataAccess.ExecuteNonQueryAutoParamSql(sSql, dicQuery);
+            return iUpdate>0;
         }
         #endregion
     }

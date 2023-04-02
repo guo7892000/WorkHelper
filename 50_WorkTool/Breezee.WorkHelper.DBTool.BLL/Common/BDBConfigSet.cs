@@ -99,5 +99,28 @@ namespace Breezee.WorkHelper.DBTool.BLL
             return dicRet;
         }
         #endregion
+
+        #region 删除数据库配置设置
+        /// <summary>
+        ///  删除数据库配置设置
+        /// </summary>
+        /// <param name="dicQuery"></param>
+        /// <returns></returns>
+        public override IDictionary<string, object> DeleteDbConfig(IDictionary<string, string> dicQuery)
+        {
+            IDictionary<string, object> dicRet = new Dictionary<string, object>();
+            try
+            {
+                var dal = ContainerContext.Container.Resolve<IDDBConfigSet>();
+                dal.DeleteDbConfig(dicQuery);
+                dicRet = ExecuteResultHelper.Success();
+            }
+            catch (Exception ex)
+            {
+                dicRet = ExecuteResultHelper.FailException(ex);
+            }
+            return dicRet;
+        }
+        #endregion
     }
 }

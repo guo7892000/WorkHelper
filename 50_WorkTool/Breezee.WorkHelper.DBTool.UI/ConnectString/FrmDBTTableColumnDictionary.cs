@@ -80,6 +80,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Add("1", "YAPI参数格式");
             cbbModuleString.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), true, true);
 
+            //
+            _dicString.Clear();
+            _dicString["1"]= "粘贴列";
+            _dicString["2"] = "查询表";
+            cbbInputType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
             //初始化网格
             DataTable dtIn = new DataTable();
             dtIn.Columns.Add(_sInputColCode, typeof(string));
@@ -519,8 +524,32 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="e"></param>
         private void btnMatch_Click(object sender, EventArgs e)
         {
-            DataTable dtSelect = dgvSelect.GetBindingTable();
             DataTable dtInput = dgvInput.GetBindingTable();
+            if (cbbInputType.SelectedValue != null && "2".Equals(cbbInputType.SelectedValue.ToString()))
+            {
+                string sSql = rtbInputSql.Text.Trim();
+                if (string.IsNullOrEmpty(sSql))
+                {
+                    ShowInfo("请输入查询空数据的SQL，这里只用到查询结果的列编码！");
+                    return;
+                }
+                try
+                {
+                    DataTable dtSql = _dataAccess.QueryAutoParamSqlData(sSql);
+                    foreach (DataColumn dc in dtSql.Columns)
+                    {
+                        dtInput.Rows.Add(dc.ColumnName);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ShowErr("执行查询SQL报错，请保证SQL的正确性，详细信息："+ex.Message);
+                    return;
+                }
+            }
+
+            DataTable dtSelect = dgvSelect.GetBindingTable();
+            
             DataTable dtAllCol = dgvColList.GetBindingTable();
             DataTable dtCommonCol = dgvCommonCol.GetBindingTable();
 
@@ -673,10 +702,15 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             rtbConString.Focus();
             string sFiter;
+            bool isChangeTap = false;
             //获取当前绑定表
             DataTable dtAllCol = dgvColList.GetBindingTable();
             if (ckbAllTableColumns.Checked)
             {
+                if (MsgHelper.ShowYesNo("【获取所有表列清单】可能需要花点时间，是否继续") == DialogResult.No)
+                {
+                    return;
+                }
                 //全部获取
                 DataTable dtCols = _dataAccess.GetSqlSchemaTableColumns(null, null);
                 foreach (DataRow dr in dtCols.Rows)
@@ -685,6 +719,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     if (dtAllCol == null || dtAllCol.Select(sFiter).Length == 0)
                     {
                         AddTableCols(dr);
+                        isChangeTap = true;
                     }
                 }
             }
@@ -700,7 +735,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 if (drArr.Length >= 50)
                 {
-                    if (MsgHelper.ShowYesNo("查询的数据表较多，是否继续") == DialogResult.No)
+                    if (MsgHelper.ShowYesNo("查询的数据表较多，可能需要花点时间，是否继续") == DialogResult.No)
                     {
                         ckbAllTableColumns.Checked = false;
                         return;
@@ -713,9 +748,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                     if (dtAllCol == null || dtAllCol.Select(sFiter).Length == 0)
                     {
                         AddTableCols(dr);
+                        isChangeTap = true;
                     }
                 }
-            }                       
+            }
+
+            if (isChangeTap)
+            {
+                tabControl2.SelectedTab = tpSelectColumn;
+            }
         }
 
         /// <summary>
@@ -756,6 +797,22 @@ namespace Breezee.WorkHelper.DBTool.UI
     ""type"":""string"",
     ""description"":""#C1#""
     },");
+                }
+            }
+        }
+
+        private void cbbInputType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(cbbInputType.SelectedValue != null)
+            {
+                string sType = cbbInputType.SelectedValue.ToString();
+                if("1".Equals(sType))
+                {
+                    grbInputSql.Visible = false;
+                }
+                else
+                {
+                    grbInputSql.Visible = true;
                 }
             }
         }

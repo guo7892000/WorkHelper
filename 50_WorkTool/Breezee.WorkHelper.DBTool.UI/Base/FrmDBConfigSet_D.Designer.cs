@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDBConfigSet_D));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbSave = new System.Windows.Forms.ToolStripButton();
+            this.tsbConnetTest = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -57,7 +59,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.txbPassword = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.tsbConnetTest = new System.Windows.Forms.ToolStripButton();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.toolStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -84,6 +86,15 @@
             this.tsbSave.Size = new System.Drawing.Size(71, 24);
             this.tsbSave.Text = "保存(&S)";
             this.tsbSave.Click += new System.EventHandler(this.tsbSave_Click);
+            // 
+            // tsbConnetTest
+            // 
+            this.tsbConnetTest.Image = ((System.Drawing.Image)(resources.GetObject("tsbConnetTest.Image")));
+            this.tsbConnetTest.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbConnetTest.Name = "tsbConnetTest";
+            this.tsbConnetTest.Size = new System.Drawing.Size(56, 24);
+            this.tsbConnetTest.Text = "测试";
+            this.tsbConnetTest.Click += new System.EventHandler(this.tsbConnetTest_Click);
             // 
             // tsbExit
             // 
@@ -368,15 +379,6 @@
             this.label9.TabIndex = 0;
             this.label9.Text = "架构名称：";
             // 
-            // tsbConnetTest
-            // 
-            this.tsbConnetTest.Image = ((System.Drawing.Image)(resources.GetObject("tsbConnetTest.Image")));
-            this.tsbConnetTest.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbConnetTest.Name = "tsbConnetTest";
-            this.tsbConnetTest.Size = new System.Drawing.Size(56, 24);
-            this.tsbConnetTest.Text = "测试";
-            this.tsbConnetTest.Click += new System.EventHandler(this.tsbConnetTest_Click);
-            // 
             // FrmDBConfigSet_D
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -432,5 +434,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txbRemark;
         private System.Windows.Forms.ToolStripButton tsbConnetTest;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

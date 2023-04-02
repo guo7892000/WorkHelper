@@ -30,6 +30,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDBTGetTableQuerySql));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbImport = new System.Windows.Forms.ToolStripButton();
@@ -52,10 +53,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.lblDefineFormat = new System.Windows.Forms.Label();
             this.txbDefineFormart = new System.Windows.Forms.TextBox();
             this.ckbUseDefaultConfig = new System.Windows.Forms.CheckBox();
-            this.ckbUseRemark = new System.Windows.Forms.CheckBox();
             this.ckbNewLine = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.cbbWordConvert = new System.Windows.Forms.ComboBox();
+            this.ckbCancelDefault = new System.Windows.Forms.CheckBox();
+            this.ckbSkipFixNull = new System.Windows.Forms.CheckBox();
+            this.ckbUseRemark = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpImport = new System.Windows.Forms.TabPage();
             this.grbColumn = new System.Windows.Forms.GroupBox();
@@ -67,7 +70,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
-            this.ckbCancelDefault = new System.Windows.Forms.CheckBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.toolStrip1.SuspendLayout();
             this.grbOrcNet.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -174,11 +177,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tableLayoutPanel4.Controls.Add(this.lblDefineFormat, 11, 0);
             this.tableLayoutPanel4.Controls.Add(this.txbDefineFormart, 13, 0);
             this.tableLayoutPanel4.Controls.Add(this.ckbUseDefaultConfig, 3, 1);
-            this.tableLayoutPanel4.Controls.Add(this.ckbUseRemark, 4, 1);
             this.tableLayoutPanel4.Controls.Add(this.ckbNewLine, 6, 1);
             this.tableLayoutPanel4.Controls.Add(this.label1, 7, 1);
             this.tableLayoutPanel4.Controls.Add(this.cbbWordConvert, 8, 1);
             this.tableLayoutPanel4.Controls.Add(this.ckbCancelDefault, 5, 1);
+            this.tableLayoutPanel4.Controls.Add(this.ckbSkipFixNull, 4, 1);
+            this.tableLayoutPanel4.Controls.Add(this.ckbUseRemark, 2, 1);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -193,7 +197,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 
             this.ckbGetTableList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.ckbGetTableList.AutoSize = true;
-            this.ckbGetTableList.Location = new System.Drawing.Point(434, 5);
+            this.ckbGetTableList.Location = new System.Drawing.Point(459, 5);
             this.ckbGetTableList.Name = "ckbGetTableList";
             this.ckbGetTableList.Size = new System.Drawing.Size(84, 16);
             this.ckbGetTableList.TabIndex = 3;
@@ -225,7 +229,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 
             this.label14.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(135, 7);
+            this.label14.Location = new System.Drawing.Point(142, 7);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(41, 12);
             this.label14.TabIndex = 1;
@@ -237,9 +241,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.cbbTableName.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.tableLayoutPanel4.SetColumnSpan(this.cbbTableName, 3);
             this.cbbTableName.FormattingEnabled = true;
-            this.cbbTableName.Location = new System.Drawing.Point(182, 3);
+            this.cbbTableName.Location = new System.Drawing.Point(189, 3);
             this.cbbTableName.Name = "cbbTableName";
-            this.cbbTableName.Size = new System.Drawing.Size(246, 20);
+            this.cbbTableName.Size = new System.Drawing.Size(264, 20);
             this.cbbTableName.TabIndex = 2;
             this.cbbTableName.SelectedIndexChanged += new System.EventHandler(this.cbbTableName_SelectedIndexChanged);
             // 
@@ -265,7 +269,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(536, 7);
+            this.label3.Location = new System.Drawing.Point(561, 7);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(65, 12);
             this.label3.TabIndex = 7;
@@ -275,7 +279,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 
             this.cbbParaType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbParaType.FormattingEnabled = true;
-            this.cbbParaType.Location = new System.Drawing.Point(607, 3);
+            this.cbbParaType.Location = new System.Drawing.Point(632, 3);
             this.cbbParaType.Name = "cbbParaType";
             this.cbbParaType.Size = new System.Drawing.Size(112, 20);
             this.cbbParaType.TabIndex = 8;
@@ -285,7 +289,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 
             this.lblParam.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lblParam.AutoSize = true;
-            this.lblParam.Location = new System.Drawing.Point(725, 7);
+            this.lblParam.Location = new System.Drawing.Point(750, 7);
             this.lblParam.Name = "lblParam";
             this.lblParam.Size = new System.Drawing.Size(65, 12);
             this.lblParam.TabIndex = 7;
@@ -293,7 +297,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 
             // txbParamPre
             // 
-            this.txbParamPre.Location = new System.Drawing.Point(796, 3);
+            this.txbParamPre.Location = new System.Drawing.Point(821, 3);
             this.txbParamPre.Name = "txbParamPre";
             this.txbParamPre.Size = new System.Drawing.Size(32, 21);
             this.txbParamPre.TabIndex = 9;
@@ -303,7 +307,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 
             this.lblDefineFormat.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lblDefineFormat.AutoSize = true;
-            this.lblDefineFormat.Location = new System.Drawing.Point(834, 7);
+            this.lblDefineFormat.Location = new System.Drawing.Point(859, 7);
             this.lblDefineFormat.Name = "lblDefineFormat";
             this.lblDefineFormat.Size = new System.Drawing.Size(77, 12);
             this.lblDefineFormat.TabIndex = 7;
@@ -312,7 +316,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             // txbDefineFormart
             // 
             this.txbDefineFormart.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txbDefineFormart.Location = new System.Drawing.Point(917, 3);
+            this.txbDefineFormart.Location = new System.Drawing.Point(942, 3);
             this.txbDefineFormart.Name = "txbDefineFormart";
             this.txbDefineFormart.Size = new System.Drawing.Size(100, 21);
             this.txbDefineFormart.TabIndex = 6;
@@ -321,26 +325,14 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 
             this.ckbUseDefaultConfig.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbUseDefaultConfig.AutoSize = true;
-            this.ckbUseDefaultConfig.Location = new System.Drawing.Point(182, 32);
+            this.ckbUseDefaultConfig.Location = new System.Drawing.Point(189, 32);
             this.ckbUseDefaultConfig.Name = "ckbUseDefaultConfig";
             this.ckbUseDefaultConfig.Size = new System.Drawing.Size(96, 16);
             this.ckbUseDefaultConfig.TabIndex = 11;
             this.ckbUseDefaultConfig.Text = "使用全局配置";
+            this.toolTip1.SetToolTip(this.ckbUseDefaultConfig, "是否使用【字段默认值与条件配置】上的配置");
             this.ckbUseDefaultConfig.UseVisualStyleBackColor = true;
-            this.ckbUseDefaultConfig.CheckedChanged += new System.EventHandler(this.CkbUseDefaultConfig_CheckedChanged);
-            // 
-            // ckbUseRemark
-            // 
-            this.ckbUseRemark.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.ckbUseRemark.AutoSize = true;
-            this.ckbUseRemark.Checked = true;
-            this.ckbUseRemark.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbUseRemark.Location = new System.Drawing.Point(284, 32);
-            this.ckbUseRemark.Name = "ckbUseRemark";
-            this.ckbUseRemark.Size = new System.Drawing.Size(48, 16);
-            this.ckbUseRemark.TabIndex = 3;
-            this.ckbUseRemark.Text = "备注";
-            this.ckbUseRemark.UseVisualStyleBackColor = true;
+            this.ckbUseDefaultConfig.CheckedChanged += new System.EventHandler(this.ckbUseDefaultConfig_CheckedChanged);
             // 
             // ckbNewLine
             // 
@@ -348,18 +340,19 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.ckbNewLine.AutoSize = true;
             this.ckbNewLine.Checked = true;
             this.ckbNewLine.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbNewLine.Location = new System.Drawing.Point(434, 32);
+            this.ckbNewLine.Location = new System.Drawing.Point(459, 32);
             this.ckbNewLine.Name = "ckbNewLine";
             this.ckbNewLine.Size = new System.Drawing.Size(84, 16);
             this.ckbNewLine.TabIndex = 3;
             this.ckbNewLine.Text = "换行";
+            this.toolTip1.SetToolTip(this.ckbNewLine, "生成的SQL是否换行");
             this.ckbNewLine.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(524, 34);
+            this.label1.Location = new System.Drawing.Point(549, 34);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(77, 12);
             this.label1.TabIndex = 7;
@@ -369,11 +362,51 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 
             this.cbbWordConvert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbWordConvert.FormattingEnabled = true;
-            this.cbbWordConvert.Location = new System.Drawing.Point(607, 30);
+            this.cbbWordConvert.Location = new System.Drawing.Point(632, 30);
             this.cbbWordConvert.Name = "cbbWordConvert";
             this.cbbWordConvert.Size = new System.Drawing.Size(112, 20);
             this.cbbWordConvert.TabIndex = 8;
             this.cbbWordConvert.SelectedIndexChanged += new System.EventHandler(this.CbbParaType_SelectedIndexChanged);
+            // 
+            // ckbCancelDefault
+            // 
+            this.ckbCancelDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.ckbCancelDefault.AutoSize = true;
+            this.ckbCancelDefault.Location = new System.Drawing.Point(369, 32);
+            this.ckbCancelDefault.Name = "ckbCancelDefault";
+            this.ckbCancelDefault.Size = new System.Drawing.Size(84, 16);
+            this.ckbCancelDefault.TabIndex = 3;
+            this.ckbCancelDefault.Text = "忽略默认值";
+            this.toolTip1.SetToolTip(this.ckbCancelDefault, "不使用固定值，即全部列参数化");
+            this.ckbCancelDefault.UseVisualStyleBackColor = true;
+            // 
+            // ckbSkipFixNull
+            // 
+            this.ckbSkipFixNull.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.ckbSkipFixNull.AutoSize = true;
+            this.ckbSkipFixNull.Checked = true;
+            this.ckbSkipFixNull.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbSkipFixNull.Location = new System.Drawing.Point(291, 32);
+            this.ckbSkipFixNull.Name = "ckbSkipFixNull";
+            this.ckbSkipFixNull.Size = new System.Drawing.Size(72, 16);
+            this.ckbSkipFixNull.TabIndex = 3;
+            this.ckbSkipFixNull.Text = "忽略NULL";
+            this.toolTip1.SetToolTip(this.ckbSkipFixNull, "不把固定值上的NULL当作默认值");
+            this.ckbSkipFixNull.UseVisualStyleBackColor = true;
+            // 
+            // ckbUseRemark
+            // 
+            this.ckbUseRemark.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.ckbUseRemark.AutoSize = true;
+            this.ckbUseRemark.Checked = true;
+            this.ckbUseRemark.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbUseRemark.Location = new System.Drawing.Point(135, 32);
+            this.ckbUseRemark.Name = "ckbUseRemark";
+            this.ckbUseRemark.Size = new System.Drawing.Size(48, 16);
+            this.ckbUseRemark.TabIndex = 3;
+            this.ckbUseRemark.Text = "备注";
+            this.toolTip1.SetToolTip(this.ckbUseRemark, "SQL中不包括备注信息");
+            this.ckbUseRemark.UseVisualStyleBackColor = true;
             // 
             // tabControl1
             // 
@@ -393,7 +426,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tpImport.Controls.Add(this.grbTable);
             this.tpImport.Location = new System.Drawing.Point(4, 22);
             this.tpImport.Name = "tpImport";
-            this.tpImport.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tpImport.Padding = new System.Windows.Forms.Padding(3);
             this.tpImport.Size = new System.Drawing.Size(1079, 312);
             this.tpImport.TabIndex = 0;
             this.tpImport.Text = "导入清单";
@@ -478,8 +511,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tpAutoSQL.Controls.Add(this.rtbResult);
             this.tpAutoSQL.Location = new System.Drawing.Point(4, 22);
             this.tpAutoSQL.Name = "tpAutoSQL";
-            this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tpAutoSQL.Size = new System.Drawing.Size(1079, 320);
+            this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3);
+            this.tpAutoSQL.Size = new System.Drawing.Size(1079, 312);
             this.tpAutoSQL.TabIndex = 1;
             this.tpAutoSQL.Text = "生成结果";
             // 
@@ -488,7 +521,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.rtbResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbResult.Location = new System.Drawing.Point(3, 3);
             this.rtbResult.Name = "rtbResult";
-            this.rtbResult.Size = new System.Drawing.Size(1073, 314);
+            this.rtbResult.Size = new System.Drawing.Size(1073, 306);
             this.rtbResult.TabIndex = 3;
             this.rtbResult.Text = "";
             // 
@@ -496,21 +529,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 
             this.uC_DbConnection1.Dock = System.Windows.Forms.DockStyle.Top;
             this.uC_DbConnection1.Location = new System.Drawing.Point(0, 27);
-            this.uC_DbConnection1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.uC_DbConnection1.Margin = new System.Windows.Forms.Padding(4);
             this.uC_DbConnection1.Name = "uC_DbConnection1";
             this.uC_DbConnection1.Size = new System.Drawing.Size(1087, 78);
             this.uC_DbConnection1.TabIndex = 35;
-            // 
-            // ckbCancelDefault
-            // 
-            this.ckbCancelDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.ckbCancelDefault.AutoSize = true;
-            this.ckbCancelDefault.Location = new System.Drawing.Point(338, 32);
-            this.ckbCancelDefault.Name = "ckbCancelDefault";
-            this.ckbCancelDefault.Size = new System.Drawing.Size(90, 16);
-            this.ckbCancelDefault.TabIndex = 3;
-            this.ckbCancelDefault.Text = "忽略默认值";
-            this.ckbCancelDefault.UseVisualStyleBackColor = true;
             // 
             // FrmDBTGetTableQuerySql
             // 
@@ -523,7 +545,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmDBTGetTableQuerySql";
             this.Text = "获取增删改查SQL";
             this.Load += new System.EventHandler(this.FrmGetOracleSql_Load);
@@ -585,5 +607,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private Label label1;
         private ComboBox cbbWordConvert;
         private CheckBox ckbCancelDefault;
+        private CheckBox ckbSkipFixNull;
+        private ToolTip toolTip1;
     }
 }

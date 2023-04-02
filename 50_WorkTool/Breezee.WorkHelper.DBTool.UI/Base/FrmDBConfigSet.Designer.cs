@@ -44,6 +44,7 @@
             this.txbDbName = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dgvQuery = new System.Windows.Forms.DataGridView();
+            this.btnDelete = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -57,6 +58,7 @@
             this.tsbQuery,
             this.tsbNew,
             this.tsbEdit,
+            this.btnDelete,
             this.tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
@@ -211,6 +213,15 @@
             this.dgvQuery.TabIndex = 4;
             this.dgvQuery.DoubleClick += new System.EventHandler(this.dgvQuery_DoubleClick);
             // 
+            // btnDelete
+            // 
+            this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
+            this.btnDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(69, 22);
+            this.btnDelete.Text = "删除(&D)";
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
             // FrmDBConfigSet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -252,5 +263,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView dgvQuery;
         private System.Windows.Forms.ToolStripButton tsbQuery;
+        private System.Windows.Forms.ToolStripButton btnDelete;
     }
 }

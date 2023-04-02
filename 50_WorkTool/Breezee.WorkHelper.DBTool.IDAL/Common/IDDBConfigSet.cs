@@ -14,5 +14,7 @@ namespace Breezee.WorkHelper.DBTool.IDAL
         #region 查询供应商是否存在
         public abstract DataTable QueryDbConfigExist(IDictionary<string, string> dicQuery);
         #endregion
+
+        public abstract bool DeleteDbConfig(IDictionary<string, string> dicQuery);
     }
 }
