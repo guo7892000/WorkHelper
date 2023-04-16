@@ -95,12 +95,32 @@ namespace Breezee.WorkHelper.DBTool.UI
             YesNoType strColNoNull = drCol.commonCol.NotNull;
             string strColRemark = drCol.commonCol.Remark;
             //其他独有字段
-            YesNoType strColAutoAdd = _isAllConvert ? drCol.allInOne.SQLite_AutoNum: drCol.sqliteCol.AutoNum;//自增长
-            string strColPKName = _isAllConvert ? drCol.allInOne.SQLite_PKName : drCol.sqliteCol.PKName;//主键名
-            string strColUnique = _isAllConvert ? drCol.allInOne.SQLite_UniqueName : drCol.sqliteCol.UniqueName;//唯一约束名
-            string strColForgKey = _isAllConvert ? drCol.allInOne.SQLite_FK : drCol.sqliteCol.FK;//外键
-            string strColForgKeyCode = _isAllConvert ? drCol.allInOne.SQLite_FKName : drCol.sqliteCol.FKName;//外键名
 
+            //独有字段
+            YesNoType strColAutoAdd = YesNoType.No;//自增长
+            string strColPKName = string.Empty;//主键名
+            string strColUnique = string.Empty;//唯一约束名
+            string strColForgKey = string.Empty;//外键
+            string strColForgKeyCode = string.Empty;//外键名
+            if (_isAllConvert)
+            {
+                //综合转换时，使用综合转换模板的独有值
+                strColAutoAdd = drCol.allInOne.SQLite_AutoNum;//自增长
+                strColPKName = drCol.allInOne.SQLite_PKName;//主键名
+                strColUnique = drCol.allInOne.SQLite_UniqueName;//唯一约束名
+                strColForgKey = drCol.allInOne.SQLite_FK;//外键
+                strColForgKeyCode = drCol.allInOne.SQLite_FKName;//外键名
+            }
+            else if (importDBType == targetDBType)
+            {
+                //只有导入类型与目标类型一致才使用独有值
+                strColAutoAdd = drCol.sqliteCol.AutoNum;//自增长
+                strColPKName = drCol.sqliteCol.PKName;//主键名
+                strColUnique = drCol.sqliteCol.UniqueName;//唯一约束名
+                strColForgKey = drCol.sqliteCol.FK;//外键
+                strColForgKeyCode = drCol.sqliteCol.FKName;//外键名
+            }
+            //其他变量
             string strTable_Col = strTableCode + "_" + strColCode;//表编码+"_"+列编码
             StringBuilder sbColSql = new StringBuilder();//列的SQL
 

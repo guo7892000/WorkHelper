@@ -203,6 +203,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         }
                         break;
                     case DataBaseType.Oracle:
+                        DbServer.SchemaName = DbServer.UserName.ToUpper();//Oracle需要用户名作为Schema
                         if (string.IsNullOrEmpty(DbServer.ServerName))
                         {
                             MsgHelper.ShowErr("TNS名称不能为空！");
@@ -215,6 +216,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         }
                         break;
                     case DataBaseType.MySql:
+                        DbServer.SchemaName = DbServer.Database;//Oracle需要数据库作为Schema
                         if (string.IsNullOrEmpty(DbServer.ServerName))
                         {
                             MsgHelper.ShowErr("服务器地址不能为空！");
@@ -292,6 +294,15 @@ namespace Breezee.WorkHelper.DBTool.UI
             cbbDatabaseType.Enabled = false;
         }
         #endregion
+
+        public string getSelectedDatabaseType()
+        {
+            if(cbbDatabaseType == null)
+            {
+                return string.Empty;
+            }
+            return cbbDatabaseType.SelectedValue.ToString();
+        }
 
         private void ckbUseConString_CheckedChanged(object sender, EventArgs e)
         {

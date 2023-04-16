@@ -102,12 +102,28 @@ namespace Breezee.WorkHelper.DBTool.UI
             YesNoType strColNoNull = drCol.commonCol.NotNull;
             string strColRemark = drCol.commonCol.Remark;
 
-            //其他独有字段
-            string strColPKName = _isAllConvert ? drCol.allInOne.PostgreSql_PKName: drCol.postgreSqlCol.PKName;//主键名
-            string strColUnique = _isAllConvert ? drCol.allInOne.PostgreSql_UniqueName : drCol.postgreSqlCol.UniqueName;//唯一约束名
-            string strColForgKey = _isAllConvert ? drCol.allInOne.PostgreSql_FK : drCol.postgreSqlCol.FK;//外键
-            string strColForgKeyCode = _isAllConvert ? drCol.allInOne.PostgreSql_FKName : drCol.postgreSqlCol.FKName;//外键名
-
+            //独有字段
+            string strColPKName = string.Empty;//主键名
+            string strColUnique = string.Empty;//唯一约束名
+            string strColForgKey = string.Empty;//外键
+            string strColForgKeyCode = string.Empty;//外键名
+            if (_isAllConvert)
+            {
+                //综合转换时，使用综合转换模板的独有值
+                strColPKName = drCol.allInOne.PostgreSql_PKName;//主键名
+                strColUnique = drCol.allInOne.PostgreSql_UniqueName;//唯一约束名
+                strColForgKey = drCol.allInOne.PostgreSql_FK;//外键
+                strColForgKeyCode = drCol.allInOne.PostgreSql_FKName;//外键名
+            }
+            else if (importDBType == targetDBType)
+            {
+                //只有导入类型与目标类型一致才使用独有值
+                strColPKName = drCol.postgreSqlCol.PKName;//主键名
+                strColUnique = drCol.postgreSqlCol.UniqueName;//唯一约束名
+                strColForgKey = drCol.postgreSqlCol.FK;//外键
+                strColForgKeyCode = drCol.postgreSqlCol.FKName;//外键名
+            }
+            //其他变量
             string strTable_Col = strTableCode + "_" + strColCode;//表编码+"_"+列编码
             string sOneSql = "";
 

@@ -15,6 +15,7 @@ using Breezee.Framework.Mini.Entity;
 using Breezee.Core.Interface;
 using Breezee.Core.WinFormUI;
 using Breezee.Core;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Breezee.Framework.Mini.StartUp
 {
@@ -51,7 +52,7 @@ namespace Breezee.Framework.Mini.StartUp
         #region 加载事件
         private void FrmMainMDI_Load(object sender, EventArgs e)
         {
-            Text = string.Format("工作助手（Work Helper） v{0} 正式版  2023-04-02", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            Text = string.Format("工作助手（Work Helper） v{0} 正式版  2023-04-13", Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
             iStartMenu = menuStrip.Items.IndexOfKey(tsbStartMenu.Name);
             this.WindowState = FormWindowState.Maximized;
@@ -352,35 +353,41 @@ namespace Breezee.Framework.Mini.StartUp
         #endregion
 
         #region 打开窗体方法
-        private void OpenMenu(MenuEntity dMenu, bool IsExpandTreeNode = true)
+        private void OpenMenu(MenuEntity dOpenMenu, bool IsExpandTreeNode)
         {
-            if (dMenu == null || dMenu.MenuType != MenuType.Menu)
+            if (dOpenMenu == null || dOpenMenu.MenuType != MenuType.Menu)
             {
                 return;
             }
 
             if (IsExpandTreeNode)
             {
-                OpenTreeNodeMenu(dMenu.Name);
+                OpenTreeNodeMenu(dOpenMenu.Name);
             }
+
             //判断窗体是否已经打开
-            foreach (Form frm in this.MdiChildren)
+            foreach (Form frm in MdiChildren)
             {
                 MenuEntity dMenuFrm = frm.Tag as MenuEntity;
-                if (dMenuFrm.Guid.Equals(dMenu.Guid))
+                //使用同菜单不同窗体GUID
+                if (dMenuFrm.SameMenuNewFormGuid.Equals(dOpenMenu.SameMenuNewFormGuid))
                 {
+                    MenuEntity selectMenu = tcMenu.SelectedTab.Tag as MenuEntity;
                     //选中页签
-                    if (tcMenu.SelectedTab != tcMenu.TabPages[dMenu.Guid])
+                    if (tcMenu.SelectedTab == tpgDesktop || selectMenu.SameMenuNewFormGuid != dMenuFrm.SameMenuNewFormGuid)
                     {
-                        tcMenu.SelectedTab = tcMenu.TabPages[dMenu.Guid];
+                        tcMenu.SelectedTab = tcMenu.TabPages[dMenuFrm.SameMenuNewFormGuid];
                     }
-                    txbMenuPath.Text = dMenu.FullPath;
+                    txbMenuPath.Text = dOpenMenu.FullPath;
                     pnlDestop.Hide();
                     frm.Activate();
                     WinFormContext.Instance.CurrentForm = frm;
                     return;
                 }
             }
+
+            //克隆一个新的菜单对象
+            MenuEntity dMenu = dOpenMenu.Clone();
             //反射得到窗体
             Assembly dll = Assembly.LoadFile(Path.Combine(_strAppPath, dMenu.DLLName));
             object form = dll.CreateInstance(dMenu.FormName);
@@ -392,10 +399,10 @@ namespace Breezee.Framework.Mini.StartUp
                 newForm.WindowState = FormWindowState.Maximized;
                 newForm.Activated += ChildForm_Active;
                 newForm.FormClosed += MdiChild_Close;
-                //增加页签
-                tcMenu.TabPages.Add(dMenu.Guid, dMenu.Name);
-                tcMenu.TabPages[dMenu.Guid].Tag = dMenu;
-                tcMenu.SelectedTab = tcMenu.TabPages[dMenu.Guid];
+                //增加页签：使用同菜单不同窗体GUID
+                tcMenu.TabPages.Add(dMenu.SameMenuNewFormGuid, dMenu.Name);
+                tcMenu.TabPages[dMenu.SameMenuNewFormGuid].Tag = dMenu;
+                tcMenu.SelectedTab = tcMenu.TabPages[dMenu.SameMenuNewFormGuid];
                 txbMenuPath.Text = dMenu.FullPath;
                 
                 newForm.Show();
@@ -511,7 +518,8 @@ namespace Breezee.Framework.Mini.StartUp
             else
             {
                 pnlDestop.Hide();
-                OpenMenu(tpSelect.Tag as MenuEntity, true);
+                MenuEntity menu = tpSelect.Tag as MenuEntity;
+                OpenMenu(menu, false);
             }
         } 
         #endregion
@@ -564,7 +572,8 @@ namespace Breezee.Framework.Mini.StartUp
                 if (tnFind != null)
                 {
                     ExpandParentNode(tnFind);
-                    OpenMenu(tnFind.Tag as MenuEntity, false);//打开菜单
+                    MenuEntity findMenu = tnFind.Tag as MenuEntity;
+                    OpenMenu(findMenu, false);//打开菜单
                     break;
                 }
             }
@@ -611,34 +620,35 @@ namespace Breezee.Framework.Mini.StartUp
                 tvLeftMenu.Show();
                 btnHideTree.Text = "<";
             }
-        } 
+        }
         #endregion
 
-        #region 关于菜单事件
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AboutAuthor about = new AboutAuthor();
-            about.ShowDialog();
-        } 
-        #endregion
-
-        #region 子窗体激活事件
+        #region 子窗体相关事件
+        /// <summary>
+        /// 子窗体激活事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ChildForm_Active(object sender, EventArgs e)
         {
             if (sender is Form)
             {
                 Form frmCurrent = sender as Form;
                 MenuEntity dMenu = frmCurrent.Tag as MenuEntity;
-                if (tcMenu.SelectedTab != tcMenu.TabPages[dMenu.Guid])
+                //使用同菜单不同窗体GUID
+                if (tcMenu.SelectedTab != tcMenu.TabPages[dMenu.SameMenuNewFormGuid])
                 {
-                    tcMenu.SelectedTab = tcMenu.TabPages[dMenu.Guid];
+                    tcMenu.SelectedTab = tcMenu.TabPages[dMenu.SameMenuNewFormGuid];
                 }
                 txbMenuPath.Text = dMenu.FullPath;
             }
         }
-        #endregion
 
-        #region 子窗体关闭事件
+        /// <summary>
+        /// 子窗体关闭事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MdiChild_Close(object sender, EventArgs e)
         {
             try
@@ -647,9 +657,10 @@ namespace Breezee.Framework.Mini.StartUp
                 {
                     Form frmCurrent = sender as Form;
                     MenuEntity dMenu = frmCurrent.Tag as MenuEntity;
-                    if (tcMenu.TabPages.ContainsKey(dMenu.Guid))
+                    //使用同菜单不同窗体GUID
+                    if (tcMenu.TabPages.ContainsKey(dMenu.SameMenuNewFormGuid))
                     {
-                        tcMenu.TabPages.Remove(tcMenu.TabPages[dMenu.Guid]);
+                        tcMenu.TabPages.Remove(tcMenu.TabPages[dMenu.SameMenuNewFormGuid]);
                     }
                 }
             }
@@ -706,12 +717,6 @@ namespace Breezee.Framework.Mini.StartUp
             }
         }
 
-        private void TsmiSupport_Click(object sender, EventArgs e)
-        {
-            FrmSupport frm = new FrmSupport();
-            frm.ShowDialog();
-        }
-
         #region 显示全局提示信息事件
         private void ShowGlobalMsg_Click(object sender, ShowGlobalMsgEventArgs e)
         {
@@ -719,6 +724,22 @@ namespace Breezee.Framework.Mini.StartUp
         }
         #endregion
 
+        #region 帮助相关
+        /// <summary>
+        /// 关于菜单事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutAuthor about = new AboutAuthor();
+            about.ShowDialog();
+        }
+        private void TsmiSupport_Click(object sender, EventArgs e)
+        {
+            FrmSupport frm = new FrmSupport();
+            frm.ShowDialog();
+        }
         private void TsbHelp_Click(object sender, EventArgs e)
         {
             TabPage tpSelect = tcMenu.SelectedTab;
@@ -735,6 +756,18 @@ namespace Breezee.Framework.Mini.StartUp
                 }
             }
         }
+
+        /// <summary>
+        /// 复制下载地址链接菜单点击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiOpenLatestDownURL_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetData(DataFormats.UnicodeText, "https://gitee.com/breezee2000/WorkHelper/releases");
+            MsgHelper.ShowInfo("已成功复制【工作助手】的下载链接地址，请粘贴到浏览器地址栏上打开链接，选择最新版下载！");
+        } 
+        #endregion
 
         #region Tab菜单页签的位置与关闭事件
         private void TsmiMenuSheetTop_Click(object sender, EventArgs e)
@@ -758,11 +791,26 @@ namespace Breezee.Framework.Mini.StartUp
         }
         #endregion
 
-        private void tsmiOpenLatestDownURL_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 打开新窗体右键菜单点击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiOpenNewForm_Click(object sender, EventArgs e)
         {
-            //System.Diagnostics.Process.Start("https://gitee.com/breezee2000/WorkHelper/releases");
-            Clipboard.SetData(DataFormats.UnicodeText, "https://gitee.com/breezee2000/WorkHelper/releases");
-            MsgHelper.ShowInfo("已成功复制【工作助手】的下载链接地址，请粘贴到浏览器地址栏上打开链接，选择最新版下载！");
+            TreeNode tnSelect = tvLeftMenu.SelectedNode;
+            if (tnSelect == null)
+            {
+                return;
+            }
+            //打开新菜单：支持同一个功能打开多次
+            MenuEntity dMenu = tnSelect.Tag as MenuEntity;
+            dMenu.SameMenuNewFormGuid = StringHelper.GetGUID();//使用同菜单不同窗体GUID
+            dMenu.IsOpenSameMenuNewForm = true;
+            OpenMenu(dMenu, false);
+            //还原为不重复打开
+            dMenu.SameMenuNewFormGuid = dMenu.Guid;
+            dMenu.IsOpenSameMenuNewForm = false;
         }
     }
 }

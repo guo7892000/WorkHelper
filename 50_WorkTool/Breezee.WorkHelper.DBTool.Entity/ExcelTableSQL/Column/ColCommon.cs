@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using static Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL.EntTable;
 
 namespace Breezee.WorkHelper.DBTool.Entity
 {
@@ -44,6 +46,76 @@ namespace Breezee.WorkHelper.DBTool.Entity
             ent.Remark = dr[ExcelCol.Remark].ToString().Trim();
 
             return ent;
+        }
+        public static DataTable GetTable()
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.AddRange(new DataColumn[]
+            {
+                new DataColumn(ExcelCol.ChangeType),
+                new DataColumn(ExcelCol.TableCode),
+                new DataColumn(ExcelCol.Name),
+                new DataColumn(ExcelCol.Code),
+                new DataColumn(ExcelCol.DataType),
+                new DataColumn(ExcelCol.DataLength),
+                new DataColumn(ExcelCol.DataDotLength),
+                new DataColumn(ExcelCol.KeyType),
+                new DataColumn(ExcelCol.NotNull),
+                new DataColumn(ExcelCol.Default),
+                new DataColumn(ExcelCol.Remark),
+            });
+            return dt;
+        }
+
+        public static bool ValidateData(DataTable dtTable, DataTable dtAllCol, out StringBuilder sb)
+        {
+            sb = new StringBuilder();
+
+            if (dtTable.Select(ExcelCol.ChangeType + " not in ('新增','修改')").Length > 0)
+            {
+                sb.AppendLine(ExcelCol.ChangeType + "只能是“新增”或“修改”！");
+            }
+            if (dtTable.Select(ExcelCol.ChangeType + "='新增' and (" + ExcelTable.Name + "='' or " + ExcelTable.Code + "='')").Length > 0)
+            {
+                sb.AppendLine("新增的表，其“" + ExcelTable.Name + "、" + ExcelTable.Code + "”都不能为空！");
+            }
+            if (dtAllCol.Select(ExcelTable.Code + "=''").Length > 0)
+            {
+                sb.AppendLine("新增的列中" + ExcelTable.Code + "不能为空！");
+            }
+            if (dtAllCol.Select(ExcelTable.Code + "='' or " + ExcelCol.Name + "='' or " + ExcelCol.Code + "='' or " + ExcelCol.DataType + "=''").Length > 0)
+            {
+                sb.AppendLine("新增的列中" + ExcelTable.Code + "、" + ExcelCol.Name + "、" + ExcelCol.Code + "、" + ExcelCol.DataType + "不能为空！");
+            }
+            foreach (DataRow dr in dtAllCol.Select("(" + ExcelCol.DataType + " like 'VARCHAR%' or " + ExcelCol.DataType + " like 'NVARCHAR%' or "
+                + ExcelCol.DataType + " like 'CHAR%') and (" + ExcelCol.DataLength + " is null)"))
+            {
+                sb.AppendLine(dr[ExcelTable.Code].ToString() + "的" + dr[ExcelCol.Code].ToString() + "，其" + dr[ExcelCol.DataType].ToString() + "类型的长度不能为空！");
+            }
+
+            DataRow[] drNewArray = dtTable.Select(ColCommon.ExcelCol.ChangeType + "='新增'");
+
+            foreach (DataRow drNew in drNewArray)
+            {
+                string strTableCode = drNew[EntTable.ExcelTable.Code].ToString();
+                string strTableName = drNew[EntTable.ExcelTable.Name].ToString();
+                string strChangeType = drNew[ColCommon.ExcelCol.ChangeType].ToString();
+                if (dtAllCol.Select(EntTable.ExcelTable.Code + "='" + strTableCode + "'").Length == 0)
+                {
+                    sb.AppendLine("表" + strTableCode + "中没有本次更变的列，请删除该表或新增列！");
+                }
+                if (dtAllCol.Select(EntTable.ExcelTable.Code + "='" + strTableCode + "' and (" + ColCommon.ExcelCol.ChangeType + " is not null and " + ColCommon.ExcelCol.ChangeType + "<>'新增')").Length > 0)
+                {
+                    sb.AppendLine("新增的表" + strTableCode + "中，只能全部为新增列！");
+                }
+
+                if (dtAllCol.Select(EntTable.ExcelTable.Code + "='" + strTableCode + "' and " + ColCommon.ExcelCol.KeyType + "='PK'").Length == 0)
+                {
+                    sb.AppendLine("新增的表" + strTableCode + "没有主键！");
+                }
+            }
+            //返回结果
+            return string.IsNullOrEmpty(sb.ToString());
         }
 
         public static class ExcelCol

@@ -42,7 +42,9 @@
             this.cbbModule = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.grbConSting = new System.Windows.Forms.GroupBox();
+            this.rtbConString = new System.Windows.Forms.RichTextBox();
             this.label21 = new System.Windows.Forms.Label();
+            this.rtbOther = new System.Windows.Forms.RichTextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpImport = new System.Windows.Forms.TabPage();
             this.grbColumn = new System.Windows.Forms.GroupBox();
@@ -54,8 +56,6 @@
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
-            this.rtbOther = new System.Windows.Forms.RichTextBox();
-            this.rtbConString = new System.Windows.Forms.RichTextBox();
             this.toolStrip1.SuspendLayout();
             this.grbOrcNet.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -222,6 +222,15 @@
             this.grbConSting.TabStop = false;
             this.grbConSting.Text = "拼接字符";
             // 
+            // rtbConString
+            // 
+            this.rtbConString.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbConString.Location = new System.Drawing.Point(3, 17);
+            this.rtbConString.Name = "rtbConString";
+            this.rtbConString.Size = new System.Drawing.Size(511, 98);
+            this.rtbConString.TabIndex = 14;
+            this.rtbConString.Text = "";
+            // 
             // label21
             // 
             this.label21.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -234,6 +243,15 @@
             this.label21.Size = new System.Drawing.Size(125, 12);
             this.label21.TabIndex = 13;
             this.label21.Text = "替换字符格式：#列名#";
+            // 
+            // rtbOther
+            // 
+            this.rtbOther.Dock = System.Windows.Forms.DockStyle.Right;
+            this.rtbOther.Location = new System.Drawing.Point(514, 17);
+            this.rtbOther.Name = "rtbOther";
+            this.rtbOther.Size = new System.Drawing.Size(537, 98);
+            this.rtbOther.TabIndex = 5;
+            this.rtbOther.Text = "";
             // 
             // tabControl1
             // 
@@ -293,6 +311,7 @@
             this.dgvColList.RowTemplate.Height = 23;
             this.dgvColList.Size = new System.Drawing.Size(1034, 124);
             this.dgvColList.TabIndex = 0;
+            this.dgvColList.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvColList_ColumnHeaderMouseDoubleClick);
             // 
             // grbTable
             // 
@@ -358,24 +377,6 @@
             this.uC_DbConnection1.Name = "uC_DbConnection1";
             this.uC_DbConnection1.Size = new System.Drawing.Size(1054, 78);
             this.uC_DbConnection1.TabIndex = 35;
-            // 
-            // rtbOther
-            // 
-            this.rtbOther.Dock = System.Windows.Forms.DockStyle.Right;
-            this.rtbOther.Location = new System.Drawing.Point(514, 17);
-            this.rtbOther.Name = "rtbOther";
-            this.rtbOther.Size = new System.Drawing.Size(537, 98);
-            this.rtbOther.TabIndex = 5;
-            this.rtbOther.Text = "";
-            // 
-            // rtbConString
-            // 
-            this.rtbConString.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbConString.Location = new System.Drawing.Point(3, 17);
-            this.rtbConString.Name = "rtbConString";
-            this.rtbConString.Size = new System.Drawing.Size(511, 98);
-            this.rtbConString.TabIndex = 14;
-            this.rtbConString.Text = "";
             // 
             // FrmDBTTableColumnString
             // 

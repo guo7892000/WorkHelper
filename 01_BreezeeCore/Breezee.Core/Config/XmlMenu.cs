@@ -99,6 +99,8 @@ namespace Breezee.Core
             MenuEntity dMenu = new MenuEntity();
             dMenu.MenuType = mte;
             dMenu.Guid = xnModel.GetAttributeValue(MemuAttrString.Guid);
+            dMenu.SameMenuNewFormGuid = xnModel.GetAttributeValue(MemuAttrString.Guid);//初始化为跟原菜单GUID一样
+            dMenu.IsOpenSameMenuNewForm = false; //默认不开启打开重复菜单
             dMenu.Name = xnModel.GetAttributeValue(MemuAttrString.Name);
             dMenu.Code = xnModel.GetAttributeValue(MemuAttrString.Code);
             dMenu.ShortCutKey = xnModel.GetAttributeValue(MemuAttrString.ShortCutKey);

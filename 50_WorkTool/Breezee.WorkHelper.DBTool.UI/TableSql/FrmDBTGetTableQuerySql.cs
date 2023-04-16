@@ -114,19 +114,21 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 数据库类型下拉框变化事件
         private void cbbDatabaseType_SelectedIndexChanged(object sender, DBTypeSelectedChangeEventArgs e)
         {
+            txbParamPre.Text = "@";
             switch (e.SelectDBType)
             {
                 case DataBaseType.PostgreSql:
                 case DataBaseType.Oracle:
-                    txbParamPre.Text = ":";
+                    if (cbbParaType.SelectedValue != null && "2".Equals(cbbParaType.SelectedValue.ToString()))
+                    {
+                        txbParamPre.Text = ":";
+                    }
                     break;
                 case DataBaseType.SQLite:
                 case DataBaseType.SqlServer:
                 case DataBaseType.MySql:
-                    txbParamPre.Text = "@";
                     break;
                 default:
-                    txbParamPre.Text = "@";
                     break;
             }
         }
@@ -305,6 +307,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.Name).Caption("列编码").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.NameCN).Caption("列名称").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.DataTypeFull).Caption("类型").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.NameUpper).Caption("大驼峰").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.NameLower).Caption("小驼峰").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.SortNum).Caption("排序号").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(40).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.KeyType).Caption("主键").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.NotNull).Caption("非空").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
@@ -1051,6 +1055,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             if (cbbParaType.SelectedValue == null) return;
             string sType = cbbParaType.SelectedValue.ToString();
+            txbParamPre.Text = "@";
             switch (sType)
             {
                 case "1":
@@ -1063,6 +1068,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                     txbParamPre.Visible = true;
                     lblParam.Visible = true;
                     lblParam.Text = "参数前缀：";
+                    if (((int)DataBaseType.Oracle).ToString().Equals(uC_DbConnection1.getSelectedDatabaseType()))
+                    {
+                        txbParamPre.Text = ":";
+                    }
                     lblDefineFormat.Visible = false;
                     txbDefineFormart.Visible = false;
                     break;

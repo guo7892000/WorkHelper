@@ -75,10 +75,14 @@ namespace Breezee.WorkHelper.DBTool.UI
         #endregion
 
         #region 获取数据库类型表
-        public static DataTable GetBaseDataTypeTable()
+        public static DataTable GetBaseDataTypeTable(bool hasNone = false)
         {
             IDictionary<string, string> dic_List = new Dictionary<string, string>();
             //生成数据库类型
+            if (hasNone)
+            {
+                dic_List.Add(((int)DataBaseType.None).ToString(), "");
+            }
             dic_List.Add(((int)DataBaseType.SqlServer).ToString(), "SqlServer");
             dic_List.Add(((int)DataBaseType.Oracle).ToString(), "Oracle");
             dic_List.Add(((int)DataBaseType.MySql).ToString(), "MySql");

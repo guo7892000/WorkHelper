@@ -57,8 +57,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             FlexGridColumnDefinition fdc = new FlexGridColumnDefinition();
             fdc.AddColumn(
                 new FlexGridColumn.Builder().Name(_sColIn).Caption("IN字段").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(150).Edit().Visible().Build(),
-                new FlexGridColumn.Builder().Name(_sColUpper).Caption("小驼峰").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(100).Edit().Visible(false).Build(),
-                new FlexGridColumn.Builder().Name(_sColLower).Caption("大驼峰").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit().Visible(false).Build()
+                new FlexGridColumn.Builder().Name(_sColUpper).Caption("大驼峰").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(100).Edit().Visible(false).Build(),
+                new FlexGridColumn.Builder().Name(_sColLower).Caption("小驼峰").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit().Visible(false).Build()
             );
             dgvTableList.Tag = fdc.GetGridTagString();
             dgvTableList.BindDataGridView(dtIn, true);

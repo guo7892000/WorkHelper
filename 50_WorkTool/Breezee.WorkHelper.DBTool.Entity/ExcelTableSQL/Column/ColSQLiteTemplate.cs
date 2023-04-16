@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -26,7 +27,48 @@ namespace Breezee.WorkHelper.DBTool.Entity
 
             return ent;
         }
+        public static bool ValidateData(DataTable dtTable, DataTable dtAllCol, out StringBuilder sb)
+        {
+            sb = new StringBuilder();
+            DataRow[] drNewArray = dtTable.Select(ColCommon.ExcelCol.ChangeType + "='新增'");
+            foreach (DataRow drNew in drNewArray)
+            {
+                string strTableCode = drNew[EntTable.ExcelTable.Code].ToString();
+                string strTableName = drNew[EntTable.ExcelTable.Name].ToString();
+                string strChangeType = drNew[ColCommon.ExcelCol.ChangeType].ToString();
 
+                string sFilter = string.Format("{0}='{1}' and {2}='PK' and ({3} is null or {3} not like 'PK_%')", EntTable.ExcelTable.Code, strTableCode, ColCommon.ExcelCol.KeyType, ExcelCol.PKName);
+
+                if (dtAllCol.Select(sFilter).Length > 0)
+                {
+                    sb.AppendLine("新增的表" + strTableCode + "中键为“PK”时，“" + ExcelCol.PKName + "”列内容不能为空，且必须以PK_开头！");
+                }
+
+                if (dtAllCol.Select(EntTable.ExcelTable.Code + "='" + strTableCode + "' and " + ExcelCol.AutoNum + " ='是' and " + ColCommon.ExcelCol.DataType + " not in ('int','bigint') ").Length > 0)
+                {
+                    sb.AppendLine("新增的表" + strTableCode + "中，“" + ExcelCol.AutoNum + "”列内容为【是】时，" + ColCommon.ExcelCol.DataType + "必须为int或bigint！");
+                }
+
+                if (dtAllCol.Select(EntTable.ExcelTable.Code + "='" + strTableCode + "' and (" + ExcelCol.UniqueName + " is not null and " + ExcelCol.UniqueName + " not like 'UQ_%')").Length > 0)
+                {
+                    sb.AppendLine("新增的表" + strTableCode + "中，“" + ExcelCol.UniqueName + "”列内容格式必须以“UQ_”开头！");
+                }
+
+                if (dtAllCol.Select(EntTable.ExcelTable.Code + "='" + strTableCode + "' and 键='FK' and (" + ExcelCol.FK + " is null or " + ExcelCol.FKName + " is null)").Length > 0)
+                {
+                    sb.AppendLine("新增的表" + strTableCode + "中键为“FK”时，“" + ExcelCol.FK + "、" + ExcelCol.FKName + "”列为必填！");
+                }
+
+                if (dtAllCol.Select(EntTable.ExcelTable.Code + "='" + strTableCode + "' and " + ColCommon.ExcelCol.KeyType + "='FK' and ("
+                    + ExcelCol.FK + " is not null and " + ExcelCol.FKName + " not like 'FK_%')").Length > 0)
+                {
+                    sb.AppendLine("新增的表" + strTableCode + "中键为“FK”时，“" + ExcelCol.FKName + "”列内容格式必须以“FK_”开头！");
+                }
+            }
+
+            //返回结果
+            return string.IsNullOrEmpty(sb.ToString());
+        }
         public static class ExcelCol
         {
             public static string AutoNum = "自增长";

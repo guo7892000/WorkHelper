@@ -153,7 +153,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 AutoFileUtil.DealMyFixParam(_dicString, dtMyDefine);
 
                 //重新查询列信息：不能从网格中取，因为存在多个生成
-                DataTable dtColumn = _dataAccess.GetSqlSchemaTableColumns(sTableName);
+                DataTable dtColumn = _dataAccess.GetSqlSchemaTableColumns(sTableName, _dbServer.SchemaName);
 
                 StringBuilder sbAllCol = new StringBuilder();
                 StringBuilder sbEntity = new StringBuilder();
@@ -512,7 +512,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     {
                         _dbServer.Database = e.Node.Parent.Text;
                         _dataAccess.ModifyConnectString(_dbServer);
-                        dtArr[1] = _dataAccess.GetSqlSchemaTableColumns(e.Node.Text);
+                        dtArr[1] = _dataAccess.GetSqlSchemaTableColumns(e.Node.Text,_dbServer.SchemaName);
                         dgvTableInfo.BindDataGridView(dtArr[1]);
                     }
                     else

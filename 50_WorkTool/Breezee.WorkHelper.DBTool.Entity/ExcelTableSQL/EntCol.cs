@@ -60,7 +60,98 @@ namespace Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL
             }
                         
             return ent;
-        }       
+        }
+
+        public static DataTable GetTable(ColumnTemplateType templateType)
+        {
+            DataTable dt = ColCommon.GetTable();
+            switch (templateType)
+            {
+                case ColumnTemplateType.AllInOne:
+                    dt.Columns.AddRange(new DataColumn[]
+                    {
+                        new DataColumn(ColAllInOne.ExcelCol.SqlServer.FullDataType),
+                        new DataColumn(ColAllInOne.ExcelCol.SqlServer.AutoNum),
+                        new DataColumn(ColAllInOne.ExcelCol.SqlServer.Unique),
+                        new DataColumn(ColAllInOne.ExcelCol.SqlServer.FK),
+
+                        new DataColumn(ColAllInOne.ExcelCol.Oracle.FullDataType),
+                        new DataColumn(ColAllInOne.ExcelCol.Oracle.PKName),
+                        new DataColumn(ColAllInOne.ExcelCol.Oracle.Sequence),
+                        new DataColumn(ColAllInOne.ExcelCol.Oracle.UniqueName),
+                        new DataColumn(ColAllInOne.ExcelCol.Oracle.FK),
+                        new DataColumn(ColAllInOne.ExcelCol.Oracle.FKName),
+
+                        new DataColumn(ColAllInOne.ExcelCol.MySql.FullDataType),
+                        new DataColumn(ColAllInOne.ExcelCol.MySql.Nonnegative),
+                        new DataColumn(ColAllInOne.ExcelCol.MySql.AutoNum),
+                        new DataColumn(ColAllInOne.ExcelCol.MySql.FK),
+
+                        new DataColumn(ColAllInOne.ExcelCol.SQLite.FullDataType),
+                        new DataColumn(ColAllInOne.ExcelCol.SQLite.PKName),
+                        new DataColumn(ColAllInOne.ExcelCol.SQLite.UniqueName),
+                        new DataColumn(ColAllInOne.ExcelCol.SQLite.AutoNum),
+                        new DataColumn(ColAllInOne.ExcelCol.SQLite.FK),
+                        new DataColumn(ColAllInOne.ExcelCol.SQLite.FKName),
+
+                        new DataColumn(ColAllInOne.ExcelCol.PostgreSql.FullDataType),
+                        new DataColumn(ColAllInOne.ExcelCol.PostgreSql.PKName),
+                        new DataColumn(ColAllInOne.ExcelCol.PostgreSql.UniqueName),
+                        new DataColumn(ColAllInOne.ExcelCol.PostgreSql.FK),
+                        new DataColumn(ColAllInOne.ExcelCol.PostgreSql.FKName),
+                    });
+                    break;
+                case ColumnTemplateType.SqlServer:
+                    dt.Columns.AddRange(new DataColumn[]
+                    {
+                        new DataColumn(ColSqlServerTemplate.ExcelCol.FK),
+                        new DataColumn(ColSqlServerTemplate.ExcelCol.AutoNum),
+                        new DataColumn(ColSqlServerTemplate.ExcelCol.Unique),
+                    });
+                    break;
+                case ColumnTemplateType.Oracle:
+                    dt.Columns.AddRange(new DataColumn[]
+                    {
+                        new DataColumn(ColOracleTemplate.ExcelCol.FK),
+                        new DataColumn(ColOracleTemplate.ExcelCol.FKName),
+                        new DataColumn(ColOracleTemplate.ExcelCol.PKName),
+                        new DataColumn(ColOracleTemplate.ExcelCol.SequenceName),
+                        new DataColumn(ColOracleTemplate.ExcelCol.UniqueName),
+                    });
+                    break;
+                case ColumnTemplateType.MySql:
+                    dt.Columns.AddRange(new DataColumn[]
+                    {
+                        new DataColumn(ColMySqlTemplate.ExcelCol.FK),
+                        new DataColumn(ColMySqlTemplate.ExcelCol.AutoNum),
+                        new DataColumn(ColMySqlTemplate.ExcelCol.Nonnegative),
+                    });
+                    break;
+                case ColumnTemplateType.SQLite:
+                    dt.Columns.AddRange(new DataColumn[]
+                    {
+                        new DataColumn(ColSQLiteTemplate.ExcelCol.FK),
+                        new DataColumn(ColSQLiteTemplate.ExcelCol.AutoNum),
+                        new DataColumn(ColSQLiteTemplate.ExcelCol.PKName),
+                        new DataColumn(ColSQLiteTemplate.ExcelCol.UniqueName),
+                        new DataColumn(ColSQLiteTemplate.ExcelCol.FKName),
+                    });
+                    break;
+                case ColumnTemplateType.PostgreSql:
+                    dt.Columns.AddRange(new DataColumn[]
+                    {
+                        new DataColumn(ColPostgreSqlTemplate.ExcelCol.FK),
+                        new DataColumn(ColPostgreSqlTemplate.ExcelCol.FKName),
+                        new DataColumn(ColPostgreSqlTemplate.ExcelCol.PKName),
+                        new DataColumn(ColPostgreSqlTemplate.ExcelCol.UniqueName),
+                    });
+                    break;
+                default:
+                    throw new Exception("暂不支持该数据库类型！");
+            }
+
+            return dt;
+        }
 
     }
 

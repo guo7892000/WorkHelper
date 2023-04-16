@@ -110,13 +110,31 @@ namespace Breezee.WorkHelper.DBTool.UI
             YesNoType strColNoNull = drCol.commonCol.NotNull;
             string strColRemark = drCol.commonCol.Remark;
 
-            //其他独有字段
-            string strColPKName = _isAllConvert ? drCol.allInOne.Oracle_PKName : drCol.oracleCol.PKName;
-            string strColSeries = _isAllConvert ? drCol.allInOne.Oracle_Sequence : drCol.oracleCol.SequenceName;
-            string strColUnique = _isAllConvert ? drCol.allInOne.Oracle_UniqueName: drCol.oracleCol.UniqueName;
-            string strColForgKey = _isAllConvert ? drCol.allInOne.Oracle_FK : drCol.oracleCol.FK;
-            string strColForgKeyCode = _isAllConvert ? drCol.allInOne.Oracle_FKName : drCol.oracleCol.FKName; //外键名
-
+            //独有字段
+            string strColPKName = string.Empty;
+            string strColSeries = string.Empty;
+            string strColUnique = string.Empty;
+            string strColForgKey = string.Empty;
+            string strColForgKeyCode = string.Empty; //外键名
+            if (_isAllConvert)
+            {
+                //综合转换时，使用综合转换模板的独有值
+                strColPKName = drCol.allInOne.Oracle_PKName;
+                strColSeries = drCol.allInOne.Oracle_Sequence;
+                strColUnique = drCol.allInOne.Oracle_UniqueName;
+                strColForgKey = drCol.allInOne.Oracle_FK;
+                strColForgKeyCode = drCol.allInOne.Oracle_FKName; //外键名
+            }
+            else if (importDBType == targetDBType)
+            {
+                //只有导入类型与目标类型一致才使用独有值
+                strColPKName = drCol.oracleCol.PKName;
+                strColSeries = drCol.oracleCol.SequenceName;
+                strColUnique = drCol.oracleCol.UniqueName;
+                strColForgKey = drCol.oracleCol.FK;
+                strColForgKeyCode = drCol.oracleCol.FKName; //外键名
+            }
+            //其他变量
             string strTable_Col = strTableCode + "_" + strColCode;//表编码+"_"+列编码
             string strCanNull = "";//是否可空
             string strDefault_Full = "";//默认值

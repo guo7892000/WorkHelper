@@ -94,13 +94,26 @@ namespace Breezee.WorkHelper.DBTool.UI
             YesNoType strColNoNull = drCol.commonCol.NotNull;
             string strColRemark = drCol.commonCol.Remark;
 
-            //其他独有字段
-            YesNoType strColUnsign = _isAllConvert ? drCol.allInOne.MySql_Nonnegative: drCol.mySqlCol.Nonnegative;//非负数
-            YesNoType strColAutoAdd = _isAllConvert ? drCol.allInOne.MySql_AutoNum : drCol.mySqlCol.AutoNum;//自增长
-            string strColForgKey = _isAllConvert ? drCol.allInOne.MySql_FK : drCol.mySqlCol.FK;//外键
-
+            //独有字段
+            YesNoType strColUnsign = YesNoType.No;
+            YesNoType strColAutoAdd = YesNoType.No;
+            string strColForgKey = string.Empty;
+            if (_isAllConvert)
+            {
+                //综合转换时，使用综合转换模板的独有值
+                strColUnsign = drCol.allInOne.MySql_Nonnegative;
+                strColAutoAdd = drCol.allInOne.MySql_AutoNum;
+                strColForgKey = drCol.allInOne.MySql_FK;
+            }
+            else if (importDBType == targetDBType)
+            {
+                //只有导入类型与目标类型一致才使用独有值
+                strColUnsign = drCol.mySqlCol.Nonnegative;
+                strColAutoAdd = drCol.mySqlCol.AutoNum;
+                strColForgKey = drCol.mySqlCol.FK;
+            }
+            //其他变量
             string strTable_Col = strTableCode + "_" + strColCode;//表编码+"_"+列编码
-
 
             #region 转换字段类型与默认值
             if (importDBType != targetDBType)

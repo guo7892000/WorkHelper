@@ -16,6 +16,7 @@ using Breezee.AutoSQLExecutor.Common;
 using Breezee.Core.Tool;
 using System.Security.Policy;
 using System.IO;
+using System.Xml.Linq;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -28,12 +29,15 @@ namespace Breezee.WorkHelper.DBTool.UI
         private readonly string _strTableName = "变更表清单";
         private readonly string _strColName = "变更列清单";
 
-        private readonly string _sGridColumnCondition = "IsCondition";
         private readonly string _sGridColumnSelect = "IsSelect";
-        private readonly string _sGridColumnDynamic = "IsDynamic";
+        //private readonly string _sGridColumnSelectAll = "IsSelectAll";
+        //private readonly string _sGridColumnSelectTable = "IsSelectTable";
+        //private readonly string _sGridColumnSelectCommon = "IsSelectCommon";
+
         private bool _allSelect = false;//默认全选，这里取反
-        private bool _allCondition = true;//默认全不选，这里取反
-        private bool _allDynamic = false;//默认全选，这里取反
+        private bool _allSelectAll = false;//默认全选，这里取反
+        private bool _allSelectTable = false;//默认全选，这里取反
+        private bool _allSelectCommon = false;//默认全选，这里取反
         //常量
         private static string strTableAlias = "A"; //查询和修改中的表别名
         private static string strTableAliasAndDot = "";
@@ -122,11 +126,15 @@ namespace Breezee.WorkHelper.DBTool.UI
             });
             commonColumn = new MiniXmlCommon(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Breezee", "WorkHelp"), "CommonColumnConfig.xml", list, DBColumnSimpleEntity.SqlString.Name);
             DataTable dtCommonCol = commonColumn.Load();
+            //增加选择列
+            DataColumn dcSelected = new DataColumn(_sGridColumnSelect);
+            dcSelected.DefaultValue = "1";
+            dtCommonCol.Columns.Add(dcSelected);
             //通用列网格跟所有列网格结构一样
             FlexGridColumnDefinition fdc = new FlexGridColumnDefinition();
             fdc.AddColumn(
                 FlexGridColumn.NewRowNoCol(),
-                //new FlexGridColumn.Builder().Name(_sGridColumnSelect).Caption("选择").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(40).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(_sGridColumnSelect).Caption("选择").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(40).Edit().Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.Name).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameCN).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameUpper).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
@@ -202,17 +210,185 @@ namespace Breezee.WorkHelper.DBTool.UI
             );
             dgvTableList.Tag = fdc.GetGridTagString();
             dgvTableList.BindDataGridView(dtTable, true);
+            tabControl2.SelectedTab = tpTable;//选中表页签
+
+            //是否清除数据
+            if (ckbClearAllCol.Checked)
+            {
+                dgvColList.GetBindingTable().Clear();
+            }
+            if (ckbClearCopyCol.Checked)
+            {
+                dgvInput.GetBindingTable().Clear();
+            }
+            if (ckbClearSelect.Checked)
+            {
+                dgvSelect.GetBindingTable().Clear();
+            }
         }
         #endregion
+
+        /// <summary>
+        /// 加载数据按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnLoadData_Click(object sender, EventArgs e)
+        {
+            rtbConString.Focus();
+            bool isChangeTap = false;
+            int iTableNum = 500;//大于等于多少个时提示
+            //获取当前绑定表
+            DataTable dtMain = dgvTableList.GetBindingTable();
+            DataTable dtAllCol = dgvColList.GetBindingTable();
+            if (ckbAllTableColumns.Checked)
+            {
+                if (dtMain != null && dtMain.Rows.Count >= iTableNum)
+                {
+                    if (MsgHelper.ShowYesNo("【获取所有表列清单】可能需要花点时间，是否继续？") == DialogResult.No)
+                    {
+                        return;
+                    }
+                }
+                //全部获取
+                isChangeTap = AddAllColumns(dtAllCol, new List<string>());
+            }
+            else
+            {
+                if (dtMain == null) return;
+                string sFiter1 = string.Format("{0}='1'", _sGridColumnSelect);
+                DataRow[] drArr = dtMain.Select(sFiter1);
+                if (drArr.Length == 0)
+                {
+                    return;
+                }
+                if (drArr.Length >= iTableNum)
+                {
+                    if (MsgHelper.ShowYesNo("查询的数据表较多，可能需要花点时间，是否继续？") == DialogResult.No)
+                    {
+                        ckbAllTableColumns.Checked = false;
+                        return;
+                    }
+                }
+                List<string> list = new List<string>();
+                foreach (DataRow dr in drArr)
+                {
+                    list.Add(dr[DBTableEntity.SqlString.Name].ToString());
+                }
+                isChangeTap = AddAllColumns(dtAllCol, list);
+            }
+
+            if (isChangeTap)
+            {
+                tabControl2.SelectedTab = tpSelectColumn;
+            }
+        }
+
+        private bool AddAllColumns(DataTable dtAllCol, List<string> list)
+        {
+            bool isChangeTap = false;
+            DataTable dtQueryCols = _dataAccess.GetSqlSchemaTableColumns(list, _dbServer.SchemaName);
+            DataTable dtNew = dtAllCol.Clone();
+            foreach (DataRow dr in dtQueryCols.Rows)
+            {
+                DBColumnEntity entity = DBColumnEntity.GetEntity(dr);
+
+                DataTable dt = DBColumnSimpleEntity.GetDataRow(new List<DBColumnEntity> { entity });
+                if (dt.Rows.Count > 0)
+                {
+                    dtNew.ImportRow(dt.Rows[0]);
+                }
+            }
+
+            DataTable dtQueryTable = new DataView(dtNew).ToTable(true, DBColumnSimpleEntity.SqlString.TableName);
+            foreach (DataRow dr in dtQueryTable.Rows)
+            {
+                string sFiter = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.TableName, dr[DBColumnSimpleEntity.SqlString.TableName]);
+                if (dtAllCol == null || dtAllCol.Select(sFiter).Length == 0)
+                {
+                    DataRow[] drQuery = dtNew.Select(sFiter);
+                    foreach (DataRow drCol in drQuery)
+                    {
+                        dtAllCol.ImportRow(drCol);
+
+                    }
+                    isChangeTap = true;
+                }
+            }
+
+            return isChangeTap;
+        }
+
+        /// <summary>
+        /// 匹配按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnMatch_Click(object sender, EventArgs e)
+        {
+            DataTable dtInput = dgvInput.GetBindingTable();
+            if (cbbInputType.SelectedValue != null && "2".Equals(cbbInputType.SelectedValue.ToString()))
+            {
+                string sSql = rtbInputSql.Text.Trim();
+                if (string.IsNullOrEmpty(sSql))
+                {
+                    ShowInfo("请输入查询空数据的SQL，这里只用到查询结果的列编码！");
+                    return;
+                }
+                try
+                {
+                    DataTable dtSql = _dataAccess.QueryAutoParamSqlData(sSql);
+                    foreach (DataColumn dc in dtSql.Columns)
+                    {
+                        dtInput.Rows.Add(dc.ColumnName);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ShowErr("执行查询SQL报错，请保证SQL的正确性，详细信息：" + ex.Message);
+                    return;
+                }
+            }
+
+            DataTable dtSelect = dgvSelect.GetBindingTable();
+
+            DataTable dtAllCol = dgvColList.GetBindingTable();
+            DataTable dtCommonCol = dgvCommonCol.GetBindingTable();
+
+            foreach (DataRow dr in dtInput.Rows)
+            {
+                string sFiter = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.Name, dr[_sInputColCode].ToString());
+                DataRow[] drArr = dtSelect.Select(sFiter);
+                if (drArr.Length > 0)
+                {
+                    continue;
+                }
+                sFiter = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.Name, dr[_sInputColCode].ToString());
+                //
+                drArr = dtCommonCol.Select(sFiter);
+                if (drArr.Length > 0)
+                {
+                    dtSelect.ImportRow(drArr[0]);
+                }
+                else
+                {
+                    drArr = dtAllCol.Select(sFiter);
+                    if (drArr.Length > 0)
+                    {
+                        dtSelect.ImportRow(drArr[0]);
+                    }
+                }
+            }
+        }
 
         #region 设置Tag方法
         private void SetColTag()
         {
-            DataTable dtColsNew = DBColumnSimpleEntity.GetTableStruct();
+            DataTable dtColsAll = DBColumnSimpleEntity.GetTableStruct();
             //增加选择列
             DataColumn dcSelected = new DataColumn(_sGridColumnSelect);
             dcSelected.DefaultValue = "1";
-            dtColsNew.Columns.Add(dcSelected);
+            dtColsAll.Columns.Add(dcSelected);
 
             //查询结果
             FlexGridColumnDefinition fdc = new FlexGridColumnDefinition();
@@ -239,31 +415,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             );
 
             dgvColList.Tag = fdc.GetGridTagString();
-            dgvColList.BindDataGridView(dtColsNew, true);        
+            dgvColList.BindDataGridView(dtColsAll, true);        
             //dgvColList.AllowUserToAddRows = true;//设置网格样式
             //已选择列网格跟通用列网格结构一样
             dgvSelect.Tag = fdc.GetGridTagString();
-            dgvSelect.BindDataGridView(dtColsNew.Clone(), true);
-
-            //设置所有列不显示选择框
-            dgvColList.Columns[_sGridColumnSelect].Visible = false;
-        }
-
-        private void AddTableCols(DataRow drTable)
-        {
-            DataTable dtCols = _dataAccess.GetSqlSchemaTableColumns(drTable[DBTableEntity.SqlString.Name].ToString(), drTable[DBTableEntity.SqlString.Schema].ToString());
-            DataTable dtColsNew = dgvColList.GetBindingTable();
-
-            foreach (DataRow dr in dtCols.Rows)
-            {
-                DBColumnEntity entity = DBColumnEntity.GetEntity(dr);
-
-                DataTable dt  = DBColumnSimpleEntity.GetDataRow(new List<DBColumnEntity> { entity });
-                if (dt.Rows.Count > 0)
-                {
-                    dtColsNew.ImportRow(dt.Rows[0]);
-                }
-            }
+            dgvSelect.BindDataGridView(dtColsAll.Clone(), true);
         }
         #endregion
 
@@ -345,7 +501,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             Close();
         }
         #endregion
-
 
         #region 生成增删改查SQL方法
         /// <summary>
@@ -474,33 +629,6 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         #endregion
 
-        private void dgvColList_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if (e.ColumnIndex == dgvColList.Columns[_sGridColumnSelect].Index)
-            {
-                foreach (DataGridViewRow item in dgvColList.Rows)
-                {
-                    item.Cells[_sGridColumnSelect].Value = _allSelect ? "1" : "0";
-                }
-                _allSelect = !_allSelect;
-            } else if (e.ColumnIndex == dgvColList.Columns[_sGridColumnCondition].Index)
-            {
-                foreach (DataGridViewRow item in dgvColList.Rows)
-                {
-                    item.Cells[_sGridColumnCondition].Value = _allCondition ? "1" : "0";
-                }
-                _allCondition = !_allCondition;
-            }
-            else if (e.ColumnIndex == dgvColList.Columns[_sGridColumnDynamic].Index)
-            {
-                foreach (DataGridViewRow item in dgvColList.Rows)
-                {
-                    item.Cells[_sGridColumnDynamic].Value = _allDynamic ? "1" : "0";
-                }
-                _allDynamic = !_allDynamic;
-            }
-        }
-
         private void btnFind_Click(object sender, EventArgs e)
         {
             string sSearch = txbSearchCol.Text.Trim();
@@ -514,68 +642,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (!isFind)
             {
                 isFind = FindData(dgvColList, sSearch, DBColumnSimpleEntity.SqlString.NameUpper);
-            }
-        }
-
-        /// <summary>
-        /// 匹配按钮事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnMatch_Click(object sender, EventArgs e)
-        {
-            DataTable dtInput = dgvInput.GetBindingTable();
-            if (cbbInputType.SelectedValue != null && "2".Equals(cbbInputType.SelectedValue.ToString()))
-            {
-                string sSql = rtbInputSql.Text.Trim();
-                if (string.IsNullOrEmpty(sSql))
-                {
-                    ShowInfo("请输入查询空数据的SQL，这里只用到查询结果的列编码！");
-                    return;
-                }
-                try
-                {
-                    DataTable dtSql = _dataAccess.QueryAutoParamSqlData(sSql);
-                    foreach (DataColumn dc in dtSql.Columns)
-                    {
-                        dtInput.Rows.Add(dc.ColumnName);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ShowErr("执行查询SQL报错，请保证SQL的正确性，详细信息："+ex.Message);
-                    return;
-                }
-            }
-
-            DataTable dtSelect = dgvSelect.GetBindingTable();
-            
-            DataTable dtAllCol = dgvColList.GetBindingTable();
-            DataTable dtCommonCol = dgvCommonCol.GetBindingTable();
-
-            foreach (DataRow dr in dtInput.Rows)
-            {
-                string sFiter = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.Name, dr[_sInputColCode].ToString());
-                DataRow[] drArr = dtSelect.Select(sFiter);
-                if (drArr.Length > 0)
-                {
-                    continue;
-                }
-                sFiter = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.Name, dr[_sInputColCode].ToString());
-                //
-                drArr = dtCommonCol.Select(sFiter);
-                if (drArr.Length > 0)
-                {
-                    dtSelect.ImportRow(drArr[0]);
-                }
-                else
-                {
-                    drArr = dtAllCol.Select(sFiter);
-                    if (drArr.Length > 0)
-                    {
-                        dtSelect.ImportRow(drArr[0]);
-                    }
-                }
             }
         }
 
@@ -630,18 +696,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
         }
 
-        private void dgvTableList_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if (e.ColumnIndex == dgvTableList.Columns[_sGridColumnSelect].Index)
-            {
-                foreach (DataGridViewRow item in dgvTableList.Rows)
-                {
-                    item.Cells[_sGridColumnSelect].Value = _allSelect ? "1" : "0";
-                }
-                _allSelect = !_allSelect;
-            }
-        }
-
         /// <summary>
         /// 输入网格的右键按钮事件
         /// </summary>
@@ -693,72 +747,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
         }
 
-        /// <summary>
-        /// 加载数据按钮事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnLoadData_Click(object sender, EventArgs e)
-        {
-            rtbConString.Focus();
-            string sFiter;
-            bool isChangeTap = false;
-            //获取当前绑定表
-            DataTable dtAllCol = dgvColList.GetBindingTable();
-            if (ckbAllTableColumns.Checked)
-            {
-                if (MsgHelper.ShowYesNo("【获取所有表列清单】可能需要花点时间，是否继续") == DialogResult.No)
-                {
-                    return;
-                }
-                //全部获取
-                DataTable dtCols = _dataAccess.GetSqlSchemaTableColumns(null, null);
-                foreach (DataRow dr in dtCols.Rows)
-                {
-                    sFiter = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.TableName, dr[DBTableEntity.SqlString.Name]);
-                    if (dtAllCol == null || dtAllCol.Select(sFiter).Length == 0)
-                    {
-                        AddTableCols(dr);
-                        isChangeTap = true;
-                    }
-                }
-            }
-            else
-            {
-                DataTable dtMain = dgvTableList.GetBindingTable();
-                if (dtMain == null) return;
-                sFiter = string.Format("{0}='1'", _sGridColumnSelect);
-                DataRow[] drArr = dtMain.Select(sFiter);
-                if (drArr.Length == 0)
-                {
-                    return;
-                }
-                if (drArr.Length >= 50)
-                {
-                    if (MsgHelper.ShowYesNo("查询的数据表较多，可能需要花点时间，是否继续") == DialogResult.No)
-                    {
-                        ckbAllTableColumns.Checked = false;
-                        return;
-                    }
-                }
-                
-                foreach (DataRow dr in drArr)
-                {
-                    sFiter = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.TableName, dr[DBTableEntity.SqlString.Name]);
-                    if (dtAllCol == null || dtAllCol.Select(sFiter).Length == 0)
-                    {
-                        AddTableCols(dr);
-                        isChangeTap = true;
-                    }
-                }
-            }
-
-            if (isChangeTap)
-            {
-                tabControl2.SelectedTab = tpSelectColumn;
-            }
-        }
-
+        #region 网格增加或移除数据
         /// <summary>
         /// 加入通过列右键按钮事件
         /// </summary>
@@ -771,6 +760,22 @@ namespace Breezee.WorkHelper.DBTool.UI
             dgvCommonCol.GetBindingTable().ImportRow(dataRow);
         }
 
+        /// <summary>
+        /// 所选列加入字典按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnAllAddDic_Click(object sender, EventArgs e)
+        {
+            DataTable dt = dgvColList.GetBindingTable();
+            string sFiter = string.Format("{0}='1'", _sGridColumnSelect);
+            DataRow[] drArr = dt.Select(sFiter);
+            foreach (DataRow dr in drArr)
+            {
+                dgvCommonCol.GetBindingTable().ImportRow(dr); 
+            }
+        }
+
         private void tsmiRemoveCommon_Click(object sender, EventArgs e)
         {
             DataTable dt = dgvCommonCol.GetBindingTable();
@@ -778,12 +783,50 @@ namespace Breezee.WorkHelper.DBTool.UI
             dt.Rows.Remove(dataRow);
         }
 
+        private void btnCommonRemoveSelect_Click(object sender, EventArgs e)
+        {
+            DataTable dt = dgvCommonCol.GetBindingTable();
+            string sFiter = string.Format("{0}='1'", _sGridColumnSelect);
+            DataRow[] drArr = dt.Select(sFiter);
+            foreach (DataRow dr in drArr)
+            {
+                dt.Rows.Remove(dr);
+            }
+        }
+
         private void tsmiRemoveSelect_Click(object sender, EventArgs e)
         {
+            DataGridView dgvSelect = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as DataGridView;
             DataTable dt = dgvSelect.GetBindingTable();
             DataRow dataRow = dgvSelect.GetCurrentRow();
             dt.Rows.Remove(dataRow);
         }
+
+        private void tsmiRemoveSelectAll_Click(object sender, EventArgs e)
+        {
+            DataGridView dgvSelect = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as DataGridView;
+            DataTable dt = dgvSelect.GetBindingTable();
+            dt.Rows.Clear();
+        }
+
+        private void btnAllRemoveSelect_Click(object sender, EventArgs e)
+        {
+            DataTable dt = dgvColList.GetBindingTable();
+            string sFiter = string.Format("{0}='1'", _sGridColumnSelect);
+            DataRow[] drArr = dt.Select(sFiter);
+            foreach (DataRow dr in drArr)
+            {
+                dt.Rows.Remove(dr);
+            }
+        }
+        private void tsmiRemoveAllCol_Click(object sender, EventArgs e)
+        {
+            DataTable dt = dgvColList.GetBindingTable();
+            dt.Clear();
+        }
+
+        
+        #endregion
 
         private void cbbModuleString_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -816,5 +859,42 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
             }
         }
+
+        #region 网格头双击全选或取消全选事件
+        private void SelectAllOrCancel(DataGridView dgv, ref bool isSelect, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.ColumnIndex == dgv.Columns[_sGridColumnSelect].Index)
+            {
+                foreach (DataGridViewRow item in dgv.Rows)
+                {
+                    item.Cells[_sGridColumnSelect].Value = isSelect ? "1" : "0";
+                }
+                isSelect = !isSelect;
+            }
+        }
+        private void dgvTableList_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            SelectAllOrCancel(dgvTableList, ref _allSelectTable, e);
+        }
+        private void dgvColList_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            SelectAllOrCancel(dgvColList, ref _allSelectAll, e);
+        }
+
+        private void dgvSelect_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            SelectAllOrCancel(dgvSelect, ref _allSelect, e);
+        }
+
+        private void dgvCommonCol_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            SelectAllOrCancel(dgvCommonCol, ref _allSelectCommon, e);
+        }
+
+
+
+        #endregion
+
+        
     }
 }

@@ -65,6 +65,8 @@
             this.tsslUserInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tvLeftMenu = new System.Windows.Forms.TreeView();
+            this.cmsOpenTreeMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiOpenNewForm = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlLeftMenu = new System.Windows.Forms.Panel();
             this.btnHideTree = new System.Windows.Forms.Button();
             this.pnlMenuNavigate = new System.Windows.Forms.Panel();
@@ -83,6 +85,7 @@
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
+            this.cmsOpenTreeMenu.SuspendLayout();
             this.pnlLeftMenu.SuspendLayout();
             this.pnlMenuNavigate.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -250,21 +253,21 @@
             // tsmiUserManual
             // 
             this.tsmiUserManual.Name = "tsmiUserManual";
-            this.tsmiUserManual.Size = new System.Drawing.Size(180, 22);
+            this.tsmiUserManual.Size = new System.Drawing.Size(148, 22);
             this.tsmiUserManual.Text = "用户手册(&U)";
             this.tsmiUserManual.Click += new System.EventHandler(this.tsmiUserManual_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.aboutToolStripMenuItem.Text = "关于(&A) ";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // tsmiOpenLatestDownURL
             // 
             this.tsmiOpenLatestDownURL.Name = "tsmiOpenLatestDownURL";
-            this.tsmiOpenLatestDownURL.Size = new System.Drawing.Size(180, 22);
+            this.tsmiOpenLatestDownURL.Size = new System.Drawing.Size(148, 22);
             this.tsmiOpenLatestDownURL.Text = "复制下载地址";
             this.tsmiOpenLatestDownURL.Click += new System.EventHandler(this.tsmiOpenLatestDownURL_Click);
             // 
@@ -382,6 +385,7 @@
             // 
             // tvLeftMenu
             // 
+            this.tvLeftMenu.ContextMenuStrip = this.cmsOpenTreeMenu;
             this.tvLeftMenu.Dock = System.Windows.Forms.DockStyle.Left;
             this.tvLeftMenu.Location = new System.Drawing.Point(0, 51);
             this.tvLeftMenu.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -390,6 +394,21 @@
             this.tvLeftMenu.TabIndex = 4;
             this.tvLeftMenu.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.tvLeftMenu_ItemDrag);
             this.tvLeftMenu.DoubleClick += new System.EventHandler(this.tvLeftMenu_DoubleClick);
+            // 
+            // cmsOpenTreeMenu
+            // 
+            this.cmsOpenTreeMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiOpenNewForm});
+            this.cmsOpenTreeMenu.Name = "cmsOpenTreeMenu";
+            this.cmsOpenTreeMenu.Size = new System.Drawing.Size(181, 48);
+            // 
+            // tsmiOpenNewForm
+            // 
+            this.tsmiOpenNewForm.Name = "tsmiOpenNewForm";
+            this.tsmiOpenNewForm.Size = new System.Drawing.Size(180, 22);
+            this.tsmiOpenNewForm.Text = "打开新窗体";
+            this.tsmiOpenNewForm.ToolTipText = "支持同一个菜单打开多个窗体！";
+            this.tsmiOpenNewForm.Click += new System.EventHandler(this.tsmiOpenNewForm_Click);
             // 
             // pnlLeftMenu
             // 
@@ -569,6 +588,7 @@
             this.toolStrip.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            this.cmsOpenTreeMenu.ResumeLayout(false);
             this.pnlLeftMenu.ResumeLayout(false);
             this.pnlMenuNavigate.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -632,6 +652,8 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiMenuSheetBottom;
         private System.Windows.Forms.ToolStripMenuItem tsmiCloseMenu;
         private System.Windows.Forms.ToolStripMenuItem tsmiOpenLatestDownURL;
+        private System.Windows.Forms.ContextMenuStrip cmsOpenTreeMenu;
+        private System.Windows.Forms.ToolStripMenuItem tsmiOpenNewForm;
     }
 }
 

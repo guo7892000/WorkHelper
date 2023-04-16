@@ -45,5 +45,10 @@ namespace Breezee.Core.Interface
         /// MySql数据库
         /// </summary>
         PostgreSql,
+
+        /// <summary>
+        /// 未指定
+        /// </summary>
+        None,
     }
 }

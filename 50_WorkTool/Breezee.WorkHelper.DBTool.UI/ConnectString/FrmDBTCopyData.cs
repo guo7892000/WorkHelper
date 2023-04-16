@@ -44,8 +44,8 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             dic_List = new Dictionary<string, string>();
             dic_List.Add("0", "无");
-            dic_List.Add("1", "驼峰式");
-            dic_List.Add("2", "首字母大写");
+            dic_List.Add("1", "小驼峰式");
+            dic_List.Add("2", "大驼峰式");
             cbbWordConvert.BindTypeValueDropDownList(dic_List.GetTextValueTable(false), false, true);
 
             //数据库类型

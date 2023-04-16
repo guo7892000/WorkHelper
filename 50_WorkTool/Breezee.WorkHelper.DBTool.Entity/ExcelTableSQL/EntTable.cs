@@ -39,6 +39,21 @@ namespace Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL
             return ent;
         }
 
+        public static DataTable GetTable()
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.AddRange(new DataColumn[]
+            {
+                new DataColumn(ExcelTable.Num),
+                new DataColumn(ExcelTable.ChangeType),
+                new DataColumn(ExcelTable.Name),
+                new DataColumn(ExcelTable.Code),
+                new DataColumn(ExcelTable.CommonColumnTableCode),
+                new DataColumn(ExcelTable.Remark),
+            });
+            return dt;
+        }
+
         /// <summary>
         /// Excel模板中Sheet为【表】中的列信息
         /// </summary>

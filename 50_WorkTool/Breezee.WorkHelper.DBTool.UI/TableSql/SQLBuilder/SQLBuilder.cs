@@ -9,6 +9,9 @@ using System.Text;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
+   /// <summary>
+   /// SQL构造器
+   /// </summary>
     public abstract class SQLBuilder
     {
         protected readonly string sNull = " NULL ";   //可空
@@ -29,7 +32,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         protected List<EntTable> entTables;
         protected List<EntCol> entCols;
 
-        public String GenerateTableContruct(DataTable dtTable, DataTable dtCols, SQLCreateType createType, DataBaseType importDBType, DataBaseType targetDBType, bool isAllConvert)
+        public string GenerateTableContruct(DataTable dtTable, DataTable dtCols, SQLCreateType createType, DataBaseType importDBType, DataBaseType targetDBType, bool isAllConvert)
         {
             sbSqlFisrt = new StringBuilder();//SQL前缀
             sbSql = new StringBuilder();           

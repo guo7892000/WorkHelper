@@ -28,16 +28,10 @@ namespace Breezee.WorkHelper.DBTool.UI
         private readonly string _strTableName = "变更表清单";
         private readonly string _strColName = "变更列清单";
 
-        private readonly string _sGridColumnCondition = "IsCondition";
         private readonly string _sGridColumnSelect = "IsSelect";
-        private readonly string _sGridColumnDynamic = "IsDynamic";
         private bool _allSelect = false;//默认全选，这里取反
-        private bool _allCondition = true;//默认全不选，这里取反
-        private bool _allDynamic = false;//默认全选，这里取反
         //常量
-        private static string strTableAlias = "A"; //查询和修改中的表别名
         private static string strTableAliasAndDot = "";
-        private static readonly string _strUpdateCtrolColumnCode = "UPDATE_CONTROL_ID";
         private string _strAutoSqlSuccess = "生成成功，并已复制到了粘贴板。详细见“生成的SQL”页签！";
         private string _strImportSuccess = "导入成功！可点“生成SQL”按钮得到本次导入的变更SQL。";
         //数据集
@@ -47,7 +41,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private IDBDefaultValue _IDBDefaultValue;
         private DataTable _dtDefault = null;
         DBSqlEntity sqlEntity;
-        String _sColumnList = "#COL_LIST#";
+        string _sColumnList = "#COL_LIST#";
         #endregion
 
         #region 构造函数
@@ -507,26 +501,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             if (e.ColumnIndex == dgvColList.Columns[_sGridColumnSelect].Index)
             {
-                foreach (DataGridViewRow item in dgvColList.Rows)
-                {
-                    item.Cells[_sGridColumnSelect].Value = _allSelect ? "1" : "0";
-                }
-                _allSelect = !_allSelect;
-            } else if (e.ColumnIndex == dgvColList.Columns[_sGridColumnCondition].Index)
-            {
-                foreach (DataGridViewRow item in dgvColList.Rows)
-                {
-                    item.Cells[_sGridColumnCondition].Value = _allCondition ? "1" : "0";
-                }
-                _allCondition = !_allCondition;
-            }
-            else if (e.ColumnIndex == dgvColList.Columns[_sGridColumnDynamic].Index)
-            {
-                foreach (DataGridViewRow item in dgvColList.Rows)
-                {
-                    item.Cells[_sGridColumnDynamic].Value = _allDynamic ? "1" : "0";
-                }
-                _allDynamic = !_allDynamic;
+                dgvColList.AllChecked(_sGridColumnSelect, ref _allSelect);
             }
         }
 

@@ -668,13 +668,38 @@ namespace Breezee.Core.WinFormUI
         /// <param name="dgv"></param>
         /// <param name="strColunmName"></param>
         /// <param name="isSelect"></param>
+        /// <param name="sSelectColumnName">双击后先中的列</param>
         public static void AllChecked(this DataGridView dgv, string strColunmName,ref bool isSelect)
         {
             foreach (DataGridViewRow item in dgv.Rows)
             {
-                item.Cells[strColunmName].Value = isSelect ? "1" : "0";
+                string sCelValue = item.Cells[strColunmName].Value.ToString();
+                if ("1".Equals(sCelValue) || "0".Equals(sCelValue))
+                {
+                    item.Cells[strColunmName].Value = isSelect ? "1" : "0";
+                }else
+                {
+                    item.Cells[strColunmName].Value = isSelect ? "True" : "False";
+                }
+                
             }
             isSelect = !isSelect;
+            //解决当开始是全部选中，双击后全部取消选 中，但因为焦点没有离开选择列，显示还是选中状态的问题
+            if(dgv.CurrentCell.ColumnIndex == dgv.Columns[strColunmName].Index)
+            {
+                int iNewAdd = dgv.CurrentCell.ColumnIndex + 1;
+                int iNewDown = dgv.CurrentCell.ColumnIndex - 1;
+                if (dgv.Columns.Count >= iNewAdd)
+                {
+                    dgv.CurrentCell = dgv.Rows[dgv.CurrentCell.RowIndex].Cells[iNewAdd];
+                    dgv.EndEdit();
+                }
+                else
+                {
+                    dgv.CurrentCell = dgv.Rows[dgv.CurrentCell.RowIndex].Cells[iNewDown];
+                    dgv.EndEdit();
+                }
+            }
         }
     }
 }

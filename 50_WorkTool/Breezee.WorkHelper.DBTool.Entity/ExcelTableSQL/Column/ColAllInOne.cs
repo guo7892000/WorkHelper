@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Breezee.Core.Interface;
+using Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -76,6 +78,67 @@ namespace Breezee.WorkHelper.DBTool.Entity
             return ent;
         }
 
+        public static bool ValidateData(DataTable dtTable, DataTable dtAllCol, DataBaseType targetDBType, out StringBuilder sb)
+        {
+            sb = new StringBuilder();
+            DataRow[] drNewArray = dtTable.Select(ColCommon.ExcelCol.ChangeType + "='新增'");
+
+            foreach (DataRow drNew in drNewArray)
+            {
+                string strTableCode = drNew[EntTable.ExcelTable.Code].ToString();
+                string strTableName = drNew[EntTable.ExcelTable.Name].ToString();
+                string strChangeType = drNew[ColCommon.ExcelCol.ChangeType].ToString();
+
+                #region 综合转换
+                if (targetDBType == DataBaseType.Oracle)
+                {
+                    if (dtAllCol.Select(EntTable.ExcelTable.Code + "='" + strTableCode + "' and " + ColCommon.ExcelCol.KeyType + "='FK' and (" + ExcelCol.Oracle.FKName
+                        + " is not null and " + ExcelCol.Oracle.FKName + " not like 'FK_%')").Length > 0)
+                    {
+                        sb.AppendLine("新增的表" + strTableCode + "中键为“FK”时，“" + ExcelCol.Oracle.FKName + "”列内容格式必须以“FK_”开头！");
+                        return false;
+                    }
+
+                    if (dtAllCol.Select(EntTable.ExcelTable.Code + "='" + strTableCode + "' and (" + ExcelCol.Oracle.Sequence + " is not null and " + ExcelCol.Oracle.Sequence + " not like 'SQ_%')").Length > 0)
+                    {
+                        sb.AppendLine("新增的表" + strTableCode + "中，“" + ExcelCol.Oracle.Sequence + "”列内容格式必须以“SQ_”开头！");
+                        return false;
+                    }
+                    if (dtAllCol.Select(EntTable.ExcelTable.Code + "='" + strTableCode + "' and (" + ExcelCol.Oracle.UniqueName + " is not null and " + ExcelCol.Oracle.UniqueName + " not like 'UQ_%')").Length > 0)
+                    {
+                        sb.AppendLine("新增的表" + strTableCode + "中，“" + ExcelCol.Oracle.UniqueName + "”列内容格式必须以“UQ_”开头！");
+                        return false;
+                    }
+                    if (dtAllCol.Select(EntTable.ExcelTable.Code + "='" + strTableCode + "' and " + ColCommon.ExcelCol.KeyType + "='FK' and (" + ExcelCol.Oracle.FK + " is null or " + ExcelCol.Oracle.FKName + " is null)").Length > 0)
+                    {
+                        sb.AppendLine("新增的表" + strTableCode + "中键为“FK”时，“" + ExcelCol.Oracle.FK + "、" + ExcelCol.Oracle.FK + "”列为必填！");
+                        return false;
+                    }
+                }
+                else if (targetDBType == DataBaseType.SqlServer)
+                {
+
+                }
+                else if (targetDBType == DataBaseType.MySql)
+                {
+
+                }
+                else if (targetDBType == DataBaseType.SQLite)
+                {
+
+                }
+                else if (targetDBType == DataBaseType.PostgreSql)
+                {
+
+                }
+                else
+                {
+                    throw new Exception("暂不支持该数据库类型！");
+                }
+                #endregion
+            }
+            return string.IsNullOrEmpty(sb.ToString());
+        }
         public static class ExcelCol
         {
             public static class SqlServer

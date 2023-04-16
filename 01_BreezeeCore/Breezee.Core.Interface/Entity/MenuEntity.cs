@@ -24,8 +24,20 @@ namespace Breezee.Core.Interface
     public class MenuEntity: Entity
     {
         IDictionary<string, MenuEntity> _Childs = new Dictionary<string, MenuEntity>();
-
+        /// <summary>
+        /// 唯一ID
+        /// </summary>
         public string Guid;
+
+        /// <summary>
+        /// 打开同一个菜单的新窗体的GUID：一般一个菜单只能打开一次，但有时为了方便功能使用，支持一个菜单打开多个实例，那么该字段就唯一标识该打开的窗体
+        /// </summary>
+        public string SameMenuNewFormGuid = string.Empty;
+        /// <summary>
+        /// 是否打开同一个菜单的新窗体
+        /// </summary>
+        public bool IsOpenSameMenuNewForm = false;
+
         public MenuType MenuType;
         public string Name;
         public string Code;
@@ -39,6 +51,22 @@ namespace Breezee.Core.Interface
 
         public IDictionary<string, MenuEntity> Childs => _Childs;
 
-
+        public MenuEntity Clone()
+        {
+            var clone = new MenuEntity();
+            clone.Guid= Guid;
+            clone.SameMenuNewFormGuid = SameMenuNewFormGuid;
+            clone.IsOpenSameMenuNewForm = IsOpenSameMenuNewForm;
+            clone.MenuType = MenuType;
+            clone.Name = Name;
+            clone.Code = Code;
+            clone.ShortCutKey = ShortCutKey;
+            clone.DLLName = DLLName;
+            clone.FormName = FormName;
+            clone.FullPath = FullPath;
+            clone.HelpPath = HelpPath;
+            clone.ParentGuid = ParentGuid;
+            return clone;
+        }
     }
 }

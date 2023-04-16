@@ -105,11 +105,25 @@ namespace Breezee.WorkHelper.DBTool.UI
             string strColLen = drCol.commonCol.DataLength;//["长度"].ToString().Trim();
             string strColDecimalDigits = drCol.commonCol.DataDotLength;//["小数位"].ToString().Trim();
             string strColDefault = drCol.commonCol.Default; //["默认值"].ToString().Trim().Replace("'", "");
-            //其他独有字段
-            YesNoType strColUnique = _isAllConvert ? drCol.allInOne.SqlServer_Unique : drCol.sqlServerCol.Unique;
-            string strColAddNum = _isAllConvert ? drCol.allInOne.SqlServer_AutoNum : drCol.sqlServerCol.AutoNum;
-            string strColForgKey = _isAllConvert ? drCol.allInOne.SqlServer_FK : drCol.sqlServerCol.FK;
-            //
+            //独有字段
+            YesNoType strColUnique = YesNoType.No;
+            string strColAddNum = string.Empty;
+            string strColForgKey = string.Empty;
+            if (_isAllConvert)
+            {
+                //综合转换时，使用综合转换模板的独有值
+                strColUnique = drCol.allInOne.SqlServer_Unique;
+                strColAddNum = drCol.allInOne.SqlServer_AutoNum;
+                strColForgKey = drCol.allInOne.SqlServer_FK;
+            }
+            else if (importDBType == targetDBType)
+            {
+                //只有导入类型与目标类型一致才使用独有值
+                strColUnique = drCol.sqlServerCol.Unique;
+                strColAddNum = drCol.sqlServerCol.AutoNum;
+                strColForgKey = drCol.sqlServerCol.FK;
+            }
+            //其他变量
             string strTable_Col = strTableCode + "_" + strColCode;//表编码+"_"+列编码
             string strCanNull = "";//是否可空
             string strDefault_Full = "";//默认值
