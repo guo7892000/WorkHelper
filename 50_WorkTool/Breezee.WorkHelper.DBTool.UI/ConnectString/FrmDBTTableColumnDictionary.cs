@@ -80,8 +80,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             #endregion
 
             SetColTag();
-
+            //模板
             _dicString.Add("1", "YAPI参数格式");
+            _dicString.Add("2", "YAPI查询结果(不分页)");
+            _dicString.Add("3", "YAPI查询结果(分页)");
+            _dicString.Add("4", "YAPI查询条件(分页)");
             cbbModuleString.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), true, true);
 
             //
@@ -469,16 +472,21 @@ namespace Breezee.WorkHelper.DBTool.UI
                         //将数据中的列名替换为单元格中的数据
                         strOneData = strOneData.Replace("#" + dc.ColumnName + "#", strData);
                     }
-                    //if ("PK".Equals(dtColumnSelect.Rows[i]["H"].ToString()))
-                    //{
-                    //    strOneData = strOneData.Replace("@TableField", "@TableId");
-                    //}
-
                     //所有SQL文本累加
                     sbAllSql.Append(strOneData + "\n");
                 }
                 rtbResult.Clear();
-                //保存属性
+
+                if (ckbRemoveLastChar.Checked)
+                {
+                    string sLast = sbAllSql.ToString().Trim();
+                    sLast = sLast.Substring(0, sLast.Length - 1);
+                    sbAllSql.Clear();
+                    sbAllSql.Append(sLast);
+                }
+
+                //YAPI的字符模板处理
+                YapiModuleStringDeal(sbAllSql);
                 rtbResult.AppendText(sbAllSql.ToString() + "\n");
                 Clipboard.SetData(DataFormats.UnicodeText, sbAllSql.ToString());
 
@@ -491,6 +499,107 @@ namespace Breezee.WorkHelper.DBTool.UI
             catch (Exception ex)
             {
                 ShowErr(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// YAPI的字符模板处理
+        /// </summary>
+        /// <param name="sbAllSql"></param>
+        private void YapiModuleStringDeal(StringBuilder sbAllSql)
+        {
+            string sModule = cbbModuleString.SelectedValue.ToString();
+            if ("2".Equals(sModule))
+            {
+                sbAllSql.Insert(0, @"{
+  ""type"": ""object"",
+  ""title"": ""empty object"",
+  ""properties"": {
+    ""result"": {
+      ""type"": ""string"",
+      ""description"": ""执行结果""
+    },
+    ""msg"": {
+      ""type"": ""string"",
+      ""description"": ""返回信息""
+    },
+    ""rows"": {
+      ""type"": ""array"",
+      ""items"": {
+        ""type"": ""object"",
+        ""properties"": {
+           ");
+
+                sbAllSql.AppendLine(@"
+           }
+      },
+      ""description"": ""结果集""
+    }
+  },
+  ""required"": [
+    ""rows"",
+    ""msg"",
+    ""result""
+  ]
+}");
+            }
+            else if ("3".Equals(sModule))
+            {
+                sbAllSql.Insert(0, @"{
+  ""type"": ""object"",
+  ""title"": ""empty object"",
+  ""properties"": {
+    ""pageindex"": {
+      ""type"": ""number"",
+      ""description"": ""页号""
+      },
+    ""pages"": {
+      ""type"": ""number"",
+      ""description"": ""总页数""
+      },
+    ""records"": {
+      ""type"": ""number"",
+      ""description"": ""总记录数""
+      },
+    ""result"": {
+      ""type"": ""number"",
+      ""description"": ""执行结果""
+      },
+    ""msg"": {
+      ""type"": ""string"",
+      ""description"": ""返回信息""
+      },
+    ""rows"": {
+      ""type"": ""object"",
+      ""properties"": {
+        ");
+                sbAllSql.AppendLine(@"
+        },
+      ""description"": ""结果集"",
+      ""required"": []
+    }
+  }
+}");
+            }
+            else if ("4".Equals(sModule))
+            {
+                sbAllSql.Insert(0, @"{
+  ""type"": ""object"",
+  ""title"": ""empty object"",
+  ""properties"": {
+    ""pageindex"": {
+      ""type"": ""number"",
+      ""description"": ""当前页数""
+      },
+    ""pagesize"": {
+      ""type"": ""number"",
+      ""description"": ""每页条数""
+      },
+    ");
+
+                sbAllSql.AppendLine(@"
+    }
+}");
             }
         }
         #endregion
@@ -833,9 +942,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (cbbModuleString.SelectedValue != null && !string.IsNullOrEmpty(cbbModuleString.SelectedValue.ToString()))
             {
                 string sModule = cbbModuleString.SelectedValue.ToString();
-                if ("1".Equals(sModule))
+                rtbConString.Clear();
+                if ("1".Equals(sModule) || "2".Equals(sModule) || "3".Equals(sModule) || "4".Equals(sModule))
                 {
-                    rtbConString.Clear();
                     rtbConString.AppendText(@"""#C3#"":{
     ""type"":""string"",
     ""description"":""#C1#""

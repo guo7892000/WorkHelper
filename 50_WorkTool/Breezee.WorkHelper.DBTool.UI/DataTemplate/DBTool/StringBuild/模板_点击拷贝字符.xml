@@ -3,15 +3,15 @@
 <!--根节点（strings）：max属性为group的默认每行项目数；
 二级节点（group）：分组。可以设置max属性，确定本分组的每行项目数，当不指定时则取根节点配置的max属性。-->
 <strings max="5">
-  <group text="示例_分组1" max="4">
+  <group text="示例_分组1" max="5">
     <!--每个字符项的属性说明：
-    type：text文本；path路径；file是文件。
+    type：text文本，用于复制字符的；path路径，可复制或打开；file是文件，可读取文件内容来复制。
     ctrol：TextBox是一般文本框；RichTextBox是富文件框，针对type为file的配置。
     pwdchar：设置密码掩码字符，如复制的是密码，请设置其值为*。
     tip：按钮的提示信息。
     text：实际拷贝的内容
     pathAbs：读取文本文件的绝对路径，针对type为file的配置。
-    pathRel：读取文本文件的相对路径，针对type为file的配置。-->
+    pathRel：读取文本文件的相对当前选择的配置文件所在目录的路径，针对type为file的配置。-->
     <string type="text" ctrol="TextBox" label="文本示例" text="文本2021" tip="这是文本示例" pwdchar=""></string>
     <string type="text" ctrol="TextBox" label="密码示例" text="1122" tip="" pwdchar="*"></string>
     <string type="path" ctrol="TextBox" label="路径示例" text="C:\Windows" tip="" pwdchar=""></string>

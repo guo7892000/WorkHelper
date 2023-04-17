@@ -44,6 +44,8 @@
             this.tsmiAddCommonCol = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiRemoveAllCol = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnAllAddDic = new System.Windows.Forms.Button();
+            this.btnAllRemoveSelect = new System.Windows.Forms.Button();
             this.lblColumnInfo = new System.Windows.Forms.Label();
             this.btnFind = new System.Windows.Forms.Button();
             this.txbSearchCol = new System.Windows.Forms.TextBox();
@@ -53,6 +55,7 @@
             this.cmsRemoveCommon = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiRemoveCommon = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnCommonRemoveSelect = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.btnCommonSave = new System.Windows.Forms.Button();
             this.btnFindCommon = new System.Windows.Forms.Button();
@@ -72,6 +75,9 @@
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.dgvTableList = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ckbClearSelect = new System.Windows.Forms.CheckBox();
+            this.ckbClearAllCol = new System.Windows.Forms.CheckBox();
+            this.ckbClearCopyCol = new System.Windows.Forms.CheckBox();
             this.tpSelectColumn = new System.Windows.Forms.TabPage();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
             this.dgvInput = new System.Windows.Forms.DataGridView();
@@ -88,13 +94,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.cbbModuleString = new System.Windows.Forms.ComboBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.btnAllRemoveSelect = new System.Windows.Forms.Button();
-            this.btnCommonRemoveSelect = new System.Windows.Forms.Button();
-            this.btnAllAddDic = new System.Windows.Forms.Button();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
-            this.ckbClearCopyCol = new System.Windows.Forms.CheckBox();
-            this.ckbClearAllCol = new System.Windows.Forms.CheckBox();
-            this.ckbClearSelect = new System.Windows.Forms.CheckBox();
+            this.ckbRemoveLastChar = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpAllTableCol.SuspendLayout();
@@ -278,6 +279,26 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "查找";
             // 
+            // btnAllAddDic
+            // 
+            this.btnAllAddDic.Location = new System.Drawing.Point(234, 16);
+            this.btnAllAddDic.Name = "btnAllAddDic";
+            this.btnAllAddDic.Size = new System.Drawing.Size(88, 23);
+            this.btnAllAddDic.TabIndex = 15;
+            this.btnAllAddDic.Text = "所选加入字典";
+            this.btnAllAddDic.UseVisualStyleBackColor = true;
+            this.btnAllAddDic.Click += new System.EventHandler(this.btnAllAddDic_Click);
+            // 
+            // btnAllRemoveSelect
+            // 
+            this.btnAllRemoveSelect.Location = new System.Drawing.Point(328, 16);
+            this.btnAllRemoveSelect.Name = "btnAllRemoveSelect";
+            this.btnAllRemoveSelect.Size = new System.Drawing.Size(75, 23);
+            this.btnAllRemoveSelect.TabIndex = 14;
+            this.btnAllRemoveSelect.Text = "移除所选";
+            this.btnAllRemoveSelect.UseVisualStyleBackColor = true;
+            this.btnAllRemoveSelect.Click += new System.EventHandler(this.btnAllRemoveSelect_Click);
+            // 
             // lblColumnInfo
             // 
             this.lblColumnInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -372,6 +393,16 @@
             this.groupBox4.TabIndex = 10;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "查找";
+            // 
+            // btnCommonRemoveSelect
+            // 
+            this.btnCommonRemoveSelect.Location = new System.Drawing.Point(278, 15);
+            this.btnCommonRemoveSelect.Name = "btnCommonRemoveSelect";
+            this.btnCommonRemoveSelect.Size = new System.Drawing.Size(75, 23);
+            this.btnCommonRemoveSelect.TabIndex = 15;
+            this.btnCommonRemoveSelect.Text = "移除所选";
+            this.btnCommonRemoveSelect.UseVisualStyleBackColor = true;
+            this.btnCommonRemoveSelect.Click += new System.EventHandler(this.btnCommonRemoveSelect_Click);
             // 
             // label1
             // 
@@ -582,6 +613,42 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "选项";
             // 
+            // ckbClearSelect
+            // 
+            this.ckbClearSelect.AutoSize = true;
+            this.ckbClearSelect.Checked = true;
+            this.ckbClearSelect.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbClearSelect.Location = new System.Drawing.Point(147, 41);
+            this.ckbClearSelect.Name = "ckbClearSelect";
+            this.ckbClearSelect.Size = new System.Drawing.Size(72, 16);
+            this.ckbClearSelect.TabIndex = 6;
+            this.ckbClearSelect.Text = "清除已选";
+            this.ckbClearSelect.UseVisualStyleBackColor = true;
+            // 
+            // ckbClearAllCol
+            // 
+            this.ckbClearAllCol.AutoSize = true;
+            this.ckbClearAllCol.Checked = true;
+            this.ckbClearAllCol.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbClearAllCol.Location = new System.Drawing.Point(80, 41);
+            this.ckbClearAllCol.Name = "ckbClearAllCol";
+            this.ckbClearAllCol.Size = new System.Drawing.Size(60, 16);
+            this.ckbClearAllCol.TabIndex = 5;
+            this.ckbClearAllCol.Text = "清除列";
+            this.ckbClearAllCol.UseVisualStyleBackColor = true;
+            // 
+            // ckbClearCopyCol
+            // 
+            this.ckbClearCopyCol.AutoSize = true;
+            this.ckbClearCopyCol.Checked = true;
+            this.ckbClearCopyCol.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbClearCopyCol.Location = new System.Drawing.Point(147, 20);
+            this.ckbClearCopyCol.Name = "ckbClearCopyCol";
+            this.ckbClearCopyCol.Size = new System.Drawing.Size(84, 16);
+            this.ckbClearCopyCol.TabIndex = 4;
+            this.ckbClearCopyCol.Text = "清除粘贴列";
+            this.ckbClearCopyCol.UseVisualStyleBackColor = true;
+            // 
             // tpSelectColumn
             // 
             this.tpSelectColumn.Controls.Add(this.groupBox11);
@@ -724,6 +791,7 @@
             // 
             // groupBox8
             // 
+            this.groupBox8.Controls.Add(this.ckbRemoveLastChar);
             this.groupBox8.Controls.Add(this.label3);
             this.groupBox8.Controls.Add(this.cbbModuleString);
             this.groupBox8.Dock = System.Windows.Forms.DockStyle.Top;
@@ -747,41 +815,11 @@
             // cbbModuleString
             // 
             this.cbbModuleString.FormattingEnabled = true;
-            this.cbbModuleString.Location = new System.Drawing.Point(53, 19);
+            this.cbbModuleString.Location = new System.Drawing.Point(52, 19);
             this.cbbModuleString.Name = "cbbModuleString";
             this.cbbModuleString.Size = new System.Drawing.Size(121, 20);
             this.cbbModuleString.TabIndex = 4;
             this.cbbModuleString.SelectedIndexChanged += new System.EventHandler(this.cbbModuleString_SelectedIndexChanged);
-            // 
-            // btnAllRemoveSelect
-            // 
-            this.btnAllRemoveSelect.Location = new System.Drawing.Point(328, 16);
-            this.btnAllRemoveSelect.Name = "btnAllRemoveSelect";
-            this.btnAllRemoveSelect.Size = new System.Drawing.Size(75, 23);
-            this.btnAllRemoveSelect.TabIndex = 14;
-            this.btnAllRemoveSelect.Text = "移除所选";
-            this.btnAllRemoveSelect.UseVisualStyleBackColor = true;
-            this.btnAllRemoveSelect.Click += new System.EventHandler(this.btnAllRemoveSelect_Click);
-            // 
-            // btnCommonRemoveSelect
-            // 
-            this.btnCommonRemoveSelect.Location = new System.Drawing.Point(278, 15);
-            this.btnCommonRemoveSelect.Name = "btnCommonRemoveSelect";
-            this.btnCommonRemoveSelect.Size = new System.Drawing.Size(75, 23);
-            this.btnCommonRemoveSelect.TabIndex = 15;
-            this.btnCommonRemoveSelect.Text = "移除所选";
-            this.btnCommonRemoveSelect.UseVisualStyleBackColor = true;
-            this.btnCommonRemoveSelect.Click += new System.EventHandler(this.btnCommonRemoveSelect_Click);
-            // 
-            // btnAllAddDic
-            // 
-            this.btnAllAddDic.Location = new System.Drawing.Point(234, 16);
-            this.btnAllAddDic.Name = "btnAllAddDic";
-            this.btnAllAddDic.Size = new System.Drawing.Size(88, 23);
-            this.btnAllAddDic.TabIndex = 15;
-            this.btnAllAddDic.Text = "所选加入字典";
-            this.btnAllAddDic.UseVisualStyleBackColor = true;
-            this.btnAllAddDic.Click += new System.EventHandler(this.btnAllAddDic_Click);
             // 
             // uC_DbConnection1
             // 
@@ -791,41 +829,15 @@
             this.uC_DbConnection1.Size = new System.Drawing.Size(1054, 78);
             this.uC_DbConnection1.TabIndex = 35;
             // 
-            // ckbClearCopyCol
+            // ckbRemoveLastChar
             // 
-            this.ckbClearCopyCol.AutoSize = true;
-            this.ckbClearCopyCol.Checked = true;
-            this.ckbClearCopyCol.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbClearCopyCol.Location = new System.Drawing.Point(147, 20);
-            this.ckbClearCopyCol.Name = "ckbClearCopyCol";
-            this.ckbClearCopyCol.Size = new System.Drawing.Size(84, 16);
-            this.ckbClearCopyCol.TabIndex = 4;
-            this.ckbClearCopyCol.Text = "清除粘贴列";
-            this.ckbClearCopyCol.UseVisualStyleBackColor = true;
-            // 
-            // ckbClearAllCol
-            // 
-            this.ckbClearAllCol.AutoSize = true;
-            this.ckbClearAllCol.Checked = true;
-            this.ckbClearAllCol.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbClearAllCol.Location = new System.Drawing.Point(80, 41);
-            this.ckbClearAllCol.Name = "ckbClearAllCol";
-            this.ckbClearAllCol.Size = new System.Drawing.Size(60, 16);
-            this.ckbClearAllCol.TabIndex = 5;
-            this.ckbClearAllCol.Text = "清除列";
-            this.ckbClearAllCol.UseVisualStyleBackColor = true;
-            // 
-            // ckbClearSelect
-            // 
-            this.ckbClearSelect.AutoSize = true;
-            this.ckbClearSelect.Checked = true;
-            this.ckbClearSelect.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbClearSelect.Location = new System.Drawing.Point(147, 41);
-            this.ckbClearSelect.Name = "ckbClearSelect";
-            this.ckbClearSelect.Size = new System.Drawing.Size(72, 16);
-            this.ckbClearSelect.TabIndex = 6;
-            this.ckbClearSelect.Text = "清除已选";
-            this.ckbClearSelect.UseVisualStyleBackColor = true;
+            this.ckbRemoveLastChar.AutoSize = true;
+            this.ckbRemoveLastChar.Location = new System.Drawing.Point(175, 20);
+            this.ckbRemoveLastChar.Name = "ckbRemoveLastChar";
+            this.ckbRemoveLastChar.Size = new System.Drawing.Size(120, 16);
+            this.ckbRemoveLastChar.TabIndex = 6;
+            this.ckbRemoveLastChar.Text = "去掉最后一个字符";
+            this.ckbRemoveLastChar.UseVisualStyleBackColor = true;
             // 
             // FrmDBTTableColumnDictionary
             // 
@@ -956,5 +968,6 @@
         private System.Windows.Forms.CheckBox ckbClearSelect;
         private System.Windows.Forms.CheckBox ckbClearAllCol;
         private System.Windows.Forms.CheckBox ckbClearCopyCol;
+        private System.Windows.Forms.CheckBox ckbRemoveLastChar;
     }
 }

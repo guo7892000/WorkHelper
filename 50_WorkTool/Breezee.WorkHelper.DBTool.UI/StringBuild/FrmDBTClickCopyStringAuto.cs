@@ -9,6 +9,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Breezee.WorkHelper.DBTool.UI.StringBuild
 {
@@ -17,6 +18,8 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
     /// </summary>
     public partial class FrmDBTClickCopyStringAuto : BaseForm
     {
+        private List<GroupBox> listGroupBox = new List<GroupBox>();
+
         public FrmDBTClickCopyStringAuto()
         {
             InitializeComponent();
@@ -49,7 +52,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             int iDefaultMax = 5;
 
             XmlDocument doc = new XmlDocument();
-            doc.Load(sXmlPath);
+            doc.Load(sXmlPath); 
 
             XmlNode root = doc.SelectSingleNode("strings");
             iDefaultMax = int.Parse(root.GetOrDefaultAttrValue(CopyStringPropertyName.GroupMax, iDefaultMax.ToString()));
@@ -105,14 +108,17 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                         {
                             if (!string.IsNullOrWhiteSpace(cs.PathRel))
                             {
-                                if(File.Exists(Path.Combine(DBTGlobalValue.AppPath, cs.PathRel)))
+                                string sPath = Path.Combine(Path.GetDirectoryName(sXmlPath), cs.PathRel);
+                                if (File.Exists(sPath))
                                 {
-                                    tb.AppendText(File.ReadAllText(Path.Combine(DBTGlobalValue.AppPath, cs.PathRel)));
+                                    //相对配置文件所在目录
+                                    tb.AppendText(File.ReadAllText(sPath));
                                     cs.Tip = string.Format("文本框是相对路径【{0}】文件的内容", cs.PathRel);
                                 }
                             }
                             if (!string.IsNullOrWhiteSpace(cs.PathAbs))
                             {
+                                //绝对路径
                                 if (File.Exists(cs.PathAbs))
                                 {
                                     tb.AppendText(File.ReadAllText(cs.PathAbs));
@@ -191,7 +197,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                 gb.AutoSize = true;
                 tlp.Dock = DockStyle.Top;
                 pnlAll.Controls.Add(gb);
-
+                listGroupBox.Add(gb);//增加到集合中
                 iGroup++;
             }
             pnlAll.Controls.Add(gbGlobal);
@@ -287,6 +293,10 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             dia.Multiselect = false;
             if (dia.ShowDialog() == DialogResult.OK)
             {
+                foreach (GroupBox gb in listGroupBox)
+                {
+                    pnlAll.Controls.Remove(gb);
+                }
                 txbXmlPath.Text = dia.FileName;
                 GenerateControls();
                 Setting.Default.ClickCopyPath = txbXmlPath.Text;

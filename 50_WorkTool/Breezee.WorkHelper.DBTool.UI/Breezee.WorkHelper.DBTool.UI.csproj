@@ -207,11 +207,11 @@
       <DependentUpon>FrmDirectoryFileString.cs</DependentUpon>
     </Compile>
     <Compile Include="StringBuild\ScriptMerge\ScriptMergeString.cs" />
-    <Compile Include="TableSql\FrmDBTExcelGenerateTableSQL.cs">
+    <Compile Include="TableSql\FrmDBTGenerateTableSQL.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TableSql\FrmDBTExcelGenerateTableSQL.Designer.cs">
-      <DependentUpon>FrmDBTExcelGenerateTableSQL.cs</DependentUpon>
+    <Compile Include="TableSql\FrmDBTGenerateTableSQL.Designer.cs">
+      <DependentUpon>FrmDBTGenerateTableSQL.cs</DependentUpon>
     </Compile>
     <Compile Include="TableSql\FrmDBTGetTableQuerySql.cs">
       <SubType>Form</SubType>
@@ -333,8 +333,8 @@
     <EmbeddedResource Include="StringBuild\FrmDirectoryFileString.resx">
       <DependentUpon>FrmDirectoryFileString.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TableSql\FrmDBTExcelGenerateTableSQL.resx">
-      <DependentUpon>FrmDBTExcelGenerateTableSQL.cs</DependentUpon>
+    <EmbeddedResource Include="TableSql\FrmDBTGenerateTableSQL.resx">
+      <DependentUpon>FrmDBTGenerateTableSQL.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TableSql\FrmDBTGetTableQuerySql.resx">
       <DependentUpon>FrmDBTGetTableQuerySql.cs</DependentUpon>
