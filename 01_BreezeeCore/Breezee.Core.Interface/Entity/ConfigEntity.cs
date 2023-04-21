@@ -23,9 +23,13 @@ namespace Breezee.Core.Interface
     public class ConfigEntity: Entity
     {
         /// <summary>
-        /// 配置文件路径
+        /// 配置文件目录
         /// </summary>
-        public virtual string ConfigPath => "";
+        public virtual string Dir { get; set; }
+        /// <summary>
+        /// 配置文件名
+        /// </summary>
+        public virtual string FileName { get; set; }
 
         IDictionary<string, object> _dic = new Dictionary<string, object>();
         /// <summary>

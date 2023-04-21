@@ -377,7 +377,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.ckbCancelDefault.Size = new System.Drawing.Size(84, 16);
             this.ckbCancelDefault.TabIndex = 3;
             this.ckbCancelDefault.Text = "忽略默认值";
-            this.toolTip1.SetToolTip(this.ckbCancelDefault, "不使用固定值，即全部列参数化");
+            this.toolTip1.SetToolTip(this.ckbCancelDefault, "不使用固定值，即全部列参数化。但选中【使用全局配置时】时，还是会用全局配置值！");
             this.ckbCancelDefault.UseVisualStyleBackColor = true;
             // 
             // ckbSkipFixNull

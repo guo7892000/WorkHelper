@@ -11,6 +11,7 @@ using Breezee.Core.Interface;
 using Breezee.Core.Tool;
 using Breezee.Framework.Mini.Entity;
 using Breezee.Core.WinFormUI;
+using System.IO;
 
 namespace Breezee.Framework.Mini.StartUp
 {
@@ -352,7 +353,13 @@ namespace Breezee.Framework.Mini.StartUp
                 default:
                     break;
             }
-        } 
+        }
         #endregion
+
+        private void tsbMiniDbConfig_Click(object sender, EventArgs e)
+        {
+            FrmDBConfig frm = new FrmDBConfig(MiniGlobalValue.DataAccessConfigKey, MiniGlobalValue.DbConfigFileDir, MiniGlobalValue.DbConfigFileName);
+            frm.ShowDialog();
+        }
     }
 }

@@ -65,7 +65,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             string[] arrSplit = sSplitList.Split(new string[] { strSplit  }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var strOne in arrSplit)
             {
-                rtbOutput.AppendText(sFormat.Replace(sItem, strOne)+"\n");
+                rtbOutput.AppendText(sFormat.Replace(sItem, strOne.Trim())+"\n");
             }
             Clipboard.SetText(rtbOutput.Text);
         }

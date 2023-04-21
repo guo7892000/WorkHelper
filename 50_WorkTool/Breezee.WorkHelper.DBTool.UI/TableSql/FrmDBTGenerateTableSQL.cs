@@ -259,6 +259,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     default:
                         throw new Exception("暂不支持该数据库类型！");
                 }
+
                 _dataAccess = AutoSQLExecutors.Connect(_dbServer);
                 
                 DataRow[] drArr = null;
@@ -463,6 +464,18 @@ namespace Breezee.WorkHelper.DBTool.UI
                     builder = new SQLServerBuilder();
                     break;
             }
+
+            foreach (DataRow dr in dtColumnSelect.Rows)
+            {
+                string sDataType = dr[ColCommon.ExcelCol.DataType].ToString();
+                string sDefault = dr[ColCommon.ExcelCol.Default].ToString();
+                string sDataLength = dr[ColCommon.ExcelCol.DataLength].ToString();
+                string sDataDotLength = dr[ColCommon.ExcelCol.DataDotLength].ToString();
+                builder.ConvertDBTypeDefaultValueString(ref sDataType, ref sDefault, importDBType);
+                dr[ColCommon.ExcelCol.DataTypeNew] = sDataType;
+                dr[ColCommon.ExcelCol.DataTypeFullNew] = ColCommon.GetFullDataType(sDataType, sDataLength, sDataDotLength);
+            }
+
             string sSql = builder.GenerateTableContruct(dtTalbeSelect, dtColumnSelect, (SQLCreateType)int.Parse(createType), importDBType, targetDBType, _isAllConvert) + "\n";
             rtbResult.AppendText(sSql);
             Clipboard.SetData(DataFormats.UnicodeText, sSql);
@@ -470,7 +483,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             //增加生成表结构的功能
             dtAllCol.AcceptChanges();
-            TableStructGenerator.Generate(tabControl1, dtTalbeSelect, dtColumnSelect);
+            TableStructGenerator.Generate(tabControl1, dtTalbeSelect, dtColumnSelect,ckbFullTypeDoc.Checked);
             //生成SQL成功后提示
             ShowSuccessMsg(_strAutoSqlSuccess);
             //初始化控件
@@ -687,17 +700,21 @@ namespace Breezee.WorkHelper.DBTool.UI
             foreach (DataRow drSource in dtCols.Rows)
             {
                 DataRow dr = dtColsNew.NewRow();
+                string sDataType = drSource[DBColumnEntity.SqlString.DataType].ToString();
+                string sDataLength = drSource[DBColumnEntity.SqlString.DataLength].ToString();
+                string sDataScale = drSource[DBColumnEntity.SqlString.DataScale].ToString();
                 dr[ColCommon.ExcelCol.ChangeType] = "新增";
                 dr[ColCommon.ExcelCol.TableCode] = drSource[DBColumnEntity.SqlString.TableName].ToString();
                 dr[ColCommon.ExcelCol.Code] = drSource[DBColumnEntity.SqlString.Name].ToString();
                 dr[ColCommon.ExcelCol.Name] = drSource[DBColumnEntity.SqlString.NameCN].ToString();
-                dr[ColCommon.ExcelCol.DataType] = drSource[DBColumnEntity.SqlString.DataType].ToString();
-                dr[ColCommon.ExcelCol.DataLength] = drSource[DBColumnEntity.SqlString.DataLength].ToString();
-                dr[ColCommon.ExcelCol.DataDotLength] = drSource[DBColumnEntity.SqlString.DataScale].ToString();
+                dr[ColCommon.ExcelCol.DataType] = sDataType;
+                dr[ColCommon.ExcelCol.DataLength] = sDataLength;
+                dr[ColCommon.ExcelCol.DataDotLength] = sDataScale;
                 dr[ColCommon.ExcelCol.Default] = drSource[DBColumnEntity.SqlString.Default].ToString();
                 dr[ColCommon.ExcelCol.KeyType] = drSource[DBColumnEntity.SqlString.KeyType].ToString();
                 dr[ColCommon.ExcelCol.NotNull] = "1".Equals(drSource[DBColumnEntity.SqlString.NotNull].ToString()) ? "是" : "";
                 dr[ColCommon.ExcelCol.Remark] = drSource[DBColumnEntity.SqlString.Comments].ToString();
+                dr[ColCommon.ExcelCol.DataTypeFullNew] = ColCommon.GetFullDataType(sDataType, sDataLength, sDataScale); //全类型
                 //统一主键处理
                 string sPKName = "PK_" + drSource[DBColumnEntity.SqlString.TableName].ToString();
                 //针对特殊数据的字段赋值

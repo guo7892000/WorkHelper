@@ -48,9 +48,9 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="tabControl"></param>
         /// <param name="tableList"></param>
         /// <param name="columnList"></param>
-        public static void Generate(TabControl tabControl, DataTable tableList, DataTable columnList)
+        public static void Generate(TabControl tabControl, DataTable tableList, DataTable columnList, bool useDataTypeFull = false)
         {
-            HtmlString = GenerateHtmlString(tableList, columnList);
+            HtmlString = GenerateHtmlString(tableList, columnList, useDataTypeFull);
 
             if (!tabControl.TabPages.ContainsKey(TABKEY_TABLE_STRUCT))
             {
@@ -86,7 +86,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="tableList">表清单</param>
         /// <param name="columnList">列清单</param>
         /// <returns></returns>
-        private static string GenerateHtmlString(DataTable tableList, DataTable columnList)
+        private static string GenerateHtmlString(DataTable tableList, DataTable columnList,bool useDataTypeFull=false)
         {
             string htmlTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Html);
             string tableTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Table);
@@ -122,9 +122,13 @@ namespace Breezee.WorkHelper.DBTool.UI
                     {
                         strColumnChangeType = "修改";
                     }
+
+                    //是否使用全类型替换
+                    string sDataType = useDataTypeFull ? row[ColCommon.ExcelCol.DataTypeFullNew].ToString() : row[ColCommon.ExcelCol.DataTypeNew].ToString();
+
                     string columnString = columnsTemplate.Replace("${ColumnName}", row[ColCommon.ExcelCol.Name].ToString())
                         .Replace("${ColumnCode}", row[ColCommon.ExcelCol.Code].ToString())
-                        .Replace("${ColumnType}", row[ColCommon.ExcelCol.DataType].ToString())
+                        .Replace("${ColumnType}", sDataType)
                         .Replace("${ColumnWidth}", row[ColCommon.ExcelCol.DataLength].ToString())
                         .Replace("${DecimalPlace}", row[ColCommon.ExcelCol.DataDotLength].ToString())
                         .Replace("${PrimaryKey}", row[ColCommon.ExcelCol.KeyType].ToString())

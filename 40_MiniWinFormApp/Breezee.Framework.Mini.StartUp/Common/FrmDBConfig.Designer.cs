@@ -1,6 +1,6 @@
-﻿namespace Breezee.WorkHelper.DBTool.UI
+﻿namespace Breezee.Framework.Mini.StartUp
 {
-    partial class FrmDBConfigSet_D
+    partial class FrmDBConfig
     {
         /// <summary>
         /// Required designer variable.
@@ -29,12 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDBConfigSet_D));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDBConfig));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbSave = new System.Windows.Forms.ToolStripButton();
             this.tsbConnetTest = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.txbDBConfigCode = new System.Windows.Forms.TextBox();
@@ -42,16 +43,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.lblServerAddr = new System.Windows.Forms.Label();
             this.txbServerIP = new System.Windows.Forms.TextBox();
-            this.txbID = new System.Windows.Forms.TextBox();
-            this.txbUPDATE_CONTROL_ID = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.txbRemark = new System.Windows.Forms.TextBox();
             this.btnSelectDbFile = new System.Windows.Forms.Button();
-            this.txbSchemaName = new System.Windows.Forms.TextBox();
             this.txbDbName = new System.Windows.Forms.TextBox();
             this.lblDbName = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txbDBConfigName = new System.Windows.Forms.TextBox();
             this.txbPortNO = new System.Windows.Forms.TextBox();
             this.lblPortNO = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -59,8 +55,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.txbPassword = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.txbSchemaName = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.tsbCopyAdd = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -71,12 +67,11 @@
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbSave,
-            this.tsbCopyAdd,
             this.tsbConnetTest,
             this.tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(575, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(475, 27);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -109,14 +104,24 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.tableLayoutPanel1);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 27);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(575, 174);
+            this.groupBox2.Size = new System.Drawing.Size(475, 182);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "编辑";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.ForeColor = System.Drawing.Color.Red;
+            this.label7.Location = new System.Drawing.Point(55, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(185, 12);
+            this.label7.TabIndex = 1;
+            this.label7.Text = "从简单起见，最好使用SQLite数据";
             // 
             // tableLayoutPanel1
             // 
@@ -135,23 +140,19 @@
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.lblServerAddr, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.txbServerIP, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.txbID, 7, 1);
-            this.tableLayoutPanel1.Controls.Add(this.txbUPDATE_CONTROL_ID, 7, 0);
             this.tableLayoutPanel1.Controls.Add(this.label4, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.txbRemark, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.btnSelectDbFile, 2, 2);
-            this.tableLayoutPanel1.Controls.Add(this.txbSchemaName, 6, 1);
             this.tableLayoutPanel1.Controls.Add(this.txbDbName, 4, 1);
             this.tableLayoutPanel1.Controls.Add(this.lblDbName, 3, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label3, 3, 0);
-            this.tableLayoutPanel1.Controls.Add(this.txbDBConfigName, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.txbPortNO, 4, 2);
             this.tableLayoutPanel1.Controls.Add(this.lblPortNO, 3, 2);
             this.tableLayoutPanel1.Controls.Add(this.label5, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.txbUserName, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.label6, 3, 3);
             this.tableLayoutPanel1.Controls.Add(this.txbPassword, 4, 3);
-            this.tableLayoutPanel1.Controls.Add(this.label9, 5, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label9, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.txbSchemaName, 4, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -162,14 +163,14 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(569, 151);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(469, 151);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.ForeColor = System.Drawing.Color.Black;
             this.label1.Location = new System.Drawing.Point(15, 7);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 12);
@@ -223,22 +224,6 @@
             this.txbServerIP.Size = new System.Drawing.Size(108, 21);
             this.txbServerIP.TabIndex = 5;
             // 
-            // txbID
-            // 
-            this.txbID.Location = new System.Drawing.Point(527, 30);
-            this.txbID.Name = "txbID";
-            this.txbID.Size = new System.Drawing.Size(10, 21);
-            this.txbID.TabIndex = 1;
-            this.txbID.Visible = false;
-            // 
-            // txbUPDATE_CONTROL_ID
-            // 
-            this.txbUPDATE_CONTROL_ID.Location = new System.Drawing.Point(527, 3);
-            this.txbUPDATE_CONTROL_ID.Name = "txbUPDATE_CONTROL_ID";
-            this.txbUPDATE_CONTROL_ID.Size = new System.Drawing.Size(10, 21);
-            this.txbUPDATE_CONTROL_ID.TabIndex = 1;
-            this.txbUPDATE_CONTROL_ID.Visible = false;
-            // 
             // label4
             // 
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Right;
@@ -253,11 +238,11 @@
             // txbRemark
             // 
             this.txbRemark.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.SetColumnSpan(this.txbRemark, 6);
+            this.tableLayoutPanel1.SetColumnSpan(this.txbRemark, 4);
             this.txbRemark.Location = new System.Drawing.Point(86, 111);
             this.txbRemark.Multiline = true;
             this.txbRemark.Name = "txbRemark";
-            this.txbRemark.Size = new System.Drawing.Size(435, 30);
+            this.txbRemark.Size = new System.Drawing.Size(311, 30);
             this.txbRemark.TabIndex = 10;
             // 
             // btnSelectDbFile
@@ -269,13 +254,6 @@
             this.btnSelectDbFile.Text = "...";
             this.btnSelectDbFile.UseVisualStyleBackColor = true;
             this.btnSelectDbFile.Click += new System.EventHandler(this.btnSelectDbFile_Click);
-            // 
-            // txbSchemaName
-            // 
-            this.txbSchemaName.Location = new System.Drawing.Point(474, 30);
-            this.txbSchemaName.Name = "txbSchemaName";
-            this.txbSchemaName.Size = new System.Drawing.Size(47, 21);
-            this.txbSchemaName.TabIndex = 7;
             // 
             // txbDbName
             // 
@@ -294,26 +272,6 @@
             this.lblDbName.Size = new System.Drawing.Size(53, 12);
             this.lblDbName.TabIndex = 0;
             this.lblDbName.Text = "数据库：";
-            // 
-            // label3
-            // 
-            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(218, 7);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(65, 12);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "配置名称：";
-            // 
-            // txbDBConfigName
-            // 
-            this.txbDBConfigName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.SetColumnSpan(this.txbDBConfigName, 3);
-            this.txbDBConfigName.Location = new System.Drawing.Point(289, 3);
-            this.txbDBConfigName.Name = "txbDBConfigName";
-            this.txbDBConfigName.Size = new System.Drawing.Size(232, 21);
-            this.txbDBConfigName.TabIndex = 1;
             // 
             // txbPortNO
             // 
@@ -375,38 +333,38 @@
             this.label9.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label9.AutoSize = true;
             this.label9.ForeColor = System.Drawing.Color.Black;
-            this.label9.Location = new System.Drawing.Point(403, 34);
+            this.label9.Location = new System.Drawing.Point(218, 7);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(65, 12);
             this.label9.TabIndex = 0;
             this.label9.Text = "架构名称：";
             // 
-            // tsbCopyAdd
+            // txbSchemaName
             // 
-            this.tsbCopyAdd.Image = ((System.Drawing.Image)(resources.GetObject("tsbCopyAdd.Image")));
-            this.tsbCopyAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbCopyAdd.Name = "tsbCopyAdd";
-            this.tsbCopyAdd.Size = new System.Drawing.Size(80, 24);
-            this.tsbCopyAdd.Text = "复制新增";
-            this.tsbCopyAdd.Click += new System.EventHandler(this.tsbCopyAdd_Click);
+            this.txbSchemaName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbSchemaName.Location = new System.Drawing.Point(289, 3);
+            this.txbSchemaName.Name = "txbSchemaName";
+            this.txbSchemaName.Size = new System.Drawing.Size(108, 21);
+            this.txbSchemaName.TabIndex = 7;
             // 
-            // FrmDBConfigSet_D
+            // FrmDBConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(575, 201);
+            this.ClientSize = new System.Drawing.Size(475, 209);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "FrmDBConfigSet_D";
+            this.Name = "FrmDBConfig";
             this.Text = "数据库连接配置";
             this.Load += new System.EventHandler(this.FrmDBConfigSet_D_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
@@ -438,14 +396,10 @@
         private System.Windows.Forms.TextBox txbSchemaName;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button btnSelectDbFile;
-        private System.Windows.Forms.TextBox txbID;
-        private System.Windows.Forms.TextBox txbUPDATE_CONTROL_ID;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txbDBConfigName;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txbRemark;
         private System.Windows.Forms.ToolStripButton tsbConnetTest;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.ToolStripButton tsbCopyAdd;
+        private System.Windows.Forms.Label label7;
     }
 }

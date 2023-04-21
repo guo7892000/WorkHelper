@@ -22,63 +22,13 @@ namespace Breezee.Core.WinFormUI
     public class DllNameConstants
     {
         /// <summary>
-        /// 系统管理模块DLL
+        /// 主框架模块DLL
         /// </summary>
-        public const string DLL_SYSTEM_MANAGE = "Breezee.Global.SystemManager.UI.dll";
+        public const string DLL_MAIN_MANAGE = "Breezee.Framework.Mini.StartUp.exe";
 
         /// <summary>
-        /// 启动管理模块DLL
+        /// 数据库工具模块DLL
         /// </summary>
-        public const string DLL_MAIN_MANAGE = "Breezee.Framework.StartUp.exe";
-
-        /// <summary>
-        /// 物品管理模块DLL
-        /// </summary>
-        public const string DLL_GOOD_MANAGE = "Peach.Warehouse.Good.UI.dll";
-
-        /// <summary>
-        /// 配件管理模块DLL
-        /// </summary>
-        public const string DLL_PART_MANAGE = "Peach.CarSale.Part.UI.dll";
-
-        /// <summary>
-        /// 服务管理模块DLL
-        /// </summary>
-        public const string DLL_SERVICE_MANAGE = "Peach.CarSale.Service.UI.dll";
-
-        /// <summary>
-        /// 汽车管理模块DLL
-        /// </summary>
-        public const string DLL_VECHICLE_MANAGE = "Peach.CarSale.Vechicle.UI.dll";
-
-        /// <summary>
-        /// 二手车管理模块DLL
-        /// </summary>
-        public const string DLL_USEDCAR_MANAGE = "Peach.CarSale.UsedCar.UI.dll";
-
-        /// <summary>
-        /// 会员管理模块DLL
-        /// </summary>
-        public const string DLL_MEMBER_MANAGE = "Peach.Member.UI.dll";
-
-        /// <summary>
-        /// 主数据模块DLL
-        /// </summary>
-        public const string DLL_MAINDATE_MANAGE = "Breezee.Global.MainData.UI.dll";
-
-        /// <summary>
-        /// 财务管理模块DLL
-        /// </summary>
-        public const string DLL_FINANCE_MANAGE = "Breezee.Global.Finance.UI.dll";
-
-        /// <summary>
-        /// 项目管理模块DLL
-        /// </summary>
-        public const string DLL_PROJECT_MANAGE = "Breezee.Global.ProjectManager.UI.dll";
-
-        /// <summary>
-        /// 租房管理模块DLL
-        /// </summary>
-        public const string DLL_LETMANAGER_MANAGE = "Peach.LetManager.UI.dll";
+        public const string DLL_DB_TOOL = "Breezee.WorkHelper.DBTool.UI.dll";
     }
 }

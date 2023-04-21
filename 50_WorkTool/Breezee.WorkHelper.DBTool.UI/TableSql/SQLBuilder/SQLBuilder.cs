@@ -119,7 +119,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         }
 
         public abstract void GenerateTableSQL(EntTable entTable);
-        protected abstract void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue,DataBaseType impDbType);
+        public abstract void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue,DataBaseType impDbType);
         private static readonly string _strBlank = " "; //空格
 
         #region 辅助方法

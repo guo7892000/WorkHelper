@@ -35,7 +35,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         string sGenPath = "GenPath";
         DataTable _dtGen;
         //
-        MiniXmlCommon _miniXml;
+        MiniXmlConfig _miniXml;
         List<string> _lstCol;
         DataTable _dtSet;
 

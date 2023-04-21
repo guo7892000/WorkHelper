@@ -29,6 +29,12 @@ namespace Breezee.WorkHelper.DBTool.DAL.SQLite
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             DbServerInfo serverInfo = new DbServerInfo(DataBaseType.SQLite, "SQLite_DBTool.db", "", "", "", "", "", "");
+            DbConfigEntity dbConfigEntity = new DbConfigEntity(DBTGlobalValue.DbConfigFileDir, DBTGlobalValue.DbConfigFileName, XmlConfigSaveType.Element);
+            if (dbConfigEntity.MainDb != null)
+            {
+                serverInfo = dbConfigEntity.MainDb;
+            }
+
             container.Register(Component.For<IDataAccess>().Instance(AutoSQLExecutors.Connect(serverInfo)).Named(DBTGlobalValue.DataAccessConfigKey));
             container.Register(Component.For<IDDBConfigSet>().ImplementedBy<SQLite.DDBConfigSet>());
             container.Register(Component.For<IDBInitializer>().ImplementedBy<SQLite.DDBTDBInitializer>().Named(DBTGlobalValue.DBInitializerConfigKey));

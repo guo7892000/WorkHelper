@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 
 /*********************************************************************		
  * 对象名称：		
@@ -170,7 +172,71 @@ namespace Breezee.Core.Interface
                 _ConnString = value;
             }
         }
+
+        /// <summary>
+        /// 主键ID
+        /// </summary>
+        public string Key { get; set; }
+        /// <summary>
+        /// 是否主要数据库
+        /// </summary>
+        public string IsMain { get; set; }
         #endregion
+
+        public static class XmlNodeString
+        {
+            public static string root = "xml";
+            public static string node = "dbConfig";
+            public static string pk = "key";//主键：要取XmlAttrString中的成员值
+        }
+        public static class XmlAttrString
+        {
+            public static string key = "key";
+            public static string isMain = "isMain";
+            public static string dbType = "dbType";
+            public static string serverName = "serverName";
+            public static string userName = "userName";
+            public static string password = "password";
+            public static string dataBase = "dataBase";
+            public static string portNo = "portNo";
+            public static string schemaName = "schemaName";
+            public static string otherString = "otherString";
+
+            public static List<string> getList()
+            {
+                return new List<string>()
+                {
+                    key,
+                    isMain,
+                    dbType,
+                    serverName,
+                    userName,
+                    password,
+                    dataBase,
+                    portNo,
+                    schemaName,
+                    otherString
+                };
+            }
+
+        }
+
+        public static DbServerInfo GetDbServer(DataRow dr)
+        {
+            DbServerInfo dbServer = new DbServerInfo();
+            dbServer.Key = dr[XmlAttrString.key].ToString(); //主键ID
+            dbServer.IsMain = dr[XmlAttrString.isMain].ToString();
+            dbServer.ServerName = dr[XmlAttrString.serverName].ToString();
+            dbServer.PortNo = dr[XmlAttrString.portNo].ToString();
+            dbServer.UserName = dr[XmlAttrString.userName].ToString();
+            dbServer.SchemaName = dr[XmlAttrString.schemaName].ToString();
+            dbServer.Database = dr[XmlAttrString.dataBase].ToString();
+            dbServer.Password = dr[XmlAttrString.password].ToString();
+            //转换为枚举
+            dbServer.DatabaseType = (DataBaseType)Enum.Parse(typeof(DataBaseType), dr[XmlAttrString.dbType].ToString());
+            dbServer._otherString = dr[XmlAttrString.otherString].ToString();
+            return dbServer;
+        }
     }
 }
 

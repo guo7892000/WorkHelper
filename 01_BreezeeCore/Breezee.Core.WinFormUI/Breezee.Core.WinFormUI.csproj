@@ -160,18 +160,8 @@
     <Compile Include="FormCross\DllNameConstants.cs" />
     <Compile Include="FormCross\FormCrossResolver.cs" />
     <Compile Include="FormCross\IFormCross.cs" />
-    <Compile Include="FormCross\ModuleCross\IFICommonFormCross.cs" />
-    <Compile Include="FormCross\ModuleCross\IGDCommonFormCross.cs" />
-    <Compile Include="FormCross\ModuleCross\ILMCommonFormCross.cs" />
+    <Compile Include="FormCross\ModuleCross\IDbToolFormCross.cs" />
     <Compile Include="FormCross\ModuleCross\IMainCommonFormCross.cs" />
-    <Compile Include="FormCross\ModuleCross\IMDCommonFormCross.cs" />
-    <Compile Include="FormCross\ModuleCross\IMECommonFormCross.cs" />
-    <Compile Include="FormCross\ModuleCross\IPACommonFormCross.cs" />
-    <Compile Include="FormCross\ModuleCross\IPMCommonFormCross.cs" />
-    <Compile Include="FormCross\ModuleCross\ISECommonFormCross.cs" />
-    <Compile Include="FormCross\ModuleCross\ISYSCommonFormCross.cs" />
-    <Compile Include="FormCross\ModuleCross\IUCCommonFormCross.cs" />
-    <Compile Include="FormCross\ModuleCross\IVECommonFormCross.cs" />
     <Compile Include="FormCross\PublicFormList.cs" />
     <Compile Include="FTP\AttachmentItem.cs">
       <SubType>UserControl</SubType>

@@ -20,7 +20,7 @@ namespace Breezee.Core.WinFormUI
 {
     /// <summary>
     /// UI窗体交叉引用处理类，UI层的调用示例：
-    /// var frm = FormCrossResolver.CreateCrossFrom<IFrmUCPurchase>("Breezee.Global.SystemManager.UI.Common.FSelectEmplyee", new object[] { intent_cust_no });
+    /// var frm = FormCrossResolver.CreateCrossFrom<IMainCommonFormCross>("Breezee.Framework.Mini.StartUp.FrmDBConfig", new object[] { '参数1','参数2' });
     /// frm.ShowDialog();
     /// </summary>
     public static class FormCrossResolver

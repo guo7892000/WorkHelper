@@ -23,7 +23,7 @@ namespace Breezee.Core
     /// </summary>
     public abstract class Config : IConfig
     {
-        ConfigEntity _Root = new ConfigEntity();
+        ConfigEntity _Root;
         IDictionary<string, ConfigEntity> _Childs = new Dictionary<string, ConfigEntity>();
         public virtual ConfigEntity Root { get => _Root; set => _Root = value; }
         public virtual IDictionary<string, ConfigEntity> Childs { get => _Childs; set => _Childs =value; }

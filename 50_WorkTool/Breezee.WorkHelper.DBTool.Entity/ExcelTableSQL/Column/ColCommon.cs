@@ -27,7 +27,10 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public YesNoType NotNull;
         public string Default;
         public string Remark;
-
+        //这个不在Excel模板内，会自动转换
+        public string DataTypeFull;
+        public string DataTypeNew;
+        public string DataTypeFullNew;
         public static ColCommon GetEntity(DataRow dr)
         {
             ColCommon ent = new ColCommon();
@@ -44,9 +47,41 @@ namespace Breezee.WorkHelper.DBTool.Entity
             ent.NotNull = TableSqlCommon.GetYesNoType(dr[ExcelCol.NotNull].ToString().Trim());
             ent.Default = dr[ExcelCol.Default].ToString().Trim().Replace("'", "");
             ent.Remark = dr[ExcelCol.Remark].ToString().Trim();
-
+            //这个不在Excel模板内，会自动转换
+            ent.DataTypeNew = ent.DataType;
+            string sDataType_Full = GetFullDataType(ent.DataType,ent.DataLength,ent.DataDotLength);
+            ent.DataTypeFull = sDataType_Full;
+            ent.DataTypeFullNew = sDataType_Full;
             return ent;
         }
+
+        public static string GetFullDataType(string sDataType,string sDataLength,string sDataDotLength)
+        {
+            //得到全类型
+            if(sDataType.Contains("("))
+            {
+                return sDataType;
+            }
+            string sDataType_Full = string.Empty;
+            if (!string.IsNullOrEmpty(sDataLength))
+            {
+                if (!string.IsNullOrEmpty(sDataDotLength))
+                {
+                    sDataType_Full = sDataType + AddLeftRightKuoHao(sDataLength + "," + sDataDotLength);
+                }
+                else
+                {
+                    sDataType_Full = sDataType + AddLeftRightKuoHao(sDataLength);
+                }
+            }
+            else
+            {
+                sDataType_Full = AddRightBand(sDataType);
+            }
+
+            return sDataType_Full;
+        }
+
         public static DataTable GetTable()
         {
             DataTable dt = new DataTable();
@@ -63,8 +98,21 @@ namespace Breezee.WorkHelper.DBTool.Entity
                 new DataColumn(ExcelCol.NotNull),
                 new DataColumn(ExcelCol.Default),
                 new DataColumn(ExcelCol.Remark),
+                //这个不在Excel模板内，会自动转换
+                new DataColumn(ExcelCol.DataTypeFull),
+                new DataColumn(ExcelCol.DataTypeNew),
+                new DataColumn(ExcelCol.DataTypeFullNew),
             });
             return dt;
+        }
+
+        private static string AddRightBand(string strColCode)
+        {
+            return strColCode + " ";
+        }
+        private static string AddLeftRightKuoHao(string strColCode)
+        {
+            return "(" + strColCode + ")";
         }
 
         public static bool ValidateData(DataTable dtTable, DataTable dtAllCol, out StringBuilder sb)
@@ -133,6 +181,10 @@ namespace Breezee.WorkHelper.DBTool.Entity
             public static string NotNull = "必填";
             public static string Default = "默认值";
             public static string Remark = "备注";
+            //这个不在Excel模板内，会自动转换
+            public static string DataTypeFull = "类型长度";
+            public static string DataTypeNew = "新类型";
+            public static string DataTypeFullNew = "新类型长度";
         }
     }
 }

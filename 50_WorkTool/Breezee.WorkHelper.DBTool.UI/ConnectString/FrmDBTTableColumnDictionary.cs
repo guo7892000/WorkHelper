@@ -30,9 +30,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         private readonly string _strColName = "变更列清单";
 
         private readonly string _sGridColumnSelect = "IsSelect";
-        //private readonly string _sGridColumnSelectAll = "IsSelectAll";
-        //private readonly string _sGridColumnSelectTable = "IsSelectTable";
-        //private readonly string _sGridColumnSelectCommon = "IsSelectCommon";
 
         private bool _allSelect = false;//默认全选，这里取反
         private bool _allSelectAll = false;//默认全选，这里取反
@@ -55,7 +52,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private readonly string _sInputColCode = "列编码";
         private BindingSource bsFindColumn = new BindingSource();
         //IDictionary<string, string> _dicColCodeRelation = new Dictionary<string, string>();
-        MiniXmlCommon commonColumn;
+        MiniXmlConfig commonColumn;
         #endregion
 
         #region 构造函数
@@ -127,7 +124,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //DBColumnSimpleEntity.SqlString.TableNameCN,
                 //DBColumnSimpleEntity.SqlString.TableNameUpper
             });
-            commonColumn = new MiniXmlCommon(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Breezee", "WorkHelp"), "CommonColumnConfig.xml", list, DBColumnSimpleEntity.SqlString.Name);
+            commonColumn = new MiniXmlConfig(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Breezee", "WorkHelp"), "CommonColumnConfig.xml", list, DBColumnSimpleEntity.SqlString.Name);
             DataTable dtCommonCol = commonColumn.Load();
             //增加选择列
             DataColumn dcSelected = new DataColumn(_sGridColumnSelect);
@@ -380,6 +377,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                     {
                         dtSelect.ImportRow(drArr[0]);
                     }
+                    else if(ckbNotFoundAdd.Checked)
+                    {
+                        //找不到的也加入，但只有列编码
+                        DataRow drNew = dtSelect.NewRow();
+                        drNew[DBColumnSimpleEntity.SqlString.Name] = dr[_sInputColCode].ToString();
+                        drNew[_sGridColumnSelect] = "1";
+                        dtSelect.Rows.Add(drNew);
+                    }
                 }
             }
         }
@@ -400,7 +405,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 new FlexGridColumn.Builder().Name(_sGridColumnSelect).Caption("选择").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(40).Edit().Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.TableName).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.Name).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameCN).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameCN).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(true).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameUpper).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameLower).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.DataType).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
@@ -949,6 +954,10 @@ namespace Breezee.WorkHelper.DBTool.UI
     ""type"":""string"",
     ""description"":""#C1#""
     },");
+                    if (!"1".Equals(sModule))
+                    {
+                        ckbRemoveLastChar.Checked = true;
+                    }
                 }
             }
         }
@@ -1002,8 +1011,12 @@ namespace Breezee.WorkHelper.DBTool.UI
 
 
 
+
         #endregion
 
-        
+        private void btnGenerate_Click(object sender, EventArgs e)
+        {
+            tsbAutoSQL.PerformClick();
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -16,6 +17,9 @@ namespace Breezee.Framework.Mini.Entity
         public static readonly string DataAccessConfigKey = "IDataAccessMini";
 
         public static readonly string DBInitializerConfigKey = "IDBInitializerMini";
+
+        public static readonly string DbConfigFileDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WorkHelper/Config");
+        public static readonly string DbConfigFileName = "MiniDbConfig.xml";
 
         /// 配置静态内部类
         /// </summary>

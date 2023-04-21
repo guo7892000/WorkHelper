@@ -34,7 +34,12 @@ namespace Breezee.Framework.Mini.DAL
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            DbServerInfo serverInfo = new DbServerInfo(DataBaseType.SQLite, "SQLite_Mini.db","","","","","", "");
+            DbServerInfo serverInfo = new DbServerInfo(DataBaseType.SQLite, "SQLite_Mini.db", "", "", "", "", "", "");
+            DbConfigEntity dbConfigEntity = new DbConfigEntity(MiniGlobalValue.DbConfigFileDir, MiniGlobalValue.DbConfigFileName, XmlConfigSaveType.Element);
+            if(dbConfigEntity.MainDb!=null )
+            {
+                serverInfo = dbConfigEntity.MainDb;
+            }
             container.Register(Component.For<IDataAccess>().Instance(AutoSQLExecutors.Connect(serverInfo)).Named(MiniGlobalValue.DataAccessConfigKey));
             container.Register(Component.For<IDMiniLogin>().ImplementedBy<SQLite.DMiniLogin>());
             container.Register(Component.For<IDMiniSystem>().ImplementedBy<SQLite.DMiniSystem>());

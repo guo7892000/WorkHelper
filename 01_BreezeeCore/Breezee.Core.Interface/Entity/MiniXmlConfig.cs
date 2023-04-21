@@ -4,9 +4,8 @@ using System.Text;
 using System.Data;
 using System.Xml.Linq;
 using System.IO;
-using Breezee.Core.Entity;
 
-namespace Breezee.Core.Tool
+namespace Breezee.Core.Interface
 {
     /// <summary>
     /// 对象名称：迷你XML通用类
@@ -14,8 +13,9 @@ namespace Breezee.Core.Tool
     /// 创建日期：2021-08-30
     /// 说明：对固定格式的XML文件维护类。
     ///     感谢水哥的支持！
+    ///     注：属性名不能含空格，否则会报【名称不能以“ ”字符(十六进制值 0x20)开头】
     /// </summary>
-    public class MiniXmlCommon
+    public class MiniXmlConfig
     {
         private string _sDirectory;
         private string _sFileName;
@@ -36,7 +36,7 @@ namespace Breezee.Core.Tool
         /// <param name="sRoot">根目录名</param>
         /// <param name="sChild">子目录名</param>
         /// <param name="saveType">XML配置保存类型：属性或者子项</param>
-        public MiniXmlCommon(string sDirectory, string sFileName,List<string> lstCol, string sPK, string sRoot="items",string sChild="item", XmlConfigSaveType saveType = XmlConfigSaveType.Attribute)
+        public MiniXmlConfig(string sDirectory, string sFileName,List<string> lstCol, string sPK, string sRoot="items",string sChild="item", XmlConfigSaveType saveType = XmlConfigSaveType.Attribute)
         {
             if(string.IsNullOrEmpty(sDirectory) || string.IsNullOrEmpty(sDirectory) || lstCol == null || lstCol.Count==0)
             {
@@ -138,6 +138,7 @@ namespace Breezee.Core.Tool
                 dt.Columns.Add(s, typeof(string));
             }
             dt.PrimaryKey = new DataColumn[] { dt.Columns[_sPK] };
+            dt.Columns[_sPK].DefaultValue = Guid.NewGuid().ToString();
             return dt;
         }
 

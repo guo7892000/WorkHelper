@@ -47,7 +47,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cbbTargetDbType = new System.Windows.Forms.ComboBox();
             this.lblTableName = new System.Windows.Forms.Label();
-            this.cbbTableName = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.lblThree = new System.Windows.Forms.Label();
             this.cbbImportDBType = new System.Windows.Forms.ComboBox();
@@ -55,7 +54,9 @@
             this.ckbAllConvert = new System.Windows.Forms.CheckBox();
             this.btnSaveOther = new System.Windows.Forms.Button();
             this.ckbGetTableList = new System.Windows.Forms.CheckBox();
+            this.cbbTableName = new System.Windows.Forms.ComboBox();
             this.ckbDefaultPKName = new System.Windows.Forms.CheckBox();
+            this.ckbFullTypeDoc = new System.Windows.Forms.CheckBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbImport = new System.Windows.Forms.ToolStripButton();
             this.tsbAutoSQL = new System.Windows.Forms.ToolStripButton();
@@ -233,15 +234,16 @@
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.cbbTargetDbType, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.lblTableName, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.cbbTableName, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.label2, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.lblThree, 4, 1);
             this.tableLayoutPanel1.Controls.Add(this.cbbImportDBType, 3, 1);
             this.tableLayoutPanel1.Controls.Add(this.cbbCreateType, 5, 1);
             this.tableLayoutPanel1.Controls.Add(this.ckbAllConvert, 6, 1);
             this.tableLayoutPanel1.Controls.Add(this.btnSaveOther, 7, 1);
-            this.tableLayoutPanel1.Controls.Add(this.ckbGetTableList, 6, 0);
-            this.tableLayoutPanel1.Controls.Add(this.ckbDefaultPKName, 7, 0);
+            this.tableLayoutPanel1.Controls.Add(this.ckbGetTableList, 5, 0);
+            this.tableLayoutPanel1.Controls.Add(this.cbbTableName, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.ckbDefaultPKName, 6, 0);
+            this.tableLayoutPanel1.Controls.Add(this.ckbFullTypeDoc, 7, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -303,16 +305,6 @@
             this.lblTableName.Size = new System.Drawing.Size(41, 12);
             this.lblTableName.TabIndex = 1;
             this.lblTableName.Text = "表名：";
-            // 
-            // cbbTableName
-            // 
-            this.tableLayoutPanel1.SetColumnSpan(this.cbbTableName, 3);
-            this.cbbTableName.FormattingEnabled = true;
-            this.cbbTableName.Location = new System.Drawing.Point(369, 3);
-            this.cbbTableName.Name = "cbbTableName";
-            this.cbbTableName.Size = new System.Drawing.Size(319, 20);
-            this.cbbTableName.TabIndex = 19;
-            this.cbbTableName.SelectedIndexChanged += new System.EventHandler(this.cbbTableName_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -382,7 +374,7 @@
             // 
             this.ckbGetTableList.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbGetTableList.AutoSize = true;
-            this.ckbGetTableList.Location = new System.Drawing.Point(694, 5);
+            this.ckbGetTableList.Location = new System.Drawing.Point(567, 5);
             this.ckbGetTableList.Name = "ckbGetTableList";
             this.ckbGetTableList.Size = new System.Drawing.Size(84, 16);
             this.ckbGetTableList.TabIndex = 20;
@@ -390,18 +382,41 @@
             this.ckbGetTableList.UseVisualStyleBackColor = true;
             this.ckbGetTableList.CheckedChanged += new System.EventHandler(this.ckbGetTableList_CheckedChanged);
             // 
+            // cbbTableName
+            // 
+            this.cbbTableName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.SetColumnSpan(this.cbbTableName, 2);
+            this.cbbTableName.FormattingEnabled = true;
+            this.cbbTableName.Location = new System.Drawing.Point(369, 3);
+            this.cbbTableName.Name = "cbbTableName";
+            this.cbbTableName.Size = new System.Drawing.Size(192, 20);
+            this.cbbTableName.TabIndex = 19;
+            this.cbbTableName.SelectedIndexChanged += new System.EventHandler(this.cbbTableName_SelectedIndexChanged);
+            // 
             // ckbDefaultPKName
             // 
             this.ckbDefaultPKName.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbDefaultPKName.AutoSize = true;
             this.ckbDefaultPKName.Checked = true;
             this.ckbDefaultPKName.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbDefaultPKName.Location = new System.Drawing.Point(784, 5);
+            this.ckbDefaultPKName.Location = new System.Drawing.Point(694, 5);
             this.ckbDefaultPKName.Name = "ckbDefaultPKName";
             this.ckbDefaultPKName.Size = new System.Drawing.Size(84, 16);
             this.ckbDefaultPKName.TabIndex = 21;
             this.ckbDefaultPKName.Text = "默认主键名";
             this.ckbDefaultPKName.UseVisualStyleBackColor = true;
+            // 
+            // ckbFullTypeDoc
+            // 
+            this.ckbFullTypeDoc.AutoSize = true;
+            this.ckbFullTypeDoc.Checked = true;
+            this.ckbFullTypeDoc.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbFullTypeDoc.Location = new System.Drawing.Point(784, 3);
+            this.ckbFullTypeDoc.Name = "ckbFullTypeDoc";
+            this.ckbFullTypeDoc.Size = new System.Drawing.Size(84, 16);
+            this.ckbFullTypeDoc.TabIndex = 22;
+            this.ckbFullTypeDoc.Text = "全类型文档";
+            this.ckbFullTypeDoc.UseVisualStyleBackColor = true;
             // 
             // toolStrip1
             // 
@@ -531,5 +546,6 @@
         private System.Windows.Forms.ComboBox cbbTableName;
         private System.Windows.Forms.CheckBox ckbGetTableList;
         private System.Windows.Forms.CheckBox ckbDefaultPKName;
+        private System.Windows.Forms.CheckBox ckbFullTypeDoc;
     }
 }

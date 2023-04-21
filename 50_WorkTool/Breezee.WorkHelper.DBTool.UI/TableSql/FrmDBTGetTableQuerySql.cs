@@ -656,15 +656,19 @@ namespace Breezee.WorkHelper.DBTool.UI
                     string sColGlobalFixedValue = drCol[_sGridColumnGlobalValue].ToString().Trim();
                     string sColGlobalAdd = drCol[_sGridColumnGlobalValueInsert].ToString().Trim();//新增语句是否使用默认值
                     string sColGlobalUpdate = drCol[_sGridColumnGlobalValueUpdate].ToString().Trim();//修改语句是否使用默认值
+                    bool bUseGlobalValue = false; //是否使用全局默认值
                     //
                     if(ckbSkipFixNull.Checked && "NULL".Equals(strColFixedValue, StringComparison.OrdinalIgnoreCase))
                     {
-                        strColFixedValue = "";//清空默认值
+                        strColFixedValue = "";//清空值为NULL的默认值
                     }
                     if (ckbUseDefaultConfig.Checked && !string.IsNullOrEmpty(sColGlobalFixedValue))
                     {
                         if(("1".Equals(sColGlobalAdd) && sqlEntity.SqlType == SqlType.Insert) || ("1".Equals(sColGlobalUpdate) && sqlEntity.SqlType == SqlType.Update))
-                        strColFixedValue = sColGlobalFixedValue;
+                        {
+                            strColFixedValue = sColGlobalFixedValue;//使用全局配置的默认值
+                            bUseGlobalValue = true;
+                        }
                     }
 
                     string strColComments = "";//列说明
@@ -691,12 +695,24 @@ namespace Breezee.WorkHelper.DBTool.UI
                         strColCodeParm = FirstLetterUpper(strColCode);
                     }
 
-                    if (string.IsNullOrEmpty(strColFixedValue) || ckbCancelDefault.Checked) //没有输入固定值或忽略默认值
+                    //确定列值
+                    if (bUseGlobalValue)
                     {
-                        if (ckbCancelDefault.Checked)
-                        {
-                            strColValue = "";//如果忽略固定值，那么将列值设置为空
-                        }
+                        strColValue = strColFixedValue;
+                    }
+                    else if (ckbCancelDefault.Checked)
+                    {
+                        strColFixedValue = "";
+                        strColValue = "";//如果忽略固定值，那么将列值设置为空
+                    }
+                    else
+                    {
+                        strColValue = strColFixedValue;
+                    }
+
+                    //确定参数化
+                    if (string.IsNullOrEmpty(strColFixedValue)) //没有固定值
+                    {
                         switch (sqlEntity.ParamType)
                         {
                             case SqlParamFormatType.BeginEndHash:
@@ -724,10 +740,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                                 strColCodeParm = sDefineFormat.Replace(sParamPre, strColCodeParm);
                                 break;
                         }
-                    }
-                    else //网格输入了固定值
-                    {
-                        strColValue = strColFixedValue;
                     }
 
                     //生成SQL

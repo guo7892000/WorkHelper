@@ -48,11 +48,13 @@
     <Compile Include="DB\DbField.cs" />
     <Compile Include="DB\DbServerInfo.cs" />
     <Compile Include="Entity\AppEntity.cs" />
+    <Compile Include="Entity\DbConfigEntity.cs" />
     <Compile Include="Entity\ConfigEntity.cs" />
     <Compile Include="Entity\DllEntity.cs" />
     <Compile Include="Entity\KeyValueListConfig.cs" />
     <Compile Include="Entity\KeyValuePairConfig.cs" />
     <Compile Include="Entity\MenuEntity.cs" />
+    <Compile Include="Entity\MiniXmlConfig.cs" />
     <Compile Include="Entity\UserEntity.cs" />
     <Compile Include="Enum\AppType.cs" />
     <Compile Include="Enum\ConfigType.cs" />

@@ -7,6 +7,8 @@ using Breezee.Core.Tool;
 using Breezee.WorkHelper.DBTool.Entity;
 using Breezee.Core.IOC;
 using Breezee.Core.WinFormUI;
+using System.IO;
+using System.Reflection;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -189,6 +191,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                 ShowInfo("É¾³ý³É¹¦£¡");
                 tsbQuery.PerformClick();
             }
+        }
+
+        private void tsbDbToolDbSet_Click(object sender, EventArgs e)
+        {
+            var frm = FormCrossResolver.CreateCrossFrom<IMainCommonFormCross>("Breezee.Framework.Mini.StartUp.FrmDBConfig", new object[] {
+                DBTGlobalValue.DataAccessConfigKey,DBTGlobalValue.DbConfigFileDir,DBTGlobalValue.DbConfigFileName
+            });
+            frm.ShowDialog();
         }
     }
 }

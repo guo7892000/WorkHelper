@@ -292,7 +292,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 #endregion
             }
         }
-        protected override void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue, DataBaseType impDbType)
+        public override void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue, DataBaseType impDbType)
         {
             switch (impDbType)
             {

@@ -33,6 +33,7 @@
             this.tsbQuery = new System.Windows.Forms.ToolStripButton();
             this.tsbNew = new System.Windows.Forms.ToolStripButton();
             this.tsbEdit = new System.Windows.Forms.ToolStripButton();
+            this.btnDelete = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -44,7 +45,7 @@
             this.txbDbName = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dgvQuery = new System.Windows.Forms.DataGridView();
-            this.btnDelete = new System.Windows.Forms.ToolStripButton();
+            this.tsbDbToolDbSet = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -59,6 +60,7 @@
             this.tsbNew,
             this.tsbEdit,
             this.btnDelete,
+            this.tsbDbToolDbSet,
             this.tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
@@ -92,6 +94,15 @@
             this.tsbEdit.Size = new System.Drawing.Size(67, 22);
             this.tsbEdit.Text = "编辑(&E)";
             this.tsbEdit.Click += new System.EventHandler(this.tsbEdit_Click);
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
+            this.btnDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(69, 22);
+            this.btnDelete.Text = "删除(&D)";
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // tsbExit
             // 
@@ -213,14 +224,14 @@
             this.dgvQuery.TabIndex = 4;
             this.dgvQuery.DoubleClick += new System.EventHandler(this.dgvQuery_DoubleClick);
             // 
-            // btnDelete
+            // tsbDbToolDbSet
             // 
-            this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
-            this.btnDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(69, 22);
-            this.btnDelete.Text = "删除(&D)";
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            this.tsbDbToolDbSet.Image = ((System.Drawing.Image)(resources.GetObject("tsbDbToolDbSet.Image")));
+            this.tsbDbToolDbSet.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbDbToolDbSet.Name = "tsbDbToolDbSet";
+            this.tsbDbToolDbSet.Size = new System.Drawing.Size(129, 22);
+            this.tsbDbToolDbSet.Text = "数据库工具DB设置";
+            this.tsbDbToolDbSet.Click += new System.EventHandler(this.tsbDbToolDbSet_Click);
             // 
             // FrmDBConfigSet
             // 
@@ -264,5 +275,6 @@
         private System.Windows.Forms.DataGridView dgvQuery;
         private System.Windows.Forms.ToolStripButton tsbQuery;
         private System.Windows.Forms.ToolStripButton btnDelete;
+        private System.Windows.Forms.ToolStripButton tsbDbToolDbSet;
     }
 }

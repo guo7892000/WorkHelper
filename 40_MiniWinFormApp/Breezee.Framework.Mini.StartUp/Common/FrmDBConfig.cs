@@ -2,9 +2,6 @@
 using Breezee.Core.Interface;
 using Breezee.Core.Tool;
 using Breezee.Core.Entity;
-using Breezee.Core.IOC;
-using Breezee.WorkHelper.DBTool.Entity;
-using Breezee.WorkHelper.DBTool.IBLL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,15 +10,17 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Breezee.AutoSQLExecutor.Core;
+using System.IO;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using Breezee.AutoSQLExecutor.Common;
+using Breezee.AutoSQLExecutor.Core;
 
-namespace Breezee.WorkHelper.DBTool.UI
+namespace Breezee.Framework.Mini.StartUp
 {
     /// <summary>
-    /// 数据库配置维护
+    /// 数据库配置：保存在配置文件中
     /// </summary>
-    public partial class FrmDBConfigSet_D : BaseForm
+    public partial class FrmDBConfig : BaseForm,IMainCommonFormCross
     {
         #region 变量
         private DataRow _drEdit;
@@ -30,47 +29,65 @@ namespace Breezee.WorkHelper.DBTool.UI
         //控件集合字典
         List<DBColumnControlRelation> _listSupply = new List<DBColumnControlRelation>();
         //
-        private IDBConfigSet _IDBConfigSet;
+        string _sKey;
+        string _strConfigFilePath;
+        string _sConfigFileName;
+
+        MiniXmlConfig _xmlCommon;
+        DataTable dtXml;
         #endregion
 
         #region 构造函数
-        public FrmDBConfigSet_D()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sKey">数据库访问对象IDataAccess获取实例的键，这个由系统提定，不能修改</param>
+        /// <param name="strConfigFilePath"></param>
+        /// <param name="sConfigFileName"></param>
+        public FrmDBConfig(string sKey,string strConfigFilePath, string sConfigFileName)
         {
             InitializeComponent();
-        }
-
-        public FrmDBConfigSet_D(DataRow drEdit)
-        {
-            InitializeComponent();
-            _drEdit = drEdit;
-
+            _sKey = sKey;
+            _strConfigFilePath = strConfigFilePath;
+            _sConfigFileName = sConfigFileName;
+            
         }
         #endregion
 
         #region 窗体加载事件
         private void FrmDBConfigSet_D_Load(object sender, EventArgs e)
         {
+            _xmlCommon = new MiniXmlConfig(_strConfigFilePath, _sConfigFileName, DbServerInfo.XmlAttrString.getList(), DbServerInfo.XmlAttrString.key, "xml", "dbConfig", XmlConfigSaveType.Element);
             //接口对象
-            _IDBConfigSet = ContainerContext.Container.Resolve<IDBConfigSet>();
 
             #region 绑定下拉框
+            _dicQuery.Clear();
+            string[] enumKey = Enum.GetNames(typeof(DataBaseType));
+            int[] enumValue = new int[enumKey.Length];
+            Enum.GetValues(typeof(DataBaseType)).CopyTo(enumValue, 0);
+            for (int i = 0; i < enumKey.Length; i++)
+            {
+                _dicQuery.Add(enumValue[i].ToString(), enumKey[i]);
+            }
+
             //数据库类型
-            DataTable dtDbType = DBToolUIHelper.GetBaseDataTypeTable();
+            DataTable dtDbType = _dicQuery.GetTextValueTable(false);
             cbbDatabaseType.BindTypeValueDropDownList(dtDbType, false, true);
             #endregion
 
             //设置控件关系
             SetControlColumnRelation();
-
-            if (_drEdit == null)//新增
+            dtXml = _xmlCommon.Load();
+            if (dtXml.Rows.Count > 0)
             {
-                tsbCopyAdd.Visible = false;
+                _listSupply.SetControlValue(dtXml.Rows[0]);
             }
-            else //修改
+            else
             {
-                _listSupply.SetControlValue(_drEdit);
-                tsbCopyAdd.Visible = true;
+                cbbDatabaseType.SelectedValue = ((int)DataBaseType.SQLite).ToString();
             }
+            txbDBConfigCode.Text = _sKey;
+            txbDBConfigCode.ReadOnly = true;
         }
         #endregion
 
@@ -78,18 +95,15 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void SetControlColumnRelation()
         {
             //配置表
-            _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.DB_CONFIG_ID, txbID));
-            _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.UPDATE_CONTROL_ID, txbUPDATE_CONTROL_ID));
-            _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.DB_TYPE, cbbDatabaseType, "数据库类型"));
-            _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.DB_CONFIG_CODE, txbDBConfigCode, "配置编码"));
-            _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.DB_CONFIG_NAME, txbDBConfigName));
-            _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.SERVER_IP, txbServerIP, "服务器IP"));
-            _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.PORT_NO, txbPortNO));
-            _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.DB_NAME, txbDbName));
-            _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.SCHEMA_NAME, txbSchemaName));
-            _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.USER_NAME, txbUserName));
-            _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.USER_PASSWORD, txbPassword));
-            _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.REMARK, txbRemark));
+            _listSupply.Add(new DBColumnControlRelation(DbServerInfo.XmlAttrString.key, txbDBConfigCode, "key"));
+            _listSupply.Add(new DBColumnControlRelation(DbServerInfo.XmlAttrString.dbType, cbbDatabaseType, "数据库类型"));
+            _listSupply.Add(new DBColumnControlRelation(DbServerInfo.XmlAttrString.serverName, txbServerIP, "服务器IP"));
+            _listSupply.Add(new DBColumnControlRelation(DbServerInfo.XmlAttrString.portNo, txbPortNO));
+            _listSupply.Add(new DBColumnControlRelation(DbServerInfo.XmlAttrString.dataBase, txbDbName));
+            _listSupply.Add(new DBColumnControlRelation(DbServerInfo.XmlAttrString.schemaName, txbSchemaName));
+            _listSupply.Add(new DBColumnControlRelation(DbServerInfo.XmlAttrString.userName, txbUserName));
+            _listSupply.Add(new DBColumnControlRelation(DbServerInfo.XmlAttrString.password, txbPassword));
+            _listSupply.Add(new DBColumnControlRelation(DbServerInfo.XmlAttrString.otherString, txbRemark));
         }
         #endregion
 
@@ -106,32 +120,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                     return;
                 }
                 #endregion
-
-                _dicObject = CreateObjectDictionary(true);
-                DataTable dtSave;
-
-                #region 供应商表
-                bool isAdd = txbID.Text.Length == 0;
-
-                List<string> coloumns = isAdd ? null : _listSupply.GetSaveColumnNameList();
-                dtSave = DBToolHelper.Instance.DataAccess.GetTableConstruct(DT_DBT_BD_DB_CONFIG.TName, coloumns);
-                dtSave.DefaultValue(_loginUser);//设置登录用户的默认值
-                _listSupply.GetControlValue(dtSave, isAdd);
-                if (isAdd)
-                {
-                    dtSave.Rows[0][DT_DBT_BD_DB_CONFIG.SqlString.DB_CONFIG_ID] = StringHelper.GetGUID();
-                    dtSave.Columns[DT_DBT_BD_DB_CONFIG.SqlString.CREATE_TIME].ExtProp(DbDefaultValueType.DateTime);
-                    dtSave.Columns[DT_DBT_BD_DB_CONFIG.SqlString.LAST_UPDATED_TIME].ExtProp(DbDefaultValueType.DateTime);
-                }
-                #endregion
-                //保存传入参数处理
-                _dicObject[DT_SYS_USER.ORG_ID] = _loginUser.ORG_ID;
-                _dicObject[DT_SYS_USER.USER_ID] = _loginUser.USER_ID;
-                _dicObject[DT_ORG_EMPLOYEE.EMP_ID] = _loginUser.EMP_ID;
-                _dicObject[DT_ORG_EMPLOYEE.EMP_NAME] = _loginUser.EMP_NAME;
-                _dicObject[IDBConfigSet.SaveDbConfig_InDicKey.DT_TABLE] = dtSave;
-                //保存维修单
-                _IDBConfigSet.SaveDbConfig(_dicObject).SafeGetDictionary();
+                _listSupply.GetControlValue(dtXml, false);
+                _xmlCommon.Save(dtXml);
                 ShowInfo("保存成功！");
                 DialogResult = DialogResult.OK;
                 Close();
@@ -140,9 +130,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 ShowErr(ex.Message);
             }
-        } 
+        }
         #endregion
-        
+
         #region 退出按钮事件
         private void tsbExit_Click(object sender, EventArgs e)
         {
@@ -328,21 +318,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                 DataTable UserTableList = _dataAccess.GetSchemaTables();
                 MsgBox.Show("连接成功！");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MsgHelper.ShowErr("连接失败，请检查！具体错误："+ex.Message);
+                MsgHelper.ShowErr("连接失败，请检查！具体错误：" + ex.Message);
             }
-        }
-
-        /// <summary>
-        /// 复制新增按钮事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tsbCopyAdd_Click(object sender, EventArgs e)
-        {
-            txbID.Text = string.Empty;
-            txbUPDATE_CONTROL_ID.Text = string.Empty;
         }
     }
 }

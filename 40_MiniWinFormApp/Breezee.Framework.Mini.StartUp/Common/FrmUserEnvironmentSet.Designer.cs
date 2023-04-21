@@ -36,15 +36,15 @@
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.txbSkinValueMain = new System.Windows.Forms.TextBox();
             this.btnSelectPicMain = new System.Windows.Forms.Button();
+            this.txbSkinValueMain = new System.Windows.Forms.TextBox();
             this.cbbColorMain = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.cbbSkinTypeMain = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.txbSkinValueCommon = new System.Windows.Forms.TextBox();
             this.btnSelectPicCommon = new System.Windows.Forms.Button();
+            this.txbSkinValueCommon = new System.Windows.Forms.TextBox();
             this.cbbColorCommon = new System.Windows.Forms.ComboBox();
             this.cbbSkinTypeCommon = new System.Windows.Forms.ComboBox();
             this.opfSelectPic = new System.Windows.Forms.OpenFileDialog();
@@ -55,6 +55,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.cbbMsgType = new System.Windows.Forms.ComboBox();
             this.tpUserSkin = new System.Windows.Forms.TabPage();
+            this.tsbMiniDbConfig = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -81,6 +82,7 @@
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbSave,
+            this.tsbMiniDbConfig,
             this.tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
@@ -140,6 +142,16 @@
             this.tableLayoutPanel3.Size = new System.Drawing.Size(661, 62);
             this.tableLayoutPanel3.TabIndex = 9;
             // 
+            // btnSelectPicMain
+            // 
+            this.btnSelectPicMain.Location = new System.Drawing.Point(356, 29);
+            this.btnSelectPicMain.Name = "btnSelectPicMain";
+            this.btnSelectPicMain.Size = new System.Drawing.Size(34, 23);
+            this.btnSelectPicMain.TabIndex = 2;
+            this.btnSelectPicMain.Text = "...";
+            this.btnSelectPicMain.UseVisualStyleBackColor = true;
+            this.btnSelectPicMain.Click += new System.EventHandler(this.btnSelectPicMain_Click);
+            // 
             // txbSkinValueMain
             // 
             this.txbSkinValueMain.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -150,16 +162,6 @@
             this.txbSkinValueMain.Name = "txbSkinValueMain";
             this.txbSkinValueMain.Size = new System.Drawing.Size(276, 30);
             this.txbSkinValueMain.TabIndex = 3;
-            // 
-            // btnSelectPicMain
-            // 
-            this.btnSelectPicMain.Location = new System.Drawing.Point(356, 29);
-            this.btnSelectPicMain.Name = "btnSelectPicMain";
-            this.btnSelectPicMain.Size = new System.Drawing.Size(34, 23);
-            this.btnSelectPicMain.TabIndex = 2;
-            this.btnSelectPicMain.Text = "...";
-            this.btnSelectPicMain.UseVisualStyleBackColor = true;
-            this.btnSelectPicMain.Click += new System.EventHandler(this.btnSelectPicMain_Click);
             // 
             // cbbColorMain
             // 
@@ -224,6 +226,16 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(661, 70);
             this.tableLayoutPanel2.TabIndex = 9;
             // 
+            // btnSelectPicCommon
+            // 
+            this.btnSelectPicCommon.Location = new System.Drawing.Point(356, 38);
+            this.btnSelectPicCommon.Name = "btnSelectPicCommon";
+            this.btnSelectPicCommon.Size = new System.Drawing.Size(34, 23);
+            this.btnSelectPicCommon.TabIndex = 6;
+            this.btnSelectPicCommon.Text = "..";
+            this.btnSelectPicCommon.UseVisualStyleBackColor = true;
+            this.btnSelectPicCommon.Click += new System.EventHandler(this.btnSelectPicCommon_Click);
+            // 
             // txbSkinValueCommon
             // 
             this.txbSkinValueCommon.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -234,16 +246,6 @@
             this.txbSkinValueCommon.Name = "txbSkinValueCommon";
             this.txbSkinValueCommon.Size = new System.Drawing.Size(276, 29);
             this.txbSkinValueCommon.TabIndex = 7;
-            // 
-            // btnSelectPicCommon
-            // 
-            this.btnSelectPicCommon.Location = new System.Drawing.Point(356, 38);
-            this.btnSelectPicCommon.Name = "btnSelectPicCommon";
-            this.btnSelectPicCommon.Size = new System.Drawing.Size(34, 23);
-            this.btnSelectPicCommon.TabIndex = 6;
-            this.btnSelectPicCommon.Text = "..";
-            this.btnSelectPicCommon.UseVisualStyleBackColor = true;
-            this.btnSelectPicCommon.Click += new System.EventHandler(this.btnSelectPicCommon_Click);
             // 
             // cbbColorCommon
             // 
@@ -296,7 +298,7 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox3.Location = new System.Drawing.Point(3, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(667, 81);
+            this.groupBox3.Size = new System.Drawing.Size(667, 52);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "保存提示设置";
@@ -321,7 +323,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(661, 61);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(661, 32);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // label3
@@ -353,6 +355,15 @@
             this.tpUserSkin.TabIndex = 0;
             this.tpUserSkin.Text = "窗体皮肤设置";
             this.tpUserSkin.UseVisualStyleBackColor = true;
+            // 
+            // tsbMiniDbConfig
+            // 
+            this.tsbMiniDbConfig.Image = ((System.Drawing.Image)(resources.GetObject("tsbMiniDbConfig.Image")));
+            this.tsbMiniDbConfig.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbMiniDbConfig.Name = "tsbMiniDbConfig";
+            this.tsbMiniDbConfig.Size = new System.Drawing.Size(105, 22);
+            this.tsbMiniDbConfig.Text = "主框架DB配置";
+            this.tsbMiniDbConfig.Click += new System.EventHandler(this.tsbMiniDbConfig_Click);
             // 
             // FrmUserEnvironmentSet
             // 
@@ -412,5 +423,6 @@
         private System.Windows.Forms.ComboBox cbbMsgType;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.ToolStripButton tsbMiniDbConfig;
     }
 }
