@@ -24,7 +24,8 @@ namespace Breezee.Core.WinFormUI
         /// <summary>
         /// 主框架模块DLL
         /// </summary>
-        public const string DLL_MAIN_MANAGE = "Breezee.Framework.Mini.StartUp.exe";
+        public const string DLL_MAIN_MANAGE = "Breezee.Framework.Mini.StartUp.exe"; //Net4使用
+        //public const string DLL_MAIN_MANAGE = "Breezee.Framework.Mini.StartUp.dll"; //Net6使用
 
         /// <summary>
         /// 数据库工具模块DLL
