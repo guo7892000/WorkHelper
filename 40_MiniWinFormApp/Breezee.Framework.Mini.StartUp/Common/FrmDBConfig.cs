@@ -32,6 +32,7 @@ namespace Breezee.Framework.Mini.StartUp
         string _sKey;
         string _strConfigFilePath;
         string _sConfigFileName;
+        string _sTitle;
 
         MiniXmlConfig _xmlCommon;
         DataTable dtXml;
@@ -44,19 +45,20 @@ namespace Breezee.Framework.Mini.StartUp
         /// <param name="sKey">数据库访问对象IDataAccess获取实例的键，这个由系统提定，不能修改</param>
         /// <param name="strConfigFilePath"></param>
         /// <param name="sConfigFileName"></param>
-        public FrmDBConfig(string sKey,string strConfigFilePath, string sConfigFileName)
+        public FrmDBConfig(string sKey,string strConfigFilePath, string sConfigFileName, string sTitle)
         {
             InitializeComponent();
             _sKey = sKey;
             _strConfigFilePath = strConfigFilePath;
             _sConfigFileName = sConfigFileName;
-            
+            _sTitle = sTitle;
         }
         #endregion
 
         #region 窗体加载事件
         private void FrmDBConfigSet_D_Load(object sender, EventArgs e)
         {
+            Text = _sTitle;
             _xmlCommon = new MiniXmlConfig(_strConfigFilePath, _sConfigFileName, DbServerInfo.XmlAttrString.getList(), DbServerInfo.XmlAttrString.key, "xml", "dbConfig", XmlConfigSaveType.Element);
             //接口对象
 
@@ -67,7 +69,10 @@ namespace Breezee.Framework.Mini.StartUp
             Enum.GetValues(typeof(DataBaseType)).CopyTo(enumValue, 0);
             for (int i = 0; i < enumKey.Length; i++)
             {
-                _dicQuery.Add(enumValue[i].ToString(), enumKey[i]);
+                if (!"NONE".Equals(enumKey[i], StringComparison.OrdinalIgnoreCase))
+                {
+                    _dicQuery.Add(enumValue[i].ToString(), enumKey[i]);
+                }
             }
 
             //数据库类型

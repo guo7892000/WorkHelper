@@ -465,6 +465,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                     break;
             }
 
+            if (!dtColumnSelect.Columns.Contains(ColCommon.ExcelCol.DataTypeNew))
+            {
+                dtColumnSelect.Columns.Add(ColCommon.ExcelCol.DataTypeNew);
+            }
+            if (!dtColumnSelect.Columns.Contains(ColCommon.ExcelCol.DataTypeFullNew))
+            {
+                dtColumnSelect.Columns.Add(ColCommon.ExcelCol.DataTypeFullNew);
+            }
+
             foreach (DataRow dr in dtColumnSelect.Rows)
             {
                 string sDataType = dr[ColCommon.ExcelCol.DataType].ToString();
@@ -483,7 +492,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             //增加生成表结构的功能
             dtAllCol.AcceptChanges();
-            TableStructGenerator.Generate(tabControl1, dtTalbeSelect, dtColumnSelect,ckbFullTypeDoc.Checked);
+            TableStructGenerator.Generate(tabControl1, dtTalbeSelect, dtColumnSelect,ckbFullTypeDoc.Checked,ckbLYTemplate.Checked);
             //生成SQL成功后提示
             ShowSuccessMsg(_strAutoSqlSuccess);
             //初始化控件
@@ -774,6 +783,14 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (e.ColumnIndex == dgvColList.Columns[_sGridColumnSelect].Index)
             {
                 dgvColList.AllChecked(_sGridColumnSelect, ref _allColumnSelect);
+            }
+        }
+
+        private void ckbLYTemplate_CheckedChanged(object sender, EventArgs e)
+        {
+            if(ckbLYTemplate.Checked)
+            {
+                ckbFullTypeDoc.Checked = true;
             }
         }
     }

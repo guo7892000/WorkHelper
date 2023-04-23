@@ -196,7 +196,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void tsbDbToolDbSet_Click(object sender, EventArgs e)
         {
             var frm = FormCrossResolver.CreateCrossFrom<IMainCommonFormCross>("Breezee.Framework.Mini.StartUp.FrmDBConfig", new object[] {
-                DBTGlobalValue.DataAccessConfigKey,DBTGlobalValue.DbConfigFileDir,DBTGlobalValue.DbConfigFileName
+                DBTGlobalValue.DataAccessConfigKey,DBTGlobalValue.DbConfigFileDir,DBTGlobalValue.DbConfigFileName,"数据库工具的数据库连接配置"
             });
             frm.ShowDialog();
         }

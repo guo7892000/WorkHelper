@@ -48,9 +48,9 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="tabControl"></param>
         /// <param name="tableList"></param>
         /// <param name="columnList"></param>
-        public static void Generate(TabControl tabControl, DataTable tableList, DataTable columnList, bool useDataTypeFull = false)
+        public static void Generate(TabControl tabControl, DataTable tableList, DataTable columnList, bool useDataTypeFull, bool useLYTemplate)
         {
-            HtmlString = GenerateHtmlString(tableList, columnList, useDataTypeFull);
+            HtmlString = GenerateHtmlString(tableList, columnList, useDataTypeFull, useLYTemplate);
 
             if (!tabControl.TabPages.ContainsKey(TABKEY_TABLE_STRUCT))
             {
@@ -86,11 +86,21 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="tableList">表清单</param>
         /// <param name="columnList">列清单</param>
         /// <returns></returns>
-        private static string GenerateHtmlString(DataTable tableList, DataTable columnList,bool useDataTypeFull=false)
+        private static string GenerateHtmlString(DataTable tableList, DataTable columnList,bool useDataTypeFull, bool useLYTemplate)
         {
             string htmlTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Html);
-            string tableTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Table);
-            string columnsTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Column);
+            string tableTemplate;
+            string columnsTemplate;
+            if (useLYTemplate)
+            {
+                tableTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Table_LY);
+                columnsTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Column_LY);
+            }
+            else
+            {
+                tableTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Table);
+                columnsTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Column);
+            }
 
             StringBuilder tableBuilder = new StringBuilder();
             foreach(DataRow rowTable in tableList.Rows)

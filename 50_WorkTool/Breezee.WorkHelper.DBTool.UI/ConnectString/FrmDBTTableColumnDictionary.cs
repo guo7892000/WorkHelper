@@ -382,6 +382,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                         //找不到的也加入，但只有列编码
                         DataRow drNew = dtSelect.NewRow();
                         drNew[DBColumnSimpleEntity.SqlString.Name] = dr[_sInputColCode].ToString();
+                        drNew[DBColumnSimpleEntity.SqlString.NameUpper] = dr[_sInputColCode].ToString().FirstLetterUpper();
+                        drNew[DBColumnSimpleEntity.SqlString.NameLower] = dr[_sInputColCode].ToString().FirstLetterUpper(false);
                         drNew[_sGridColumnSelect] = "1";
                         dtSelect.Rows.Add(drNew);
                     }

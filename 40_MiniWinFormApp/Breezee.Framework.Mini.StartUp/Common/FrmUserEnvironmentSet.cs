@@ -358,7 +358,7 @@ namespace Breezee.Framework.Mini.StartUp
 
         private void tsbMiniDbConfig_Click(object sender, EventArgs e)
         {
-            FrmDBConfig frm = new FrmDBConfig(MiniGlobalValue.DataAccessConfigKey, MiniGlobalValue.DbConfigFileDir, MiniGlobalValue.DbConfigFileName);
+            FrmDBConfig frm = new FrmDBConfig(MiniGlobalValue.DataAccessConfigKey, MiniGlobalValue.DbConfigFileDir, MiniGlobalValue.DbConfigFileName, "主框架的数据库连接配置");
             frm.ShowDialog();
         }
     }

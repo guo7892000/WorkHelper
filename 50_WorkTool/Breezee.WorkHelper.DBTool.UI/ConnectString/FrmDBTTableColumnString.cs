@@ -55,10 +55,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void FrmGetOracleSql_Load(object sender, EventArgs e)
         {
             _IDBDefaultValue = ContainerContext.Container.Resolve<IDBDefaultValue>();
-
+            _dicString.Add("0", "自定义");
             _dicString.Add("1", "Mybatis实体");
-            _dicString.Add("2", "自定义");
-            cbbModule.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), true, true);            
+            _dicString.Add("2", "YAPI参数");
+            _dicString.Add("3", "API属性说明");
+            cbbModule.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);            
 
             #region 设置数据库连接控件
             _IDBConfigSet = ContainerContext.Container.Resolve<IDBConfigSet>();
@@ -530,14 +531,30 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     rtbOther.Visible = false;
                     rtbConString.Clear();
+                    rtbConString.AppendText(@"""#C3#"":{
+    ""type"":""string"",
+    ""description"":""#C1#""
+    },");
+
+                }
+                else if ("3".Equals(sModule))
+                {
+                    rtbOther.Visible = false;
+                    rtbConString.Clear();
                     rtbConString.AppendText(string.Format(@"@ApiModelProperty(""#{0}#"")
 private String #{1}#;
 ", DBColumnSimpleEntity.SqlString.NameCN, DBColumnSimpleEntity.SqlString.NameUpper));
                 }
                 else
                 {
-                    rtbOther.Visible= false;
+                    rtbConString.Clear();
+                    rtbOther.Visible = false;
                 }
+            }
+            else
+            {
+                rtbConString.Clear();
+                rtbOther.Visible = false;
             }
         }
 

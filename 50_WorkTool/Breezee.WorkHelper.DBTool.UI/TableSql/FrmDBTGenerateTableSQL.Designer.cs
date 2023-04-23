@@ -57,6 +57,7 @@
             this.cbbTableName = new System.Windows.Forms.ComboBox();
             this.ckbDefaultPKName = new System.Windows.Forms.CheckBox();
             this.ckbFullTypeDoc = new System.Windows.Forms.CheckBox();
+            this.ckbLYTemplate = new System.Windows.Forms.CheckBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbImport = new System.Windows.Forms.ToolStripButton();
             this.tsbAutoSQL = new System.Windows.Forms.ToolStripButton();
@@ -226,8 +227,8 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 8F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 149F));
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbbInputType, 1, 0);
@@ -244,6 +245,7 @@
             this.tableLayoutPanel1.Controls.Add(this.cbbTableName, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.ckbDefaultPKName, 6, 0);
             this.tableLayoutPanel1.Controls.Add(this.ckbFullTypeDoc, 7, 0);
+            this.tableLayoutPanel1.Controls.Add(this.ckbLYTemplate, 8, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -408,15 +410,26 @@
             // 
             // ckbFullTypeDoc
             // 
+            this.ckbFullTypeDoc.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbFullTypeDoc.AutoSize = true;
-            this.ckbFullTypeDoc.Checked = true;
-            this.ckbFullTypeDoc.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbFullTypeDoc.Location = new System.Drawing.Point(784, 3);
+            this.ckbFullTypeDoc.Location = new System.Drawing.Point(784, 5);
             this.ckbFullTypeDoc.Name = "ckbFullTypeDoc";
-            this.ckbFullTypeDoc.Size = new System.Drawing.Size(84, 16);
+            this.ckbFullTypeDoc.Size = new System.Drawing.Size(60, 16);
             this.ckbFullTypeDoc.TabIndex = 22;
-            this.ckbFullTypeDoc.Text = "全类型文档";
+            this.ckbFullTypeDoc.Text = "全类型";
             this.ckbFullTypeDoc.UseVisualStyleBackColor = true;
+            // 
+            // ckbLYTemplate
+            // 
+            this.ckbLYTemplate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbLYTemplate.AutoSize = true;
+            this.ckbLYTemplate.Location = new System.Drawing.Point(861, 5);
+            this.ckbLYTemplate.Name = "ckbLYTemplate";
+            this.ckbLYTemplate.Size = new System.Drawing.Size(60, 16);
+            this.ckbLYTemplate.TabIndex = 23;
+            this.ckbLYTemplate.Text = "LY模板";
+            this.ckbLYTemplate.UseVisualStyleBackColor = true;
+            this.ckbLYTemplate.CheckedChanged += new System.EventHandler(this.ckbLYTemplate_CheckedChanged);
             // 
             // toolStrip1
             // 
@@ -547,5 +560,6 @@
         private System.Windows.Forms.CheckBox ckbGetTableList;
         private System.Windows.Forms.CheckBox ckbDefaultPKName;
         private System.Windows.Forms.CheckBox ckbFullTypeDoc;
+        private System.Windows.Forms.CheckBox ckbLYTemplate;
     }
 }

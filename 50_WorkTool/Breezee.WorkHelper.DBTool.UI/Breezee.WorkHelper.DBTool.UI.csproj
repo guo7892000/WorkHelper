@@ -356,6 +356,8 @@
     <EmbeddedResource Include="DataTemplate\DBTool\TableSQL\Columns.txt" />
     <EmbeddedResource Include="DataTemplate\DBTool\TableSQL\Html.txt" />
     <EmbeddedResource Include="DataTemplate\DBTool\TableSQL\Table.txt" />
+    <EmbeddedResource Include="DataTemplate\DBTool\TableSQL\LY\Table.txt" />
+    <EmbeddedResource Include="DataTemplate\DBTool\TableSQL\LY\Columns.txt" />
     <Content Include="Doc\Study\Mariadb常用SQL.sql" />
     <Content Include="Doc\Study\Oracle常用SQL.sql" />
     <Content Include="Doc\Study\PostgreSQL常用SQL.sql" />
