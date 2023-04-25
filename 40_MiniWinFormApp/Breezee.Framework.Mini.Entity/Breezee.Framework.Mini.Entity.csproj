@@ -58,6 +58,7 @@
     <Compile Include="Enum\SSStaticString.cs" />
     <Compile Include="Global\MiniGlobalValue.cs" />
     <Compile Include="Global\MiniKeyValue.cs" />
+    <Compile Include="Global\MiniUserLoveConfig.cs" />
     <Compile Include="Mini_SYS_USER.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

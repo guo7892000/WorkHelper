@@ -1,39 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Breezee.WorkHelper.DBTool.UI.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
   <Profiles />
-  <Settings>
-    <Setting Name="LastSelectedPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="AutoEntity_Path" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="AutoEntity_ClassPre" Type="System.String" Scope="User">
-      <Value Profile="(Default)">DT_</Value>
-    </Setting>
-    <Setting Name="AutoEntity_ClassEnd" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="AutoEntity_PropertyPre" Type="System.String" Scope="User">
-      <Value Profile="(Default)">EF_</Value>
-    </Setting>
-    <Setting Name="ExcelCol2Row_FixRowCount" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="ExcelCol2Row_EachDataRowCount" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">2</Value>
-    </Setting>
-    <Setting Name="ClickCopyPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="ExcelCopyDataConnect" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="DbGetSql_ParamType" Type="System.String" Scope="User">
-      <Value Profile="(Default)">3</Value>
-    </Setting>
-    <Setting Name="DbGetSql_FirstWordType" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1</Value>
-    </Setting>
-  </Settings>
+  <Settings />
 </SettingsFile>

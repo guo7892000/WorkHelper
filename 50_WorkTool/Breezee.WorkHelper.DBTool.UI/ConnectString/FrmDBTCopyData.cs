@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Setting = Breezee.WorkHelper.DBTool.UI.Properties.Settings;
+using Breezee.WorkHelper.DBTool.Entity;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -60,7 +61,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             //
             lblTableData.Text = "可在Excel中复制数据后，点击网格后按ctrl + v粘贴即可。注：第一行为列名！";
             ckbAutoColumnName.Checked = true;
-            rtbConString.Text = Setting.Default.ExcelCopyDataConnect;
+
+            //加载用户偏好值
+            rtbConString.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ExcelCopyDataConnect, "").Value;
+            //rtbConString.Text = Setting.Default.ExcelCopyDataConnect;
         }
         #endregion
 
@@ -245,8 +249,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                 lblInfo.Text = _strAutoSqlSuccess;
                 rtbResult.Select(0, 0); //返回到第一
 
-                Setting.Default.ExcelCopyDataConnect = rtbConString.Text;
-                Setting.Default.Save();
+                //保存用户偏好值
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ExcelCopyDataConnect, rtbConString.Text, "【复制拼接字符】字符模板");
+                WinFormContext.UserLoveSettings.Save();
+                //Setting.Default.ExcelCopyDataConnect = rtbConString.Text;
+                //Setting.Default.Save();
             }
             catch (Exception ex)
             {

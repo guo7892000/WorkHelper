@@ -6,6 +6,7 @@ using Breezee.Core.Interface;
 using System.IO;
 using System;
 using System.Windows.Forms;
+using Breezee.WorkHelper.DBTool.Entity;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -17,7 +18,7 @@ namespace Breezee.WorkHelper.DBTool.UI
     public partial class FrmDirectoryFileString : BaseForm
     {
         #region 变量
-        string strLastSelectedPath = AppSet.Default.LastSelectedPath;
+        string strLastSelectedPath;
         #endregion
 
         #region 构造函数
@@ -31,6 +32,9 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 加载事件
         private void FrmDirectoryFileString_Load(object sender, EventArgs e)
         {
+            //加载用户偏好值
+            strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DirStringLastSelectedPath, "").Value;
+
             _dicString.Add("1", "仅文件");
             _dicString.Add("2", "仅目录");
             _dicString.Add("3", "目录和文件");
@@ -55,7 +59,8 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void btnSelectPath_Click(object sender, EventArgs e)
         {
             var dialog = new FolderBrowserDialog();
-            var strLastSelectedPath = AppSet.Default.LastSelectedPath;
+            var strLastSelectedPath = WinFormContext.UserLoveSettings.Get("LastSelectedPath", "").Value;
+
             if (!string.IsNullOrEmpty(strLastSelectedPath))
             {
                 dialog.SelectedPath = strLastSelectedPath;
@@ -64,7 +69,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 txbSelectPath.Text = dialog.SelectedPath;
-                AppSet.Default.LastSelectedPath = dialog.SelectedPath;
+                //保存用户偏好值
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DirStringLastSelectedPath, dialog.SelectedPath, "【目录字符生成】最后选择的目录");
+                WinFormContext.UserLoveSettings.Save();
             }
         } 
         #endregion

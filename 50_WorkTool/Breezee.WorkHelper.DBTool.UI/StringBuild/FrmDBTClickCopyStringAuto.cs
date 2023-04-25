@@ -27,14 +27,8 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
 
         private void FrmDBTClickCopyStringAuto_Load(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(Setting.Default.ClickCopyPath))
-            {
-                txbXmlPath.Text = Path.Combine(DBTGlobalValue.AppPath, DBTGlobalValue.StringBuild.Xml_CopyString);
-            }
-            else
-            {
-                txbXmlPath.Text = Setting.Default.ClickCopyPath;
-            }
+            //加载用户偏好值
+            txbXmlPath.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ClickCopyPath, Path.Combine(DBTGlobalValue.AppPath, DBTGlobalValue.StringBuild.Xml_CopyString)).Value;
             GenerateControls();
         }
 
@@ -299,8 +293,12 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                 }
                 txbXmlPath.Text = dia.FileName;
                 GenerateControls();
-                Setting.Default.ClickCopyPath = txbXmlPath.Text;
-                Setting.Default.Save();
+
+                //保存用户偏好值
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ClickCopyPath, txbXmlPath.Text, "【点击复制】选择路径");
+                WinFormContext.UserLoveSettings.Save();
+                //Setting.Default.ClickCopyPath = txbXmlPath.Text;
+                //Setting.Default.Save();
             }
         }
 

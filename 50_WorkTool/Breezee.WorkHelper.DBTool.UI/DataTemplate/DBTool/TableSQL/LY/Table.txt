@@ -1,9 +1,14 @@
 ﻿<table >
             <tr class="tabletr">
             <td></td>
-            <td colspan="2">表名称：${tableName}</td>
-            <td colspan="4">表编码：${tableCode}</td>
-            <td colspan="2">变更类型： ${changeType}</td>
+            <td colspan="1">表名称：${tableName}</td>
+            <td></td>
+            <td colspan="2">表编码：${tableCode}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td colspan="1">变更类型：</td>
+            <td colspan="1">${changeType}</td>
             </tr>
             <tr class="tabletr">
             <td></td>

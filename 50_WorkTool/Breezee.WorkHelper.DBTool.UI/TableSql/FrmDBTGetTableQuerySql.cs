@@ -15,6 +15,7 @@ using Breezee.Core.IOC;
 using Breezee.AutoSQLExecutor.Common;
 using Breezee.Core.Tool;
 using Setting = Breezee.WorkHelper.DBTool.UI.Properties.Settings;
+using System.IO;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -106,8 +107,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             cbbTableName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cbbTableName.AutoCompleteSource = AutoCompleteSource.CustomSource;
 
-            cbbParaType.SelectedValue = Setting.Default.DbGetSql_ParamType;
-            cbbWordConvert.SelectedValue = Setting.Default.DbGetSql_FirstWordType;
+            //加载用户偏好值
+            cbbParaType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbGetSql_ParamType, "3").Value;
+            cbbWordConvert.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbGetSql_FirstWordType, "1").Value;
+            //cbbParaType.SelectedValue = Setting.Default.DbGetSql_ParamType1;
+            //cbbWordConvert.SelectedValue = Setting.Default.DbGetSql_FirstWordType1;
         }
         #endregion
 
@@ -304,8 +308,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 new FlexGridColumn.Builder().Name(_sGridColumnCondition).Caption("条件").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(40).Edit().Visible().Build(),
                 new FlexGridColumn.Builder().Name(_sGridColumnDynamic).Caption("MyBatis动态列").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(80).Edit().Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.Default).Caption("固定值").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit().Visible().Build(),
-                new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.Name).Caption("列编码").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.NameCN).Caption("列名称").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.Name).Caption("列编码").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.DataTypeFull).Caption("类型").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.NameUpper).Caption("大驼峰").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.NameLower).Caption("小驼峰").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
@@ -890,10 +894,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             rtbResult.AppendText(sbAllSql.ToString() + sqlEntity.NewLine);
             Clipboard.SetData(DataFormats.UnicodeText, sbAllSql.ToString());
             tabControl1.SelectedTab = tpAutoSQL;
-            //保存配置
-            Setting.Default.DbGetSql_ParamType = cbbParaType.SelectedValue.ToString();
-            Setting.Default.DbGetSql_FirstWordType = cbbWordConvert.SelectedValue.ToString();
-            Setting.Default.Save();
+            //保存用户偏好值
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbGetSql_ParamType, cbbParaType.SelectedValue.ToString(), "【增删改查SQL生成】参数类型");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbGetSql_FirstWordType, cbbWordConvert.SelectedValue.ToString(), "【增删改查SQL生成】首字母方式");
+            WinFormContext.UserLoveSettings.Save();
+            //Setting.Default.DbGetSql_ParamType1 = cbbParaType.SelectedValue.ToString();
+            //Setting.Default.DbGetSql_FirstWordType1 = cbbWordConvert.SelectedValue.ToString();
+            //Setting.Default.Save();
             //生成SQL成功后提示
             ShowInfo(_strAutoSqlSuccess);
             return;

@@ -151,10 +151,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                     index++;
                 }
 
+                string sTableChangeType = rowTable[EntTable.ExcelTable.ChangeType].ToString();
+                if (useLYTemplate)
+                {
+                    sTableChangeType += "±í";
+                }
                 string tableString = tableTemplate.Replace("$$(ColumnsHolder)", columnBuilder.ToString())
                     .Replace("${tableName}", rowTable[EntTable.ExcelTable.Name].ToString())
                     .Replace("${tableCode}", rowTable[EntTable.ExcelTable.Code].ToString())
-                    .Replace("${changeType}", rowTable[EntTable.ExcelTable.ChangeType].ToString())
+                    .Replace("${changeType}", sTableChangeType)
                     .Replace("${tableRemark}", rowTable[EntTable.ExcelTable.Remark].ToString());
                 tableBuilder.Append(tableString);
             }

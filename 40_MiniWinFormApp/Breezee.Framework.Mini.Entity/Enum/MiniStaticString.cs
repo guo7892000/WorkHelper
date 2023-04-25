@@ -19,6 +19,9 @@ namespace Breezee.Framework.Mini.Entity
         public static readonly string DllFileName = "DllList.xml";
         public static readonly string MenuFileName = "MenuList.xml";
         public static readonly string ShortCutMenuFileName = "ShortCutMenuList.xml";
+        //用户偏好设定
+        public static readonly string UserLoveSettings = "UserLoveSettings.xml";
+
         //WPF使用的菜单相关
         public static readonly string DllFileName_WPF = "DllList_WPF.xml";
         public static readonly string MenuFileName_WPF = "MenuList_WPF.xml";

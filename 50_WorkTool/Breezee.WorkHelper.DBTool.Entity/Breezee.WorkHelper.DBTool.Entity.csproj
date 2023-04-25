@@ -67,6 +67,7 @@
     <Compile Include="ExcelTableSQL\Enum\TableSqlEnum.cs" />
     <Compile Include="ExcelTableSQL\TableSqlCommon.cs" />
     <Compile Include="Global\DBTGlobalValue.cs" />
+    <Compile Include="Global\DBTUserLoveConfig.cs" />
     <Compile Include="IDBToolModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Table\DT_DBT_BD_COLUMN_DEFAULT.cs" />

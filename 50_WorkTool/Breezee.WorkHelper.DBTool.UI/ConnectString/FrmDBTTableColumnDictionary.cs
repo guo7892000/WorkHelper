@@ -89,6 +89,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString["1"]= "粘贴列";
             _dicString["2"] = "查询表";
             cbbInputType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
+
             //初始化网格
             DataTable dtIn = new DataTable();
             dtIn.Columns.Add(_sInputColCode, typeof(string));
@@ -96,6 +97,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             dgvInput.DataSource = bsFindColumn;
             //加载通用列内容
             LoadCommonColumnData();
+            //加载用户偏好值
+            cbbInputType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDicConfirmColumnType, "2").Value;
         }
 
         /// <summary>
@@ -327,6 +330,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void btnMatch_Click(object sender, EventArgs e)
         {
             DataTable dtInput = dgvInput.GetBindingTable();
+            DataTable dtSelect = dgvSelect.GetBindingTable();
             if (cbbInputType.SelectedValue != null && "2".Equals(cbbInputType.SelectedValue.ToString()))
             {
                 string sSql = rtbInputSql.Text.Trim();
@@ -334,6 +338,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     ShowInfo("请输入查询空数据的SQL，这里只用到查询结果的列编码！");
                     return;
+                }
+                if (ckbOnlyMatchQueryResult.Checked)
+                {
+                    dtInput.Clear();
+                    dtSelect.Clear();
                 }
                 try
                 {
@@ -350,7 +359,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
             }
 
-            DataTable dtSelect = dgvSelect.GetBindingTable();
+            //保存用户偏好值
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDicConfirmColumnType, cbbInputType.SelectedValue.ToString(), "【数据字典】确认列类型");
+            WinFormContext.UserLoveSettings.Save();
 
             DataTable dtAllCol = dgvColList.GetBindingTable();
             DataTable dtCommonCol = dgvCommonCol.GetBindingTable();
@@ -972,10 +983,13 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if("1".Equals(sType))
                 {
                     grbInputSql.Visible = false;
+                    ckbOnlyMatchQueryResult.Visible = false;
                 }
                 else
                 {
                     grbInputSql.Visible = true;
+                    ckbOnlyMatchQueryResult.Visible = true;
+                    ckbOnlyMatchQueryResult.Checked = true;
                 }
             }
         }

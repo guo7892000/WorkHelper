@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Setting = Breezee.WorkHelper.DBTool.UI.Properties.Settings;
+using Breezee.WorkHelper.DBTool.Entity;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -36,9 +37,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 加载事件
         private void FrmCopyData_Load(object sender, EventArgs e)
         {
-            //读取属性配置
-            nudFixRowCount.Value = Setting.Default.ExcelCol2Row_FixRowCount;
-            nudEachDataRowCount.Value = Setting.Default.ExcelCol2Row_EachDataRowCount;
+            //加载用户偏好值
+            nudFixRowCount.Value = int.Parse(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ExcelCol2Row_FixRowCount, "0").Value);
+            nudEachDataRowCount.Value = int.Parse(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ExcelCol2Row_EachDataRowCount, "2").Value);
+            //nudFixRowCount.Value = Setting.Default.ExcelCol2Row_FixRowCount;
+            //nudEachDataRowCount.Value = Setting.Default.ExcelCol2Row_EachDataRowCount;
             //
             DataTable dtCopy = new DataTable();
             dtCopy.TableName = _strTableName;
@@ -144,10 +147,13 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //生成SQL成功后提示
                 lblInfo.Text = _strAutoSqlSuccess;
                 rtbResult.Select(0, 0); //返回到第一
-                //保存属性配置
-                Setting.Default.ExcelCol2Row_FixRowCount = (int)nudFixRowCount.Value;
-                Setting.Default.ExcelCol2Row_EachDataRowCount = (int)nudEachDataRowCount.Value;
-                Setting.Default.Save();
+                //保存用户偏好值
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ExcelCol2Row_FixRowCount, ((int)nudFixRowCount.Value).ToString(), "【Excel列转行】固定行数");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ExcelCol2Row_EachDataRowCount, ((int)nudEachDataRowCount.Value).ToString(), "【Excel列转行】每组数据行数");
+                WinFormContext.UserLoveSettings.Save();
+                //Setting.Default.ExcelCol2Row_FixRowCount = (int)nudFixRowCount.Value;
+                //Setting.Default.ExcelCol2Row_EachDataRowCount = (int)nudEachDataRowCount.Value;
+                //Setting.Default.Save();
             }
             catch (Exception ex)
             {

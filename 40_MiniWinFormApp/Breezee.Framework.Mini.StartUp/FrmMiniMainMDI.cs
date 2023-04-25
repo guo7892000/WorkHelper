@@ -69,6 +69,8 @@ namespace Breezee.Framework.Mini.StartUp
             LoadMenu();
             //增加快捷菜单
             LoadShortCutMenu();
+            //加载用户偏好设定
+            LoadUserLoveSettings();
             //默认桌面布满
             pnlDestop.Dock = DockStyle.Fill;
             txbMenuPath.BackColor = txbMenuPath.Parent.BackColor;
@@ -238,6 +240,12 @@ namespace Breezee.Framework.Mini.StartUp
             }
         }
         #endregion
+
+        private void LoadUserLoveSettings()
+        {
+            UserLoveSettings miniXmlConfig = new UserLoveSettings(_strConfigFilePath, MiniStaticString.UserLoveSettings, XmlConfigSaveType.Attribute);
+            WinFormContext.UserLoveSettings = miniXmlConfig;
+        }
 
         #region 修改密码
         /// <summary>

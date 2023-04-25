@@ -88,7 +88,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             uC_DbConnection1.DBConnName_SelectedIndexChanged += cbbConnName_SelectedIndexChanged;
             #endregion
 
-            txbSavePath.Text = "d:/javaAuto";
+            //加载用户偏好值
+            txbSavePath.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.AutoCode_Path, "").Value;
             //设置下拉框查找数据源
             cbbTableName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cbbTableName.AutoCompleteSource = AutoCompleteSource.CustomSource;
@@ -523,7 +524,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //生成SQL成功后提示
                 //ShowInfo(strInfo);
                 lblInfo.Text = _strAutoSqlSuccess;
-
             }
             catch (Exception ex)
             {
@@ -554,9 +554,6 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             return sPackName;
         }
-
-        
-
         #endregion
 
         #region 帮助按钮事件
@@ -729,7 +726,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             FolderBrowserDialog dialog = new FolderBrowserDialog();
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                this.txbSavePath.Text = dialog.SelectedPath;
+                txbSavePath.Text = dialog.SelectedPath;
+                //保存用户偏好值
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.AutoCode_Path, txbSavePath.Text, "【代码生成】保存路径");
+                WinFormContext.UserLoveSettings.Save();
             }
         }
 

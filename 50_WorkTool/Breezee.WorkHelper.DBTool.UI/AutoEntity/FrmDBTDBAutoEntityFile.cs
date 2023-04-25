@@ -55,8 +55,9 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             Text = "生成实体文件";
             ctxmBuilt.Visible = false;
-            //读取属性配置
-            txtPath.Text = Setting.Default.AutoEntity_Path;
+            //加载用户偏好值
+            txtPath.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.AutoEntity_Path, "").Value;
+            //txtPath.Text = Setting.Default.AutoEntity_Path;
 
             //设置数据库连接控件
             _IDBConfigSet = ContainerContext.Container.Resolve<IDBConfigSet>();
@@ -217,9 +218,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                     writer.Write(sFileContent);
                 }
             }
-            //保存属性
-            Setting.Default.AutoEntity_Path = txtPath.Text;
-            Setting.Default.Save();
+            //保存用户偏好值
+            WinFormContext.UserLoveSettings.Set("AutoEntity_Path", txtPath.Text, "实体保存路径");
+            WinFormContext.UserLoveSettings.Save();
+            //Setting.Default.AutoEntity_Path = txtPath.Text;
+            //Setting.Default.Save();
             ShowInfo("实体成功生成！");
         }
         #endregion
@@ -319,8 +322,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 txtPath.Text = dialog.SelectedPath;
-                Setting.Default.AutoEntity_Path = dialog.SelectedPath;
-                Setting.Default.Save();
+                //保存用户偏好值
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.AutoEntity_Path, dialog.SelectedPath, "【实体生成】保存路径");
+                WinFormContext.UserLoveSettings.Save();
+                //Setting.Default.AutoEntity_Path1 = dialog.SelectedPath;
+                //Setting.Default.Save();
             }
         } 
         #endregion

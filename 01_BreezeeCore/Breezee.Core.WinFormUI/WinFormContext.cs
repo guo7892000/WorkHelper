@@ -42,6 +42,8 @@ namespace Breezee.Core.WinFormUI
         //配置信息
         private static RunningConfig _GlobalConfig = new RunningConfig();//全局配置
         private static UserEnvConfig _UserEnvConfig = new UserEnvConfig();//用户配置
+        //用户偏好设置
+        private static UserLoveSettings _userLoveSettings;
 
         private static FtpServer _FteServerDefault = new FtpServer();//默认的FTP服务器
         private static List<FtpServer> _FteServerList = new List<FtpServer>();//FTP服务器列表
@@ -193,9 +195,11 @@ namespace Breezee.Core.WinFormUI
         {
             get { return _FteServerList; }
             set { _FteServerList = value; }
-        } 
+        }
+
+        public static UserLoveSettings UserLoveSettings { get => _userLoveSettings; set => _userLoveSettings = value; }
         #endregion
-        
+
         #endregion
 
         #region 构造函数

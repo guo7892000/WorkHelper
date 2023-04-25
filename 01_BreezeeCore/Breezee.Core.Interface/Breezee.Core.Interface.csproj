@@ -48,6 +48,7 @@
     <Compile Include="DB\DbField.cs" />
     <Compile Include="DB\DbServerInfo.cs" />
     <Compile Include="Entity\AppEntity.cs" />
+    <Compile Include="Entity\UserLoveSettings.cs" />
     <Compile Include="Entity\DbConfigEntity.cs" />
     <Compile Include="Entity\ConfigEntity.cs" />
     <Compile Include="Entity\DllEntity.cs" />
