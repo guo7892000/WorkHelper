@@ -8,7 +8,7 @@ using System.IO;
 namespace Breezee.Core.Interface
 {
     /// <summary>
-    /// 对象名称：迷你XML通用类
+    /// 对象名称：最小化的XML通用类
     /// 创建作者：黄国辉
     /// 创建日期：2021-08-30
     /// 说明：对固定格式的XML文件维护类。
@@ -17,14 +17,35 @@ namespace Breezee.Core.Interface
     /// </summary>
     public class MiniXmlConfig
     {
-        private string _sDirectory;
-        private string _sFileName;
-        private string _sFullFileName;
+        private string _sDirectory; //目录名
+        private string _sFileName; //文件名
+        private string _sFullFileName; //文件全路径
         private string _sRoot; //根节点
         private string _sElement; //子节点
         private XmlConfigSaveType _saveType;
         private List<string> _lstCol;
         private string _sPK;
+        private DataTable _dtData;
+
+        public DataTable Data { get => _dtData;  }
+        public string DirName { get => _sDirectory;  }
+        public string FileName { get => _sFileName; }
+        public string FullFileName { get => _sFullFileName; }
+        public List<string> Columns { get => _lstCol; }
+        public XmlConfigSaveType SaveType { get => _saveType; }
+        /// <summary>
+        /// 主键列名
+        /// </summary>
+        public string PK { get => _sPK; }
+        /// <summary>
+        /// 根节点名称
+        /// </summary>
+        public string Root { get => _sRoot; }
+        /// <summary>
+        /// 子节点名称
+        /// </summary>
+        public string Element { get => _sElement; }
+
 
         /// <summary>
         /// 构造函数
@@ -46,7 +67,7 @@ namespace Breezee.Core.Interface
             _sFileName = sFileName;
             _sFullFileName = Path.Combine(_sDirectory, sFileName);
             _lstCol = lstCol;
-            if(!_lstCol.Contains(sPK))
+            if (!_lstCol.Contains(sPK))
             {
                 _lstCol.Add(sPK);
             }
@@ -54,37 +75,29 @@ namespace Breezee.Core.Interface
             _sRoot = sRoot;
             _sElement = sChild;
             _saveType = saveType;
+            //不存在目录时创建
+            if (!Directory.Exists(sDirectory))
+            {
+                if (!Directory.Exists(_sDirectory))
+                {
+                    Directory.CreateDirectory(_sDirectory);
+                }
+                //创建一个根实体
+                XElement ele = new XElement(_sRoot);
+                ele.Save(_sFullFileName);
+            }
         }
 
         /// <summary>
-        /// 获取配置文件方法
-        /// </summary>
-        /// <returns></returns>
-        public string GetFullFileName()
-        {
-            return _sFullFileName;
-        }
-
-        public string GetFileName()
-        {
-            return _sFileName;
-        }
-
-        public string GetDirectory()
-        {
-            return _sDirectory;
-        }
-
-        /// <summary>
-        /// 加载文件
+        /// 加载文件数据
         /// </summary>
         /// <returns></returns>
         public DataTable Load()
         {
-            DataTable dt = GenerateDataStruct();
+            _dtData = GenerateDataStruct();
             if (!File.Exists(_sFullFileName))
             {
-                return dt;
+                return _dtData;
             }
             FileInfo f = new FileInfo(_sFullFileName);
             f.Attributes = FileAttributes.Normal;//去掉文件的的只读属性
@@ -94,19 +107,19 @@ namespace Breezee.Core.Interface
             {
                 foreach (XElement ele in doc.Root.Elements(_sElement))
                 {
-                    DataRow row = dt.NewRow();
+                    DataRow row = _dtData.NewRow();
                     foreach (string s in _lstCol)
                     {
                         row[s] = (string)ele.Element(s);
                     }
-                    dt.Rows.Add(row);
+                    _dtData.Rows.Add(row);
                 }
             }
             else
             {
                 foreach (XElement ele in doc.Root.Elements(_sElement))
                 {
-                    DataRow row = dt.NewRow();
+                    DataRow row = _dtData.NewRow();
                     foreach (XAttribute att in ele.Attributes())
                     {
                         foreach (string s in _lstCol)
@@ -119,38 +132,21 @@ namespace Breezee.Core.Interface
                         }
 
                     }
-                    dt.Rows.Add(row);
+                    _dtData.Rows.Add(row);
                 }
-                
             }
-            return dt;
-        }
-
-        /// <summary>
-        /// 生成表结构
-        /// </summary>
-        /// <returns></returns>
-        public DataTable GenerateDataStruct()
-        {
-            DataTable dt = new DataTable();
-            foreach (string s in _lstCol)
-            {
-                dt.Columns.Add(s, typeof(string));
-            }
-            dt.PrimaryKey = new DataColumn[] { dt.Columns[_sPK] };
-            dt.Columns[_sPK].DefaultValue = Guid.NewGuid().ToString();
-            return dt;
+            return _dtData;
         }
 
         /// <summary>
         /// 保存XML文件方法
         /// </summary>
         /// <param name="dtItems"></param>
-        public void Save(DataTable dtItems)
+        public void Save(DataTable dtItems = null)
         {
             if (dtItems == null)
             {
-                return;
+                dtItems = _dtData == null ? GenerateDataStruct() : _dtData;
             }
             List<XElement> keyItems = new List<XElement>(dtItems.Rows.Count);
             if (_saveType == XmlConfigSaveType.Element)
@@ -185,17 +181,21 @@ namespace Breezee.Core.Interface
             }
             ele.Save(_sFullFileName);
         }
-    }
 
-    public enum XmlConfigSaveType
-    {
         /// <summary>
-        /// 属性方式保存
+        /// 生成表结构
         /// </summary>
-        Attribute,
-        /// <summary>
-        /// 子对象方式
-        /// </summary>
-        Element
+        /// <returns></returns>
+        private DataTable GenerateDataStruct()
+        {
+            _dtData = new DataTable();
+            foreach (string s in _lstCol)
+            {
+                _dtData.Columns.Add(s, typeof(string));
+            }
+            _dtData.PrimaryKey = new DataColumn[] { _dtData.Columns[_sPK] };
+            _dtData.Columns[_sPK].DefaultValue = Guid.NewGuid().ToString();
+            return _dtData;
+        }
     }
 }

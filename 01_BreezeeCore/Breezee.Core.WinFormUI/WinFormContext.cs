@@ -48,6 +48,25 @@ namespace Breezee.Core.WinFormUI
         private static FtpServer _FteServerDefault = new FtpServer();//默认的FTP服务器
         private static List<FtpServer> _FteServerList = new List<FtpServer>();//FTP服务器列表
 
+        /// <summary>
+        /// 配置根路径
+        /// </summary>
+        //public string ConfigRootPath => GlobalContext.AppRootPath;
+        /// <summary>
+        /// 用户自定配置的路径
+        /// </summary>
+        //public string UserSettingPath => GlobalContext.PathConfig();
+        public AppConfigPair AppConfigPair { get; set; }
+        public WinFormConfig WinFormConfig { get; set; }
+        /// <summary>
+        /// 临时目录路径
+        /// </summary>
+        public string TempDirPath => GlobalContext.PathTemp();
+        /// <summary>
+        /// 网格的Tag历史保存路径
+        /// </summary>
+        public string DataGridTagHistoryPath => GlobalContext.PathGridStyle();
+
         //其他变量
         private Form mCurrentForm; //当前窗体
         private IMainForm mMainForm; //主窗体
@@ -691,7 +710,32 @@ namespace Breezee.Core.WinFormUI
         }
         #endregion
 
+        /// <summary>
+        /// 加载应用配置
+        /// </summary>
+        /// <param name="sNewDir">新目录名</param>
+        public void LoadAppConfig(string sNewDir = null)
+        {
+            //读取应用的配置
+            AppConfigPair appConfig = new AppConfigPair(GlobalContext.AppStartConfigPath, GlobalFile.StartUp, XmlConfigSaveType.Attribute);
+            //获取用户喜好设置路径
+            string sConfigRootPath;
+            if (sNewDir == null)
+            {
+                sConfigRootPath = appConfig.Get(GlobalKey.ConfigPathKey, GlobalContext.AppRootPath);
+            }
+            else
+            {
+                sConfigRootPath = sNewDir;
+                appConfig.Set(GlobalKey.ConfigPathKey, sNewDir, "个性化配置文件路径");
+            }
+            GlobalContext.PathConfigRoot(sConfigRootPath);//改变根配置路径
+            Instance.AppConfigPair = appConfig;
+            WinFormConfig winConfig = new WinFormConfig(GlobalContext.PathConfig(), GlobalFile.FormStyle, XmlConfigSaveType.Attribute);
+            Instance.WinFormConfig = winConfig;
+            appConfig.Save();
+            winConfig.Save();
+        }
 
-        
     }
 }

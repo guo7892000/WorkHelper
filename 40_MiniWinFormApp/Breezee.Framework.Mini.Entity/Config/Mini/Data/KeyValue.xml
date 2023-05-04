@@ -19,8 +19,8 @@
   <key kid="FORM_SKIN_TYPE" name ="窗体皮肤类型">
     <value vid="0" name="默认"/>
     <value vid="1" name="选择颜色"/>
-    <value vid="2" name="选择图片"/>
-    <value vid="3" name="自定义颜色"/>
+	<value vid="2" name="自定义颜色"/>
+    <value vid="3" name="选择图片"/>   
   </key>
   <key kid="SAVE_TIP" name ="保存提示类型">
     <value vid="1" name="弹出提示"/>

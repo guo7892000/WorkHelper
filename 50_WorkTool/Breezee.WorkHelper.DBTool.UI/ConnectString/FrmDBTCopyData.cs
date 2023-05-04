@@ -57,7 +57,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             dtCopy.TableName = _strTableName;
             bsTable.DataSource = dtCopy;
             dgvTableList.DataSource = bsTable;
-            GlobalValue.Instance.SetPublicDataSource(new DataTable[] { dtCopy });
+            WinFormGlobalValue.SetPublicDataSource(new DataTable[] { dtCopy });
             //
             lblTableData.Text = "可在Excel中复制数据后，点击网格后按ctrl + v粘贴即可。注：第一行为列名！";
             ckbAutoColumnName.Checked = true;
@@ -81,7 +81,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         return;
                     }
 
-                    DataTable dtMain = (DataTable)GlobalValue.Instance.dicBindingSource[_strTableName].DataSource;
+                    DataTable dtMain = (DataTable)WinFormGlobalValue.dicBindingSource[_strTableName].DataSource;
                     dtMain.Clear();
                     dtMain.Columns.Clear();
                     pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain);
@@ -104,7 +104,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (strSqlType == "1")
                 {
                     #region 拼接字符串
-                    DataTable dtMain = (DataTable)GlobalValue.Instance.dicBindingSource[_strTableName].DataSource;
+                    DataTable dtMain = (DataTable)WinFormGlobalValue.dicBindingSource[_strTableName].DataSource;
                     if (dtMain.Rows.Count == 0)
                     {
                         ShowInfo("没有可生成的数据！");
@@ -153,7 +153,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     int iDbType = int.Parse(cbbDbType.SelectedValue.ToString());
                     DataBaseType selectDBType = (DataBaseType)iDbType;
 
-                    DataTable dtMain = (DataTable)GlobalValue.Instance.dicBindingSource[_strTableName].DataSource;
+                    DataTable dtMain = (DataTable)WinFormGlobalValue.dicBindingSource[_strTableName].DataSource;
                     if (dtMain.Rows.Count == 0)
                     {
                         ShowInfo("没有可生成的数据！");

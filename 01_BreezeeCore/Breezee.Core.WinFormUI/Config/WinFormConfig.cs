@@ -1,9 +1,10 @@
 ﻿using Breezee.Core.Interface;
 using System.Data;
+using System.IO;
 
 
 /*********************************************************************	
- * 对象名称：	
+ * 对象名称：WinForm配置类
  * 对象类别：类	
  * 创建作者：黄国辉	
  * 创建日期：2022/11/10 0:46:13	
@@ -16,78 +17,36 @@ using System.Data;
 namespace Breezee.Core.WinFormUI
 {
     /// <summary>
-    /// 类
+    /// WinForm配置类
     /// </summary>
-    public class WinFormConfig
+    public class WinFormConfig : IXmlConfigPair
     {
-        private static string configPath;
-        private static KeyValuePairConfig config;
-        private static DataTable dtConfig;
-
-        #region IOC容器
-        private static readonly object lockob = new object();
-        private static WinFormConfig _instance;
-
-        /// <summary>
-        /// 容器
-        /// </summary>
-        public static WinFormConfig Instance
+        public override IXmlConfigPair XmlConfig { get; }
+        public WinFormConfig(string sPath, string sConfigName, XmlConfigSaveType saveType)
         {
-            get
-            {
-                if (_instance == null)
-                {
-                    lock (lockob)
-                    {
-                        if (_instance == null)
-                        {
-                            _instance = new WinFormConfig();
-                        }
-                    }
-                }
-                return _instance;
-            }
-        }
-        #endregion
-        public WinFormConfig()
-        {
-            configPath = GlobalValue.StartupPath + @"\Config\Data\FormStyle.xml";
-            config = new KeyValuePairConfig(configPath);
-            dtConfig = config.Get();
-        }
-        public string Get(string sKey)
-        {
-            DataRow[] drArr = dtConfig.Select(KeyValuePairConfig.XmlKeyValueStr.KeyProp.Key + "='"+ sKey + "'");
-            if (drArr == null || drArr.Length == 0)
-            {
-                dtConfig.Rows.Add(dtConfig.NewRow());
-            }
-            return drArr[0][KeyValuePairConfig.XmlKeyValueStr.KeyProp.Value].ToString();
+            Dir = sPath;
+            FileName = sConfigName;
+            XmlConfig = new KeyValuePairConfig(sPath, sConfigName, saveType);
         }
 
-        public void Set(string sKey,string sValue) {
-            DataRow[] drArr = dtConfig.Select(KeyValuePairConfig.XmlKeyValueStr.KeyProp.Key + "='" + sKey + "'");
-            if (drArr != null || drArr.Length == 0)
-            {
-                dtConfig.Rows.Add(dtConfig.NewRow());
-            }
-            drArr[0][KeyValuePairConfig.XmlKeyValueStr.KeyProp.Value] = sValue;
+        public override void Set(string sKey, string sValue, string sRemark)
+        {
+            XmlConfig.Set(sKey, sValue, sRemark);
         }
 
-        public void Save()
+        public override KeyValuePairEntity GetEntity(string sKey, string sDefault)
         {
-            config.Save(dtConfig, configPath);
+            return XmlConfig.GetEntity(sKey, sDefault);
         }
 
-        public static class WinFormConfigString
+        public override string Get(string sKey, string sDefault)
         {
-            public static string MainSkinType = "MainSkinType";
-            public static string MainSkinValue = "MainSkinValue";
-            public static string MainSkinColorName = "MainSkinColorName";
-            public static string CommonSkinType = "CommonSkinType";
-            public static string CommonSkinValue = "CommonSkinValue";
-            public static string CommonSkinColorName = "CommonSkinColorName";
-            public static string SavePromptType = "SavePromptType";
+            return XmlConfig.Get(sKey, sDefault);
+        }
+        public override bool Save()
+        {
+            XmlConfig.Save();
+            return true;
         }
     }
 

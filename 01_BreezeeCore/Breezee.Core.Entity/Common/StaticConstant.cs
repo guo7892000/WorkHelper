@@ -16,22 +16,6 @@ namespace Breezee.Core.Entity
     /// </summary>
     public static partial class StaticConstant
     {
-
-        ///// <summary>
-        ///// 主机厂ID
-        ///// </summary>
-        //public static readonly string MAIN_ID = "HOST";
-
-        ///// <summary>
-        ///// Dictionary唯一ID关键字
-        ///// </summary>
-        //public static readonly string UNIQUE_FLAG = "LIFECYCLE_UNID";
-
-        ///// <summary>
-        ///// 性能追踪开关
-        ///// </summary>
-        //public static readonly string PERFORMANCE_FLAG = "PERFORMANCE_TRACE_FLAG";
-
         #region 分页相关
         /// <summary>
         /// 每页记录数常量
@@ -153,10 +137,6 @@ namespace Breezee.Core.Entity
 
         public static readonly string FRA_GRID_ROWNO_STR = "ROWNO";
         public static readonly string FRA_GRID_IS_SELECTED_STR = "IS_SELECTED";
-        //Peach应用程序数据目录及文件名
-        public static readonly string FRA_PEACH_DATA_CONFIG_PATH =  Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + @"\Peach\Config";
-        public static readonly string FRA_PEACH_DATA_CONFIG_NAME = "all.xml";
-        public static readonly string FRA_PEACH_SHORT_CUT_MENU_CONFIG_PATH = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + @"\Peach\Config\ShortCutMenu";
 
     }
 }

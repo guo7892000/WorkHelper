@@ -21,13 +21,13 @@ namespace Breezee.Core
     /// <summary>
     /// 全局上下文类
     /// </summary>
-    public class GlobalContext
+    public class CoreGlobalContext
     {
-        private static GlobalContext _Instance; //自身的一个静态实例
+        private static CoreGlobalContext _Instance; //自身的一个静态实例
         private static readonly object lockob = new object();
         public IApp MainApp { get;internal set; }
 
-        public static GlobalContext Instance
+        public static CoreGlobalContext Instance
         {
             get
             {
@@ -37,7 +37,7 @@ namespace Breezee.Core
                     {
                         if (_Instance == null)
                         {
-                            _Instance = new GlobalContext();
+                            _Instance = new CoreGlobalContext();
                         }
                     }
                 }

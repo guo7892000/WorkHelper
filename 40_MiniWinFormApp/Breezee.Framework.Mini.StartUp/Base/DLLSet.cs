@@ -7,6 +7,7 @@ using System.IO;
 using Breezee.Core.Entity;
 using Breezee.Framework.Mini.Entity;
 using Breezee.Core.WinFormUI;
+using Breezee.Core.Interface;
 
 namespace Breezee.Framework.Mini.StartUp
 {
@@ -24,7 +25,7 @@ namespace Breezee.Framework.Mini.StartUp
         private string _strGuid = "Guid"; //类型
         private string _strName = "Name"; //键
         private string _strCode = "Code"; //值
-        private string _strFileName = Path.Combine(GlobalValue.StartupPath, MiniStaticString.ConfigDataPath, MiniStaticString.DllFileName);
+        private string _strFileName = Path.Combine(GlobalContext.AppEntryAssemblyPath, MiniStaticString.ConfigDataPath, MiniStaticString.DllFileName);
 
         /// <summary>
         /// 构造函数

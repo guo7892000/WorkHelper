@@ -30,16 +30,17 @@ namespace Breezee.Framework.Mini.StartUp
         #region 变量
         public event EventHandler<EventArgs> FormClosed;
         string _strAppPath = AppDomain.CurrentDomain.BaseDirectory;
-        string _strConfigFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WorkHelper/Config");
+        //string _strConfigFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WorkHelper/Config");
         int iStartMenu = 0;
         XmlMenu _xmlMenu;
         IDictionary<string, MenuEntity> _MenuDic;
         ShortCutList _ShortCutMenuList;
         bool IsReLoad = false;
-        string MenuXmlFilePath = Path.Combine(GlobalValue.EntryAssemblyPath, MiniStaticString.ConfigDataPath, MiniStaticString.MenuFileName);
+        string MenuXmlFilePath = Path.Combine(GlobalContext.AppEntryAssemblyPath, MiniStaticString.ConfigDataPath, MiniStaticString.MenuFileName);
         public ToolStripStatusLabel StatusBarMessagePanel => throw new NotImplementedException();
         private string _FrameworkHelpPath = "/Help/Html/Mini/WorkHelper.html";
         private string _FrameworkHelpName = "工作助手";
+        private WinFormConfig _WinFormConfig;
         #endregion
 
         #region 构造函数
@@ -52,8 +53,9 @@ namespace Breezee.Framework.Mini.StartUp
         #region 加载事件
         private void FrmMainMDI_Load(object sender, EventArgs e)
         {
-            Text = string.Format("工作助手（Work Helper） v{0} 正式版  2023-04-21", Assembly.GetExecutingAssembly().GetName().Version.ToString());
-
+            Text = string.Format("工作助手（Work Helper） v{0} 正式版  2023-05-04", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            
+            _WinFormConfig = WinFormContext.Instance.WinFormConfig;
             iStartMenu = menuStrip.Items.IndexOfKey(tsbStartMenu.Name);
             this.WindowState = FormWindowState.Maximized;
 #if DEBUG
@@ -62,7 +64,7 @@ namespace Breezee.Framework.Mini.StartUp
             tcMenu.Dock = DockStyle.Top;
             _xmlMenu = new XmlMenu(MenuXmlFilePath);
 
-            this.SetFormBackGroupStyle(WinFormConfig.Instance.Get(WinFormConfig.WinFormConfigString.MainSkinType), WinFormConfig.Instance.Get(WinFormConfig.WinFormConfigString.MainSkinValue));//设置主窗体样式
+            this.SetFormBackGroupStyle(_WinFormConfig.Get(GlobalKey.MainSkinType, BaseForm.ChildFormStyleType), _WinFormConfig.Get(GlobalKey.MainSkinValue, BaseForm.ChildFormStyleValue));//设置主窗体样式
             WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp(_FrameworkHelpPath, _FrameworkHelpName + " > 概述", _FrameworkHelpName));
             WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp("/Help/Html/Mini/ChangeHistory.html", _FrameworkHelpName + " > 变更历史", _FrameworkHelpName));
             //加载菜单
@@ -198,17 +200,23 @@ namespace Breezee.Framework.Mini.StartUp
         #region 加载快捷菜单
         private void LoadShortCutMenu()
         {
-            if (!Directory.Exists(_strConfigFilePath))
+            string sPathConfig = GlobalContext.PathConfig();
+            if (!Directory.Exists(sPathConfig))
             {
-                Directory.CreateDirectory(_strConfigFilePath);
+                Directory.CreateDirectory(sPathConfig); 
             }
-            string strShortCutFilePath = Path.Combine(_strConfigFilePath, MiniStaticString.ShortCutMenuFileName);
+            string strShortCutFilePath = Path.Combine(sPathConfig, MiniStaticString.ShortCutMenuFileName);
             if (!File.Exists(strShortCutFilePath))
             {
                 XmlDocument xmlShortCut = new XmlDocument();
                 XmlElement xmRoot = xmlShortCut.CreateElement("xml");
                 xmlShortCut.AppendChild(xmRoot);
                 xmlShortCut.Save(strShortCutFilePath);
+                //
+                _ShortCutMenuList = new ShortCutList();
+                _ShortCutMenuList.AddShortCutItem += AddShortCutMenuItem;//新增快捷菜单事件
+                _ShortCutMenuList.Dock = DockStyle.Fill;
+                pnlDestop.Controls.Add(_ShortCutMenuList);
             }
             else
             {
@@ -243,7 +251,7 @@ namespace Breezee.Framework.Mini.StartUp
 
         private void LoadUserLoveSettings()
         {
-            UserLoveSettings miniXmlConfig = new UserLoveSettings(_strConfigFilePath, MiniStaticString.UserLoveSettings, XmlConfigSaveType.Attribute);
+            UserLoveSettings miniXmlConfig = new UserLoveSettings(GlobalContext.PathConfig(), MiniStaticString.UserLoveSettings, XmlConfigSaveType.Attribute);
             WinFormContext.UserLoveSettings = miniXmlConfig;
         }
 
@@ -464,7 +472,7 @@ namespace Breezee.Framework.Mini.StartUp
         #region 保存快捷菜单配置
         private void SaveShortCutMenuConfig(MenuEntity dMenu,bool IsAdd)
         {
-            string strShortCutFilePath = Path.Combine(_strConfigFilePath, MiniStaticString.ShortCutMenuFileName);
+            string strShortCutFilePath = Path.Combine(GlobalContext.PathConfig(), MiniStaticString.ShortCutMenuFileName);
             XmlDocument xmlMenu = new XmlDocument();
             xmlMenu.Load(strShortCutFilePath);
             XmlNodeList xmlList = xmlMenu.SelectNodes("xml/Menu");
@@ -721,7 +729,7 @@ namespace Breezee.Framework.Mini.StartUp
             f.ShowGlobalMsg += ShowGlobalMsg_Click;//绑定全局信息提示
             if (f.ShowDialog() == DialogResult.OK)
             {
-                this.SetFormBackGroupStyle(WinFormConfig.Instance.Get(WinFormConfig.WinFormConfigString.MainSkinType), WinFormConfig.Instance.Get(WinFormConfig.WinFormConfigString.MainSkinValue));//设置主窗体样式
+                this.SetFormBackGroupStyle(_WinFormConfig.Get(GlobalKey.MainSkinType, BaseForm.ChildFormStyleType), _WinFormConfig.Get(GlobalKey.MainSkinValue, BaseForm.ChildFormStyleValue));//设置主窗体样式
             }
         }
 

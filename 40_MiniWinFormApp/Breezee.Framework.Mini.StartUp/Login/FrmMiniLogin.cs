@@ -38,6 +38,7 @@ namespace Breezee.Framework.Mini.StartUp
         #region 全局变量
         IMiniLogin lg = ContainerContext.Container.Resolve<IMiniLogin>();
         string _LocalVersion;
+        LoginConfig _loginConfig;
         #endregion
 
         #region 默认构造函数
@@ -58,14 +59,16 @@ namespace Breezee.Framework.Mini.StartUp
         /// <param name="e"></param>
         private void FrmLogin_Load(object sender, EventArgs e)
         {
+            _loginConfig = new LoginConfig(GlobalContext.AppStartConfigPath, GlobalFile.LoginConfig, XmlConfigSaveType.Attribute);
             //设置背景颜色为透明
             pnl_All.BackColor = Color.Transparent;
             pnlLogin.BackColor = Color.Transparent;
             
             //设置为无边框窗体
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 
-            if ("1".Equals(LoginConfig.Instance.Get(LoginConfig.LgoinConfigString.IsRememberPwd)))
+            //登录配置处理
+            if ("1".Equals(_loginConfig.Get(LgoinConfigString.IsRememberPwd,"0")))
             {
                 this.chbSavePwd.Checked = true;
             }
@@ -74,8 +77,8 @@ namespace Breezee.Framework.Mini.StartUp
                 this.chbSavePwd.Checked = false;
             }
 
-            cbbUserName.Text = LoginConfig.Instance.Get(LoginConfig.LgoinConfigString.LastLoginUserName);
-            string[] users = LoginConfig.Instance.Get(LoginConfig.LgoinConfigString.AutoCompleteUserList).Split(',');
+            cbbUserName.Text = _loginConfig.Get(LgoinConfigString.LastLoginUserName,"");
+            string[] users = _loginConfig.Get(LgoinConfigString.AutoCompleteUserList, "xtadmin").Split(',');
             cbbUserName.AutoCompleteCustomSource.AddRange(users);
             foreach (string str in users)
             {
@@ -84,7 +87,7 @@ namespace Breezee.Framework.Mini.StartUp
                     cbbUserName.Items.Add(str);
                 }
             }
-            txbPassword.Text = LoginConfig.Instance.Get(LoginConfig.LgoinConfigString.LastLoginPwd);
+            txbPassword.Text = _loginConfig.Get(LgoinConfigString.LastLoginPwd,"");
             //设置最大的面板背景图片
             this.BackgroundImage = Properties.Resources.WorkHelp_Logo;
             //设置主SQL配置文件路径
@@ -159,18 +162,18 @@ namespace Breezee.Framework.Mini.StartUp
                 #region 保存设置信息
                 if (chbSavePwd.Checked)
                 {
-                    LoginConfig.Instance.Set(LoginConfig.LgoinConfigString.LastLoginPwd, txbPassword.Text);
-                    LoginConfig.Instance.Set(LoginConfig.LgoinConfigString.IsRememberPwd, "1");
+                    _loginConfig.Set(LgoinConfigString.LastLoginPwd, txbPassword.Text,"最后登录密码");
+                    _loginConfig.Set(LgoinConfigString.IsRememberPwd, "1", "是否记录密码");
                 }
                 else
                 {
-                    LoginConfig.Instance.Set(LoginConfig.LgoinConfigString.LastLoginPwd, "");
-                    LoginConfig.Instance.Set(LoginConfig.LgoinConfigString.IsRememberPwd, "0");
+                    _loginConfig.Set(LgoinConfigString.LastLoginPwd, "", "最后登录密码");
+                    _loginConfig.Set(LgoinConfigString.IsRememberPwd, "0", "是否记录密码");
                 }
                 if (ckbAutoLogin.Checked)
                 {
-                    LoginConfig.Instance.Set(LoginConfig.LgoinConfigString.LastLoginUserName, userName);
-                    string sAutoCompleteUserList = LoginConfig.Instance.Get(LoginConfig.LgoinConfigString.AutoCompleteUserList);
+                    _loginConfig.Set(LgoinConfigString.LastLoginUserName, userName, "最后登录用户");
+                    string sAutoCompleteUserList = _loginConfig.Get(LgoinConfigString.AutoCompleteUserList, "xtadmin");
                     bool isIncludeName = false;
                     foreach (string str in sAutoCompleteUserList.Split(','))
                     {
@@ -183,15 +186,15 @@ namespace Breezee.Framework.Mini.StartUp
                     }
                     if (!isIncludeName)
                     {
-                        LoginConfig.Instance.Set(LoginConfig.LgoinConfigString.AutoCompleteUserList, sAutoCompleteUserList += userName + ",");
+                        _loginConfig.Set(LgoinConfigString.AutoCompleteUserList, sAutoCompleteUserList += userName + ",","xtadmin");
                     }
                 }
                 else
                 {
-                    LoginConfig.Instance.Set(LoginConfig.LgoinConfigString.LastLoginUserName, "");
+                    _loginConfig.Set(LgoinConfigString.LastLoginUserName, "", "最后登录用户");
                 }
 
-                LoginConfig.Instance.Save(); 
+                _loginConfig.Save(); 
                 #endregion
 
                 //关闭本窗体

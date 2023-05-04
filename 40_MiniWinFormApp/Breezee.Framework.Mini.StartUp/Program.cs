@@ -1,7 +1,9 @@
 using Breezee.Core;
+using Breezee.Core.Interface;
 using Breezee.Core.WinFormUI;
 using Breezee.Framework.Mini.Entity;
 using System;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
@@ -20,21 +22,23 @@ namespace Breezee.Framework.Mini.StartUp
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            //加载应用配置
+            WinFormContext.Instance.LoadAppConfig();
+            //打开登录界面
             FrmMiniLogin frmLogin = new FrmMiniLogin();
-            if (frmLogin.ShowDialog() == DialogResult.OK)
-            {
-                FrmMiniMainMDI frmMain = new FrmMiniMainMDI();
-                WinFormContext.Instance.SetMdiParent(frmMain);
-
-                FormApp app = new MiniApp();
-                app.SetMain();
-                app.LoginForm = frmLogin;
-                app.MainForm = frmMain;
-                app.Init();
-
-                Application.Run(frmMain);
-            }
-        }
+            if (frmLogin.ShowDialog() != DialogResult.OK) return;
+            //创建主窗体
+            FrmMiniMainMDI frmMain = new FrmMiniMainMDI();
+            WinFormContext.Instance.SetMdiParent(frmMain);
+            //全局应用类
+            FormApp app = new MiniApp();
+            app.SetMain();
+            app.LoginForm = frmLogin;
+            app.MainForm = frmMain;
+            app.Init();
+            //运行应用
+            Application.Run(frmMain);
+        }  
         #endregion
 
         #region 应用程序错误异常

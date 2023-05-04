@@ -343,6 +343,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             txbID.Text = string.Empty;
             txbUPDATE_CONTROL_ID.Text = string.Empty;
+            txbDBConfigCode.Text = txbDBConfigCode.Text.Trim() + "Copy";
         }
     }
 }

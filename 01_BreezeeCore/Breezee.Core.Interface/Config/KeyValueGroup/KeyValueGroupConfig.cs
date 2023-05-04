@@ -7,11 +7,11 @@ using System.Text;
 using System.Xml.Linq;
 
 /*********************************************************************		
- * 对象名称：		
+ * 对象名称：分组键值XML配置
  * 对象类别：接口		
  * 创建作者：黄国辉		
  * 创建日期：2022/11/5 22:29:28		
- * 对象说明：		
+ * 对象说明：值列表分组配置，类似值列表数据，即一种类型下有多个值的配置。		
  * 电邮地址：guo7892000@126.com		
  * 微 信 号：BreezeeHui		
  * 修改历史：		
@@ -22,10 +22,10 @@ namespace Breezee.Core.Interface
     /// <summary>
     /// XML方式的键值表
     /// </summary>
-    public class KeyValueListConfig
+    public class KeyValueGroupConfig
     {
         public XDocument Doc;
-        public KeyValueListConfig(string sPath)
+        public KeyValueGroupConfig(string sPath)
         {
             if (File.Exists(sPath))
             {
@@ -38,7 +38,7 @@ namespace Breezee.Core.Interface
             {
                 Doc = new XDocument();
                 Doc.Declaration = new XDeclaration("1.0", "utf-8","no");
-                XElement xRoot = new XElement(XmlKeyValueStr.Root);// 添加根节点
+                XElement xRoot = new XElement(KeyValueGroupString.Root);// 添加根节点
                 Doc.Add(xRoot);
                 Doc.Save(sPath);
             }
@@ -47,14 +47,14 @@ namespace Breezee.Core.Interface
         public DataTable GetKeys()
         {
             DataTable dtKeys = new DataTable();
-            dtKeys.Columns.Add(XmlKeyValueStr.KeyProp.Kid);
-            dtKeys.Columns.Add(XmlKeyValueStr.KeyProp.Name);
+            dtKeys.Columns.Add(KeyValueGroupString.KeyProp.Kid);
+            dtKeys.Columns.Add(KeyValueGroupString.KeyProp.Name);
 
             foreach (XElement e in Doc.Root.Elements())
             {
                 DataRow dr = dtKeys.NewRow();
-                dr[XmlKeyValueStr.KeyProp.Kid] = e.Attribute(XmlKeyValueStr.KeyProp.Kid).Value;
-                dr[XmlKeyValueStr.KeyProp.Name] = e.Attribute(XmlKeyValueStr.KeyProp.Name).Value;
+                dr[KeyValueGroupString.KeyProp.Kid] = e.Attribute(KeyValueGroupString.KeyProp.Kid).Value;
+                dr[KeyValueGroupString.KeyProp.Name] = e.Attribute(KeyValueGroupString.KeyProp.Name).Value;
 
                 dtKeys.ImportRow(dr);
             }
@@ -64,41 +64,23 @@ namespace Breezee.Core.Interface
         public DataTable GetValues(string sKey)
         {
             DataTable dtValues = new DataTable();
-            dtValues.Columns.Add(XmlKeyValueStr.ValueProp.Kid);
-            dtValues.Columns.Add(XmlKeyValueStr.ValueProp.Vid);
-            dtValues.Columns.Add(XmlKeyValueStr.ValueProp.Name);
+            dtValues.Columns.Add(KeyValueGroupString.ValueProp.Kid);
+            dtValues.Columns.Add(KeyValueGroupString.ValueProp.Vid);
+            dtValues.Columns.Add(KeyValueGroupString.ValueProp.Name);
 
-            IEnumerable<XElement> key = Doc.Root.Elements(XmlKeyValueStr.Key).Where(t => t.Attribute(XmlKeyValueStr.KeyProp.Kid).Value.Equals(sKey));
+            IEnumerable<XElement> key = Doc.Root.Elements(KeyValueGroupString.Key).Where(t => t.Attribute(KeyValueGroupString.KeyProp.Kid).Value.Equals(sKey));
             if(key.Count()>0)
             {
                 foreach (XElement e in key.Elements())
                 {
                     DataRow dr = dtValues.NewRow();
-                    dr[XmlKeyValueStr.ValueProp.Kid] = e.Parent.Attribute(XmlKeyValueStr.ValueProp.Kid).Value;
-                    dr[XmlKeyValueStr.ValueProp.Vid] = e.Attribute(XmlKeyValueStr.ValueProp.Vid).Value;
-                    dr[XmlKeyValueStr.ValueProp.Name] = e.Attribute(XmlKeyValueStr.ValueProp.Name).Value;
+                    dr[KeyValueGroupString.ValueProp.Kid] = e.Parent.Attribute(KeyValueGroupString.ValueProp.Kid).Value;
+                    dr[KeyValueGroupString.ValueProp.Vid] = e.Attribute(KeyValueGroupString.ValueProp.Vid).Value;
+                    dr[KeyValueGroupString.ValueProp.Name] = e.Attribute(KeyValueGroupString.ValueProp.Name).Value;
                     dtValues.Rows.Add(dr);
                 }
             }
             return dtValues;
-        }
-
-        public static class XmlKeyValueStr
-        {
-            public static string Root = "xml";
-            public static string Key = "key";
-            public static string Value = "value";
-            public static class KeyProp
-            {
-                public static string Kid = "kid";
-                public static string Name = "name";
-            }
-            public static class ValueProp
-            {
-                public static string Kid = "kid";
-                public static string Vid = "vid";
-                public static string Name = "name";
-            }
         }
     }
 }

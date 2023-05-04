@@ -417,7 +417,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 #endregion
 
                 //设置数据源
-                GlobalValue.Instance.SetPublicDataSource(new DataTable[] { dtMain, dtSec });
+                WinFormGlobalValue.SetPublicDataSource(new DataTable[] { dtMain, dtSec });
                 dgvTableList.DataSource = bsCos;
                 //dgvColList.DataSource = null;
                 //设置网格样式
@@ -491,8 +491,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
             }
             //取得数据源
-            DataTable dtMain = (DataTable)GlobalValue.Instance.dicBindingSource[_strTableName].DataSource;
-            DataTable dtSec = (DataTable)GlobalValue.Instance.dicBindingSource[_strColName].DataSource;
+            DataTable dtMain = (DataTable)WinFormGlobalValue.dicBindingSource[_strTableName].DataSource;
+            DataTable dtSec = (DataTable)WinFormGlobalValue.dicBindingSource[_strColName].DataSource;
             //移除空行
             dtMain.DeleteNullRow();
             //得到变更后数据

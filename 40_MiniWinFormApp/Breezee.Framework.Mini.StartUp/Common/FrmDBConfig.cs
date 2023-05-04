@@ -90,6 +90,7 @@ namespace Breezee.Framework.Mini.StartUp
             else
             {
                 cbbDatabaseType.SelectedValue = ((int)DataBaseType.SQLite).ToString();
+                cbbDatabaseType.SetControlReadOnly(true);//为简单起见，这里只能使用SQLite数据库
             }
             txbDBConfigCode.Text = _sKey;
             txbDBConfigCode.ReadOnly = true;
@@ -127,7 +128,7 @@ namespace Breezee.Framework.Mini.StartUp
                 #endregion
                 _listSupply.GetControlValue(dtXml, false);
                 _xmlCommon.Save(dtXml);
-                ShowInfo("保存成功！");
+                ShowInfo("保存成功，但需要重新登录才能生效！");
                 DialogResult = DialogResult.OK;
                 Close();
             }

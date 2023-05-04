@@ -1,7 +1,9 @@
-﻿using Breezee.Core.Tool;
+﻿using Breezee.Core.Interface;
+using Breezee.Core.Tool;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -24,23 +26,19 @@ namespace Breezee.Core.WinFormUI
     /// <summary>
     /// 全局值类
     /// </summary>
-    public class GlobalValue
+    public class WinFormGlobalValue : GlobalContext
     {
-        public static GlobalValue Instance = new GlobalValue();
-        public IDictionary<string, BindingSource> dicBindingSource = new Dictionary<string, BindingSource>();
+        public static IDictionary<string, BindingSource> dicBindingSource = new Dictionary<string, BindingSource>();
         //应用程序路径相关
         public static string StartupPath = Application.StartupPath;
-        public static string EntryAssemblyPath = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-        public static string BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
-        
         #region 设置绑定源集合
         /// <summary>
         /// 设置绑定源集合
         /// </summary>
         /// <param name="dicBindingSource"></param>
         /// <param name="dataTableArr"></param>
-        private void CreateBingSource(IDictionary<string, BindingSource> dicBindingSource, DataTable[] dataTableArr)
+        private static void CreateBingSource(IDictionary<string, BindingSource> dicBindingSource, DataTable[] dataTableArr)
         {
             for (int i = 0; i < dataTableArr.Length; i++)
             {
@@ -54,7 +52,7 @@ namespace Breezee.Core.WinFormUI
         #endregion
 
         #region 设置全局数据源
-        public void SetPublicDataSource(DataTable[] dataTableArr)
+        public static void SetPublicDataSource(DataTable[] dataTableArr)
         {
             CreateBingSource(dicBindingSource, dataTableArr);
             for (int i = 0; i < dataTableArr.Length; i++)

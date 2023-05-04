@@ -8,7 +8,7 @@ using System.Text;
 
 /*********************************************************************		
  * 对象名称：数据库配置		
- * 对象类别：接口		
+ * 对象类别：类		
  * 创建作者：黄国辉		
  * 创建日期：2022/11/5 22:29:28		
  * 对象说明：		
@@ -20,7 +20,7 @@ using System.Text;
 namespace Breezee.Core.Interface
 {
     /// <summary>
-    /// 实体基类
+    /// 数据库配置实体类
     /// </summary>
     public class DbConfigEntity: ConfigEntity
     {
@@ -46,7 +46,7 @@ namespace Breezee.Core.Interface
                 {
                     DbServers[dbServer.Key] = dbServer;
                 }
-                if (dt.Rows.Count == 1)
+                if ("1".Equals(dbServer.IsMain,StringComparison.OrdinalIgnoreCase))
                 {
                     MainDb = dbServer;
                 }

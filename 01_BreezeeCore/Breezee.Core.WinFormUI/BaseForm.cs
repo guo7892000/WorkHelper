@@ -1,4 +1,5 @@
 ﻿using Breezee.Core.Entity;
+using Breezee.Core.Interface;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -47,6 +48,10 @@ namespace Breezee.Core.WinFormUI
         public bool ShowPopFormMaxBox = false;
         public bool ShowPopFormMinBox = false;
         public FormBorderStyle ShowPopFormBorderStyle = FormBorderStyle.FixedSingle;//边框样式，如为FormBorderStyle.Sizable则可以调整大小。
+        //默认子窗体样式类型与样式值
+        public static string ChildFormStyleType = "0";//默认颜色
+        public static string ChildFormStyleValue = "216,246,255"; //浅蓝
+        private WinFormConfig _WinFormConfig;
 
         #region 构造函数
         /// <summary>
@@ -79,6 +84,7 @@ namespace Breezee.Core.WinFormUI
                 MinimizeBox = ShowPopFormMinBox;
                 FormBorderStyle = ShowPopFormBorderStyle;
             }
+            _WinFormConfig = WinFormContext.Instance.WinFormConfig;
             //使用辅助缓冲区重汇窗体
             DoubleBuffered = true;
 
@@ -91,7 +97,7 @@ namespace Breezee.Core.WinFormUI
                 }
                 else
                 {
-                    this.SetFormBackGroupStyle(WinFormConfig.Instance.Get(WinFormConfig.WinFormConfigString.CommonSkinType), WinFormConfig.Instance.Get(WinFormConfig.WinFormConfigString.CommonSkinValue));//设置子窗体样式
+                    this.SetFormBackGroupStyle(_WinFormConfig.Get(GlobalKey.CommonSkinType, ChildFormStyleType), _WinFormConfig.Get(GlobalKey.CommonSkinValue, ChildFormStyleValue));//设置子窗体样式
                 }
             }
             #endregion
@@ -215,7 +221,7 @@ namespace Breezee.Core.WinFormUI
                 return false;
             }
             if ((MainFormMode == MainFormModelEnum.FullFunction && WinFormContext.UserEnvConfig.SaveMsgPrompt == SaveMsgPromptTypeEnum.OnlyPromptNotPopup) 
-                || (MainFormMode == MainFormModelEnum.Mini && "2".Equals(WinFormConfig.Instance.Get(WinFormConfig.WinFormConfigString.SavePromptType))))
+                || (MainFormMode == MainFormModelEnum.Mini && "2".Equals(_WinFormConfig.Get(GlobalKey.SavePromptType, "2"))))
             {
                 if(!string.IsNullOrEmpty(MenuName))
                 {

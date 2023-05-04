@@ -136,21 +136,6 @@
         y50YUNL9PoSgGJYKLfPWSehwC/hb7Xbf3Z45FYUb/+MAAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="tsbExit.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFfSURBVDhPxZItb8MwGITzE/ITDEcmGQ4aFhpWQxkrNCw0
-        W6BhWU0mFRoWBg4aBhoWGpbdzk4btSnYpoGddMqX73kvTpr/V/AOt/bFO3uxw2VZldmlu+uqGjw4xM8B
-        S7nezIESViY+AspEnBMBoTbIOSOfUY/WdDVgfIYnX24iCqhzdJ+gLRuVqsh8eh6Qk5/bpAKwDtewC5Pt
-        gea9ApI63ABOnmabZBGPFuk0LbqGDR93LkP39HZ6HaE9Ae4GMFrkaJCCqgCtO8i1r3WXYbUJECtu8gxI
-        nD4a5M8Og2uQEhcrVfdAcpLaRsIY4rlYFbsJ4HpOPbEjqyN2NTS4FpEA9SLnXS+QWnmp8qmugDI9HzWG
-        noAxQz6Ju0CduFQFjHx/Ts+DRjpIBFsACUK0j4GlDL918PzrrEL0ggAFvxUQbVt9Wfa99vs9urWC27T4
-        eH/+eXCpt1fNjfzF5L+pab4A5+WHSaUiJOsAAAAASUVORK5CYII=
-</value>
-  </data>
-  <metadata name="opfSelectPic.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>256, 17</value>
-  </metadata>
   <data name="tsbMiniDbConfig.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -166,4 +151,22 @@
         TgDQASA1MVpwzwAAAABJRU5ErkJggg==
 </value>
   </data>
+  <data name="tsbExit.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFfSURBVDhPxZItb8MwGITzE/ITDEcmGQ4aFhpWQxkrNCw0
+        W6BhWU0mFRoWBg4aBhoWGpbdzk4btSnYpoGddMqX73kvTpr/V/AOt/bFO3uxw2VZldmlu+uqGjw4xM8B
+        S7nezIESViY+AspEnBMBoTbIOSOfUY/WdDVgfIYnX24iCqhzdJ+gLRuVqsh8eh6Qk5/bpAKwDtewC5Pt
+        gea9ApI63ABOnmabZBGPFuk0LbqGDR93LkP39HZ6HaE9Ae4GMFrkaJCCqgCtO8i1r3WXYbUJECtu8gxI
+        nD4a5M8Og2uQEhcrVfdAcpLaRsIY4rlYFbsJ4HpOPbEjqyN2NTS4FpEA9SLnXS+QWnmp8qmugDI9HzWG
+        noAxQz6Ju0CduFQFjHx/Ts+DRjpIBFsACUK0j4GlDL918PzrrEL0ggAFvxUQbVt9Wfa99vs9urWC27T4
+        eH/+eXCpt1fNjfzF5L+pab4A5+WHSaUiJOsAAAAASUVORK5CYII=
+</value>
+  </data>
+  <metadata name="opfSelectPic.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>256, 17</value>
+  </metadata>
+  <metadata name="fbdSelectPath.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>380, 17</value>
+  </metadata>
 </root>

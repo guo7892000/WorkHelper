@@ -52,6 +52,7 @@
     <Compile Include="Helper\ExceptionHelper.cs" />
     <Compile Include="Helper\ExecuteResultHelper.cs" />
     <Compile Include="Helper\ExeProgramHelper.cs" />
+    <Compile Include="Helper\FileDirHelper.cs" />
     <Compile Include="Helper\LogHelper.cs" />
     <Compile Include="Helper\NumberHelper.cs" />
     <Compile Include="Helper\ReflectHelper.cs" />

@@ -1,15 +1,17 @@
 ﻿using Breezee.Core.Interface;
 using Breezee.Core.Tool;
+using Breezee.Core.WinFormUI;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 
 /*********************************************************************	
- * 对象名称：	
+ * 对象名称：登录配置类	
  * 对象类别：类	
  * 创建作者：黄国辉	
  * 创建日期：2022/11/10 0:46:13	
@@ -22,77 +24,37 @@ using System.Threading.Tasks;
 namespace Breezee.Framework.Mini.StartUp
 {
     /// <summary>
-    /// 类
+    /// 登录配置类
     /// </summary>
-    public class LoginConfig
+    public class LoginConfig : IXmlConfigPair
     {
-        private static string configPath;
-        private static KeyValuePairConfig config;
-        private static DataTable dtConfig;
-
-        #region IOC容器
-        private static readonly object lockob = new object();
-        private static LoginConfig _instance;
-
-        /// <summary>
-        /// 容器
-        /// </summary>
-        public static LoginConfig Instance
+        public override IXmlConfigPair XmlConfig { get; }
+        public LoginConfig(string sPath, string sConfigName, XmlConfigSaveType saveType)
         {
-            get
-            {
-                if (_instance == null)
-                {
-                    lock (lockob)
-                    {
-                        if (_instance == null)
-                        {
-                            _instance = new LoginConfig();
-                        }
-                    }
-                }
-                return _instance;
-            }
-        }
-        #endregion
-        public LoginConfig()
-        {
-            configPath = AppDomain.CurrentDomain.BaseDirectory + @"\Config\Mini\Data\LoginConfig.xml";
-            config = new KeyValuePairConfig(configPath);
-            dtConfig = config.Get();
-        }
-        public string Get(string sKey)
-        {
-            DataRow[] drArr = dtConfig.Select(KeyValuePairConfig.XmlKeyValueStr.KeyProp.Key + "='"+ sKey + "'");
-            if (drArr == null || drArr.Length == 0)
-            {
-                dtConfig.Rows.Add(dtConfig.NewRow());
-            }
-            return drArr[0][KeyValuePairConfig.XmlKeyValueStr.KeyProp.Value].ToString();
+            Dir = sPath;
+            FileName = sConfigName;
+            XmlConfig = new KeyValuePairConfig(sPath, sConfigName, saveType);
         }
 
-        public void Set(string sKey,string sValue) {
-            DataRow[] drArr = dtConfig.Select(KeyValuePairConfig.XmlKeyValueStr.KeyProp.Key + "='" + sKey + "'");
-            if (drArr != null || drArr.Length == 0)
-            {
-                dtConfig.Rows.Add(dtConfig.NewRow());
-            }
-            drArr[0][KeyValuePairConfig.XmlKeyValueStr.KeyProp.Value] = sValue;
+        public override void Set(string sKey, string sValue, string sRemark)
+        {
+            XmlConfig.Set(sKey, sValue, sRemark);
         }
 
-        public void Save()
+        public override KeyValuePairEntity GetEntity(string sKey, string sDefault)
         {
-            config.Save(dtConfig, configPath);
+            return XmlConfig.GetEntity(sKey, sDefault);
         }
 
-        public static class LgoinConfigString
+        public override string Get(string sKey, string sDefault)
         {
-            public static string LastLoginUserName = "LastLoginUserName";
-            public static string IsRememberUserName = "IsRememberUserName";
-            public static string BrandCode = "BrandCode";
-            public static string IsRememberPwd = "IsRememberPwd";
-            public static string LastLoginPwd = "LastLoginPwd";
-            public static string AutoCompleteUserList = "AutoCompleteUserList";
+            return XmlConfig.Get(sKey, sDefault);
+        }
+
+        public override bool Save()
+        {
+            XmlConfig.Save();
+            return true;
         }
     }
 

@@ -34,11 +34,13 @@ namespace Breezee.Framework.Mini.DAL
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            DbServerInfo serverInfo = new DbServerInfo(DataBaseType.SQLite, "SQLite_Mini.db", "", "", "", "", "", "");
-            DbConfigEntity dbConfigEntity = new DbConfigEntity(MiniGlobalValue.DbConfigFileDir, MiniGlobalValue.DbConfigFileName, XmlConfigSaveType.Element);
-            if(dbConfigEntity.MainDb!=null )
+            //默认数据库连接：读取跟启动文件所在目录的文件
+            DbServerInfo serverInfo = new DbServerInfo(DataBaseType.SQLite, GlobalFile.DbConfigMini, "", "", "", "", "", "");
+            //读取数据库配置中配置的数据库
+            DbConfigEntity dbConfigEntity = new DbConfigEntity(GlobalContext.PathDb(), GlobalFile.DbConfigMini, XmlConfigSaveType.Element);
+            if (dbConfigEntity != null && dbConfigEntity.DbServers.ContainsKey(MiniGlobalValue.DataAccessConfigKey))
             {
-                serverInfo = dbConfigEntity.MainDb;
+                serverInfo = dbConfigEntity.DbServers[MiniGlobalValue.DataAccessConfigKey]; //优先使用配置文件中的
             }
             container.Register(Component.For<IDataAccess>().Instance(AutoSQLExecutors.Connect(serverInfo)).Named(MiniGlobalValue.DataAccessConfigKey));
             container.Register(Component.For<IDMiniLogin>().ImplementedBy<SQLite.DMiniLogin>());

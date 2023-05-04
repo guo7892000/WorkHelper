@@ -17,6 +17,7 @@ using Breezee.Core.Tool;
 using System.Security.Policy;
 using System.IO;
 using System.Xml.Linq;
+using System.Text.RegularExpressions;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -88,6 +89,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Clear();
             _dicString["1"]= "粘贴列";
             _dicString["2"] = "查询表";
+            _dicString["3"] = "参数筛选";
             cbbInputType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
 
             //初始化网格
@@ -331,12 +333,14 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             DataTable dtInput = dgvInput.GetBindingTable();
             DataTable dtSelect = dgvSelect.GetBindingTable();
-            if (cbbInputType.SelectedValue != null && "2".Equals(cbbInputType.SelectedValue.ToString()))
+            if (cbbInputType.SelectedValue != null)
             {
+                string sInputType = cbbInputType.SelectedValue.ToString();
                 string sSql = rtbInputSql.Text.Trim();
                 if (string.IsNullOrEmpty(sSql))
                 {
-                    ShowInfo("请输入查询空数据的SQL，这里只用到查询结果的列编码！");
+                    string sErr = "2".Equals(sInputType) ? "请输入查询空数据的SQL，这里只用到查询结果的列编码！" : "请输入条件字符（以@或:开头，或前后#的参数）";
+                    ShowInfo(sErr);
                     return;
                 }
                 if (ckbOnlyMatchQueryResult.Checked)
@@ -344,19 +348,33 @@ namespace Breezee.WorkHelper.DBTool.UI
                     dtInput.Clear();
                     dtSelect.Clear();
                 }
-                try
+                if ("2".Equals(sInputType))
                 {
-                    DataTable dtSql = _dataAccess.QueryAutoParamSqlData(sSql);
-                    foreach (DataColumn dc in dtSql.Columns)
+                    try
                     {
-                        dtInput.Rows.Add(dc.ColumnName);
+                        DataTable dtSql = _dataAccess.QueryAutoParamSqlData(sSql);
+                        foreach (DataColumn dc in dtSql.Columns)
+                        {
+                            dtInput.Rows.Add(dc.ColumnName);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ShowErr("执行查询SQL报错，请保证SQL的正确性，详细信息：" + ex.Message);
+                        return;
                     }
                 }
-                catch (Exception ex)
+                else if("3".Equals(sInputType))
                 {
-                    ShowErr("执行查询SQL报错，请保证SQL的正确性，详细信息：" + ex.Message);
-                    return;
-                }
+                    string sPattern = "([@:]\\w+)|(#\\w+#)";
+                    Regex regex = new Regex(sPattern, RegexOptions.IgnoreCase);
+                    MatchCollection mcColl = regex.Matches(sSql);
+                    foreach (Match mt in mcColl)
+                    {
+                        string sCol = mt.Value.Replace("@", "").Replace(":", "").Replace("#", "");
+                        dtInput.Rows.Add(sCol);
+                    }
+                }                
             }
 
             //保存用户偏好值
@@ -990,6 +1008,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                     grbInputSql.Visible = true;
                     ckbOnlyMatchQueryResult.Visible = true;
                     ckbOnlyMatchQueryResult.Checked = true;
+                    grbInputSql.Text = "2".Equals(sType) ? "查询SQL" : "参数字符";
+                    ckbOnlyMatchQueryResult.Text = "2".Equals(sType) ? "仅匹配查询结果" : "仅匹配参数";
                 }
             }
         }

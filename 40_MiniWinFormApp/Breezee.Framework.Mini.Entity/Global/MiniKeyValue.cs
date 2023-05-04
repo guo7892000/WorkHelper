@@ -13,7 +13,7 @@ namespace Breezee.Framework.Mini.Entity
     public class MiniKeyValue
     {
         
-        public static KeyValueListConfig KeyValue = new KeyValueListConfig(System.IO.Path.Combine(MiniGlobalValue.AppPath + MiniGlobalValue.Config.KeyValueCofig_Path));
+        public static KeyValueGroupConfig KeyValue = new KeyValueGroupConfig(System.IO.Path.Combine(MiniGlobalValue.AppPath + MiniGlobalValue.Config.KeyValueCofig_Path));
 
         public static DataTable GetValue(MiniKeyEnum miniKeyEnum)
         {

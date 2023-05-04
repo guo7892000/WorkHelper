@@ -30,7 +30,7 @@ namespace Breezee.Core
 
         public void SetMain()
         {
-            GlobalContext.Instance.MainApp = this;
+            CoreGlobalContext.Instance.MainApp = this;
         }
     }
 }

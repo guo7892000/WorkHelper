@@ -42,9 +42,9 @@ namespace Breezee.Framework.Mini.StartUp
         #region 窗体加载
         private void FrmMenuManage_Load(object sender, EventArgs e)
         {
-            sDllPath = Path.Combine(GlobalValue.StartupPath, MiniStaticString.ConfigDataPath, MiniStaticString.DllFileName);
-            MenuXmlFilePath = Path.Combine(GlobalValue.EntryAssemblyPath, MiniStaticString.ConfigDataPath, MiniStaticString.MenuFileName);
-            MenuXmlFilePath_WPF = Path.Combine(GlobalValue.EntryAssemblyPath, "Config", MiniStaticString.MenuFileName_WPF);
+            sDllPath = Path.Combine(GlobalContext.AppEntryAssemblyPath, MiniStaticString.ConfigDataPath, MiniStaticString.DllFileName);
+            MenuXmlFilePath = Path.Combine(GlobalContext.AppEntryAssemblyPath, MiniStaticString.ConfigDataPath, MiniStaticString.MenuFileName);
+            MenuXmlFilePath_WPF = Path.Combine(GlobalContext.AppEntryAssemblyPath, "Config", MiniStaticString.MenuFileName_WPF);
             _saveMenu = new MenuEntity();
             _xmlMenu =  new XmlMenu(MenuXmlFilePath);
 

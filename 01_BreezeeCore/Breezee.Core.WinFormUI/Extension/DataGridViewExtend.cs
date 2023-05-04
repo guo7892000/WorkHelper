@@ -651,12 +651,12 @@ namespace Breezee.Core.WinFormUI
                 formList.Reverse();
                 //格式为：功能名+ 窗体名 + 网格名
                 string fileName = string.Join(".", formList) + "." + strFormName + "." + dgv.Name + ".style";
-                fileFullPath = Path.Combine(StaticConstant.FRA_PEACH_DATA_CONFIG_PATH, "FormStyles", fileName);
+                fileFullPath = Path.Combine(WinFormContext.Instance.DataGridTagHistoryPath, fileName);
             }
             else //针对桌面上的网格
             {
                 string fileName = "桌面." + dgv.Name + ".style";
-                fileFullPath = Path.Combine(StaticConstant.FRA_PEACH_DATA_CONFIG_PATH, "FormStyles", fileName);
+                fileFullPath = Path.Combine(WinFormContext.Instance.DataGridTagHistoryPath, fileName);
             }
             return fileFullPath;
         }

@@ -56,19 +56,19 @@ namespace Breezee.WorkHelper.DBTool.UI
             dtCopy.TableName = _strExcel1;
             bsExcel1.DataSource = dtCopy;
             dgvExcel1.DataSource = bsExcel1;
-            GlobalValue.Instance.SetPublicDataSource(new DataTable[] { dtCopy });
+            WinFormGlobalValue.SetPublicDataSource(new DataTable[] { dtCopy });
 
             DataTable dtCopy2 = dtCopy.Copy();
             dtCopy2.TableName = _strExcel2;
             bsExcel2.DataSource = dtCopy2;
             dgvExcel2.DataSource = bsExcel2;
-            GlobalValue.Instance.SetPublicDataSource(new DataTable[] { dtCopy2 });
+            WinFormGlobalValue.SetPublicDataSource(new DataTable[] { dtCopy2 });
 
             DataTable dtCopy3 = dtCopy.Copy();
             dtCopy3.TableName = _strExcel3;
             bsExcel3.DataSource = dtCopy3;
             dgvResult.DataSource = bsExcel3;
-            GlobalValue.Instance.SetPublicDataSource(new DataTable[] { dtCopy3 });
+            WinFormGlobalValue.SetPublicDataSource(new DataTable[] { dtCopy3 });
             //
             lblTableData.Text = "可在Excel中复制数据后，点击网格后按ctrl + v粘贴即可。注：第一行为列名！";
             lblInfo2.Text = "可在Excel中复制数据后，点击网格后按ctrl + v粘贴即可。注：第一行为列名！";
@@ -89,7 +89,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         return;
                     }
 
-                    DataTable dtMain = (DataTable)GlobalValue.Instance.dicBindingSource[_strExcel1].DataSource;
+                    DataTable dtMain = (DataTable)WinFormGlobalValue.dicBindingSource[_strExcel1].DataSource;
                     dtMain.Clear();
                     dtMain.Columns.Clear();
                     pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain);
@@ -107,9 +107,9 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             try
             {
-                DataTable dtMain = (DataTable)GlobalValue.Instance.dicBindingSource[_strExcel1].DataSource;
-                DataTable dtSec = (DataTable)GlobalValue.Instance.dicBindingSource[_strExcel2].DataSource;
-                DataTable dtResult = (DataTable)GlobalValue.Instance.dicBindingSource[_strExcel3].DataSource;
+                DataTable dtMain = (DataTable)WinFormGlobalValue.dicBindingSource[_strExcel1].DataSource;
+                DataTable dtSec = (DataTable)WinFormGlobalValue.dicBindingSource[_strExcel2].DataSource;
+                DataTable dtResult = (DataTable)WinFormGlobalValue.dicBindingSource[_strExcel3].DataSource;
                 if (dtMain.Rows.Count == 0 || dtSec.Rows.Count == 0)
                 {
                     ShowInfo("两个Excel都必须要有数据！");
@@ -279,7 +279,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         return;
                     }
 
-                    DataTable dtMain = (DataTable)GlobalValue.Instance.dicBindingSource[_strExcel2].DataSource;
+                    DataTable dtMain = (DataTable)WinFormGlobalValue.dicBindingSource[_strExcel2].DataSource;
                     dtMain.Clear();
                     dtMain.Columns.Clear();
                     pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain,"1");
@@ -296,13 +296,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (CkbLoadExampleData.Checked)
             {
                 string sText = "CITY_ID\tPROVINCE_ID\r\n1\t1\r\n10\t6\r\n100\t30\r\n10000\t8";
-                DataTable dtMain = (DataTable)GlobalValue.Instance.dicBindingSource[_strExcel1].DataSource;
+                DataTable dtMain = (DataTable)WinFormGlobalValue.dicBindingSource[_strExcel1].DataSource;
                 dtMain.Clear();
                 dtMain.Columns.Clear();
                 sText.GetStringTable(ckbAutoColumnName.Checked, dtMain);
 
                 sText = "CITY_CODE\tCITY_NAME\r\n1\t北京\r\n10\t沈阳市\r\n100\t番禺\r\n11\t茂名";
-                dtMain = (DataTable)GlobalValue.Instance.dicBindingSource[_strExcel2].DataSource;
+                dtMain = (DataTable)WinFormGlobalValue.dicBindingSource[_strExcel2].DataSource;
                 dtMain.Clear();
                 dtMain.Columns.Clear();
                 sText.GetStringTable(ckbAutoColumnName.Checked, dtMain, "1");
@@ -312,11 +312,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             else
             {
-                DataTable dtMain = (DataTable)GlobalValue.Instance.dicBindingSource[_strExcel1].DataSource;
+                DataTable dtMain = (DataTable)WinFormGlobalValue.dicBindingSource[_strExcel1].DataSource;
                 dtMain.Clear();
                 dtMain.Columns.Clear();
 
-                dtMain = (DataTable)GlobalValue.Instance.dicBindingSource[_strExcel2].DataSource;
+                dtMain = (DataTable)WinFormGlobalValue.dicBindingSource[_strExcel2].DataSource;
                 dtMain.Clear();
                 dtMain.Columns.Clear();
 
@@ -326,7 +326,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private void tsbExport_Click(object sender, EventArgs e)
         {
-            DataTable dtResult = (DataTable)GlobalValue.Instance.dicBindingSource[_strExcel3].DataSource;
+            DataTable dtResult = (DataTable)WinFormGlobalValue.dicBindingSource[_strExcel3].DataSource;
             if (dtResult==null || dtResult.Rows.Count==0)
             {
                 ShowErr("没有要导出的记录！", "提示");

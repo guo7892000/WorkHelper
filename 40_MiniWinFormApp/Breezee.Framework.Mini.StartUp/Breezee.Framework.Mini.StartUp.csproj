@@ -93,6 +93,7 @@
       <DependentUpon>FrmUserEnvironmentSet.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\LgoinConfig.cs" />
+    <Compile Include="Common\LgoinConfigString.cs" />
     <Compile Include="Common\SystemMenuHelper.cs" />
     <Compile Include="FrmMiniMainMDI.cs">
       <SubType>Form</SubType>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Breezee.Core.Interface;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -69,9 +70,6 @@ namespace Breezee.WorkHelper.DBTool.Entity
         {
             get { return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\"; }
         }
-
-        public static readonly string DbConfigFileDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WorkHelper/Config");
-        public static readonly string DbConfigFileName = "DataBaseToolDbConfig.xml";
 
         public static readonly string DataAccessConfigKey = "IDataAccessDBTool";
 

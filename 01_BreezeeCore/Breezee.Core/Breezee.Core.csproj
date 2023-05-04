@@ -60,7 +60,7 @@
     <Compile Include="DB\PostgreSqlDac.cs" />
     <Compile Include="DB\SQLiteDac.cs" />
     <Compile Include="DB\SqlServerDac.cs" />
-    <Compile Include="GlobalContext.cs" />
+    <Compile Include="CoreGlobalContext.cs" />
     <Compile Include="Layer\Controller.cs" />
     <Compile Include="Layer\Dac.cs" />
     <Compile Include="Layer\Interface\IController.cs" />

@@ -33,6 +33,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbSave = new System.Windows.Forms.ToolStripButton();
+            this.tsbMiniDbConfig = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -50,12 +51,16 @@
             this.opfSelectPic = new System.Windows.Forms.OpenFileDialog();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpBase = new System.Windows.Forms.TabPage();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnSelectMySettingPath = new System.Windows.Forms.Button();
+            this.txbMyLoveSettingPath = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.cbbMsgType = new System.Windows.Forms.ComboBox();
             this.tpUserSkin = new System.Windows.Forms.TabPage();
-            this.tsbMiniDbConfig = new System.Windows.Forms.ToolStripButton();
+            this.fbdSelectPath = new System.Windows.Forms.FolderBrowserDialog();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -63,6 +68,7 @@
             this.tableLayoutPanel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpBase.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tpUserSkin.SuspendLayout();
@@ -98,6 +104,15 @@
             this.tsbSave.Size = new System.Drawing.Size(67, 22);
             this.tsbSave.Text = "保存(&S)";
             this.tsbSave.Click += new System.EventHandler(this.tsbSave_Click);
+            // 
+            // tsbMiniDbConfig
+            // 
+            this.tsbMiniDbConfig.Image = ((System.Drawing.Image)(resources.GetObject("tsbMiniDbConfig.Image")));
+            this.tsbMiniDbConfig.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbMiniDbConfig.Name = "tsbMiniDbConfig";
+            this.tsbMiniDbConfig.Size = new System.Drawing.Size(105, 22);
+            this.tsbMiniDbConfig.Text = "主框架DB配置";
+            this.tsbMiniDbConfig.Click += new System.EventHandler(this.tsbMiniDbConfig_Click);
             // 
             // tsbExit
             // 
@@ -266,10 +281,6 @@
             this.cbbSkinTypeCommon.TabIndex = 5;
             this.cbbSkinTypeCommon.SelectedIndexChanged += new System.EventHandler(this.cbbSkinTypeCommon_SelectedIndexChanged);
             // 
-            // opfSelectPic
-            // 
-            this.opfSelectPic.FileName = "openFileDialog1";
-            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tpBase);
@@ -283,6 +294,7 @@
             // 
             // tpBase
             // 
+            this.tpBase.Controls.Add(this.groupBox4);
             this.tpBase.Controls.Add(this.groupBox3);
             this.tpBase.Location = new System.Drawing.Point(4, 22);
             this.tpBase.Name = "tpBase";
@@ -291,6 +303,46 @@
             this.tpBase.TabIndex = 1;
             this.tpBase.Text = "基本配置";
             this.tpBase.UseVisualStyleBackColor = true;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.label4);
+            this.groupBox4.Controls.Add(this.btnSelectMySettingPath);
+            this.groupBox4.Controls.Add(this.txbMyLoveSettingPath);
+            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox4.Location = new System.Drawing.Point(3, 55);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(667, 49);
+            this.groupBox4.TabIndex = 1;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "个性化配置路径";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 22);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(65, 12);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "当前路径：";
+            // 
+            // btnSelectMySettingPath
+            // 
+            this.btnSelectMySettingPath.Location = new System.Drawing.Point(75, 16);
+            this.btnSelectMySettingPath.Name = "btnSelectMySettingPath";
+            this.btnSelectMySettingPath.Size = new System.Drawing.Size(23, 23);
+            this.btnSelectMySettingPath.TabIndex = 2;
+            this.btnSelectMySettingPath.Text = "...";
+            this.btnSelectMySettingPath.UseVisualStyleBackColor = true;
+            this.btnSelectMySettingPath.Click += new System.EventHandler(this.btnSelectMySettingPath_Click);
+            // 
+            // txbMyLoveSettingPath
+            // 
+            this.txbMyLoveSettingPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbMyLoveSettingPath.Location = new System.Drawing.Point(101, 18);
+            this.txbMyLoveSettingPath.Name = "txbMyLoveSettingPath";
+            this.txbMyLoveSettingPath.Size = new System.Drawing.Size(550, 21);
+            this.txbMyLoveSettingPath.TabIndex = 1;
             // 
             // groupBox3
             // 
@@ -356,15 +408,6 @@
             this.tpUserSkin.Text = "窗体皮肤设置";
             this.tpUserSkin.UseVisualStyleBackColor = true;
             // 
-            // tsbMiniDbConfig
-            // 
-            this.tsbMiniDbConfig.Image = ((System.Drawing.Image)(resources.GetObject("tsbMiniDbConfig.Image")));
-            this.tsbMiniDbConfig.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbMiniDbConfig.Name = "tsbMiniDbConfig";
-            this.tsbMiniDbConfig.Size = new System.Drawing.Size(105, 22);
-            this.tsbMiniDbConfig.Text = "主框架DB配置";
-            this.tsbMiniDbConfig.Click += new System.EventHandler(this.tsbMiniDbConfig_Click);
-            // 
             // FrmUserEnvironmentSet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -386,6 +429,8 @@
             this.tableLayoutPanel2.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tpBase.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
@@ -424,5 +469,10 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.ToolStripButton tsbMiniDbConfig;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnSelectMySettingPath;
+        private System.Windows.Forms.TextBox txbMyLoveSettingPath;
+        private System.Windows.Forms.FolderBrowserDialog fbdSelectPath;
     }
 }
