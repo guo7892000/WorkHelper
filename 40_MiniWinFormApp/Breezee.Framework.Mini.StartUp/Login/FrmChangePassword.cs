@@ -11,6 +11,8 @@ using Breezee.Core.Tool;
 using Breezee.Framework.Mini.IBLL;
 using Breezee.Core.WinFormUI;
 using Breezee.Core.IOC;
+using Breezee.Core.Interface;
+using Breezee.Framework.Mini.Entity;
 
 namespace Breezee.Framework.Mini.StartUp
 {
@@ -94,6 +96,12 @@ namespace Breezee.Framework.Mini.StartUp
             int iEff = _ILogin.UpdateUserPasswd(_dicString);
             if (iEff > 0)
             {
+                //修改配置文件的最后登录密码
+                LoginConfig loginConfig = new LoginConfig(GlobalContext.AppStartConfigPath, GlobalFile.LoginConfig, XmlConfigSaveType.Attribute);
+                string sPassword = EncryptHelper.AESEncrypt(strNewPwd, MiniGlobalValue.MiniDesEncryKey, MiniGlobalValue.MiniDesEncryVector);
+                loginConfig.Set(LgoinConfigString.LastLoginPwd, sPassword, "最后登录密码");
+                loginConfig.Save();
+                //提示保存成功
                 ShowInfo("密码修改成功！", "提示");
                 this.Close();
             }

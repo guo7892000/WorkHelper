@@ -20,8 +20,14 @@ namespace Breezee.Framework.Mini.Entity
 
         public static readonly string DBInitializerConfigKey = "IDBInitializerMini";
 
-        //public static string DbConfigFileDir = GlobalContext.PathDb();
-        //public static readonly string DbConfigFileName = GlobalFile.DbConfigMini;
+        /// <summary>
+        /// 加密使用的键：必须24个字符
+        /// </summary>
+        public static readonly string MiniDesEncryKey = "BrEe%eKiMLVPeaCh*WKTooLG";
+        /// <summary>
+        /// 加密使用的向量：必须16个字符
+        /// </summary>
+        public static readonly string MiniDesEncryVector = "PAchVe*&=OEBrMi+";
 
         /// 配置静态内部类
         /// </summary>

@@ -87,7 +87,17 @@ namespace Breezee.Framework.Mini.StartUp
                     cbbUserName.Items.Add(str);
                 }
             }
-            txbPassword.Text = _loginConfig.Get(LgoinConfigString.LastLoginPwd,"");
+            //
+            string sPassword = string.Empty;
+            try
+            {
+                sPassword = EncryptHelper.AESDecrypt(_loginConfig.Get(LgoinConfigString.LastLoginPwd, ""), MiniGlobalValue.MiniDesEncryKey, MiniGlobalValue.MiniDesEncryVector);
+            }
+            catch
+            {
+                //报错时啥都不用做
+            }
+            txbPassword.Text = sPassword;
             //设置最大的面板背景图片
             this.BackgroundImage = Properties.Resources.WorkHelp_Logo;
             //设置主SQL配置文件路径
@@ -162,7 +172,8 @@ namespace Breezee.Framework.Mini.StartUp
                 #region 保存设置信息
                 if (chbSavePwd.Checked)
                 {
-                    _loginConfig.Set(LgoinConfigString.LastLoginPwd, txbPassword.Text,"最后登录密码");
+                    string sPassword = EncryptHelper.AESEncrypt(txbPassword.Text, MiniGlobalValue.MiniDesEncryKey, MiniGlobalValue.MiniDesEncryVector);
+                    _loginConfig.Set(LgoinConfigString.LastLoginPwd, sPassword, "最后登录密码");
                     _loginConfig.Set(LgoinConfigString.IsRememberPwd, "1", "是否记录密码");
                 }
                 else

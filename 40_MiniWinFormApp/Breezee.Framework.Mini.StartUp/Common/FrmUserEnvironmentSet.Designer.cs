@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmUserEnvironmentSet));
             this.cdlSelectColor = new System.Windows.Forms.ColorDialog();
             this.label2 = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbSave = new System.Windows.Forms.ToolStripButton();
-            this.tsbMiniDbConfig = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -60,7 +60,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.cbbMsgType = new System.Windows.Forms.ComboBox();
             this.tpUserSkin = new System.Windows.Forms.TabPage();
+            this.tpOther = new System.Windows.Forms.TabPage();
             this.fbdSelectPath = new System.Windows.Forms.FolderBrowserDialog();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -88,11 +90,10 @@
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbSave,
-            this.tsbMiniDbConfig,
             this.tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(681, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(750, 25);
             this.toolStrip1.TabIndex = 6;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -104,15 +105,6 @@
             this.tsbSave.Size = new System.Drawing.Size(67, 22);
             this.tsbSave.Text = "保存(&S)";
             this.tsbSave.Click += new System.EventHandler(this.tsbSave_Click);
-            // 
-            // tsbMiniDbConfig
-            // 
-            this.tsbMiniDbConfig.Image = ((System.Drawing.Image)(resources.GetObject("tsbMiniDbConfig.Image")));
-            this.tsbMiniDbConfig.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbMiniDbConfig.Name = "tsbMiniDbConfig";
-            this.tsbMiniDbConfig.Size = new System.Drawing.Size(105, 22);
-            this.tsbMiniDbConfig.Text = "主框架DB配置";
-            this.tsbMiniDbConfig.Click += new System.EventHandler(this.tsbMiniDbConfig_Click);
             // 
             // tsbExit
             // 
@@ -129,7 +121,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(667, 82);
+            this.groupBox1.Size = new System.Drawing.Size(736, 82);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "主窗体样式设置";
@@ -154,7 +146,7 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(661, 62);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(730, 62);
             this.tableLayoutPanel3.TabIndex = 9;
             // 
             // btnSelectPicMain
@@ -213,7 +205,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox2.Location = new System.Drawing.Point(3, 85);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(667, 90);
+            this.groupBox2.Size = new System.Drawing.Size(736, 90);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "子窗体样式设置";
@@ -238,7 +230,7 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(661, 70);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(730, 70);
             this.tableLayoutPanel2.TabIndex = 9;
             // 
             // btnSelectPicCommon
@@ -285,11 +277,12 @@
             // 
             this.tabControl1.Controls.Add(this.tpBase);
             this.tabControl1.Controls.Add(this.tpUserSkin);
+            this.tabControl1.Controls.Add(this.tpOther);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 25);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(681, 403);
+            this.tabControl1.Size = new System.Drawing.Size(750, 421);
             this.tabControl1.TabIndex = 9;
             // 
             // tpBase
@@ -299,7 +292,7 @@
             this.tpBase.Location = new System.Drawing.Point(4, 22);
             this.tpBase.Name = "tpBase";
             this.tpBase.Padding = new System.Windows.Forms.Padding(3);
-            this.tpBase.Size = new System.Drawing.Size(673, 377);
+            this.tpBase.Size = new System.Drawing.Size(742, 395);
             this.tpBase.TabIndex = 1;
             this.tpBase.Text = "基本配置";
             this.tpBase.UseVisualStyleBackColor = true;
@@ -312,7 +305,7 @@
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox4.Location = new System.Drawing.Point(3, 55);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(667, 49);
+            this.groupBox4.Size = new System.Drawing.Size(736, 49);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "个性化配置路径";
@@ -341,7 +334,7 @@
             this.txbMyLoveSettingPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txbMyLoveSettingPath.Location = new System.Drawing.Point(101, 18);
             this.txbMyLoveSettingPath.Name = "txbMyLoveSettingPath";
-            this.txbMyLoveSettingPath.Size = new System.Drawing.Size(550, 21);
+            this.txbMyLoveSettingPath.Size = new System.Drawing.Size(619, 21);
             this.txbMyLoveSettingPath.TabIndex = 1;
             // 
             // groupBox3
@@ -350,7 +343,7 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox3.Location = new System.Drawing.Point(3, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(667, 52);
+            this.groupBox3.Size = new System.Drawing.Size(736, 52);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "保存提示设置";
@@ -375,7 +368,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(661, 32);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(730, 32);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // label3
@@ -403,16 +396,26 @@
             this.tpUserSkin.Location = new System.Drawing.Point(4, 22);
             this.tpUserSkin.Name = "tpUserSkin";
             this.tpUserSkin.Padding = new System.Windows.Forms.Padding(3);
-            this.tpUserSkin.Size = new System.Drawing.Size(673, 377);
+            this.tpUserSkin.Size = new System.Drawing.Size(742, 395);
             this.tpUserSkin.TabIndex = 0;
             this.tpUserSkin.Text = "窗体皮肤设置";
             this.tpUserSkin.UseVisualStyleBackColor = true;
+            // 
+            // tpOther
+            // 
+            this.tpOther.Location = new System.Drawing.Point(4, 22);
+            this.tpOther.Name = "tpOther";
+            this.tpOther.Padding = new System.Windows.Forms.Padding(3);
+            this.tpOther.Size = new System.Drawing.Size(742, 395);
+            this.tpOther.TabIndex = 2;
+            this.tpOther.Text = "其他";
+            this.tpOther.UseVisualStyleBackColor = true;
             // 
             // FrmUserEnvironmentSet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(681, 428);
+            this.ClientSize = new System.Drawing.Size(750, 446);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
@@ -468,11 +471,12 @@
         private System.Windows.Forms.ComboBox cbbMsgType;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.ToolStripButton tsbMiniDbConfig;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnSelectMySettingPath;
         private System.Windows.Forms.TextBox txbMyLoveSettingPath;
         private System.Windows.Forms.FolderBrowserDialog fbdSelectPath;
+        private System.Windows.Forms.TabPage tpOther;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

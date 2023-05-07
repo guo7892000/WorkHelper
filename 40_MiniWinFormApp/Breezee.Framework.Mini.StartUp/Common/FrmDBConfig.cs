@@ -14,6 +14,7 @@ using System.IO;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using Breezee.AutoSQLExecutor.Common;
 using Breezee.AutoSQLExecutor.Core;
+using Breezee.Framework.Mini.Entity;
 
 namespace Breezee.Framework.Mini.StartUp
 {
@@ -85,7 +86,22 @@ namespace Breezee.Framework.Mini.StartUp
             dtXml = _xmlCommon.Load();
             if (dtXml.Rows.Count > 0)
             {
+                //解密密码
+                string sEncPwd = dtXml.Rows[0][DbServerInfo.XmlAttrString.password].ToString();
+                if (!string.IsNullOrEmpty(sEncPwd))
+                {
+                    try
+                    {
+                        dtXml.Rows[0][DbServerInfo.XmlAttrString.password] = EncryptHelper.AESDecrypt(sEncPwd, MiniGlobalValue.MiniDesEncryKey, MiniGlobalValue.MiniDesEncryVector);
+                    }
+                    catch
+                    {
+                        //报错时啥都不用做
+                    }
+                }
+                //控件赋值
                 _listSupply.SetControlValue(dtXml.Rows[0]);
+                cbbDatabaseType.SetControlReadOnly(true);//为简单起见，这里只能使用SQLite数据库
             }
             else
             {
@@ -118,19 +134,31 @@ namespace Breezee.Framework.Mini.StartUp
         {
             try
             {
-                #region 保存前判断
-                string strInfo = _listSupply.JudgeNotNull(true);
-                if (!string.IsNullOrEmpty(strInfo))
+                string sErr;
+                if(TestConnect(out sErr))
                 {
-                    ShowInfo("保存失败！\n" + strInfo);
-                    return;
+                    string strInfo = _listSupply.JudgeNotNull(true);
+                    if (!string.IsNullOrEmpty(strInfo))
+                    {
+                        ShowInfo("保存失败！\n" + strInfo);
+                        return;
+                    }
+                    _listSupply.GetControlValue(dtXml, false);
+                    //加密密码
+                    string sEncPwd = dtXml.Rows[0][DbServerInfo.XmlAttrString.password].ToString();
+                    if (!string.IsNullOrEmpty(sEncPwd))
+                    {
+                        dtXml.Rows[0][DbServerInfo.XmlAttrString.password] = EncryptHelper.AESEncrypt(sEncPwd, MiniGlobalValue.MiniDesEncryKey, MiniGlobalValue.MiniDesEncryVector);
+                    }
+                    _xmlCommon.Save(dtXml);
+                    ShowInfo("保存成功，但需要重新登录才能生效！");
+                    DialogResult = DialogResult.OK;
+                    Close();
                 }
-                #endregion
-                _listSupply.GetControlValue(dtXml, false);
-                _xmlCommon.Save(dtXml);
-                ShowInfo("保存成功，但需要重新登录才能生效！");
-                DialogResult = DialogResult.OK;
-                Close();
+                else
+                {
+                    MsgBox.Show(sErr);
+                }
             }
             catch (Exception ex)
             {
@@ -236,6 +264,13 @@ namespace Breezee.Framework.Mini.StartUp
 
         private void tsbConnetTest_Click(object sender, EventArgs e)
         {
+            string sErr;
+            TestConnect(out sErr);
+            MsgBox.Show(sErr);
+        }
+
+        private bool TestConnect(out string msg)
+        {
             try
             {
                 var DbServer = new DbServerInfo()
@@ -258,8 +293,8 @@ namespace Breezee.Framework.Mini.StartUp
                 {
                     if (IsDbNameNotNull && string.IsNullOrEmpty(DbServer.Database))
                     {
-                        MsgHelper.ShowErr("数据库名称不能为空！");
-                        return;
+                        msg = "数据库名称不能为空！";
+                        return false;
                     }
                 }
 
@@ -268,51 +303,51 @@ namespace Breezee.Framework.Mini.StartUp
                     case DataBaseType.SqlServer:
                         if (string.IsNullOrEmpty(DbServer.ServerName))
                         {
-                            MsgHelper.ShowErr("服务器地址不能为空！");
-                            return;
+                            msg = "服务器地址不能为空！";
+                            return false;
                         }
                         break;
                     case DataBaseType.Oracle:
                         if (string.IsNullOrEmpty(DbServer.ServerName))
                         {
-                            MsgHelper.ShowErr("TNS名称不能为空！");
-                            return;
+                            msg = "TNS名称不能为空！";
+                            return false;
                         }
                         if (string.IsNullOrEmpty(DbServer.UserName) || string.IsNullOrEmpty(DbServer.Password))
                         {
-                            MsgHelper.ShowErr("用户名和密码都不能为空！");
-                            return;
+                            msg = "用户名和密码都不能为空！";
+                            return false;
                         }
                         break;
                     case DataBaseType.MySql:
                         if (string.IsNullOrEmpty(DbServer.ServerName))
                         {
-                            MsgHelper.ShowErr("服务器地址不能为空！");
-                            return;
+                            msg = "服务器地址不能为空！";
+                            return false;
                         }
                         if (string.IsNullOrEmpty(DbServer.UserName) || string.IsNullOrEmpty(DbServer.Password))
                         {
-                            MsgHelper.ShowErr("用户名和密码都不能为空！");
-                            return;
+                            msg = "用户名和密码都不能为空！";
+                            return false;
                         }
                         break;
                     case DataBaseType.SQLite:
                         if (string.IsNullOrEmpty(DbServer.ServerName))
                         {
-                            MsgHelper.ShowErr("数据库文件路径不能为空！");
-                            return;
+                            msg = "数据库文件路径不能为空！";
+                            return false;
                         }
                         break;
                     case DataBaseType.PostgreSql:
                         if (string.IsNullOrEmpty(DbServer.ServerName))
                         {
-                            MsgHelper.ShowErr("服务器地址不能为空！");
-                            return;
+                            msg = "服务器地址不能为空！";
+                            return false;
                         }
                         if (string.IsNullOrEmpty(DbServer.UserName) || string.IsNullOrEmpty(DbServer.Password))
                         {
-                            MsgHelper.ShowErr("用户名和密码都不能为空！");
-                            return;
+                            msg = "用户名和密码都不能为空！";
+                            return false;
                         }
                         break;
                     default:
@@ -322,11 +357,13 @@ namespace Breezee.Framework.Mini.StartUp
                 //得到数据库访问对象
                 IDataAccess _dataAccess = AutoSQLExecutors.Connect(DbServer);
                 DataTable UserTableList = _dataAccess.GetSchemaTables();
-                MsgBox.Show("连接成功！");
+                msg = "连接成功";
+                return true;
             }
             catch (Exception ex)
             {
-                MsgHelper.ShowErr("连接失败，请检查！具体错误：" + ex.Message);
+                msg = "连接失败，请检查！具体错误：" + ex.Message;
+                return false;
             }
         }
     }

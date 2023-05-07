@@ -35,7 +35,7 @@ namespace Breezee.Framework.Mini.StartUp
         public FrmUserEnvironmentSet()
         {
             InitializeComponent();
-        } 
+        }
         #endregion
 
         #region 加载事件
@@ -55,7 +55,7 @@ namespace Breezee.Framework.Mini.StartUp
             cbbSkinTypeMain.BindXmlTypeValueDropDownList(dtFormSksy, false, true);
             cbbSkinTypeCommon.BindXmlTypeValueDropDownList(dtFormSksy, false, true);
             cbbMsgType.BindXmlTypeValueDropDownList(dtSaveTip, false, true);
-            cbbMsgType.SelectedValue = _WinFormConfig.Get(GlobalKey.SavePromptType, "2"); 
+            cbbMsgType.SelectedValue = _WinFormConfig.Get(GlobalKey.SavePromptType, "2");
             //主窗体皮肤类型
             string sMainSkinType = _WinFormConfig.Get(GlobalKey.MainSkinType, "0");
             cbbSkinTypeMain.SelectedValue = sMainSkinType;
@@ -80,7 +80,7 @@ namespace Breezee.Framework.Mini.StartUp
             }
             //用户自定义的配置路径
             txbMyLoveSettingPath.Text = GlobalContext.AppRootPath;
-        } 
+        }
         #endregion
 
         #region 保存按钮事件
@@ -102,7 +102,7 @@ namespace Breezee.Framework.Mini.StartUp
                     case "0": //默认
                         WinFormContext.UserEnvConfig.MainFormSkin.SkinType = FormSkinTypeEnum.Default;
                         WinFormContext.UserEnvConfig.MainFormSkin.ColorRBGOrImagePath = cbbColorMain.SelectedValue.ToString();
-                        _WinFormConfig.Set(GlobalKey.MainSkinValue, cbbColorMain.SelectedValue.ToString(), "主窗体皮肤设置："+ cbbColorMain.Text);
+                        _WinFormConfig.Set(GlobalKey.MainSkinValue, cbbColorMain.SelectedValue.ToString(), "主窗体皮肤设置：" + cbbColorMain.Text);
                         break;
                     case "1": //选择颜色
                         WinFormContext.UserEnvConfig.MainFormSkin.SkinType = FormSkinTypeEnum.ColorList;
@@ -146,7 +146,7 @@ namespace Breezee.Framework.Mini.StartUp
                     case "0": //默认
                         WinFormContext.UserEnvConfig.MainFormSkin.SkinType = FormSkinTypeEnum.Default;
                         WinFormContext.UserEnvConfig.MainFormSkin.ColorRBGOrImagePath = cbbColorCommon.SelectedValue.ToString();
-                        _WinFormConfig.Set(GlobalKey.CommonSkinValue, cbbColorCommon.SelectedValue.ToString(), "主窗体皮肤设置："+ cbbColorCommon.Text);
+                        _WinFormConfig.Set(GlobalKey.CommonSkinValue, cbbColorCommon.SelectedValue.ToString(), "主窗体皮肤设置：" + cbbColorCommon.Text);
                         break;
                     case "1": //选择颜色
                         WinFormContext.UserEnvConfig.MainFormSkin.SkinType = FormSkinTypeEnum.ColorList;
@@ -185,7 +185,7 @@ namespace Breezee.Framework.Mini.StartUp
             {
                 #region 保存提示方式
                 string strSavePromptType = cbbMsgType.SelectedValue.ToString();
-                _WinFormConfig.Set(GlobalKey.SavePromptType, strSavePromptType, "保存提示方式"); 
+                _WinFormConfig.Set(GlobalKey.SavePromptType, strSavePromptType, "保存提示方式");
                 if (strSavePromptType == "2")//仅显示，不弹出
                 {
                     WinFormContext.UserEnvConfig.SaveMsgPrompt = SaveMsgPromptTypeEnum.OnlyPromptNotPopup;
@@ -198,8 +198,8 @@ namespace Breezee.Framework.Mini.StartUp
             }
             _WinFormConfig.Save();
             ShowInfo("【用户环境设置】保存成功！");
-            DialogResult = System.Windows.Forms.DialogResult.OK; 
-        } 
+            DialogResult = System.Windows.Forms.DialogResult.OK;
+        }
         #endregion
 
         #region 关闭按钮事件
@@ -211,7 +211,7 @@ namespace Breezee.Framework.Mini.StartUp
         private void tsbExit_Click(object sender, EventArgs e)
         {
             Close();
-        } 
+        }
         #endregion
 
         #region 主窗体皮肤类型下拉框选择变化事件
@@ -250,7 +250,7 @@ namespace Breezee.Framework.Mini.StartUp
                 default:
                     break;
             }
-        } 
+        }
         #endregion
 
         #region 子窗体皮肤类型下拉框选择变化事件
@@ -286,7 +286,7 @@ namespace Breezee.Framework.Mini.StartUp
                 default:
                     break;
             }
-        } 
+        }
         #endregion
 
         #region 主窗体选择自定义颜色或图片
@@ -323,7 +323,7 @@ namespace Breezee.Framework.Mini.StartUp
                 default:
                     break;
             }
-        } 
+        }
         #endregion
 
         #region 子窗体选择自定义颜色或图片
@@ -363,12 +363,6 @@ namespace Breezee.Framework.Mini.StartUp
         }
         #endregion
 
-        private void tsbMiniDbConfig_Click(object sender, EventArgs e)
-        {
-            FrmDBConfig frm = new FrmDBConfig(MiniGlobalValue.DataAccessConfigKey, GlobalContext.PathDb(), GlobalFile.DbConfigMini, "主框架的数据库连接配置");
-            frm.ShowDialog();
-        }
-
         /// <summary>
         /// 选择我的配置路径按钮事件
         /// </summary>
@@ -384,7 +378,7 @@ namespace Breezee.Framework.Mini.StartUp
                 if (result == DialogResult.Yes)
                 {
                     //注：这里要取用户喜好目录下的所有文件
-                    FileDirHelper.CopyFilesToDirKeepSrcDirName(GlobalContext.PathConfig(), sDirName,true);
+                    FileDirHelper.CopyFilesToDirKeepSrcDirName(GlobalContext.PathConfig(), sDirName, true);
                     WinFormContext.Instance.LoadAppConfig(sDirName);//重新加载应用配置
                     txbMyLoveSettingPath.Text = sDirName;
                 }
@@ -394,5 +388,7 @@ namespace Breezee.Framework.Mini.StartUp
                 MsgHelper.ShowErr("请选择一个空目录！");
             }
         }
+
+        
     }
 }

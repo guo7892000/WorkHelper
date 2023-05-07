@@ -77,8 +77,8 @@ namespace Breezee.Core.Tool
         /// <returns></returns>
         public static string DESEncrypt(string data, string key, string iv)
         {
-            byte[] byKey = System.Text.ASCIIEncoding.ASCII.GetBytes(key);
-            byte[] byIV = System.Text.ASCIIEncoding.ASCII.GetBytes(iv);
+            byte[] byKey = Encoding.ASCII.GetBytes(key);
+            byte[] byIV = Encoding.ASCII.GetBytes(iv);
 
             DESCryptoServiceProvider cryptoProvider = new DESCryptoServiceProvider();
             int i = cryptoProvider.KeySize;
@@ -102,8 +102,8 @@ namespace Breezee.Core.Tool
         /// <returns></returns>
         public static string DESDecrypt(string data, string key, string iv)
         {
-            byte[] byKey = System.Text.ASCIIEncoding.ASCII.GetBytes(key);
-            byte[] byIV = System.Text.ASCIIEncoding.ASCII.GetBytes(iv);
+            byte[] byKey = Encoding.ASCII.GetBytes(key);
+            byte[] byIV = Encoding.ASCII.GetBytes(iv);
 
             byte[] byEnc;
             try
