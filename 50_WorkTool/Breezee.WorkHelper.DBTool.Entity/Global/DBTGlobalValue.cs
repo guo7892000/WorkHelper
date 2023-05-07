@@ -74,5 +74,13 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string DataAccessConfigKey = "IDataAccessDBTool";
 
         public static readonly string DBInitializerConfigKey = "IDBInitializerDBTool";
+        /// <summary>
+        /// 加密使用的键：必须24个字符
+        /// </summary>
+        public static readonly string DBTDesEncryKey = "BrEe%eKiMLVPeaCh*DbTooL#";
+        /// <summary>
+        /// 加密使用的向量：必须16个字符
+        /// </summary>
+        public static readonly string DBTDesEncryVector = "=PAc&Ve&OEBrDbT+";
     }
 }

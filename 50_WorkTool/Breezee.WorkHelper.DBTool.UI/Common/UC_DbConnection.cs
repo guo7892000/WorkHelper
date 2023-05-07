@@ -79,6 +79,19 @@ namespace Breezee.WorkHelper.DBTool.UI
                 txbPortNO.Text = dr["PORT_NO"].ToString();
                 txbDbName.Text = dr["DB_NAME"].ToString();
                 txbUserName.Text = dr["USER_NAME"].ToString();
+                //解密密码
+                string sEncPwd = dr["USER_PASSWORD"].ToString();
+                if (!string.IsNullOrEmpty(sEncPwd))
+                {
+                    try
+                    {
+                        dr["USER_PASSWORD"] = EncryptHelper.AESDecrypt(sEncPwd, DBTGlobalValue.DBTDesEncryKey, DBTGlobalValue.DBTDesEncryVector);
+                    }
+                    catch
+                    {
+                        //报错时啥都不用做
+                    }
+                }
                 txbPassword.Text = dr["USER_PASSWORD"].ToString();
                 
             }

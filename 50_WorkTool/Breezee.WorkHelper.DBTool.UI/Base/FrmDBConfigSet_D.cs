@@ -68,6 +68,19 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             else //修改
             {
+                //解密密码
+                string sEncPwd = _drEdit[DT_DBT_BD_DB_CONFIG.SqlString.USER_PASSWORD].ToString();
+                if (!string.IsNullOrEmpty(sEncPwd))
+                {
+                    try
+                    {
+                        _drEdit[DT_DBT_BD_DB_CONFIG.SqlString.USER_PASSWORD] = EncryptHelper.AESDecrypt(sEncPwd, DBTGlobalValue.DBTDesEncryKey, DBTGlobalValue.DBTDesEncryVector);
+                    }
+                    catch
+                    {
+                        //报错时啥都不用做
+                    }
+                }
                 _listSupply.SetControlValue(_drEdit);
                 tsbCopyAdd.Visible = true;
             }
@@ -117,6 +130,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                 dtSave = DBToolHelper.Instance.DataAccess.GetTableConstruct(DT_DBT_BD_DB_CONFIG.TName, coloumns);
                 dtSave.DefaultValue(_loginUser);//设置登录用户的默认值
                 _listSupply.GetControlValue(dtSave, isAdd);
+                //加密密码
+                string sEncPwd = dtSave.Rows[0][DT_DBT_BD_DB_CONFIG.SqlString.USER_PASSWORD].ToString();
+                if (!string.IsNullOrEmpty(sEncPwd))
+                {
+                    dtSave.Rows[0][DT_DBT_BD_DB_CONFIG.SqlString.USER_PASSWORD] = EncryptHelper.AESEncrypt(sEncPwd, DBTGlobalValue.DBTDesEncryKey, DBTGlobalValue.DBTDesEncryVector);
+                }
                 if (isAdd)
                 {
                     dtSave.Rows[0][DT_DBT_BD_DB_CONFIG.SqlString.DB_CONFIG_ID] = StringHelper.GetGUID();

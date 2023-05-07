@@ -45,7 +45,6 @@
             this.txbDbName = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dgvQuery = new System.Windows.Forms.DataGridView();
-            this.tsbDbToolDbSet = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -60,7 +59,6 @@
             this.tsbNew,
             this.tsbEdit,
             this.btnDelete,
-            this.tsbDbToolDbSet,
             this.tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
@@ -224,15 +222,6 @@
             this.dgvQuery.TabIndex = 4;
             this.dgvQuery.DoubleClick += new System.EventHandler(this.dgvQuery_DoubleClick);
             // 
-            // tsbDbToolDbSet
-            // 
-            this.tsbDbToolDbSet.Image = ((System.Drawing.Image)(resources.GetObject("tsbDbToolDbSet.Image")));
-            this.tsbDbToolDbSet.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbDbToolDbSet.Name = "tsbDbToolDbSet";
-            this.tsbDbToolDbSet.Size = new System.Drawing.Size(129, 22);
-            this.tsbDbToolDbSet.Text = "数据库工具DB设置";
-            this.tsbDbToolDbSet.Click += new System.EventHandler(this.tsbDbToolDbSet_Click);
-            // 
             // FrmDBConfigSet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -275,6 +264,5 @@
         private System.Windows.Forms.DataGridView dgvQuery;
         private System.Windows.Forms.ToolStripButton tsbQuery;
         private System.Windows.Forms.ToolStripButton btnDelete;
-        private System.Windows.Forms.ToolStripButton tsbDbToolDbSet;
     }
 }

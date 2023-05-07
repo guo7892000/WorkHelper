@@ -200,6 +200,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             DataColumn dcSelected = new DataColumn(_sGridColumnSelect);
             dcSelected.DefaultValue = "1";
             dtTable.Columns.Add(dcSelected);
+            //排除分表
+            ExcludeSplitTable(dtTable);
 
             //绑定表网格
             FlexGridColumnDefinition fdc = new FlexGridColumnDefinition();
@@ -229,6 +231,26 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (ckbClearSelect.Checked)
             {
                 dgvSelect.GetBindingTable().Clear();
+            }
+        }
+
+        /// <summary>
+        /// 排除分表：以【_数字】结尾的表
+        /// </summary>
+        /// <param name="dtTable"></param>
+        private void ExcludeSplitTable(DataTable dtTable)
+        {
+            if (ckbNotIncludeSplitTable.Checked)
+            {
+                foreach (DataRow dr in dtTable.Rows)
+                {
+                    string[] arrTable = dr[DBTableEntity.SqlString.Name].ToString().Split('_');
+                    int num;
+                    if (arrTable.Length > 0 && int.TryParse(arrTable[arrTable.Length - 1], out num))
+                    {
+                        dr[_sGridColumnSelect] = "0";
+                    }
+                }
             }
         }
         #endregion
@@ -333,21 +355,32 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             DataTable dtInput = dgvInput.GetBindingTable();
             DataTable dtSelect = dgvSelect.GetBindingTable();
+            DataTable dtAllCol = dgvColList.GetBindingTable();
+            if (dtAllCol.Rows.Count == 0)
+            {
+                ShowInfo("请先选择表，并点击【加载数据】后，再匹配数据！");
+                return;
+            }
+
             if (cbbInputType.SelectedValue != null)
             {
                 string sInputType = cbbInputType.SelectedValue.ToString();
                 string sSql = rtbInputSql.Text.Trim();
-                if (string.IsNullOrEmpty(sSql))
+                if("2".Equals(sInputType) || "3".Equals(sInputType))
                 {
-                    string sErr = "2".Equals(sInputType) ? "请输入查询空数据的SQL，这里只用到查询结果的列编码！" : "请输入条件字符（以@或:开头，或前后#的参数）";
-                    ShowInfo(sErr);
-                    return;
+                    if (string.IsNullOrEmpty(sSql))
+                    {
+                        string sErr = "2".Equals(sInputType) ? "请输入查询空数据的SQL，这里只用到查询结果的列编码！" : "请输入条件字符（以@或:开头，或前后#的参数）";
+                        ShowInfo(sErr);
+                        return;
+                    }
+                    if (ckbOnlyMatchQueryResult.Checked)
+                    {
+                        dtInput.Clear();
+                        dtSelect.Clear();
+                    }
                 }
-                if (ckbOnlyMatchQueryResult.Checked)
-                {
-                    dtInput.Clear();
-                    dtSelect.Clear();
-                }
+                
                 if ("2".Equals(sInputType))
                 {
                     try
@@ -381,7 +414,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDicConfirmColumnType, cbbInputType.SelectedValue.ToString(), "【数据字典】确认列类型");
             WinFormContext.UserLoveSettings.Save();
 
-            DataTable dtAllCol = dgvColList.GetBindingTable();
+            
             DataTable dtCommonCol = dgvCommonCol.GetBindingTable();
 
             foreach (DataRow dr in dtInput.Rows)
@@ -858,6 +891,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                         return;
                     }
                     DataTable dtMain = ((BindingSource)dgvInput.DataSource).DataSource as DataTable;
+                    if(!ckbOnlyMatchQueryResult.Checked)
+                    {
+                        dtMain.Clear(); //非追加，则清除所有数据
+                    }
+
                     int iRow = 0;
                     int iColumn = 0;
                     Object[,] data = StringHelper.GetStringArray(ref pasteText, ref iRow, ref iColumn);
@@ -1001,12 +1039,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if("1".Equals(sType))
                 {
                     grbInputSql.Visible = false;
-                    ckbOnlyMatchQueryResult.Visible = false;
+                    ckbOnlyMatchQueryResult.Checked = true;
+                    ckbOnlyMatchQueryResult.Text = "追加列";
                 }
                 else
                 {
                     grbInputSql.Visible = true;
-                    ckbOnlyMatchQueryResult.Visible = true;
                     ckbOnlyMatchQueryResult.Checked = true;
                     grbInputSql.Text = "2".Equals(sType) ? "查询SQL" : "参数字符";
                     ckbOnlyMatchQueryResult.Text = "2".Equals(sType) ? "仅匹配查询结果" : "仅匹配参数";
@@ -1053,6 +1091,33 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void btnGenerate_Click(object sender, EventArgs e)
         {
             tsbAutoSQL.PerformClick();
+        }
+
+        private void tsmiTableRemove_Click(object sender, EventArgs e)
+        {
+            DataTable dt = dgvTableList.GetBindingTable();
+            //得到表字符清单
+            SortedSet<string> set = new SortedSet<string>();
+            for (int i=0;i < dgvTableList.SelectedCells.Count;i++)
+            {
+                set.Add(dgvTableList.Rows[dgvTableList.SelectedCells[i].RowIndex].Cells[DBTableEntity.SqlString.Name].Value.ToString());
+            }
+
+            foreach (string sTable in set)
+            {
+                string sFiter = string.Format("{0}='{1}'", DBTableEntity.SqlString.Name, sTable);
+                DataRow[] drArr = dt.Select(sFiter);
+                foreach (DataRow dr in drArr)
+                {
+                    dt.Rows.Remove(dr);
+                }
+            }
+        }
+
+        private void ckbNotIncludeSplitTable_CheckedChanged(object sender, EventArgs e)
+        {
+            DataTable dt = dgvTableList.GetBindingTable();
+            ExcludeSplitTable(dt);
         }
     }
 }
