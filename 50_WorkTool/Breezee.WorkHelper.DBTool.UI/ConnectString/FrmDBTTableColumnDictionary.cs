@@ -361,10 +361,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                 ShowInfo("请先选择表，并点击【加载数据】后，再匹配数据！");
                 return;
             }
+            string sInputType = string.Empty;
 
             if (cbbInputType.SelectedValue != null)
             {
-                string sInputType = cbbInputType.SelectedValue.ToString();
+                sInputType = cbbInputType.SelectedValue.ToString();
                 string sSql = rtbInputSql.Text.Trim();
                 if("2".Equals(sInputType) || "3".Equals(sInputType))
                 {
@@ -399,56 +400,99 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 else if("3".Equals(sInputType))
                 {
-                    string sPattern = "([@:]\\w+)|(#\\w+#)";
+                    string sPattern = @"([@:]\w+)|(#\w+#)|(#{\w+})|(#{param.\w+})|(#{para.\w+})";
                     Regex regex = new Regex(sPattern, RegexOptions.IgnoreCase);
                     MatchCollection mcColl = regex.Matches(sSql);
                     foreach (Match mt in mcColl)
                     {
-                        string sCol = mt.Value.Replace("@", "").Replace(":", "").Replace("#", "");
+                        //去掉参数前后缀
+                        string sCol = mt.Value.Replace("#{param.", "")
+                            .Replace("#{para.", "")
+                            .Replace("@", "")
+                            .Replace(":", "")
+                            .Replace("#", "")
+                            .Replace("{","")
+                            .Replace("}", "");
                         dtInput.Rows.Add(sCol);
                     }
-                }                
+                }
             }
 
             //保存用户偏好值
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDicConfirmColumnType, cbbInputType.SelectedValue.ToString(), "【数据字典】确认列类型");
             WinFormContext.UserLoveSettings.Save();
-
-            
+ 
             DataTable dtCommonCol = dgvCommonCol.GetBindingTable();
 
             foreach (DataRow dr in dtInput.Rows)
             {
-                string sFiter = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.Name, dr[_sInputColCode].ToString());
+                string sCol = dr[_sInputColCode].ToString();
+                string sFiter = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.Name, sCol);
+                //判断列是否已加入
                 DataRow[] drArr = dtSelect.Select(sFiter);
                 if (drArr.Length > 0)
                 {
                     continue;
                 }
-                sFiter = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.Name, dr[_sInputColCode].ToString());
-                //
+                //针对没有下框线，且不是查询类型
+                if (!sCol.Contains("_") && !"2".Equals(sInputType))
+                {
+                    string sFiterUnderscore = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.Name, sCol.ToUnderscoreCase());
+                    drArr = dtSelect.Select(sFiterUnderscore);
+                    if (drArr.Length > 0)
+                    {
+                        continue;
+                    }
+                }
+
+                sFiter = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.Name, sCol);
+                //查找通用列中是否存在
                 drArr = dtCommonCol.Select(sFiter);
                 if (drArr.Length > 0)
                 {
                     dtSelect.ImportRow(drArr[0]);
+                    continue;
                 }
-                else
+
+                //查找所有列中是否存在
+                drArr = dtAllCol.Select(sFiter);
+                if (drArr.Length > 0)
                 {
+                    dtSelect.ImportRow(drArr[0]);
+                    continue;
+                }
+
+                //判断是否包括下横线：如不包含，那么转换为下横线找找看
+                if (!sCol.Contains("_") && !"2".Equals(sInputType))
+                {
+                    sFiter = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.Name, sCol.ToUnderscoreCase());
+                    //查找通用列中是否存在
+                    drArr = dtCommonCol.Select(sFiter);
+                    if (drArr.Length > 0)
+                    {
+                        dtSelect.ImportRow(drArr[0]);
+                        continue;
+                    }
+
+                    //查找所有列中是否存在
                     drArr = dtAllCol.Select(sFiter);
                     if (drArr.Length > 0)
                     {
                         dtSelect.ImportRow(drArr[0]);
+                        continue;
                     }
-                    else if(ckbNotFoundAdd.Checked)
-                    {
-                        //找不到的也加入，但只有列编码
-                        DataRow drNew = dtSelect.NewRow();
-                        drNew[DBColumnSimpleEntity.SqlString.Name] = dr[_sInputColCode].ToString();
-                        drNew[DBColumnSimpleEntity.SqlString.NameUpper] = dr[_sInputColCode].ToString().FirstLetterUpper();
-                        drNew[DBColumnSimpleEntity.SqlString.NameLower] = dr[_sInputColCode].ToString().FirstLetterUpper(false);
-                        drNew[_sGridColumnSelect] = "1";
-                        dtSelect.Rows.Add(drNew);
-                    }
+                }
+
+                //都找不到
+                if (ckbNotFoundAdd.Checked)
+                {
+                    //找不到的也加入，但只有列编码
+                    DataRow drNew = dtSelect.NewRow();
+                    drNew[DBColumnSimpleEntity.SqlString.Name] = sCol;
+                    drNew[DBColumnSimpleEntity.SqlString.NameUpper] = sCol.FirstLetterUpper();
+                    drNew[DBColumnSimpleEntity.SqlString.NameLower] = sCol.FirstLetterUpper(false);
+                    drNew[_sGridColumnSelect] = "1";
+                    dtSelect.Rows.Add(drNew);
                 }
             }
         }

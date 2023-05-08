@@ -278,6 +278,12 @@ namespace Breezee.Core.Interface
             return dt;
         }
 
+        /// <summary>
+        /// 下横线转驼峰
+        /// </summary>
+        /// <param name="strColCode">要转换的字符</param>
+        /// <param name="isFirstWorldUpper">是：大驼峰，否：小驼峰</param>
+        /// <returns></returns>
         public static string FirstLetterUpper(this string strColCode, bool isFirstWorldUpper = true)
         {
             strColCode = strColCode.ToLower();
@@ -300,6 +306,16 @@ namespace Breezee.Core.Interface
             return strColCode;
         }
 
+        /// <summary>
+        /// 驼峰转下横线
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string ToUnderscoreCase(this string str, bool isUpper = true)
+        {
+            string sUnderLine = string.Concat(str.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString()));
+            return isUpper? sUnderLine.ToUpper() : sUnderLine.ToLower();
+        }
 
     }
 }
