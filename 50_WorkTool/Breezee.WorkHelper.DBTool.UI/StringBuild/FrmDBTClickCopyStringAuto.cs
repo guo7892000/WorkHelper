@@ -102,6 +102,10 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                         {
                             if (!string.IsNullOrWhiteSpace(cs.PathRel))
                             {
+                                if(cs.PathRel.StartsWith(@"\") || cs.PathRel.StartsWith(@"/"))
+                                {
+                                    cs.PathRel = cs.PathRel.Substring(1); //去掉前面的斜杆，让后面的Path.Combine能正常合并路径；否则得到的路径是错的
+                                }
                                 string sPath = Path.Combine(Path.GetDirectoryName(sXmlPath), cs.PathRel);
                                 if (File.Exists(sPath))
                                 {

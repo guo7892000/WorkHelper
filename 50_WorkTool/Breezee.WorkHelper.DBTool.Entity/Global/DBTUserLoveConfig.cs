@@ -22,5 +22,6 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string DbGetSql_FirstWordType = "DbGetSql_FirstWordType";
         public static readonly string AutoEntity_Path = "AutoEntity_Path";
         public static readonly string AutoCode_Path = "AutoCode_Path";
+        public static readonly string MergeScriptPath = "MergeScriptPath";
     }
 }

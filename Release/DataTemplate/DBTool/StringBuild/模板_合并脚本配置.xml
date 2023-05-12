@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--db：数据库类型，包括SqlServer、Oracle、MySql、SQLite、PostgreSql-->
-<configuration db="SqlServer">
-  <!--class：分类。每种分类生成一个文件。type中t(表)、f(函数)、v(视图)、p(存储过程)、d(数据)。name属性就是输出文件名-->
+<!--dbType：数据库类型，包括SqlServer、Oracle、MySql、SQLite、PostgreSql-->
+<!--sourcePath：读取的目录（不配置时读取配置文件所在目录）。targetPath：生成文件的目录（不配置时读取配置文件所在目录）-->
+<configuration dbType="SqlServer" sourcePath="D:\javaAuto\03_SqlServer\001_DBObjects" targetPath="D:\javaAuto\11">
+  <!--class：分类。每种分类生成一个文件。type中t(表)、f(函数)、v(视图)、p(存储过程)、d(数据)。finalName属性就是输出文件名-->
+  <!--sourcePathAbs：读取的绝对路径（优先）。sourcePathRel：读取的相对目录。-->
+  <!--fileExt：文件扩展名（支持逗号分隔多个）。charset：字符集类型（单选，包括utf8,utf16,utf32）-->
   <!--item：文件名，不需要相对路径-->
   <!--创建表-->
-  <class type="t" name="01_table_all.sql">
+  <class objectType="t" finalName="01_table_all.sql" sourcePathRel="\01_Table" sourcePathAbs="" fileExt="" charset="">
     <item></item>
   </class>
 
   <!--创建函数-->
-  <class type="f" name="02_function_all.sql">
+  <class objectType="f" finalName="02_function_all.sql" sourcePathRel="03_Function" >
     <item>F_COMMON_GET_PY.sql</item>
     <item>F_COMMON_GET_SPLIT_STRING.sql</item>
     <item>F_SYS_GET_WORD_SEQUENCE_NO.sql</item>
   </class>
 
   <!--创建视图-->
-  <class type="v" name="03_view_all.sql">
+  <class objectType="v" finalName="03_view_all.sql">
     <item>V_COM_PROVICE_CITY.sql</item>
     <item>V_ORG_INFO.sql</item>
     <item>V_SYS_AND_MENU.sql</item>
@@ -29,12 +32,11 @@
   </class>
 
   <!--创建存储过程-->
-  <class type="p" name="04_produce_all.sql">
-    <item>P_COMM_GET_FORM_CODE.sql</item>
+  <class objectType="p" finalName="04_produce_all.sql" sourcePathAbs="D:\javaAuto\04_Produce" >
   </class>
 
   <!--初始化数据-->
-  <class type="d" name="05_data_all.sql">
+  <class objectType="d" finalName="05_data_all.sql">
     <item></item>
   </class>
 

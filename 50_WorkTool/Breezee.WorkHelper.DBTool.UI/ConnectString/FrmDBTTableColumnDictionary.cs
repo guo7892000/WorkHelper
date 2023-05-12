@@ -381,7 +381,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         dtSelect.Clear();
                     }
                 }
-                
+
                 if ("2".Equals(sInputType))
                 {
                     try
@@ -398,11 +398,19 @@ namespace Breezee.WorkHelper.DBTool.UI
                         return;
                     }
                 }
-                else if("3".Equals(sInputType))
+                else if ("3".Equals(sInputType))
                 {
-                    string sPattern = @"([@:]\w+)|(#\w+#)|(#{\w+})|(#{param.\w+})|(#{para.\w+})";
-                    Regex regex = new Regex(sPattern, RegexOptions.IgnoreCase);
+                    string remarkPatter = "--.*|(/\\*.*/*/)";
+                    Regex regex = new Regex(remarkPatter, RegexOptions.IgnoreCase);
                     MatchCollection mcColl = regex.Matches(sSql);
+                    foreach (Match mt in mcColl)
+                    {
+                        sSql = sSql.Replace(mt.Value, ""); //清除注释
+                    }
+                    //参数格式
+                    string sPattern = @"([@:]\w+)|(#\w+#)|(#{\w+})|(#{param.\w+})|(#{para.\w+})";
+                    regex = new Regex(sPattern, RegexOptions.IgnoreCase);
+                    mcColl = regex.Matches(sSql);
                     foreach (Match mt in mcColl)
                     {
                         //去掉参数前后缀
@@ -411,7 +419,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                             .Replace("@", "")
                             .Replace(":", "")
                             .Replace("#", "")
-                            .Replace("{","")
+                            .Replace("{", "")
                             .Replace("}", "");
                         dtInput.Rows.Add(sCol);
                     }

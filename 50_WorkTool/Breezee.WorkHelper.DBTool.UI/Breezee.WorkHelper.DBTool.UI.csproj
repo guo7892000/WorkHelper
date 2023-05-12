@@ -206,6 +206,7 @@
     <Compile Include="StringBuild\FrmDirectoryFileString.Designer.cs">
       <DependentUpon>FrmDirectoryFileString.cs</DependentUpon>
     </Compile>
+    <Compile Include="StringBuild\ScriptMerge\ScriptMergeEntity.cs" />
     <Compile Include="StringBuild\ScriptMerge\ScriptMergeString.cs" />
     <Compile Include="TableSql\FrmDBTGenerateTableSQL.cs">
       <SubType>Form</SubType>
