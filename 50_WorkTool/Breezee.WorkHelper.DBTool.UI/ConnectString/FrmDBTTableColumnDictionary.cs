@@ -1093,13 +1093,26 @@ namespace Breezee.WorkHelper.DBTool.UI
                     grbInputSql.Visible = false;
                     ckbOnlyMatchQueryResult.Checked = true;
                     ckbOnlyMatchQueryResult.Text = "追加列";
+                    toolTip1.SetToolTip(cbbInputType, "粘贴列编码");
+                    toolTip1.SetToolTip(ckbOnlyMatchQueryResult, "选中后支持多次复制追加数据");
+                }
+                else if ("2".Equals(sType))
+                {
+                    grbInputSql.Visible = true;
+                    ckbOnlyMatchQueryResult.Checked = true;
+                    grbInputSql.Text = "查询SQL";
+                    ckbOnlyMatchQueryResult.Text = "仅匹配查询结果";
+                    toolTip1.SetToolTip(cbbInputType, "根据查询的SQL来得到所有列（注：SQL必须运行不报错，且最好是查询空数据）");
+                    toolTip1.SetToolTip(ckbOnlyMatchQueryResult, "选中后点【匹配】按钮会清空【粘贴或查询的列】网格");
                 }
                 else
                 {
                     grbInputSql.Visible = true;
                     ckbOnlyMatchQueryResult.Checked = true;
-                    grbInputSql.Text = "2".Equals(sType) ? "查询SQL" : "参数字符";
-                    ckbOnlyMatchQueryResult.Text = "2".Equals(sType) ? "仅匹配查询结果" : "仅匹配参数";
+                    grbInputSql.Text = "参数字符";
+                    ckbOnlyMatchQueryResult.Text = "仅匹配参数";
+                    toolTip1.SetToolTip(cbbInputType, "根据参数字符来匹配所有列，支持#{param.colName}、#{colName}、@colName、:colName、#colName#格式");
+                    toolTip1.SetToolTip(ckbOnlyMatchQueryResult, "选中后点【匹配】按钮会清空【粘贴或查询的列】网格");
                 }
             }
         }

@@ -58,6 +58,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.lblInfo = new System.Windows.Forms.Label();
+            this.tsmiClear = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -122,7 +123,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 45F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 51F));
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbbDbType, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.lblDbType, 2, 0);
@@ -316,14 +317,15 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 
             this.cmsGird.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.cmsGird.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiInsert});
+            this.tsmiInsert,
+            this.tsmiClear});
             this.cmsGird.Name = "contextMenuStrip1";
-            this.cmsGird.Size = new System.Drawing.Size(101, 26);
+            this.cmsGird.Size = new System.Drawing.Size(181, 70);
             // 
             // tsmiInsert
             // 
             this.tsmiInsert.Name = "tsmiInsert";
-            this.tsmiInsert.Size = new System.Drawing.Size(100, 22);
+            this.tsmiInsert.Size = new System.Drawing.Size(180, 22);
             this.tsmiInsert.Text = "加入";
             this.tsmiInsert.Click += new System.EventHandler(this.TsmiInsert_Click);
             // 
@@ -347,7 +349,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tpAutoSQL.Location = new System.Drawing.Point(4, 22);
             this.tpAutoSQL.Name = "tpAutoSQL";
             this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3);
-            this.tpAutoSQL.Size = new System.Drawing.Size(859, 288);
+            this.tpAutoSQL.Size = new System.Drawing.Size(918, 288);
             this.tpAutoSQL.TabIndex = 1;
             this.tpAutoSQL.Text = "生成结果";
             // 
@@ -356,7 +358,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.rtbResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbResult.Location = new System.Drawing.Point(3, 3);
             this.rtbResult.Name = "rtbResult";
-            this.rtbResult.Size = new System.Drawing.Size(853, 282);
+            this.rtbResult.Size = new System.Drawing.Size(912, 282);
             this.rtbResult.TabIndex = 3;
             this.rtbResult.Text = "";
             // 
@@ -369,6 +371,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.lblInfo.Size = new System.Drawing.Size(53, 12);
             this.lblInfo.TabIndex = 28;
             this.lblInfo.Text = "提示信息";
+            // 
+            // tsmiClear
+            // 
+            this.tsmiClear.Name = "tsmiClear";
+            this.tsmiClear.Size = new System.Drawing.Size(180, 22);
+            this.tsmiClear.Text = "清空";
+            this.tsmiClear.Click += new System.EventHandler(this.tsmiClear_Click_1);
             // 
             // FrmDBTCopyData
             // 
@@ -432,5 +441,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         private System.Windows.Forms.CheckBox ckbTrim;
         private Label label2;
         private ComboBox cbbWordConvert;
+        private ToolStripMenuItem tsmiClear;
     }
 }

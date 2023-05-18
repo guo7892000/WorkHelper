@@ -214,7 +214,12 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void tsbHelp_Click(object sender, EventArgs e)
         {
 
-        } 
+        }
         #endregion
+
+        private void tsmiClear_Click(object sender, EventArgs e)
+        {
+            dgvTableList.GetBindingTable().Clear();
+        }
     }
 }

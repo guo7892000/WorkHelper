@@ -296,5 +296,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             int iCurCol = dgvTableList.CurrentCell.ColumnIndex;
             rtbConString.AppendText(string.Format("#{0}#", dgvTableList.Columns[iCurCol].Name));
         }
+
+        private void tsmiClear_Click_1(object sender, EventArgs e)
+        {
+            dgvTableList.GetBindingTable().Clear();
+        }
     }
 }

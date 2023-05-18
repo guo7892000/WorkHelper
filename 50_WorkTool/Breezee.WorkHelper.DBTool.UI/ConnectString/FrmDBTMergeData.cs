@@ -282,7 +282,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     DataTable dtMain = (DataTable)WinFormGlobalValue.dicBindingSource[_strExcel2].DataSource;
                     dtMain.Clear();
                     dtMain.Columns.Clear();
-                    pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain,"1");
+                    pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain,"1",true);
                 }
             }
             catch (Exception ex)
@@ -334,6 +334,20 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             //导出Excel
             ExportHelper.ExportExcel(dtResult, "合并后数据_" + DateTime.Now.ToString("yyyyMMddHHmmss"),true);
+        }
+
+        private void tsmiClear_Click(object sender, EventArgs e)
+        {
+            DataGridView dgvSelect = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as DataGridView;
+            dgvSelect.GetBindingTable().Clear();
+        }
+
+        private void tsmiDelete_Click(object sender, EventArgs e)
+        {
+            DataGridView dgvSelect = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as DataGridView;
+            DataTable dt = dgvSelect.GetBindingTable();
+            DataRow dataRow = dgvSelect.GetCurrentRow();
+            dt.Rows.Remove(dataRow);
         }
     }
 }

@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDBTMergeData));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbAutoSQL = new System.Windows.Forms.ToolStripButton();
+            this.tsbExport = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -45,6 +47,8 @@
             this.tpImport = new System.Windows.Forms.TabPage();
             this.grbTable = new System.Windows.Forms.GroupBox();
             this.dgvExcel1 = new System.Windows.Forms.DataGridView();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiClear = new System.Windows.Forms.ToolStripMenuItem();
             this.lblTableData = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -53,7 +57,7 @@
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.dgvResult = new System.Windows.Forms.DataGridView();
             this.lblInfo = new System.Windows.Forms.Label();
-            this.tsbExport = new System.Windows.Forms.ToolStripButton();
+            this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -62,6 +66,7 @@
             this.tpImport.SuspendLayout();
             this.grbTable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvExcel1)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvExcel2)).BeginInit();
@@ -90,6 +95,15 @@
             this.tsbAutoSQL.Size = new System.Drawing.Size(72, 24);
             this.tsbAutoSQL.Text = "生成(&A)";
             this.tsbAutoSQL.Click += new System.EventHandler(this.tsbAutoSQL_Click);
+            // 
+            // tsbExport
+            // 
+            this.tsbExport.Image = ((System.Drawing.Image)(resources.GetObject("tsbExport.Image")));
+            this.tsbExport.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbExport.Name = "tsbExport";
+            this.tsbExport.Size = new System.Drawing.Size(71, 24);
+            this.tsbExport.Text = "导出(&E)";
+            this.tsbExport.Click += new System.EventHandler(this.tsbExport_Click);
             // 
             // tsbExit
             // 
@@ -254,6 +268,7 @@
             // dgvExcel1
             // 
             this.dgvExcel1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvExcel1.ContextMenuStrip = this.contextMenuStrip1;
             this.dgvExcel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvExcel1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
             this.dgvExcel1.Location = new System.Drawing.Point(3, 17);
@@ -262,6 +277,21 @@
             this.dgvExcel1.Size = new System.Drawing.Size(769, 322);
             this.dgvExcel1.TabIndex = 0;
             this.dgvExcel1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvTableList_KeyDown);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiDelete,
+            this.tsmiClear});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
+            // 
+            // tsmiClear
+            // 
+            this.tsmiClear.Name = "tsmiClear";
+            this.tsmiClear.Size = new System.Drawing.Size(180, 22);
+            this.tsmiClear.Text = "清空";
+            this.tsmiClear.Click += new System.EventHandler(this.tsmiClear_Click);
             // 
             // lblTableData
             // 
@@ -303,6 +333,7 @@
             // dgvExcel2
             // 
             this.dgvExcel2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvExcel2.ContextMenuStrip = this.contextMenuStrip1;
             this.dgvExcel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvExcel2.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
             this.dgvExcel2.Location = new System.Drawing.Point(3, 17);
@@ -357,14 +388,12 @@
             this.lblInfo.TabIndex = 28;
             this.lblInfo.Text = "提示信息";
             // 
-            // tsbExport
+            // tsmiDelete
             // 
-            this.tsbExport.Image = ((System.Drawing.Image)(resources.GetObject("tsbExport.Image")));
-            this.tsbExport.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbExport.Name = "tsbExport";
-            this.tsbExport.Size = new System.Drawing.Size(71, 24);
-            this.tsbExport.Text = "导出(&E)";
-            this.tsbExport.Click += new System.EventHandler(this.tsbExport_Click);
+            this.tsmiDelete.Name = "tsmiDelete";
+            this.tsmiDelete.Size = new System.Drawing.Size(180, 22);
+            this.tsmiDelete.Text = "删除";
+            this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
             // 
             // FrmDBTMergeData
             // 
@@ -393,6 +422,7 @@
             this.grbTable.ResumeLayout(false);
             this.grbTable.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvExcel1)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -431,5 +461,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox CkbLoadExampleData;
         private System.Windows.Forms.ToolStripButton tsbExport;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem tsmiClear;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDelete;
     }
 }

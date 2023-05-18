@@ -237,7 +237,16 @@ namespace Breezee.Core.Interface
             return sSource.Replace(" ", "").Equals(sTarget.Replace(" ", ""), StringComparison.InvariantCultureIgnoreCase);
         }
 
-        public static DataTable GetStringTable(this string pasteText, bool AutoColumnName, DataTable dt = null, string endString = "")
+        /// <summary>
+        /// 获取字符表
+        /// </summary>
+        /// <param name="pasteText">粘贴的文本</param>
+        /// <param name="AutoColumnName">是否自动列名</param>
+        /// <param name="dt">在哪个表上累加数据</param>
+        /// <param name="autoColumnEndString">自动列名的生缀</param>
+        /// <param name="isTrimData">是否去掉数据前后空格</param>
+        /// <returns></returns>
+        public static DataTable GetStringTable(this string pasteText, bool AutoColumnName, DataTable dt = null, string autoColumnEndString = "",bool isTrimData=false)
         {
             if (dt == null)
             {
@@ -253,14 +262,21 @@ namespace Breezee.Core.Interface
                     {
                         for (int j = 0; j < colNames.Length; j++)
                         {
-                            dt.Columns.Add(j.ToUpperWord()+ endString, typeof(string));
+                            string sColName = j.ToUpperWord() + autoColumnEndString;
+                            if (!dt.Columns.Contains(sColName))
+                            {
+                                dt.Columns.Add(sColName, typeof(string));
+                            }
                         }
                     }
                     else
                     {
                         foreach (string s in colNames)
                         {
-                            dt.Columns.Add(s, typeof(string));
+                            if (!dt.Columns.Contains(s.Trim()))
+                            {
+                                dt.Columns.Add(s.Trim(), typeof(string));
+                            }
                         }
                     }
                 }
@@ -270,7 +286,7 @@ namespace Breezee.Core.Interface
                     string[] cols = rows[i].Split(new string[] { "\t" }, StringSplitOptions.None);//注：这里不要去掉空白
                     for (int j = 0; j < cols.Length; j++)
                     {
-                        dr[j] = cols[j];
+                        dr[j] = isTrimData? cols[j].Trim(): cols[j];
                     }
                     dt.Rows.Add(dr);
                 }
