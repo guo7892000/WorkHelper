@@ -543,7 +543,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     rtbConString.Clear();
                     rtbConString.AppendText(string.Format(@"@ApiModelProperty(""#{0}#"")
 private String #{1}#;
-", DBColumnSimpleEntity.SqlString.NameCN, DBColumnSimpleEntity.SqlString.NameUpper));
+", DBColumnSimpleEntity.SqlString.NameCN, DBColumnSimpleEntity.SqlString.NameLower));
                 }
                 else
                 {

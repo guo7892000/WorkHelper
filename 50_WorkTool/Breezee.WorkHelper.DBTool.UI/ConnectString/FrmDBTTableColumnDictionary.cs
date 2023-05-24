@@ -83,6 +83,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Add("2", "YAPI查询结果(不分页)");
             _dicString.Add("3", "YAPI查询结果(分页)");
             _dicString.Add("4", "YAPI查询条件(分页)");
+            _dicString.Add("11", "Mybatis表实体属性");
+            _dicString.Add("12", "通用实体属性");
             cbbModuleString.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), true, true);
 
             //
@@ -592,6 +594,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                         string strData = dtColumnSelect.Rows[i][dc.ColumnName].ToString();
                         //将数据中的列名替换为单元格中的数据
                         strOneData = strOneData.Replace("#" + dc.ColumnName + "#", strData);
+                        if(cbbModuleString.SelectedValue !=null && "11".Equals(cbbModuleString.SelectedValue.ToString()) 
+                            && "PK".Equals(dtColumnSelect.Rows[i][DBColumnSimpleEntity.SqlString.KeyType].ToString(),StringComparison.OrdinalIgnoreCase))
+                        {
+                            strOneData = strOneData.Replace("@TableField", "@TableId");
+                        }
+
                     }
                     //所有SQL文本累加
                     sbAllSql.Append(strOneData + "\n");
@@ -1079,6 +1087,19 @@ namespace Breezee.WorkHelper.DBTool.UI
                     {
                         ckbRemoveLastChar.Checked = true;
                     }
+                }
+                else if ("11".Equals(sModule))
+                {
+                    rtbConString.AppendText(string.Format(@"    @ApiModelProperty(""#{0}#"")
+    @TableField(""#{1}#"")
+    private String #{2}#;
+", DBColumnSimpleEntity.SqlString.NameCN, DBColumnSimpleEntity.SqlString.Name, DBColumnSimpleEntity.SqlString.NameLower));
+                }
+                else if ("12".Equals(sModule))
+                {
+                    rtbConString.AppendText(string.Format(@"@ApiModelProperty(""#{0}#"")
+private String #{1}#;
+", DBColumnSimpleEntity.SqlString.NameCN, DBColumnSimpleEntity.SqlString.NameLower));
                 }
             }
         }
