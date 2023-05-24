@@ -8,8 +8,8 @@
     <ProjectGuid>{8FD60D3C-DC4E-4606-8139-B1561B854F80}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Breezee.Framework.DataAccess.SqlServer</RootNamespace>
-    <AssemblyName>Breezee.Framework.DataAccess.SqlServer</AssemblyName>
+    <RootNamespace>Breezee.AutoSQLExecutor.SqlServer</RootNamespace>
+    <AssemblyName>Breezee.AutoSQLExecutor.SqlServer</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
