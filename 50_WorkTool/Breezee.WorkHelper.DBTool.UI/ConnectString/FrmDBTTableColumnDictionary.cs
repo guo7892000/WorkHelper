@@ -85,6 +85,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Add("4", "YAPI查询条件(分页)");
             _dicString.Add("11", "Mybatis表实体属性");
             _dicString.Add("12", "通用实体属性");
+            _dicString.Add("13", "Mybatis查询条件");
             cbbModuleString.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), true, true);
 
             //
@@ -586,20 +587,37 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             try
             {
+                string sModule = cbbModuleString.SelectedValue.ToString();
                 for (int i = 0; i < dtColumnSelect.Rows.Count; i++)
                 {
                     string strOneData = rtbConString.Text;
+                    if ("13".Equals(sModule))
+                    {
+                        string sDataType = dtColumnSelect.Rows[i][DBColumnSimpleEntity.SqlString.DataType].ToString();
+                        string sColumnName = dtColumnSelect.Rows[i][DBColumnSimpleEntity.SqlString.Name].ToString();
+                        if ("date".Equals(sDataType, StringComparison.OrdinalIgnoreCase)|| "datetime".Equals(sDataType, StringComparison.OrdinalIgnoreCase))
+                        {
+                            strOneData = getMybatiString(MybatisStringType.Datetime);
+                        }
+                        else if(sColumnName.EndsWith("list",StringComparison.OrdinalIgnoreCase))
+                        {
+                            strOneData = getMybatiString(MybatisStringType.List);
+                        }
+                        else
+                        {
+                            strOneData = getMybatiString(MybatisStringType.If);
+                        }
+                    }
                     foreach (DataColumn dc in dtColumnSelect.Columns)
                     {
                         string strData = dtColumnSelect.Rows[i][dc.ColumnName].ToString();
                         //将数据中的列名替换为单元格中的数据
                         strOneData = strOneData.Replace("#" + dc.ColumnName + "#", strData);
-                        if(cbbModuleString.SelectedValue !=null && "11".Equals(cbbModuleString.SelectedValue.ToString()) 
-                            && "PK".Equals(dtColumnSelect.Rows[i][DBColumnSimpleEntity.SqlString.KeyType].ToString(),StringComparison.OrdinalIgnoreCase))
+                        if (cbbModuleString.SelectedValue != null && "11".Equals(sModule)
+                            && "PK".Equals(dtColumnSelect.Rows[i][DBColumnSimpleEntity.SqlString.KeyType].ToString(), StringComparison.OrdinalIgnoreCase))
                         {
                             strOneData = strOneData.Replace("@TableField", "@TableId");
                         }
-
                     }
                     //所有SQL文本累加
                     sbAllSql.Append(strOneData + "\n");
@@ -1073,6 +1091,9 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private void cbbModuleString_SelectedIndexChanged(object sender, EventArgs e)
         {
+            string sLower = DBColumnSimpleEntity.SqlString.NameLower;
+            string sName = DBColumnSimpleEntity.SqlString.Name;
+
             if (cbbModuleString.SelectedValue != null && !string.IsNullOrEmpty(cbbModuleString.SelectedValue.ToString()))
             {
                 string sModule = cbbModuleString.SelectedValue.ToString();
@@ -1100,6 +1121,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                     rtbConString.AppendText(string.Format(@"@ApiModelProperty(""#{0}#"")
 private String #{1}#;
 ", DBColumnSimpleEntity.SqlString.NameCN, DBColumnSimpleEntity.SqlString.NameLower));
+                }
+                else if("13".Equals(sModule))
+                {
+                    rtbConString.AppendText(@"<if test=""param.#C3# != null and param.#C3# != ''"">
+ AND  t.#C# =  #{param.#C3#}
+</if>");
                 }
             }
         }
@@ -1205,5 +1232,52 @@ private String #{1}#;
             DataTable dt = dgvTableList.GetBindingTable();
             ExcludeSplitTable(dt);
         }
+
+        private string getMybatiString(MybatisStringType mybatisStringType)
+        {
+            StringBuilder sb = new StringBuilder();
+            switch (mybatisStringType)
+            {
+                case MybatisStringType.If:
+                    sb.Append(@"<if test=""param.#C3# != null and param.#C3# != ''"">
+AND  t.#C# =  #{param.#C3#}
+</if>");
+                    break;
+                case MybatisStringType.List:
+                    sb.Append(@"<if test=""param.#C3# != null and param.#C3# !=''"">
+ <choose>
+  <when test='param.#C3#.contains("","") == false'>
+	AND A.#C# = #{param.#C3#}
+  </when>
+  <otherwise>
+   AND  A.#C# IN
+   <foreach item=""item"" collection=""param.#C3#.split(',')""
+    index=""index"" open=""("" separator="","" close="")"">
+	 #{item}
+   </foreach>
+  </otherwise>
+ </choose>
+</if>");
+                    break;
+                case MybatisStringType.Datetime:
+                    sb.Append(@"<if test=""param.#C3#Begin != null and param.#C3#Begin != ''"">
+ AND A.#C# <![CDATA[ >= ]]> #{param.#C3#Begin}
+</if>
+<if test=""param.#C3#End != null and param.#C3#End != ''"">
+ AND A.#C# <![CDATA[ < ]]> DATE_ADD(#{param.#C3#End},INTERVAL 1 DAY)
+</if>");
+                    break;
+                default:
+                    break;
+            }
+            return sb.ToString();
+        }
+    }
+
+    public enum MybatisStringType
+    {
+        If,
+        List,
+        Datetime
     }
 }
