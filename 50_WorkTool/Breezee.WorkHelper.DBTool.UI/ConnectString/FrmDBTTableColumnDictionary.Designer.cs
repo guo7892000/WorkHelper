@@ -518,6 +518,7 @@
             this.dgvSelect.RowTemplate.Height = 23;
             this.dgvSelect.Size = new System.Drawing.Size(333, 273);
             this.dgvSelect.TabIndex = 0;
+            this.dgvSelect.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSelect_CellEndEdit);
             this.dgvSelect.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvSelect_ColumnHeaderMouseDoubleClick);
             // 
             // cmsRemoveSelect
