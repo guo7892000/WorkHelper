@@ -796,6 +796,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                         else //尾行
                         {
                             sbInsertColums.Append(sqlEntity.Tab + strTableAliasAndDot + strColCode + "" + sqlEntity.NewLine + ")" + sqlEntity.NewLine);
+                            if (bDynamicCol)
+                            {
+                                sColValueComment = sColValueDynamic;
+                            }
                             //最后一行不用加逗号
                             sbInsertVale.Append(sColValueComment + sqlEntity.NewLine + ")" + sqlEntity.NewLine);
                         }
@@ -815,7 +819,14 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                         if (j == 0) //首行
                         {
-                            sbUpdate.Append("UPDATE " + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment) + sSet + sColValueComment);
+                            if (bDynamicCol)
+                            {
+                                sbUpdate.Append("UPDATE " + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment) + sSet + sColValueDynamic);
+                            }
+                            else
+                            {
+                                sbUpdate.Append("UPDATE " + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment) + sSet + sColValueComment);
+                            } 
                         }
                         else if (j != iSelectLastNumber) //中间行
                         {
@@ -827,6 +838,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                         }
                         else //尾行
                         {
+                            if (bDynamicCol)
+                            {
+                                sColValueComment = sColValueDynamic;
+                            }
                             sbUpdate.Append(sColValueComment);
                         }
                         #endregion

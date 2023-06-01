@@ -1261,7 +1261,7 @@ private String #{1}#;
             {
                 case MybatisStringType.If:
                     sb.Append(@"<if test=""param.#C3# != null and param.#C3# != ''"">
-AND  t.#C# =  #{param.#C3#}
+AND  A.#C# =  #{param.#C3#}
 </if>");
                     break;
                 case MybatisStringType.List:
