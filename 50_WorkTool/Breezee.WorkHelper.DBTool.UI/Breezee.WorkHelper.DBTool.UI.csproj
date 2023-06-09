@@ -123,6 +123,12 @@
     <Compile Include="ConnectString\FrmDBTExcelCol2Row.Designer.cs">
       <DependentUpon>FrmDBTExcelCol2Row.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConnectString\FrmDBTExcelFormulateString.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConnectString\FrmDBTExcelFormulateString.Designer.cs">
+      <DependentUpon>FrmDBTExcelFormulateString.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConnectString\FrmDBTInList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -164,6 +170,12 @@
     </Compile>
     <Compile Include="DataSql\FrmDBTReadDBData.Designer.cs">
       <DependentUpon>FrmDBTReadDBData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GetFile\FrmGetUpdateDirectoryFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GetFile\FrmGetUpdateDirectoryFile.Designer.cs">
+      <DependentUpon>FrmGetUpdateDirectoryFile.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -208,6 +220,7 @@
     </Compile>
     <Compile Include="StringBuild\ScriptMerge\ScriptMergeEntity.cs" />
     <Compile Include="StringBuild\ScriptMerge\ScriptMergeString.cs" />
+    <Compile Include="TableSql\DBSqlEntity.cs" />
     <Compile Include="TableSql\FrmDBTGenerateTableSQL.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -233,6 +246,7 @@
     <Compile Include="TableSql\SQLBuilder\SQLiteBuilder.cs" />
     <Compile Include="TableSql\SQLBuilder\SQLServerBuilder.cs" />
     <Compile Include="TableSql\TableStructGenerator.cs" />
+    <Compile Include="TableSql\WordUpperType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -294,6 +308,9 @@
     <EmbeddedResource Include="ConnectString\FrmDBTExcelCol2Row.resx">
       <DependentUpon>FrmDBTExcelCol2Row.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ConnectString\FrmDBTExcelFormulateString.resx">
+      <DependentUpon>FrmDBTExcelFormulateString.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ConnectString\FrmDBTInList.resx">
       <DependentUpon>FrmDBTInList.cs</DependentUpon>
     </EmbeddedResource>
@@ -314,6 +331,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataSql\FrmDBTReadDBData.resx">
       <DependentUpon>FrmDBTReadDBData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GetFile\FrmGetUpdateDirectoryFile.resx">
+      <DependentUpon>FrmGetUpdateDirectoryFile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -28,7 +28,8 @@
       <!--数据SQL生成-->
       <Menu Guid="62718AB5-E92B-4E1B-BA35-4FBB707F7192" Name="模板数据SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTExcelImportData"  HelpPath="/Help/Html/DBTool/DB/DataSqlExcel.html"/>
       <Menu Guid="68E159DA-4239-4183-A9B0-677C511E053C" Name="数据库数据SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTReadDBData"  HelpPath="/Help/Html/DBTool/DB/DataSqlDBQuery.html"/>
-    </Class>
+	  <Menu Guid="C4815807-4AD7-4721-B25E-7702B63D89B4" Name="数据Excel公式生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTExcelFormulateString"  HelpPath="/Help/Html/DBTool/DB/DataSqlDBQuery.html"/>
+	</Class>
     <Class Guid="FF32364F-3832-48F7-8B32-B473DC48401D" Name="数据拼接" Code="M_DB_TOOL_STR_CONN" ShortCutKey="">
       <!--字符拼接-->
       <Menu Guid="05AF975A-6814-4538-953E-CE4F2E294172" Name="数据库数据拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTReadDataBaseString"  HelpPath="/Help/Html/DBTool/DB/DataStringDBQuery.html"/>
@@ -40,6 +41,7 @@
       <!--实体生成-->
 	  <Menu Guid="89205F44-3EF5-4A0B-A4CD-04DD8145F99E" Name="代码文件生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTDBAutoCodeFile"  HelpPath="/Help/Html/DBTool/DB/AutoFile.html"/>
 	  <Menu Guid="6DD928D5-B5A6-4E65-97AF-C894B2DF92DA" Name="实体文件生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTDBAutoEntityFile"  HelpPath="/Help/Html/DBTool/DB/AutoEntity.html"/>
+	  <Menu Guid="17ABFE5D-6EE6-41C6-988E-F8CABCA6759B" Name="获取变化的文件" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmGetUpdateDirectoryFile"  HelpPath="/Help/Html/DBTool/DB/AutoEntity.html"/>
     </Class>
     <Class Guid="07A30998-9277-4AC7-96AA-108AA04F1AF2" Name="综合" Code="M_DB_TOOL_ALL" ShortCutKey="">
       <Menu Guid="FAC4990F-07F5-41C7-AE6A-86915CEFD282" Name="合并脚本" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTScriptMerge"  HelpPath="/Help/Html/DBTool/DB/MergeScript.html"/>

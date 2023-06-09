@@ -82,6 +82,7 @@
             this.tpgDesktop = new System.Windows.Forms.TabPage();
             this.pnlDestop = new System.Windows.Forms.Panel();
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
+            this.tsbCloseAll = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -400,12 +401,12 @@
             this.cmsOpenTreeMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiOpenNewForm});
             this.cmsOpenTreeMenu.Name = "cmsOpenTreeMenu";
-            this.cmsOpenTreeMenu.Size = new System.Drawing.Size(181, 48);
+            this.cmsOpenTreeMenu.Size = new System.Drawing.Size(137, 26);
             // 
             // tsmiOpenNewForm
             // 
             this.tsmiOpenNewForm.Name = "tsmiOpenNewForm";
-            this.tsmiOpenNewForm.Size = new System.Drawing.Size(180, 22);
+            this.tsmiOpenNewForm.Size = new System.Drawing.Size(136, 22);
             this.tsmiOpenNewForm.Text = "打开新窗体";
             this.tsmiOpenNewForm.ToolTipText = "支持同一个菜单打开多个窗体！";
             this.tsmiOpenNewForm.Click += new System.EventHandler(this.tsmiOpenNewForm_Click);
@@ -516,28 +517,29 @@
             this.cmsMenuSheet.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiMenuSheetTop,
             this.tsmiMenuSheetBottom,
-            this.tsmiCloseMenu});
+            this.tsmiCloseMenu,
+            this.tsbCloseAll});
             this.cmsMenuSheet.Name = "cmsMenuSheet";
-            this.cmsMenuSheet.Size = new System.Drawing.Size(113, 70);
+            this.cmsMenuSheet.Size = new System.Drawing.Size(181, 114);
             // 
             // tsmiMenuSheetTop
             // 
             this.tsmiMenuSheetTop.Name = "tsmiMenuSheetTop";
-            this.tsmiMenuSheetTop.Size = new System.Drawing.Size(112, 22);
+            this.tsmiMenuSheetTop.Size = new System.Drawing.Size(180, 22);
             this.tsmiMenuSheetTop.Text = "置顶部";
             this.tsmiMenuSheetTop.Click += new System.EventHandler(this.TsmiMenuSheetTop_Click);
             // 
             // tsmiMenuSheetBottom
             // 
             this.tsmiMenuSheetBottom.Name = "tsmiMenuSheetBottom";
-            this.tsmiMenuSheetBottom.Size = new System.Drawing.Size(112, 22);
+            this.tsmiMenuSheetBottom.Size = new System.Drawing.Size(180, 22);
             this.tsmiMenuSheetBottom.Text = "置底部";
             this.tsmiMenuSheetBottom.Click += new System.EventHandler(this.TsmiMenuSheetBottom_Click);
             // 
             // tsmiCloseMenu
             // 
             this.tsmiCloseMenu.Name = "tsmiCloseMenu";
-            this.tsmiCloseMenu.Size = new System.Drawing.Size(112, 22);
+            this.tsmiCloseMenu.Size = new System.Drawing.Size(180, 22);
             this.tsmiCloseMenu.Text = "关闭";
             this.tsmiCloseMenu.Click += new System.EventHandler(this.TsmiCloseMenu_Click);
             // 
@@ -560,6 +562,13 @@
             this.pnlDestop.Name = "pnlDestop";
             this.pnlDestop.Size = new System.Drawing.Size(1075, 47);
             this.pnlDestop.TabIndex = 8;
+            // 
+            // tsbCloseAll
+            // 
+            this.tsbCloseAll.Name = "tsbCloseAll";
+            this.tsbCloseAll.Size = new System.Drawing.Size(180, 22);
+            this.tsbCloseAll.Text = "关闭所有";
+            this.tsbCloseAll.Click += new System.EventHandler(this.tsbCloseAll_Click);
             // 
             // FrmMiniMainMDI
             // 
@@ -654,6 +663,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiOpenLatestDownURL;
         private System.Windows.Forms.ContextMenuStrip cmsOpenTreeMenu;
         private System.Windows.Forms.ToolStripMenuItem tsmiOpenNewForm;
+        private System.Windows.Forms.ToolStripMenuItem tsbCloseAll;
     }
 }
 

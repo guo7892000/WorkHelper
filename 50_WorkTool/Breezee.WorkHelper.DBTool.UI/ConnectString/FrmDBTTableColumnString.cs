@@ -59,7 +59,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Add("1", "Mybatis实体");
             _dicString.Add("2", "YAPI参数");
             _dicString.Add("3", "API属性说明");
-            _dicString.Add("4", "Excel拼接公式字符");
             cbbModule.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);            
 
             #region 设置数据库连接控件
@@ -257,7 +256,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             if ("4".Equals(sModule))
             {
-                sbHead.Append("CONCATENATE(\"INSERT INTO "+ dtMain.Rows[0][DBTableEntity.SqlString.Name].ToString() + " (\"");
+                sbHead.Append("concat(\"INSERT INTO " + dtMain.Rows[0][DBTableEntity.SqlString.Name].ToString() + " (\"");
                 sbTail.Append("\") VALUES (\"");
             }
             else
@@ -272,56 +271,33 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             try
             {
-                if ("4".Equals(sModule))
+                for (int i = 0; i < dtColumnSelect.Rows.Count; i++)
                 {
-                    for (int i = 0; i < dtColumnSelect.Rows.Count; i++)
+                    string strOneData = rtbConString.Text;
+
+                    Regex regex = new Regex(@"#\w+#", RegexOptions.IgnoreCase);
+                    MatchCollection mc = regex.Matches(strOneData);
+                    //得到##匹配值
+                    foreach (Match item in mc)
                     {
-                        int idxCol = i + 26;
-                        int idxData = i + 26*2;
-                        string sDataChar = ",\"'\",";
-                        if (i== dtColumnSelect.Rows.Count - 1)
+                        //如果包含全局公共值，先替换
+                        string sColName = item.Value.Replace("#", "");
+                        if (dtColumnSelect.Columns.Contains(sColName))
                         {
-                            sbHead.Append("," + idxCol.ToUpperWord() + ",");
-                            sbTail.Append(sDataChar + idxData.ToUpperWord() + ",\"'\""+",\")\"");
-                        }
-                        else
-                        {
-                            sbHead.Append("," + idxCol.ToUpperWord() + ",\",\"");
-                            sbTail.Append(sDataChar + idxData.ToUpperWord() + sDataChar + "\",\"");
+                            //将数据中的列名替换为单元格中的数据
+                            strOneData = strOneData.Replace(item.Value, dtColumnSelect.Rows[i][sColName].ToString());
                         }
                     }
-                    sbAllSql.Append(sbHead.ToString()+ sbTail.ToString()+")");
-                }
-                else
-                {
-                    for (int i = 0; i < dtColumnSelect.Rows.Count; i++)
+
+                    if ("PK".Equals(dtColumnSelect.Rows[i][DBColumnSimpleEntity.SqlString.KeyType].ToString()))
                     {
-                        string strOneData = rtbConString.Text;
-
-                        Regex regex = new Regex(@"#\w+#", RegexOptions.IgnoreCase);
-                        MatchCollection mc = regex.Matches(strOneData);
-                        //得到##匹配值
-                        foreach (Match item in mc)
-                        {
-                            //如果包含全局公共值，先替换
-                            string sColName = item.Value.Replace("#", "");
-                            if (dtColumnSelect.Columns.Contains(sColName))
-                            {
-                                //将数据中的列名替换为单元格中的数据
-                                strOneData = strOneData.Replace(item.Value, dtColumnSelect.Rows[i][sColName].ToString());
-                            }
-                        }
-
-                        if ("PK".Equals(dtColumnSelect.Rows[i][DBColumnSimpleEntity.SqlString.KeyType].ToString()))
-                        {
-                            strOneData = strOneData.Replace("@TableField", "@TableId");
-                        }
-
-                        //所有SQL文本累加
-                        sbAllSql.Append(strOneData + "\n");
+                        strOneData = strOneData.Replace("@TableField", "@TableId");
                     }
+
+                    //所有SQL文本累加
+                    sbAllSql.Append(strOneData + "\n");
                 }
-                
+
                 rtbResult.Clear();
                 //保存属性
                 if ("1".Equals(sModule))
@@ -543,7 +519,8 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private void cbbModule_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbbModule.SelectedValue != null && !string.IsNullOrEmpty(cbbModule.SelectedValue.ToString()))
+            if (cbbModule.SelectedValue == null) return;
+            if (!string.IsNullOrEmpty(cbbModule.SelectedValue.ToString()))
             {
                 string sModule = cbbModule.SelectedValue.ToString();
                 if("1".Equals(sModule))

@@ -23,7 +23,7 @@ namespace Breezee.Core.Interface
         /// 包括0至9、大写A至Z共36个字符
         /// </summary>
         public static string[] NumberLetter = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
-
+        public static string[] Letter = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
 
         /// <summary>
         /// 数值转换为大写字母
@@ -37,15 +37,39 @@ namespace Breezee.Core.Interface
                 num = 0;
             }
             int times = num / 26;
-            int idx = num % 26 + 65;//A为65
-
-            System.Text.ASCIIEncoding asciiEncoding = new System.Text.ASCIIEncoding();
-            byte[] btNumber = new byte[] { (byte)idx };
-            string sReturn = asciiEncoding.GetString(btNumber);
-            return times > 0 ? sReturn + times.ToString() : sReturn;
+            return times > 0 ? Letter[num % 26] + times.ToString() : Letter[num % 26];
         }
 
-        
+        /// <summary>
+        /// 数值转换为Excel列字母
+        /// </summary>
+        /// <param name="num"></param>
+        /// <returns></returns>
+        public static string ToExcelColumnWord(this int num)
+        {
+            if (num < 0)
+            {
+                num = 0;
+            }
+
+            StringBuilder sb = new StringBuilder();
+            do
+            {
+                sb.Insert(0, Letter[num % 26]);//得到余数，作为最后的数字
+
+                num = num / 26;
+                if (num == 0) break;
+                if (num <= 26)
+                {
+                    sb.Insert(0, Letter[num-1]);
+                    break;
+                }
+            }
+            while (num >= 26);
+
+            return sb.ToString();
+        }
+
         /// <summary>
         /// 随机产生指定位数的字符串
         /// </summary>

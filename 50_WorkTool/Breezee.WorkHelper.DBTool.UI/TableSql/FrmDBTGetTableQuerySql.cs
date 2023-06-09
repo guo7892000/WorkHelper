@@ -110,8 +110,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             //加载用户偏好值
             cbbParaType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbGetSql_ParamType, "3").Value;
             cbbWordConvert.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbGetSql_FirstWordType, "1").Value;
-            //cbbParaType.SelectedValue = Setting.Default.DbGetSql_ParamType1;
-            //cbbWordConvert.SelectedValue = Setting.Default.DbGetSql_FirstWordType1;
         }
         #endregion
 
@@ -913,9 +911,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbGetSql_ParamType, cbbParaType.SelectedValue.ToString(), "【增删改查SQL生成】参数类型");
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbGetSql_FirstWordType, cbbWordConvert.SelectedValue.ToString(), "【增删改查SQL生成】首字母方式");
             WinFormContext.UserLoveSettings.Save();
-            //Setting.Default.DbGetSql_ParamType1 = cbbParaType.SelectedValue.ToString();
-            //Setting.Default.DbGetSql_FirstWordType1 = cbbWordConvert.SelectedValue.ToString();
-            //Setting.Default.Save();
             //生成SQL成功后提示
             ShowInfo(_strAutoSqlSuccess);
             return;
@@ -1288,52 +1283,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             
         }
-    }
-
-    public class DBSqlEntity
-    {
-        /// <summary>
-        /// 表名
-        /// </summary>
-        public string TableName { get; set; }
-        /// <summary>
-        /// 表别名
-        /// </summary>
-        public string TableAlias { get; set; }
-        /// <summary>
-        /// SQL类型
-        /// </summary>
-        public SqlType SqlType { get; set; }
-
-        /// <summary>
-        /// SQL参数格式类型
-        /// </summary>
-        public SqlParamFormatType ParamType { get; set; }
-        public string ParamCol { get; set; }
-
-        public bool IsHasRemark { get; set; }
-        public string NewLine { get; set; }
-        public string Tab { get; set; }
-        public bool IsUseGlobal { get; set; }
-        public WordUpperType WordUpperType { get; set; }
-
 
     }
-
-    public enum WordUpperType
-    {
-        /// <summary>
-        /// 大驼峰式（所有单词首字母大写）
-        /// </summary>
-        UpperCamelCase,
-        /// <summary>
-        /// 小驼峰式（所有单词首字母大写，除了第一个单词）
-        /// </summary>
-        LowerCamelCase,
-        /// <summary>
-        /// 不做转换
-        /// </summary>
-        None,
-    }
-
 }

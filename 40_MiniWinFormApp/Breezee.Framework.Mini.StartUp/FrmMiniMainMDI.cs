@@ -826,5 +826,10 @@ namespace Breezee.Framework.Mini.StartUp
             dMenu.SameMenuNewFormGuid = dMenu.Guid;
             dMenu.IsOpenSameMenuNewForm = false;
         }
+
+        private void tsbCloseAll_Click(object sender, EventArgs e)
+        {
+            closeAllToolStripMenuItem.PerformClick();
+        }
     }
 }

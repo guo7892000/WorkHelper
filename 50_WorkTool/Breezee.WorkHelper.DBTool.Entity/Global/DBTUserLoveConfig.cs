@@ -23,5 +23,16 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string AutoEntity_Path = "AutoEntity_Path";
         public static readonly string AutoCode_Path = "AutoCode_Path";
         public static readonly string MergeScriptPath = "MergeScriptPath";
+        //获取修改文件
+        public static readonly string GetFileReadPath = "GetFile_ReadPath";
+        public static readonly string GetFileTargetPath = "GetFile_TargetPath";
+        public static readonly string GetFileExcludeEndprx = "GetFile_ExcludeEndprx";
+        public static readonly string GetFileExcludeDirName = "GetFile_ExcludeDirName";
+        public static readonly string GetFileExcludeFullDir = "GetFile_ExcludeFullDir";
+        public static readonly string GetFileIsGenerateDateTimeDir = "GetFile_IsGenerateDateTimeDir";
+        //Excel公式
+        public static readonly string ExcelFomulate_Type = "ExcelFomulate_Type";
+        public static readonly string ExcelFomulate_TableName = "ExcelFomulate_TableName";
+        public static readonly string ExcelFomulate_ColumnNum = "ExcelFomulate_ColumnNum";
     }
 }

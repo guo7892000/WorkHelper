@@ -121,16 +121,25 @@
     <value>17, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="tsbSave.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="tsbImport.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFlSURBVDhPrZKhcsMwEETzCf2EfIJhoGCgoKFgoGCgYKBh
-        oGCgYKBgoWGhYKFg2XX3bMeKmyno9GZ2PGN5n+72vPuXSvcqqjTrViVG6FpkGGZdioQAnUfxlB9ltgMA
-        U86CD+XXql8its/i+qSa7Q3gUudPfxbNtVYxNkvXOYAaQETLBLDFV7WYy2eVziaMUcTa2AAwLwEeB9tq
-        zeMHAMek8z8DEJYCcNDW1pzHInsTxZ02AKZMAA+WemXO70XeDgC4LPY4NACsKN8FqwTEgc4PkLYGhpnZ
-        Nm9+mHnWAhheSgBAMXKdVQI2Mu296Gge3S1mC+gzAD9Guq1m2/tnOY/xQmOGTFgB/LPam2nCa+mM0fnH
-        UsWdw2RUc9wA0GK84j+Y2yaAZn8epMDMIH0Y8I7GOD0PLQDz6e0w7xlYZxBoVuU8In2uzapRhTDNQbtc
-        y50YUNL9PoSgGJYKLfPWSehwC/hb7Xbf3Z45FYUb/+MAAAAASUVORK5CYII=
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFwSURBVDhPrZIxa8JAGIb9Kf0J+QkZOzo7STen/oAscdEM
+        HS6bQ4ajS9y8URc5KEWhWA66SB2MuBQs9Lq5vb33GquQBBz6wQshufd5v/u+tP61vuw3Fi+vkGOFOBEY
+        9ofI8xz6eYHD5wHlsfra7vbeqJSCWRew1sIerXs2/n3mQJvNph7CZB5iEo6oyDqpqUaWZfWdsG0m1xm9
+        LFB8AGIkMZvNqgCms+1Gs5Nxn9XUYPAwqALiWPg7VwBlMkWANha9Xq8K4LQvAZfJv2YO00Iti3oAJ2yM
+        aTY7aQeQSvvVlrZzcfqcA80n46ltJtPM9vlvTCZ5FcDVZI+Z38SfsUylUTmJkULUjyCSLnbvqyqEP0nq
+        9iyE9K3yvpQca3DInL7RMexaQo0aIOyEe07T1A+rc9fxxii6h4wDFNMQtnAbc2qE1NVqOUe3HUAlZ0hh
+        BKToXgdgnSAyCaFEgHYYYL99ux7A8pDbG4RBgOXT3JlbrR83QAptHARORQAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="tsbAutoSQL.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACUSURBVDhPnY7LDYAgEEQpgCo4UrolePRqAV6swQpMkFk+
+        WfmsyEsmC+7MoPqJi5rCAX3oqZLpMAWWax0Kl0t6FXMonMzhSvBvchgvQEWA32WMMc6elkq2e8+/PFwA
+        eEmjoKUalKQwlAp606uCL7KxN71e0ALwcw94KFUQ19/AGyI10SIDX7C3ibY22AebTDL25FHqAbj0NZ4k
+        ZvDHAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="tsbExit.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -145,7 +154,10 @@
         eH/+eXCpt1fNjfzF5L+pab4A5+WHSaUiJOsAAAAASUVORK5CYII=
 </value>
   </data>
-  <metadata name="cmsTreeMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>127, 17</value>
+  </metadata>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>127, 17</value>
   </metadata>
 </root>
