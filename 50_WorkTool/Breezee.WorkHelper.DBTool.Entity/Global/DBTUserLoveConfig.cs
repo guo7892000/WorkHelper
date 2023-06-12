@@ -30,6 +30,9 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string GetFileExcludeDirName = "GetFile_ExcludeDirName";
         public static readonly string GetFileExcludeFullDir = "GetFile_ExcludeFullDir";
         public static readonly string GetFileIsGenerateDateTimeDir = "GetFile_IsGenerateDateTimeDir";
+        public static readonly string GetFileLastSaveEndDateTime = "GetFile_SaveEndDateTime";
+        public static readonly string GetFileDirType = "GetFile_DirType";
+
         //Excel公式
         public static readonly string ExcelFomulate_Type = "ExcelFomulate_Type";
         public static readonly string ExcelFomulate_TableName = "ExcelFomulate_TableName";

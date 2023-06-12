@@ -11,6 +11,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using Breezee.Core.Tool.Helper;
+using LibGit2Sharp;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -41,8 +42,13 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void FrmDirectoryFileString_Load(object sender, EventArgs e)
         {
             dtpBegin.Value = DateTime.Now.AddHours(-10);
-            dtpEnd.Value = DateTime.Now.AddDays(1);
+            dtpEnd.Value = DateTime.Now;
             lblExcludeTip.Text = "支持逗号（中英文）、分号（中英文）、冒号（中文）、竖线（英文）分隔的多个排除项配置！";
+            //绑定下拉框
+            _dicString["1"]= "git源码管理目录";
+            _dicString["9"] = "普通目录";
+            cbbDirType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false),false,true);
+
             //加载用户偏好值
             //读取目录
             strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileReadPath, "").Value;
@@ -58,6 +64,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 txbTargetPath.Text = strLastSelectedPath;
             }
             ckbDateDir.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileIsGenerateDateTimeDir, "0").Value) ? true : false;
+            cbbDirType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileDirType, "1").Value;
             //排除项
             txbExcludeEndprx.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileExcludeEndprx, "").Value; 
             txbExcludeDirName.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileExcludeDirName, "").Value;
@@ -147,6 +154,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileExcludeDirName, txbExcludeDirName.Text.Trim(), "【获取修改过的文件】的排除目录名列表");
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileExcludeFullDir, txbExcludeFullDir.Text.Trim(), "【获取修改过的文件】的排除全路径目录列表");
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileIsGenerateDateTimeDir, ckbDateDir.Checked ? "1" : "0", "【获取修改过的文件】的是否生成日期目录");
+
+            if (ckbSaveEndTime.Checked)
+            {
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileLastSaveEndDateTime, dtpEnd.Value.ToString("yyyy-MM-dd HH:mm:ss"), "【获取修改过的文件】的最后修改时间");
+            }
+
             WinFormContext.UserLoveSettings.Save();
             if (iFileNum <= 0)
             {
@@ -178,57 +191,137 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="iDeep"></param>
         private void GetDirectoryFile(StringBuilder sb, DirectoryInfo rootDirectory)
         {
+            
+            //得到排除项
+            string[] sExcludeDirName = txbExcludeDirName.Text.Trim().ToLower().Split(splitCharArr);//得到排除的文件名
+            string[] sExcludeFullDir = txbExcludeFullDir.Text.Trim().ToLower().Split(splitCharArr);//得到排除的绝对目录
+
+            if ("1".Equals(cbbDirType.SelectedValue.ToString()))
+            {
+                //1：git源码管理目录处理
+                bool isGitDir = false;
+                DirectoryInfo[] dirArr = rootDirectory.GetDirectories();//迭代子目录
+                var gitDir = dirArr.AsQueryable().Where(t => t.Name.Equals(".git", StringComparison.OrdinalIgnoreCase));
+                //判断是否
+                if (gitDir.Count() > 0)
+                {
+                    //
+                    isGitDir = true;
+                    string sDirName = gitDir.First().FullName;
+                    string sParentDirName = gitDir.First().Parent.FullName;
+                    using (var repo = new Repository(sDirName))
+                    {
+                        //查找变化的文件：包括未跟踪的
+                        using (var changes = repo.Diff.Compare<TreeChanges>(null, true))
+                        {
+                            foreach (var item in changes.Modified)
+                            {
+                                FileInfo file = new FileInfo(Path.Combine(sParentDirName, item.Path));
+                                if (file.Exists)
+                                {
+                                    CopyFileBackup(file, sb);
+                                }
+                            }
+                            foreach (var item in changes.Added)
+                            {
+                                FileInfo file = new FileInfo(Path.Combine(sParentDirName, item.Path));
+                                if (file.Exists)
+                                {
+                                    CopyFileBackup(file, sb);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                //当前目录不包括.git目录，那么继续查找子目录
+                if (!isGitDir)
+                {
+                    foreach (DirectoryInfo path in rootDirectory.GetDirectories())
+                    {
+                        if (path.Name.StartsWith("."))
+                        {
+                            continue; //跳过点开头的系统目录
+                        }
+                        //目录名、绝对目录
+                        if (sExcludeDirName.Contains(path.Name.ToLower()) || sExcludeFullDir.Contains(path.FullName.ToLower()))
+                        {
+                            continue;
+                        }
+                        GetDirectoryFile(sb, path);
+                    }
+                }
+            }
+            else
+            {
+                //9：普通目录的处理
+                foreach (FileInfo file in rootDirectory.GetFiles()) //文件的处理
+                {
+                    CopyFileBackup(file,sb);
+                }
+
+                foreach (DirectoryInfo path in rootDirectory.GetDirectories())
+                {
+                    //目录名、绝对目录
+                    if (sExcludeDirName.Contains(path.Name.ToLower()) || sExcludeFullDir.Contains(path.FullName.ToLower()))
+                    {
+                        continue;
+                    }
+                    GetDirectoryFile(sb, path);
+                }
+            }
+        } 
+        #endregion
+
+        /// <summary>
+        /// 复制文件备份
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="sb"></param>
+        private void CopyFileBackup(FileInfo file, StringBuilder sb)
+        {
             string sReadPath = txbReadPath.Text.Trim();
             string sTargetPath = txbTargetPath.Text.Trim();
             if (ckbDateDir.Checked)
             {
                 sTargetPath = Path.Combine(txbTargetPath.Text.Trim(), DateTime.Now.ToString("yyyy-MM-dd"));
             }
-            
-            //得到排除项
             string[] sExcludeEndprx = txbExcludeEndprx.Text.Trim().ToLower().Split(splitCharArr);//得到排除的后缀
-            string[] sExcludeDirName = txbExcludeDirName.Text.Trim().ToLower().Split(splitCharArr);//得到排除的文件名
-            string[] sExcludeFullDir = txbExcludeFullDir.Text.Trim().ToLower().Split(splitCharArr);//得到排除的绝对目录
 
-            foreach (FileInfo file in rootDirectory.GetFiles()) //文件的处理
+            if (file.Attributes == FileAttributes.System || file.Attributes == FileAttributes.Temporary || file.Attributes == FileAttributes.Hidden)
             {
-                if (file.Attributes == FileAttributes.System || file.Attributes == FileAttributes.Temporary || file.Attributes == FileAttributes.Hidden)
-                {
-                    continue;
-                }
-                //不在修改时间范围内的文件跳过
-                if (file.LastWriteTime< dtpBegin.Value || file.LastWriteTime > dtpEnd.Value)
-                {
-                    continue;
-                }
-                //排除后缀
-                if (sExcludeEndprx.Contains(file.Extension.Substring(1)) )
-                {
-                    continue;
-                }
-
-                //生成目录
-                string sFinalDir = file.DirectoryName.Replace(sReadPath, sTargetPath);
-                //复制文件
-                FileDirHelper.CopyFilesToDirKeepSrcDirName(file.FullName, sFinalDir);
-                sb.Append(Path.Combine(sFinalDir, file.Name) + "\n");
-                iFileNum++;
+                return;
             }
-            
-            //迭代子目录
-            foreach (DirectoryInfo path in rootDirectory.GetDirectories())
+            //不在修改时间范围内的文件跳过
+            if (file.LastWriteTime < dtpBegin.Value || file.LastWriteTime > dtpEnd.Value)
             {
-                //排除后缀、目录名、绝对目录
-                if (sExcludeDirName.Contains(path.Name.ToLower()) || sExcludeFullDir.Contains(path.FullName.ToLower()))
-                {
-                    continue;
-                }
-                GetDirectoryFile(sb, path);
+                return;
             }
+            //排除后缀
+            if (!string.IsNullOrEmpty(file.Extension) && (sExcludeEndprx.Contains(file.Extension.Substring(1))))
+            {
+                return;
+            }
+            //生成目录
+            string sFinalDir = file.DirectoryName.Replace(sReadPath, sTargetPath);
+            //复制文件
+            FileDirHelper.CopyFilesToDirKeepSrcDirName(file.FullName, sFinalDir);
+            sb.Append(Path.Combine(sFinalDir, file.Name) + "\n");
+            iFileNum++;
+        }
 
-        } 
-        #endregion
+        private void ckbSetBeginAsLastSaveEnd_CheckedChanged(object sender, EventArgs e)
+        {
+            string lastEndDateTim = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileLastSaveEndDateTime, "").Value;
+            if (!string.IsNullOrEmpty(lastEndDateTim))
+            {
+                dtpBegin.Value = DateTime.Parse(lastEndDateTim);
+            }
+        }
 
-
+        private void ckbResetEndToNow_CheckedChanged(object sender, EventArgs e)
+        {
+            dtpEnd.Value = DateTime.Now;
+        }
     }
 }
