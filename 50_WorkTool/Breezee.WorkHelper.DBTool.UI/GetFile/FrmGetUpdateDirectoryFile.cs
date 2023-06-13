@@ -12,6 +12,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using Breezee.Core.Tool.Helper;
 using LibGit2Sharp;
+using System.Collections.Generic;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -45,9 +46,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             dtpEnd.Value = DateTime.Now;
             lblExcludeTip.Text = "支持逗号（中英文）、分号（中英文）、冒号（中文）、竖线（英文）分隔的多个排除项配置！";
             //绑定下拉框
-            _dicString["1"]= "git源码管理目录";
+            _dicString["1"]= "含git源码的目录";
             _dicString["9"] = "普通目录";
             cbbDirType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false),false,true);
+            toolTip1.SetToolTip(cbbDirType, "【含git源码的目录】：针对新增和修改的文件，拉取下来的文件不含在内，但【普通目录】会包括！");
 
             //加载用户偏好值
             //读取目录
@@ -131,10 +133,17 @@ namespace Breezee.WorkHelper.DBTool.UI
                 return;
             }
 
-            if (dtpBegin.Value.CompareTo(dtpEnd.Value)>0)
+            if (ckbEndToNow.Checked)
             {
-                ShowErr("修改的开始时间不能大于结束时间！");
-                return;
+                dtpEnd.Value = DateTime.Now;
+            }
+            else
+            {
+                if (dtpBegin.Value.CompareTo(dtpEnd.Value) > 0)
+                {
+                    ShowErr("修改的开始时间不能大于结束时间！");
+                    return;
+                } 
             }
 
             rtbString.Clear();
@@ -214,22 +223,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                         //查找变化的文件：包括未跟踪的
                         using (var changes = repo.Diff.Compare<TreeChanges>(null, true))
                         {
-                            foreach (var item in changes.Modified)
-                            {
-                                FileInfo file = new FileInfo(Path.Combine(sParentDirName, item.Path));
-                                if (file.Exists)
-                                {
-                                    CopyFileBackup(file, sb);
-                                }
-                            }
-                            foreach (var item in changes.Added)
-                            {
-                                FileInfo file = new FileInfo(Path.Combine(sParentDirName, item.Path));
-                                if (file.Exists)
-                                {
-                                    CopyFileBackup(file, sb);
-                                }
-                            }
+                            CopyChangesFile(sb, sParentDirName, changes.Added);//新增的
+                            CopyChangesFile(sb, sParentDirName, changes.Modified); //修改的
                         }
                     }
                 }
@@ -270,7 +265,19 @@ namespace Breezee.WorkHelper.DBTool.UI
                     GetDirectoryFile(sb, path);
                 }
             }
-        } 
+        }
+
+        private void CopyChangesFile(StringBuilder sb, string sParentDirName, IEnumerable<TreeEntryChanges> changes)
+        {
+            foreach (var item in changes)
+            {
+                FileInfo file = new FileInfo(Path.Combine(sParentDirName, item.Path));
+                if (file.Exists)
+                {
+                    CopyFileBackup(file, sb);
+                }
+            }
+        }
         #endregion
 
         /// <summary>
@@ -313,15 +320,34 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void ckbSetBeginAsLastSaveEnd_CheckedChanged(object sender, EventArgs e)
         {
             string lastEndDateTim = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileLastSaveEndDateTime, "").Value;
-            if (!string.IsNullOrEmpty(lastEndDateTim))
+            dtpBegin.Enabled = true;
+            if (ckbSetBeginAsLastSaveEnd.Checked)
             {
-                dtpBegin.Value = DateTime.Parse(lastEndDateTim);
+                if (!string.IsNullOrEmpty(lastEndDateTim))
+                {
+                    dtpBegin.Value = DateTime.Parse(lastEndDateTim);
+                    dtpBegin.Enabled = false;
+                }
             }
+            
         }
 
-        private void ckbResetEndToNow_CheckedChanged(object sender, EventArgs e)
+        /// <summary>
+        /// 结束时间为当前时间复选框选中事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ckbEndToNow_CheckedChanged(object sender, EventArgs e)
         {
-            dtpEnd.Value = DateTime.Now;
+            if (ckbEndToNow.Checked)
+            {
+                dtpEnd.Value = DateTime.Now;
+                dtpEnd.Enabled = false;
+            }
+            else
+            {
+                dtpEnd.Enabled = true;
+            }
         }
     }
 }
