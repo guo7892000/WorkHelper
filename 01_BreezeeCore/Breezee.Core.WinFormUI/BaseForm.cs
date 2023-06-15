@@ -43,7 +43,9 @@ namespace Breezee.Core.WinFormUI
         //显示提示全局信息事件
         public EventHandler<ShowGlobalMsgEventArgs> ShowGlobalMsg;
         public MainFormModelEnum MainFormMode = MainFormModelEnum.FullFunction;
-        public String MenuName;
+        public string MenuName;
+        //最后的提示信息
+        public string LastestTipMsg;
         //弹出窗体是否可以最大最小及调整大小
         public bool ShowPopFormMaxBox = false;
         public bool ShowPopFormMinBox = false;
@@ -227,11 +229,26 @@ namespace Breezee.Core.WinFormUI
                 {
                     Msg = string.Format("【{0}】{1}", MenuName, Msg);
                 }
+                LastestTipMsg = Msg;
                 ShowGlobalMsgEventArgs arg = new ShowGlobalMsgEventArgs(Msg);
                 ShowGlobalMsg(this, arg);
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// 显示桌面提示信息
+        /// </summary>
+        public void ShowDestopTipMsg(string Msg)
+        {
+            if (!string.IsNullOrEmpty(MenuName))
+            {
+                Msg = string.Format("【{0}】{1}", MenuName, Msg);
+            }
+            LastestTipMsg = Msg;
+            ShowGlobalMsgEventArgs arg = new ShowGlobalMsgEventArgs(Msg);
+            ShowGlobalMsg(this, arg);
         }
 
         public void ShowInfo(string Msg,string title)

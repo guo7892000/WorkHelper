@@ -13,6 +13,7 @@ using System.Linq;
 using Breezee.Core.Tool.Helper;
 using LibGit2Sharp;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -27,6 +28,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 变量
         string strLastSelectedPath;
         int iFileNum = 0;
+        string sDirType;
         //分隔的字符数组
         char[] splitCharArr = new char[] { ',', '，', '：', ';', '；','|' };
         #endregion
@@ -117,9 +119,9 @@ namespace Breezee.WorkHelper.DBTool.UI
         #endregion
 
         #region 生成SQL按钮事件
-        private void tsbAutoSQL_Click(object sender, EventArgs e)
+        private async void tsbAutoSQL_Click(object sender, EventArgs e)
         {
-            string sPath = txbReadPath.Text.Trim();
+            string sPath = txbReadPath.Text.Trim(); 
             if (string.IsNullOrEmpty(sPath))
             {
                 ShowErr("请选择读取目录！");
@@ -152,7 +154,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             DirectoryInfo rootDirectory = new DirectoryInfo(sPath);
             //查找并输出文件
             iFileNum = 0;
-            GetDirectoryFile(sb, rootDirectory);
+            sDirType = cbbDirType.SelectedValue.ToString();
+            tsbAutoSQL.Enabled = false;
+            ShowDestopTipMsg("正在异步获取文件清单，请稍等一会...");
+            //异步获取文件
+            await Task.Run(()=> GetDirectoryFile(sb, rootDirectory));
+            tsbAutoSQL.Enabled = true; //重置按钮为有效
             rtbString.AppendText(sb.ToString());
 
             //保存用户偏好值
@@ -172,11 +179,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             WinFormContext.UserLoveSettings.Save();
             if (iFileNum <= 0)
             {
-                ShowInfo("没有修改的文件！");
+                ShowInfo("异步获取文件清单完成，没有修改的文件！");
             }
             else
             {
-                ShowInfo("修改的文件数为："+iFileNum.ToString());
+                ShowInfo("异步获取文件清单完成，修改的文件数为：" + iFileNum.ToString());
             }
         } 
         #endregion
@@ -198,14 +205,14 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="sPathType">路径类型：1全路径，2仅文件名，3相对路径</param>
         /// <param name="IsSearchDept"></param>
         /// <param name="iDeep"></param>
-        private void GetDirectoryFile(StringBuilder sb, DirectoryInfo rootDirectory)
+        private async void GetDirectoryFile(StringBuilder sb, DirectoryInfo rootDirectory)
         {
             
             //得到排除项
             string[] sExcludeDirName = txbExcludeDirName.Text.Trim().ToLower().Split(splitCharArr);//得到排除的文件名
             string[] sExcludeFullDir = txbExcludeFullDir.Text.Trim().ToLower().Split(splitCharArr);//得到排除的绝对目录
 
-            if ("1".Equals(cbbDirType.SelectedValue.ToString()))
+            if ("1".Equals(sDirType))
             {
                 //1：git源码管理目录处理
                 bool isGitDir = false;

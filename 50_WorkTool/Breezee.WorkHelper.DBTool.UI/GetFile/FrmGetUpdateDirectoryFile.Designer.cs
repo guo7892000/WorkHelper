@@ -160,16 +160,16 @@
             this.ckbEndToNow.AutoSize = true;
             this.ckbEndToNow.Location = new System.Drawing.Point(265, 107);
             this.ckbEndToNow.Name = "ckbEndToNow";
-            this.ckbEndToNow.Size = new System.Drawing.Size(132, 16);
+            this.ckbEndToNow.Size = new System.Drawing.Size(168, 16);
             this.ckbEndToNow.TabIndex = 13;
-            this.ckbEndToNow.Text = "结束时间为当前时间";
+            this.ckbEndToNow.Text = "获取时结束时间取当前时间";
             this.ckbEndToNow.UseVisualStyleBackColor = true;
             this.ckbEndToNow.CheckedChanged += new System.EventHandler(this.ckbEndToNow_CheckedChanged);
             // 
             // ckbSaveEndTime
             // 
             this.ckbSaveEndTime.AutoSize = true;
-            this.ckbSaveEndTime.Location = new System.Drawing.Point(406, 107);
+            this.ckbSaveEndTime.Location = new System.Drawing.Point(452, 107);
             this.ckbSaveEndTime.Name = "ckbSaveEndTime";
             this.ckbSaveEndTime.Size = new System.Drawing.Size(96, 16);
             this.ckbSaveEndTime.TabIndex = 13;

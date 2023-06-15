@@ -53,7 +53,7 @@ namespace Breezee.Framework.Mini.StartUp
         #region 加载事件
         private void FrmMainMDI_Load(object sender, EventArgs e)
         {
-            Text = string.Format("工作助手（Work Helper） v{0} 正式版  2023-06-13", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            Text = string.Format("工作助手（Work Helper） v{0} 正式版  2023-06-15", Assembly.GetExecutingAssembly().GetName().Version.ToString());
             
             _WinFormConfig = WinFormContext.Instance.WinFormConfig;
             iStartMenu = menuStrip.Items.IndexOfKey(tsbStartMenu.Name);
@@ -373,7 +373,7 @@ namespace Breezee.Framework.Mini.StartUp
             {
                 return;
             }
-
+            
             if (IsExpandTreeNode)
             {
                 OpenTreeNodeMenu(dOpenMenu.Name);
@@ -396,6 +396,11 @@ namespace Breezee.Framework.Mini.StartUp
                     pnlDestop.Hide();
                     frm.Activate();
                     WinFormContext.Instance.CurrentForm = frm;
+                    //全局提示信息显示为当前菜单的提示信息
+                    if(frm is BaseForm)
+                    {
+                        txbGlobalMsg.Text = ((BaseForm)frm).LastestTipMsg;
+                    }
                     return;
                 }
             }
@@ -546,7 +551,6 @@ namespace Breezee.Framework.Mini.StartUp
             {
                 return;
             }
-
             //打开菜单
             OpenMenu(tnSelect.Tag as MenuEntity, false);
         } 
