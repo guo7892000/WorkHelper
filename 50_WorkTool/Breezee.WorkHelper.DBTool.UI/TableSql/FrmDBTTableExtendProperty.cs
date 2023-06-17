@@ -130,7 +130,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 tabControl1.SelectedTab = tpImport;
 
                 //导入成功提示
-                lblInfo.Text = _strImportSuccess;
+                ShowInfo(_strImportSuccess);
             }
             catch (Exception ex)
             {
@@ -271,8 +271,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             Clipboard.SetData(DataFormats.UnicodeText, sbAllSql.ToString());
             tabControl1.SelectedTab = tpAutoSQL;
             //生成SQL成功后提示
-            //ShowInfo(strInfo);
-            lblInfo.Text = _strAutoSqlSuccess;
+            ShowInfo(_strAutoSqlSuccess);
             rtbResult.Select(0, 0); //返回到第一
             return;
             #endregion

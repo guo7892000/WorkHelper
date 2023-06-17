@@ -60,9 +60,8 @@
             this.tsbDownloadModel = new System.Windows.Forms.ToolStripButton();
             this.btnExit = new System.Windows.Forms.ToolStripButton();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.lblInfo = new System.Windows.Forms.Label();
-            this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
             this.ctxmBuilt.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableInfo)).BeginInit();
@@ -339,7 +338,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(375, 402);
+            this.tabPage2.Size = new System.Drawing.Size(432, 330);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "系统变量";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -351,7 +350,7 @@
             this.dgvSysParam.Location = new System.Drawing.Point(3, 3);
             this.dgvSysParam.Name = "dgvSysParam";
             this.dgvSysParam.RowTemplate.Height = 23;
-            this.dgvSysParam.Size = new System.Drawing.Size(369, 396);
+            this.dgvSysParam.Size = new System.Drawing.Size(426, 324);
             this.dgvSysParam.TabIndex = 2;
             // 
             // tabPage3
@@ -359,7 +358,7 @@
             this.tabPage3.Controls.Add(this.dgvTypeConvert);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(375, 402);
+            this.tabPage3.Size = new System.Drawing.Size(432, 330);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "类型转换";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -371,7 +370,7 @@
             this.dgvTypeConvert.Location = new System.Drawing.Point(0, 0);
             this.dgvTypeConvert.Name = "dgvTypeConvert";
             this.dgvTypeConvert.RowTemplate.Height = 23;
-            this.dgvTypeConvert.Size = new System.Drawing.Size(375, 402);
+            this.dgvTypeConvert.Size = new System.Drawing.Size(432, 330);
             this.dgvTypeConvert.TabIndex = 2;
             // 
             // toolStrip1
@@ -432,25 +431,6 @@
             this.splitContainer2.SplitterDistance = 376;
             this.splitContainer2.TabIndex = 16;
             // 
-            // lblInfo
-            // 
-            this.lblInfo.AutoSize = true;
-            this.lblInfo.ForeColor = System.Drawing.Color.Red;
-            this.lblInfo.Location = new System.Drawing.Point(614, 15);
-            this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(53, 12);
-            this.lblInfo.TabIndex = 32;
-            this.lblInfo.Text = "提示信息";
-            // 
-            // uC_DbConnection1
-            // 
-            this.uC_DbConnection1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.uC_DbConnection1.Location = new System.Drawing.Point(0, 27);
-            this.uC_DbConnection1.Margin = new System.Windows.Forms.Padding(4);
-            this.uC_DbConnection1.Name = "uC_DbConnection1";
-            this.uC_DbConnection1.Size = new System.Drawing.Size(1343, 71);
-            this.uC_DbConnection1.TabIndex = 20;
-            // 
             // splitContainer3
             // 
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -469,13 +449,21 @@
             this.splitContainer3.SplitterDistance = 199;
             this.splitContainer3.TabIndex = 23;
             // 
+            // uC_DbConnection1
+            // 
+            this.uC_DbConnection1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.uC_DbConnection1.Location = new System.Drawing.Point(0, 27);
+            this.uC_DbConnection1.Margin = new System.Windows.Forms.Padding(4);
+            this.uC_DbConnection1.Name = "uC_DbConnection1";
+            this.uC_DbConnection1.Size = new System.Drawing.Size(1343, 71);
+            this.uC_DbConnection1.TabIndex = 20;
+            // 
             // FrmDBTDBAutoEntityFile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1343, 657);
             this.Controls.Add(this.splitContainer2);
-            this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.uC_DbConnection1);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
@@ -548,7 +536,6 @@
         private System.Windows.Forms.DataGridView dgvTypeConvert;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.ComboBox cbbModuleList;
-        private System.Windows.Forms.Label lblInfo;
         private System.Windows.Forms.ToolStripButton tsbDownloadModel;
         private System.Windows.Forms.TextBox txbRemoveTablePre;
         private System.Windows.Forms.SplitContainer splitContainer3;

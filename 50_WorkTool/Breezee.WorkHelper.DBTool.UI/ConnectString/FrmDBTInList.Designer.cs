@@ -33,7 +33,6 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbAutoSQL = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
-            this.lblInfo = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.cbbSqlType = new System.Windows.Forms.ComboBox();
@@ -50,11 +49,12 @@
             this.tpImport = new System.Windows.Forms.TabPage();
             this.grbTable = new System.Windows.Forms.GroupBox();
             this.dgvTableList = new System.Windows.Forms.DataGridView();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiClear = new System.Windows.Forms.ToolStripMenuItem();
             this.lblTableData = new System.Windows.Forms.Label();
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tsmiClear = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblRuleInfo = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.grbInputString.SuspendLayout();
@@ -63,8 +63,8 @@
             this.tpImport.SuspendLayout();
             this.grbTable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableList)).BeginInit();
-            this.tpAutoSQL.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
+            this.tpAutoSQL.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -97,19 +97,10 @@
             this.tsbExit.Text = "退出(&X)";
             this.tsbExit.Click += new System.EventHandler(this.tsbExit_Click);
             // 
-            // lblInfo
-            // 
-            this.lblInfo.AutoSize = true;
-            this.lblInfo.ForeColor = System.Drawing.Color.Red;
-            this.lblInfo.Location = new System.Drawing.Point(263, 9);
-            this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(53, 12);
-            this.lblInfo.TabIndex = 27;
-            this.lblInfo.Text = "提示信息";
-            // 
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
+            this.groupBox1.Controls.Add(this.lblRuleInfo);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.cbbSqlType);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -259,7 +250,7 @@
             this.tpImport.Controls.Add(this.grbTable);
             this.tpImport.Location = new System.Drawing.Point(4, 22);
             this.tpImport.Name = "tpImport";
-            this.tpImport.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tpImport.Padding = new System.Windows.Forms.Padding(3);
             this.tpImport.Size = new System.Drawing.Size(584, 292);
             this.tpImport.TabIndex = 0;
             this.tpImport.Text = "导入清单";
@@ -289,6 +280,20 @@
             this.dgvTableList.TabIndex = 0;
             this.dgvTableList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvTableList_KeyDown);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiClear});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(101, 26);
+            // 
+            // tsmiClear
+            // 
+            this.tsmiClear.Name = "tsmiClear";
+            this.tsmiClear.Size = new System.Drawing.Size(100, 22);
+            this.tsmiClear.Text = "清空";
+            this.tsmiClear.Click += new System.EventHandler(this.tsmiClear_Click);
+            // 
             // lblTableData
             // 
             this.lblTableData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -308,8 +313,8 @@
             this.tpAutoSQL.Controls.Add(this.rtbResult);
             this.tpAutoSQL.Location = new System.Drawing.Point(4, 22);
             this.tpAutoSQL.Name = "tpAutoSQL";
-            this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tpAutoSQL.Size = new System.Drawing.Size(584, 297);
+            this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3);
+            this.tpAutoSQL.Size = new System.Drawing.Size(584, 292);
             this.tpAutoSQL.TabIndex = 1;
             this.tpAutoSQL.Text = "生成结果";
             // 
@@ -318,23 +323,19 @@
             this.rtbResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbResult.Location = new System.Drawing.Point(3, 3);
             this.rtbResult.Name = "rtbResult";
-            this.rtbResult.Size = new System.Drawing.Size(578, 291);
+            this.rtbResult.Size = new System.Drawing.Size(578, 286);
             this.rtbResult.TabIndex = 3;
             this.rtbResult.Text = "";
             // 
-            // contextMenuStrip1
+            // lblInfo
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiClear});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(101, 26);
-            // 
-            // tsmiClear
-            // 
-            this.tsmiClear.Name = "tsmiClear";
-            this.tsmiClear.Size = new System.Drawing.Size(180, 22);
-            this.tsmiClear.Text = "清空";
-            this.tsmiClear.Click += new System.EventHandler(this.tsmiClear_Click);
+            this.lblRuleInfo.AutoSize = true;
+            this.lblRuleInfo.ForeColor = System.Drawing.Color.Red;
+            this.lblRuleInfo.Location = new System.Drawing.Point(77, 0);
+            this.lblRuleInfo.Name = "lblInfo";
+            this.lblRuleInfo.Size = new System.Drawing.Size(53, 12);
+            this.lblRuleInfo.TabIndex = 4;
+            this.lblRuleInfo.Text = "规则说明";
             // 
             // FrmDBTInList
             // 
@@ -344,10 +345,9 @@
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.grbInputString);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FrmDBTInList";
             this.Text = "复制数据生成IN清单";
             this.Load += new System.EventHandler(this.FrmInList_Load);
@@ -363,8 +363,8 @@
             this.grbTable.ResumeLayout(false);
             this.grbTable.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableList)).EndInit();
-            this.tpAutoSQL.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
+            this.tpAutoSQL.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -375,7 +375,6 @@
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton tsbAutoSQL;
         private System.Windows.Forms.ToolStripButton tsbExit;
-        private System.Windows.Forms.Label lblInfo;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cbbSqlType;
@@ -397,5 +396,6 @@
         private System.Windows.Forms.RichTextBox rtbResult;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem tsmiClear;
+        private System.Windows.Forms.Label lblRuleInfo;
     }
 }

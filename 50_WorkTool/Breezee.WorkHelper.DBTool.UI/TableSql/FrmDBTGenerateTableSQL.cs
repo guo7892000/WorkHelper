@@ -225,8 +225,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     //绑定网格
                     bsCos.DataSource = dtTable;
                     dgvColList.DataSource = bsCos;
-                    //ShowInfo("导入成功！");
-                    lblInfo.Text = _strImportSuccess;
+                    ShowInfo(_strImportSuccess);
                 }
             }
             else
@@ -622,8 +621,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// </summary>
         private void ShowSuccessMsg(string strInfo)
         {
-            //ShowInfo(strInfo);
-            lblInfo.Text = strInfo;
+            ShowInfo(strInfo);
             rtbResult.Select(0, 0); //返回到第一行
         }
         #endregion

@@ -187,7 +187,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             //导入成功后处理
             tabControl1.SelectedTab = tpImport;
             //导入成功提示
-            lblInfo.Text = _strImportSuccess;
+            ShowInfo(_strImportSuccess);
         }
         #endregion
 
@@ -522,8 +522,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 }
                 //生成SQL成功后提示
-                //ShowInfo(strInfo);
-                lblInfo.Text = _strAutoSqlSuccess;
+                ShowInfo(_strAutoSqlSuccess);
             }
             catch (Exception ex)
             {
@@ -716,7 +715,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 dgvTypeConvert.Tag = fdc.GetGridTagString();
                 dgvTypeConvert.BindDataGridView(_dsExcel.Tables[AutoImportModuleString.SheetName.DbTypeConvert], true);
 
-                lblInfo.Text = "导入成功！";
+                ShowInfo("导入成功！");
                 tsbAutoSQL.Enabled = true;
             }
         }

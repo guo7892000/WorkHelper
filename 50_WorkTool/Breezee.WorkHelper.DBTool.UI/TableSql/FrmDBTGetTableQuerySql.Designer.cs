@@ -36,7 +36,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tsbImport = new System.Windows.Forms.ToolStripButton();
             this.tsbAutoSQL = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
-            this.lblInfo = new System.Windows.Forms.Label();
             this.grbOrcNet = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.ckbGetTableList = new System.Windows.Forms.CheckBox();
@@ -122,16 +121,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tsbExit.Size = new System.Drawing.Size(72, 24);
             this.tsbExit.Text = "退出(&X)";
             this.tsbExit.Click += new System.EventHandler(this.tsbExit_Click);
-            // 
-            // lblInfo
-            // 
-            this.lblInfo.AutoSize = true;
-            this.lblInfo.ForeColor = System.Drawing.Color.Red;
-            this.lblInfo.Location = new System.Drawing.Point(370, 11);
-            this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(53, 12);
-            this.lblInfo.TabIndex = 31;
-            this.lblInfo.Text = "提示信息";
             // 
             // grbOrcNet
             // 
@@ -542,7 +531,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.grbOrcNet);
             this.Controls.Add(this.uC_DbConnection1);
-            this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -574,7 +562,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         private System.Windows.Forms.ToolStripButton tsbImport;
         private System.Windows.Forms.ToolStripButton tsbAutoSQL;
         private System.Windows.Forms.ToolStripButton tsbExit;
-        private System.Windows.Forms.Label lblInfo;
         private UC_DbConnection uC_DbConnection1;
         private System.Windows.Forms.GroupBox grbOrcNet;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;

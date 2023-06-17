@@ -156,8 +156,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 Clipboard.SetData(DataFormats.UnicodeText, sbAllSql.ToString());
                 tabControl1.SelectedTab = tpAutoSQL;
                 //生成SQL成功后提示
-                //ShowInfo(strInfo);
-                lblInfo.Text = _strAutoSqlSuccess;
+                ShowInfo(_strAutoSqlSuccess);
                 rtbResult.Select(0, 0); //返回到第一行
             }
             catch (Exception ex)

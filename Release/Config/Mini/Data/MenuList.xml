@@ -3,7 +3,7 @@
   <!--模块-->
   <Model Guid="C628C5BD-5B96-401D-B69B-FB5DAF66DB8B" Name="系统管理" Code="MODEL_SYSTEM" ShortCutKey="S">
     <Class Guid="9B38C7AF-A3DA-4C79-8F96-0C3574619B28" Name="基础数据" Code="" ShortCutKey="">
-      <Menu Guid="A464F839-715A-4AD1-9DD0-F40BC001F911" Name="主框架系统设置" Code="" ShortCutKey="M" DLLName="Breezee.Framework.Mini.StartUp.exe" FormName="Breezee.Framework.Mini.StartUp.FrmMiniSystemSet" HelpPath="/Help/Html/Mini/SystemSet.html"/>
+      <Menu Guid="A464F839-715A-4AD1-9DD0-F40BC001F911" Name="全局系统配置" Code="" ShortCutKey="M" DLLName="Breezee.Framework.Mini.StartUp.exe" FormName="Breezee.Framework.Mini.StartUp.FrmMiniSystemSet" HelpPath="/Help/Html/Mini/SystemSet.html"/>
 	  <Menu Guid="59D1EA9B-E422-4F22-88D8-A0509B14EC0F" Name="菜单管理" Code="" ShortCutKey="M" DLLName="Breezee.Framework.Mini.StartUp.exe" FormName="Breezee.Framework.Mini.StartUp.FrmMenuManage" HelpPath="/Help/Html/Mini/MenuManage.html"/>
 	  <Menu Guid="1216E107-2405-4496-BA26-E64E6DA54AB6" Name="界面程序集维护" Code="" ShortCutKey="D" DLLName="Breezee.Framework.Mini.StartUp.exe" FormName="Breezee.Framework.Mini.StartUp.FrmDllManage" HelpPath="/Help/Html/Mini/DllSet.html"/>
     </Class>
@@ -13,9 +13,9 @@
     <!--菜单分类1.3-->
     <Class Guid="AD8E21CB-D718-417B-8F62-7270E2220150" Name="基础数据" Code="" ShortCutKey="">
       <!--基础数据-->
-		<Menu Guid="E702741D-3259-4E80-9FC0-AA2E12CD8B93" Name="数据库工具系统设置" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTSystemSet" HelpPath="/Help/Html/DBTool/DB/DBTSystemSet.html"/>
+		<Menu Guid="E702741D-3259-4E80-9FC0-AA2E12CD8B93" Name="DB工具系统配置" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTSystemSet" HelpPath="/Help/Html/DBTool/DB/DBTSystemSet.html"/>
 		<Menu Guid="B2EEFDDA-62F9-46AD-BA58-6C5DC057AF61" Name="数据库连接配置" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBConfigSet" HelpPath="/Help/Html/DBTool/DB/DBConnectSet.html"/>
-		<Menu Guid="8D1C89B3-FBD1-44A3-8CE4-A60D98C659AB" Name="字段默认值与条件配置" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTDefaultValueSet"  HelpPath="/Help/Html/DBTool/DB/DefaultValueSet.html"/>
+		<Menu Guid="8D1C89B3-FBD1-44A3-8CE4-A60D98C659AB" Name="字段默认值配置" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTDefaultValueSet"  HelpPath="/Help/Html/DBTool/DB/DefaultValueSet.html"/>
     </Class>
     <Class Guid="TD73F5C5-5E16-4B59-B468-070D16956F80" Name="表SQL生成" Code="M_DB_TOOL_TABLE_STRUCT" ShortCutKey="">
       <!--表SQL生成-->

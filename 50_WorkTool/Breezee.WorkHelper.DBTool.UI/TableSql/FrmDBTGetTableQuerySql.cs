@@ -187,7 +187,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             tabControl1.SelectedTab = tpImport;
             SetGlobalCondition();
             //导入成功提示
-            lblInfo.Text = _strImportSuccess;
+            ShowInfo(_strImportSuccess);
         }
         #endregion
 

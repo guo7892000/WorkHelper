@@ -40,7 +40,6 @@
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lblInfo = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.cbbInputType = new System.Windows.Forms.ComboBox();
@@ -197,7 +196,6 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
-            this.groupBox1.Controls.Add(this.lblInfo);
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 27);
@@ -205,16 +203,6 @@
             this.groupBox1.Size = new System.Drawing.Size(1035, 75);
             this.groupBox1.TabIndex = 24;
             this.groupBox1.TabStop = false;
-            // 
-            // lblInfo
-            // 
-            this.lblInfo.AutoSize = true;
-            this.lblInfo.ForeColor = System.Drawing.Color.Red;
-            this.lblInfo.Location = new System.Drawing.Point(113, 2);
-            this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(53, 12);
-            this.lblInfo.TabIndex = 13;
-            this.lblInfo.Text = "提示信息";
             // 
             // tableLayoutPanel1
             // 
@@ -514,7 +502,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableList)).EndInit();
             this.tpAutoSQL.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
@@ -547,7 +534,6 @@
         private System.Windows.Forms.ComboBox cbbImportDBType;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label lblInfo;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cbbTargetDbType;
         private System.Windows.Forms.CheckBox ckbAllConvert;

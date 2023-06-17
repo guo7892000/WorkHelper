@@ -283,7 +283,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 dgvTypeConvert.Tag = fdc.GetGridTagString();
                 dgvTypeConvert.BindDataGridView(_dsExcel.Tables[AutoImportModuleString.SheetName.DbTypeConvert], true);
 
-                lblInfo.Text = "导入成功！";
+                ShowInfo("导入成功！");
             }
         }
 

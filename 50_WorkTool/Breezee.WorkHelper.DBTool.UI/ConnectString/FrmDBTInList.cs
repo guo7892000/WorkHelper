@@ -63,7 +63,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             dgvTableList.Tag = fdc.GetGridTagString();
             dgvTableList.BindDataGridView(dtIn, true);
 
-            lblInfo.Text = "请在Excel中复制一列内容，然后点击网格后按ctrl + v粘贴即可。";
+            lblRuleInfo.Text = "请在Excel中复制一列内容，然后点击网格后按ctrl + v粘贴即可。";
         }
         #endregion
 
@@ -180,7 +180,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             tabControl1.SelectedTab = tpAutoSQL;
             //生成SQL成功后提示
             //ShowInfo(strInfo);
-            lblInfo.Text = _strAutoSqlSuccess;
+            lblRuleInfo.Text = _strAutoSqlSuccess;
             rtbResult.Select(0, 0); //返回到第一
         }
         #endregion

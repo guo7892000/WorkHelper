@@ -79,6 +79,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Add("1", "查询数据库");
             _dicString.Add("2", "自定义");
             cmbType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
+            //
+            _dicString.Clear();
+            _dicString.Add("1", "&字符");
+            _dicString.Add("2", "CONCATENATE函数");
+            cbbConnString.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
             #endregion
 
             #region 设置数据库连接控件
@@ -96,6 +101,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             cmbType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ExcelFomulate_Type, "1").Value;
             txbTableName.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ExcelFomulate_TableName, "").Value;
             nudColumnNum.Value = int.Parse(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ExcelFomulate_ColumnNum, "1").Value);
+            //
+            lblInfo.Text = "请将生成的字符复制到Excel数据模板中最后列的右边前两行。注：列名要跟表的列名一致！";
+            tsbAutoSQL.ToolTipText = "生成新增表数据的Excel数据模板公式字符";
         }
         #endregion
 
@@ -149,7 +157,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             tsbAutoSQL.Enabled = true;
             tabControl1.SelectedTab = tpImport;
             //导入成功提示
-            lblInfo.Text = _strImportSuccess;
+            ShowInfo(_strImportSuccess);
         }
         #endregion
 
@@ -295,10 +303,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             #region 判断并取得数据
             if (cmbType.SelectedValue == null) return;
+            string sConnString = cbbConnString.SelectedValue.ToString();
 
-            if("2".Equals(cmbType.SelectedValue.ToString()))
+            if ("2".Equals(cmbType.SelectedValue.ToString()))
             {
-                //直接输入表名称列数据来生成Excel公式
+                //2、直接输入表名称列数据来生成Excel公式
                 string sTableName = txbTableName.Text.Trim();
                 if (string.IsNullOrEmpty(sTableName))
                 {
@@ -306,26 +315,54 @@ namespace Breezee.WorkHelper.DBTool.UI
                     txbTableName.Focus();
                     return;
                 }
+                
                 int iColumnNum = int.Parse(nudColumnNum.Value.ToString());
                 StringBuilder sbHead = new StringBuilder();
                 StringBuilder sbTail = new StringBuilder();
-                sbHead.Append("=CONCATENATE(\"INSERT INTO " + sTableName + " (\",");
-                sbTail.Append("=CONCATENATE($" + iColumnNum.ToExcelColumnWord() + "$1");
+                if ("1".Equals(sConnString))
+                {
+                    //&拼接
+                    sbHead.Append("=\"INSERT INTO " + sTableName + " (\"");
+                    sbTail.Append("=$" + iColumnNum.ToExcelColumnWord() + "$1");
+                }
+                else
+                {
+                    //CONCATENATE函数拼接
+                    sbHead.Append("=CONCATENATE(\"INSERT INTO " + sTableName + " (\",");
+                    sbTail.Append("=CONCATENATE($" + iColumnNum.ToExcelColumnWord() + "$1");
+                }
+                
                 
                 for (int i = 0; i < iColumnNum; i++)
                 {
                     string sExcelCol = i.ToExcelColumnWord();
                     bool isLast = i == iColumnNum - 1;
-                    // 列名拼接
-                    string sColChar = string.Format("{0}1,\",\",", sExcelCol);//非最后的列字符
-                    string sColCharLast = string.Format("{0}1,\") VALUES (\")", sExcelCol);//最后的列字符
-                    // 数据拼接
-                    string sDataChar = string.Format(",\"'\",{0}2,\"'\"", sExcelCol);
-                    string sDouhao = string.Format(",\"{0}\"", ",");
-                    string sLastKuohao = string.Format(",\"{0}\"", ")");
-                    //拼接公式
-                    sbHead.Append(isLast ? sColCharLast : sColChar);
-                    sbTail.Append(isLast ? sDataChar + sLastKuohao : sDataChar + sDouhao);//加引号
+                    if ("1".Equals(sConnString))
+                    {
+                        //&拼接
+                        string sColChar = string.Format("&{0}1&\",\"", sExcelCol);//非最后的列字符
+                        string sColCharLast = string.Format("&{0}1&\") VALUES (\"", sExcelCol);//最后的列字符
+                                                                                               // 数据拼接
+                        string sDataChar = string.Format("&\"'\"&{0}2&\"'\"", sExcelCol);
+                        string sDouhao = string.Format("&\"{0}\"", ",");
+                        string sLastKuohao = string.Format("&\"{0}\"", ")");
+                        //拼接公式
+                        sbHead.Append(isLast ? sColCharLast : sColChar);
+                        sbTail.Append(isLast ? sDataChar + sLastKuohao : sDataChar + sDouhao);//加引号
+                    }
+                    else
+                    {
+                        //CONCATENATE函数拼接：列名拼接
+                        string sColChar = string.Format("{0}1,\",\",", sExcelCol);//非最后的列字符
+                        string sColCharLast = string.Format("{0}1,\") VALUES (\")", sExcelCol);//最后的列字符
+                                                                                               // 数据拼接
+                        string sDataChar = string.Format(",\"'\",{0}2,\"'\"", sExcelCol);
+                        string sDouhao = string.Format(",\"{0}\"", ",");
+                        string sLastKuohao = string.Format(",\"{0}\"", ")");
+                        //拼接公式
+                        sbHead.Append(isLast ? sColCharLast : sColChar);
+                        sbTail.Append(isLast ? sDataChar + sLastKuohao : sDataChar + sDouhao);//加引号
+                    }
                 }
 
                 //保存用户偏好值
@@ -345,7 +382,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 return;
             }
 
-            //读取数据库生成Excel公式
+            //1、读取数据库生成Excel公式
             txbTableName.Focus();
             //取得数据源
             DataTable dtMain = dgvTableList.GetBindingTable();
@@ -395,11 +432,19 @@ namespace Breezee.WorkHelper.DBTool.UI
             StringBuilder sbBegin = new StringBuilder();
             StringBuilder sbEnd = new StringBuilder();
             sbBegin.Append("INSERT INTO " + strDataTableName + " (");
-            /** 拖动公式时使其中部分内容保持不变方法：
-             * 默认情况下excel是相对引用，因此当我们往下拖鼠标时，在A2变成A3的同时，E2:E4也变成 E3：E5，这不是我们想要的。
-             * 为了解决上述问题，需要用到绝对引用。$表示绝对引用，也就是说在拖鼠标时，它保持不变。我们将公式改成=COUNTIF($E$2:$E$4,A2)，也就是绝对引用的形式
-             */
-            sbEnd.Append("=CONCATENATE($" + dtColumnSelect.Rows.Count.ToExcelColumnWord() + "$1");
+            if ("1".Equals(sConnString))
+            {
+                sbEnd.Append("=$" + dtColumnSelect.Rows.Count.ToExcelColumnWord() + "$1");
+            }
+            else
+            {
+                /** 拖动公式时使其中部分内容保持不变方法：
+                 * 默认情况下excel是相对引用，因此当我们往下拖鼠标时，在A2变成A3的同时，E2:E4也变成 E3：E5，这不是我们想要的。
+                 * 为了解决上述问题，需要用到绝对引用。$表示绝对引用，也就是说在拖鼠标时，它保持不变。我们将公式改成=COUNTIF($E$2:$E$4,A2)，也就是绝对引用的形式
+                 */
+                sbEnd.Append("=CONCATENATE($" + dtColumnSelect.Rows.Count.ToExcelColumnWord() + "$1");
+            }
+                
             for (int j = 0; j < dtColumnSelect.Rows.Count; j++)//针对列清单循环：因为只有一个表，所以第二个网格是该表的全部列
             {
                 DataRow drCol = dtColumnSelect.Rows[j];
@@ -415,6 +460,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                 string sDataCharNo = string.Format(",{0}2", sExcelCol);
                 string sDouhao = string.Format(",\"{0}\"", ",");
                 string sLastKuohao = string.Format(",\"{0}\"", ")");
+                if ("1".Equals(sConnString))
+                {
+                    //&拼接
+                    sFixedValue = string.Format("&\"{0}\"", strColFixedValue);
+                    sDataChar = string.Format("&\"'\"&{0}2&\"'\"", sExcelCol);
+                    sDataCharNo = string.Format("&{0}2", sExcelCol);
+                    sDouhao = string.Format("&\"{0}\"", ",");
+                    sLastKuohao = string.Format("&\"{0}\"", ")");
+                }                    
 
                 if (!ckbCancelDefault.Checked && !string.IsNullOrEmpty(strColFixedValue))
                 {
@@ -463,13 +517,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             strColCode = sb.ToString();
             return strColCode;
-        }
-        #endregion
-
-        #region 帮助按钮事件
-        private void tsbHelp_Click(object sender, EventArgs e)
-        {
-
         }
         #endregion
 

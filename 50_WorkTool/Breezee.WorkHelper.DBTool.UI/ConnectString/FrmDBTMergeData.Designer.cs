@@ -48,6 +48,7 @@
             this.grbTable = new System.Windows.Forms.GroupBox();
             this.dgvExcel1 = new System.Windows.Forms.DataGridView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiClear = new System.Windows.Forms.ToolStripMenuItem();
             this.lblTableData = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -56,8 +57,6 @@
             this.lblInfo2 = new System.Windows.Forms.Label();
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.dgvResult = new System.Windows.Forms.DataGridView();
-            this.lblInfo = new System.Windows.Forms.Label();
-            this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -284,12 +283,19 @@
             this.tsmiDelete,
             this.tsmiClear});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(101, 48);
+            // 
+            // tsmiDelete
+            // 
+            this.tsmiDelete.Name = "tsmiDelete";
+            this.tsmiDelete.Size = new System.Drawing.Size(100, 22);
+            this.tsmiDelete.Text = "删除";
+            this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
             // 
             // tsmiClear
             // 
             this.tsmiClear.Name = "tsmiClear";
-            this.tsmiClear.Size = new System.Drawing.Size(180, 22);
+            this.tsmiClear.Size = new System.Drawing.Size(100, 22);
             this.tsmiClear.Text = "清空";
             this.tsmiClear.Click += new System.EventHandler(this.tsmiClear_Click);
             // 
@@ -378,29 +384,11 @@
             this.dgvResult.Size = new System.Drawing.Size(775, 342);
             this.dgvResult.TabIndex = 1;
             // 
-            // lblInfo
-            // 
-            this.lblInfo.AutoSize = true;
-            this.lblInfo.ForeColor = System.Drawing.Color.Red;
-            this.lblInfo.Location = new System.Drawing.Point(236, 9);
-            this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(53, 12);
-            this.lblInfo.TabIndex = 28;
-            this.lblInfo.Text = "提示信息";
-            // 
-            // tsmiDelete
-            // 
-            this.tsmiDelete.Name = "tsmiDelete";
-            this.tsmiDelete.Size = new System.Drawing.Size(180, 22);
-            this.tsmiDelete.Text = "删除";
-            this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
-            // 
             // FrmDBTMergeData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(789, 523);
-            this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.grbConSting);
             this.Controls.Add(this.groupBox1);
@@ -449,7 +437,6 @@
         private System.Windows.Forms.DataGridView dgvExcel1;
         private System.Windows.Forms.Label lblTableData;
         private System.Windows.Forms.TabPage tpAutoSQL;
-        private System.Windows.Forms.Label lblInfo;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.CheckBox ckbAutoColumnName;
         private System.Windows.Forms.TabPage tabPage1;

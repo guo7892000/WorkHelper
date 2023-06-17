@@ -145,7 +145,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 Clipboard.SetData(DataFormats.UnicodeText, sbAll.ToString());
                 tabControl1.SelectedTab = tpAutoSQL;
                 //生成SQL成功后提示
-                lblInfo.Text = _strAutoSqlSuccess;
+                ShowInfo(_strAutoSqlSuccess);
                 rtbResult.Select(0, 0); //返回到第一
                 //保存用户偏好值
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ExcelCol2Row_FixRowCount, ((int)nudFixRowCount.Value).ToString(), "【Excel列转行】固定行数");

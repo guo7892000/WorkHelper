@@ -250,7 +250,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 #endregion
 
                 tabControl1.SelectedTab = tpAutoSQL;
-                lblInfo.Text = _strAutoSqlSuccess;//生成SQL成功后提示
+                ShowInfo(_strAutoSqlSuccess);//生成SQL成功后提示
             }
             catch (Exception ex)
             {

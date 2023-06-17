@@ -54,11 +54,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.dgvTableList = new System.Windows.Forms.DataGridView();
             this.cmsGird = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiInsert = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiClear = new System.Windows.Forms.ToolStripMenuItem();
             this.lblTableData = new System.Windows.Forms.Label();
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
-            this.lblInfo = new System.Windows.Forms.Label();
-            this.tsmiClear = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -320,14 +319,21 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tsmiInsert,
             this.tsmiClear});
             this.cmsGird.Name = "contextMenuStrip1";
-            this.cmsGird.Size = new System.Drawing.Size(181, 70);
+            this.cmsGird.Size = new System.Drawing.Size(101, 48);
             // 
             // tsmiInsert
             // 
             this.tsmiInsert.Name = "tsmiInsert";
-            this.tsmiInsert.Size = new System.Drawing.Size(180, 22);
+            this.tsmiInsert.Size = new System.Drawing.Size(100, 22);
             this.tsmiInsert.Text = "加入";
             this.tsmiInsert.Click += new System.EventHandler(this.TsmiInsert_Click);
+            // 
+            // tsmiClear
+            // 
+            this.tsmiClear.Name = "tsmiClear";
+            this.tsmiClear.Size = new System.Drawing.Size(100, 22);
+            this.tsmiClear.Text = "清空";
+            this.tsmiClear.Click += new System.EventHandler(this.tsmiClear_Click_1);
             // 
             // lblTableData
             // 
@@ -362,23 +368,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.rtbResult.TabIndex = 3;
             this.rtbResult.Text = "";
             // 
-            // lblInfo
-            // 
-            this.lblInfo.AutoSize = true;
-            this.lblInfo.ForeColor = System.Drawing.Color.Red;
-            this.lblInfo.Location = new System.Drawing.Point(236, 9);
-            this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(53, 12);
-            this.lblInfo.TabIndex = 28;
-            this.lblInfo.Text = "提示信息";
-            // 
-            // tsmiClear
-            // 
-            this.tsmiClear.Name = "tsmiClear";
-            this.tsmiClear.Size = new System.Drawing.Size(180, 22);
-            this.tsmiClear.Text = "清空";
-            this.tsmiClear.Click += new System.EventHandler(this.tsmiClear_Click_1);
-            // 
             // FrmDBTCopyData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -386,7 +375,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.ClientSize = new System.Drawing.Size(926, 523);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.grbConSting);
-            this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
@@ -433,7 +421,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         private System.Windows.Forms.RichTextBox rtbResult;
         private System.Windows.Forms.Label lblDbType;
         private System.Windows.Forms.ComboBox cbbDbType;
-        private System.Windows.Forms.Label lblInfo;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.CheckBox ckbAutoColumnName;
         private System.Windows.Forms.ContextMenuStrip cmsGird;

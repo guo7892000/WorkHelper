@@ -34,7 +34,6 @@
             this.tsbConnect = new System.Windows.Forms.ToolStripButton();
             this.tsbAutoSQL = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
-            this.lblInfo = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.lblSqlWHere = new System.Windows.Forms.Label();
@@ -52,16 +51,16 @@
             this.dgvTableList = new System.Windows.Forms.DataGridView();
             this.cmsGird = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiInsert = new System.Windows.Forms.ToolStripMenuItem();
-            this.lblTableData = new System.Windows.Forms.Label();
-            this.tpAutoSQL = new System.Windows.Forms.TabPage();
-            this.rtbResult = new System.Windows.Forms.RichTextBox();
-            this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
             this.tsmiAndEqual = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAndLike = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiOrEqual = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiOrLike = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAndIn = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiOrIn = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblTableData = new System.Windows.Forms.Label();
+            this.tpAutoSQL = new System.Windows.Forms.TabPage();
+            this.rtbResult = new System.Windows.Forms.RichTextBox();
+            this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
             this.toolStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -113,16 +112,6 @@
             this.tsbExit.Size = new System.Drawing.Size(72, 24);
             this.tsbExit.Text = "退出(&X)";
             this.tsbExit.Click += new System.EventHandler(this.tsbExit_Click);
-            // 
-            // lblInfo
-            // 
-            this.lblInfo.AutoSize = true;
-            this.lblInfo.ForeColor = System.Drawing.Color.Red;
-            this.lblInfo.Location = new System.Drawing.Point(312, 7);
-            this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(53, 12);
-            this.lblInfo.TabIndex = 31;
-            this.lblInfo.Text = "提示信息";
             // 
             // groupBox2
             // 
@@ -274,7 +263,7 @@
             this.tpImport.Controls.Add(this.grbTable);
             this.tpImport.Location = new System.Drawing.Point(4, 22);
             this.tpImport.Name = "tpImport";
-            this.tpImport.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tpImport.Padding = new System.Windows.Forms.Padding(3);
             this.tpImport.Size = new System.Drawing.Size(885, 235);
             this.tpImport.TabIndex = 0;
             this.tpImport.Text = "导入清单";
@@ -316,14 +305,56 @@
             this.tsmiAndIn,
             this.tsmiOrIn});
             this.cmsGird.Name = "contextMenuStrip1";
-            this.cmsGird.Size = new System.Drawing.Size(181, 180);
+            this.cmsGird.Size = new System.Drawing.Size(127, 158);
             // 
             // tsmiInsert
             // 
             this.tsmiInsert.Name = "tsmiInsert";
-            this.tsmiInsert.Size = new System.Drawing.Size(180, 22);
+            this.tsmiInsert.Size = new System.Drawing.Size(126, 22);
             this.tsmiInsert.Text = "加入";
             this.tsmiInsert.Click += new System.EventHandler(this.TsmiInsert_Click);
+            // 
+            // tsmiAndEqual
+            // 
+            this.tsmiAndEqual.Name = "tsmiAndEqual";
+            this.tsmiAndEqual.Size = new System.Drawing.Size(126, 22);
+            this.tsmiAndEqual.Text = "And =";
+            this.tsmiAndEqual.Click += new System.EventHandler(this.TsmiAndEqual_Click);
+            // 
+            // tsmiAndLike
+            // 
+            this.tsmiAndLike.Name = "tsmiAndLike";
+            this.tsmiAndLike.Size = new System.Drawing.Size(126, 22);
+            this.tsmiAndLike.Text = "And Like";
+            this.tsmiAndLike.Click += new System.EventHandler(this.TsmiAndLike_Click);
+            // 
+            // tsmiOrEqual
+            // 
+            this.tsmiOrEqual.Name = "tsmiOrEqual";
+            this.tsmiOrEqual.Size = new System.Drawing.Size(126, 22);
+            this.tsmiOrEqual.Text = "Or =";
+            this.tsmiOrEqual.Click += new System.EventHandler(this.TsmiOrEqual_Click);
+            // 
+            // tsmiOrLike
+            // 
+            this.tsmiOrLike.Name = "tsmiOrLike";
+            this.tsmiOrLike.Size = new System.Drawing.Size(126, 22);
+            this.tsmiOrLike.Text = "Or Like";
+            this.tsmiOrLike.Click += new System.EventHandler(this.TsmiOrLike_Click);
+            // 
+            // tsmiAndIn
+            // 
+            this.tsmiAndIn.Name = "tsmiAndIn";
+            this.tsmiAndIn.Size = new System.Drawing.Size(126, 22);
+            this.tsmiAndIn.Text = "And In";
+            this.tsmiAndIn.Click += new System.EventHandler(this.TsmiAndIn_Click);
+            // 
+            // tsmiOrIn
+            // 
+            this.tsmiOrIn.Name = "tsmiOrIn";
+            this.tsmiOrIn.Size = new System.Drawing.Size(126, 22);
+            this.tsmiOrIn.Text = "Or In";
+            this.tsmiOrIn.Click += new System.EventHandler(this.TsmiOrIn_Click);
             // 
             // lblTableData
             // 
@@ -344,7 +375,7 @@
             this.tpAutoSQL.Controls.Add(this.rtbResult);
             this.tpAutoSQL.Location = new System.Drawing.Point(4, 22);
             this.tpAutoSQL.Name = "tpAutoSQL";
-            this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3);
             this.tpAutoSQL.Size = new System.Drawing.Size(885, 235);
             this.tpAutoSQL.TabIndex = 1;
             this.tpAutoSQL.Text = "生成结果";
@@ -367,48 +398,6 @@
             this.uC_DbConnection1.Size = new System.Drawing.Size(893, 77);
             this.uC_DbConnection1.TabIndex = 36;
             // 
-            // tsmiAndEqual
-            // 
-            this.tsmiAndEqual.Name = "tsmiAndEqual";
-            this.tsmiAndEqual.Size = new System.Drawing.Size(180, 22);
-            this.tsmiAndEqual.Text = "And =";
-            this.tsmiAndEqual.Click += new System.EventHandler(this.TsmiAndEqual_Click);
-            // 
-            // tsmiAndLike
-            // 
-            this.tsmiAndLike.Name = "tsmiAndLike";
-            this.tsmiAndLike.Size = new System.Drawing.Size(180, 22);
-            this.tsmiAndLike.Text = "And Like";
-            this.tsmiAndLike.Click += new System.EventHandler(this.TsmiAndLike_Click);
-            // 
-            // tsmiOrEqual
-            // 
-            this.tsmiOrEqual.Name = "tsmiOrEqual";
-            this.tsmiOrEqual.Size = new System.Drawing.Size(180, 22);
-            this.tsmiOrEqual.Text = "Or =";
-            this.tsmiOrEqual.Click += new System.EventHandler(this.TsmiOrEqual_Click);
-            // 
-            // tsmiOrLike
-            // 
-            this.tsmiOrLike.Name = "tsmiOrLike";
-            this.tsmiOrLike.Size = new System.Drawing.Size(180, 22);
-            this.tsmiOrLike.Text = "Or Like";
-            this.tsmiOrLike.Click += new System.EventHandler(this.TsmiOrLike_Click);
-            // 
-            // tsmiAndIn
-            // 
-            this.tsmiAndIn.Name = "tsmiAndIn";
-            this.tsmiAndIn.Size = new System.Drawing.Size(180, 22);
-            this.tsmiAndIn.Text = "And In";
-            this.tsmiAndIn.Click += new System.EventHandler(this.TsmiAndIn_Click);
-            // 
-            // tsmiOrIn
-            // 
-            this.tsmiOrIn.Name = "tsmiOrIn";
-            this.tsmiOrIn.Size = new System.Drawing.Size(180, 22);
-            this.tsmiOrIn.Text = "Or In";
-            this.tsmiOrIn.Click += new System.EventHandler(this.TsmiOrIn_Click);
-            // 
             // FrmDBTReadDataBaseString
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -418,10 +407,9 @@
             this.Controls.Add(this.grbConSting);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.uC_DbConnection1);
-            this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmDBTReadDataBaseString";
             this.Text = "读取数据库拼接字符串";
             this.Load += new System.EventHandler(this.FrmReadDataBaseString_Load);
@@ -451,7 +439,6 @@
         private System.Windows.Forms.ToolStripButton tsbConnect;
         private System.Windows.Forms.ToolStripButton tsbAutoSQL;
         private System.Windows.Forms.ToolStripButton tsbExit;
-        private System.Windows.Forms.Label lblInfo;
         private UC_DbConnection uC_DbConnection1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
