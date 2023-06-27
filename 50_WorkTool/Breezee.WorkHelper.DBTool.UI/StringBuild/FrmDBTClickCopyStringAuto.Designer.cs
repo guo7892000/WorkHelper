@@ -53,7 +53,7 @@
             this.tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(887, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(665, 27);
             this.toolStrip1.TabIndex = 23;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -62,7 +62,7 @@
             this.tsbDownLoad.Image = ((System.Drawing.Image)(resources.GetObject("tsbDownLoad.Image")));
             this.tsbDownLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbDownLoad.Name = "tsbDownLoad";
-            this.tsbDownLoad.Size = new System.Drawing.Size(114, 24);
+            this.tsbDownLoad.Size = new System.Drawing.Size(97, 24);
             this.tsbDownLoad.Text = "下载模板(&D)";
             this.tsbDownLoad.Click += new System.EventHandler(this.TsbDownLoad_Click);
             // 
@@ -71,7 +71,7 @@
             this.tsbExit.Image = ((System.Drawing.Image)(resources.GetObject("tsbExit.Image")));
             this.tsbExit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbExit.Name = "tsbExit";
-            this.tsbExit.Size = new System.Drawing.Size(83, 24);
+            this.tsbExit.Size = new System.Drawing.Size(72, 24);
             this.tsbExit.Text = "退出(&X)";
             this.tsbExit.Click += new System.EventHandler(this.TsbExit_Click);
             // 
@@ -80,8 +80,9 @@
             this.pnlAll.Controls.Add(this.gbGlobal);
             this.pnlAll.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlAll.Location = new System.Drawing.Point(0, 27);
+            this.pnlAll.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pnlAll.Name = "pnlAll";
-            this.pnlAll.Size = new System.Drawing.Size(887, 462);
+            this.pnlAll.Size = new System.Drawing.Size(665, 364);
             this.pnlAll.TabIndex = 24;
             // 
             // gbGlobal
@@ -92,8 +93,10 @@
             this.gbGlobal.Controls.Add(this.label3);
             this.gbGlobal.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbGlobal.Location = new System.Drawing.Point(0, 0);
+            this.gbGlobal.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.gbGlobal.Name = "gbGlobal";
-            this.gbGlobal.Size = new System.Drawing.Size(887, 84);
+            this.gbGlobal.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbGlobal.Size = new System.Drawing.Size(665, 67);
             this.gbGlobal.TabIndex = 25;
             this.gbGlobal.TabStop = false;
             this.gbGlobal.Text = "全局选项";
@@ -101,19 +104,19 @@
             // ckbOpenPath
             // 
             this.ckbOpenPath.AutoSize = true;
-            this.ckbOpenPath.Location = new System.Drawing.Point(14, 60);
+            this.ckbOpenPath.Location = new System.Drawing.Point(10, 48);
+            this.ckbOpenPath.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ckbOpenPath.Name = "ckbOpenPath";
-            this.ckbOpenPath.Size = new System.Drawing.Size(119, 19);
+            this.ckbOpenPath.Size = new System.Drawing.Size(96, 16);
             this.ckbOpenPath.TabIndex = 6;
             this.ckbOpenPath.Text = "点击打开目录";
             this.ckbOpenPath.UseVisualStyleBackColor = true;
             // 
             // btnSelectPath
             // 
-            this.btnSelectPath.Location = new System.Drawing.Point(102, 19);
-            this.btnSelectPath.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSelectPath.Location = new System.Drawing.Point(76, 15);
             this.btnSelectPath.Name = "btnSelectPath";
-            this.btnSelectPath.Size = new System.Drawing.Size(23, 34);
+            this.btnSelectPath.Size = new System.Drawing.Size(17, 27);
             this.btnSelectPath.TabIndex = 5;
             this.btnSelectPath.Text = "...";
             this.btnSelectPath.UseVisualStyleBackColor = true;
@@ -123,33 +126,32 @@
             // 
             this.txbXmlPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbXmlPath.Location = new System.Drawing.Point(130, 19);
-            this.txbXmlPath.Margin = new System.Windows.Forms.Padding(4);
+            this.txbXmlPath.Location = new System.Drawing.Point(98, 15);
             this.txbXmlPath.Multiline = true;
             this.txbXmlPath.Name = "txbXmlPath";
-            this.txbXmlPath.Size = new System.Drawing.Size(744, 38);
+            this.txbXmlPath.Size = new System.Drawing.Size(559, 31);
             this.txbXmlPath.TabIndex = 4;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(17, 29);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(13, 23);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(82, 15);
+            this.label3.Size = new System.Drawing.Size(65, 12);
             this.label3.TabIndex = 3;
             this.label3.Text = "配置文件：";
             // 
             // FrmDBTClickCopyStringAuto
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(887, 489);
+            this.ClientSize = new System.Drawing.Size(665, 391);
             this.Controls.Add(this.pnlAll);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "FrmDBTClickCopyStringAuto";
-            this.Text = "FrmDBTClickCopyStringAuto";
+            this.Text = "点击复制字符";
             this.Load += new System.EventHandler(this.FrmDBTClickCopyStringAuto_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();

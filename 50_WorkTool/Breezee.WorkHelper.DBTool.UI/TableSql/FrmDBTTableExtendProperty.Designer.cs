@@ -150,7 +150,7 @@
             this.tpImport.Controls.Add(this.grbTable);
             this.tpImport.Location = new System.Drawing.Point(4, 22);
             this.tpImport.Name = "tpImport";
-            this.tpImport.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tpImport.Padding = new System.Windows.Forms.Padding(3);
             this.tpImport.Size = new System.Drawing.Size(601, 405);
             this.tpImport.TabIndex = 0;
             this.tpImport.Text = "导入清单";
@@ -198,8 +198,8 @@
             this.tpAutoSQL.Controls.Add(this.rtbResult);
             this.tpAutoSQL.Location = new System.Drawing.Point(4, 22);
             this.tpAutoSQL.Name = "tpAutoSQL";
-            this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tpAutoSQL.Size = new System.Drawing.Size(601, 410);
+            this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3);
+            this.tpAutoSQL.Size = new System.Drawing.Size(601, 405);
             this.tpAutoSQL.TabIndex = 1;
             this.tpAutoSQL.Text = "生成结果";
             // 
@@ -208,7 +208,7 @@
             this.rtbResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbResult.Location = new System.Drawing.Point(3, 3);
             this.rtbResult.Name = "rtbResult";
-            this.rtbResult.Size = new System.Drawing.Size(595, 404);
+            this.rtbResult.Size = new System.Drawing.Size(595, 399);
             this.rtbResult.TabIndex = 3;
             this.rtbResult.Text = "";
             // 
@@ -221,9 +221,9 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmDBTTableExtendProperty";
-            this.Text = "FrmTableExtendProperty";
+            this.Text = "表列注释SQL生成";
             this.Load += new System.EventHandler(this.FrmTableExtendProperty_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();

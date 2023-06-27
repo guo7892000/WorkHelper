@@ -32,7 +32,11 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string GetFileIsGenerateDateTimeDir = "GetFile_IsGenerateDateTimeDir";
         public static readonly string GetFileLastSaveEndDateTime = "GetFile_SaveEndDateTime";
         public static readonly string GetFileDirType = "GetFile_DirType";
-
+        public static readonly string GetFileIsIncludeModify = "GetFile_IsIncludeModify";
+        public static readonly string GetFileIsIncludeAdd = "GetFile_IsIncludeAdd";
+        public static readonly string GetFileIsIncludeCommit = "GetFile_IsIncludeCommit";
+        public static readonly string GetFileEmail = "GetFile_Email";
+        public static readonly string GetFileUserName = "GetFile_UserName";
         //Excel公式
         public static readonly string ExcelFomulate_Type = "ExcelFomulate_Type";
         public static readonly string ExcelFomulate_TableName = "ExcelFomulate_TableName";

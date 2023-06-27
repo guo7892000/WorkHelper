@@ -34,6 +34,14 @@
             this.tsbAutoSQL = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.ckbNowAdd = new System.Windows.Forms.CheckBox();
+            this.ckbNowModify = new System.Windows.Forms.CheckBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label9 = new System.Windows.Forms.Label();
+            this.lblEmail = new System.Windows.Forms.Label();
+            this.txbUserName = new System.Windows.Forms.TextBox();
+            this.txbEmail = new System.Windows.Forms.TextBox();
+            this.ckbIncludeCommit = new System.Windows.Forms.CheckBox();
             this.cbbDirType = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.ckbSetBeginAsLastSaveEnd = new System.Windows.Forms.CheckBox();
@@ -62,11 +70,14 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.rtbString = new System.Windows.Forms.RichTextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.panel2 = new System.Windows.Forms.Panel();
             this.toolStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.grbExclude.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -101,6 +112,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.panel2);
+            this.groupBox2.Controls.Add(this.panel1);
             this.groupBox2.Controls.Add(this.cbbDirType);
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.ckbSetBeginAsLastSaveEnd);
@@ -121,10 +134,92 @@
             this.groupBox2.ForeColor = System.Drawing.Color.Red;
             this.groupBox2.Location = new System.Drawing.Point(0, 27);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1091, 157);
+            this.groupBox2.Size = new System.Drawing.Size(1091, 158);
             this.groupBox2.TabIndex = 31;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "读取与生成配置";
+            // 
+            // ckbNowAdd
+            // 
+            this.ckbNowAdd.AutoSize = true;
+            this.ckbNowAdd.Checked = true;
+            this.ckbNowAdd.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbNowAdd.Location = new System.Drawing.Point(92, 5);
+            this.ckbNowAdd.Name = "ckbNowAdd";
+            this.ckbNowAdd.Size = new System.Drawing.Size(72, 16);
+            this.ckbNowAdd.TabIndex = 18;
+            this.ckbNowAdd.Text = "含将新增";
+            this.ckbNowAdd.UseVisualStyleBackColor = true;
+            // 
+            // ckbNowModify
+            // 
+            this.ckbNowModify.AutoSize = true;
+            this.ckbNowModify.Checked = true;
+            this.ckbNowModify.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbNowModify.Location = new System.Drawing.Point(2, 5);
+            this.ckbNowModify.Name = "ckbNowModify";
+            this.ckbNowModify.Size = new System.Drawing.Size(84, 16);
+            this.ckbNowModify.TabIndex = 18;
+            this.ckbNowModify.Text = "含正在修改";
+            this.ckbNowModify.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.label9);
+            this.panel1.Controls.Add(this.lblEmail);
+            this.panel1.Controls.Add(this.txbUserName);
+            this.panel1.Controls.Add(this.txbEmail);
+            this.panel1.Location = new System.Drawing.Point(524, 127);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(401, 25);
+            this.panel1.TabIndex = 17;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.ForeColor = System.Drawing.Color.Black;
+            this.label9.Location = new System.Drawing.Point(231, 7);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(53, 12);
+            this.label9.TabIndex = 17;
+            this.label9.Text = "用户名：";
+            // 
+            // lblEmail
+            // 
+            this.lblEmail.AutoSize = true;
+            this.lblEmail.ForeColor = System.Drawing.Color.Black;
+            this.lblEmail.Location = new System.Drawing.Point(4, 7);
+            this.lblEmail.Name = "lblEmail";
+            this.lblEmail.Size = new System.Drawing.Size(47, 12);
+            this.lblEmail.TabIndex = 17;
+            this.lblEmail.Text = "Email：";
+            // 
+            // txbUserName
+            // 
+            this.txbUserName.Location = new System.Drawing.Point(288, 3);
+            this.txbUserName.Name = "txbUserName";
+            this.txbUserName.Size = new System.Drawing.Size(106, 21);
+            this.txbUserName.TabIndex = 16;
+            // 
+            // txbEmail
+            // 
+            this.txbEmail.Location = new System.Drawing.Point(58, 2);
+            this.txbEmail.Name = "txbEmail";
+            this.txbEmail.Size = new System.Drawing.Size(167, 21);
+            this.txbEmail.TabIndex = 16;
+            // 
+            // ckbIncludeCommit
+            // 
+            this.ckbIncludeCommit.AutoSize = true;
+            this.ckbIncludeCommit.Checked = true;
+            this.ckbIncludeCommit.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbIncludeCommit.Location = new System.Drawing.Point(170, 5);
+            this.ckbIncludeCommit.Name = "ckbIncludeCommit";
+            this.ckbIncludeCommit.Size = new System.Drawing.Size(84, 16);
+            this.ckbIncludeCommit.TabIndex = 15;
+            this.ckbIncludeCommit.Text = "含之前提交";
+            this.ckbIncludeCommit.UseVisualStyleBackColor = true;
+            this.ckbIncludeCommit.CheckedChanged += new System.EventHandler(this.ckbIncludeCommit_CheckedChanged);
             // 
             // cbbDirType
             // 
@@ -133,6 +228,7 @@
             this.cbbDirType.Name = "cbbDirType";
             this.cbbDirType.Size = new System.Drawing.Size(153, 20);
             this.cbbDirType.TabIndex = 14;
+            this.cbbDirType.SelectedIndexChanged += new System.EventHandler(this.cbbDirType_SelectedIndexChanged);
             // 
             // label8
             // 
@@ -287,7 +383,7 @@
             this.grbExclude.Controls.Add(this.lblExcludeTip);
             this.grbExclude.Dock = System.Windows.Forms.DockStyle.Top;
             this.grbExclude.ForeColor = System.Drawing.Color.Red;
-            this.grbExclude.Location = new System.Drawing.Point(0, 184);
+            this.grbExclude.Location = new System.Drawing.Point(0, 185);
             this.grbExclude.Name = "grbExclude";
             this.grbExclude.Size = new System.Drawing.Size(1091, 51);
             this.grbExclude.TabIndex = 32;
@@ -393,9 +489,9 @@
             // 
             this.groupBox3.Controls.Add(this.rtbString);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(0, 235);
+            this.groupBox3.Location = new System.Drawing.Point(0, 236);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1091, 267);
+            this.groupBox3.Size = new System.Drawing.Size(1091, 266);
             this.groupBox3.TabIndex = 34;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "生成的字符";
@@ -405,9 +501,19 @@
             this.rtbString.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbString.Location = new System.Drawing.Point(3, 17);
             this.rtbString.Name = "rtbString";
-            this.rtbString.Size = new System.Drawing.Size(1085, 247);
+            this.rtbString.Size = new System.Drawing.Size(1085, 246);
             this.rtbString.TabIndex = 0;
             this.rtbString.Text = "";
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.ckbNowModify);
+            this.panel2.Controls.Add(this.ckbNowAdd);
+            this.panel2.Controls.Add(this.ckbIncludeCommit);
+            this.panel2.Location = new System.Drawing.Point(265, 127);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(256, 25);
+            this.panel2.TabIndex = 19;
             // 
             // FrmGetUpdateDirectoryFile
             // 
@@ -427,11 +533,15 @@
             this.toolStrip1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.grbExclude.ResumeLayout(false);
             this.grbExclude.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -471,5 +581,14 @@
         private System.Windows.Forms.CheckBox ckbSetBeginAsLastSaveEnd;
         private System.Windows.Forms.CheckBox ckbSaveEndTime;
         private System.Windows.Forms.CheckBox ckbEndToNow;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label lblEmail;
+        private System.Windows.Forms.TextBox txbUserName;
+        private System.Windows.Forms.TextBox txbEmail;
+        private System.Windows.Forms.CheckBox ckbIncludeCommit;
+        private System.Windows.Forms.CheckBox ckbNowAdd;
+        private System.Windows.Forms.CheckBox ckbNowModify;
+        private System.Windows.Forms.Panel panel2;
     }
 }
