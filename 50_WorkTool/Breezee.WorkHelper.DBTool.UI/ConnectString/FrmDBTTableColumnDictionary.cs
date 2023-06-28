@@ -456,6 +456,44 @@ namespace Breezee.WorkHelper.DBTool.UI
                     }
                 }
 
+                /*********************测试使用的SQL***************
+                 select A.CITY_CODE,A.CITY_NAME, B.PROVINCE_NAME
+                    from BAS_CITY A
+                    join BAS_PROVINCE B on A.PROVINCE_ID=b.PROVINCE_ID
+                    where 1=2
+                    AND A.CITY_CODE ='#CITY_CODE#'
+                    AND B.PROVINCE_NAME ='#PROVINCE_NAME#'
+                 *************************************************/
+                //针对2和3，找到语句中的表，优先从这些表里边找
+                if ("2".Equals(sInputType) || "3".Equals(sInputType))
+                {
+                    List<string> listTable = new List<string>();
+                    bool isFind = false;
+                    string sSql = rtbInputSql.Text.Trim();
+                    string tablePattern = @"\s*(FROM|JOIN)\s+\w+\s+";//前面为*，是因为有可能在拆分时，去掉了前面的空格
+                    Regex regex = new Regex(tablePattern, RegexOptions.IgnoreCase);
+                    MatchCollection mc = regex.Matches(sSql);
+                    foreach (Match item in mc)
+                    {
+                        string sValue = item.Value.Trim();
+                        string sTableName = sValue.Substring(sValue.LastIndexOf(" ")).Trim();
+                        sFiter = string.Format("{0}='{1}' and {2}='{3}'", DBColumnSimpleEntity.SqlString.TableName, sTableName, DBColumnSimpleEntity.SqlString.Name, sCol);
+                        //查找通用列中是否存在
+                        drArr = dtAllCol.Select(sFiter);
+                        if (drArr.Length > 0)
+                        {
+                            dtSelect.ImportRow(drArr[0]);
+                            isFind = true;
+                            continue;
+                        }
+                    }
+                    //已从优先表中找到，那么直接下一个处理
+                    if (isFind)
+                    {
+                        continue;
+                    }
+                }
+
                 sFiter = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.Name, sCol);
                 //查找通用列中是否存在
                 drArr = dtCommonCol.Select(sFiter);

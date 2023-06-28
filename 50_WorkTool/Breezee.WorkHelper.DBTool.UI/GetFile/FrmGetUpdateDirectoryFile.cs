@@ -31,6 +31,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         string sDirType;
         //分隔的字符数组
         char[] splitCharArr = new char[] { ',', '，', '：', ';', '；','|' };
+        List<string> _listFilePath;
         #endregion
 
         #region 构造函数
@@ -46,12 +47,12 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             dtpBegin.Value = DateTime.Now.AddHours(-10);
             dtpEnd.Value = DateTime.Now;
-            lblExcludeTip.Text = "支持逗号（中英文）、分号（中英文）、冒号（中文）、竖线（英文）分隔的多个排除项配置！";
+            lblExcludeTip.Text = "支持逗号（中英文）、分号（中英文）、冒号（中文）、竖线（英文）分隔的多个排除项配置！另外：会过滤以.开头的文件夹";
             //绑定下拉框
             _dicString["1"]= "含git源码的目录";
             _dicString["9"] = "普通目录";
             cbbDirType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false),false,true);
-            toolTip1.SetToolTip(cbbDirType, "【含git源码的目录】：针对新增和修改的文件，拉取下来的文件不含在内，但【普通目录】会包括！");
+            toolTip1.SetToolTip(cbbDirType, "【含git源码的目录】：针对有变化的新增和修改的文件，git拉取下来的文件不含在内，但【普通目录】会包括！");
 
             //加载用户偏好值
             //读取目录
@@ -155,12 +156,24 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
 
             rtbString.Clear();
-
+            _listFilePath = new List<string>();
             StringBuilder sb = new StringBuilder();
             DirectoryInfo rootDirectory = new DirectoryInfo(sPath);
             //查找并输出文件
             iFileNum = 0;
             sDirType = cbbDirType.SelectedValue.ToString();
+            if ("1".Equals(sDirType))
+            { 
+                if(!ckbNowAdd.Checked && !ckbNowModify.Checked && !ckbIncludeCommit.Checked)
+                {
+                    ShowInfo("含正在修改、含将新增、含之前提交，这三个复选框至少选择一个！");
+                    return;
+                }
+            }
+            else
+            {
+
+            }
             tsbAutoSQL.Enabled = false;
             ShowDestopTipMsg("正在异步获取文件清单，请稍等一会...");
             //异步获取文件
@@ -370,6 +383,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 return;
             }
+            //跳过已包含的文件
+            if(_listFilePath.Contains(file.FullName))
+            {
+                return;
+            }
+            _listFilePath.Add(file.FullName);
             //生成目录
             string sFinalDir = file.DirectoryName.Replace(sReadPath, sTargetPath);
             //复制文件
