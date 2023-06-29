@@ -32,6 +32,10 @@ namespace Breezee.WorkHelper.DBTool.UI
         //分隔的字符数组
         char[] splitCharArr = new char[] { ',', '，', '：', ';', '；','|' };
         List<string> _listFilePath;
+        string[] sExcludeDirName; //排除的目录名
+        string[] sExcludeFullDir;
+        string[] sExcludeFileName; //排除的文件名
+        string[] sExcludeFullFileName;
         #endregion
 
         #region 构造函数
@@ -71,9 +75,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             ckbDateDir.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileIsGenerateDateTimeDir, "0").Value) ? true : false;
             cbbDirType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileDirType, "1").Value;
             //排除项
-            txbExcludeEndprx.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileExcludeEndprx, "").Value; 
+            txbExcludeEndprx.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileExcludeEndprx, "").Value;
             txbExcludeDirName.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileExcludeDirName, "").Value;
             txbExcludeFullDir.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileExcludeFullDir, "").Value;
+            txbExcludeFile.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileExcludeFileName, "").Value;
+            txbExcludeFullFile.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileExcludeFullFileName, "").Value;
             //包含已提交
             ckbNowModify.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileIsIncludeModify, "1").Value) ? true : false;
             ckbNowAdd.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileIsIncludeAdd, "1").Value) ? true : false;
@@ -128,87 +134,99 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 生成SQL按钮事件
         private async void tsbAutoSQL_Click(object sender, EventArgs e)
         {
-            string sPath = txbReadPath.Text.Trim(); 
-            if (string.IsNullOrEmpty(sPath))
+            try
             {
-                ShowErr("请选择读取目录！");
-                return;
-            }
-
-            string sTargePath = txbTargetPath.Text.Trim();
-            if (string.IsNullOrEmpty(sTargePath))
-            {
-                ShowErr("请选择生成目录！");
-                return;
-            }
-
-            if (ckbEndToNow.Checked)
-            {
-                dtpEnd.Value = DateTime.Now;
-            }
-            else
-            {
-                if (dtpBegin.Value.CompareTo(dtpEnd.Value) > 0)
+                string sPath = txbReadPath.Text.Trim();
+                if (string.IsNullOrEmpty(sPath))
                 {
-                    ShowErr("修改的开始时间不能大于结束时间！");
-                    return;
-                } 
-            }
-
-            rtbString.Clear();
-            _listFilePath = new List<string>();
-            StringBuilder sb = new StringBuilder();
-            DirectoryInfo rootDirectory = new DirectoryInfo(sPath);
-            //查找并输出文件
-            iFileNum = 0;
-            sDirType = cbbDirType.SelectedValue.ToString();
-            if ("1".Equals(sDirType))
-            { 
-                if(!ckbNowAdd.Checked && !ckbNowModify.Checked && !ckbIncludeCommit.Checked)
-                {
-                    ShowInfo("含正在修改、含将新增、含之前提交，这三个复选框至少选择一个！");
+                    ShowErr("请选择读取目录！");
                     return;
                 }
+
+                string sTargePath = txbTargetPath.Text.Trim();
+                if (string.IsNullOrEmpty(sTargePath))
+                {
+                    ShowErr("请选择生成目录！");
+                    return;
+                }
+
+                if (ckbEndToNow.Checked)
+                {
+                    dtpEnd.Value = DateTime.Now;
+                }
+                else
+                {
+                    if (dtpBegin.Value.CompareTo(dtpEnd.Value) > 0)
+                    {
+                        ShowErr("修改的开始时间不能大于结束时间！");
+                        return;
+                    }
+                }
+
+                rtbString.Clear();
+                _listFilePath = new List<string>();
+                StringBuilder sb = new StringBuilder();
+                DirectoryInfo rootDirectory = new DirectoryInfo(sPath);
+                //查找并输出文件
+                iFileNum = 0;
+                sDirType = cbbDirType.SelectedValue.ToString();
+                if ("1".Equals(sDirType))
+                {
+                    if (!ckbNowAdd.Checked && !ckbNowModify.Checked && !ckbIncludeCommit.Checked)
+                    {
+                        ShowInfo("含正在修改、含将新增、含之前提交，这三个复选框至少选择一个！");
+                        return;
+                    }
+                }
+                else
+                {
+
+                }
+                tsbAutoSQL.Enabled = false;
+                ShowDestopTipMsg("正在异步获取文件清单，请稍等一会...");
+                //异步获取文件
+                await Task.Run(() => GetDirectoryFile(sb, rootDirectory));
+                tsbAutoSQL.Enabled = true; //重置按钮为有效
+                rtbString.AppendText(sb.ToString());
+
+                //保存用户偏好值
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileReadPath, sPath, "【获取修改过的文件】最后选择的读取目录");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileTargetPath, sTargePath, "【获取修改过的文件】最后选择的生成目录");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileExcludeEndprx, txbExcludeEndprx.Text.Trim(), "【获取修改过的文件】的排除扩展名列表");
+
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileExcludeDirName, txbExcludeDirName.Text.Trim(), "【获取修改过的文件】的排除目录名列表");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileExcludeFullDir, txbExcludeFullDir.Text.Trim(), "【获取修改过的文件】的排除全路径目录列表");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileExcludeFileName, txbExcludeFile.Text.Trim(), "【获取修改过的文件】的排除文件名列表");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileExcludeFullFileName, txbExcludeFullFile.Text.Trim(), "【获取修改过的文件】的排除全路径文件名列表");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileIsGenerateDateTimeDir, ckbDateDir.Checked ? "1" : "0", "【获取修改过的文件】的是否生成日期目录");
+
+                if (ckbSaveEndTime.Checked)
+                {
+                    WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileLastSaveEndDateTime, dtpEnd.Value.ToString("yyyy-MM-dd HH:mm:ss"), "【获取修改过的文件】的最后修改时间");
+                }
+
+                //包含已提交
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileIsIncludeAdd, ckbNowAdd.Checked ? "1" : "0", "【获取修改过的文件】的是否包含将增加");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileIsIncludeModify, ckbNowModify.Checked ? "1" : "0", "【获取修改过的文件】的是否包含正在修改");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileIsIncludeCommit, ckbIncludeCommit.Checked ? "1" : "0", "【获取修改过的文件】的是否包含之前提交");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileEmail, txbEmail.Text.Trim(), "【获取修改过的文件】的Email");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileUserName, txbUserName.Text.Trim(), "【获取修改过的文件】的用户名");
+
+                WinFormContext.UserLoveSettings.Save();
+                if (iFileNum <= 0)
+                {
+                    ShowInfo("异步获取文件清单完成，没有修改的文件！");
+                }
+                else
+                {
+                    ShowInfo("异步获取文件清单完成，修改的文件数为：" + iFileNum.ToString());
+                }
             }
-            else
+            catch(Exception ex)
             {
-
+                ShowErr(ex.Message);
             }
-            tsbAutoSQL.Enabled = false;
-            ShowDestopTipMsg("正在异步获取文件清单，请稍等一会...");
-            //异步获取文件
-            await Task.Run(()=> GetDirectoryFile(sb, rootDirectory));
-            tsbAutoSQL.Enabled = true; //重置按钮为有效
-            rtbString.AppendText(sb.ToString());
-
-            //保存用户偏好值
-            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileReadPath, sPath, "【获取修改过的文件】最后选择的读取目录");
-            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileTargetPath, sTargePath, "【获取修改过的文件】最后选择的生成目录");
-            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileExcludeEndprx, txbExcludeEndprx.Text.Trim(), "【获取修改过的文件】的排除扩展名列表");
-
-            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileExcludeDirName, txbExcludeDirName.Text.Trim(), "【获取修改过的文件】的排除目录名列表");
-            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileExcludeFullDir, txbExcludeFullDir.Text.Trim(), "【获取修改过的文件】的排除全路径目录列表");
-            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileIsGenerateDateTimeDir, ckbDateDir.Checked ? "1" : "0", "【获取修改过的文件】的是否生成日期目录");
-
-            if (ckbSaveEndTime.Checked)
-            {
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileLastSaveEndDateTime, dtpEnd.Value.ToString("yyyy-MM-dd HH:mm:ss"), "【获取修改过的文件】的最后修改时间");
-            }
-
-            //包含已提交
-            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileIsIncludeCommit, ckbIncludeCommit.Checked ? "1" : "0", "【获取修改过的文件】的是否包含已提交");
-            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileEmail, txbEmail.Text.Trim(), "【获取修改过的文件】的Email");
-            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileUserName, txbUserName.Text.Trim(), "【获取修改过的文件】的用户名");
-
-            WinFormContext.UserLoveSettings.Save();
-            if (iFileNum <= 0)
-            {
-                ShowInfo("异步获取文件清单完成，没有修改的文件！");
-            }
-            else
-            {
-                ShowInfo("异步获取文件清单完成，修改的文件数为：" + iFileNum.ToString());
-            }
+            
         } 
         #endregion
 
@@ -233,8 +251,10 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             
             //得到排除项
-            string[] sExcludeDirName = txbExcludeDirName.Text.Trim().ToLower().Split(splitCharArr);//得到排除的文件名
-            string[] sExcludeFullDir = txbExcludeFullDir.Text.Trim().ToLower().Split(splitCharArr);//得到排除的绝对目录
+            sExcludeDirName = txbExcludeDirName.Text.Trim().ToLower().Split(splitCharArr); //得到排除的目录名
+            sExcludeFullDir = txbExcludeFullDir.Text.Trim().ToLower().Split(splitCharArr); //得到排除的绝对目录
+            sExcludeFileName = txbExcludeFile.Text.Trim().ToLower().Split(splitCharArr); //得到排除的文件名
+            sExcludeFullFileName = txbExcludeFullFile.Text.Trim().ToLower().Split(splitCharArr); //得到排除的绝对路径文件名
 
             if ("1".Equals(sDirType))
             {
@@ -259,11 +279,27 @@ namespace Breezee.WorkHelper.DBTool.UI
                         {
                             if (ckbNowAdd.Checked)
                             {
-                                CopyChangesFile(sb, sParentDirName, changes.Added);//新增的
+                                //新增的
+                                foreach (var item in changes.Added)
+                                {
+                                    FileInfo file = new FileInfo(Path.Combine(sParentDirName, item.Path)); 
+                                    if (file.Exists)
+                                    {
+                                        CopyFileBackup(file, sb);
+                                    }
+                                }
                             }
                             if (ckbNowModify.Checked)
                             {
-                                CopyChangesFile(sb, sParentDirName, changes.Modified); //修改的
+                                //修改的
+                                foreach (var item in changes.Modified)
+                                {
+                                    FileInfo file = new FileInfo(Path.Combine(sParentDirName, item.Path));
+                                    if (file.Exists)
+                                    {
+                                        CopyFileBackup(file, sb);
+                                    }
+                                }
                             }
                         }
                         //查找已提交的
@@ -337,18 +373,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
             }
         }
-
-        private void CopyChangesFile(StringBuilder sb, string sParentDirName, IEnumerable<TreeEntryChanges> changes)
-        {
-            foreach (var item in changes)
-            {
-                FileInfo file = new FileInfo(Path.Combine(sParentDirName, item.Path));
-                if (file.Exists)
-                {
-                    CopyFileBackup(file, sb);
-                }
-            }
-        }
         #endregion
 
         /// <summary>
@@ -383,8 +407,31 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 return;
             }
+
+            //跳过忽略的文件名、绝对路径文件名
+            if (sExcludeFileName.Contains(file.Name.ToLower()) || sExcludeFullFileName.Contains(file.FullName.ToLower()))
+            {
+                return;
+            }
+
+            //跳过忽略的绝对目录
+            if (sExcludeFullDir.Contains(file.DirectoryName))
+            {
+                return;
+            }
+
+            //跳过忽略的目录名
+            string[] sFileDirs = file.DirectoryName.ToLower().Split(new char[] { '\\', '/' });
+            foreach (var sDir in sFileDirs)
+            {
+                if (sExcludeDirName.Contains(sDir))
+                {
+                    return;
+                }
+            }
+
             //跳过已包含的文件
-            if(_listFilePath.Contains(file.FullName))
+            if (_listFilePath.Contains(file.FullName))
             {
                 return;
             }

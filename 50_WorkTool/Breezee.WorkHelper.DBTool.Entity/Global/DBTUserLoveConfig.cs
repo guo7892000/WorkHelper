@@ -29,6 +29,8 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string GetFileExcludeEndprx = "GetFile_ExcludeEndprx";
         public static readonly string GetFileExcludeDirName = "GetFile_ExcludeDirName";
         public static readonly string GetFileExcludeFullDir = "GetFile_ExcludeFullDir";
+        public static readonly string GetFileExcludeFileName = "GetFile_ExcludeFileName";
+        public static readonly string GetFileExcludeFullFileName = "GetFile_ExcludeFullFileName";
         public static readonly string GetFileIsGenerateDateTimeDir = "GetFile_IsGenerateDateTimeDir";
         public static readonly string GetFileLastSaveEndDateTime = "GetFile_SaveEndDateTime";
         public static readonly string GetFileDirType = "GetFile_DirType";
