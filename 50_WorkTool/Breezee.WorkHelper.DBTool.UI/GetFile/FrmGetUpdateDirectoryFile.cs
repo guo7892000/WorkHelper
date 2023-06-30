@@ -309,6 +309,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                             var commits = repo.Commits.QueryBy(new CommitFilter());
                             foreach (var commit in commits)
                             {
+                                //取指定人提交的文件
                                 if (!string.IsNullOrEmpty(sEmail) && !sEmail.Equals(commit.Author.Email)) continue; //如邮件不为空，且不相等，则跳过
                                 if (!string.IsNullOrEmpty(sUserName) && !sUserName.Equals(commit.Author.Name)) continue;//如用户名不为空，且不相等，则跳过
                                 //不在选择的时间范围内
@@ -318,6 +319,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                                 }
                                 foreach (var parent in commit.Parents)
                                 {
+                                    //要排除冲突时帮其他人提交的文件
+                                    if (!string.IsNullOrEmpty(sEmail) && !sEmail.Equals(parent.Author.Email)) continue; //如邮件不为空，且不相等，则跳过
+                                    if (!string.IsNullOrEmpty(sUserName) && !sUserName.Equals(parent.Author.Name)) continue;//如用户名不为空，且不相等，则跳过
                                     foreach (TreeEntryChanges change in repo.Diff.Compare<TreeChanges>(parent.Tree, commit.Tree))
                                     {
                                         FileInfo file = new FileInfo(Path.Combine(sParentDirName, change.Path));

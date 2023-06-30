@@ -113,7 +113,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     for (int i = 0; i < dtMain.Rows.Count; i++)
                     {
                         //初始化单条数据为书写的文本
-                        string strOneData = rtbConString.Text.Trim();
+                        string strOneData = ckbTrim.Checked ? rtbConString.Text.Trim(): rtbConString.Text;
                         string sConvert = cbbWordConvert.SelectedValue.ToString();
                         StringBuilder sb = new StringBuilder();
                         for (int j = 0; j < dtMain.Columns.Count; j++)

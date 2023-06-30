@@ -35,7 +35,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void FrmDBTScriptMerge_Load(object sender, EventArgs e)
         {
             ckbAutoOpen.Checked = true;
-            lblMergeInfo.Text= "请保证所有要合并的文件在配置文件所在目录（或子目录）下，并且文件的格式为UTF-8格式（可通过另存为UTF-8保证），否则合并后可能会有乱码";
+            lblMergeInfo.Text= "请保证配置的字符集类型（charset）正确，请考虑将所有文件另存为UTF-8，那样合并后就不会出现乱码！";
             //加载用户偏好值
             txbSelectPath.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.MergeScriptPath, Path.Combine(DBTGlobalValue.AppPath, DBTGlobalValue.StringBuild.Xml_MergeScript)).Value;
         }
@@ -96,7 +96,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             //获取所有分类
             XmlNodeList xmlList = XmlHelper.GetXmlNodeListByXpath(sConfigPath, ScriptMergeString.NodeString.ClassPath);
-            string[] sqlFiles;
+            string[] sqlFiles = null;
 
             foreach (XmlNode cla in xmlList)
             {
@@ -123,20 +123,40 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //得到目录文件清单
                 if(string.IsNullOrEmpty(sSourcePathRel) && string.IsNullOrEmpty(sSourcePathAbs))
                 {
+                    //没有配置相对目录和绝对目录时
                     sqlFiles = Directory.GetFiles(sDirSource, "*.*", SearchOption.AllDirectories);
                     if (sqlFiles.Length == 0) continue;
                 }
-                else if (!string.IsNullOrEmpty(sSourcePathAbs))
-                {
-                    sqlFiles = Directory.GetFiles(sSourcePathAbs, "*.*", SearchOption.AllDirectories);
-                }
                 else
                 {
-                    if (sSourcePathRel.StartsWith(@"\") || sSourcePathRel.StartsWith(@"/"))
+                    //相对目录和绝对目录至少有一个不为空
+                    if (!string.IsNullOrEmpty(sSourcePathAbs))
                     {
-                        sSourcePathRel = sSourcePathRel.Substring(1); //去掉前面的斜杆，让后面的Path.Combine能正常合并路径；否则得到的路径是错的
+                        //绝对目录不为空时，获取其下所有文件
+                        sqlFiles = Directory.GetFiles(sSourcePathAbs, "*.*", SearchOption.AllDirectories);
                     }
-                    sqlFiles = Directory.GetFiles(Path.Combine(sDirSource, sSourcePathRel), "*.*", SearchOption.AllDirectories);
+                    if (!string.IsNullOrEmpty(sSourcePathRel))
+                    {
+                        //相对目录不为空时
+                        if (sSourcePathRel.StartsWith(@"\") || sSourcePathRel.StartsWith(@"/"))
+                        {
+                            sSourcePathRel = sSourcePathRel.Substring(1); //去掉前面的斜杆，让后面的Path.Combine能正常合并路径；否则得到的路径是错的
+                        }
+                        string[]  sqlFilesRel = Directory.GetFiles(Path.Combine(sDirSource, sSourcePathRel), "*.*", SearchOption.AllDirectories);
+                        if (sqlFiles == null)
+                        {
+                            sqlFiles = sqlFilesRel; //原SQL数组为空时，直接取相对目录文件数组
+                        }
+                        else if(sqlFilesRel.Length>0)
+                        {
+                            foreach (string item in sqlFilesRel)
+                            {
+                                sqlFiles.Append(item); //将相对目录文件数组添加到原SQL数组中
+                            }
+                        }
+                    }
+                    //没有文件时继续下一个分类
+                    if (sqlFiles ==null || sqlFiles.Length == 0) continue;
                 }
                
                 IList<string> fileList = new List<string>();
@@ -154,7 +174,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //如配置有文件扩展名，那么根据扩展名查找文件，找到的文件加入清单
                 if (!string.IsNullOrEmpty(sFileExt))
                 {
-                    foreach (string ext in sFileExt.Split(new char[] { ',','，', '|' }))
+                    foreach (string ext in sFileExt.Split(new char[] { ',','，', ';', '；', '|' }))
                     {
                         IEnumerable<string> exist = sqlFiles.ToList().Where(t => t.ToLower().EndsWith("."+ ext.ToLower()));
                         if (exist.Count() == 0) continue;
