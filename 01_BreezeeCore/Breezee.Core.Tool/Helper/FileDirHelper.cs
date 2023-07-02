@@ -95,13 +95,19 @@ namespace Breezee.Core.Tool.Helper
             {
                 destDirectory.Create();
             }
-            if(isMove)
+
+            string sTargetPath = Path.Combine(destDirectory.FullName, fileName);
+            if (File.Exists(sTargetPath))
             {
-                File.Move(srcFile, destDirectory.FullName + @"\" + fileName);
+                File.SetAttributes(sTargetPath, FileAttributes.Normal); //去除文件的只读属性
+            }
+            if (isMove)
+            {               
+                File.Move(srcFile, sTargetPath);
             }
             else
             {
-                File.Copy(srcFile, destDirectory.FullName + @"\" + fileName, true);
+                File.Copy(srcFile, sTargetPath, true);
             }
         }
     }
