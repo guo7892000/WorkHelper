@@ -40,6 +40,7 @@
             this.txbXmlPath = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.ckbFlowDesign = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.pnlAll.SuspendLayout();
             this.gbGlobal.SuspendLayout();
@@ -80,23 +81,24 @@
             this.pnlAll.Controls.Add(this.gbGlobal);
             this.pnlAll.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlAll.Location = new System.Drawing.Point(0, 27);
-            this.pnlAll.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlAll.Margin = new System.Windows.Forms.Padding(2);
             this.pnlAll.Name = "pnlAll";
             this.pnlAll.Size = new System.Drawing.Size(665, 364);
             this.pnlAll.TabIndex = 24;
             // 
             // gbGlobal
             // 
+            this.gbGlobal.Controls.Add(this.ckbFlowDesign);
             this.gbGlobal.Controls.Add(this.ckbOpenPath);
             this.gbGlobal.Controls.Add(this.btnSelectPath);
             this.gbGlobal.Controls.Add(this.txbXmlPath);
             this.gbGlobal.Controls.Add(this.label3);
             this.gbGlobal.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbGlobal.Location = new System.Drawing.Point(0, 0);
-            this.gbGlobal.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbGlobal.Margin = new System.Windows.Forms.Padding(2);
             this.gbGlobal.Name = "gbGlobal";
-            this.gbGlobal.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.gbGlobal.Size = new System.Drawing.Size(665, 67);
+            this.gbGlobal.Padding = new System.Windows.Forms.Padding(2);
+            this.gbGlobal.Size = new System.Drawing.Size(665, 70);
             this.gbGlobal.TabIndex = 25;
             this.gbGlobal.TabStop = false;
             this.gbGlobal.Text = "全局选项";
@@ -104,8 +106,8 @@
             // ckbOpenPath
             // 
             this.ckbOpenPath.AutoSize = true;
-            this.ckbOpenPath.Location = new System.Drawing.Point(10, 48);
-            this.ckbOpenPath.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ckbOpenPath.Location = new System.Drawing.Point(10, 50);
+            this.ckbOpenPath.Margin = new System.Windows.Forms.Padding(2);
             this.ckbOpenPath.Name = "ckbOpenPath";
             this.ckbOpenPath.Size = new System.Drawing.Size(96, 16);
             this.ckbOpenPath.TabIndex = 6;
@@ -141,6 +143,19 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "配置文件：";
             // 
+            // ckbFlowDesign
+            // 
+            this.ckbFlowDesign.AutoSize = true;
+            this.ckbFlowDesign.Checked = true;
+            this.ckbFlowDesign.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbFlowDesign.Location = new System.Drawing.Point(112, 50);
+            this.ckbFlowDesign.Name = "ckbFlowDesign";
+            this.ckbFlowDesign.Size = new System.Drawing.Size(72, 16);
+            this.ckbFlowDesign.TabIndex = 7;
+            this.ckbFlowDesign.Text = "流式布局";
+            this.ckbFlowDesign.UseVisualStyleBackColor = true;
+            this.ckbFlowDesign.CheckedChanged += new System.EventHandler(this.ckbFlowDesign_CheckedChanged);
+            // 
             // FrmDBTClickCopyStringAuto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -149,7 +164,7 @@
             this.Controls.Add(this.pnlAll);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FrmDBTClickCopyStringAuto";
             this.Text = "点击复制字符";
             this.Load += new System.EventHandler(this.FrmDBTClickCopyStringAuto_Load);
@@ -175,5 +190,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ToolStripButton tsbDownLoad;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.CheckBox ckbFlowDesign;
     }
 }

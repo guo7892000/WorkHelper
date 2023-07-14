@@ -42,6 +42,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private DataTable _dtDefault = null;
         DBSqlEntity sqlEntity;
         string _sColumnList = "#COL_LIST#";
+        DataGridViewFindText dgvFindText;
         #endregion
 
         #region 构造函数
@@ -570,5 +571,22 @@ private String #{1}#;
             }
         }
 
+        private void btnFindNext_Click(object sender, EventArgs e)
+        {
+            FindGridText(true);
+        }
+
+        private void btnFindFront_Click(object sender, EventArgs e)
+        {
+            FindGridText(false);
+        }
+
+        private void FindGridText(bool isNext)
+        {
+            string sSearch = txbSearchColumn.Text.Trim();
+            if (string.IsNullOrEmpty(sSearch)) return;
+            dgvColList.SeachText(sSearch, ref dgvFindText, null, isNext);
+            lblFind.Text = dgvFindText.CurrentMsg;
+        }
     }
 }

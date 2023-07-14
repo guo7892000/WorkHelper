@@ -8,6 +8,7 @@ using Breezee.Core.Interface;
 using Breezee.Core.Entity;
 using System.Drawing;
 using System.IO;
+using NPOI.SS.Formula.Functions;
 
 /*********************************************************************		
  * 对象名称：		
@@ -669,7 +670,7 @@ namespace Breezee.Core.WinFormUI
         /// <param name="strColunmName"></param>
         /// <param name="isSelect"></param>
         /// <param name="sSelectColumnName">双击后先中的列</param>
-        public static void AllChecked(this DataGridView dgv, string strColunmName,ref bool isSelect)
+        public static void AllChecked(this DataGridView dgv, string strColunmName, ref bool isSelect)
         {
             foreach (DataGridViewRow item in dgv.Rows)
             {
@@ -677,15 +678,16 @@ namespace Breezee.Core.WinFormUI
                 if ("1".Equals(sCelValue) || "0".Equals(sCelValue))
                 {
                     item.Cells[strColunmName].Value = isSelect ? "1" : "0";
-                }else
+                }
+                else
                 {
                     item.Cells[strColunmName].Value = isSelect ? "True" : "False";
                 }
-                
+
             }
             isSelect = !isSelect;
             //解决当开始是全部选中，双击后全部取消选 中，但因为焦点没有离开选择列，显示还是选中状态的问题
-            if(dgv.CurrentCell.ColumnIndex == dgv.Columns[strColunmName].Index)
+            if (dgv.CurrentCell.ColumnIndex == dgv.Columns[strColunmName].Index)
             {
                 int iNewAdd = dgv.CurrentCell.ColumnIndex + 1;
                 int iNewDown = dgv.CurrentCell.ColumnIndex - 1;
@@ -700,6 +702,145 @@ namespace Breezee.Core.WinFormUI
                     dgv.EndEdit();
                 }
             }
+        }
+
+        /// <summary>
+        /// 查找文本
+        /// </summary>
+        /// <param name="dgv"></param>
+        /// <param name="sText"></param>
+        /// <param name="listColumn"></param>
+        /// <param name="isForwardFind">是否身前查找：true是，false否</param>
+        public static void SeachText(this DataGridView dgv, string sText, ref DataGridViewFindText dgvText, List<string> listColumn = null, bool isForwardFind = true)
+        {
+            bool isFind = false;
+            if (dgvText == null)
+            {
+                dgvText = new DataGridViewFindText();
+            }
+            if (isForwardFind)
+            {
+                foreach (DataGridViewRow row in dgv.Rows)
+                {
+                    //向前查找
+                    if (row.Index >= dgvText.RowIndex)
+                    {
+                        foreach (DataGridViewCell cell in row.Cells)
+                        {
+                            if (listColumn != null && listColumn.Count > 0 && !listColumn.Contains(dgv.Columns[cell.ColumnIndex].Name))
+                            {
+                                continue;
+                            }
+
+                            if (!cell.Visible) continue;
+
+                            if (row.Index == dgvText.RowIndex)
+                            {
+                                if (cell.ColumnIndex > dgvText.ColumnIndex)
+                                {
+                                    if (cell.Value != null && cell.Value.ToString().Contains(sText))
+                                    {
+                                        isFind = SetFindEntityInfo(dgv, dgvText, cell, isForwardFind);
+                                        return;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (cell.Value != null && cell.Value.ToString().Contains(sText))
+                                {
+                                    isFind = SetFindEntityInfo(dgv, dgvText, cell, isForwardFind);
+                                    return;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+            else
+            {
+                //向后查找
+                if (dgvText.ColumnIndex == -1 || dgvText.RowIndex == -1)
+                {
+                    dgvText.ColumnIndex = dgv.Columns.Count - 1;
+                    dgvText.RowIndex = dgv.Rows.Count - 1;
+                }
+
+                for (int i = dgv.Rows.Count - 1; i >= 0; i--)
+                {
+                    DataGridViewRow row = dgv.Rows[i];
+                    if (row.Index <= dgvText.RowIndex)
+                    {
+                        for (int j = dgv.Columns.Count - 1; j >= 0; j--)
+                        {
+                            DataGridViewCell cell = row.Cells[j];
+
+                            if (listColumn != null && listColumn.Count > 0 && !listColumn.Contains(dgv.Columns[cell.ColumnIndex].Name))
+                            {
+                                continue;
+                            }
+
+                            if (!cell.Visible) continue;
+
+                            //如果是当前选中行 只查找前面的列
+                            if (dgvText.RowIndex == row.Index)
+                            {
+                                if (cell.ColumnIndex < dgvText.ColumnIndex)
+                                {
+                                    if (cell.Value != null && cell.Value.ToString().Contains(sText))
+                                    {
+                                        isFind = SetFindEntityInfo(dgv, dgvText, cell, isForwardFind);
+                                        return;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (cell.Value != null && cell.Value.ToString().Contains(sText))
+                                {
+                                    isFind = SetFindEntityInfo(dgv, dgvText, cell, isForwardFind);
+                                    return;
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            //没找到，重置索引
+            if (!isFind)
+            {
+                dgvText.IsFindEnd = true;
+                dgvText.ColumnIndex = -1;
+                dgvText.RowIndex = -1;
+                dgvText.CurrentIndex = 0;
+                dgvText.CurrentMsg = isForwardFind ? "已查找到最后，下次将从头开始查找..." : "已查找到开头，下次将从尾部开始查找...";
+            }
+        }
+
+
+
+        private static bool SetFindEntityInfo(DataGridView dgv, DataGridViewFindText dgvText, DataGridViewCell cell,bool isNext)
+        {
+            bool isFind;
+            cell.Selected = true;
+            dgv.CurrentCell = cell;
+
+            dgvText.ColumnIndex = cell.ColumnIndex;
+            dgvText.RowIndex = cell.RowIndex;
+            if (isNext)
+            {
+                dgvText.CurrentIndex++;
+            }
+            else
+            {
+                dgvText.CurrentIndex--;
+            }
+            dgvText.CurrentMsg = string.Format("已找到第{0}个", dgvText.CurrentIndex);
+            isFind = true;
+            return isFind;
         }
     }
 }

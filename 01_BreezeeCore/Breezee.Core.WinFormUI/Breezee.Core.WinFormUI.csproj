@@ -143,6 +143,7 @@
       <DependentUpon>GridPager.cs</DependentUpon>
     </Compile>
     <Compile Include="DataGrid\StoreProducePage.cs" />
+    <Compile Include="Entity\DataGridViewFindText.cs" />
     <Compile Include="Entity\EntMenuHelp.cs" />
     <Compile Include="Entity\LoginUserInfo.cs" />
     <Compile Include="Enum\DataGridViewColumnTypeEnum.cs" />

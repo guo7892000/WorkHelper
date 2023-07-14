@@ -319,7 +319,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                                 }
                                 foreach (var parent in commit.Parents)
                                 {
-                                    //要排除冲突时帮其他人提交的文件
+                                    //要排除冲突时帮其他人提交的文件：不知道为什么还是包括不是指定人改的文件？？？
                                     if (!string.IsNullOrEmpty(sEmail) && !sEmail.Equals(parent.Author.Email)) continue; //如邮件不为空，且不相等，则跳过
                                     if (!string.IsNullOrEmpty(sUserName) && !sUserName.Equals(parent.Author.Name)) continue;//如用户名不为空，且不相等，则跳过
                                     foreach (TreeEntryChanges change in repo.Diff.Compare<TreeChanges>(parent.Tree, commit.Tree))

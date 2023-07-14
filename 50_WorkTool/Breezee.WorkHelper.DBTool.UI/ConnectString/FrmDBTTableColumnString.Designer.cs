@@ -47,11 +47,13 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpImport = new System.Windows.Forms.TabPage();
             this.grbColumn = new System.Windows.Forms.GroupBox();
-            this.lblColumnInfo = new System.Windows.Forms.Label();
+            this.btnFindFront = new System.Windows.Forms.Button();
+            this.lblFind = new System.Windows.Forms.Label();
+            this.btnFindNext = new System.Windows.Forms.Button();
+            this.txbSearchColumn = new System.Windows.Forms.TextBox();
             this.dgvColList = new System.Windows.Forms.DataGridView();
             this.grbTable = new System.Windows.Forms.GroupBox();
             this.dgvTableList = new System.Windows.Forms.DataGridView();
-            this.lblTableData = new System.Windows.Forms.Label();
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
@@ -268,7 +270,10 @@
             // grbColumn
             // 
             this.grbColumn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
-            this.grbColumn.Controls.Add(this.lblColumnInfo);
+            this.grbColumn.Controls.Add(this.btnFindFront);
+            this.grbColumn.Controls.Add(this.lblFind);
+            this.grbColumn.Controls.Add(this.btnFindNext);
+            this.grbColumn.Controls.Add(this.txbSearchColumn);
             this.grbColumn.Controls.Add(this.dgvColList);
             this.grbColumn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbColumn.Location = new System.Drawing.Point(3, 80);
@@ -278,18 +283,45 @@
             this.grbColumn.TabStop = false;
             this.grbColumn.Text = "列清单";
             // 
-            // lblColumnInfo
+            // btnFindFront
             // 
-            this.lblColumnInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.btnFindFront.Location = new System.Drawing.Point(353, -2);
+            this.btnFindFront.Name = "btnFindFront";
+            this.btnFindFront.Size = new System.Drawing.Size(55, 21);
+            this.btnFindFront.TabIndex = 18;
+            this.btnFindFront.Text = "往前找";
+            this.btnFindFront.UseVisualStyleBackColor = true;
+            this.btnFindFront.Click += new System.EventHandler(this.btnFindFront_Click);
+            // 
+            // lblFind
+            // 
+            this.lblFind.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblColumnInfo.AutoSize = true;
-            this.lblColumnInfo.ForeColor = System.Drawing.Color.Red;
-            this.lblColumnInfo.Location = new System.Drawing.Point(310, 2);
-            this.lblColumnInfo.Name = "lblColumnInfo";
-            this.lblColumnInfo.Size = new System.Drawing.Size(53, 12);
-            this.lblColumnInfo.TabIndex = 13;
-            this.lblColumnInfo.Text = "提示信息";
+            this.lblFind.AutoSize = true;
+            this.lblFind.ForeColor = System.Drawing.Color.Red;
+            this.lblFind.Location = new System.Drawing.Point(423, 1);
+            this.lblFind.Name = "lblFind";
+            this.lblFind.Size = new System.Drawing.Size(53, 12);
+            this.lblFind.TabIndex = 16;
+            this.lblFind.Text = "查找提示";
+            // 
+            // btnFindNext
+            // 
+            this.btnFindNext.Location = new System.Drawing.Point(294, -2);
+            this.btnFindNext.Name = "btnFindNext";
+            this.btnFindNext.Size = new System.Drawing.Size(56, 21);
+            this.btnFindNext.TabIndex = 15;
+            this.btnFindNext.Text = "下一个";
+            this.btnFindNext.UseVisualStyleBackColor = true;
+            this.btnFindNext.Click += new System.EventHandler(this.btnFindNext_Click);
+            // 
+            // txbSearchColumn
+            // 
+            this.txbSearchColumn.Location = new System.Drawing.Point(104, -3);
+            this.txbSearchColumn.Name = "txbSearchColumn";
+            this.txbSearchColumn.Size = new System.Drawing.Size(187, 21);
+            this.txbSearchColumn.TabIndex = 14;
             // 
             // dgvColList
             // 
@@ -306,7 +338,6 @@
             // 
             this.grbTable.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
             this.grbTable.Controls.Add(this.dgvTableList);
-            this.grbTable.Controls.Add(this.lblTableData);
             this.grbTable.Dock = System.Windows.Forms.DockStyle.Top;
             this.grbTable.Location = new System.Drawing.Point(3, 3);
             this.grbTable.Name = "grbTable";
@@ -325,19 +356,6 @@
             this.dgvTableList.RowTemplate.Height = 23;
             this.dgvTableList.Size = new System.Drawing.Size(1034, 57);
             this.dgvTableList.TabIndex = 0;
-            // 
-            // lblTableData
-            // 
-            this.lblTableData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTableData.AutoSize = true;
-            this.lblTableData.ForeColor = System.Drawing.Color.Red;
-            this.lblTableData.Location = new System.Drawing.Point(305, 0);
-            this.lblTableData.Name = "lblTableData";
-            this.lblTableData.Size = new System.Drawing.Size(53, 12);
-            this.lblTableData.TabIndex = 12;
-            this.lblTableData.Text = "提示信息";
             // 
             // tpAutoSQL
             // 
@@ -395,7 +413,6 @@
             this.grbColumn.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvColList)).EndInit();
             this.grbTable.ResumeLayout(false);
-            this.grbTable.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableList)).EndInit();
             this.tpAutoSQL.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -420,16 +437,18 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tpImport;
         private System.Windows.Forms.GroupBox grbColumn;
-        private System.Windows.Forms.Label lblColumnInfo;
         private System.Windows.Forms.DataGridView dgvColList;
         private System.Windows.Forms.GroupBox grbTable;
         private System.Windows.Forms.DataGridView dgvTableList;
-        private System.Windows.Forms.Label lblTableData;
         private System.Windows.Forms.TabPage tpAutoSQL;
         private System.Windows.Forms.RichTextBox rtbResult;
         private System.Windows.Forms.ComboBox cbbModule;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RichTextBox rtbOther;
         private System.Windows.Forms.RichTextBox rtbConString;
+        private System.Windows.Forms.Button btnFindNext;
+        private System.Windows.Forms.TextBox txbSearchColumn;
+        private System.Windows.Forms.Label lblFind;
+        private System.Windows.Forms.Button btnFindFront;
     }
 }

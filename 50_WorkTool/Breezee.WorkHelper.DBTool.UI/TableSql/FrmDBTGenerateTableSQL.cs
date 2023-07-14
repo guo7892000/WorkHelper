@@ -49,6 +49,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private readonly string _sGridColumnSelect = "选择";
         private bool _allTableSelect = false;//默认全选，这里取反
         private bool _allColumnSelect = false;//默认全选，这里取反
+        DataGridViewFindText dgvFindText;
 
         private IDBConfigSet _IDBConfigSet;
         private DbServerInfo _dbServer;
@@ -790,6 +791,24 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 ckbFullTypeDoc.Checked = true;
             }
+        }
+
+        private void btnFindNext_Click(object sender, EventArgs e)
+        {
+            FindGridText(true);
+        }
+
+        private void btnFindFront_Click(object sender, EventArgs e)
+        {
+            FindGridText(false);
+        }
+
+        private void FindGridText(bool isNext)
+        {
+            string sSearch = txbSearchColumn.Text.Trim();
+            if (string.IsNullOrEmpty(sSearch)) return;
+            dgvColList.SeachText(sSearch, ref dgvFindText, null, isNext);
+            lblFind.Text = dgvFindText.CurrentMsg;
         }
     }
 }
