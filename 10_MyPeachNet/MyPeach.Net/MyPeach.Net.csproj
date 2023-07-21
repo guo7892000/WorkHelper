@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\MyPeachNetProperties.cs" />
+    <Compile Include="Config\SqlKeyConfig.cs" />
     <Compile Include="Config\StaticConstants.cs" />
     <Compile Include="Core\AbstractSqlParser.cs" />
     <Compile Include="Core\DeleteSqlParser.cs" />

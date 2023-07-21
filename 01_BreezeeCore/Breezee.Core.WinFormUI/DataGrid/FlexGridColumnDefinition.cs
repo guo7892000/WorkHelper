@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -25,7 +26,7 @@ namespace Breezee.Core.WinFormUI
     {
         #region 变量
         private List<FlexGridColumn> mColuns = new List<FlexGridColumn>();
-
+ 
         private int mFrozenCols = 0;
         private int mFrozenRows = 0;
         private int mFixedCols = 0;
@@ -81,6 +82,16 @@ namespace Breezee.Core.WinFormUI
             get { return mColuns; }
         } 
         #endregion
+
+        public DataTable GetNullTable()
+        {
+            DataTable dtNull = new DataTable();
+            foreach (var item in mColuns)
+            {
+                dtNull.Columns.Add(item.DBColumnName);
+            }
+            return dtNull;
+        }
 
         #region 添加列
         /// <summary>

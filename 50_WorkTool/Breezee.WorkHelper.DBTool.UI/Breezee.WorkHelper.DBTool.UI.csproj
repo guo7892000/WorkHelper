@@ -194,6 +194,18 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="SqlExecute\FrmDBTAutoSqlVerify.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SqlExecute\FrmDBTAutoSqlVerify.Designer.cs">
+      <DependentUpon>FrmDBTAutoSqlVerify.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SqlExecute\FrmDBTSqlExecutor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SqlExecute\FrmDBTSqlExecutor.Designer.cs">
+      <DependentUpon>FrmDBTSqlExecutor.cs</DependentUpon>
+    </Compile>
     <Compile Include="StringBuild\FrmDBTClickCopyStringAuto.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -345,6 +357,12 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SqlExecute\FrmDBTAutoSqlVerify.resx">
+      <DependentUpon>FrmDBTAutoSqlVerify.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SqlExecute\FrmDBTSqlExecutor.resx">
+      <DependentUpon>FrmDBTSqlExecutor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="StringBuild\FrmDBTClickCopyStringAuto.resx">
       <DependentUpon>FrmDBTClickCopyStringAuto.cs</DependentUpon>
@@ -646,6 +664,10 @@
     <ProjectReference Include="..\..\01_BreezeeCore\Breezee.Core\Breezee.Core.csproj">
       <Project>{56A30012-16A2-40E5-8F61-BCC7781AF675}</Project>
       <Name>Breezee.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\10_MyPeachNet\MyPeach.Net\MyPeach.Net.csproj">
+      <Project>{FFA388F6-518F-411F-B50D-3389BBAEE380}</Project>
+      <Name>MyPeach.Net</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\20_AutoSQLExcutor\Breezee.AutoSQLExecutor.Common\Breezee.AutoSQLExecutor.Common.csproj">
       <Project>{7728bc8b-39df-4ecb-89f9-7ac34c2ea416}</Project>

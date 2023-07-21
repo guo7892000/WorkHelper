@@ -43,5 +43,7 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string ExcelFomulate_Type = "ExcelFomulate_Type";
         public static readonly string ExcelFomulate_TableName = "ExcelFomulate_TableName";
         public static readonly string ExcelFomulate_ColumnNum = "ExcelFomulate_ColumnNum";
+        //SQL自动参数化验证
+        public static readonly string SQLAutoParamVerify_BeforeSql = "SQLAutoParamVerify_BeforeSql";
     }
 }

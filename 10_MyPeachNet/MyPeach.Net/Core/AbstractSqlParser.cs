@@ -13,6 +13,8 @@ namespace org.breezee.MyPeachNet
      * @email: guo7892000@126.com
      * @wechat: BreezeeHui
      * @date: 2022/4/12 21:52
+     * @history:
+     *   2023/07/20 BreezeeHui 增加非空参数无值时抛错。但未解决LIKE的问题
      */
     public abstract class AbstractSqlParser
     {
@@ -43,9 +45,9 @@ namespace org.breezee.MyPeachNet
         protected SqlTypeEnum sqlTypeEnum;
 
         /***
-     * 构造函数：初始化所有变量
-     * @param prop 全局配置
-     */
+         * 构造函数：初始化所有变量
+         * @param prop 全局配置
+         */
         public AbstractSqlParser(MyPeachNetProperties prop)
         {
             myPeachProp = prop;
@@ -80,6 +82,37 @@ namespace org.breezee.MyPeachNet
             ObjectQuery = new Dictionary<string, object>();
             StringQuery = new Dictionary<string, string>();
             positionParamConditonList = new List<object>();
+        }
+
+        /// <summary>
+        /// 预获取SQL参数（方便给参数赋值用于测试）
+        /// </summary>
+        /// <param name="sSql"></param>
+        /// <returns></returns>
+        public IDictionary<string, SqlKeyValueEntity> PreGetParam(string sSql)
+        {
+            IDictionary<string, SqlKeyValueEntity> dicReturn = new Dictionary<string, SqlKeyValueEntity>();
+            //去掉前后空字符：注这里不要转换为大写，因为有些条件里有字母值，如转换为大写，则会使条件失效！！
+            string sSqlNew = sSql.trim(); //.toUpperCase();//将SQL转换为大写
+
+            //1、删除所有注释，降低分析难度，提高准确性
+            MatchCollection mc = ToolHelper.getMatcher(sSqlNew, StaticConstants.remarkPatter);//Pattern：explanatory note
+            //Pattern regex;
+            while (mc.find())
+            {
+                sSqlNew = sSqlNew.replace(mc.group(), "");//删除所有注释
+            }
+            mc = ToolHelper.getMatcher(sSqlNew, keyPattern);
+            while (mc.find())
+            {
+                string sParamName = ToolHelper.getKeyName(mc.group(), myPeachProp);
+                SqlKeyValueEntity param = SqlKeyValueEntity.build(mc.group(), new Dictionary<string, object>(), myPeachProp);
+                if (!dicReturn.ContainsKey(sParamName))
+                {
+                    dicReturn[sParamName] = param;
+                }
+            }
+            return dicReturn;
         }
 
         /**
@@ -127,6 +160,10 @@ namespace org.breezee.MyPeachNet
                     mapSqlKeyValid.put(sParamName, param);//有传值的键
                     ObjectQuery.put(sParamName, param.KeyValue);
                     StringQuery[sParamName] = param.KeyValue.ToString();
+                }
+                if(!param.isHasValue() && param.getKeyMoreInfo().IsMust)
+                {
+                    mapError.put(sParamName, sParamName + "参数非空，但未传值！");//非空参数空值报错
                 }
 
                 if (ToolHelper.IsNotNull(param.getErrorMessage()))
@@ -815,7 +852,7 @@ namespace org.breezee.MyPeachNet
                     //2、返回替换键后只有值的SQL语句
                     return sSql.replace(mc.group(),entity.getReplaceKeyWithValue().ToString());
                 }
-                //3、返回参数化的SQL语句
+                //3、返回参数化的SQL语句：todo-这里未解决LIKE的问题
                 return sSql.replace(mc.group(), myPeachProp.getParamPrefix() + sKey + myPeachProp.getParamSuffix());
             }
             return sSql;//4、没有键时，直接返回原语句
