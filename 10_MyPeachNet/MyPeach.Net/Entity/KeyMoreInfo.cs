@@ -40,7 +40,7 @@ namespace org.breezee.MyPeachNet
         public static KeyMoreInfo build(string sKeyMore, object objValue)
         {
             KeyMoreInfo moreInfo = new KeyMoreInfo();
-            string[] arr = sKeyMore.Split(':');
+            string[] arr = sKeyMore.Split(new char[] { ':','：' });//也支持中文冒号
             for (int i = 0; i < arr.Length; i++)
             {
                 if (i == 0) continue;
@@ -64,7 +64,7 @@ namespace org.breezee.MyPeachNet
                     listConvert(objValue, moreInfo, false);
                 }
                 //子配置项：未考虑好
-                string[] arrChild = sOne.Split('-');
+                string[] arrChild = sOne.Split(new char[] { '-' });
                 for (int j = 0; j < arrChild.Length; j++)
                 {
                     string sOneItem = arrChild[j];

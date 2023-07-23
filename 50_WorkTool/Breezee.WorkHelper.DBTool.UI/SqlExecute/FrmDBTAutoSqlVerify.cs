@@ -51,6 +51,9 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             //加载用户偏好值
             rtbSqlInput.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.SQLAutoParamVerify_BeforeSql, "").Value;
+            lblBefore.Text = "条件格式：#键名:N:R:LS#，其中N或M表示非空，R表示值替换，LS表示字符列表，LI为整型列表，即IN括号里的部分字符。";
+            lblFuncInfo.Text = "针对自动参数化SQL的个人项目（Java版和C#版）：MyPeach、MyPeach.Net的有效性验证！";
+            rtbSqlOutput.ReadOnly= true;
         }
 
         private void SetTag()
@@ -60,8 +63,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             fdc.AddColumn(
                 FlexGridColumn.NewRowNoCol(),
                 new FlexGridColumn.Builder().Name("IN_KEY").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(150).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name("IN_VALUE").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(200).Edit(true).Visible().Build(),
-                new FlexGridColumn.Builder().Name("IN_TYPE").Type(DataGridViewColumnTypeEnum.ComboBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(150).Edit(true).Visible(false).Build()
+                new FlexGridColumn.Builder().Name("IN_VALUE").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(150).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name("IN_TYPE").Type(DataGridViewColumnTypeEnum.ComboBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(0).Edit(true).Visible(false).Build()
             );
             dgvConditionInput.Tag = fdc.GetGridTagString();
             dgvConditionInput.BindDataGridView(fdc.GetNullTable()); 
@@ -78,8 +81,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             fdc.AddColumn(
                 FlexGridColumn.NewRowNoCol(),
                 new FlexGridColumn.Builder().Name("OUT_KEY").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(150).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name("OUT_VALUE").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(200).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name("OUT_TYPE").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(150).Edit(false).Visible(false).Build()
+                new FlexGridColumn.Builder().Name("OUT_VALUE").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(150).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name("OUT_TYPE").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(0).Edit(false).Visible(false).Build()
             );
             dgvConditionOutput.Tag = fdc.GetGridTagString();
             dgvConditionOutput.BindDataGridView(fdc.GetNullTable());
@@ -106,10 +109,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             else
             {
-                if (_dataAccess == null)
-                {
-                    _dataAccess = AutoSQLExecutors.Connect(_dbServer);
-                }
+                _dataAccess = AutoSQLExecutors.Connect(_dbServer); //每次都要获取一个连接，因为可能会连接不同数据库
             }
             IDictionary<string, SqlKeyValueEntity> dicPreCondition = _dataAccess.SqlParsers.PreGetParam(sSqlBefore);
             DataTable dt = dgvConditionInput.GetBindingTable();
@@ -120,15 +120,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                 drNew["IN_KEY"] = item;
                 dt.Rows.Add(drNew);
             }
+            tabControl1.SelectedTab = tpAutoAfter;
         }
         private void tsbImport_Click(object sender, EventArgs e)
         {
-            _dbServer = uC_DbConnection1.GetDbServerInfo();
-            if (_dbServer == null)
-            {
-                return;
-            }
-            _dataAccess = AutoSQLExecutors.Connect(_dbServer);
+            btnGetCondition.PerformClick();
         }
 
         private void tsbConvert_Click(object sender, EventArgs e)
@@ -148,10 +144,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             else
             {
-                if (_dataAccess == null)
-                {
-                    _dataAccess = AutoSQLExecutors.Connect(_dbServer);
-                }
+                _dataAccess = AutoSQLExecutors.Connect(_dbServer);
             }
 
             DataTable dt = dgvConditionInput.GetBindingTable();
@@ -180,7 +173,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     dt.Rows.Add(drNew);
                 }
                 _dicObject = result.ObjectQuery;
-                tabControl1.SelectedTab = tpAutoAfter;
+                //tabControl1.SelectedTab = tpAutoAfter;
                 //保存用户偏好值
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.SQLAutoParamVerify_BeforeSql, rtbSqlInput.Text, "SQL自动参数化验证_参数化前SQL");
                 WinFormContext.UserLoveSettings.Save();
@@ -226,12 +219,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             try
             {
-                //DataTable dt = dgvConditionOutput.GetBindingTable();
-                //_dicObject.Clear();
-                //foreach (DataRow dr in dt.Rows)
-                //{
-                //    _dicObject.Add(dr["OUT_KEY"].ToString(), dr["OUT_VALUE"]);
-                //}
                 DataTable dtResult = _dataAccess.QueryHadParamSqlData(sSqlOut, _dicObject);
                 dgvQuery.BindAutoColumn(dtResult);
             }
@@ -263,14 +250,14 @@ WHERE PROVINCE_ID = '#PROVINCE_ID#'
 	AND UPDATE_CONTROL_ID= '#UPDATE_CONTROL_ID#'
 	OR REMARK LIKE '%#REMARK#'
 	AND ( ( CREATOR = '#CREATOR#' OR CREATOR_ID = #CREATOR_ID# ) AND TFLG = '#TFLG#')
- AND TO_CHAR(TFLG,'yyyy') = '#TFLG2#'
-AND TFLG =  TO_DATE('#TFLG#','yyyy-MM-dd')
+    AND TO_CHAR(TFLG,'yyyy') = '#TFLG2#'
+    AND TFLG =  TO_DATE('#TFLG#','yyyy-MM-dd')
 	AND MODIFIER IN ('#MDLIST:LS#')
-AND EXISTS(SELECT 1 FROM TBF G WHERE G.ID = A.ID AND G.BF = '#BF#' )
+    AND EXISTS(SELECT 1 FROM TBF G WHERE G.ID = A.ID AND G.BF = '#BF#' )
 GROUP BY 	PROVINCE_ID
 HAVING A.SORT_ID > #SORT_ID:M:R#
 ORDER BY A.[PROVINCE_CODE],B.[CITY_NAME]
-LIMIT 100,#PAGE_SIZE#";
+LIMIT 100,#PAGE_SIZE:M#";
             }
         }
     }

@@ -40,6 +40,16 @@ namespace Breezee.Core.WinFormUI
             dgv.DataSource = bs;
         }
 
+        public static void BindAutoTable(this DataGridView dgv, DataTable dtSource)
+        {
+            BindAutoColumn(dgv,dtSource);
+        }
+
+        public static void BindTagTable(this DataGridView dgv, DataTable dtSource, bool IsUseTagHistoryConfig = true, GridPager gPage = null)
+        {
+            BindDataGridView(dgv, dtSource, IsUseTagHistoryConfig, gPage);
+        }
+
         #region 绑定网格数据为对象集合
         /// <summary>
         /// 绑定网格数据为对象集合
