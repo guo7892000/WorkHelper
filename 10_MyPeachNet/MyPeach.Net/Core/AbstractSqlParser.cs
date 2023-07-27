@@ -14,7 +14,7 @@ namespace org.breezee.MyPeachNet
      * @wechat: BreezeeHui
      * @date: 2022/4/12 21:52
      * @history:
-     *   2023/07/20 BreezeeHui 增加非空参数无值时抛错。但未解决LIKE的问题
+     *   2023/07/20 BreezeeHui 增加非空参数无值时抛错。已解决LIKE的问题
      */
     public abstract class AbstractSqlParser
     {

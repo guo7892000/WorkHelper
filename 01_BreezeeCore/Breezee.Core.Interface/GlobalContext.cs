@@ -55,6 +55,15 @@ namespace Breezee.Core.Interface
         }
 
         /// <summary>
+        /// 获取数据文件配置目录
+        /// </summary>
+        /// <returns></returns>
+        public static string PathData()
+        {
+            return Path.Combine(AppRootPath, GlobalDir.Data);
+        }
+
+        /// <summary>
         /// 获取临时文件配置目录
         /// </summary>
         /// <returns></returns>

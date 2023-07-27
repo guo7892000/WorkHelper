@@ -132,7 +132,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //DBColumnSimpleEntity.SqlString.TableNameCN,
                 //DBColumnSimpleEntity.SqlString.TableNameUpper
             });
-            commonColumn = new MiniXmlConfig(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Breezee", "WorkHelp"), "CommonColumnConfig.xml", list, DBColumnSimpleEntity.SqlString.Name);
+            commonColumn = new MiniXmlConfig(GlobalContext.PathData(), "CommonColumnConfig.xml", list, DBColumnSimpleEntity.SqlString.Name);
             DataTable dtCommonCol = commonColumn.Load();
             //增加选择列
             DataColumn dcSelected = new DataColumn(_sGridColumnSelect);

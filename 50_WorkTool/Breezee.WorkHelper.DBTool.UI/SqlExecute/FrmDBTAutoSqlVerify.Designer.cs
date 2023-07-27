@@ -39,53 +39,53 @@
             this.btnGetCondition = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.rtbSqlOutput = new System.Windows.Forms.RichTextBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.dgvQuery = new System.Windows.Forms.DataGridView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpAutoBefore = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.lblBefore = new System.Windows.Forms.Label();
             this.rtbSqlInput = new System.Windows.Forms.RichTextBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.tpAutoAfter = new System.Windows.Forms.TabPage();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.dgvConditionOutput = new System.Windows.Forms.DataGridView();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.dgvQuery = new System.Windows.Forms.DataGridView();
-            this.lblFuncInfo = new System.Windows.Forms.Label();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dgvConditionInput = new System.Windows.Forms.DataGridView();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.rtbSqlOutput = new System.Windows.Forms.RichTextBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.dgvConditionOutput = new System.Windows.Forms.DataGridView();
+            this.lblFuncInfo = new System.Windows.Forms.Label();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvQuery)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tpAutoBefore.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.tpAutoAfter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvConditionOutput)).BeginInit();
-            this.groupBox5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvQuery)).BeginInit();
-            this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvConditionInput)).BeginInit();
-            this.groupBox3.SuspendLayout();
             this.groupBox8.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvConditionOutput)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -107,8 +107,8 @@
             this.tsbImport.Image = ((System.Drawing.Image)(resources.GetObject("tsbImport.Image")));
             this.tsbImport.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbImport.Name = "tsbImport";
-            this.tsbImport.Size = new System.Drawing.Size(68, 24);
-            this.tsbImport.Text = "连接(&I)";
+            this.tsbImport.Size = new System.Drawing.Size(92, 24);
+            this.tsbImport.Text = "获取条件(&I)";
             this.tsbImport.Click += new System.EventHandler(this.tsbImport_Click);
             // 
             // tsbConvert
@@ -197,6 +197,61 @@
             this.splitContainer1.SplitterDistance = 343;
             this.splitContainer1.TabIndex = 35;
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label1);
+            this.groupBox3.Controls.Add(this.rtbSqlOutput);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox3.Location = new System.Drawing.Point(0, 0);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(616, 343);
+            this.groupBox3.TabIndex = 2;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "最终参数化后的SQL";
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.Location = new System.Drawing.Point(218, 2);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(251, 12);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "根据传入条件动态生成最终可参数化执行的SQL";
+            // 
+            // rtbSqlOutput
+            // 
+            this.rtbSqlOutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbSqlOutput.Location = new System.Drawing.Point(3, 17);
+            this.rtbSqlOutput.Name = "rtbSqlOutput";
+            this.rtbSqlOutput.Size = new System.Drawing.Size(610, 323);
+            this.rtbSqlOutput.TabIndex = 0;
+            this.rtbSqlOutput.Text = "";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.dgvQuery);
+            this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox5.Location = new System.Drawing.Point(0, 0);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(616, 227);
+            this.groupBox5.TabIndex = 1;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "查询结果";
+            // 
+            // dgvQuery
+            // 
+            this.dgvQuery.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvQuery.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvQuery.Location = new System.Drawing.Point(3, 17);
+            this.dgvQuery.Name = "dgvQuery";
+            this.dgvQuery.RowTemplate.Height = 23;
+            this.dgvQuery.Size = new System.Drawing.Size(610, 207);
+            this.dgvQuery.TabIndex = 0;
+            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tpAutoBefore);
@@ -254,6 +309,18 @@
             this.rtbSqlInput.TabIndex = 1;
             this.rtbSqlInput.Text = "";
             // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.ckbExample);
+            this.groupBox7.Controls.Add(this.btnGetCondition);
+            this.groupBox7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox7.Location = new System.Drawing.Point(3, 3);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(1086, 42);
+            this.groupBox7.TabIndex = 1;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "操作";
+            // 
             // tpAutoAfter
             // 
             this.tpAutoAfter.Controls.Add(this.splitContainer3);
@@ -281,73 +348,6 @@
             this.splitContainer3.Size = new System.Drawing.Size(1086, 612);
             this.splitContainer3.SplitterDistance = 855;
             this.splitContainer3.TabIndex = 1;
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.dgvConditionOutput);
-            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox4.Location = new System.Drawing.Point(0, 0);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(227, 612);
-            this.groupBox4.TabIndex = 2;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "最终参数化的条件";
-            // 
-            // dgvConditionOutput
-            // 
-            this.dgvConditionOutput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvConditionOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvConditionOutput.Location = new System.Drawing.Point(3, 17);
-            this.dgvConditionOutput.Name = "dgvConditionOutput";
-            this.dgvConditionOutput.RowTemplate.Height = 23;
-            this.dgvConditionOutput.Size = new System.Drawing.Size(221, 592);
-            this.dgvConditionOutput.TabIndex = 1;
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.dgvQuery);
-            this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox5.Location = new System.Drawing.Point(0, 0);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(616, 227);
-            this.groupBox5.TabIndex = 1;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "查询结果";
-            // 
-            // dgvQuery
-            // 
-            this.dgvQuery.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvQuery.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvQuery.Location = new System.Drawing.Point(3, 17);
-            this.dgvQuery.Name = "dgvQuery";
-            this.dgvQuery.RowTemplate.Height = 23;
-            this.dgvQuery.Size = new System.Drawing.Size(610, 207);
-            this.dgvQuery.TabIndex = 0;
-            // 
-            // lblFuncInfo
-            // 
-            this.lblFuncInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblFuncInfo.AutoSize = true;
-            this.lblFuncInfo.ForeColor = System.Drawing.Color.Red;
-            this.lblFuncInfo.Location = new System.Drawing.Point(362, 8);
-            this.lblFuncInfo.Name = "lblFuncInfo";
-            this.lblFuncInfo.Size = new System.Drawing.Size(29, 12);
-            this.lblFuncInfo.TabIndex = 36;
-            this.lblFuncInfo.Text = "说明";
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.Controls.Add(this.ckbExample);
-            this.groupBox7.Controls.Add(this.btnGetCondition);
-            this.groupBox7.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox7.Location = new System.Drawing.Point(3, 3);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(1086, 42);
-            this.groupBox7.TabIndex = 1;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "操作";
             // 
             // splitContainer2
             // 
@@ -388,40 +388,6 @@
             this.dgvConditionInput.Size = new System.Drawing.Size(229, 592);
             this.dgvConditionInput.TabIndex = 0;
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.label1);
-            this.groupBox3.Controls.Add(this.rtbSqlOutput);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(0, 0);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(616, 343);
-            this.groupBox3.TabIndex = 2;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "最终参数化后的SQL";
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.Color.Red;
-            this.label1.Location = new System.Drawing.Point(218, 2);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(251, 12);
-            this.label1.TabIndex = 15;
-            this.label1.Text = "根据传入条件动态生成最终可参数化执行的SQL";
-            // 
-            // rtbSqlOutput
-            // 
-            this.rtbSqlOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbSqlOutput.Location = new System.Drawing.Point(3, 17);
-            this.rtbSqlOutput.Name = "rtbSqlOutput";
-            this.rtbSqlOutput.Size = new System.Drawing.Size(610, 323);
-            this.rtbSqlOutput.TabIndex = 0;
-            this.rtbSqlOutput.Text = "";
-            // 
             // groupBox8
             // 
             this.groupBox8.Controls.Add(this.btnConvert);
@@ -433,6 +399,40 @@
             this.groupBox8.TabIndex = 3;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "操作";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.dgvConditionOutput);
+            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox4.Location = new System.Drawing.Point(0, 0);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(227, 612);
+            this.groupBox4.TabIndex = 2;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "最终参数化的条件";
+            // 
+            // dgvConditionOutput
+            // 
+            this.dgvConditionOutput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvConditionOutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvConditionOutput.Location = new System.Drawing.Point(3, 17);
+            this.dgvConditionOutput.Name = "dgvConditionOutput";
+            this.dgvConditionOutput.RowTemplate.Height = 23;
+            this.dgvConditionOutput.Size = new System.Drawing.Size(221, 592);
+            this.dgvConditionOutput.TabIndex = 1;
+            // 
+            // lblFuncInfo
+            // 
+            this.lblFuncInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblFuncInfo.AutoSize = true;
+            this.lblFuncInfo.ForeColor = System.Drawing.Color.Red;
+            this.lblFuncInfo.Location = new System.Drawing.Point(362, 8);
+            this.lblFuncInfo.Name = "lblFuncInfo";
+            this.lblFuncInfo.Size = new System.Drawing.Size(29, 12);
+            this.lblFuncInfo.TabIndex = 36;
+            this.lblFuncInfo.Text = "说明";
             // 
             // uC_DbConnection1
             // 
@@ -461,30 +461,30 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvQuery)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tpAutoBefore.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.tpAutoAfter.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvConditionOutput)).EndInit();
-            this.groupBox5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvQuery)).EndInit();
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvConditionInput)).EndInit();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.groupBox8.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvConditionOutput)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

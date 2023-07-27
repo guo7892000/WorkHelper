@@ -28,6 +28,10 @@ namespace Breezee.Core.Interface
         /// </summary>
         public static string Db = "DB";
         /// <summary>
+        /// 目录名_Data
+        /// </summary>
+        public static string Data = "Data";
+        /// <summary>
         /// 目录名_网格样式
         /// </summary>
         public static string GridStyle = "DataGridStyle";
