@@ -1,36 +1,26 @@
 # WorkHelper
 
-#### Description
-【工作助手】是一款基于个人开发的迷你式框架（只有简单的用户登录，没有角色授权、组织管理等）的工具软件，主要针对软件开发和设计、数据库开发与运维、测试人员等使用，用于生成数据库变更脚本等相关操作。当然，也包括一些常用的字符拼接、复制等功能，适用于任何使用电脑的人员！！
-
+##Introduction
+Work Assistant is a mini framework based on personal development (with only simple user login, no role authorization, organizational management, etc.) tool software, mainly designed for software development and design, database development and operation, testing personnel, and other uses,
+Used to generate database change scripts and other related operations. Of course, it also includes some commonly used character splicing, copying and other functions, suitable for anyone using a computer!!
 #### Software Architecture
 Software architecture description
 
-#### Installation
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### Instructions
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### Contribution
-
-1.  Fork the repository
-2.  Create Feat_xxx branch
-3.  Commit your code
-4.  Create Pull Request
+##Software architecture
+Developed using C #+WinForm based on. Net Framework 4.8, supports five database types: SqlServer, Oracle, MySql, SQLite, and PostgreSql. Because it is a tool class, the default is to use a simple and easy-to-use SQLite database.
+This software is based on the personal MiniWinFormApp framework and implements modularity. Currently, there is only one database tool submodule. The project also uses some open-source frameworks, such as using Castle. Windsor for IOC and NPOI for Excel import and export.
+UI components are generally shipped with Microsoft. This project also integrates the implementation of two other personal projects, MyPeachNet and AutoSQLExtractor, under the. Net Framework 4.8.
 
 
-#### Gitee Feature
 
-1.  You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2.  Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3.  Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4.  The most valuable open source project [GVP](https://gitee.com/gvp)
-5.  The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6.  The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+##Development debugging
+*After downloading the source code, set [Breezee. Framework. Mini. StartUp] as the startup project and ensure that the project references the following projects:<br>
+<img src="Projects that need to be referenced for Mini startup projects. png"/>
+
+##Download and use
+*1. Open the release package link and download the software:
+[Release Package Download]（ https://gitee.com/breezee2000/WorkHelper/releases ）
+*After downloading and extracting, double-click on Breezee. Framework. Mini. StartUp. exe to open the program.
+Note: Before 1.02, installation packages are used and require installation; After 1.0.3, use the green package method to decompress and use it.
+*3. The default user is xtadmin with a password of 1. After logging in, we can also make modifications.
+*4. Each function has operating instructions. We can click on 'Question Book' on the toolbar or 'User Manual' under the 'Help' menu to view it.

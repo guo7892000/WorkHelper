@@ -344,7 +344,7 @@ namespace org.breezee.MyPeachNet
          * @param sSql
          * @return
          */
-        protected String removeMultiLineRemark(String sSql)
+        protected string removeMultiLineRemark(string sSql)
         {
             MatchCollection mc;
             StringBuilder sb = new StringBuilder();
@@ -382,9 +382,10 @@ namespace org.breezee.MyPeachNet
             if (iGroupStart > 0)
             {
                 sb.append(sSql.substring(iGroupStart));
+                return sb.toString().trim();
             }
-            //返回SQL
-            return sb.toString().trim();
+            //没有注释时，直接返回原SQL
+            return sSql;
         }
 
         /**
