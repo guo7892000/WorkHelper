@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>数据Excel公式生成</title>
+</head>
+<body>
+    <div>
+        <h1>数据Excel公式生成</h1>
+        <div>
+            <h2>一、功能概述</h2>
+            针对Excel第一行为表的列名格式的数据新增公式生成，包括查询数据库和自定义两种方式。
+        </div>
+        <div>
+            <h2>二、界面截图</h2>
+            主界面：查询数据库<br>
+            <img src="Images\ExcelFormulateGenerate01.jpg" alt=""><br>
+            自定义<br>
+            <img src="Images\ExcelFormulateGenerate02.jpg" alt=""><br>
+        </div>
+
+        <div>
+            <h2>三、操作步骤</h2>
+            <b>查询数据库</b><br>
+            <b>1、【生成方式】：</b>选择【查询数据库】。<br>
+            <b>2、【连接字符】：</b>选择【&符号】或【CONCATNATE函数】。<br>
+            <b>3、【连接配置名】：</b>选择要连接的数据库。<br>
+            【表名】下拉框：必填，可以手工输入；也可以在勾中【获取表清单】复选框后下拉选择。<br>
+            【获取表清单】复选框：当选中时会把表清单加载到【表名】下拉框中。<br>
+            【忽略NULL】：针对默认值为NULL字符的，使用空字符。<br>
+            【忽略默认值】复选框：默认选中，表示SQL中所有列不使用默认值，都需要参数传入。如不选中，则会在SQL中使用默认值。<br>
+            <b>4、【列清单】：</b>选择要生成公式的列，及是否加引号。<br>
+            【选择】复选框：默认选中，表示Excel中有该列的数据值；如不选中，那么表示Excel中没有该列。<br>
+            【是否加引号】复选框：默认选中，表示值前后会加上单引号；如不选中，那么表示值不会加上单引号，一般针对整型值。<br>
+            <b>5、点击【生成】：</b>成功后在【生成结果】页签中得到Excel公式字符。<br>
+            <b>6、将生成的Excel公式字符，复制到Excel中最后列的前两行，并从第二行开始拖动，得到其他行的数据新增SQL。<br>
+            <br>
+            <b>自定义</b><br>
+            <b>1、【生成方式】：</b>选择【自定义】。<br>
+            <b>2、【连接字符】：</b>选择【&符号】或【CONCATNATE函数】。<br>
+            <b>3、【表名】：</b>输入数据插入到哪个表里。<br>
+            <b>4、【列数量】：</b>输入Excel中配置的列数量。<br>
+            <b>5、点击【生成】：</b>成功后在【生成结果】页签中得到Excel公式字符。<br>
+            <b>6、将生成的Excel公式字符，复制到Excel中最后列的前两行，并从第二行开始拖动，得到其他行的数据新增SQL。<br>
+        </div>        
+        <div>
+            <h2>四、逻辑与业务规则</h2>
+            <div>
+                <b>关于最终生成的新增表数据的Excel公式：</b>
+                最终的Excel公式，我们要粘贴到Excel最后一列的右边一列（可称之为新最后列），粘贴的公式占【新最后列】的第一和第二行。
+                第一行为列字符的拼接；第二行为第一条数据的拼接。其他行数据的拼接，直接拖动【新最后列】第二行网格向下填充即可。<br>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

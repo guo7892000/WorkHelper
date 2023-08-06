@@ -80,6 +80,9 @@ namespace Breezee.Framework.Mini.StartUp
             }
             //用户自定义的配置路径
             txbMyLoveSettingPath.Text = GlobalContext.AppRootPath;
+            lblDgvStyleInfo.Text = "功能退出时会保存网格样式，以便下次加载！如要清除，请先退出所有功能，再点“清除所有网格样式”按钮！";
+            txbGirdStyleTempPath.Text = WinFormContext.Instance.DataGridTagHistoryPath;
+            txbGirdStyleTempPath.ReadOnly= true;
         }
         #endregion
 
@@ -389,6 +392,11 @@ namespace Breezee.Framework.Mini.StartUp
             }
         }
 
-        
+        private void btnClearDGVStyle_Click(object sender, EventArgs e)
+        {
+            if (ShowYesNo("请确保除其他功能已关闭，确定要清空所有网格样式？") != DialogResult.Yes) return;
+            Directory.Delete(WinFormContext.Instance.DataGridTagHistoryPath, true);
+            ShowInfo("成功清空所有网格样式！");
+        }
     }
 }

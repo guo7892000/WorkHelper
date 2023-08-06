@@ -36,5 +36,9 @@ namespace MyPeach.Net
          * 整型值清单
          */
         public static readonly string INTEGE_LIST = "LI";
+        /**
+         * 优先使用的配置：当同一个键出现多次时，会以F的配置为主
+         */
+        public static readonly string IS_FIRST = "F";
     }
 }

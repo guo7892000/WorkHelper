@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -57,6 +57,10 @@
     <ProjectReference Include="..\..\01_BreezeeCore\Breezee.Core.Tool\Breezee.Core.Tool.csproj">
       <Project>{b6c2c089-6b55-44af-b4c1-632668af76a4}</Project>
       <Name>Breezee.Core.Tool</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\10_MyPeachNet\MyPeachNetTest\MyPeachNetTest.csproj">
+      <Project>{DA0BB6AE-743C-41BC-8CCA-48C127CD2C0B}</Project>
+      <Name>MyPeachNetTest</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

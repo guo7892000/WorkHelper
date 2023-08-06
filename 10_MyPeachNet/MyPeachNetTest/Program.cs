@@ -6,9 +6,11 @@ using System.Reflection;
 //Console.WriteLine("Hello, World!");
 
 SelectTest selectTest = new SelectTest();
-selectTest.Select();
+//selectTest.Select();
 //selectTest.WithSelect();
 //selectTest.UnionSelect();
+selectTest.WithInsertSelect();
+selectTest.InsertWithSelect();
 
 Select2Test select2Test = new Select2Test();
 //select2Test.Select();

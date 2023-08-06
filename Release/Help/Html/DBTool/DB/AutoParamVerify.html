@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自动参数化SQL验证</title>
+</head>
+<body>
+    <div>
+        <h1>自动参数化SQL验证</h1>
+        <div>
+            <h2>一、功能概述</h2>
+            针对个人项目MyPeach.Net中自动化参数SQL的功能测试验证（MyPeach是Java版的）。即在SQL中，我们可以将需要参数化或动态化的条件，以#参数#表示动态部分，经过MyPeach.Net处理后，
+            #参数#会被替换为参数或字符，或如无值传入，会被移除或替换为1=1等，最终得到被参数化的SQL及有效条件集合。这样就减少了字符的拼接，以一个完整的SQL来验证语法是否存在错误！
+            键字符支持'#MDLIST:N:M:LS:R#'格式，其中N或M表示非空，R表示值替换，LS或LI表示列表，即IN括号里的部分字符，可以传入数组或List。 LS为字符列表，值两边加引号； LI为整型列表，值两边不加引号。
+        </div>
+        <div>
+            <h2>二、界面截图</h2>
+            主界面及参数化前：<br>
+            <img src="Images\AutoParamVerify01.jpg" alt=""><br>
+            参数化后：<br>
+            <img src="Images\AutoParamVerify02.jpg" alt=""><br>
+        </div>
+
+        <div>
+            <h2>三、操作步骤</h2>
+            <b>1、【连接配置名】：</b>选择一个数据库。<br>
+            <b>2、输入【参数化前的SQL】。</b><br>
+            <b>3、点击【获取条件】：</b>会将#参数#中的参数加载到【参数化前传入的条件】网格中<br>
+            <b>4、在【参数化前传入的条件】网格中的【IN_VALUE】中输入条件值。</b><br>
+            <b>5、点击【参数化】：</b>将得到最终参数化的SQL和有效条件！<br>
+            <b>6、点击【执行最终SQL】：</b>将在选择的数据库中执行最终SQL，结果会显示在【查询结果】网格中！<br>
+        </div>        
+        <div>
+            <h2>四、逻辑与业务规则</h2>
+            <div>
+                <b>在【参数化前的SQL】不变的情况下，</b>我们可以通过改变【参数化前传入的条件】中的值来观察参数化SQL的变化。<br>
+                <b>如【参数化前的SQL】有改变，</b>那么需要重新点【获取条件】，以获取正确的【参数化前传入的条件】。<br>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

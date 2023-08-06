@@ -63,6 +63,11 @@
             this.tpOther = new System.Windows.Forms.TabPage();
             this.fbdSelectPath = new System.Windows.Forms.FolderBrowserDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txbGirdStyleTempPath = new System.Windows.Forms.TextBox();
+            this.btnClearDGVStyle = new System.Windows.Forms.Button();
+            this.lblDgvStyleInfo = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -74,6 +79,8 @@
             this.groupBox3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tpUserSkin.SuspendLayout();
+            this.tpOther.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // label2
@@ -134,7 +141,7 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 248F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 317F));
             this.tableLayoutPanel3.Controls.Add(this.btnSelectPicMain, 3, 1);
             this.tableLayoutPanel3.Controls.Add(this.txbSkinValueMain, 1, 1);
             this.tableLayoutPanel3.Controls.Add(this.cbbColorMain, 2, 0);
@@ -218,7 +225,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 248F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 317F));
             this.tableLayoutPanel2.Controls.Add(this.btnSelectPicCommon, 3, 1);
             this.tableLayoutPanel2.Controls.Add(this.txbSkinValueCommon, 1, 1);
             this.tableLayoutPanel2.Controls.Add(this.cbbColorCommon, 2, 0);
@@ -359,7 +366,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 308F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 354F));
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbbMsgType, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -403,6 +410,7 @@
             // 
             // tpOther
             // 
+            this.tpOther.Controls.Add(this.groupBox5);
             this.tpOther.Location = new System.Drawing.Point(4, 22);
             this.tpOther.Name = "tpOther";
             this.tpOther.Padding = new System.Windows.Forms.Padding(3);
@@ -410,6 +418,56 @@
             this.tpOther.TabIndex = 2;
             this.tpOther.Text = "其他";
             this.tpOther.UseVisualStyleBackColor = true;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.lblDgvStyleInfo);
+            this.groupBox5.Controls.Add(this.btnClearDGVStyle);
+            this.groupBox5.Controls.Add(this.txbGirdStyleTempPath);
+            this.groupBox5.Controls.Add(this.label5);
+            this.groupBox5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox5.Location = new System.Drawing.Point(3, 3);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(736, 46);
+            this.groupBox5.TabIndex = 0;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "临时文件";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(4, 21);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(113, 12);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "网格样式临时文件：";
+            // 
+            // txbGirdStyleTempPath
+            // 
+            this.txbGirdStyleTempPath.Location = new System.Drawing.Point(123, 18);
+            this.txbGirdStyleTempPath.Name = "txbGirdStyleTempPath";
+            this.txbGirdStyleTempPath.Size = new System.Drawing.Size(365, 21);
+            this.txbGirdStyleTempPath.TabIndex = 1;
+            // 
+            // btnClearDGVStyle
+            // 
+            this.btnClearDGVStyle.Location = new System.Drawing.Point(494, 16);
+            this.btnClearDGVStyle.Name = "btnClearDGVStyle";
+            this.btnClearDGVStyle.Size = new System.Drawing.Size(121, 23);
+            this.btnClearDGVStyle.TabIndex = 2;
+            this.btnClearDGVStyle.Text = "清除所有网格样式";
+            this.btnClearDGVStyle.UseVisualStyleBackColor = true;
+            this.btnClearDGVStyle.Click += new System.EventHandler(this.btnClearDGVStyle_Click);
+            // 
+            // lblDgvStyleInfo
+            // 
+            this.lblDgvStyleInfo.AutoSize = true;
+            this.lblDgvStyleInfo.ForeColor = System.Drawing.Color.Red;
+            this.lblDgvStyleInfo.Location = new System.Drawing.Point(101, 0);
+            this.lblDgvStyleInfo.Name = "lblDgvStyleInfo";
+            this.lblDgvStyleInfo.Size = new System.Drawing.Size(95, 12);
+            this.lblDgvStyleInfo.TabIndex = 3;
+            this.lblDgvStyleInfo.Text = "lblDgvStyleInfo";
             // 
             // FrmUserEnvironmentSet
             // 
@@ -438,6 +496,9 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tpUserSkin.ResumeLayout(false);
+            this.tpOther.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -478,5 +539,10 @@
         private System.Windows.Forms.FolderBrowserDialog fbdSelectPath;
         private System.Windows.Forms.TabPage tpOther;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Button btnClearDGVStyle;
+        private System.Windows.Forms.TextBox txbGirdStyleTempPath;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblDgvStyleInfo;
     }
 }

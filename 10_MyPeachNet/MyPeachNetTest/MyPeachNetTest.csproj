@@ -30,6 +30,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -52,6 +55,8 @@
   <ItemGroup>
     <Content Include="Sql\Delete\01_Delete.txt" />
     <Content Include="Sql\Insert\01_Insert.txt" />
+    <Content Include="Sql\Insert\04_InsertWithSelect.txt" />
+    <Content Include="Sql\Insert\03_WithInsertSelect.txt" />
     <Content Include="Sql\Insert\02_InsertSelect.txt" />
     <Content Include="Sql\Select2\01_Select.txt" />
     <Content Include="Sql\Select\01_Select.txt" />
