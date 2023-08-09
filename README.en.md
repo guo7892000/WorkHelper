@@ -11,7 +11,7 @@ UI components are generally shipped with Microsoft. This project also integrates
 
 ##  Development debugging    
 *After downloading the source code, set [Breezee. Framework. Mini. StartUp] as the startup project and ensure that the project references the following projects:<br>
-<img src="Projects that need to be referenced for Mini startup projects. png"/>
+ <img src="Mini启动项目需要引用的项目.png"/>
 
 ##  Download and use    
 *1. Open the release package link and download the software:
