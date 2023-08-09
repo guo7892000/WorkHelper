@@ -24,3 +24,24 @@ UI components are generally shipped with Microsoft. This project also integrates
 Note: Before 1.02, installation packages are used and require installation; After 1.0.3, use the green package method to decompress and use it.
 *3. The default user is xtadmin with a password of 1. After logging in, we can also make modifications.
 *4. Each function has operating instructions. We can click on 'Question Book' on the toolbar or 'User Manual' under the 'Help' menu to view it.
+
+##Common functions:
+Copy data splicing: Copy data from Excel and then customize the splicing! Commonly used!!
+Click to copy characters: By configuring, you can click to copy characters or open a directory. Commonly used!!
+Table structure SQL generation: includes Excel template generation, reading database to generate table SQL. Commonly used!!
+Add, delete, modify, and query SQL generation: Read the database and generate parameterized add, delete, modify, and query SQL. Commonly used!!
+Table column character concatenation: Read the column information of the data table for character concatenation. Commonly used!!
+Database data SQL generation: Read the database data and generate new data SQL.
+Data Excel formula generation: Quickly generate new data formulas for Excel templates.
+Data Dictionary: Read the column information of the data table, and generate corresponding characters such as SQL query results and SQL query conditions.
+Code file generation: Generate code through custom Excel templates.
+Entity file generation: Generate entity objects for data tables through custom Excel templates.
+Merge script: Merge multiple database scripts into one file.
+Merge two Excel files: By copying the contents of two Excel files and defining conditions to associate and merge data.
+IN List Splicing: Generate an Excel column of data as an IN list.
+Directory character generation: Read all directory or file information under a certain directory.
+
+##Issue and bug submission
+When submitting a bug issue, please provide a detailed description or screenshot explanation. Thank you!
+[Email feedback suggestions or questions]（ guo7892000@126.com ）
+[WeChat] BreezeeHui
