@@ -2,6 +2,7 @@
 using Breezee.AutoSQLExecutor.Core;
 using Breezee.Core.Interface;
 using Breezee.Core.IOC;
+using Breezee.Core.Tool;
 using Breezee.Core.WinFormUI;
 using Breezee.WorkHelper.DBTool.Entity;
 using Breezee.WorkHelper.DBTool.IBLL;
@@ -47,6 +48,17 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Add("DateTime", "DateTime");
             _dicString.Add("Int", "Int");
             dtInputType = _dicString.GetTextValueTable(false);
+            _dicString.Clear();
+            _dicString.Add("10", "select");
+            _dicString.Add("11", "withSelect");
+            _dicString.Add("12", "selectUnion");
+            _dicString.Add("20", "insertValues");
+            _dicString.Add("21", "insertSelect");
+            _dicString.Add("22", "insertWithSelect");
+            _dicString.Add("23", "withInsertSelect");
+            _dicString.Add("30", "update");
+            _dicString.Add("40", "delete");
+            cbbExampleType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), true, true);
             SetTag();
 
             //加载用户偏好值
@@ -111,7 +123,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 _dataAccess = AutoSQLExecutors.Connect(_dbServer); //每次都要获取一个连接，因为可能会连接不同数据库
             }
-            IDictionary<string, SqlKeyValueEntity> dicPreCondition = _dataAccess.SqlParsers.PreGetParam(sSqlBefore);
+            IDictionary<string, SqlKeyValueEntity> dicPreCondition = _dataAccess.SqlParsers.PreGetParam(sSqlBefore,_dicObject);
             DataTable dt = dgvConditionInput.GetBindingTable();
             dt.Clear();
             foreach (var item in dicPreCondition.Keys)
@@ -228,11 +240,14 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
         }
 
-        private void ckbExample_CheckedChanged(object sender, EventArgs e)
+        private void cbbExampleType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(ckbExample.Checked)
+            if (cbbExampleType.SelectedValue == null) return;
+            string sType = cbbExampleType.SelectedValue.ToString();
+            switch (sType)
             {
-                rtbSqlInput.Text = @"SELECT DISTINCT A.[PROVINCE_ID] AS PROVINCE_ID
+                case "10":
+                    rtbSqlInput.Text = @"SELECT DISTINCT A.[PROVINCE_ID] AS PROVINCE_ID
   ,A.[PROVINCE_CODE]
  ,B.[CITY_NAME]
  ,(SELECT TOP 1 ID FROM SUB T WHERE T.RID = A.RID AND A.NAME ='#NAME#' AND ( TFLG = '#TFLG#' OR ( CREATOR = '#CREATOR#' OR CREATOR_ID = #CREATOR_ID# ) )) AS ID
@@ -240,7 +255,8 @@ namespace Breezee.WorkHelper.DBTool.UI
 FROM TAB AS A
 LEFT  OUTER JOIN BAB B on A.ID = B.ID AND A.NAME ='#NAME#' AND TO_CAHR(A.CDATE,'yyyy-MM-dd') ='#DATE#'
 FULL JOIN BC C on C.ID = B.ID AND C.TNAME ='#TNAME#'
-RIGHT  OUTER  JOIN (
+RIGHT  OUTER  JOIN ( /*我是多行注---
+换行的释释*/
     SELECT ID,PROVINCE_ID,UPDATE_CONTROL_ID,ID
     FROM TAB_C
     WHERE PROVINCE_ID = '#PROVINCE_ID#'
@@ -251,13 +267,191 @@ WHERE PROVINCE_ID = '#PROVINCE_ID#'
 	OR REMARK LIKE '%#REMARK#'
 	AND ( ( CREATOR = '#CREATOR#' OR CREATOR_ID = #CREATOR_ID# ) AND TFLG = '#TFLG#')
     AND TO_CHAR(TFLG,'yyyy') = '#TFLG2#'
-    AND TFLG =  TO_DATE('#TFLG#','yyyy-MM-dd')
-	AND MODIFIER IN ('#MDLIST:LS#')
+    AND TFLG =  TO_DATE('#TFLG#','yyyy-MM-dd') #我是注释#号呀
+	AND MODIFIER IN ('#MDLIST:LS#') --我是注释--啊
     AND EXISTS(SELECT 1 FROM TBF G WHERE G.ID = A.ID AND G.BF = '#BF#' )
 GROUP BY 	PROVINCE_ID
 HAVING A.SORT_ID > #SORT_ID:M:R#
 ORDER BY A.[PROVINCE_CODE],B.[CITY_NAME]
 LIMIT 100,#PAGE_SIZE:M#";
+                    break;
+                case "11":
+                    rtbSqlInput.Text = @"WITH SE1 AS (
+   SELECT 1 FROM TB_AA L
+   JOIN TB_BB M ON L.ID = M.AID AND L.TD = '#TD#'
+   WHERE G.FF = '#GF#'
+    AND ( ( CREATOR = '#CREATOR#' OR CREATOR_ID = #CREATOR_ID# ) AND TFLG = '#TFLG#')),
+WITH SE2 AS (
+     SELECT 1,(SELECT TOP 1 ID FROM SUB T WHERE T.RID = A.RID AND A.NAME ='#NAME#') AS ID
+     FROM TB_AA L
+     JOIN TB_BB M ON L.ID = M.AID AND L.TD = '#TD3#'
+     WHERE G.FFF = '#GFF#'
+      AND ( ( CREATOR = '#CREATOR1#' OR CREATOR_ID = #CREATOR_ID2# ) AND TFLG = '#TFLG3#')
+)
+SELECT A.[PROVINCE_ID],A.[PROVINCE_CODE],
+ A.[PROVINCE_NAME]
+ ,A.[SORT_ID]
+ ,B.[CITY_ID]
+ ,B.CITY_CODE
+ ,B.[CITY_NAME]
+ ,((SELECT TOP 1 ID FROM SUB T WHERE T.RID = A.RID AND A.NAME ='#NAME#')) AS ID
+  ,A.[UPDATE_CONTROL_ID]
+FROM TAB A
+LEFT JOIN BAB B on A.ID = B.ID AND A.NAME ='#NAME#' AND TO_CAHR(A.CDATE,'yyyy-MM-dd') ='#DATE#'
+LEFT JOIN BC C on C.ID = B.ID AND C.TNAME ='#TNAME#'
+ WHERE PROVINCE_ID = '#PROVINCE_ID#'
+	AND UPDATE_CONTROL_ID= '#UPDATE_CONTROL_ID#'
+	OR REMARK LIKE '%#REMARK#'
+	AND ( ( CREATOR = '#CREATOR#' OR CREATOR_ID = #CREATOR_ID# ) AND TFLG = '#TFLG#')
+     AND ( TFLG = '#TFLG#' OR ( CREATOR = '#CREATOR#' OR CREATOR_ID = #CREATOR_ID# ) )
+ AND TO_CHAR(TFLG,'yyyy') = '#TFLG2#'
+AND TFLG =  TO_DATE('#TFLG#','yyyy-MM-dd')
+	AND MODIFIER='#MODIFIER#'
+AND EXISTS(SELECT 1 FROM TBF G WHERE G.ID = A.ID AND G.BF = '#BF#' )
+GROUP BY 	PROVINCE_ID
+HAVING A.SORT_ID > 1
+ORDER BY MODIFIER DESC";
+                    break;
+                case "12":
+                    rtbSqlInput.Text = @"SELECT DISTINCT A.[PROVINCE_ID]
+  ,A.[PROVINCE_CODE]
+ ,B.[CITY_NAME]
+ ,(SELECT TOP 1 ID FROM SUB T WHERE T.RID = A.RID AND A.NAME ='#NAME#' AND ( TFLG = '#TFLG#' OR ( CREATOR = '#CREATOR#' OR CREATOR_ID = #CREATOR_ID# ) )) AS ID
+  ,A.[UPDATE_CONTROL_ID]
+FROM TAB A
+LEFT JOIN BAB B on A.ID = B.ID AND A.NAME ='#NAME#' AND TO_CAHR(A.CDATE,'yyyy-MM-dd') ='#DATE#'
+LEFT JOIN (
+    SELECT ID,PROVINCE_ID,UPDATE_CONTROL_ID,ID
+    FROM TAB_C
+    WHERE PROVINCE_ID = '#PROVINCE_ID#'
+       AND UPDATE_CONTROL_ID= '#UPDATE_CONTROL_ID#'
+) C on C.ID = B.ID AND C.TNAME ='#TNAME#'
+ WHERE PROVINCE_ID = '#PROVINCE_ID#'
+	AND UPDATE_CONTROL_ID= '#UPDATE_CONTROL_ID#'
+	OR REMARK LIKE '%#REMARK#'
+	AND ( ( CREATOR = '#CREATOR#' OR CREATOR_ID = #CREATOR_ID# ) AND TFLG = '#TFLG#')
+ AND TO_CHAR(TFLG,'yyyy') = '#TFLG2#'
+AND TFLG =  TO_DATE('#TFLG#','yyyy-MM-dd')
+	AND MODIFIER IN ('#MDLIST:LS#')
+AND EXISTS(SELECT 1 FROM TBF G WHERE G.ID = A.ID AND G.BF = '#BF#' )
+ORDER BY A.[PROVINCE_CODE],B.[CITY_NAME]
+LIMIT 100,10
+UNION    ALL
+SELECT DISTINCT A.[PROVINCE_ID]
+  ,A.[PROVINCE_CODE]
+ ,B.[CITY_NAME]
+ ,(SELECT TOP 1 ID FROM SUB T WHERE T.RID = A.RID AND A.NAME ='#NAME#' AND ( TFLG = '#TFLG#' OR ( CREATOR = '#CREATOR#' OR CREATOR_ID = #CREATOR_ID# ) )) AS ID
+  ,A.[UPDATE_CONTROL_ID]
+FROM TAB A
+LEFT JOIN BAB B on A.ID = B.ID AND A.NAME ='#NAME#' AND TO_CAHR(A.CDATE,'yyyy-MM-dd') ='#DATE#'
+LEFT JOIN BC C on C.ID = B.ID AND C.TNAME ='#TNAME#'
+ WHERE PROVINCE_ID = '#PROVINCE_ID#'
+	AND UPDATE_CONTROL_ID= '#UPDATE_CONTROL_ID#'
+	AND TFLG IS NOT NULL
+	AND SORT_ID not between 1 and 4
+UNION
+SELECT DISTINCT A.[PROVINCE_ID]
+  ,A.[PROVINCE_CODE]
+ ,B.[CITY_NAME]
+ ,(SELECT TOP 1 ID FROM SUB T WHERE T.RID = A.RID AND A.NAME ='#NAME#' AND ( TFLG = '#TFLG#' OR ( CREATOR = '#CREATOR#' OR CREATOR_ID = #CREATOR_ID# ) )) AS ID
+  ,A.[UPDATE_CONTROL_ID]
+FROM TAB A
+LEFT JOIN CBC B on A.ID = B.ID AND A.NAME ='#NAME#' AND TO_CAHR(A.CDATE,'yyyy-MM-dd') ='#DATE#'
+LEFT JOIN CDC C on C.ID = B.ID AND C.TNAME ='#TNAME#'
+ WHERE PROVINCE_ID = '#PROVINCE_ID#'
+	AND UPDATE_CONTROL_ID= '#UPDATE_CONTROL_ID#'
+	AND TFLG IS NOT NULL
+GROUP BY 	PROVINCE_ID
+HAVING A.SORT_ID > 1";
+                    break;
+                case "20":
+                    rtbSqlInput.Text = @"INSERT INTO [dbo].[BAS_PROVINCE] --test
+(
+  [PROVINCE_ID],[PROVINCE_CODE] --test
+    ,[PROVINCE_NAME]
+    ,[SORT_ID]
+ ,[TFLAG],CDATE
+)
+VALUES (
+ '#PROVINCE_ID#' /*22*/
+    ,'#PROVINCE_CODE#' --test
+ ,#PROVINCE_NAME#',
+ #SORT_ID#
+   ,'#TFLAG#',
+   TO_DATE('#CDATE#','YYYY-MM-DD')
+)";
+                    break;
+                case "21":
+                    rtbSqlInput.Text = @"INSERT INTO [dbo].[BAS_PROVINCE] --test
+  ([PROVINCE_ID],[PROVINCE_CODE] --test
+    ,[PROVINCE_NAME]
+    ,[SORT_ID]
+ ,[TFLAG])
+ SELECT PROVINCE_ID /*22*/
+    ,TO_DATE(A.CREATE_TIME,'yyyy-MM-dd') --test
+ ,A.PROVINCE_NAME,A.SORT_ID
+   ,'#TFLAG#'
+FROM BAS_CITY A
+WHERE PROVINCE_ID = '#PROVINCE_ID#'
+	AND UPDATE_CONTROL_ID= '#UPDATE_CONTROL_ID#'
+	OR REMARK LIKE '%#REMARK#'
+	AND ( ( CREATOR = '#CREATOR#' OR CREATOR_ID = #CREATOR_ID# ) AND TFLG = '#TFLG#')
+     AND ( TFLG = '#TFLG#' OR ( CREATOR = '#CREATOR#' OR CREATOR_ID = #CREATOR_ID# ) )
+ AND TO_CHAR(TFLG,'yyyy') = '#TFLG2#'
+AND TFLG =  TO_DATE('#TFLG#','yyyy-MM-dd')
+	AND MODIFIER='#MODIFIER#'
+AND EXISTS(SELECT 1 FROM TBF G WHERE G.ID = A.ID AND G.BF = '#BF#' )";
+                    break;
+                case "22":
+                    rtbSqlInput.Text = @"/*MySql、Oracle:必须是INSERT INTO在with之前。Oracle查空表必须加FROM DUAL，MySql可有可无。*/
+INSERT INTO TEST_TABLE(ID,CNAME)
+with TMP_A AS(select #SORT_ID# as id,'#TFLAG#' as name FROM DUAL)
+select * from TMP_A
+
+/* 注释222 */
+/*PostgreSQL、SQLite:表名和列名要加双引号。:必须是INSERT INTO在with之前。SQLite不能加FROM DUAL。
+INSERT INTO ""TEST_TABLE""(""ID"",""CNAME"")
+with TMP_A AS(select #SORT_ID# as id,'#TFLAG#' as name FROM DUAL)
+select * from TMP_A
+*/";
+                    break;
+                case "23":
+                    rtbSqlInput.Text = @"/*SqlServer:必须是with在INSERT INTO之前*/
+with TMP_A AS(select #SORT_ID# as id,'#TFLAG#' as name)
+INSERT INTO TEST_TABLE(ID,CNAME)
+select * from TMP_A";
+                    break;
+                case "30":
+                    rtbSqlInput.Text = @"UPDATE --2232
+ [dbo].[BAS_PROVINCE] /***8888***/
+   SET [PROVINCE_CODE] = '#PROVINCE_CODE#',[PROVINCE_NAME] = '#PROVINCE_NAME#'
+      ,[SORT_ID] = SORT_ID
+      ,[REMARK] = '#REMARK#'
+      ,[CREATE_TIME] = TO_DATE(#CREATE_TIME#,'yyyy-MM-dd')
+      ,[TFLAG] = TFLAG
+FROM TAB A
+LEFT JOIN BAB B on A.ID = B.ID AND A.NAME ='#NAME#'
+LEFT JOIN BC C on C.ID = B.ID AND C.TNAME ='#TNAME#'
+ WHERE PROVINCE_ID = '#PROVINCE_ID#'
+	AND UPDATE_CONTROL_ID= '#UPDATE_CONTROL_ID#'
+	OR REMARK LIKE '%#REMARK#'
+	AND ( ( CREATOR = '#CREATOR#' OR CREATOR_ID = #CREATOR_ID# ) OR TFLG = '#TFLG#')
+     AND ( TFLG = '#TFLG#' OR ( CREATOR = '#CREATOR#' OR CREATOR_ID = #CREATOR_ID# ) )
+ AND TO_CHAR(TFLG,'yyyy') = '#TFLG2#'
+AND TFLG =  TO_DATE('#TFLG#','yyyy-MM-dd')
+AND EXISTS(SELECT 1 FROM TBF G WHERE G.ID = A.ID AND MODIFIER='#MODIFIER#')";
+                    break;
+                case "40":
+                    rtbSqlInput.Text = @"DELETE FROM [dbo].[BAS_PROVINCE]
+WHERE PROVINCE_ID = '#PROVINCE_ID:N#'
+ and UPDATE_CONTROL_ID= '#UPDATE_CONTROL_ID#'
+AND REMARK like '%#REMARK:R#'
+AND ( TFLG = '#TFLG#' OR ( CREATOR = '#CREATOR#' OR CREATOR_ID = #CREATOR_ID# ) )
+AND ( ( CREATOR = '#CREATOR#' OR CREATOR_ID = #CREATOR_ID# ) AND TFLG = '#TFLG#')
+AND MODIFIER='#MODIFIER#'";
+                    break;
+                default:
+                    break;
             }
         }
     }

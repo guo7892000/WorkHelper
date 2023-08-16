@@ -14,11 +14,11 @@ UI components are generally shipped with Microsoft. This project also integrates
  <img src="Mini启动项目需要引用的项目.png"/>
 
 ##  Download and use    
-*1. Open the release package link and download the software:
-[Release Package Download]（ https://gitee.com/breezee2000/WorkHelper/releases ）
-*After downloading and extracting, double-click on Breezee. Framework. Mini. StartUp. exe to open the program.
-Note: Before 1.02, installation packages are used and require installation; After 1.0.3, use the green package method to decompress and use it.
-*3. The default user is xtadmin with a password of 1. After logging in, we can also make modifications.
+*1. Open the release package link and download the software:    
+[Release Package Download]（ https://gitee.com/breezee2000/WorkHelper/releases ）    
+*After downloading and extracting, double-click on Breezee. Framework. Mini. StartUp. exe to open the program.    
+Note: Before 1.02, installation packages are used and require installation; After 1.0.3, use the green package method to decompress and use it.    
+*3. The default user is xtadmin with a password of 1. After logging in, we can also make modifications.    
 *4. Each function has operating instructions. We can click on 'Question Book' on the toolbar or 'User Manual' under the 'Help' menu to view it.
 
 ##  Common functions:    

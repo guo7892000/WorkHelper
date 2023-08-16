@@ -154,7 +154,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 string sTableChangeType = rowTable[EntTable.ExcelTable.ChangeType].ToString();
                 if (useLYTemplate)
                 {
-                    sTableChangeType += "表";
+                    sTableChangeType = sTableChangeType.Replace("新增","创建") +"表";
                 }
                 string tableString = tableTemplate.Replace("$$(ColumnsHolder)", columnBuilder.ToString())
                     .Replace("${tableName}", rowTable[EntTable.ExcelTable.Name].ToString())

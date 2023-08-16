@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\BaseTest.cs" />
+    <Compile Include="Test\CommonTest.cs" />
     <Compile Include="Test\DeleteTest.cs" />
     <Compile Include="Test\InsertTest.cs" />
     <Compile Include="Test\Select2Test.cs" />
@@ -53,12 +54,18 @@
     <Compile Include="Test\UpdateTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Sql\Common\01_MergeInto.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Sql\Delete\01_Delete.txt" />
     <Content Include="Sql\Insert\01_Insert.txt" />
     <Content Include="Sql\Insert\04_InsertWithSelect.txt" />
     <Content Include="Sql\Insert\03_WithInsertSelect.txt" />
     <Content Include="Sql\Insert\02_InsertSelect.txt" />
     <Content Include="Sql\Select2\01_Select.txt" />
+    <Content Include="Sql\Select\04_DynamicSelect.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Sql\Select\01_Select.txt" />
     <Content Include="Sql\Select\02_WithSelect.txt" />
     <Content Include="Sql\Select\03_SelectUnion.txt" />

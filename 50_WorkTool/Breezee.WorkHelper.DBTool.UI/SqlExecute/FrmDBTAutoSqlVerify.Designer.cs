@@ -34,7 +34,6 @@
             this.tsbConvert = new System.Windows.Forms.ToolStripButton();
             this.tsbExport = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
-            this.ckbExample = new System.Windows.Forms.CheckBox();
             this.btnExecute = new System.Windows.Forms.Button();
             this.btnGetCondition = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
@@ -60,6 +59,8 @@
             this.dgvConditionOutput = new System.Windows.Forms.DataGridView();
             this.lblFuncInfo = new System.Windows.Forms.Label();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
+            this.cbbExampleType = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -137,17 +138,6 @@
             this.tsbExit.Size = new System.Drawing.Size(72, 24);
             this.tsbExit.Text = "退出(&X)";
             this.tsbExit.Click += new System.EventHandler(this.tsbExit_Click);
-            // 
-            // ckbExample
-            // 
-            this.ckbExample.AutoSize = true;
-            this.ckbExample.Location = new System.Drawing.Point(152, 17);
-            this.ckbExample.Name = "ckbExample";
-            this.ckbExample.Size = new System.Drawing.Size(72, 16);
-            this.ckbExample.TabIndex = 1;
-            this.ckbExample.Text = "加载示例";
-            this.ckbExample.UseVisualStyleBackColor = true;
-            this.ckbExample.CheckedChanged += new System.EventHandler(this.ckbExample_CheckedChanged);
             // 
             // btnExecute
             // 
@@ -311,7 +301,8 @@
             // 
             // groupBox7
             // 
-            this.groupBox7.Controls.Add(this.ckbExample);
+            this.groupBox7.Controls.Add(this.label2);
+            this.groupBox7.Controls.Add(this.cbbExampleType);
             this.groupBox7.Controls.Add(this.btnGetCondition);
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox7.Location = new System.Drawing.Point(3, 3);
@@ -442,6 +433,24 @@
             this.uC_DbConnection1.Size = new System.Drawing.Size(1100, 80);
             this.uC_DbConnection1.TabIndex = 33;
             // 
+            // cbbExampleType
+            // 
+            this.cbbExampleType.FormattingEnabled = true;
+            this.cbbExampleType.Location = new System.Drawing.Point(193, 14);
+            this.cbbExampleType.Name = "cbbExampleType";
+            this.cbbExampleType.Size = new System.Drawing.Size(191, 20);
+            this.cbbExampleType.TabIndex = 2;
+            this.cbbExampleType.SelectedIndexChanged += new System.EventHandler(this.cbbExampleType_SelectedIndexChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(124, 18);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(65, 12);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "参考示例：";
+            // 
             // FrmDBTAutoSqlVerify
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -513,7 +522,6 @@
         private System.Windows.Forms.Button btnConvert;
         private System.Windows.Forms.Button btnGetCondition;
         private System.Windows.Forms.Label lblBefore;
-        private System.Windows.Forms.CheckBox ckbExample;
         private System.Windows.Forms.Label lblFuncInfo;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.SplitContainer splitContainer2;
@@ -523,5 +531,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RichTextBox rtbSqlOutput;
         private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox cbbExampleType;
     }
 }

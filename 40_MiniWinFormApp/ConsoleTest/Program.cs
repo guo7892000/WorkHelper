@@ -17,6 +17,8 @@ namespace ConsoleTest
             //Console.WriteLine(i.ToUpperWord());
             //Console.ReadKey();
 
+            CommonTest commonTest = new CommonTest();
+            commonTest.MergeTest();
 
             SelectTest selectTest = new SelectTest();
             //selectTest.Select();
@@ -27,12 +29,13 @@ namespace ConsoleTest
             Select2Test select2Test = new Select2Test();
             //select2Test.Select();
             //select2Test.Select2();
+            //select2Test.SelectDynamic();
 
             InsertTest insertTest = new InsertTest();
             //insertTest.Insert();
             //insertTest.InsertSelect();
             //insertTest.WithInsertSelect();
-            insertTest.InsertWithSelect();
+            //insertTest.InsertWithSelect();
 
             UpdateTest updateTest = new UpdateTest();
             //updateTest.Update();

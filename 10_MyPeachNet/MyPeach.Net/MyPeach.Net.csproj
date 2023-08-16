@@ -45,6 +45,7 @@
     <Compile Include="Config\SqlKeyConfig.cs" />
     <Compile Include="Config\StaticConstants.cs" />
     <Compile Include="Core\AbstractSqlParser.cs" />
+    <Compile Include="Core\CommonSqlParser.cs" />
     <Compile Include="Core\DeleteSqlParser.cs" />
     <Compile Include="Core\InsertSqlParser.cs" />
     <Compile Include="Core\SelectSqlParser.cs" />
@@ -62,6 +63,10 @@
     <Compile Include="Utils\StringBuilderExtension.cs" />
     <Compile Include="Utils\StringExtension.cs" />
     <Compile Include="Utils\ToolHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.en.md" />
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
