@@ -65,6 +65,7 @@
     <Compile Include="Utils\ToolHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ChangeHistory.md" />
     <None Include="README.en.md" />
     <None Include="README.md" />
   </ItemGroup>

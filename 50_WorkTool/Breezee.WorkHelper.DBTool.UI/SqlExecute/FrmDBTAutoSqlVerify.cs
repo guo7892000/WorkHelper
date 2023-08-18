@@ -49,15 +49,17 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Add("Int", "Int");
             dtInputType = _dicString.GetTextValueTable(false);
             _dicString.Clear();
-            _dicString.Add("10", "select");
-            _dicString.Add("11", "withSelect");
-            _dicString.Add("12", "selectUnion");
+            _dicString.Add("1", "select");
+            _dicString.Add("2", "withSelect");
+            _dicString.Add("3", "selectUnion");
             _dicString.Add("20", "insertValues");
             _dicString.Add("21", "insertSelect");
             _dicString.Add("22", "insertWithSelect");
             _dicString.Add("23", "withInsertSelect");
             _dicString.Add("30", "update");
             _dicString.Add("40", "delete");
+            _dicString.Add("50", "mergeInto");
+            _dicString.Add("60", "动态条件拼接SQL段");
             cbbExampleType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), true, true);
             SetTag();
 
@@ -130,6 +132,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 DataRow drNew = dt.NewRow();
                 drNew["IN_KEY"] = item;
+                drNew["IN_VALUE"] = dicPreCondition[item].KeyValue;
                 dt.Rows.Add(drNew);
             }
             tabControl1.SelectedTab = tpAutoAfter;
@@ -246,7 +249,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             string sType = cbbExampleType.SelectedValue.ToString();
             switch (sType)
             {
-                case "10":
+                case "1":
                     rtbSqlInput.Text = @"SELECT DISTINCT A.[PROVINCE_ID] AS PROVINCE_ID
   ,A.[PROVINCE_CODE]
  ,B.[CITY_NAME]
@@ -275,7 +278,7 @@ HAVING A.SORT_ID > #SORT_ID:M:R#
 ORDER BY A.[PROVINCE_CODE],B.[CITY_NAME]
 LIMIT 100,#PAGE_SIZE:M#";
                     break;
-                case "11":
+                case "2":
                     rtbSqlInput.Text = @"WITH SE1 AS (
    SELECT 1 FROM TB_AA L
    JOIN TB_BB M ON L.ID = M.AID AND L.TD = '#TD#'
@@ -312,7 +315,7 @@ GROUP BY 	PROVINCE_ID
 HAVING A.SORT_ID > 1
 ORDER BY MODIFIER DESC";
                     break;
-                case "12":
+                case "3":
                     rtbSqlInput.Text = @"SELECT DISTINCT A.[PROVINCE_ID]
   ,A.[PROVINCE_CODE]
  ,B.[CITY_NAME]
@@ -449,6 +452,46 @@ AND REMARK like '%#REMARK:R#'
 AND ( TFLG = '#TFLG#' OR ( CREATOR = '#CREATOR#' OR CREATOR_ID = #CREATOR_ID# ) )
 AND ( ( CREATOR = '#CREATOR#' OR CREATOR_ID = #CREATOR_ID# ) AND TFLG = '#TFLG#')
 AND MODIFIER='#MODIFIER#'";
+                    break;
+                case "50":
+                    rtbSqlInput.Text = @"MERGE INTO credit.record_rule_data AS a
+USING tem1 AS b 
+ON a.rule_id =b.ruleName AND a.user_id ='#USER_ID#' AND a.auth_type =4
+WHEN MATCHED THEN UPDATE SET a.rule_value =b.ruleValue ,update_time=GETDATE()
+WHEN NOT MATCHED THEN
+INSERT
+(gid, create_time, update_time, data_version, user_id, auth_type, rule_id, rule_value)
+VALUES
+(NEWID(),GETDATE(),GETDATE(),'11','39917B36-9663-42E5-A9E8-7CEB875EDF5F','#AUTH_TYPE#',b.ruleName,b.ruleValue)";
+                    break;
+                case "60":
+                    rtbSqlInput.Text = @"SELECT A.PROVINCE_ID,A.PROVINCE_CODE
+ ,A.PROVINCE_NAME
+ ,A.SORT_ID
+ ,B.CITY_ID
+ ,B.CITY_CODE
+ ,B.CITY_NAME
+ ,((SELECT TOP 1 ID FROM SUB T WHERE T.RID = A.RID AND A.NAME ='#{NAME}')) AS ID
+  ,A.UPDATE_CONTROL_ID,
+  /***@MP&DYN {[id=1]}& {[A.ID,B.ID]}  @MP&DYN****/
+ /* @MP&DYN{[id=2]} &{[A.ID]}  @MP&DYN**/
+/* @MP&DYN {[id>=3]}& {[B.ID]} @MP&DYN  */
+FROM TAB A
+LEFT JOIN BAB B on A.ID = B.ID AND A.NAME ='#{NAME:D&getdate()-R-n}' AND TO_CAHR(A.CDATE,'yyyy-MM-dd') ='#{DATE}'
+LEFT JOIN BC C on C.ID = B.ID AND C.TNAME ='#{TNAME}'
+ WHERE PROVINCE_ID = '#{PROVINCE_ID}'
+	AND UPDATE_CONTROL_ID= '#{UPDATE_CONTROL_ID}'
+	OR REMARK LIKE '%#{REMARK}'
+	AND ( ( CREATOR = '#{CREATOR}' OR CREATOR_ID = #{CREATOR_ID} ) AND TFLG = '#{TFLG}')
+     AND ( TFLG = '#{TFLG}' OR ( CREATOR = '#{CREATOR}' OR CREATOR_ID = #{CREATOR_ID} ) )
+ AND TO_CHAR(TFLG,'yyyy') = '#{TFLG2}'
+AND TFLG =  TO_DATE('#{TFLG}','yyyy-MM-dd')
+	AND MODIFIER='#{MODIFIER}'
+AND EXISTS(SELECT 1 FROM TBF G WHERE G.ID = A.ID AND G.BF = '#{BF}' )
+GROUPY BY 
+  /**  *@MP&DYN {[id=1]}&{[A.ID,B.ID]}  @MP&DYN  ****/
+ /* @MP&DYN{[id=2]} &{[A.ID]}  @MP&DYN**/
+/* @MP&DYN {[id>=4]} ^&{[B.ID]} @MP&DYN  */";
                     break;
                 default:
                     break;
