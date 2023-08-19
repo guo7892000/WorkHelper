@@ -65,7 +65,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             //加载用户偏好值
             rtbSqlInput.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.SQLAutoParamVerify_BeforeSql, "").Value;
-            lblBefore.Text = "条件格式：#键名:N:R:LS#，其中N或M表示非空，R表示值替换，LS表示字符列表，LI为整型列表，即IN括号里的部分字符。";
+            lblBefore.Text = "条件格式：#键名:M:R:LS:D-now()-r-n:N#，其中M表示非空，R表示值替换，LS表示字符列表，LI为整型列表，即IN括号里的部分字符。N不加引号；D默认值配置，其第二个参数为默认值。";
             lblFuncInfo.Text = "针对自动参数化SQL的个人项目（Java版和C#版）：MyPeach、MyPeach.Net的有效性验证！";
             rtbSqlOutput.ReadOnly= true;
         }
