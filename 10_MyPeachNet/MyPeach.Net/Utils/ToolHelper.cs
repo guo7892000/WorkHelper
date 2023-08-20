@@ -33,15 +33,15 @@ namespace org.breezee.MyPeachNet
          */
         public static string getKeyNameMore(string sKeyString, MyPeachNetProperties prop)
         {
-            string keyPrefix = "#";
-            string keySuffix = "#";
-            if (prop.KeyStyle == SqlKeyStyleEnum.POUND_SIGN_BRACKETS)
-            {
-                keyPrefix = StaticConstants.HASH_LEFT_BRACE;
-                keySuffix = StaticConstants.RIGHT_BRACE;
-            }
+            string keyPrefix = StaticConstants.HASH;
+            string keySuffix = StaticConstants.HASH;
+            //if (prop.KeyStyle == SqlKeyStyleEnum.POUND_SIGN_BRACKETS)
+            //{
+            //    keyPrefix = StaticConstants.HASH_LEFT_BRACE;
+            //    keySuffix = StaticConstants.RIGHT_BRACE;
+            //}
             string sKeyNameMore = sKeyString.Replace("'", "").Replace("%", "")
-                    .Replace(keyPrefix, "").Replace(keySuffix, "");
+                    .Replace(keyPrefix, "").Replace(keySuffix, "").trim();
             return sKeyNameMore;//键中包含其他信息
         }
 
@@ -56,11 +56,11 @@ namespace org.breezee.MyPeachNet
             string sKeyNameMore = getKeyNameMore(sKeyString, prop);
             if (sKeyNameMore.IndexOf(":") < 0)
             {
-                return sKeyNameMore;//键中没有包含其他信息
+                return sKeyNameMore.trim();//键中没有包含其他信息
             }
             else
             {
-                return sKeyNameMore.Split(':')[0];//键中包含其他信息，但第一个必须是键名
+                return sKeyNameMore.Split(':')[0].trim();//键中包含其他信息，但第一个必须是键名
             }
         }
 
