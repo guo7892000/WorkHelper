@@ -135,7 +135,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                 drNew["IN_VALUE"] = dicPreCondition[item].KeyValue;
                 dt.Rows.Add(drNew);
             }
-            tabControl1.SelectedTab = tpAutoAfter;
         }
         private void tsbImport_Click(object sender, EventArgs e)
         {
