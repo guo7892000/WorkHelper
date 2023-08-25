@@ -283,7 +283,7 @@ LIMIT 100,#PAGE_SIZE:M#";
    JOIN TB_BB M ON L.ID = M.AID AND L.TD = '#TD#'
    WHERE G.FF = '#GF#'
     AND ( ( CREATOR = '#CREATOR#' OR CREATOR_ID = #CREATOR_ID# ) AND TFLG = '#TFLG#')),
-WITH SE2 AS (
+SE2 AS (
      SELECT 1,(SELECT TOP 1 ID FROM SUB T WHERE T.RID = A.RID AND A.NAME ='#NAME#') AS ID
      FROM TB_AA L
      JOIN TB_BB M ON L.ID = M.AID AND L.TD = '#TD3#'
@@ -490,7 +490,7 @@ AND EXISTS(SELECT 1 FROM TBF G WHERE G.ID = A.ID AND G.BF = '#{BF}' )
 GROUPY BY 
   /**  *@MP&DYN {[id=1]}&{[A.ID,B.ID]}  @MP&DYN  ****/
  /* @MP&DYN{[id=2]} &{[A.ID]}  @MP&DYN**/
-/* @MP&DYN {[id>=4]} ^&{[B.ID]} @MP&DYN  */";
+/* @MP&DYN {[id>=4]} &{[B.ID]} @MP&DYN  */";
                     break;
                 default:
                     break;
