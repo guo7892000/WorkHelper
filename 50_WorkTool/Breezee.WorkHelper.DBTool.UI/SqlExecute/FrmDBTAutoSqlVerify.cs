@@ -60,6 +60,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Add("40", "delete");
             _dicString.Add("50", "mergeInto");
             _dicString.Add("60", "动态条件拼接SQL段");
+            _dicString.Add("70", "IN清单分拆");
             cbbExampleType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), true, true);
             SetTag();
 
@@ -135,7 +136,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                 drNew["IN_VALUE"] = dicPreCondition[item].KeyValue;
                 dt.Rows.Add(drNew);
             }
-            tabControl1.SelectedTab = tpAutoAfter;
         }
         private void tsbImport_Click(object sender, EventArgs e)
         {
@@ -167,10 +167,48 @@ namespace Breezee.WorkHelper.DBTool.UI
             foreach (DataRow dr in dt.Rows)
             {
                 string sKey = dr["IN_KEY"].ToString();
-                string sValue = dr["IN_VALUE"].ToString();
-                if (!data.ContainsKey(sKey))
+                string sValue = dr["IN_VALUE"].ToString().trim();
+                bool isString = sValue.IndexOf("'") > -1;
+                if (!string.IsNullOrEmpty(sValue))
                 {
-                    data.Add(sKey, sValue);
+                    string[] lstArr = sValue.Split(new char[] { ',', '，' });
+                    if (lstArr.Length == 1)
+                    {
+                        if (!data.ContainsKey(sKey))
+                        {
+                            data.Add(sKey, sValue.replace("'",""));
+                        }
+                    }
+                    else
+                    {
+                        List<string> lstString = new List<string>();
+                        List<int> lstInt = new List<int>();
+                        if (isString)
+                        {
+                            foreach (string item in lstArr)
+                            {
+                                lstString.Add(item);
+                            }
+                            data[sKey] = lstString;
+                        }
+                        else
+                        {
+                            foreach (string item in lstArr)
+                            {
+                                int iResult;
+                                if(int.TryParse(item, out iResult))
+                                {
+                                    lstInt.Add(int.Parse(item));
+                                }
+                                else
+                                {
+                                    ShowInfo("IN清单的【"+ item + "】转换为整型失败，请保证不加引号的IN项为整型！");
+                                    return;
+                                }
+                            }
+                            data[sKey] = lstInt;
+                        }
+                    }
                 }
             }
             //
@@ -284,7 +322,7 @@ LIMIT 100,#PAGE_SIZE:M#";
    JOIN TB_BB M ON L.ID = M.AID AND L.TD = '#TD#'
    WHERE G.FF = '#GF#'
     AND ( ( CREATOR = '#CREATOR#' OR CREATOR_ID = #CREATOR_ID# ) AND TFLG = '#TFLG#')),
-WITH SE2 AS (
+SE2 AS (
      SELECT 1,(SELECT TOP 1 ID FROM SUB T WHERE T.RID = A.RID AND A.NAME ='#NAME#') AS ID
      FROM TB_AA L
      JOIN TB_BB M ON L.ID = M.AID AND L.TD = '#TD3#'
@@ -491,7 +529,18 @@ AND EXISTS(SELECT 1 FROM TBF G WHERE G.ID = A.ID AND G.BF = '#{BF}' )
 GROUPY BY 
   /**  *@MP&DYN {[id=1]}&{[A.ID,B.ID]}  @MP&DYN  ****/
  /* @MP&DYN{[id=2]} &{[A.ID]}  @MP&DYN**/
-/* @MP&DYN {[id>=4]} ^&{[B.ID]} @MP&DYN  */";
+/* @MP&DYN {[id>=4]} &{[B.ID]} @MP&DYN  */";
+                    break;
+                case "70":
+                    rtbSqlInput.Text = @"SELECT DISTINCT A.[PROVINCE_ID] AS PROVINCE_ID
+  ,A.[PROVINCE_CODE]
+ ,B.[CITY_NAME],B.CITY_ID,B.CITY_CODE,B.CITY_NAME
+FROM BAS_PROVINCE AS A
+JOIN BAS_CITY B on A.PROVINCE_ID = B.PROVINCE_ID 
+WHERE A.ORG_ID = '#ORG_ID#'
+	AND (A.PROVINCE_ID IN ('#PROVINCE_ID_LIST:LS-4#') AND ( A.CREATOR = '#CREATOR#' OR A.CREATOR_ID = #CREATOR_ID# ) AND B.CITY_ID IN ('#CITY_ID_LIST:LS-4#'))
+	AND A.PROVINCE_CODE IN ('#PROVINCE_CODE_LIST:LS-2#')
+ AND TO_CHAR(A.TFLG,'yyyy') = '#TFLG2#'";
                     break;
                 default:
                     break;

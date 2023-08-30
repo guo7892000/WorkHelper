@@ -57,19 +57,42 @@
     <Content Include="Sql\Common\01_MergeInto.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sql\Delete\01_Delete.txt" />
-    <Content Include="Sql\Insert\01_Insert.txt" />
-    <Content Include="Sql\Insert\04_InsertWithSelect.txt" />
-    <Content Include="Sql\Insert\03_WithInsertSelect.txt" />
-    <Content Include="Sql\Insert\02_InsertSelect.txt" />
-    <Content Include="Sql\Select2\01_Select.txt" />
+    <Content Include="Sql\Delete\01_Delete.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sql\Insert\01_Insert.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sql\Insert\04_InsertWithSelect.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sql\Insert\03_WithInsertSelect.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sql\Insert\02_InsertSelect.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sql\Select2\01_Select.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sql\Select\05_InList.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Sql\Select\04_DynamicSelect.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sql\Select\01_Select.txt" />
-    <Content Include="Sql\Select\02_WithSelect.txt" />
-    <Content Include="Sql\Select\03_SelectUnion.txt" />
-    <Content Include="Sql\Update\01_Update.txt" />
+    <Content Include="Sql\Select\01_Select.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sql\Select\02_WithSelect.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sql\Select\03_SelectUnion.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sql\Update\01_Update.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyPeach.Net\MyPeach.Net.csproj">

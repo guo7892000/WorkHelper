@@ -18,13 +18,13 @@ namespace ConsoleTest
             //Console.ReadKey();
 
             CommonTest commonTest = new CommonTest();
-            commonTest.MergeTest();
+            //commonTest.MergeTest();
 
             SelectTest selectTest = new SelectTest();
             //selectTest.Select();
             //selectTest.WithSelect();
             //selectTest.UnionSelect();
-            
+            selectTest.InList();
 
             Select2Test select2Test = new Select2Test();
             //select2Test.Select();
