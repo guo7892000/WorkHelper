@@ -898,11 +898,12 @@ namespace Breezee.Framework.Mini.StartUp
                     //版本升级
                     WinFormContext.Instance.IsUpgradeRunning = true;
                     //异步获取文件
-                    string sLocalDir = _WinFormConfig.Get(GlobalKey.Upgrade_TempPath, GlobalContext.PathTemp());
+                    DirectoryInfo sPrePath = new DirectoryInfo(GlobalContext.AppEntryAssemblyPath);
+                    string sLocalDir = _WinFormConfig.Get(GlobalKey.Upgrade_TempPath, sPrePath.Parent.FullName);//默认为当前运行程序的父目录
                     string sServerZipUrl = string.Format("https://gitee.com/breezee2000/WorkHelper/releases/download/{0}/WorkHelper{1}.rar", sServerVersion, sServerVersion);
                     await Task.Run(() => FileDirHelper.DownloadWebZipAndUnZipAsync(sServerZipUrl, sLocalDir));
                     WinFormContext.Instance.IsUpgradeRunning = false;
-                    DirectoryInfo sPrePath =new DirectoryInfo(GlobalContext.AppEntryAssemblyPath);
+                    
                     if("release".Equals(sPrePath.Name,StringComparison.OrdinalIgnoreCase) || "bin".Equals(sPrePath.Name, StringComparison.OrdinalIgnoreCase))
                     {
                         _WinFormConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "当前版本所在的目录，为升级完后删除旧版本使用！"); //开发环境，不记录原版本
