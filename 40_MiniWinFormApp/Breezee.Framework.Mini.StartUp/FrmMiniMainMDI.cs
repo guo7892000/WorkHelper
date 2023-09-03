@@ -58,7 +58,7 @@ namespace Breezee.Framework.Mini.StartUp
         #region 加载事件
         private void FrmMainMDI_Load(object sender, EventArgs e)
         {
-            Text = string.Format("工作助手（Work Helper） v{0} 正式版  2023-08-30", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            Text = string.Format("工作助手（Work Helper） v{0} 正式版  2023-09-03", Assembly.GetExecutingAssembly().GetName().Version.ToString());
             _IADPJson = ContainerContext.Container.Resolve<IADPJson>();
 
             _WinFormConfig = WinFormContext.Instance.WinFormConfig;
@@ -900,7 +900,7 @@ namespace Breezee.Framework.Mini.StartUp
                     //异步获取文件
                     string sLocalDir = _WinFormConfig.Get(GlobalKey.Upgrade_TempPath, GlobalContext.PathTemp());
                     string sServerZipUrl = string.Format("https://gitee.com/breezee2000/WorkHelper/releases/download/{0}/WorkHelper{1}.rar", sServerVersion, sServerVersion);
-                    //await Task.Run(() => FileDirHelper.DownloadWebZipAndUnZipAsync(sServerZipUrl, sLocalDir));
+                    await Task.Run(() => FileDirHelper.DownloadWebZipAndUnZipAsync(sServerZipUrl, sLocalDir));
                     WinFormContext.Instance.IsUpgradeRunning = false;
                     DirectoryInfo sPrePath =new DirectoryInfo(GlobalContext.AppEntryAssemblyPath);
                     if("release".Equals(sPrePath.Name,StringComparison.OrdinalIgnoreCase) || "bin".Equals(sPrePath.Name, StringComparison.OrdinalIgnoreCase))
