@@ -863,7 +863,7 @@ namespace Breezee.Framework.Mini.StartUp
                  * 读取服务器的版本(blob为默认点开的网页形式)：https://gitee.com/breezee2000/WorkHelper/blob/master/LatestVersion.json
                  * 读取服务器的版本(raw为原始数据形式)：https://gitee.com/breezee2000/WorkHelper/raw/master/LatestVersion.json
                  */
-                string sServerVersionJson = FileDirHelper.ReadWebText("https://gitee.com/breezee2000/WorkHelper/raw/dev/LatestVersion.json").Trim();
+                string sServerVersionJson = FileDirHelper.ReadWebText("https://gitee.com/breezee2000/WorkHelper/raw/master/LatestVersion.json").Trim();
                 LatestVerion ver = _IADPJson.Deserialize<LatestVerion>(sServerVersionJson);
                 string sServerVersion = ver.version;
                 string sNowVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(); //本地版本
