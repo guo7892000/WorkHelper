@@ -38,11 +38,13 @@ namespace Breezee.Framework.Mini.StartUp
                     if(MessageBox.Show("旧版本路径："+ sPrePath + "，确认删除？", "删除旧版本提示", MessageBoxButtons.OKCancel)== DialogResult.OK)
                     {
                         Directory.Delete(sPrePath, true);
+                        winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "","清空上个版本文件夹");
                     }
                 }
                 else
                 {
                     Directory.Delete(sPrePath, true);
+                    winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "清空上个版本文件夹");
                 }
             }
 
