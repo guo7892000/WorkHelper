@@ -51,6 +51,7 @@
             this.tsmiUserManual = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiOpenLatestDownURL = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbCheckUpdate = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.tstbMenuSearch = new System.Windows.Forms.ToolStripTextBox();
@@ -79,10 +80,10 @@
             this.tsmiMenuSheetTop = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMenuSheetBottom = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiCloseMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbCloseAll = new System.Windows.Forms.ToolStripMenuItem();
             this.tpgDesktop = new System.Windows.Forms.TabPage();
             this.pnlDestop = new System.Windows.Forms.Panel();
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
-            this.tsbCloseAll = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -246,7 +247,8 @@
             this.helpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiUserManual,
             this.aboutToolStripMenuItem,
-            this.tsmiOpenLatestDownURL});
+            this.tsmiOpenLatestDownURL,
+            this.tsbCheckUpdate});
             this.helpMenu.Name = "helpMenu";
             this.helpMenu.Size = new System.Drawing.Size(61, 22);
             this.helpMenu.Text = "帮助(&H)";
@@ -254,23 +256,31 @@
             // tsmiUserManual
             // 
             this.tsmiUserManual.Name = "tsmiUserManual";
-            this.tsmiUserManual.Size = new System.Drawing.Size(148, 22);
+            this.tsmiUserManual.Size = new System.Drawing.Size(180, 22);
             this.tsmiUserManual.Text = "用户手册(&U)";
             this.tsmiUserManual.Click += new System.EventHandler(this.tsmiUserManual_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "关于(&A) ";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // tsmiOpenLatestDownURL
             // 
             this.tsmiOpenLatestDownURL.Name = "tsmiOpenLatestDownURL";
-            this.tsmiOpenLatestDownURL.Size = new System.Drawing.Size(148, 22);
+            this.tsmiOpenLatestDownURL.Size = new System.Drawing.Size(180, 22);
             this.tsmiOpenLatestDownURL.Text = "复制下载地址";
             this.tsmiOpenLatestDownURL.Click += new System.EventHandler(this.tsmiOpenLatestDownURL_Click);
+            // 
+            // tsbCheckUpdate
+            // 
+            this.tsbCheckUpdate.Name = "tsbCheckUpdate";
+            this.tsbCheckUpdate.Size = new System.Drawing.Size(180, 22);
+            this.tsbCheckUpdate.Text = "检查更新";
+            this.tsbCheckUpdate.ToolTipText = "检测是否有新版本";
+            this.tsbCheckUpdate.Click += new System.EventHandler(this.tsbCheckUpdate_Click);
             // 
             // toolStrip
             // 
@@ -520,28 +530,35 @@
             this.tsmiCloseMenu,
             this.tsbCloseAll});
             this.cmsMenuSheet.Name = "cmsMenuSheet";
-            this.cmsMenuSheet.Size = new System.Drawing.Size(181, 114);
+            this.cmsMenuSheet.Size = new System.Drawing.Size(125, 92);
             // 
             // tsmiMenuSheetTop
             // 
             this.tsmiMenuSheetTop.Name = "tsmiMenuSheetTop";
-            this.tsmiMenuSheetTop.Size = new System.Drawing.Size(180, 22);
+            this.tsmiMenuSheetTop.Size = new System.Drawing.Size(124, 22);
             this.tsmiMenuSheetTop.Text = "置顶部";
             this.tsmiMenuSheetTop.Click += new System.EventHandler(this.TsmiMenuSheetTop_Click);
             // 
             // tsmiMenuSheetBottom
             // 
             this.tsmiMenuSheetBottom.Name = "tsmiMenuSheetBottom";
-            this.tsmiMenuSheetBottom.Size = new System.Drawing.Size(180, 22);
+            this.tsmiMenuSheetBottom.Size = new System.Drawing.Size(124, 22);
             this.tsmiMenuSheetBottom.Text = "置底部";
             this.tsmiMenuSheetBottom.Click += new System.EventHandler(this.TsmiMenuSheetBottom_Click);
             // 
             // tsmiCloseMenu
             // 
             this.tsmiCloseMenu.Name = "tsmiCloseMenu";
-            this.tsmiCloseMenu.Size = new System.Drawing.Size(180, 22);
+            this.tsmiCloseMenu.Size = new System.Drawing.Size(124, 22);
             this.tsmiCloseMenu.Text = "关闭";
             this.tsmiCloseMenu.Click += new System.EventHandler(this.TsmiCloseMenu_Click);
+            // 
+            // tsbCloseAll
+            // 
+            this.tsbCloseAll.Name = "tsbCloseAll";
+            this.tsbCloseAll.Size = new System.Drawing.Size(124, 22);
+            this.tsbCloseAll.Text = "关闭所有";
+            this.tsbCloseAll.Click += new System.EventHandler(this.tsbCloseAll_Click);
             // 
             // tpgDesktop
             // 
@@ -562,13 +579,6 @@
             this.pnlDestop.Name = "pnlDestop";
             this.pnlDestop.Size = new System.Drawing.Size(1075, 47);
             this.pnlDestop.TabIndex = 8;
-            // 
-            // tsbCloseAll
-            // 
-            this.tsbCloseAll.Name = "tsbCloseAll";
-            this.tsbCloseAll.Size = new System.Drawing.Size(180, 22);
-            this.tsbCloseAll.Text = "关闭所有";
-            this.tsbCloseAll.Click += new System.EventHandler(this.tsbCloseAll_Click);
             // 
             // FrmMiniMainMDI
             // 
@@ -664,6 +674,7 @@
         private System.Windows.Forms.ContextMenuStrip cmsOpenTreeMenu;
         private System.Windows.Forms.ToolStripMenuItem tsmiOpenNewForm;
         private System.Windows.Forms.ToolStripMenuItem tsbCloseAll;
+        private System.Windows.Forms.ToolStripMenuItem tsbCheckUpdate;
     }
 }
 

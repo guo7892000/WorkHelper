@@ -16,6 +16,10 @@ using Breezee.Core.Interface;
 using Breezee.Core.WinFormUI;
 using Breezee.Core;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Breezee.Core.Tool.Helper;
+using System.Threading.Tasks;
+using Breezee.Core.IOC;
+using Breezee.Core.Adapter.IBLL;
 
 namespace Breezee.Framework.Mini.StartUp
 {
@@ -41,6 +45,7 @@ namespace Breezee.Framework.Mini.StartUp
         private string _FrameworkHelpPath = "/Help/Html/Mini/WorkHelper.html";
         private string _FrameworkHelpName = "工作助手";
         private WinFormConfig _WinFormConfig;
+        private IADPJson _IADPJson;//JSON转换
         #endregion
 
         #region 构造函数
@@ -54,7 +59,8 @@ namespace Breezee.Framework.Mini.StartUp
         private void FrmMainMDI_Load(object sender, EventArgs e)
         {
             Text = string.Format("工作助手（Work Helper） v{0} 正式版  2023-08-30", Assembly.GetExecutingAssembly().GetName().Version.ToString());
-            
+            _IADPJson = ContainerContext.Container.Resolve<IADPJson>();
+
             _WinFormConfig = WinFormContext.Instance.WinFormConfig;
             iStartMenu = menuStrip.Items.IndexOfKey(tsbStartMenu.Name);
             this.WindowState = FormWindowState.Maximized;
@@ -85,6 +91,11 @@ namespace Breezee.Framework.Mini.StartUp
             tsbRestartMenu.Click += tsbRestartMenu_Click;
             tsmiLock.Click += tsmiLock_Click;
             tsmiChangePassword.Click += tsmiChangePassword_Click;
+            //自动检测是否有新版本
+            if ("1".Equals(_WinFormConfig.Get(GlobalKey.Upgrade_IsAutoCheckVersion, "1")))
+            {
+                Task.Run(() => UpgradeSystem(false)); 
+            }
         }
         #endregion
 
@@ -835,5 +846,117 @@ namespace Breezee.Framework.Mini.StartUp
         {
             closeAllToolStripMenuItem.PerformClick();
         }
+
+        private void tsbCheckUpdate_Click(object sender, EventArgs e)
+        {
+            UpgradeSystem(true);
+        }
+        /// <summary>
+        /// 升级系统方法
+        /// </summary>
+        /// <param name="isHandUpdate"></param>
+        private async void UpgradeSystem(bool isHandUpdate)
+        {
+            try
+            {
+                /**
+                 * 读取服务器的版本(blob为默认点开的网页形式)：https://gitee.com/breezee2000/WorkHelper/blob/master/LatestVersion.json
+                 * 读取服务器的版本(raw为原始数据形式)：https://gitee.com/breezee2000/WorkHelper/raw/master/LatestVersion.json
+                 */
+                string sServerVersionJson = FileDirHelper.ReadWebText("https://gitee.com/breezee2000/WorkHelper/raw/master/LatestVersion.json").Trim();
+                LatestVerion ver = _IADPJson.Deserialize<LatestVerion>(sServerVersionJson);
+                string sServerVersion = ver.version;
+                string sNowVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(); //本地版本
+
+                bool hasNewVerion = false;
+                string[] sNowArr = sNowVersion.Split(new char[] { '.' });
+                string[] sServerArr = sServerVersion.Split(new char[] { '.' });
+                for (int i = 0; i < sServerArr.Length; i++)
+                {
+                    if (sNowArr.Length > i)
+                    {
+                        hasNewVerion = int.Parse(sServerArr[i]) > int.Parse(sNowArr[i]); //服务器版本大于本地版本
+                        if (hasNewVerion) break;
+                    }
+                }
+                if (hasNewVerion)
+                {
+                    if (WinFormContext.Instance.IsUpgradeRunning)
+                    {
+                        if (isHandUpdate)
+                        {
+                            MsgHelper.ShowInfo("目前正在升级下载中。。。");
+                        }
+                        return;
+                    }
+
+                    if (MsgHelper.ShowOkCancel("存在新版本：" + sServerVersion + "，确定要升级？") == DialogResult.Cancel)
+                    {
+                        return;
+                    }
+                    
+                    //版本升级
+                    WinFormContext.Instance.IsUpgradeRunning = true;
+                    //异步获取文件
+                    string sLocalDir = _WinFormConfig.Get(GlobalKey.Upgrade_TempPath, GlobalContext.PathTemp());
+                    string sServerZipUrl = string.Format("https://gitee.com/breezee2000/WorkHelper/releases/download/{0}/WorkHelper{1}.rar", sServerVersion, sServerVersion);
+                    //await Task.Run(() => FileDirHelper.DownloadWebZipAndUnZipAsync(sServerZipUrl, sLocalDir));
+                    WinFormContext.Instance.IsUpgradeRunning = false;
+                    DirectoryInfo sPrePath =new DirectoryInfo(GlobalContext.AppEntryAssemblyPath);
+                    if("release".Equals(sPrePath.Name,StringComparison.OrdinalIgnoreCase) || "bin".Equals(sPrePath.Name, StringComparison.OrdinalIgnoreCase))
+                    {
+                        _WinFormConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "当前版本所在的目录，为升级完后删除旧版本使用！"); //开发环境，不记录原版本
+                    }
+                    else
+                    {
+                        _WinFormConfig.Set(GlobalKey.Upgrade_PreVersionPath, sPrePath.FullName, "当前版本所在的目录，为升级完后删除旧版本使用！");
+                        try
+                        {
+                            //SQLite的数据库文件也复制一份到目标目录：如表结构有变更
+                            string dbFile = Path.Combine(sPrePath.FullName, "SQLite_DBTool.db");
+                            if (File.Exists(dbFile))
+                            {
+                                FileDirHelper.CopyFilesToDirKeepSrcDirName(dbFile, sLocalDir);
+                            }
+                            dbFile = Path.Combine(sPrePath.FullName, "SQLite_Mini.db");
+                            if (File.Exists(dbFile))
+                            {
+                                FileDirHelper.CopyFilesToDirKeepSrcDirName(dbFile, sLocalDir);
+                            }
+                        }
+                        catch(Exception ex) 
+                        {
+                            System.Console.WriteLine(ex.Message); //复制文件出错，只在控制台输入错误信息
+                        }
+                    }
+                    
+                    if (MsgHelper.ShowOkCancel("升级成功！是否打开新版本？")== DialogResult.Cancel) 
+                    { 
+                        return; 
+                    }
+                    //
+                    string sNewVerExe = Path.Combine(sLocalDir, "WorkHelper" + sServerVersion, "Breezee.Framework.Mini.StartUp.exe");
+                    _WinFormConfig.Save();
+                    this.Close();//关闭当前窗体
+                    EXEProgramHelper.StartEXEProgram(sNewVerExe,"");//运行新版本
+                }
+                else
+                {
+                    if (isHandUpdate)
+                    {
+                        MsgHelper.ShowInfo("已经是最新版本，不需要升级！");
+                    }
+                }
+            }
+            catch(Exception ex) 
+            {
+                if (isHandUpdate)
+                {
+                    MsgHelper.ShowInfo("升级出错：" + ex.Message);
+                }
+                WinFormContext.Instance.IsUpgradeRunning = false;
+            }
+        }
+        
     }
 }

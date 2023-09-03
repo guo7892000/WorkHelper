@@ -27,6 +27,25 @@ namespace Breezee.Framework.Mini.StartUp
             //打开登录界面
             FrmMiniLogin frmLogin = new FrmMiniLogin();
             if (frmLogin.ShowDialog() != DialogResult.OK) return;
+
+            //删除旧版本逻辑：有上次更新路径，且是要删除旧版本
+            WinFormConfig  winConfig= WinFormContext.Instance.WinFormConfig;
+            string sPrePath = winConfig.Get(GlobalKey.Upgrade_PreVersionPath, "");
+            if (!string.IsNullOrEmpty(sPrePath) && "1".Equals(winConfig.Get(GlobalKey.Upgrade_IsDeleteOldVersion, "0")))
+            {
+                if("1".Equals(winConfig.Get(GlobalKey.Upgrade_IsDeleteOldVersionNeedConfirm, "1")))
+                {
+                    if(MessageBox.Show("旧版本路径："+ sPrePath + "，确认删除？", "删除旧版本提示", MessageBoxButtons.OKCancel)== DialogResult.OK)
+                    {
+                        Directory.Delete(sPrePath, true);
+                    }
+                }
+                else
+                {
+                    Directory.Delete(sPrePath, true);
+                }
+            }
+
             //创建主窗体
             FrmMiniMainMDI frmMain = new FrmMiniMainMDI();
             WinFormContext.Instance.SetMdiParent(frmMain);

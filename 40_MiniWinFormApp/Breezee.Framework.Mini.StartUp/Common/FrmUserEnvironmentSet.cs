@@ -83,6 +83,12 @@ namespace Breezee.Framework.Mini.StartUp
             lblDgvStyleInfo.Text = "功能退出时会保存网格样式，以便下次加载！如要清除，请先退出所有功能，再点“清除所有网格样式”按钮！";
             txbGirdStyleTempPath.Text = WinFormContext.Instance.DataGridTagHistoryPath;
             txbGirdStyleTempPath.ReadOnly= true;
+            //升级配置
+            ckbAutoCheckVersion.Checked = _WinFormConfig.Get(GlobalKey.Upgrade_IsAutoCheckVersion, "1").Equals("1") ? true : false;
+            ckbUpgradeSuccessDelOldVerion.Checked = _WinFormConfig.Get(GlobalKey.Upgrade_IsDeleteOldVersion, "0").Equals("1") ? true : false; //默认不删除旧版本
+            ckbDelOldNeedConfirm.Checked = _WinFormConfig.Get(GlobalKey.Upgrade_IsDeleteOldVersionNeedConfirm, "1").Equals("1") ? true : false; //删除旧版本是否需要确认
+            
+            txbUpgradeTempDir.Text = _WinFormConfig.Get(GlobalKey.Upgrade_TempPath, GlobalContext.PathTemp());
         }
         #endregion
 
@@ -199,6 +205,11 @@ namespace Breezee.Framework.Mini.StartUp
                 }
                 #endregion
             }
+            //升级配置
+            _WinFormConfig.Set(GlobalKey.Upgrade_IsAutoCheckVersion, ckbAutoCheckVersion.Checked ? "1" : "0", "是否自动检测新版本");
+            _WinFormConfig.Set(GlobalKey.Upgrade_IsDeleteOldVersion, ckbUpgradeSuccessDelOldVerion.Checked ? "1" : "0", "是否在新版本升级成功后删除旧版本");
+            _WinFormConfig.Set(GlobalKey.Upgrade_IsDeleteOldVersionNeedConfirm, ckbDelOldNeedConfirm.Checked ? "1" : "0", "是否在新版本升级成功后需要确认才删除旧版本"); 
+            _WinFormConfig.Set(GlobalKey.Upgrade_TempPath, txbUpgradeTempDir.Text.Trim(),"临时升级文件保存路径");
             _WinFormConfig.Save();
             ShowInfo("【用户环境设置】保存成功！");
             DialogResult = System.Windows.Forms.DialogResult.OK;
@@ -397,6 +408,12 @@ namespace Breezee.Framework.Mini.StartUp
             if (ShowYesNo("请确保除其他功能已关闭，确定要清空所有网格样式？") != DialogResult.Yes) return;
             Directory.Delete(WinFormContext.Instance.DataGridTagHistoryPath, true);
             ShowInfo("成功清空所有网格样式！");
+        }
+
+        private void btnSelectUpgradeTmpPath_Click(object sender, EventArgs e)
+        {
+            if (fbdSelectPath.ShowDialog() != DialogResult.OK) return;
+            txbUpgradeTempDir.Text = fbdSelectPath.SelectedPath;
         }
     }
 }
