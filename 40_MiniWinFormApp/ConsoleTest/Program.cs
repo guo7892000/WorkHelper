@@ -1,4 +1,5 @@
 ﻿using Breezee.Core.Interface;
+using Breezee.Core.Tool.Helper;
 using MyPeachNetTest;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace ConsoleTest
             //selectTest.Select();
             //selectTest.WithSelect();
             //selectTest.UnionSelect();
-            selectTest.InList();
+            //selectTest.InList();
 
             Select2Test select2Test = new Select2Test();
             //select2Test.Select();
@@ -43,7 +44,17 @@ namespace ConsoleTest
             DeleteTest deleteTest = new DeleteTest();
             //deleteTest.Delete();
 
+            downLoadTet();
+
             Console.ReadKey();
+        }
+
+        private static async void downLoadTet()
+        {
+            string sResult = FileDirHelper.ReadWebText("https://gitee.com/breezee2000/WorkHelper/blob/master/README.md");
+
+            await FileDirHelper.DownloadWebZipAndUnZipAsync(@"https://gitee.com/breezee2000/WorkHelper/releases/download/1.2.24/WorkHelper1.2.24.rar", "E:\\mypeach");
+
         }
     }
 }

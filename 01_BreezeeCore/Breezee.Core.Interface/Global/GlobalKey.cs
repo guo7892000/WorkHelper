@@ -22,5 +22,11 @@ namespace Breezee.Core.Interface
         public static string SavePromptType = "SavePromptType";
         //配置目录配置
         public static string ConfigPathKey = "ConfigPath";
+        //升级配置
+        public static string Upgrade_IsAutoCheckVersion = "Upgrade_IsAutoCheckVersion"; //是否自动检测新版本
+        public static string Upgrade_IsDeleteOldVersion = "Upgrade_IsDeleteOldVersion"; //是否升级新版本成功后删除旧版本
+        public static string Upgrade_IsDeleteOldVersionNeedConfirm = "Upgrade_IsDeleteOldVersionNeedConfirm"; //是否升级新版本成功后删除旧版本需要确认？
+        public static string Upgrade_TempPath = "Upgrade_TempPath"; //升级临时文件路径
+        public static string Upgrade_PreVersionPath = "Upgrade_PreVersionPath"; //上个版本的路径
     }
 }

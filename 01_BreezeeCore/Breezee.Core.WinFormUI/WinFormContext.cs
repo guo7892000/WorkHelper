@@ -49,13 +49,9 @@ namespace Breezee.Core.WinFormUI
         private static List<FtpServer> _FteServerList = new List<FtpServer>();//FTP服务器列表
 
         /// <summary>
-        /// 配置根路径
+        /// 是否正在升级
         /// </summary>
-        //public string ConfigRootPath => GlobalContext.AppRootPath;
-        /// <summary>
-        /// 用户自定配置的路径
-        /// </summary>
-        //public string UserSettingPath => GlobalContext.PathConfig();
+        public bool IsUpgradeRunning = false;
         public AppConfigPair AppConfigPair { get; set; }
         public WinFormConfig WinFormConfig { get; set; }
         /// <summary>
