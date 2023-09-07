@@ -32,7 +32,7 @@ namespace Breezee.Core.Tool
             ProcessStartInfo info = new ProcessStartInfo();
             info.FileName = ExeFileFullPath;//@"路径\exe的文件名";
             info.Arguments = ExeArg;
-            info.WindowStyle = ProcessWindowStyle.Minimized;
+            info.WindowStyle = ProcessWindowStyle.Normal;
             Process pro = Process.Start(info);
             if (IsWaitForExit)
             {

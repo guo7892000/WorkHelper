@@ -27,27 +27,8 @@ namespace Breezee.Framework.Mini.StartUp
             //打开登录界面
             FrmMiniLogin frmLogin = new FrmMiniLogin();
             if (frmLogin.ShowDialog() != DialogResult.OK) return;
-
-            //删除旧版本逻辑：有上次更新路径，且是要删除旧版本
-            WinFormConfig  winConfig= WinFormContext.Instance.WinFormConfig;
-            string sPrePath = winConfig.Get(GlobalKey.Upgrade_PreVersionPath, "");
-            if (!string.IsNullOrEmpty(sPrePath) && "1".Equals(winConfig.Get(GlobalKey.Upgrade_IsDeleteOldVersion, "0")))
-            {
-                if("1".Equals(winConfig.Get(GlobalKey.Upgrade_IsDeleteOldVersionNeedConfirm, "1")))
-                {
-                    if(MessageBox.Show("旧版本路径："+ sPrePath + "，确认删除？", "删除旧版本提示", MessageBoxButtons.OKCancel)== DialogResult.OK)
-                    {
-                        Directory.Delete(sPrePath, true);
-                        winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "","清空上个版本文件夹");
-                    }
-                }
-                else
-                {
-                    Directory.Delete(sPrePath, true);
-                    winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "清空上个版本文件夹");
-                }
-            }
-
+            //删除旧版本文件
+            DeleteOldVersionFile();
             //创建主窗体
             FrmMiniMainMDI frmMain = new FrmMiniMainMDI();
             WinFormContext.Instance.SetMdiParent(frmMain);
@@ -59,7 +40,53 @@ namespace Breezee.Framework.Mini.StartUp
             app.Init();
             //运行应用
             Application.Run(frmMain);
-        }  
+        }
+        #endregion
+
+        #region 删除旧版本文件
+        private static void DeleteOldVersionFile()
+        {
+            //删除旧版本逻辑：有上次更新路径，且是要删除旧版本
+            WinFormConfig winConfig = WinFormContext.Instance.WinFormConfig;
+            try
+            {
+                string sPrePath = winConfig.Get(GlobalKey.Upgrade_PreVersionPath, "");
+                if (!string.IsNullOrEmpty(sPrePath) && "1".Equals(winConfig.Get(GlobalKey.Upgrade_IsDeleteOldVersion, "0")))
+                {
+                    string sExePath = Path.GetFullPath(GlobalContext.AppEntryAssemblyPath);
+                    string sPreVersionPath = Path.GetFullPath(sPrePath);
+                    bool isSaveDir = sExePath.Equals(sPreVersionPath, StringComparison.OrdinalIgnoreCase);
+
+                    if ("1".Equals(winConfig.Get(GlobalKey.Upgrade_IsDeleteOldVersionNeedConfirm, "1")))
+                    {
+                        if (Directory.Exists(sPrePath) && !isSaveDir)
+                        {
+                            if (MsgHelper.ShowOkCancel("旧版本路径：" + sPrePath + "，确认删除？") == DialogResult.OK)
+                            {
+                                Directory.Delete(sPrePath, true);
+                                winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "清空上个版本文件夹");
+                                winConfig.Save();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (Directory.Exists(sPrePath) && !isSaveDir)
+                        {
+                            Directory.Delete(sPrePath, true);
+                            winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "清空上个版本文件夹");
+                            winConfig.Save();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex.Message);
+                winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "清空上个版本文件夹");
+                winConfig.Save();
+            }
+        } 
         #endregion
 
         #region 应用程序错误异常

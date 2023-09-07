@@ -87,7 +87,7 @@ namespace Breezee.Framework.Mini.StartUp
             ckbAutoCheckVersion.Checked = _WinFormConfig.Get(GlobalKey.Upgrade_IsAutoCheckVersion, "1").Equals("1") ? true : false;
             ckbUpgradeSuccessDelOldVerion.Checked = _WinFormConfig.Get(GlobalKey.Upgrade_IsDeleteOldVersion, "0").Equals("1") ? true : false; //默认不删除旧版本
             ckbDelOldNeedConfirm.Checked = _WinFormConfig.Get(GlobalKey.Upgrade_IsDeleteOldVersionNeedConfirm, "1").Equals("1") ? true : false; //删除旧版本是否需要确认
-            
+            toolTip1.SetToolTip(ckbUpgradeSuccessDelOldVerion, "如选中本项，升级完成后自动删除旧版本，一些杀毒软件会误报为病毒。所以不建议选中本项，建议升级完成后还是手工删除旧版本！");
             txbUpgradeTempDir.Text = _WinFormConfig.Get(GlobalKey.Upgrade_TempPath, GlobalContext.PathTemp());
         }
         #endregion

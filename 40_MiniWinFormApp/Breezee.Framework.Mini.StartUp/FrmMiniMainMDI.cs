@@ -28,6 +28,8 @@ namespace Breezee.Framework.Mini.StartUp
     /// 对象类型：窗体
     /// 创建日期：2016-10-20
     /// 创建作者：黄国辉
+    /// 修改历史：
+    ///    2023-08-30 BreezeeHui 增加自动升级
     /// </summary>
     public partial class FrmMiniMainMDI : Form, IMainForm, IForm
     {
@@ -58,7 +60,7 @@ namespace Breezee.Framework.Mini.StartUp
         #region 加载事件
         private void FrmMainMDI_Load(object sender, EventArgs e)
         {
-            Text = string.Format("工作助手（Work Helper） v{0} 正式版  2023-09-03", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            Text = string.Format("工作助手（Work Helper） v{0} 正式版  2023-09-07", Assembly.GetExecutingAssembly().GetName().Version.ToString());
             _IADPJson = ContainerContext.Container.Resolve<IADPJson>();
 
             _WinFormConfig = WinFormContext.Instance.WinFormConfig;
@@ -852,7 +854,7 @@ namespace Breezee.Framework.Mini.StartUp
             UpgradeSystem(true);
         }
         /// <summary>
-        /// 升级系统方法
+        /// 升级系统方法：TO：升级中不过退出，原压缩包要不要删除，还有一个配置文件删除不了
         /// </summary>
         /// <param name="isHandUpdate"></param>
         private async void UpgradeSystem(bool isHandUpdate)
@@ -890,7 +892,7 @@ namespace Breezee.Framework.Mini.StartUp
                         return;
                     }
 
-                    if (MsgHelper.ShowOkCancel("存在新版本：" + sServerVersion + "，确定要升级？") == DialogResult.Cancel)
+                    if (MsgHelper.ShowOkCancel("存在新版本：" + sServerVersion + "，确定要升级？"+System.Environment.NewLine +"升级过程在后台运行，不影响正常使用，完成后会提示。") == DialogResult.Cancel)
                     {
                         return;
                     }
@@ -910,27 +912,11 @@ namespace Breezee.Framework.Mini.StartUp
                     }
                     else
                     {
+                        //正式运行环境：记录原版本路径，还备份SQLite数据库文件
                         _WinFormConfig.Set(GlobalKey.Upgrade_PreVersionPath, sPrePath.FullName, "当前版本所在的目录，为升级完后删除旧版本使用！");
-                        try
-                        {
-                            //SQLite的数据库文件也复制一份到目标目录：如表结构有变更
-                            string dbFile = Path.Combine(sPrePath.FullName, "SQLite_DBTool.db");
-                            if (File.Exists(dbFile))
-                            {
-                                FileDirHelper.CopyFilesToDirKeepSrcDirName(dbFile, sLocalDir);
-                            }
-                            dbFile = Path.Combine(sPrePath.FullName, "SQLite_Mini.db");
-                            if (File.Exists(dbFile))
-                            {
-                                FileDirHelper.CopyFilesToDirKeepSrcDirName(dbFile, sLocalDir);
-                            }
-                        }
-                        catch(Exception ex) 
-                        {
-                            System.Console.WriteLine(ex.Message); //复制文件出错，只在控制台输入错误信息
-                        }
                     }
-                    
+                    //删除新版本的压缩包
+                    //File.Delete(Path.Combine(sLocalDir,string.Format("WorkHelper{0}.rar", sServerVersion)));
                     if (MsgHelper.ShowOkCancel("升级成功！是否打开新版本？")== DialogResult.Cancel) 
                     { 
                         return; 

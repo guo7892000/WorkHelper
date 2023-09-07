@@ -26,6 +26,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             public static readonly string ModuleCode = "模板编码";
             public static readonly string ModuleContent = "模板内容";
+            public static readonly string ModuleFileSuffix = "文件后缀";
         }
 
         /// <summary>

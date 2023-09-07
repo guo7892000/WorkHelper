@@ -347,6 +347,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             DataGridView dgvSelect = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as DataGridView;
             DataTable dt = dgvSelect.GetBindingTable();
             DataRow dataRow = dgvSelect.GetCurrentRow();
+            if (dataRow == null) return;
             dt.Rows.Remove(dataRow);
         }
     }

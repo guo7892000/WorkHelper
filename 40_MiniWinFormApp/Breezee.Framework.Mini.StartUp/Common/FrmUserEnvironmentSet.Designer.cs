@@ -52,6 +52,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpBase = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.ckbDelOldNeedConfirm = new System.Windows.Forms.CheckBox();
             this.ckbUpgradeSuccessDelOldVerion = new System.Windows.Forms.CheckBox();
             this.btnSelectUpgradeTmpPath = new System.Windows.Forms.Button();
             this.txbUpgradeTempDir = new System.Windows.Forms.TextBox();
@@ -74,7 +75,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.fbdSelectPath = new System.Windows.Forms.FolderBrowserDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.ckbDelOldNeedConfirm = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -149,7 +149,7 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 317F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 341F));
             this.tableLayoutPanel3.Controls.Add(this.btnSelectPicMain, 3, 1);
             this.tableLayoutPanel3.Controls.Add(this.txbSkinValueMain, 1, 1);
             this.tableLayoutPanel3.Controls.Add(this.cbbColorMain, 2, 0);
@@ -233,7 +233,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 317F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 341F));
             this.tableLayoutPanel2.Controls.Add(this.btnSelectPicCommon, 3, 1);
             this.tableLayoutPanel2.Controls.Add(this.txbSkinValueCommon, 1, 1);
             this.tableLayoutPanel2.Controls.Add(this.cbbColorCommon, 2, 0);
@@ -328,6 +328,16 @@
             this.groupBox6.TabIndex = 2;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "升级配置";
+            // 
+            // ckbDelOldNeedConfirm
+            // 
+            this.ckbDelOldNeedConfirm.AutoSize = true;
+            this.ckbDelOldNeedConfirm.Location = new System.Drawing.Point(273, 44);
+            this.ckbDelOldNeedConfirm.Name = "ckbDelOldNeedConfirm";
+            this.ckbDelOldNeedConfirm.Size = new System.Drawing.Size(132, 16);
+            this.ckbDelOldNeedConfirm.TabIndex = 5;
+            this.ckbDelOldNeedConfirm.Text = "删除旧版本需要确认";
+            this.ckbDelOldNeedConfirm.UseVisualStyleBackColor = true;
             // 
             // ckbUpgradeSuccessDelOldVerion
             // 
@@ -540,16 +550,6 @@
             this.label5.Size = new System.Drawing.Size(113, 12);
             this.label5.TabIndex = 0;
             this.label5.Text = "网格样式临时文件：";
-            // 
-            // ckbDelOldNeedConfig
-            // 
-            this.ckbDelOldNeedConfirm.AutoSize = true;
-            this.ckbDelOldNeedConfirm.Location = new System.Drawing.Point(273, 44);
-            this.ckbDelOldNeedConfirm.Name = "ckbDelOldNeedConfig";
-            this.ckbDelOldNeedConfirm.Size = new System.Drawing.Size(132, 16);
-            this.ckbDelOldNeedConfirm.TabIndex = 5;
-            this.ckbDelOldNeedConfirm.Text = "删除旧版本需要确认";
-            this.ckbDelOldNeedConfirm.UseVisualStyleBackColor = true;
             // 
             // FrmUserEnvironmentSet
             // 
