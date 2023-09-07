@@ -15,11 +15,16 @@ using Setting = Breezee.WorkHelper.DBTool.UI.Properties.Settings;
 using Breezee.Core.WinFormUI;
 using Breezee.AutoSQLExecutor.Core;
 using System.Text.RegularExpressions;
+using org.breezee.MyPeachNet;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
     /// <summary>
-    /// 生成实体
+    /// 功能名称：生成实体
+    /// 创建作者：黄国辉
+    /// 创建日期：2016-10-20
+    /// 修改历史:
+    ///   2023-09-07 BreezeeHui 模板增加文件后缀
     /// </summary>
 	public partial class FrmDBTDBAutoEntityFile : BaseForm
 	{
@@ -206,8 +211,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     Directory.CreateDirectory(sFilePath);
                 }
+                //确定文件后缀名
+                string sFileSuffix = txbModuleFileSuffix.Text.trim();
+                if (!sFileSuffix.startsWith("."))
+                {
+                    sFileSuffix = "." + sFileSuffix;
+                }
                 //最终文件路径：包含文件
-                sFilePath = Path.Combine(sFilePath, _dicString[AutoImportModuleString.AutoFileSysParam.EntNameClass] + ".cs");
+                sFilePath = Path.Combine(sFilePath, _dicString[AutoImportModuleString.AutoFileSysParam.EntNameClass] + sFileSuffix);
                 foreach (string sKey in _dicString.Keys)
                 {
                     sFileContent = sFileContent.Replace(sKey, _dicString[sKey]);
@@ -330,7 +341,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
         } 
         #endregion
-
 
         #region 加载树方法
         private void LoadTreeView(DbServerInfo server)
@@ -533,9 +543,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
         }
         #endregion
-
-        
-
+       
         /// <summary>
         /// 模板下拉框变化
         /// </summary>
@@ -550,7 +558,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if(drArr.Length> 0)
                 {
                     rtbEntityTemplate.Clear();
-                    rtbEntityTemplate.AppendText(drArr[0][AutoImportModuleString.ColumnNameModule.ModuleContent].ToString());
+                    rtbEntityTemplate.AppendText(drArr[0][AutoImportModuleString.ColumnNameModule.ModuleContent].ToString()); //模板内容
+                    txbModuleFileSuffix.Text = drArr[0][AutoImportModuleString.ColumnNameModule.ModuleFileSuffix].ToString(); //后缀
                 }
             }
         }

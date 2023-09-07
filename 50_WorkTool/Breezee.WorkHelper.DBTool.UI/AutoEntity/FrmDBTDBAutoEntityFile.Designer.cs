@@ -62,6 +62,8 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
+            this.txbModuleFileSuffix = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.ctxmBuilt.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableInfo)).BeginInit();
@@ -164,6 +166,8 @@
             this.tableLayoutPanel1.Controls.Add(this.label5, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.btnPath, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.txbRemoveTablePre, 3, 1);
+            this.tableLayoutPanel1.Controls.Add(this.txbModuleFileSuffix, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 2, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -458,6 +462,24 @@
             this.uC_DbConnection1.Size = new System.Drawing.Size(1343, 71);
             this.uC_DbConnection1.TabIndex = 20;
             // 
+            // txbFileExtName
+            // 
+            this.txbModuleFileSuffix.Location = new System.Drawing.Point(303, 3);
+            this.txbModuleFileSuffix.Name = "txbFileExtName";
+            this.txbModuleFileSuffix.Size = new System.Drawing.Size(49, 21);
+            this.txbModuleFileSuffix.TabIndex = 4;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.Black;
+            this.label1.Location = new System.Drawing.Point(232, 8);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 12);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "文件后缀：";
+            // 
             // FrmDBTDBAutoEntityFile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -539,5 +561,7 @@
         private System.Windows.Forms.ToolStripButton tsbDownloadModel;
         private System.Windows.Forms.TextBox txbRemoveTablePre;
         private System.Windows.Forms.SplitContainer splitContainer3;
+        private System.Windows.Forms.TextBox txbModuleFileSuffix;
+        private System.Windows.Forms.Label label1;
     }
 }
