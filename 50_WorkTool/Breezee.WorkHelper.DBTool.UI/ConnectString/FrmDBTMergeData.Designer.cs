@@ -57,6 +57,7 @@
             this.lblInfo2 = new System.Windows.Forms.Label();
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.dgvResult = new System.Windows.Forms.DataGridView();
+            this.ckbCondTrim = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -134,10 +135,11 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 683F));
-            this.tableLayoutPanel1.Controls.Add(this.ckbAutoColumnName, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbbSqlType, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.CkbLoadExampleData, 6, 0);
+            this.tableLayoutPanel1.Controls.Add(this.ckbAutoColumnName, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.ckbCondTrim, 4, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
@@ -184,7 +186,7 @@
             // 
             this.CkbLoadExampleData.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.CkbLoadExampleData.AutoSize = true;
-            this.CkbLoadExampleData.Location = new System.Drawing.Point(321, 5);
+            this.CkbLoadExampleData.Location = new System.Drawing.Point(459, 5);
             this.CkbLoadExampleData.Margin = new System.Windows.Forms.Padding(2);
             this.CkbLoadExampleData.Name = "CkbLoadExampleData";
             this.CkbLoadExampleData.Size = new System.Drawing.Size(96, 16);
@@ -275,7 +277,7 @@
             this.dgvExcel1.RowTemplate.Height = 23;
             this.dgvExcel1.Size = new System.Drawing.Size(769, 322);
             this.dgvExcel1.TabIndex = 0;
-            this.dgvExcel1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvTableList_KeyDown);
+            this.dgvExcel1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvExcel1_KeyDown);
             // 
             // contextMenuStrip1
             // 
@@ -384,6 +386,20 @@
             this.dgvResult.Size = new System.Drawing.Size(775, 342);
             this.dgvResult.TabIndex = 1;
             // 
+            // ckbCondTrim
+            // 
+            this.ckbCondTrim.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbCondTrim.AutoSize = true;
+            this.ckbCondTrim.Checked = true;
+            this.ckbCondTrim.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbCondTrim.Location = new System.Drawing.Point(322, 5);
+            this.ckbCondTrim.Name = "ckbCondTrim";
+            this.ckbCondTrim.Size = new System.Drawing.Size(132, 16);
+            this.ckbCondTrim.TabIndex = 8;
+            this.ckbCondTrim.Text = "条件值去掉前后空格";
+            this.ckbCondTrim.UseVisualStyleBackColor = true;
+            this.ckbCondTrim.Visible = false;
+            // 
             // FrmDBTMergeData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -451,5 +467,6 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem tsmiClear;
         private System.Windows.Forms.ToolStripMenuItem tsmiDelete;
+        private System.Windows.Forms.CheckBox ckbCondTrim;
     }
 }

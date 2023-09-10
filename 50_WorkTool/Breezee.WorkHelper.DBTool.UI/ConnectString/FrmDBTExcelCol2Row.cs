@@ -16,8 +16,7 @@ using Breezee.WorkHelper.DBTool.Entity;
 namespace Breezee.WorkHelper.DBTool.UI
 {
     /// <summary>
-    /// 复制数据生成拼接字符
-    /// 测试结果：通过
+    /// Excel的列转行
     /// </summary>
     public partial class FrmDBTExcelCol2Row : BaseForm
     {
@@ -81,7 +80,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             DataTable dtMain = (DataTable)WinFormGlobalValue.dicBindingSource[_strTableName].DataSource;
             dtMain.Clear();
             dtMain.Columns.Clear();
-            pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain);
+            pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain,"",true,false);
         }
         #endregion
 

@@ -136,6 +136,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 drNew["IN_VALUE"] = dicPreCondition[item].KeyValue;
                 dt.Rows.Add(drNew);
             }
+            dgvConditionInput.ShowRowNum(true);
         }
         private void tsbImport_Click(object sender, EventArgs e)
         {
@@ -225,6 +226,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     drNew["OUT_VALUE"] = item.Value.KeyValue;
                     dt.Rows.Add(drNew);
                 }
+                dgvConditionOutput.ShowRowNum(true); //显示行号
                 _dicObject = result.ObjectQuery;
                 //tabControl1.SelectedTab = tpAutoAfter;
                 //保存用户偏好值
@@ -274,6 +276,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 DataTable dtResult = _dataAccess.QueryHadParamSqlData(sSqlOut, _dicObject);
                 dgvQuery.BindAutoColumn(dtResult);
+                dgvQuery.ShowRowNum(true); //显示行号
             }
             catch(Exception ex) 
             { 

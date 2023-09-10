@@ -77,7 +77,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         #endregion
 
         #region 网格粘贴事件
-        private void dgvTableList_KeyDown(object sender, KeyEventArgs e)
+        private void dgvExcel1_KeyDown(object sender, KeyEventArgs e)
         {
             try
             {
@@ -93,6 +93,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     dtMain.Clear();
                     dtMain.Columns.Clear();
                     pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain);
+                    dgvExcel1.ShowRowNum();
                 }
             }
             catch (Exception ex)
@@ -248,7 +249,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     }
                 }
                 #endregion
-
+                dgvResult.ShowRowNum(true);
                 tabControl1.SelectedTab = tpAutoSQL;
                 ShowInfo(_strAutoSqlSuccess);//生成SQL成功后提示
             }
@@ -266,7 +267,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         }
         #endregion
 
-
         private void dgvExcel2_KeyDown(object sender, KeyEventArgs e)
         {
             try
@@ -283,6 +283,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     dtMain.Clear();
                     dtMain.Columns.Clear();
                     pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain,"1",true);
+                    dgvExcel2.ShowRowNum();
                 }
             }
             catch (Exception ex)

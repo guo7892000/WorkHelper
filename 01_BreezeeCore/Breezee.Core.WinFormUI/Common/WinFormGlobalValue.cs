@@ -57,10 +57,11 @@ namespace Breezee.Core.WinFormUI
             CreateBingSource(dicBindingSource, dataTableArr);
             for (int i = 0; i < dataTableArr.Length; i++)
             {
-                string sTableName = dataTableArr[i].TableName;
+                DataTable dtSource = dataTableArr[i];
+                string sTableName = dtSource.TableName;
                 if (dicBindingSource.ContainsKey(sTableName))
                 {
-                    dicBindingSource[sTableName].DataSource = dataTableArr[i];
+                    dicBindingSource[sTableName].DataSource = dtSource;
                 }
             }
         }

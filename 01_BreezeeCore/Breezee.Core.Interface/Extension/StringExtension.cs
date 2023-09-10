@@ -245,13 +245,19 @@ namespace Breezee.Core.Interface
         /// <param name="dt">在哪个表上累加数据</param>
         /// <param name="autoColumnEndString">自动列名的生缀</param>
         /// <param name="isTrimData">是否去掉数据前后空格</param>
+        /// <param name="isAddRowNum">是否增加序号列</param>
         /// <returns></returns>
-        public static DataTable GetStringTable(this string pasteText, bool AutoColumnName, DataTable dt = null, string autoColumnEndString = "",bool isTrimData=false)
+        public static DataTable GetStringTable(this string pasteText, bool AutoColumnName, DataTable dt = null, string autoColumnEndString = "",bool isTrimData=false,bool isAddRowNum = true)
         {
             if (dt == null)
             {
                 dt = new DataTable();
             }
+            if (!dt.Columns.Contains(GlobalKey.RowNum) && isAddRowNum)
+            {
+                dt.Columns.Add(GlobalKey.RowNum);
+            }
+
             string[] rows = pasteText.Trim().Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);//分割的行数数组
             string[] colNames = rows[0].Split(new string[] { "\t" }, StringSplitOptions.RemoveEmptyEntries);//列头数组
             for (int i = 0; i < rows.Length; i++)//行
@@ -284,9 +290,22 @@ namespace Breezee.Core.Interface
                 {
                     DataRow dr = dt.NewRow();
                     string[] cols = rows[i].Split(new string[] { "\t" }, StringSplitOptions.None);//注：这里不要去掉空白
-                    for (int j = 0; j < cols.Length; j++)
+                    if (isAddRowNum)
                     {
-                        dr[j] = isTrimData? cols[j].Trim(): cols[j];
+                        // 有序号列
+                        dr[GlobalKey.RowNum] = i; //行号
+                        for (int j = 0; j < cols.Length; j++)
+                        {
+                            dr[j + 1] = isTrimData ? cols[j].Trim() : cols[j]; //第一列为序号，需要跳过
+                        }
+                    }
+                    else
+                    {
+                        // 无序号列
+                        for (int j = 0; j < cols.Length; j++)
+                        {
+                            dr[j] = isTrimData ? cols[j].Trim() : cols[j]; //第一列为实际数据
+                        }
                     }
                     dt.Rows.Add(dr);
                 }

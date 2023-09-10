@@ -111,6 +111,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                             iGoodDataNum++;
                         }
                     }
+                    dgvTableList.ShowRowNum(true); //显示行号
                     tsbAutoSQL.Enabled = true;
 
                     #endregion
@@ -149,6 +150,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 dgvTableList.Columns[_sColLower].Visible = true;
                 dgvTableList.Columns[_sColUpper].Visible = true;
+                dgvTableList.ShowRowNum(true); //显示行号
                 return;
             }
      
@@ -173,6 +175,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     sbAllSql = sbAllSql + strPreStr + strData + strEndStr + strConnStr + strReturnStr;
                 }
             }
+            dgvTableList.ShowRowNum(true); //显示行号
             sbAllSql = sbAllSql.Substring(0, sbAllSql.Length - 1) + sbAllSqlEnd;
             rtbResult.Clear();
             rtbResult.AppendText(sbAllSql.ToString() + "\n");
@@ -194,11 +197,16 @@ namespace Breezee.WorkHelper.DBTool.UI
                 dgvTableList.Columns[_sColLower].Visible = false;
                 dgvTableList.Columns[_sColUpper].Visible = false;
             }
-            if (strSqlType == "1")
+            if (strSqlType == "2")
             {
                 txbPreString.Text = "'";
                 txbEndString.Text = "'";
                 txbConcateString.Text = ",";
+                grbInputString.Visible = true;
+            }
+            else
+            {
+                grbInputString.Visible= false;
             }
         }
         #endregion
