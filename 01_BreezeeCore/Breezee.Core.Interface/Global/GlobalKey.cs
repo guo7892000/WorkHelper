@@ -28,5 +28,7 @@ namespace Breezee.Core.Interface
         public static string Upgrade_IsDeleteOldVersionNeedConfirm = "Upgrade_IsDeleteOldVersionNeedConfirm"; //是否升级新版本成功后删除旧版本需要确认？
         public static string Upgrade_TempPath = "Upgrade_TempPath"; //升级临时文件路径
         public static string Upgrade_PreVersionPath = "Upgrade_PreVersionPath"; //上个版本的路径
+        //行号
+        public static string RowNum = "ROWNO";
     }
 }

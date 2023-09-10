@@ -116,6 +116,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //设置数据源
                 WinFormGlobalValue.SetPublicDataSource(new DataTable[] { dtMain });
                 dgvTableList.DataSource = bsTable;
+                dgvTableList.ShowRowNum();
             }
             catch (Exception ex)
             {

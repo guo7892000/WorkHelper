@@ -73,18 +73,20 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 int iDbType = int.Parse(cbbDbType.SelectedValue.ToString());
                 _selectDBType = (DataBaseType)iDbType;
-                //_dicQuery[_strTableName] = DBToolStaticString.DataGenerate_Table + " AND 数据库类型 = '" + _selectDBType.ToString() + "' order by [序号]";
-                //_dicQuery[_strColName] = DBToolStaticString.DataGenerate_Column;
-
-                //dsExcel = ExportHelper.GetExcelDataBySql(_dicQuery,out _DBConnString);
                 dsExcel = ExportHelper.GetExcelDataSet();
                 if (dsExcel != null)
                 {
-                    bsTable.DataSource = dsExcel.Tables[_strTableName];
-                    bsCos.DataSource = dsExcel.Tables[_strColName];
+                    //过滤数据
+                    DataTable dtTable = dsExcel.Tables[_strTableName].Select("表名 is not null","序号").CopyToDataTable();
+                    DataTable dtCol = dsExcel.Tables[_strColName].Select("表名 is not null and 列名 is not null").CopyToDataTable();
+
+                    bsTable.DataSource = dtTable;
+                    bsCos.DataSource = dtCol;
 
                     dgvTableList.DataSource = bsTable;
                     dgvColList.DataSource = bsCos;
+                    dgvTableList.ShowRowNum();
+                    dgvColList.ShowRowNum();
                     //初始化变量
                     ShowInfo(_strImportSuccess);
                     tsbAutoSQL.Enabled = true;
@@ -105,6 +107,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             _selectDBType = (DataBaseType)iDbType;
             try
             {
+                //过滤数据
+                DataTable dtTable = dsExcel.Tables[_strTableName].Select("表名 is not null", "序号").CopyToDataTable();
+                DataTable dtCol = dsExcel.Tables[_strColName].Select("表名 is not null and 列名 is not null").CopyToDataTable();
+
                 #region 提交字符处理
                 string strDataStyle = cbbThree.SelectedValue.ToString();
                 string strCommit = "";//提交字符
@@ -137,14 +143,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                 sbAllSql.Append("* 使用版本: \n");
                 sbAllSql.Append("* 说    明：\n");
                 int iTable = 1;
-                foreach (DataRow dr in dsExcel.Tables[_strTableName].Rows)
+                foreach (DataRow dr in dtTable.Rows)
                 {
                     sbAllSql.Append("**\t" + iTable + "  " + dr["表名"].ToString() + dr["类型"].ToString() + "数据\n");
                     iTable++;
                 }
                 sbAllSql.Append("***********************************************************************************/\n");
                 iTable = 1;
-                foreach (DataRow drTable in dsExcel.Tables[_strTableName].Rows)//针对表清单循环
+                foreach (DataRow drTable in dtTable.Rows)//针对表清单循环
                 {
                     string strSheet = drTable["数据Sheet名"].ToString().Trim();
                     if (strSheet.IsNullOrEmpty())
@@ -162,20 +168,20 @@ namespace Breezee.WorkHelper.DBTool.UI
                     sbAllSql.Append("/**" + iTable.ToString() + "  " + strDataTableName + strDataDealType + "数据*/\n");
                     #region 数据变更表必须有列配置判断
                     //筛选出表的列清单
-                    DataRow[] dtColRowListAll = dsExcel.Tables[_strColName].Select(" 表名='" + strDataTableName + "'");
+                    DataRow[] dtColRowListAll = dtCol.Select(" 表名='" + strDataTableName + "'");
                     if (dtColRowListAll.Length == 0)
                     {
                         ShowErr("生成失败，" + strDataTableName + "表没有列！");
                         return;
                     }
-                    DataRow[] dtColRowList = dsExcel.Tables[_strColName].Select(" 表名='" + strDataTableName + "' and (固定值 is null or 是否修改条件='是')");
+                    DataRow[] dtColRowList = dtCol.Select(" 表名='" + strDataTableName + "' and (固定值 is null or 是否修改条件='是')");
                     #endregion
 
                     #region 修改表记录必须有条件判断
-                    DataRow[] dtTableModifyList = dsExcel.Tables[_strTableName].Select(" 类型='" + strDataDealType_Modify + "'");
+                    DataRow[] dtTableModifyList = dtTable.Select(" 类型='" + strDataDealType_Modify + "'");
                     foreach (DataRow dr in dtTableModifyList)
                     {
-                        DataRow[] dtColModifyConditionList = dsExcel.Tables[_strColName].Select(" 表名='" + dr["表名"].ToString().Trim() + "' and 是否修改条件='" + strColModifyCondition_Yes + "'");
+                        DataRow[] dtColModifyConditionList = dtCol.Select(" 表名='" + dr["表名"].ToString().Trim() + "' and 是否修改条件='" + strColModifyCondition_Yes + "'");
                         if (dtColModifyConditionList.Length == 0)
                         {
                             ShowErr("生成失败，修改的表" + dr["表名"].ToString().Trim() + "中“是否修改条件”为至少有一个字段为“是”！");

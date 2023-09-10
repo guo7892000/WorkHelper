@@ -85,6 +85,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     dtMain.Clear();
                     dtMain.Columns.Clear();
                     pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain);
+                    dgvTableList.ShowRowNum(); //显示行号
                 }
             }
             catch (Exception ex)

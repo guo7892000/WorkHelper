@@ -220,6 +220,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             );
             dgvTableList.Tag = fdc.GetGridTagString();
             dgvTableList.BindDataGridView(dtTable, true);
+            dgvTableList.ShowRowNum();
             tabControl2.SelectedTab = tpTable;//选中表页签
 
             //是否清除数据
@@ -307,7 +308,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 isChangeTap = AddAllColumns(dtAllCol, list);
             }
-
+            dgvColList.ShowRowNum(true); //显示序号
             if (isChangeTap)
             {
                 tabControl2.SelectedTab = tpSelectColumn;
@@ -544,6 +545,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     dtSelect.Rows.Add(drNew);
                 }
             }
+            dgvSelect.ShowRowNum(true); //显示行号
         }
 
         #region 设置Tag方法
@@ -580,7 +582,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             );
 
             dgvColList.Tag = fdc.GetGridTagString();
-            dgvColList.BindDataGridView(dtColsAll, true);
+            dgvColList.BindDataGridView(dtColsAll, true);         
             //已选择列网格跟通用列网格结构一样
             fdc = new FlexGridColumnDefinition();
             fdc.AddColumn(
@@ -1058,6 +1060,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                             iGoodDataNum++;
                         }
                     }
+                    dgvInput.ShowRowNum(true);
                 }
             }
             catch (Exception ex)

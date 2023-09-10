@@ -32,6 +32,10 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpImport = new System.Windows.Forms.TabPage();
             this.grbColumn = new System.Windows.Forms.GroupBox();
+            this.btnFindFront = new System.Windows.Forms.Button();
+            this.lblFind = new System.Windows.Forms.Label();
+            this.btnFindNext = new System.Windows.Forms.Button();
+            this.txbSearchColumn = new System.Windows.Forms.TextBox();
             this.lblColumnInfo = new System.Windows.Forms.Label();
             this.dgvColList = new System.Windows.Forms.DataGridView();
             this.grbTable = new System.Windows.Forms.GroupBox();
@@ -63,10 +67,6 @@
             this.tsbDownLoad = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
-            this.btnFindFront = new System.Windows.Forms.Button();
-            this.lblFind = new System.Windows.Forms.Label();
-            this.btnFindNext = new System.Windows.Forms.Button();
-            this.txbSearchColumn = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tpImport.SuspendLayout();
             this.grbColumn.SuspendLayout();
@@ -118,6 +118,46 @@
             this.grbColumn.TabIndex = 8;
             this.grbColumn.TabStop = false;
             this.grbColumn.Text = "列清单";
+            // 
+            // btnFindFront
+            // 
+            this.btnFindFront.Location = new System.Drawing.Point(314, -2);
+            this.btnFindFront.Name = "btnFindFront";
+            this.btnFindFront.Size = new System.Drawing.Size(55, 21);
+            this.btnFindFront.TabIndex = 22;
+            this.btnFindFront.Text = "往前找";
+            this.btnFindFront.UseVisualStyleBackColor = true;
+            this.btnFindFront.Click += new System.EventHandler(this.btnFindFront_Click);
+            // 
+            // lblFind
+            // 
+            this.lblFind.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblFind.AutoSize = true;
+            this.lblFind.ForeColor = System.Drawing.Color.Red;
+            this.lblFind.Location = new System.Drawing.Point(375, 0);
+            this.lblFind.Name = "lblFind";
+            this.lblFind.Size = new System.Drawing.Size(53, 12);
+            this.lblFind.TabIndex = 21;
+            this.lblFind.Text = "查找提示";
+            // 
+            // btnFindNext
+            // 
+            this.btnFindNext.Location = new System.Drawing.Point(255, -2);
+            this.btnFindNext.Name = "btnFindNext";
+            this.btnFindNext.Size = new System.Drawing.Size(56, 21);
+            this.btnFindNext.TabIndex = 20;
+            this.btnFindNext.Text = "下一个";
+            this.btnFindNext.UseVisualStyleBackColor = true;
+            this.btnFindNext.Click += new System.EventHandler(this.btnFindNext_Click);
+            // 
+            // txbSearchColumn
+            // 
+            this.txbSearchColumn.Location = new System.Drawing.Point(65, -3);
+            this.txbSearchColumn.Name = "txbSearchColumn";
+            this.txbSearchColumn.Size = new System.Drawing.Size(187, 21);
+            this.txbSearchColumn.TabIndex = 19;
             // 
             // lblColumnInfo
             // 
@@ -485,46 +525,6 @@
             this.uC_DbConnection1.Name = "uC_DbConnection1";
             this.uC_DbConnection1.Size = new System.Drawing.Size(1035, 78);
             this.uC_DbConnection1.TabIndex = 36;
-            // 
-            // btnFindFront
-            // 
-            this.btnFindFront.Location = new System.Drawing.Point(314, -2);
-            this.btnFindFront.Name = "btnFindFront";
-            this.btnFindFront.Size = new System.Drawing.Size(55, 21);
-            this.btnFindFront.TabIndex = 22;
-            this.btnFindFront.Text = "往前找";
-            this.btnFindFront.UseVisualStyleBackColor = true;
-            this.btnFindFront.Click += new System.EventHandler(this.btnFindFront_Click);
-            // 
-            // lblFind
-            // 
-            this.lblFind.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblFind.AutoSize = true;
-            this.lblFind.ForeColor = System.Drawing.Color.Red;
-            this.lblFind.Location = new System.Drawing.Point(375, 0);
-            this.lblFind.Name = "lblFind";
-            this.lblFind.Size = new System.Drawing.Size(53, 12);
-            this.lblFind.TabIndex = 21;
-            this.lblFind.Text = "查找提示";
-            // 
-            // btnFindNext
-            // 
-            this.btnFindNext.Location = new System.Drawing.Point(255, -2);
-            this.btnFindNext.Name = "btnFindNext";
-            this.btnFindNext.Size = new System.Drawing.Size(56, 21);
-            this.btnFindNext.TabIndex = 20;
-            this.btnFindNext.Text = "下一个";
-            this.btnFindNext.UseVisualStyleBackColor = true;
-            this.btnFindNext.Click += new System.EventHandler(this.btnFindNext_Click);
-            // 
-            // txbSearchColumn
-            // 
-            this.txbSearchColumn.Location = new System.Drawing.Point(65, -3);
-            this.txbSearchColumn.Name = "txbSearchColumn";
-            this.txbSearchColumn.Size = new System.Drawing.Size(187, 21);
-            this.txbSearchColumn.TabIndex = 19;
             // 
             // FrmDBTExcelGenerateTableSQL
             // 

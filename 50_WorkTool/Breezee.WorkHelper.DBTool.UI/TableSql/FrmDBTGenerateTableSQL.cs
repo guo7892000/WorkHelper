@@ -181,7 +181,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     //绑定网格
                     bsTable.DataSource = dtTable;
                     dgvTableList.DataSource = bsTable;
-
+                    dgvTableList.ShowRowNum();
                     //绑定列
                     dtTable = _dsExcelData.Tables[GetExcelSheetNameCol(importDBType)];
                     //默认主键处理
@@ -226,6 +226,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     //绑定网格
                     bsCos.DataSource = dtTable;
                     dgvColList.DataSource = bsCos;
+                    dgvColList.ShowRowNum();
                     ShowInfo(_strImportSuccess);
                 }
             }
@@ -690,7 +691,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             dt.Columns[_sGridColumnSelect].SetOrdinal(0);//设置选择列在最前面
             bsTable.DataSource = dt;
             dgvTableList.DataSource = bsTable;
-            
+            dgvTableList.ShowRowNum();
         }
 
         #region 设置Tag方法
@@ -766,6 +767,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             bsCos.DataSource = dtColsNew;
             dgvColList.DataSource = bsCos;
+            dgvColList.ShowRowNum();
         }
         #endregion
 

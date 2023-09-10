@@ -138,6 +138,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             dtTable.TableName = _strTableName;
             dgvTableList.BindDataGridView(dtTable);
+            dgvTableList.ShowRowNum();
             //查询列数据
             DataTable dtCols = _dataAccess.GetSqlSchemaTableColumns(sTableName, drArr[0][DBTableEntity.SqlString.Schema].ToString());
             DataTable dtColsNew = dgvColList.GetBindingTable();
@@ -152,6 +153,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     dtColsNew.ImportRow(dt.Rows[0]);
                 }
             }
+            dgvColList.ShowRowNum(true);
             //查询全局的默认值配置
             _dicQuery[DT_DBT_BD_COLUMN_DEFAULT.SqlString.IS_ENABLED] = "1";
             _dtDefault = _IDBDefaultValue.QueryDefaultValue(_dicQuery).SafeGetDictionaryTable(); //获取默认值、排除列配置信息
@@ -214,7 +216,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             );
             dgvColList.Tag = fdc.GetGridTagString();
             dgvColList.BindDataGridView(dtColsNew, true);
-            //dgvColList.AllowUserToAddRows = true;//设置网格样式
         }
         #endregion
 

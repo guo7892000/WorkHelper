@@ -428,6 +428,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                     if (dgvc.Name == "固定值" || dgvc.Name == "辅助查询值")
                     {
                         dgvc.ReadOnly = false;
+                        Color cEditColunmHead = Color.LightGreen;
+                        //设置可编辑列的颜色
+                        dgvc.DefaultCellStyle.BackColor = cEditColunmHead;
                     }
                 }
                 #endregion

@@ -50,6 +50,66 @@ namespace Breezee.Core.WinFormUI
             BindDataGridView(dgv, dtSource, IsUseTagHistoryConfig, gPage);
         }
 
+        /// <summary>
+        /// 显示行号
+        /// </summary>
+        /// <param name="dgv"></param>
+        /// <param name="isResetRowNum"></param>
+        public static void ShowRowNum(this DataGridView dgv,bool isResetRowNum=false)
+        {
+            int rowNumber = 1;
+            if (dgv.Columns.Contains(GlobalKey.RowNum))
+            {
+                dgv.Columns[GlobalKey.RowNum].HeaderText = "序号";
+                dgv.Columns[GlobalKey.RowNum].Width = 40;
+                dgv.RowHeadersVisible = false;//不显示行标题，即第一个空白列
+                if (!isResetRowNum)
+                {
+                    return;
+                }
+                DataTable dtBind = dgv.GetBindingTable();
+                string sLineNumName = GlobalKey.RowNum;
+                if (dtBind == null)
+                {
+                    //没有绑定表
+                    if (dgv.Columns.Contains(sLineNumName))
+                    {
+                        foreach (DataGridViewRow row in dgv.Rows)
+                        {
+                            if (row.IsNewRow) continue;
+                            row.Cells[sLineNumName].Value = rowNumber.ToString(); //这里必须是字符
+                            rowNumber++;
+                        }
+                    }
+                }
+                else
+                {
+                    //有绑定表
+                    if (!dtBind.Columns.Contains(sLineNumName))
+                    {
+                        dtBind.AddLineNum();
+                    }
+                    foreach (DataRow row in dtBind.Rows)
+                    {
+                        row[sLineNumName] = rowNumber.ToString(); //这里必须是字符
+                        rowNumber++;
+                    }
+                }
+                dgv.RowHeadersVisible = false;//不显示行标题，即第一个空白列
+            }
+            else
+            {
+                dgv.RowHeadersVisible = true;//显示行标题，即第一个空白列
+                foreach (DataGridViewRow row in dgv.Rows)
+                {
+                    if (row.IsNewRow) continue;
+                    row.HeaderCell.Value = rowNumber.ToString(); //这里必须是字符
+                    rowNumber++;
+                }
+                dgv.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
+            }
+        }
+
         #region 绑定网格数据为对象集合
         /// <summary>
         /// 绑定网格数据为对象集合
@@ -829,8 +889,6 @@ namespace Breezee.Core.WinFormUI
                 dgvText.CurrentMsg = isForwardFind ? "已查找到最后，下次将从头开始查找..." : "已查找到开头，下次将从尾部开始查找...";
             }
         }
-
-
 
         private static bool SetFindEntityInfo(DataGridView dgv, DataGridViewFindText dgvText, DataGridViewCell cell,bool isNext)
         {

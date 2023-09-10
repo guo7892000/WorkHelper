@@ -98,5 +98,19 @@ namespace Breezee.Core.WinFormUI
             }
         }
         #endregion
+
+        #region 设置列默认值类型
+        public static void AddLineNum(this DataTable dt, string strColumnName="ROWNO")
+        {
+            if (!dt.Columns.Contains(strColumnName))
+            {
+                dt.Columns.Add(strColumnName);
+            }
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                dt.Rows[i][strColumnName] = i + 1;
+            }
+        }
+        #endregion
     }
 }
