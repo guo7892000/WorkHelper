@@ -75,6 +75,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.fbdSelectPath = new System.Windows.Forms.FolderBrowserDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.ckbUpgradeDelNewZipFile = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -315,6 +316,7 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.ckbUpgradeDelNewZipFile);
             this.groupBox6.Controls.Add(this.ckbDelOldNeedConfirm);
             this.groupBox6.Controls.Add(this.ckbUpgradeSuccessDelOldVerion);
             this.groupBox6.Controls.Add(this.btnSelectUpgradeTmpPath);
@@ -551,6 +553,16 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "网格样式临时文件：";
             // 
+            // ckbUpgradeDelNewZipFile
+            // 
+            this.ckbUpgradeDelNewZipFile.AutoSize = true;
+            this.ckbUpgradeDelNewZipFile.Location = new System.Drawing.Point(411, 44);
+            this.ckbUpgradeDelNewZipFile.Name = "ckbUpgradeDelNewZipFile";
+            this.ckbUpgradeDelNewZipFile.Size = new System.Drawing.Size(144, 16);
+            this.ckbUpgradeDelNewZipFile.TabIndex = 6;
+            this.ckbUpgradeDelNewZipFile.Text = "升级成功删除新压缩包";
+            this.ckbUpgradeDelNewZipFile.UseVisualStyleBackColor = true;
+            // 
             // FrmUserEnvironmentSet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -635,5 +647,6 @@
         private System.Windows.Forms.CheckBox ckbAutoCheckVersion;
         private System.Windows.Forms.CheckBox ckbUpgradeSuccessDelOldVerion;
         private System.Windows.Forms.CheckBox ckbDelOldNeedConfirm;
+        private System.Windows.Forms.CheckBox ckbUpgradeDelNewZipFile;
     }
 }

@@ -85,9 +85,10 @@ namespace Breezee.Framework.Mini.StartUp
             txbGirdStyleTempPath.ReadOnly= true;
             //升级配置
             ckbAutoCheckVersion.Checked = _WinFormConfig.Get(GlobalKey.Upgrade_IsAutoCheckVersion, "1").Equals("1") ? true : false;
-            ckbUpgradeSuccessDelOldVerion.Checked = _WinFormConfig.Get(GlobalKey.Upgrade_IsDeleteOldVersion, "0").Equals("1") ? true : false; //默认不删除旧版本
-            ckbDelOldNeedConfirm.Checked = _WinFormConfig.Get(GlobalKey.Upgrade_IsDeleteOldVersionNeedConfirm, "1").Equals("1") ? true : false; //删除旧版本是否需要确认
-            toolTip1.SetToolTip(ckbUpgradeSuccessDelOldVerion, "如选中本项，升级完成后自动删除旧版本，一些杀毒软件会误报为病毒。所以不建议选中本项，建议升级完成后还是手工删除旧版本！");
+            ckbUpgradeSuccessDelOldVerion.Checked = _WinFormConfig.Get(GlobalKey.Upgrade_IsDeleteOldVersion, "1").Equals("1") ? true : false; //默认删除旧版本
+            ckbDelOldNeedConfirm.Checked = _WinFormConfig.Get(GlobalKey.Upgrade_IsDeleteOldVersionNeedConfirm, "1").Equals("1") ? true : false; //默认删除旧版本需要确认
+            ckbUpgradeDelNewZipFile.Checked = _WinFormConfig.Get(GlobalKey.Upgrade_IsDeleteNewVerZipFile, "1").Equals("1") ? true : false; //默认升级新版本成功后删除新版本的压缩包
+            toolTip1.SetToolTip(ckbUpgradeSuccessDelOldVerion, "如选中本项，升级完成后会自动删除旧版本，一些杀毒软件会误报为病毒，所以我们可以不选中本项，升级完成后自行删除旧版本！");
             txbUpgradeTempDir.Text = _WinFormConfig.Get(GlobalKey.Upgrade_TempPath, GlobalContext.PathTemp());
         }
         #endregion
@@ -208,7 +209,8 @@ namespace Breezee.Framework.Mini.StartUp
             //升级配置
             _WinFormConfig.Set(GlobalKey.Upgrade_IsAutoCheckVersion, ckbAutoCheckVersion.Checked ? "1" : "0", "是否自动检测新版本");
             _WinFormConfig.Set(GlobalKey.Upgrade_IsDeleteOldVersion, ckbUpgradeSuccessDelOldVerion.Checked ? "1" : "0", "是否在新版本升级成功后删除旧版本");
-            _WinFormConfig.Set(GlobalKey.Upgrade_IsDeleteOldVersionNeedConfirm, ckbDelOldNeedConfirm.Checked ? "1" : "0", "是否在新版本升级成功后需要确认才删除旧版本"); 
+            _WinFormConfig.Set(GlobalKey.Upgrade_IsDeleteOldVersionNeedConfirm, ckbDelOldNeedConfirm.Checked ? "1" : "0", "是否在新版本升级成功后需要确认才删除旧版本");
+            _WinFormConfig.Set(GlobalKey.Upgrade_IsDeleteNewVerZipFile, ckbUpgradeDelNewZipFile.Checked ? "1" : "0", "是否升级新版本成功后删除新版本的压缩包"); 
             _WinFormConfig.Set(GlobalKey.Upgrade_TempPath, txbUpgradeTempDir.Text.Trim(),"临时升级文件保存路径");
             _WinFormConfig.Save();
             ShowInfo("【用户环境设置】保存成功！");
