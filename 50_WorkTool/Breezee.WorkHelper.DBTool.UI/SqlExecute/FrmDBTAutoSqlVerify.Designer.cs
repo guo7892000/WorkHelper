@@ -43,22 +43,24 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.dgvQuery = new System.Windows.Forms.DataGridView();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.lblBefore = new System.Windows.Forms.Label();
             this.rtbSqlInput = new System.Windows.Forms.RichTextBox();
+            this.lblBefore = new System.Windows.Forms.Label();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.cbbExampleType = new System.Windows.Forms.ComboBox();
             this.btnGetCondition = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.dgvConditionOutput = new System.Windows.Forms.DataGridView();
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dgvConditionInput = new System.Windows.Forms.DataGridView();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.dgvConditionOutput = new System.Windows.Forms.DataGridView();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.lblFuncInfo = new System.Windows.Forms.Label();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
-            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.cbbParamType = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -77,15 +79,15 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvConditionOutput)).BeginInit();
-            this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvConditionInput)).BeginInit();
-            this.groupBox8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
             this.splitContainer4.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvConditionInput)).BeginInit();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvConditionOutput)).BeginInit();
+            this.groupBox8.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -140,7 +142,7 @@
             // 
             // btnExecute
             // 
-            this.btnExecute.Location = new System.Drawing.Point(132, 10);
+            this.btnExecute.Location = new System.Drawing.Point(308, 11);
             this.btnExecute.Name = "btnExecute";
             this.btnExecute.Size = new System.Drawing.Size(89, 23);
             this.btnExecute.TabIndex = 0;
@@ -150,7 +152,7 @@
             // 
             // btnConvert
             // 
-            this.btnConvert.Location = new System.Drawing.Point(35, 10);
+            this.btnConvert.Location = new System.Drawing.Point(227, 11);
             this.btnConvert.Name = "btnConvert";
             this.btnConvert.Size = new System.Drawing.Size(75, 23);
             this.btnConvert.TabIndex = 0;
@@ -242,6 +244,15 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "参数化前配置的SQL";
             // 
+            // rtbSqlInput
+            // 
+            this.rtbSqlInput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbSqlInput.Location = new System.Drawing.Point(3, 17);
+            this.rtbSqlInput.Name = "rtbSqlInput";
+            this.rtbSqlInput.Size = new System.Drawing.Size(420, 582);
+            this.rtbSqlInput.TabIndex = 1;
+            this.rtbSqlInput.Text = "";
+            // 
             // lblBefore
             // 
             this.lblBefore.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -254,15 +265,6 @@
             this.lblBefore.Size = new System.Drawing.Size(137, 12);
             this.lblBefore.TabIndex = 14;
             this.lblBefore.Text = "动态条件形式：#参数名#";
-            // 
-            // rtbSqlInput
-            // 
-            this.rtbSqlInput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbSqlInput.Location = new System.Drawing.Point(3, 17);
-            this.rtbSqlInput.Name = "rtbSqlInput";
-            this.rtbSqlInput.Size = new System.Drawing.Size(420, 582);
-            this.rtbSqlInput.TabIndex = 1;
-            this.rtbSqlInput.Text = "";
             // 
             // splitContainer3
             // 
@@ -341,26 +343,23 @@
             this.splitContainer2.SplitterDistance = 209;
             this.splitContainer2.TabIndex = 3;
             // 
-            // groupBox4
+            // splitContainer4
             // 
-            this.groupBox4.Controls.Add(this.dgvConditionOutput);
-            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox4.Location = new System.Drawing.Point(0, 0);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(209, 318);
-            this.groupBox4.TabIndex = 2;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "最终参数化的条件";
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer4.Name = "splitContainer4";
+            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // dgvConditionOutput
+            // splitContainer4.Panel1
             // 
-            this.dgvConditionOutput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvConditionOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvConditionOutput.Location = new System.Drawing.Point(3, 17);
-            this.dgvConditionOutput.Name = "dgvConditionOutput";
-            this.dgvConditionOutput.RowTemplate.Height = 23;
-            this.dgvConditionOutput.Size = new System.Drawing.Size(203, 298);
-            this.dgvConditionOutput.TabIndex = 1;
+            this.splitContainer4.Panel1.Controls.Add(this.groupBox2);
+            // 
+            // splitContainer4.Panel2
+            // 
+            this.splitContainer4.Panel2.Controls.Add(this.groupBox4);
+            this.splitContainer4.Size = new System.Drawing.Size(209, 644);
+            this.splitContainer4.SplitterDistance = 322;
+            this.splitContainer4.TabIndex = 4;
             // 
             // groupBox2
             // 
@@ -383,8 +382,31 @@
             this.dgvConditionInput.Size = new System.Drawing.Size(203, 302);
             this.dgvConditionInput.TabIndex = 0;
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.dgvConditionOutput);
+            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox4.Location = new System.Drawing.Point(0, 0);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(209, 318);
+            this.groupBox4.TabIndex = 2;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "最终参数化的条件";
+            // 
+            // dgvConditionOutput
+            // 
+            this.dgvConditionOutput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvConditionOutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvConditionOutput.Location = new System.Drawing.Point(3, 17);
+            this.dgvConditionOutput.Name = "dgvConditionOutput";
+            this.dgvConditionOutput.RowTemplate.Height = 23;
+            this.dgvConditionOutput.Size = new System.Drawing.Size(203, 298);
+            this.dgvConditionOutput.TabIndex = 1;
+            // 
             // groupBox8
             // 
+            this.groupBox8.Controls.Add(this.label3);
+            this.groupBox8.Controls.Add(this.cbbParamType);
             this.groupBox8.Controls.Add(this.btnConvert);
             this.groupBox8.Controls.Add(this.btnExecute);
             this.groupBox8.Dock = System.Windows.Forms.DockStyle.Top;
@@ -416,23 +438,23 @@
             this.uC_DbConnection1.Size = new System.Drawing.Size(1100, 80);
             this.uC_DbConnection1.TabIndex = 33;
             // 
-            // splitContainer4
+            // cbbParamType
             // 
-            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer4.Name = "splitContainer4";
-            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.cbbParamType.FormattingEnabled = true;
+            this.cbbParamType.Location = new System.Drawing.Point(90, 13);
+            this.cbbParamType.Name = "cbbParamType";
+            this.cbbParamType.Size = new System.Drawing.Size(127, 20);
+            this.cbbParamType.TabIndex = 1;
             // 
-            // splitContainer4.Panel1
+            // label3
             // 
-            this.splitContainer4.Panel1.Controls.Add(this.groupBox2);
-            // 
-            // splitContainer4.Panel2
-            // 
-            this.splitContainer4.Panel2.Controls.Add(this.groupBox4);
-            this.splitContainer4.Size = new System.Drawing.Size(209, 644);
-            this.splitContainer4.SplitterDistance = 322;
-            this.splitContainer4.TabIndex = 4;
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.Color.Red;
+            this.label3.Location = new System.Drawing.Point(7, 17);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(77, 12);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "参数化类型：";
             // 
             // FrmDBTAutoSqlVerify
             // 
@@ -469,15 +491,16 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvConditionOutput)).EndInit();
-            this.groupBox2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvConditionInput)).EndInit();
-            this.groupBox8.ResumeLayout(false);
             this.splitContainer4.Panel1.ResumeLayout(false);
             this.splitContainer4.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
             this.splitContainer4.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvConditionInput)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvConditionOutput)).EndInit();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -515,5 +538,7 @@
         private System.Windows.Forms.ComboBox cbbExampleType;
         private System.Windows.Forms.Button btnGetCondition;
         private System.Windows.Forms.SplitContainer splitContainer4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cbbParamType;
     }
 }
