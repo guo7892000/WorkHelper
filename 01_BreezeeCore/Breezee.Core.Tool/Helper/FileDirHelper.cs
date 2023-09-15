@@ -120,10 +120,11 @@ namespace Breezee.Core.Tool.Helper
         /// <summary>
         /// 下载Web压缩包并解压
         /// </summary>
-        /// <param name="sSoureUrl"></param>
-        /// <param name="sLocalDirPath"></param>
+        /// <param name="sSoureUrl">下载Web源地址</param>
+        /// <param name="sLocalDirPath">本地目录</param>
+        /// <param name="isDeleteNewVersionZipFile">是否删除新版本的压缩包</param>
         /// <returns></returns>
-        public static async Task DownloadWebZipAndUnZipAsync(string sSoureUrl, string sLocalDirPath)
+        public static async Task DownloadWebZipAndUnZipAsync(string sSoureUrl, string sLocalDirPath,bool isDeleteNewVersionZipFile=false)
         {
             //下载地址：https://gitee.com/breezee2000/WorkHelper/releases/download/1.2.24/WorkHelper1.2.24.rar
             Regex regex = new Regex(@"/(\w|\.)+.(rar|zip|7z)", RegexOptions.IgnoreCase); //得到绿色版包名
@@ -136,40 +137,54 @@ namespace Breezee.Core.Tool.Helper
                 //如已存在，修改压缩包名称：如删除文件，杀毒软件会误报为病毒
                 if (File.Exists(sFullZipPath))
                 {
-                    //找出版本号
-                    regex = new Regex(@"(\d+.)+", RegexOptions.IgnoreCase);
-                    mc = regex.Matches(sFileName);
-                    if (mc.Count > 0)
+                    if (isDeleteNewVersionZipFile)
                     {
-                        //有版本号
-                        string sVersion = mc[0].Value.Substring(0, mc[0].Value.Length-1);
-                        string sSetupName = sFileName.Substring(0, mc[0].Index);
-                        string sExtName = sFileName.Substring(mc[0].Index+ mc[0].Length);
-                        int iNewFile = 1;//从所有父目录查找同名文件还有没有
-                        while (File.Exists(Path.Combine(sLocalDirPath, sSetupName+ sVersion+"("+ iNewFile +")."+ sExtName)))
+                        try
                         {
-                            iNewFile++;
+                            File.Delete(sFullZipPath);
                         }
-                        sFileName = sSetupName + sVersion + "(" + iNewFile + ")." + sExtName;
-                        sFullZipPath = Path.Combine(sLocalDirPath, sFileName);
+                        catch(Exception ex)
+                        {
+                            System.Console.WriteLine(ex.Message); //复制文件出错，只在控制台输入错误信息
+                        }
                     }
                     else
                     {
-                        //无版本号，直接取压缩包后缀
-                        regex = new Regex(@".(rar|zip\7z)$", RegexOptions.IgnoreCase);
+                        //找出版本号
+                        regex = new Regex(@"(\d+.)+", RegexOptions.IgnoreCase);
                         mc = regex.Matches(sFileName);
                         if (mc.Count > 0)
                         {
+                            //有版本号
+                            string sVersion = mc[0].Value.Substring(0, mc[0].Value.Length - 1);
                             string sSetupName = sFileName.Substring(0, mc[0].Index);
-                            int iNewFile = 1;
-                            while (File.Exists(Path.Combine(sLocalDirPath, sSetupName +"(" + iNewFile + ")" + mc[0].Value)))
+                            string sExtName = sFileName.Substring(mc[0].Index + mc[0].Length);
+                            int iNewFile = 1;//从所有父目录查找同名文件还有没有
+                            while (File.Exists(Path.Combine(sLocalDirPath, sSetupName + sVersion + "(" + iNewFile + ")." + sExtName)))
                             {
                                 iNewFile++;
                             }
-                            sFileName = sSetupName + "(" + iNewFile + ")" + mc[0].Value;
+                            sFileName = sSetupName + sVersion + "(" + iNewFile + ")." + sExtName;
                             sFullZipPath = Path.Combine(sLocalDirPath, sFileName);
                         }
-                    }                    
+                        else
+                        {
+                            //无版本号，直接取压缩包后缀
+                            regex = new Regex(@".(rar|zip\7z)$", RegexOptions.IgnoreCase);
+                            mc = regex.Matches(sFileName);
+                            if (mc.Count > 0)
+                            {
+                                string sSetupName = sFileName.Substring(0, mc[0].Index);
+                                int iNewFile = 1;
+                                while (File.Exists(Path.Combine(sLocalDirPath, sSetupName + "(" + iNewFile + ")" + mc[0].Value)))
+                                {
+                                    iNewFile++;
+                                }
+                                sFileName = sSetupName + "(" + iNewFile + ")" + mc[0].Value;
+                                sFullZipPath = Path.Combine(sLocalDirPath, sFileName);
+                            }
+                        }
+                    }                   
                 }
                 //下载到临时文件
                 var tmpZipName = sFullZipPath + ".tmp";
@@ -199,6 +214,7 @@ namespace Breezee.Core.Tool.Helper
                         }
                     }
                 }
+
                 //备份数据库文件
                 try
                 {
@@ -219,6 +235,19 @@ namespace Breezee.Core.Tool.Helper
                 catch (Exception ex)
                 {
                     System.Console.WriteLine(ex.Message); //复制文件出错，只在控制台输入错误信息
+                }
+
+                //删除新版本压缩包
+                if (isDeleteNewVersionZipFile)
+                {
+                    try
+                    {
+                        File.Delete(sFullZipPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Console.WriteLine(ex.Message); //复制文件出错，只在控制台输入错误信息
+                    }
                 }
             }
         }
