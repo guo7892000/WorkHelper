@@ -33,16 +33,38 @@ namespace Breezee.Core.WinFormUI
         /// </summary>
         /// <param name="dgv"></param>
         /// <param name="dtSource"></param>
-        public static void BindAutoColumn(this DataGridView dgv, DataTable dtSource)
+        public static void BindAutoColumn(this DataGridView dgv, DataTable dtSource, bool isAutoSize = false)
         {
             BindingSource bs = new BindingSource();
             bs.DataSource = dtSource;
-            dgv.DataSource = bs;
+            BindAutoColumn(dgv,bs, isAutoSize);
         }
 
-        public static void BindAutoTable(this DataGridView dgv, DataTable dtSource)
+        /// <summary>
+        /// 使用自动列名绑定数据源
+        /// </summary>
+        /// <param name="dgv"></param>
+        /// <param name="bs"></param>
+        /// <param name="isAutoSize"></param>
+        public static void BindAutoColumn(this DataGridView dgv, BindingSource bs,bool isAutoSize = false)
         {
-            BindAutoColumn(dgv,dtSource);
+            dgv.DataSource = bs;
+            if (isAutoSize)
+            {
+                dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                //设置列和行自动调整
+                dgv.AutoResizeColumns();
+                dgv.AutoResizeRows();
+                //设置网格列宽可手工调整
+                //dgv.AllowUserToResizeColumns = true;
+                //设置网格行高可手工调整
+                //dgv.AllowUserToResizeRows = true;
+            }
+        }
+
+        public static void BindAutoTable(this DataGridView dgv, DataTable dtSource, bool isAutoSize = false)
+        {
+            BindAutoColumn(dgv,dtSource, isAutoSize);
         }
 
         public static void BindTagTable(this DataGridView dgv, DataTable dtSource, bool IsUseTagHistoryConfig = true, GridPager gPage = null)

@@ -28,15 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDBTExcelImportData));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpImport = new System.Windows.Forms.TabPage();
-            this.grbColumn = new System.Windows.Forms.GroupBox();
-            this.lblColumnInfo = new System.Windows.Forms.Label();
-            this.dgvColList = new System.Windows.Forms.DataGridView();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.grbTable = new System.Windows.Forms.GroupBox();
             this.dgvTableList = new System.Windows.Forms.DataGridView();
             this.lblTableData = new System.Windows.Forms.Label();
+            this.grbColumn = new System.Windows.Forms.GroupBox();
+            this.lblColumnInfo = new System.Windows.Forms.Label();
+            this.dgvColList = new System.Windows.Forms.DataGridView();
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -50,16 +52,23 @@
             this.tsbAutoSQL = new System.Windows.Forms.ToolStripButton();
             this.tsbDownLoad = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiDirectShow = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tpImport.SuspendLayout();
-            this.grbColumn.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvColList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.grbTable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableList)).BeginInit();
+            this.grbColumn.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvColList)).BeginInit();
             this.tpAutoSQL.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -76,14 +85,69 @@
             // tpImport
             // 
             this.tpImport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
-            this.tpImport.Controls.Add(this.grbColumn);
-            this.tpImport.Controls.Add(this.grbTable);
+            this.tpImport.Controls.Add(this.splitContainer1);
             this.tpImport.Location = new System.Drawing.Point(4, 22);
             this.tpImport.Name = "tpImport";
-            this.tpImport.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tpImport.Padding = new System.Windows.Forms.Padding(3);
             this.tpImport.Size = new System.Drawing.Size(631, 383);
             this.tpImport.TabIndex = 0;
             this.tpImport.Text = "导入清单";
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.grbTable);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.grbColumn);
+            this.splitContainer1.Size = new System.Drawing.Size(625, 377);
+            this.splitContainer1.SplitterDistance = 143;
+            this.splitContainer1.TabIndex = 9;
+            // 
+            // grbTable
+            // 
+            this.grbTable.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
+            this.grbTable.Controls.Add(this.dgvTableList);
+            this.grbTable.Controls.Add(this.lblTableData);
+            this.grbTable.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grbTable.Location = new System.Drawing.Point(0, 0);
+            this.grbTable.Name = "grbTable";
+            this.grbTable.Size = new System.Drawing.Size(625, 143);
+            this.grbTable.TabIndex = 1;
+            this.grbTable.TabStop = false;
+            this.grbTable.Text = "表清单";
+            // 
+            // dgvTableList
+            // 
+            this.dgvTableList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTableList.ContextMenuStrip = this.contextMenuStrip1;
+            this.dgvTableList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvTableList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
+            this.dgvTableList.Location = new System.Drawing.Point(3, 17);
+            this.dgvTableList.Name = "dgvTableList";
+            this.dgvTableList.RowTemplate.Height = 23;
+            this.dgvTableList.Size = new System.Drawing.Size(619, 123);
+            this.dgvTableList.TabIndex = 0;
+            // 
+            // lblTableData
+            // 
+            this.lblTableData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTableData.AutoSize = true;
+            this.lblTableData.ForeColor = System.Drawing.Color.Red;
+            this.lblTableData.Location = new System.Drawing.Point(305, 0);
+            this.lblTableData.Name = "lblTableData";
+            this.lblTableData.Size = new System.Drawing.Size(53, 12);
+            this.lblTableData.TabIndex = 12;
+            this.lblTableData.Text = "提示信息";
             // 
             // grbColumn
             // 
@@ -91,9 +155,9 @@
             this.grbColumn.Controls.Add(this.lblColumnInfo);
             this.grbColumn.Controls.Add(this.dgvColList);
             this.grbColumn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grbColumn.Location = new System.Drawing.Point(3, 131);
+            this.grbColumn.Location = new System.Drawing.Point(0, 0);
             this.grbColumn.Name = "grbColumn";
-            this.grbColumn.Size = new System.Drawing.Size(625, 249);
+            this.grbColumn.Size = new System.Drawing.Size(625, 230);
             this.grbColumn.TabIndex = 8;
             this.grbColumn.TabStop = false;
             this.grbColumn.Text = "列清单";
@@ -114,49 +178,13 @@
             // dgvColList
             // 
             this.dgvColList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvColList.ContextMenuStrip = this.contextMenuStrip1;
             this.dgvColList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvColList.Location = new System.Drawing.Point(3, 17);
             this.dgvColList.Name = "dgvColList";
             this.dgvColList.RowTemplate.Height = 23;
-            this.dgvColList.Size = new System.Drawing.Size(619, 229);
+            this.dgvColList.Size = new System.Drawing.Size(619, 210);
             this.dgvColList.TabIndex = 0;
-            // 
-            // grbTable
-            // 
-            this.grbTable.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
-            this.grbTable.Controls.Add(this.dgvTableList);
-            this.grbTable.Controls.Add(this.lblTableData);
-            this.grbTable.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grbTable.Location = new System.Drawing.Point(3, 3);
-            this.grbTable.Name = "grbTable";
-            this.grbTable.Size = new System.Drawing.Size(625, 128);
-            this.grbTable.TabIndex = 1;
-            this.grbTable.TabStop = false;
-            this.grbTable.Text = "表清单";
-            // 
-            // dgvTableList
-            // 
-            this.dgvTableList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTableList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvTableList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
-            this.dgvTableList.Location = new System.Drawing.Point(3, 17);
-            this.dgvTableList.Name = "dgvTableList";
-            this.dgvTableList.RowTemplate.Height = 23;
-            this.dgvTableList.Size = new System.Drawing.Size(619, 108);
-            this.dgvTableList.TabIndex = 0;
-            // 
-            // lblTableData
-            // 
-            this.lblTableData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTableData.AutoSize = true;
-            this.lblTableData.ForeColor = System.Drawing.Color.Red;
-            this.lblTableData.Location = new System.Drawing.Point(305, 0);
-            this.lblTableData.Name = "lblTableData";
-            this.lblTableData.Size = new System.Drawing.Size(53, 12);
-            this.lblTableData.TabIndex = 12;
-            this.lblTableData.Text = "提示信息";
             // 
             // tpAutoSQL
             // 
@@ -164,8 +192,8 @@
             this.tpAutoSQL.Controls.Add(this.rtbResult);
             this.tpAutoSQL.Location = new System.Drawing.Point(4, 22);
             this.tpAutoSQL.Name = "tpAutoSQL";
-            this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tpAutoSQL.Size = new System.Drawing.Size(631, 388);
+            this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3);
+            this.tpAutoSQL.Size = new System.Drawing.Size(631, 383);
             this.tpAutoSQL.TabIndex = 1;
             this.tpAutoSQL.Text = "生成结果";
             // 
@@ -174,7 +202,7 @@
             this.rtbResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbResult.Location = new System.Drawing.Point(3, 3);
             this.rtbResult.Name = "rtbResult";
-            this.rtbResult.Size = new System.Drawing.Size(625, 382);
+            this.rtbResult.Size = new System.Drawing.Size(625, 377);
             this.rtbResult.TabIndex = 3;
             this.rtbResult.Text = "";
             // 
@@ -299,6 +327,20 @@
             this.tsbExit.Text = "退出(&X)";
             this.tsbExit.Click += new System.EventHandler(this.tsbExit_Click);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiDirectShow});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(149, 26);
+            // 
+            // tsmiDirectShow
+            // 
+            this.tsmiDirectShow.Name = "tsmiDirectShow";
+            this.tsmiDirectShow.Size = new System.Drawing.Size(180, 22);
+            this.tsmiDirectShow.Text = "显示方向切换";
+            this.tsmiDirectShow.Click += new System.EventHandler(this.tsmiDirectShow_Click);
+            // 
             // FrmDBTExcelImportData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -308,24 +350,29 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmDBTExcelImportData";
             this.Text = "Excel导入数据生成";
             this.Load += new System.EventHandler(this.FrmExcelImportData_Load);
             this.tabControl1.ResumeLayout(false);
             this.tpImport.ResumeLayout(false);
-            this.grbColumn.ResumeLayout(false);
-            this.grbColumn.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvColList)).EndInit();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.grbTable.ResumeLayout(false);
             this.grbTable.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableList)).EndInit();
+            this.grbColumn.ResumeLayout(false);
+            this.grbColumn.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvColList)).EndInit();
             this.tpAutoSQL.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -354,5 +401,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cbbDbType;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDirectShow;
     }
 }

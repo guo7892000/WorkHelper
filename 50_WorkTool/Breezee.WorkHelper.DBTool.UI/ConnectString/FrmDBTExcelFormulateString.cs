@@ -564,6 +564,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                 lblColumnNum.Visible = false;
                 txbTableName.Visible = false;
                 nudColumnNum.Visible = false;
+                if (!tabControl1.TabPages.Contains(tpImport))
+                {
+                    tabControl1.TabPages.Insert(0,tpImport);
+                }
             }
             else
             {
@@ -576,6 +580,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                 lblColumnNum.Visible = true;
                 txbTableName.Visible = true;
                 nudColumnNum.Visible = true;
+                if (tabControl1.TabPages.Contains(tpImport))
+                {
+                    tabControl1.TabPages.Remove(tpImport);
+                }
             }
         }
 

@@ -189,7 +189,7 @@
             // 
             // grbColumn
             // 
-            this.grbColumn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
+            this.grbColumn.BackColor = System.Drawing.SystemColors.Control;
             this.grbColumn.Controls.Add(this.lblColumnInfo);
             this.grbColumn.Controls.Add(this.dgvColList);
             this.grbColumn.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -226,7 +226,7 @@
             // 
             // grbTable
             // 
-            this.grbTable.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
+            this.grbTable.BackColor = System.Drawing.Color.White;
             this.grbTable.Controls.Add(this.dgvTableList);
             this.grbTable.Controls.Add(this.grbOrcNet);
             this.grbTable.Controls.Add(this.lblTableData);
@@ -251,7 +251,7 @@
             // 
             // grbOrcNet
             // 
-            this.grbOrcNet.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
+            this.grbOrcNet.BackColor = System.Drawing.SystemColors.Control;
             this.grbOrcNet.Controls.Add(this.tableLayoutPanel4);
             this.grbOrcNet.Dock = System.Windows.Forms.DockStyle.Left;
             this.grbOrcNet.Location = new System.Drawing.Point(3, 17);

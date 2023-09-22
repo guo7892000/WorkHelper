@@ -73,6 +73,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.toolStrip1.SuspendLayout();
             this.grbOrcNet.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -83,6 +84,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.grbTable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableList)).BeginInit();
             this.tpAutoSQL.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -414,8 +419,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             // tpImport
             // 
             this.tpImport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
-            this.tpImport.Controls.Add(this.grbColumn);
-            this.tpImport.Controls.Add(this.grbTable);
+            this.tpImport.Controls.Add(this.splitContainer1);
             this.tpImport.Location = new System.Drawing.Point(4, 22);
             this.tpImport.Name = "tpImport";
             this.tpImport.Padding = new System.Windows.Forms.Padding(3);
@@ -432,9 +436,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.grbColumn.Controls.Add(this.lblColumnInfo);
             this.grbColumn.Controls.Add(this.dgvColList);
             this.grbColumn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grbColumn.Location = new System.Drawing.Point(3, 80);
+            this.grbColumn.Location = new System.Drawing.Point(0, 0);
             this.grbColumn.Name = "grbColumn";
-            this.grbColumn.Size = new System.Drawing.Size(1073, 229);
+            this.grbColumn.Size = new System.Drawing.Size(1073, 236);
             this.grbColumn.TabIndex = 8;
             this.grbColumn.TabStop = false;
             this.grbColumn.Text = "列清单";
@@ -486,7 +490,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.dgvColList.Location = new System.Drawing.Point(3, 17);
             this.dgvColList.Name = "dgvColList";
             this.dgvColList.RowTemplate.Height = 23;
-            this.dgvColList.Size = new System.Drawing.Size(1067, 209);
+            this.dgvColList.Size = new System.Drawing.Size(1067, 216);
             this.dgvColList.TabIndex = 0;
             this.dgvColList.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvColList_ColumnHeaderMouseDoubleClick);
             // 
@@ -495,10 +499,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.grbTable.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
             this.grbTable.Controls.Add(this.dgvTableList);
             this.grbTable.Controls.Add(this.lblTableData);
-            this.grbTable.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grbTable.Location = new System.Drawing.Point(3, 3);
+            this.grbTable.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grbTable.Location = new System.Drawing.Point(0, 0);
             this.grbTable.Name = "grbTable";
-            this.grbTable.Size = new System.Drawing.Size(1073, 77);
+            this.grbTable.Size = new System.Drawing.Size(1073, 66);
             this.grbTable.TabIndex = 1;
             this.grbTable.TabStop = false;
             this.grbTable.Text = "表清单";
@@ -511,7 +515,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.dgvTableList.Location = new System.Drawing.Point(3, 17);
             this.dgvTableList.Name = "dgvTableList";
             this.dgvTableList.RowTemplate.Height = 23;
-            this.dgvTableList.Size = new System.Drawing.Size(1067, 57);
+            this.dgvTableList.Size = new System.Drawing.Size(1067, 46);
             this.dgvTableList.TabIndex = 0;
             // 
             // lblTableData
@@ -556,6 +560,24 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.uC_DbConnection1.Size = new System.Drawing.Size(1087, 78);
             this.uC_DbConnection1.TabIndex = 35;
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.grbTable);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.grbColumn);
+            this.splitContainer1.Size = new System.Drawing.Size(1073, 306);
+            this.splitContainer1.SplitterDistance = 66;
+            this.splitContainer1.TabIndex = 9;
+            // 
             // FrmDBTGetTableQuerySql
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -584,6 +606,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.grbTable.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableList)).EndInit();
             this.tpAutoSQL.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -632,5 +658,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         private Button btnFindNext;
         private TextBox txbSearchColumn;
         private Button btnFindFront;
+        private SplitContainer splitContainer1;
     }
 }

@@ -461,6 +461,11 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             return cs;
         }
 
+        /// <summary>
+        /// 选择路径按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnSelectPath_Click(object sender, EventArgs e)
         {
             OpenFileDialog dia = new OpenFileDialog();
@@ -476,8 +481,27 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             }
         }
 
+        /// <summary>
+        /// 重新加载文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnReloadFile_Click(object sender, EventArgs e)
+        {
+            ReloadFile(); //重新加载文件
+            //保存用户偏好值
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ClickCopyPath, txbXmlPath.Text, "【点击复制】选择路径");
+            WinFormContext.UserLoveSettings.Save();
+        }
+
         private void ReloadFile()
         {
+            string sXmlPath = txbXmlPath.Text.Trim();
+            if (!File.Exists(sXmlPath))
+            {
+                ShowErr("文件：" + sXmlPath + "不存在！");
+                return;
+            }
             foreach (GroupBox gb in listGroupBox)
             {
                 pnlAll.Controls.Remove(gb);
@@ -494,6 +518,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             {
                 GenerateGroupControls();
             }
+            ShowInfo("文件加载成功！");
         }
 
         private void TsbExit_Click(object sender, EventArgs e)
@@ -505,6 +530,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
         {
             ReloadFile();
         }
+
     }
 
     class CopyStringPropertyName

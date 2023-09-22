@@ -91,7 +91,7 @@
             this.tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1172, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(879, 27);
             this.toolStrip1.TabIndex = 3;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -100,7 +100,7 @@
             this.tsbImport.Image = ((System.Drawing.Image)(resources.GetObject("tsbImport.Image")));
             this.tsbImport.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbImport.Name = "tsbImport";
-            this.tsbImport.Size = new System.Drawing.Size(77, 24);
+            this.tsbImport.Size = new System.Drawing.Size(68, 24);
             this.tsbImport.Text = "连接(&I)";
             this.tsbImport.Click += new System.EventHandler(this.tsbImport_Click);
             // 
@@ -109,7 +109,7 @@
             this.tsbAutoSQL.Image = ((System.Drawing.Image)(resources.GetObject("tsbAutoSQL.Image")));
             this.tsbAutoSQL.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbAutoSQL.Name = "tsbAutoSQL";
-            this.tsbAutoSQL.Size = new System.Drawing.Size(84, 24);
+            this.tsbAutoSQL.Size = new System.Drawing.Size(72, 24);
             this.tsbAutoSQL.Text = "生成(&A)";
             this.tsbAutoSQL.Click += new System.EventHandler(this.tsbAutoSQL_Click);
             // 
@@ -118,7 +118,7 @@
             this.tsbExport.Image = ((System.Drawing.Image)(resources.GetObject("tsbExport.Image")));
             this.tsbExport.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbExport.Name = "tsbExport";
-            this.tsbExport.Size = new System.Drawing.Size(81, 24);
+            this.tsbExport.Size = new System.Drawing.Size(71, 24);
             this.tsbExport.Text = "导出(&E)";
             this.tsbExport.Click += new System.EventHandler(this.tsbExport_Click);
             // 
@@ -127,7 +127,7 @@
             this.tsbExit.Image = ((System.Drawing.Image)(resources.GetObject("tsbExit.Image")));
             this.tsbExit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbExit.Name = "tsbExit";
-            this.tsbExit.Size = new System.Drawing.Size(83, 24);
+            this.tsbExit.Size = new System.Drawing.Size(72, 24);
             this.tsbExit.Text = "退出(&X)";
             this.tsbExit.Click += new System.EventHandler(this.tsbExit_Click);
             // 
@@ -137,11 +137,9 @@
             this.grbSqlNet.Controls.Add(this.tlpNetCon);
             this.grbSqlNet.Controls.Add(this.lblInfo);
             this.grbSqlNet.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grbSqlNet.Location = new System.Drawing.Point(0, 127);
-            this.grbSqlNet.Margin = new System.Windows.Forms.Padding(4);
+            this.grbSqlNet.Location = new System.Drawing.Point(0, 107);
             this.grbSqlNet.Name = "grbSqlNet";
-            this.grbSqlNet.Padding = new System.Windows.Forms.Padding(4);
-            this.grbSqlNet.Size = new System.Drawing.Size(1172, 144);
+            this.grbSqlNet.Size = new System.Drawing.Size(879, 115);
             this.grbSqlNet.TabIndex = 33;
             this.grbSqlNet.TabStop = false;
             this.grbSqlNet.Text = "选项配置";
@@ -155,8 +153,8 @@
             this.tlpNetCon.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlpNetCon.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlpNetCon.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlpNetCon.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 8F));
-            this.tlpNetCon.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+            this.tlpNetCon.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 6F));
+            this.tlpNetCon.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpNetCon.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlpNetCon.Controls.Add(this.lblSqlWHere, 0, 3);
             this.tlpNetCon.Controls.Add(this.rtbWhere, 1, 3);
@@ -172,25 +170,23 @@
             this.tlpNetCon.Controls.Add(this.ckbShowSaveFileDialog, 4, 2);
             this.tlpNetCon.Controls.Add(this.btnSaveOther, 5, 2);
             this.tlpNetCon.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpNetCon.Location = new System.Drawing.Point(4, 22);
-            this.tlpNetCon.Margin = new System.Windows.Forms.Padding(4);
+            this.tlpNetCon.Location = new System.Drawing.Point(3, 17);
             this.tlpNetCon.Name = "tlpNetCon";
             this.tlpNetCon.RowCount = 4;
             this.tlpNetCon.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpNetCon.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpNetCon.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpNetCon.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpNetCon.Size = new System.Drawing.Size(1164, 118);
+            this.tlpNetCon.Size = new System.Drawing.Size(873, 95);
             this.tlpNetCon.TabIndex = 4;
             // 
             // lblSqlWHere
             // 
             this.lblSqlWHere.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblSqlWHere.AutoSize = true;
-            this.lblSqlWHere.Location = new System.Drawing.Point(4, 82);
-            this.lblSqlWHere.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblSqlWHere.Location = new System.Drawing.Point(3, 71);
             this.lblSqlWHere.Name = "lblSqlWHere";
-            this.lblSqlWHere.Size = new System.Drawing.Size(92, 15);
+            this.lblSqlWHere.Size = new System.Drawing.Size(71, 12);
             this.lblSqlWHere.TabIndex = 1;
             this.lblSqlWHere.Text = "where条件：";
             // 
@@ -198,10 +194,9 @@
             // 
             this.tlpNetCon.SetColumnSpan(this.rtbWhere, 8);
             this.rtbWhere.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbWhere.Location = new System.Drawing.Point(109, 66);
-            this.rtbWhere.Margin = new System.Windows.Forms.Padding(4);
+            this.rtbWhere.Location = new System.Drawing.Point(86, 55);
             this.rtbWhere.Name = "rtbWhere";
-            this.rtbWhere.Size = new System.Drawing.Size(1051, 48);
+            this.rtbWhere.Size = new System.Drawing.Size(804, 45);
             this.rtbWhere.TabIndex = 4;
             this.rtbWhere.Text = "";
             // 
@@ -210,10 +205,9 @@
             this.label7.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label7.AutoSize = true;
             this.label7.ForeColor = System.Drawing.Color.Red;
-            this.label7.Location = new System.Drawing.Point(49, 39);
-            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label7.Location = new System.Drawing.Point(39, 33);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(52, 15);
+            this.label7.Size = new System.Drawing.Size(41, 12);
             this.label7.TabIndex = 1;
             this.label7.Text = "表名：";
             // 
@@ -222,10 +216,9 @@
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.Red;
-            this.label1.Location = new System.Drawing.Point(4, 8);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(3, 7);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(97, 15);
+            this.label1.Size = new System.Drawing.Size(77, 12);
             this.label1.TabIndex = 1;
             this.label1.Text = "目标数据库：";
             // 
@@ -233,30 +226,27 @@
             // 
             this.cbbTargetDbType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbTargetDbType.FormattingEnabled = true;
-            this.cbbTargetDbType.Location = new System.Drawing.Point(109, 4);
-            this.cbbTargetDbType.Margin = new System.Windows.Forms.Padding(4);
+            this.cbbTargetDbType.Location = new System.Drawing.Point(86, 3);
             this.cbbTargetDbType.Name = "cbbTargetDbType";
-            this.cbbTargetDbType.Size = new System.Drawing.Size(233, 23);
+            this.cbbTargetDbType.Size = new System.Drawing.Size(176, 20);
             this.cbbTargetDbType.TabIndex = 0;
             // 
             // cbbTableName
             // 
             this.cbbTableName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbTableName.FormattingEnabled = true;
-            this.cbbTableName.Location = new System.Drawing.Point(109, 35);
-            this.cbbTableName.Margin = new System.Windows.Forms.Padding(4);
+            this.cbbTableName.Location = new System.Drawing.Point(86, 29);
             this.cbbTableName.Name = "cbbTableName";
-            this.cbbTableName.Size = new System.Drawing.Size(233, 23);
+            this.cbbTableName.Size = new System.Drawing.Size(176, 20);
             this.cbbTableName.TabIndex = 2;
             // 
             // ckbGetTableList
             // 
             this.ckbGetTableList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.ckbGetTableList.AutoSize = true;
-            this.ckbGetTableList.Location = new System.Drawing.Point(350, 37);
-            this.ckbGetTableList.Margin = new System.Windows.Forms.Padding(4);
+            this.ckbGetTableList.Location = new System.Drawing.Point(268, 31);
             this.ckbGetTableList.Name = "ckbGetTableList";
-            this.ckbGetTableList.Size = new System.Drawing.Size(104, 19);
+            this.ckbGetTableList.Size = new System.Drawing.Size(84, 16);
             this.ckbGetTableList.TabIndex = 10;
             this.ckbGetTableList.Text = "获取表清单";
             this.ckbGetTableList.UseVisualStyleBackColor = true;
@@ -266,10 +256,9 @@
             this.lblThree.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lblThree.AutoSize = true;
             this.lblThree.ForeColor = System.Drawing.Color.Red;
-            this.lblThree.Location = new System.Drawing.Point(372, 8);
-            this.lblThree.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblThree.Location = new System.Drawing.Point(287, 7);
             this.lblThree.Name = "lblThree";
-            this.lblThree.Size = new System.Drawing.Size(82, 15);
+            this.lblThree.Size = new System.Drawing.Size(65, 12);
             this.lblThree.TabIndex = 1;
             this.lblThree.Text = "提交方式：";
             // 
@@ -277,20 +266,18 @@
             // 
             this.cbbCommitType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbCommitType.FormattingEnabled = true;
-            this.cbbCommitType.Location = new System.Drawing.Point(462, 4);
-            this.cbbCommitType.Margin = new System.Windows.Forms.Padding(4);
+            this.cbbCommitType.Location = new System.Drawing.Point(358, 3);
             this.cbbCommitType.Name = "cbbCommitType";
-            this.cbbCommitType.Size = new System.Drawing.Size(177, 23);
+            this.cbbCommitType.Size = new System.Drawing.Size(134, 20);
             this.cbbCommitType.TabIndex = 1;
             // 
             // ckbAutoGetSql
             // 
             this.ckbAutoGetSql.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.ckbAutoGetSql.AutoSize = true;
-            this.ckbAutoGetSql.Location = new System.Drawing.Point(462, 37);
-            this.ckbAutoGetSql.Margin = new System.Windows.Forms.Padding(4);
+            this.ckbAutoGetSql.Location = new System.Drawing.Point(358, 31);
             this.ckbAutoGetSql.Name = "ckbAutoGetSql";
-            this.ckbAutoGetSql.Size = new System.Drawing.Size(177, 19);
+            this.ckbAutoGetSql.Size = new System.Drawing.Size(134, 16);
             this.ckbAutoGetSql.TabIndex = 11;
             this.ckbAutoGetSql.Text = "表变化自动生成";
             this.ckbAutoGetSql.UseVisualStyleBackColor = true;
@@ -300,10 +287,9 @@
             this.ckbMainKeyInsert.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbMainKeyInsert.AutoSize = true;
             this.ckbMainKeyInsert.Enabled = false;
-            this.ckbMainKeyInsert.Location = new System.Drawing.Point(647, 6);
-            this.ckbMainKeyInsert.Margin = new System.Windows.Forms.Padding(4);
+            this.ckbMainKeyInsert.Location = new System.Drawing.Point(498, 5);
             this.ckbMainKeyInsert.Name = "ckbMainKeyInsert";
-            this.ckbMainKeyInsert.Size = new System.Drawing.Size(119, 19);
+            this.ckbMainKeyInsert.Size = new System.Drawing.Size(96, 16);
             this.ckbMainKeyInsert.TabIndex = 15;
             this.ckbMainKeyInsert.Text = "自增长列插入";
             this.ckbMainKeyInsert.UseVisualStyleBackColor = true;
@@ -312,19 +298,19 @@
             // 
             this.ckbShowSaveFileDialog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.ckbShowSaveFileDialog.AutoSize = true;
-            this.ckbShowSaveFileDialog.Location = new System.Drawing.Point(647, 37);
-            this.ckbShowSaveFileDialog.Margin = new System.Windows.Forms.Padding(4);
+            this.ckbShowSaveFileDialog.Location = new System.Drawing.Point(498, 31);
             this.ckbShowSaveFileDialog.Name = "ckbShowSaveFileDialog";
-            this.ckbShowSaveFileDialog.Size = new System.Drawing.Size(119, 19);
+            this.ckbShowSaveFileDialog.Size = new System.Drawing.Size(96, 16);
             this.ckbShowSaveFileDialog.TabIndex = 13;
             this.ckbShowSaveFileDialog.Text = "保存文件";
             this.ckbShowSaveFileDialog.UseVisualStyleBackColor = true;
             // 
             // btnSaveOther
             // 
-            this.btnSaveOther.Location = new System.Drawing.Point(773, 34);
+            this.btnSaveOther.Location = new System.Drawing.Point(599, 28);
+            this.btnSaveOther.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnSaveOther.Name = "btnSaveOther";
-            this.btnSaveOther.Size = new System.Drawing.Size(73, 25);
+            this.btnSaveOther.Size = new System.Drawing.Size(55, 20);
             this.btnSaveOther.TabIndex = 16;
             this.btnSaveOther.Text = "另存为";
             this.btnSaveOther.UseVisualStyleBackColor = true;
@@ -334,10 +320,9 @@
             // 
             this.lblInfo.AutoSize = true;
             this.lblInfo.ForeColor = System.Drawing.Color.Red;
-            this.lblInfo.Location = new System.Drawing.Point(236, 0);
-            this.lblInfo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblInfo.Location = new System.Drawing.Point(177, 0);
             this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(67, 15);
+            this.lblInfo.Size = new System.Drawing.Size(53, 12);
             this.lblInfo.TabIndex = 28;
             this.lblInfo.Text = "提示信息";
             // 
@@ -347,22 +332,20 @@
             this.tabControl1.Controls.Add(this.tpData);
             this.tabControl1.Controls.Add(this.tpAutoSQL);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 271);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
+            this.tabControl1.Location = new System.Drawing.Point(0, 222);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1172, 427);
+            this.tabControl1.Size = new System.Drawing.Size(879, 336);
             this.tabControl1.TabIndex = 34;
             // 
             // tpImport
             // 
             this.tpImport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
             this.tpImport.Controls.Add(this.grbTable);
-            this.tpImport.Location = new System.Drawing.Point(4, 25);
-            this.tpImport.Margin = new System.Windows.Forms.Padding(4);
+            this.tpImport.Location = new System.Drawing.Point(4, 22);
             this.tpImport.Name = "tpImport";
-            this.tpImport.Padding = new System.Windows.Forms.Padding(4);
-            this.tpImport.Size = new System.Drawing.Size(1164, 398);
+            this.tpImport.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tpImport.Size = new System.Drawing.Size(871, 310);
             this.tpImport.TabIndex = 0;
             this.tpImport.Text = "导入清单";
             // 
@@ -372,11 +355,9 @@
             this.grbTable.Controls.Add(this.dgvTableList);
             this.grbTable.Controls.Add(this.lblTableData);
             this.grbTable.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grbTable.Location = new System.Drawing.Point(4, 4);
-            this.grbTable.Margin = new System.Windows.Forms.Padding(4);
+            this.grbTable.Location = new System.Drawing.Point(3, 3);
             this.grbTable.Name = "grbTable";
-            this.grbTable.Padding = new System.Windows.Forms.Padding(4);
-            this.grbTable.Size = new System.Drawing.Size(1156, 390);
+            this.grbTable.Size = new System.Drawing.Size(865, 304);
             this.grbTable.TabIndex = 1;
             this.grbTable.TabStop = false;
             this.grbTable.Text = "表的列信息";
@@ -387,11 +368,10 @@
             this.dgvTableList.ContextMenuStrip = this.cmsGird;
             this.dgvTableList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvTableList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
-            this.dgvTableList.Location = new System.Drawing.Point(4, 22);
-            this.dgvTableList.Margin = new System.Windows.Forms.Padding(4);
+            this.dgvTableList.Location = new System.Drawing.Point(3, 17);
             this.dgvTableList.Name = "dgvTableList";
             this.dgvTableList.RowTemplate.Height = 23;
-            this.dgvTableList.Size = new System.Drawing.Size(1148, 364);
+            this.dgvTableList.Size = new System.Drawing.Size(859, 284);
             this.dgvTableList.TabIndex = 0;
             // 
             // cmsGird
@@ -405,47 +385,47 @@
             this.tsmiAndIn,
             this.tsmiOrIn});
             this.cmsGird.Name = "contextMenuStrip1";
-            this.cmsGird.Size = new System.Drawing.Size(142, 148);
+            this.cmsGird.Size = new System.Drawing.Size(127, 136);
             // 
             // tsmiAndEqual
             // 
             this.tsmiAndEqual.Name = "tsmiAndEqual";
-            this.tsmiAndEqual.Size = new System.Drawing.Size(141, 24);
+            this.tsmiAndEqual.Size = new System.Drawing.Size(126, 22);
             this.tsmiAndEqual.Text = "And =";
             this.tsmiAndEqual.Click += new System.EventHandler(this.TsmiAndEqual_Click);
             // 
             // tsmiAndLike
             // 
             this.tsmiAndLike.Name = "tsmiAndLike";
-            this.tsmiAndLike.Size = new System.Drawing.Size(141, 24);
+            this.tsmiAndLike.Size = new System.Drawing.Size(126, 22);
             this.tsmiAndLike.Text = "And Like";
             this.tsmiAndLike.Click += new System.EventHandler(this.TsmiAndLike_Click);
             // 
             // tsmiOrEqual
             // 
             this.tsmiOrEqual.Name = "tsmiOrEqual";
-            this.tsmiOrEqual.Size = new System.Drawing.Size(141, 24);
+            this.tsmiOrEqual.Size = new System.Drawing.Size(126, 22);
             this.tsmiOrEqual.Text = "Or =";
             this.tsmiOrEqual.Click += new System.EventHandler(this.TsmiOrEqual_Click);
             // 
             // tsmiOrLike
             // 
             this.tsmiOrLike.Name = "tsmiOrLike";
-            this.tsmiOrLike.Size = new System.Drawing.Size(141, 24);
+            this.tsmiOrLike.Size = new System.Drawing.Size(126, 22);
             this.tsmiOrLike.Text = "Or Like";
             this.tsmiOrLike.Click += new System.EventHandler(this.TsmiOrLike_Click);
             // 
             // tsmiAndIn
             // 
             this.tsmiAndIn.Name = "tsmiAndIn";
-            this.tsmiAndIn.Size = new System.Drawing.Size(141, 24);
+            this.tsmiAndIn.Size = new System.Drawing.Size(126, 22);
             this.tsmiAndIn.Text = "And In";
             this.tsmiAndIn.Click += new System.EventHandler(this.TsmiAndIn_Click);
             // 
             // tsmiOrIn
             // 
             this.tsmiOrIn.Name = "tsmiOrIn";
-            this.tsmiOrIn.Size = new System.Drawing.Size(141, 24);
+            this.tsmiOrIn.Size = new System.Drawing.Size(126, 22);
             this.tsmiOrIn.Text = "Or In";
             this.tsmiOrIn.Click += new System.EventHandler(this.TsmiOrIn_Click);
             // 
@@ -456,19 +436,19 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTableData.AutoSize = true;
             this.lblTableData.ForeColor = System.Drawing.Color.Red;
-            this.lblTableData.Location = new System.Drawing.Point(407, 0);
-            this.lblTableData.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblTableData.Location = new System.Drawing.Point(305, 0);
             this.lblTableData.Name = "lblTableData";
-            this.lblTableData.Size = new System.Drawing.Size(67, 15);
+            this.lblTableData.Size = new System.Drawing.Size(53, 12);
             this.lblTableData.TabIndex = 12;
             this.lblTableData.Text = "提示信息";
             // 
             // tpData
             // 
             this.tpData.Controls.Add(this.dgvData);
-            this.tpData.Location = new System.Drawing.Point(4, 25);
+            this.tpData.Location = new System.Drawing.Point(4, 22);
+            this.tpData.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tpData.Name = "tpData";
-            this.tpData.Size = new System.Drawing.Size(1164, 398);
+            this.tpData.Size = new System.Drawing.Size(871, 310);
             this.tpData.TabIndex = 2;
             this.tpData.Text = "数据清单";
             this.tpData.UseVisualStyleBackColor = true;
@@ -478,30 +458,29 @@
             this.dgvData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvData.Location = new System.Drawing.Point(0, 0);
+            this.dgvData.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dgvData.Name = "dgvData";
             this.dgvData.RowTemplate.Height = 27;
-            this.dgvData.Size = new System.Drawing.Size(1164, 398);
+            this.dgvData.Size = new System.Drawing.Size(871, 310);
             this.dgvData.TabIndex = 0;
             // 
             // tpAutoSQL
             // 
             this.tpAutoSQL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
             this.tpAutoSQL.Controls.Add(this.rtbResult);
-            this.tpAutoSQL.Location = new System.Drawing.Point(4, 25);
-            this.tpAutoSQL.Margin = new System.Windows.Forms.Padding(4);
+            this.tpAutoSQL.Location = new System.Drawing.Point(4, 22);
             this.tpAutoSQL.Name = "tpAutoSQL";
-            this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(4);
-            this.tpAutoSQL.Size = new System.Drawing.Size(1164, 398);
+            this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tpAutoSQL.Size = new System.Drawing.Size(871, 310);
             this.tpAutoSQL.TabIndex = 1;
             this.tpAutoSQL.Text = "生成结果";
             // 
             // rtbResult
             // 
             this.rtbResult.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbResult.Location = new System.Drawing.Point(4, 4);
-            this.rtbResult.Margin = new System.Windows.Forms.Padding(4);
+            this.rtbResult.Location = new System.Drawing.Point(3, 3);
             this.rtbResult.Name = "rtbResult";
-            this.rtbResult.Size = new System.Drawing.Size(1156, 390);
+            this.rtbResult.Size = new System.Drawing.Size(865, 304);
             this.rtbResult.TabIndex = 3;
             this.rtbResult.Text = "";
             // 
@@ -509,22 +488,21 @@
             // 
             this.uC_DbConnection1.Dock = System.Windows.Forms.DockStyle.Top;
             this.uC_DbConnection1.Location = new System.Drawing.Point(0, 27);
-            this.uC_DbConnection1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.uC_DbConnection1.Name = "uC_DbConnection1";
-            this.uC_DbConnection1.Size = new System.Drawing.Size(1172, 100);
+            this.uC_DbConnection1.Size = new System.Drawing.Size(879, 80);
             this.uC_DbConnection1.TabIndex = 32;
             // 
             // FrmDBTReadDBData
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1172, 698);
+            this.ClientSize = new System.Drawing.Size(879, 558);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.grbSqlNet);
             this.Controls.Add(this.uC_DbConnection1);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(5);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FrmDBTReadDBData";
             this.Text = "读取数据库表生成数据SQL";
             this.Load += new System.EventHandler(this.FrmReadSqlServerDBData_Load);
