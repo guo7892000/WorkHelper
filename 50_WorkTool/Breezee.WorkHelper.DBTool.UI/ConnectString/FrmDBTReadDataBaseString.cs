@@ -148,7 +148,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         strOneData = strOneData.Replace("#" + dtMain.Columns[j].ColumnName + "#", strData);
                     }
                     //所有SQL文本累加
-                    sbAllSql += strOneData + "\n";
+                    sbAllSql += strOneData + (ckbResultNewLine.Checked ? "\n" : "");
                 }
                 //保存属性
                 //PropSetting.Default.Save();

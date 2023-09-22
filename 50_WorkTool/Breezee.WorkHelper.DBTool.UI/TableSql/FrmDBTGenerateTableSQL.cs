@@ -180,7 +180,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                     }
                     //绑定网格
                     bsTable.DataSource = dtTable;
-                    dgvTableList.DataSource = bsTable;
+                    //dgvTableList.DataSource = bsTable;
+                    dgvTableList.BindAutoColumn(bsTable);
                     dgvTableList.ShowRowNum();
                     //绑定列
                     dtTable = _dsExcelData.Tables[GetExcelSheetNameCol(importDBType)];
@@ -225,7 +226,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                     }
                     //绑定网格
                     bsCos.DataSource = dtTable;
-                    dgvColList.DataSource = bsCos;
+                    //dgvColList.DataSource = bsCos;
+                    dgvColList.BindAutoColumn(bsCos);
                     dgvColList.ShowRowNum();
                     ShowInfo(_strImportSuccess);
                 }
@@ -690,7 +692,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             dt.Columns.Add(dcSelected);
             dt.Columns[_sGridColumnSelect].SetOrdinal(0);//设置选择列在最前面
             bsTable.DataSource = dt;
-            dgvTableList.DataSource = bsTable;
+            dgvTableList.BindAutoColumn(bsTable);
             dgvTableList.ShowRowNum();
         }
 
@@ -766,7 +768,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             dtColsNew.TableName = _strColName;
 
             bsCos.DataSource = dtColsNew;
-            dgvColList.DataSource = bsCos;
+            //dgvColList.DataSource= dtColsNew;
+            dgvColList.BindAutoColumn(bsCos);
             dgvColList.ShowRowNum();
         }
         #endregion
@@ -811,6 +814,25 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (string.IsNullOrEmpty(sSearch)) return;
             dgvColList.SeachText(sSearch, ref dgvFindText, null, isNext);
             lblFind.Text = dgvFindText.CurrentMsg;
+        }
+
+        /// <summary>
+        /// 显示方向右键按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiDirectShow_Click(object sender, EventArgs e)
+        {
+            Orientation orientationNew = splitContainer1.Orientation == Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal;
+            if (orientationNew.Equals(Orientation.Vertical))
+            {
+                splitContainer1.SplitterDistance = int.Parse(Math.Ceiling(splitContainer1.Width * 0.3).ToString());
+            }
+            else
+            {
+                splitContainer1.SplitterDistance = int.Parse(Math.Ceiling(splitContainer1.Height * 0.3).ToString());
+            }
+            splitContainer1.Orientation = orientationNew;
         }
     }
 }

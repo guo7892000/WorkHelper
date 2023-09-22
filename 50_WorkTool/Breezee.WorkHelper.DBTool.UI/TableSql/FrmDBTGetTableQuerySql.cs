@@ -111,6 +111,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             //加载用户偏好值
             cbbParaType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbGetSql_ParamType, "3").Value;
             cbbWordConvert.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbGetSql_FirstWordType, "1").Value;
+            //设置上部分分隔的高度
+            splitContainer1.SplitterDistance = 40;
         }
         #endregion
 

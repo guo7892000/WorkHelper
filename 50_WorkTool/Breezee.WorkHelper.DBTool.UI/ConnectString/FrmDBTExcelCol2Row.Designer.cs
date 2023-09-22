@@ -40,9 +40,6 @@
             this.nudFixRowCount = new System.Windows.Forms.NumericUpDown();
             this.nudEachDataRowCount = new System.Windows.Forms.NumericUpDown();
             this.CkbLoadExampleData = new System.Windows.Forms.CheckBox();
-            this.grbConSting = new System.Windows.Forms.GroupBox();
-            this.label21 = new System.Windows.Forms.Label();
-            this.rtbConString = new System.Windows.Forms.RichTextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpImport = new System.Windows.Forms.TabPage();
             this.grbTable = new System.Windows.Forms.GroupBox();
@@ -55,7 +52,6 @@
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFixRowCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudEachDataRowCount)).BeginInit();
-            this.grbConSting.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpImport.SuspendLayout();
             this.grbTable.SuspendLayout();
@@ -100,7 +96,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 27);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(625, 56);
+            this.groupBox1.Size = new System.Drawing.Size(625, 50);
             this.groupBox1.TabIndex = 25;
             this.groupBox1.TabStop = false;
             // 
@@ -122,12 +118,12 @@
             this.tableLayoutPanel1.Controls.Add(this.CkbLoadExampleData, 5, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 16F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(619, 36);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(619, 30);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
             // label1
@@ -157,7 +153,7 @@
             this.ckbAutoColumnName.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbAutoColumnName.AutoSize = true;
             this.ckbAutoColumnName.Location = new System.Drawing.Point(356, 4);
-            this.ckbAutoColumnName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ckbAutoColumnName.Margin = new System.Windows.Forms.Padding(2);
             this.ckbAutoColumnName.Name = "ckbAutoColumnName";
             this.ckbAutoColumnName.Size = new System.Drawing.Size(96, 16);
             this.ckbAutoColumnName.TabIndex = 3;
@@ -167,7 +163,7 @@
             // nudFixRowCount
             // 
             this.nudFixRowCount.Location = new System.Drawing.Point(73, 2);
-            this.nudFixRowCount.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nudFixRowCount.Margin = new System.Windows.Forms.Padding(2);
             this.nudFixRowCount.Name = "nudFixRowCount";
             this.nudFixRowCount.Size = new System.Drawing.Size(90, 21);
             this.nudFixRowCount.TabIndex = 1;
@@ -175,7 +171,7 @@
             // nudEachDataRowCount
             // 
             this.nudEachDataRowCount.Location = new System.Drawing.Point(262, 2);
-            this.nudEachDataRowCount.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nudEachDataRowCount.Margin = new System.Windows.Forms.Padding(2);
             this.nudEachDataRowCount.Name = "nudEachDataRowCount";
             this.nudEachDataRowCount.Size = new System.Drawing.Size(90, 21);
             this.nudEachDataRowCount.TabIndex = 2;
@@ -190,7 +186,7 @@
             this.CkbLoadExampleData.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.CkbLoadExampleData.AutoSize = true;
             this.CkbLoadExampleData.Location = new System.Drawing.Point(456, 4);
-            this.CkbLoadExampleData.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.CkbLoadExampleData.Margin = new System.Windows.Forms.Padding(2);
             this.CkbLoadExampleData.Name = "CkbLoadExampleData";
             this.CkbLoadExampleData.Size = new System.Drawing.Size(96, 16);
             this.CkbLoadExampleData.TabIndex = 3;
@@ -198,51 +194,15 @@
             this.CkbLoadExampleData.UseVisualStyleBackColor = true;
             this.CkbLoadExampleData.CheckedChanged += new System.EventHandler(this.CkbLoadExampleData_CheckedChanged);
             // 
-            // grbConSting
-            // 
-            this.grbConSting.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
-            this.grbConSting.Controls.Add(this.label21);
-            this.grbConSting.Controls.Add(this.rtbConString);
-            this.grbConSting.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grbConSting.Location = new System.Drawing.Point(0, 83);
-            this.grbConSting.Name = "grbConSting";
-            this.grbConSting.Size = new System.Drawing.Size(625, 66);
-            this.grbConSting.TabIndex = 26;
-            this.grbConSting.TabStop = false;
-            this.grbConSting.Text = "拼接字符";
-            this.grbConSting.Visible = false;
-            // 
-            // label21
-            // 
-            this.label21.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label21.AutoSize = true;
-            this.label21.ForeColor = System.Drawing.Color.Red;
-            this.label21.Location = new System.Drawing.Point(204, 2);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(125, 12);
-            this.label21.TabIndex = 13;
-            this.label21.Text = "替换字符格式：#列名#";
-            // 
-            // rtbConString
-            // 
-            this.rtbConString.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbConString.Location = new System.Drawing.Point(3, 17);
-            this.rtbConString.Name = "rtbConString";
-            this.rtbConString.Size = new System.Drawing.Size(619, 46);
-            this.rtbConString.TabIndex = 5;
-            this.rtbConString.Text = "";
-            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tpImport);
             this.tabControl1.Controls.Add(this.tpAutoSQL);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 149);
+            this.tabControl1.Location = new System.Drawing.Point(0, 77);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(625, 306);
+            this.tabControl1.Size = new System.Drawing.Size(625, 378);
             this.tabControl1.TabIndex = 27;
             // 
             // tpImport
@@ -251,8 +211,8 @@
             this.tpImport.Controls.Add(this.grbTable);
             this.tpImport.Location = new System.Drawing.Point(4, 22);
             this.tpImport.Name = "tpImport";
-            this.tpImport.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tpImport.Size = new System.Drawing.Size(617, 280);
+            this.tpImport.Padding = new System.Windows.Forms.Padding(3);
+            this.tpImport.Size = new System.Drawing.Size(617, 352);
             this.tpImport.TabIndex = 0;
             this.tpImport.Text = "导入清单";
             // 
@@ -264,7 +224,7 @@
             this.grbTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbTable.Location = new System.Drawing.Point(3, 3);
             this.grbTable.Name = "grbTable";
-            this.grbTable.Size = new System.Drawing.Size(611, 274);
+            this.grbTable.Size = new System.Drawing.Size(611, 346);
             this.grbTable.TabIndex = 1;
             this.grbTable.TabStop = false;
             this.grbTable.Text = "粘贴的数据列表";
@@ -277,7 +237,7 @@
             this.dgvTableList.Location = new System.Drawing.Point(3, 17);
             this.dgvTableList.Name = "dgvTableList";
             this.dgvTableList.RowTemplate.Height = 23;
-            this.dgvTableList.Size = new System.Drawing.Size(605, 254);
+            this.dgvTableList.Size = new System.Drawing.Size(605, 326);
             this.dgvTableList.TabIndex = 0;
             this.dgvTableList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvTableList_KeyDown);
             // 
@@ -300,8 +260,8 @@
             this.tpAutoSQL.Controls.Add(this.rtbResult);
             this.tpAutoSQL.Location = new System.Drawing.Point(4, 22);
             this.tpAutoSQL.Name = "tpAutoSQL";
-            this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tpAutoSQL.Size = new System.Drawing.Size(617, 286);
+            this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3);
+            this.tpAutoSQL.Size = new System.Drawing.Size(617, 257);
             this.tpAutoSQL.TabIndex = 1;
             this.tpAutoSQL.Text = "生成结果";
             // 
@@ -310,7 +270,7 @@
             this.rtbResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbResult.Location = new System.Drawing.Point(3, 3);
             this.rtbResult.Name = "rtbResult";
-            this.rtbResult.Size = new System.Drawing.Size(611, 280);
+            this.rtbResult.Size = new System.Drawing.Size(611, 251);
             this.rtbResult.TabIndex = 3;
             this.rtbResult.Text = "";
             // 
@@ -320,11 +280,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(625, 455);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.grbConSting);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmDBTExcelCol2Row";
             this.Text = "Excel列转行";
             this.Load += new System.EventHandler(this.FrmCopyData_Load);
@@ -335,8 +294,6 @@
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFixRowCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudEachDataRowCount)).EndInit();
-            this.grbConSting.ResumeLayout(false);
-            this.grbConSting.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tpImport.ResumeLayout(false);
             this.grbTable.ResumeLayout(false);
@@ -355,9 +312,6 @@
         private System.Windows.Forms.ToolStripButton tsbExit;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.GroupBox grbConSting;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.RichTextBox rtbConString;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tpImport;
         private System.Windows.Forms.GroupBox grbTable;

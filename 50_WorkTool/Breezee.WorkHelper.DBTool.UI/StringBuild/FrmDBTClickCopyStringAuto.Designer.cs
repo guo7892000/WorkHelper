@@ -35,12 +35,13 @@
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.pnlAll = new System.Windows.Forms.Panel();
             this.gbGlobal = new System.Windows.Forms.GroupBox();
+            this.ckbFlowDesign = new System.Windows.Forms.CheckBox();
             this.ckbOpenPath = new System.Windows.Forms.CheckBox();
             this.btnSelectPath = new System.Windows.Forms.Button();
             this.txbXmlPath = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.ckbFlowDesign = new System.Windows.Forms.CheckBox();
+            this.btnReloadFile = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.pnlAll.SuspendLayout();
             this.gbGlobal.SuspendLayout();
@@ -88,6 +89,7 @@
             // 
             // gbGlobal
             // 
+            this.gbGlobal.Controls.Add(this.btnReloadFile);
             this.gbGlobal.Controls.Add(this.ckbFlowDesign);
             this.gbGlobal.Controls.Add(this.ckbOpenPath);
             this.gbGlobal.Controls.Add(this.btnSelectPath);
@@ -102,6 +104,19 @@
             this.gbGlobal.TabIndex = 25;
             this.gbGlobal.TabStop = false;
             this.gbGlobal.Text = "全局选项";
+            // 
+            // ckbFlowDesign
+            // 
+            this.ckbFlowDesign.AutoSize = true;
+            this.ckbFlowDesign.Checked = true;
+            this.ckbFlowDesign.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbFlowDesign.Location = new System.Drawing.Point(112, 50);
+            this.ckbFlowDesign.Name = "ckbFlowDesign";
+            this.ckbFlowDesign.Size = new System.Drawing.Size(72, 16);
+            this.ckbFlowDesign.TabIndex = 7;
+            this.ckbFlowDesign.Text = "流式布局";
+            this.ckbFlowDesign.UseVisualStyleBackColor = true;
+            this.ckbFlowDesign.CheckedChanged += new System.EventHandler(this.ckbFlowDesign_CheckedChanged);
             // 
             // ckbOpenPath
             // 
@@ -128,10 +143,10 @@
             // 
             this.txbXmlPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbXmlPath.Location = new System.Drawing.Point(98, 15);
+            this.txbXmlPath.Location = new System.Drawing.Point(181, 15);
             this.txbXmlPath.Multiline = true;
             this.txbXmlPath.Name = "txbXmlPath";
-            this.txbXmlPath.Size = new System.Drawing.Size(559, 31);
+            this.txbXmlPath.Size = new System.Drawing.Size(476, 31);
             this.txbXmlPath.TabIndex = 4;
             // 
             // label3
@@ -143,18 +158,15 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "配置文件：";
             // 
-            // ckbFlowDesign
+            // btnReloadFile
             // 
-            this.ckbFlowDesign.AutoSize = true;
-            this.ckbFlowDesign.Checked = true;
-            this.ckbFlowDesign.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbFlowDesign.Location = new System.Drawing.Point(112, 50);
-            this.ckbFlowDesign.Name = "ckbFlowDesign";
-            this.ckbFlowDesign.Size = new System.Drawing.Size(72, 16);
-            this.ckbFlowDesign.TabIndex = 7;
-            this.ckbFlowDesign.Text = "流式布局";
-            this.ckbFlowDesign.UseVisualStyleBackColor = true;
-            this.ckbFlowDesign.CheckedChanged += new System.EventHandler(this.ckbFlowDesign_CheckedChanged);
+            this.btnReloadFile.Location = new System.Drawing.Point(99, 16);
+            this.btnReloadFile.Name = "btnReloadFile";
+            this.btnReloadFile.Size = new System.Drawing.Size(75, 27);
+            this.btnReloadFile.TabIndex = 8;
+            this.btnReloadFile.Text = "重新加载";
+            this.btnReloadFile.UseVisualStyleBackColor = true;
+            this.btnReloadFile.Click += new System.EventHandler(this.btnReloadFile_Click);
             // 
             // FrmDBTClickCopyStringAuto
             // 
@@ -191,5 +203,6 @@
         private System.Windows.Forms.ToolStripButton tsbDownLoad;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.CheckBox ckbFlowDesign;
+        private System.Windows.Forms.Button btnReloadFile;
     }
 }

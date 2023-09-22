@@ -36,10 +36,11 @@
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.ckbAutoColumnName = new System.Windows.Forms.CheckBox();
             this.cbbSqlType = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.CkbLoadExampleData = new System.Windows.Forms.CheckBox();
+            this.ckbAutoColumnName = new System.Windows.Forms.CheckBox();
+            this.ckbCondTrim = new System.Windows.Forms.CheckBox();
             this.grbConSting = new System.Windows.Forms.GroupBox();
             this.label21 = new System.Windows.Forms.Label();
             this.rtbConString = new System.Windows.Forms.RichTextBox();
@@ -57,7 +58,7 @@
             this.lblInfo2 = new System.Windows.Forms.Label();
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.dgvResult = new System.Windows.Forms.DataGridView();
-            this.ckbCondTrim = new System.Windows.Forms.CheckBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -72,6 +73,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvExcel2)).BeginInit();
             this.tpAutoSQL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResult)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -150,18 +155,6 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(783, 36);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
-            // ckbAutoColumnName
-            // 
-            this.ckbAutoColumnName.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ckbAutoColumnName.AutoSize = true;
-            this.ckbAutoColumnName.Location = new System.Drawing.Point(221, 5);
-            this.ckbAutoColumnName.Margin = new System.Windows.Forms.Padding(2);
-            this.ckbAutoColumnName.Name = "ckbAutoColumnName";
-            this.ckbAutoColumnName.Size = new System.Drawing.Size(96, 16);
-            this.ckbAutoColumnName.TabIndex = 4;
-            this.ckbAutoColumnName.Text = "自动字母列名";
-            this.ckbAutoColumnName.UseVisualStyleBackColor = true;
-            // 
             // cbbSqlType
             // 
             this.cbbSqlType.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -195,15 +188,41 @@
             this.CkbLoadExampleData.UseVisualStyleBackColor = true;
             this.CkbLoadExampleData.CheckedChanged += new System.EventHandler(this.CkbLoadExampleData_CheckedChanged);
             // 
+            // ckbAutoColumnName
+            // 
+            this.ckbAutoColumnName.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbAutoColumnName.AutoSize = true;
+            this.ckbAutoColumnName.Location = new System.Drawing.Point(221, 5);
+            this.ckbAutoColumnName.Margin = new System.Windows.Forms.Padding(2);
+            this.ckbAutoColumnName.Name = "ckbAutoColumnName";
+            this.ckbAutoColumnName.Size = new System.Drawing.Size(96, 16);
+            this.ckbAutoColumnName.TabIndex = 4;
+            this.ckbAutoColumnName.Text = "自动字母列名";
+            this.ckbAutoColumnName.UseVisualStyleBackColor = true;
+            // 
+            // ckbCondTrim
+            // 
+            this.ckbCondTrim.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbCondTrim.AutoSize = true;
+            this.ckbCondTrim.Checked = true;
+            this.ckbCondTrim.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbCondTrim.Location = new System.Drawing.Point(322, 5);
+            this.ckbCondTrim.Name = "ckbCondTrim";
+            this.ckbCondTrim.Size = new System.Drawing.Size(132, 16);
+            this.ckbCondTrim.TabIndex = 8;
+            this.ckbCondTrim.Text = "条件值去掉前后空格";
+            this.ckbCondTrim.UseVisualStyleBackColor = true;
+            this.ckbCondTrim.Visible = false;
+            // 
             // grbConSting
             // 
             this.grbConSting.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
             this.grbConSting.Controls.Add(this.label21);
             this.grbConSting.Controls.Add(this.rtbConString);
-            this.grbConSting.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grbConSting.Location = new System.Drawing.Point(0, 83);
+            this.grbConSting.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grbConSting.Location = new System.Drawing.Point(0, 0);
             this.grbConSting.Name = "grbConSting";
-            this.grbConSting.Size = new System.Drawing.Size(789, 66);
+            this.grbConSting.Size = new System.Drawing.Size(789, 54);
             this.grbConSting.TabIndex = 26;
             this.grbConSting.TabStop = false;
             this.grbConSting.Text = "关联条件";
@@ -226,7 +245,7 @@
             this.rtbConString.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbConString.Location = new System.Drawing.Point(3, 17);
             this.rtbConString.Name = "rtbConString";
-            this.rtbConString.Size = new System.Drawing.Size(783, 46);
+            this.rtbConString.Size = new System.Drawing.Size(783, 34);
             this.rtbConString.TabIndex = 5;
             this.rtbConString.Text = "";
             // 
@@ -236,10 +255,10 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tpAutoSQL);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 149);
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(789, 374);
+            this.tabControl1.Size = new System.Drawing.Size(789, 382);
             this.tabControl1.TabIndex = 27;
             // 
             // tpImport
@@ -249,7 +268,7 @@
             this.tpImport.Location = new System.Drawing.Point(4, 22);
             this.tpImport.Name = "tpImport";
             this.tpImport.Padding = new System.Windows.Forms.Padding(3);
-            this.tpImport.Size = new System.Drawing.Size(781, 348);
+            this.tpImport.Size = new System.Drawing.Size(781, 356);
             this.tpImport.TabIndex = 0;
             this.tpImport.Text = "Excel1";
             // 
@@ -261,7 +280,7 @@
             this.grbTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbTable.Location = new System.Drawing.Point(3, 3);
             this.grbTable.Name = "grbTable";
-            this.grbTable.Size = new System.Drawing.Size(775, 342);
+            this.grbTable.Size = new System.Drawing.Size(775, 350);
             this.grbTable.TabIndex = 1;
             this.grbTable.TabStop = false;
             this.grbTable.Text = "粘贴的数据列表";
@@ -275,7 +294,7 @@
             this.dgvExcel1.Location = new System.Drawing.Point(3, 17);
             this.dgvExcel1.Name = "dgvExcel1";
             this.dgvExcel1.RowTemplate.Height = 23;
-            this.dgvExcel1.Size = new System.Drawing.Size(769, 322);
+            this.dgvExcel1.Size = new System.Drawing.Size(769, 330);
             this.dgvExcel1.TabIndex = 0;
             this.dgvExcel1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvExcel1_KeyDown);
             // 
@@ -320,7 +339,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(781, 348);
+            this.tabPage1.Size = new System.Drawing.Size(781, 308);
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "Excel2";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -333,7 +352,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(3, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(775, 342);
+            this.groupBox2.Size = new System.Drawing.Size(775, 302);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "粘贴的数据列表";
@@ -347,7 +366,7 @@
             this.dgvExcel2.Location = new System.Drawing.Point(3, 17);
             this.dgvExcel2.Name = "dgvExcel2";
             this.dgvExcel2.RowTemplate.Height = 23;
-            this.dgvExcel2.Size = new System.Drawing.Size(769, 322);
+            this.dgvExcel2.Size = new System.Drawing.Size(769, 282);
             this.dgvExcel2.TabIndex = 0;
             this.dgvExcel2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvExcel2_KeyDown);
             // 
@@ -371,7 +390,7 @@
             this.tpAutoSQL.Location = new System.Drawing.Point(4, 22);
             this.tpAutoSQL.Name = "tpAutoSQL";
             this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3);
-            this.tpAutoSQL.Size = new System.Drawing.Size(781, 348);
+            this.tpAutoSQL.Size = new System.Drawing.Size(781, 308);
             this.tpAutoSQL.TabIndex = 1;
             this.tpAutoSQL.Text = "生成结果";
             // 
@@ -383,30 +402,33 @@
             this.dgvResult.Location = new System.Drawing.Point(3, 3);
             this.dgvResult.Name = "dgvResult";
             this.dgvResult.RowTemplate.Height = 23;
-            this.dgvResult.Size = new System.Drawing.Size(775, 342);
+            this.dgvResult.Size = new System.Drawing.Size(775, 302);
             this.dgvResult.TabIndex = 1;
             // 
-            // ckbCondTrim
+            // splitContainer1
             // 
-            this.ckbCondTrim.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ckbCondTrim.AutoSize = true;
-            this.ckbCondTrim.Checked = true;
-            this.ckbCondTrim.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbCondTrim.Location = new System.Drawing.Point(322, 5);
-            this.ckbCondTrim.Name = "ckbCondTrim";
-            this.ckbCondTrim.Size = new System.Drawing.Size(132, 16);
-            this.ckbCondTrim.TabIndex = 8;
-            this.ckbCondTrim.Text = "条件值去掉前后空格";
-            this.ckbCondTrim.UseVisualStyleBackColor = true;
-            this.ckbCondTrim.Visible = false;
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 83);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.grbConSting);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
+            this.splitContainer1.Size = new System.Drawing.Size(789, 440);
+            this.splitContainer1.SplitterDistance = 54;
+            this.splitContainer1.TabIndex = 28;
             // 
             // FrmDBTMergeData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(789, 523);
-            this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.grbConSting);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
@@ -433,6 +455,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvExcel2)).EndInit();
             this.tpAutoSQL.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvResult)).EndInit();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -468,5 +494,6 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiClear;
         private System.Windows.Forms.ToolStripMenuItem tsmiDelete;
         private System.Windows.Forms.CheckBox ckbCondTrim;
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }

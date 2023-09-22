@@ -111,7 +111,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 27);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(609, 62);
+            this.groupBox1.Size = new System.Drawing.Size(609, 50);
             this.groupBox1.TabIndex = 23;
             this.groupBox1.TabStop = false;
             // 
@@ -119,7 +119,7 @@
             // 
             this.lblThree.AutoSize = true;
             this.lblThree.ForeColor = System.Drawing.Color.Red;
-            this.lblThree.Location = new System.Drawing.Point(13, 27);
+            this.lblThree.Location = new System.Drawing.Point(11, 22);
             this.lblThree.Name = "lblThree";
             this.lblThree.Size = new System.Drawing.Size(77, 12);
             this.lblThree.TabIndex = 1;
@@ -128,7 +128,7 @@
             // cbbDbType
             // 
             this.cbbDbType.FormattingEnabled = true;
-            this.cbbDbType.Location = new System.Drawing.Point(92, 22);
+            this.cbbDbType.Location = new System.Drawing.Point(92, 18);
             this.cbbDbType.Name = "cbbDbType";
             this.cbbDbType.Size = new System.Drawing.Size(142, 20);
             this.cbbDbType.TabIndex = 0;
@@ -138,10 +138,10 @@
             this.tabControl1.Controls.Add(this.tpImport);
             this.tabControl1.Controls.Add(this.tpAutoSQL);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 89);
+            this.tabControl1.Location = new System.Drawing.Point(0, 77);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(609, 431);
+            this.tabControl1.Size = new System.Drawing.Size(609, 443);
             this.tabControl1.TabIndex = 24;
             // 
             // tpImport
@@ -151,7 +151,7 @@
             this.tpImport.Location = new System.Drawing.Point(4, 22);
             this.tpImport.Name = "tpImport";
             this.tpImport.Padding = new System.Windows.Forms.Padding(3);
-            this.tpImport.Size = new System.Drawing.Size(601, 405);
+            this.tpImport.Size = new System.Drawing.Size(601, 417);
             this.tpImport.TabIndex = 0;
             this.tpImport.Text = "导入清单";
             // 
@@ -163,7 +163,7 @@
             this.grbTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbTable.Location = new System.Drawing.Point(3, 3);
             this.grbTable.Name = "grbTable";
-            this.grbTable.Size = new System.Drawing.Size(595, 399);
+            this.grbTable.Size = new System.Drawing.Size(595, 411);
             this.grbTable.TabIndex = 1;
             this.grbTable.TabStop = false;
             this.grbTable.Text = "表清单";
@@ -176,7 +176,7 @@
             this.dgvTableList.Location = new System.Drawing.Point(3, 17);
             this.dgvTableList.Name = "dgvTableList";
             this.dgvTableList.RowTemplate.Height = 23;
-            this.dgvTableList.Size = new System.Drawing.Size(589, 379);
+            this.dgvTableList.Size = new System.Drawing.Size(589, 391);
             this.dgvTableList.TabIndex = 0;
             // 
             // lblTableData

@@ -62,7 +62,7 @@ namespace Breezee.Framework.Mini.StartUp
         #region 加载事件
         private void FrmMainMDI_Load(object sender, EventArgs e)
         {
-            Text = string.Format("工作助手（Work Helper） v{0} 正式版  2023-09-15", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            Text = string.Format("工作助手（Work Helper） v{0} 正式版  2023-09-22", Assembly.GetExecutingAssembly().GetName().Version.ToString());
             _IADPJson = ContainerContext.Container.Resolve<IADPJson>();
 
             _WinFormConfig = WinFormContext.Instance.WinFormConfig;
@@ -913,7 +913,7 @@ namespace Breezee.Framework.Mini.StartUp
                     DirectoryInfo sPrePath = new DirectoryInfo(GlobalContext.AppEntryAssemblyPath);
                     string sLocalDir = _WinFormConfig.Get(GlobalKey.Upgrade_TempPath, sPrePath.Parent.FullName);//默认为当前运行程序的父目录
                     string sServerZipUrl = string.Format("https://gitee.com/breezee2000/WorkHelper/releases/download/{0}/WorkHelper{1}.rar", sServerVersion, sServerVersion);
-                    bool isDeleteNewVerZipFile = _WinFormConfig.Get(GlobalKey.Upgrade_IsDeleteNewVerZipFile, "0").Equals("1") ? true : false;
+                    bool isDeleteNewVerZipFile = _WinFormConfig.Get(GlobalKey.Upgrade_IsDeleteNewVerZipFile, "1").Equals("1") ? true : false;
                     //异步获取压缩包文件
                     await Task.Run(() => FileDirHelper.DownloadWebZipAndUnZipAsync(sServerZipUrl, sLocalDir, isDeleteNewVerZipFile));
                     WinFormContext.Instance.IsUpgradeRunning = false;

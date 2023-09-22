@@ -28,9 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDBTExcelGenerateTableSQL));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpImport = new System.Windows.Forms.TabPage();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.grbTable = new System.Windows.Forms.GroupBox();
+            this.dgvTableList = new System.Windows.Forms.DataGridView();
+            this.lblTableData = new System.Windows.Forms.Label();
             this.grbColumn = new System.Windows.Forms.GroupBox();
             this.btnFindFront = new System.Windows.Forms.Button();
             this.lblFind = new System.Windows.Forms.Label();
@@ -38,9 +43,6 @@
             this.txbSearchColumn = new System.Windows.Forms.TextBox();
             this.lblColumnInfo = new System.Windows.Forms.Label();
             this.dgvColList = new System.Windows.Forms.DataGridView();
-            this.grbTable = new System.Windows.Forms.GroupBox();
-            this.dgvTableList = new System.Windows.Forms.DataGridView();
-            this.lblTableData = new System.Windows.Forms.Label();
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -67,16 +69,23 @@
             this.tsbDownLoad = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiDirectShow = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tpImport.SuspendLayout();
-            this.grbColumn.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvColList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.grbTable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableList)).BeginInit();
+            this.grbColumn.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvColList)).BeginInit();
             this.tpAutoSQL.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -93,14 +102,70 @@
             // tpImport
             // 
             this.tpImport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
-            this.tpImport.Controls.Add(this.grbColumn);
-            this.tpImport.Controls.Add(this.grbTable);
+            this.tpImport.Controls.Add(this.splitContainer1);
             this.tpImport.Location = new System.Drawing.Point(4, 22);
             this.tpImport.Name = "tpImport";
             this.tpImport.Padding = new System.Windows.Forms.Padding(3);
             this.tpImport.Size = new System.Drawing.Size(1027, 311);
             this.tpImport.TabIndex = 0;
             this.tpImport.Text = "导入清单";
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.grbTable);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.grbColumn);
+            this.splitContainer1.Size = new System.Drawing.Size(1021, 305);
+            this.splitContainer1.SplitterDistance = 63;
+            this.splitContainer1.TabIndex = 9;
+            // 
+            // grbTable
+            // 
+            this.grbTable.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
+            this.grbTable.Controls.Add(this.dgvTableList);
+            this.grbTable.Controls.Add(this.lblTableData);
+            this.grbTable.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grbTable.Location = new System.Drawing.Point(0, 0);
+            this.grbTable.Name = "grbTable";
+            this.grbTable.Size = new System.Drawing.Size(1021, 63);
+            this.grbTable.TabIndex = 1;
+            this.grbTable.TabStop = false;
+            this.grbTable.Text = "表清单";
+            // 
+            // dgvTableList
+            // 
+            this.dgvTableList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTableList.ContextMenuStrip = this.contextMenuStrip1;
+            this.dgvTableList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvTableList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
+            this.dgvTableList.Location = new System.Drawing.Point(3, 17);
+            this.dgvTableList.Name = "dgvTableList";
+            this.dgvTableList.RowTemplate.Height = 23;
+            this.dgvTableList.Size = new System.Drawing.Size(1015, 43);
+            this.dgvTableList.TabIndex = 0;
+            this.dgvTableList.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvTableList_ColumnHeaderMouseDoubleClick);
+            // 
+            // lblTableData
+            // 
+            this.lblTableData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTableData.AutoSize = true;
+            this.lblTableData.ForeColor = System.Drawing.Color.Red;
+            this.lblTableData.Location = new System.Drawing.Point(174, 1);
+            this.lblTableData.Name = "lblTableData";
+            this.lblTableData.Size = new System.Drawing.Size(53, 12);
+            this.lblTableData.TabIndex = 12;
+            this.lblTableData.Text = "提示信息";
             // 
             // grbColumn
             // 
@@ -112,9 +177,9 @@
             this.grbColumn.Controls.Add(this.lblColumnInfo);
             this.grbColumn.Controls.Add(this.dgvColList);
             this.grbColumn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grbColumn.Location = new System.Drawing.Point(3, 131);
+            this.grbColumn.Location = new System.Drawing.Point(0, 0);
             this.grbColumn.Name = "grbColumn";
-            this.grbColumn.Size = new System.Drawing.Size(1021, 177);
+            this.grbColumn.Size = new System.Drawing.Size(1021, 238);
             this.grbColumn.TabIndex = 8;
             this.grbColumn.TabStop = false;
             this.grbColumn.Text = "列清单";
@@ -175,51 +240,14 @@
             // dgvColList
             // 
             this.dgvColList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvColList.ContextMenuStrip = this.contextMenuStrip1;
             this.dgvColList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvColList.Location = new System.Drawing.Point(3, 17);
             this.dgvColList.Name = "dgvColList";
             this.dgvColList.RowTemplate.Height = 23;
-            this.dgvColList.Size = new System.Drawing.Size(1015, 157);
+            this.dgvColList.Size = new System.Drawing.Size(1015, 218);
             this.dgvColList.TabIndex = 0;
             this.dgvColList.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvColList_ColumnHeaderMouseDoubleClick);
-            // 
-            // grbTable
-            // 
-            this.grbTable.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
-            this.grbTable.Controls.Add(this.dgvTableList);
-            this.grbTable.Controls.Add(this.lblTableData);
-            this.grbTable.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grbTable.Location = new System.Drawing.Point(3, 3);
-            this.grbTable.Name = "grbTable";
-            this.grbTable.Size = new System.Drawing.Size(1021, 128);
-            this.grbTable.TabIndex = 1;
-            this.grbTable.TabStop = false;
-            this.grbTable.Text = "表清单";
-            // 
-            // dgvTableList
-            // 
-            this.dgvTableList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTableList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvTableList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
-            this.dgvTableList.Location = new System.Drawing.Point(3, 17);
-            this.dgvTableList.Name = "dgvTableList";
-            this.dgvTableList.RowTemplate.Height = 23;
-            this.dgvTableList.Size = new System.Drawing.Size(1015, 108);
-            this.dgvTableList.TabIndex = 0;
-            this.dgvTableList.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvTableList_ColumnHeaderMouseDoubleClick);
-            // 
-            // lblTableData
-            // 
-            this.lblTableData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTableData.AutoSize = true;
-            this.lblTableData.ForeColor = System.Drawing.Color.Red;
-            this.lblTableData.Location = new System.Drawing.Point(174, 1);
-            this.lblTableData.Name = "lblTableData";
-            this.lblTableData.Size = new System.Drawing.Size(53, 12);
-            this.lblTableData.TabIndex = 12;
-            this.lblTableData.Text = "提示信息";
             // 
             // tpAutoSQL
             // 
@@ -526,6 +554,20 @@
             this.uC_DbConnection1.Size = new System.Drawing.Size(1035, 78);
             this.uC_DbConnection1.TabIndex = 36;
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiDirectShow});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
+            // 
+            // tsmiDirectShow
+            // 
+            this.tsmiDirectShow.Name = "tsmiDirectShow";
+            this.tsmiDirectShow.Size = new System.Drawing.Size(180, 22);
+            this.tsmiDirectShow.Text = "显示方向切换";
+            this.tsmiDirectShow.Click += new System.EventHandler(this.tsmiDirectShow_Click);
+            // 
             // FrmDBTExcelGenerateTableSQL
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -542,18 +584,23 @@
             this.Load += new System.EventHandler(this.FrmDBTImportExcelGenerateTableSQL_Load);
             this.tabControl1.ResumeLayout(false);
             this.tpImport.ResumeLayout(false);
-            this.grbColumn.ResumeLayout(false);
-            this.grbColumn.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvColList)).EndInit();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.grbTable.ResumeLayout(false);
             this.grbTable.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableList)).EndInit();
+            this.grbColumn.ResumeLayout(false);
+            this.grbColumn.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvColList)).EndInit();
             this.tpAutoSQL.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -599,5 +646,8 @@
         private System.Windows.Forms.Label lblFind;
         private System.Windows.Forms.Button btnFindNext;
         private System.Windows.Forms.TextBox txbSearchColumn;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDirectShow;
     }
 }

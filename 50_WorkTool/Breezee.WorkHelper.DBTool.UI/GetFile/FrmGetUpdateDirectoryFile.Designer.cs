@@ -70,11 +70,11 @@
             this.label10 = new System.Windows.Forms.Label();
             this.txbExcludeFile = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
+            this.txbExcludeFullFile = new System.Windows.Forms.TextBox();
             this.lblExcludeTip = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.rtbString = new System.Windows.Forms.RichTextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.txbExcludeFullFile = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -92,7 +92,7 @@
             this.tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1220, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(937, 27);
             this.toolStrip1.TabIndex = 22;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -138,7 +138,7 @@
             this.groupBox2.ForeColor = System.Drawing.Color.Red;
             this.groupBox2.Location = new System.Drawing.Point(0, 27);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1220, 158);
+            this.groupBox2.Size = new System.Drawing.Size(937, 158);
             this.groupBox2.TabIndex = 31;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "读取与生成配置";
@@ -399,7 +399,7 @@
             this.grbExclude.ForeColor = System.Drawing.Color.Red;
             this.grbExclude.Location = new System.Drawing.Point(0, 185);
             this.grbExclude.Name = "grbExclude";
-            this.grbExclude.Size = new System.Drawing.Size(1220, 75);
+            this.grbExclude.Size = new System.Drawing.Size(937, 75);
             this.grbExclude.TabIndex = 32;
             this.grbExclude.TabStop = false;
             this.grbExclude.Text = "排除目录或文件选项";
@@ -435,7 +435,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 13F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1214, 55);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(931, 55);
             this.tableLayoutPanel1.TabIndex = 5;
             // 
             // label5
@@ -523,6 +523,14 @@
             this.label11.TabIndex = 3;
             this.label11.Text = "排除绝对文件名：";
             // 
+            // txbExcludeFullFile
+            // 
+            this.txbExcludeFullFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbExcludeFullFile.Location = new System.Drawing.Point(415, 30);
+            this.txbExcludeFullFile.Name = "txbExcludeFullFile";
+            this.txbExcludeFullFile.Size = new System.Drawing.Size(216, 21);
+            this.txbExcludeFullFile.TabIndex = 13;
+            // 
             // lblExcludeTip
             // 
             this.lblExcludeTip.AutoSize = true;
@@ -539,7 +547,7 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(0, 260);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1220, 242);
+            this.groupBox3.Size = new System.Drawing.Size(937, 242);
             this.groupBox3.TabIndex = 34;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "生成的字符";
@@ -549,23 +557,15 @@
             this.rtbString.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbString.Location = new System.Drawing.Point(3, 17);
             this.rtbString.Name = "rtbString";
-            this.rtbString.Size = new System.Drawing.Size(1214, 222);
+            this.rtbString.Size = new System.Drawing.Size(931, 222);
             this.rtbString.TabIndex = 0;
             this.rtbString.Text = "";
-            // 
-            // txbExcludeFullFile
-            // 
-            this.txbExcludeFullFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbExcludeFullFile.Location = new System.Drawing.Point(415, 30);
-            this.txbExcludeFullFile.Name = "txbExcludeFullFile";
-            this.txbExcludeFullFile.Size = new System.Drawing.Size(216, 21);
-            this.txbExcludeFullFile.TabIndex = 13;
             // 
             // FrmGetUpdateDirectoryFile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1220, 502);
+            this.ClientSize = new System.Drawing.Size(937, 502);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.grbExclude);
             this.Controls.Add(this.groupBox2);

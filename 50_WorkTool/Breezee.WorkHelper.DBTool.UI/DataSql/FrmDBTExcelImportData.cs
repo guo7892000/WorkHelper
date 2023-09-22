@@ -415,7 +415,26 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 tsbAutoSQL.Enabled = false;
             }
-        } 
+        }
         #endregion
+
+        /// <summary>
+        /// 显示方向右键按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiDirectShow_Click(object sender, EventArgs e)
+        {
+            Orientation orientationNew = splitContainer1.Orientation == Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal;
+            if (orientationNew.Equals(Orientation.Vertical))
+            {
+                splitContainer1.SplitterDistance = int.Parse(Math.Ceiling(splitContainer1.Width * 0.3).ToString());
+            }
+            else
+            {
+                splitContainer1.SplitterDistance = int.Parse(Math.Ceiling(splitContainer1.Height * 0.3).ToString());
+            }
+            splitContainer1.Orientation = orientationNew;
+        }
     }
 }
