@@ -37,7 +37,7 @@ namespace Breezee.Core.WinFormUI
         {
             BindingSource bs = new BindingSource();
             bs.DataSource = dtSource;
-            BindAutoColumn(dgv,bs, isAutoSize);
+            BindAutoColumn(dgv, bs, isAutoSize);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Breezee.Core.WinFormUI
         /// <param name="dgv"></param>
         /// <param name="bs"></param>
         /// <param name="isAutoSize"></param>
-        public static void BindAutoColumn(this DataGridView dgv, BindingSource bs,bool isAutoSize = false)
+        public static void BindAutoColumn(this DataGridView dgv, BindingSource bs, bool isAutoSize = false)
         {
             dgv.DataSource = bs;
             if (isAutoSize)
@@ -64,7 +64,7 @@ namespace Breezee.Core.WinFormUI
 
         public static void BindAutoTable(this DataGridView dgv, DataTable dtSource, bool isAutoSize = false)
         {
-            BindAutoColumn(dgv,dtSource, isAutoSize);
+            BindAutoColumn(dgv, dtSource, isAutoSize);
         }
 
         public static void BindTagTable(this DataGridView dgv, DataTable dtSource, bool IsUseTagHistoryConfig = true, GridPager gPage = null)
@@ -77,7 +77,7 @@ namespace Breezee.Core.WinFormUI
         /// </summary>
         /// <param name="dgv"></param>
         /// <param name="isResetRowNum"></param>
-        public static void ShowRowNum(this DataGridView dgv,bool isResetRowNum=false)
+        public static void ShowRowNum(this DataGridView dgv, bool isResetRowNum = false)
         {
             int rowNumber = 1;
             if (dgv.Columns.Contains(GlobalKey.RowNum))
@@ -778,8 +778,43 @@ namespace Breezee.Core.WinFormUI
 
             }
             isSelect = !isSelect;
+            ChangeCurrentCell(dgv, strColunmName);
+        }
+
+        /// <summary>
+        /// 改变当前所在网格
+        /// </summary>
+        /// <param name="dgv"></param>
+        /// <param name="strColunmName"></param>
+        public static void ChangeCurrentCell(this DataGridView dgv, string strColunmName)
+        {
             //解决当开始是全部选中，双击后全部取消选 中，但因为焦点没有离开选择列，显示还是选中状态的问题
             if (dgv.CurrentCell.ColumnIndex == dgv.Columns[strColunmName].Index)
+            {
+                int iNewAdd = dgv.CurrentCell.ColumnIndex + 1;
+                int iNewDown = dgv.CurrentCell.ColumnIndex - 1;
+                if (dgv.Columns.Count >= iNewAdd)
+                {
+                    dgv.CurrentCell = dgv.Rows[dgv.CurrentCell.RowIndex].Cells[iNewAdd];
+                    dgv.EndEdit();
+                }
+                else
+                {
+                    dgv.CurrentCell = dgv.Rows[dgv.CurrentCell.RowIndex].Cells[iNewDown];
+                    dgv.EndEdit();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 改变当前所在网格
+        /// </summary>
+        /// <param name="dgv"></param>
+        /// <param name="iColunmIndex"></param>
+        public static void ChangeCurrentCell(this DataGridView dgv, int iColunmIndex)
+        {
+            //解决当开始是全部选中，双击后全部取消选 中，但因为焦点没有离开选择列，显示还是选中状态的问题
+            if (dgv.CurrentCell.ColumnIndex == iColunmIndex)
             {
                 int iNewAdd = dgv.CurrentCell.ColumnIndex + 1;
                 int iNewDown = dgv.CurrentCell.ColumnIndex - 1;
@@ -912,7 +947,7 @@ namespace Breezee.Core.WinFormUI
             }
         }
 
-        private static bool SetFindEntityInfo(DataGridView dgv, DataGridViewFindText dgvText, DataGridViewCell cell,bool isNext)
+        private static bool SetFindEntityInfo(DataGridView dgv, DataGridViewFindText dgvText, DataGridViewCell cell, bool isNext)
         {
             bool isFind;
             cell.Selected = true;

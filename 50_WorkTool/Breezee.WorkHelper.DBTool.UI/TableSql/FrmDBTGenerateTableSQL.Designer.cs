@@ -35,6 +35,8 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.grbTable = new System.Windows.Forms.GroupBox();
             this.dgvTableList = new System.Windows.Forms.DataGridView();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiDirectShow = new System.Windows.Forms.ToolStripMenuItem();
             this.lblTableData = new System.Windows.Forms.Label();
             this.grbColumn = new System.Windows.Forms.GroupBox();
             this.btnFindFront = new System.Windows.Forms.Button();
@@ -69,8 +71,6 @@
             this.tsbDownLoad = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tsmiDirectShow = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tpImport.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -79,13 +79,13 @@
             this.splitContainer1.SuspendLayout();
             this.grbTable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableList)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.grbColumn.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvColList)).BeginInit();
             this.tpAutoSQL.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -153,6 +153,20 @@
             this.dgvTableList.Size = new System.Drawing.Size(1015, 43);
             this.dgvTableList.TabIndex = 0;
             this.dgvTableList.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvTableList_ColumnHeaderMouseDoubleClick);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiDirectShow});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(149, 26);
+            // 
+            // tsmiDirectShow
+            // 
+            this.tsmiDirectShow.Name = "tsmiDirectShow";
+            this.tsmiDirectShow.Size = new System.Drawing.Size(148, 22);
+            this.tsmiDirectShow.Text = "显示方向切换";
+            this.tsmiDirectShow.Click += new System.EventHandler(this.tsmiDirectShow_Click);
             // 
             // lblTableData
             // 
@@ -554,20 +568,6 @@
             this.uC_DbConnection1.Size = new System.Drawing.Size(1035, 78);
             this.uC_DbConnection1.TabIndex = 36;
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiDirectShow});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
-            // 
-            // tsmiDirectShow
-            // 
-            this.tsmiDirectShow.Name = "tsmiDirectShow";
-            this.tsmiDirectShow.Size = new System.Drawing.Size(180, 22);
-            this.tsmiDirectShow.Text = "显示方向切换";
-            this.tsmiDirectShow.Click += new System.EventHandler(this.tsmiDirectShow_Click);
-            // 
             // FrmDBTExcelGenerateTableSQL
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -591,6 +591,7 @@
             this.grbTable.ResumeLayout(false);
             this.grbTable.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableList)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.grbColumn.ResumeLayout(false);
             this.grbColumn.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvColList)).EndInit();
@@ -600,7 +601,6 @@
             this.tableLayoutPanel1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

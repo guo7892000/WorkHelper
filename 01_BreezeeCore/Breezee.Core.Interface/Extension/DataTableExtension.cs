@@ -455,5 +455,74 @@ namespace Breezee.Core.Interface
         }
         #endregion
 
+        /// <summary>
+        /// 获取数据的组合查询SQL
+        /// </summary>
+        /// <param name="dtMain">当前表</param>
+        /// <param name="isUnionAll">是否UNION ALL</param>
+        /// <param name="isTrimData">是否对数据去掉前后空格</param>
+        /// <param name="sColumnNamePre">列名前缀</param>
+        /// <param name="sColumnNameEnd">列名后缀</param>
+        /// <returns></returns>
+        public static string getUnionDataSql(this DataTable dtMain, bool isFromDual, bool isUnionAll=true,bool isTrimData = true, string sColumnNamePre="\"",string sColumnNameEnd = "\"")
+        {
+            if (dtMain==null || dtMain.Rows.Count == 0)
+            {
+                return string.Empty;
+            }
+
+            StringBuilder sbAllSql = new StringBuilder();
+            string sUnion = isUnionAll ? "UNION ALL SELECT " : "UNION SELECT ";
+
+            for (int i = 0; i < dtMain.Rows.Count; i++)
+            {
+                string sOneData = "";
+                for (int j = 0; j < dtMain.Columns.Count; j++)
+                {
+                    string sData = isTrimData ? dtMain.Rows[i][j].ToString().Trim() : dtMain.Rows[i][j].ToString();
+                    if (i == 0)
+                    {
+                        if (string.IsNullOrEmpty(sData))
+                        {
+                            sOneData += ("'' AS " + sColumnNamePre + dtMain.Columns[j].ColumnName + sColumnNameEnd + ",");
+                        }
+                        else
+                        {
+                            sOneData += (" '" + sData + "' AS " + sColumnNamePre + dtMain.Columns[j].ColumnName + sColumnNameEnd + ",");
+                        }
+                    }
+                    else
+                    {
+                        #region 非第一行不用定义列名
+                        if (string.IsNullOrEmpty(sData))
+                        {
+                            sOneData += "'',";//其他列不定义列名
+                        }
+                        else
+                        {
+                            sOneData += (" '" +  sData + "',");//其他列不定义列名
+                        }
+                        #endregion
+                    }
+                }
+
+                #region 构造生成SQL
+                sOneData = sOneData.Substring(0, sOneData.Length - 1); //去掉最后的逗号
+                if (isFromDual)
+                {
+                    sOneData += " FROM DUAL ";
+                }
+
+                if (i > 0)
+                {
+                    sOneData = sUnion + sOneData;
+                }
+                sbAllSql.AppendLine(sOneData);
+                #endregion
+            }
+            //返回结果
+            return "SELECT " + sbAllSql.ToString();
+        }
+
     }
 }
