@@ -92,7 +92,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                     dtData.Columns.Add("A");
                     foreach (var item in splitList)
                     {
-                        dtData.Rows.Add(item);
+                        dtData.Rows.Add(ckbEveryDataTrim.Checked?item.Trim(): item);//去掉前后空白字符
                     }
                     dgvData.BindAutoColumn(dtData);
                     return;
@@ -112,7 +112,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                 // 再处理数据
                 for (int i = 0; i < splitList.Length; i++)
                 {
-                    dr[i] = splitList[i];
+                    dr[i] = ckbEveryDataTrim.Checked ? splitList[i].Trim() : splitList[i];
                 }
                 dtData.Rows.Add(dr);
             }
@@ -143,7 +143,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                     string sColName = dc.ColumnName;
                     sOneData = sOneData.Replace("#" + sColName + "#", dr[sColName].ToString());
                 }
-                rtbOutput.AppendText(sOneData + System.Environment.NewLine);
+                rtbOutput.AppendText(sOneData + (ckbNewLine.Checked? System.Environment.NewLine:"")); //是否换行
             }
             Clipboard.SetText(rtbOutput.Text);
             ShowInfo("转换成功！");

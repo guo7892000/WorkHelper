@@ -16,6 +16,7 @@ using Breezee.AutoSQLExecutor.Common;
 using Breezee.Core.Tool;
 using Setting = Breezee.WorkHelper.DBTool.UI.Properties.Settings;
 using System.IO;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -1303,6 +1304,34 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (string.IsNullOrEmpty(sSearch)) return;
             dgvColList.SeachText(sSearch, ref dgvFindText, null, isNext);
             lblColumnInfo.Text = dgvFindText.CurrentMsg;
+        }
+
+        private void tsmiChooseOrNot_Click(object sender, EventArgs e)
+        {
+            if(dgvColList.SelectedCells == null || dgvColList.SelectedCells.Count==0) return;
+            if(dgvColList.CurrentCell.ColumnIndex != dgvColList.Columns[_sGridColumnSelect].Index
+                && dgvColList.CurrentCell.ColumnIndex != dgvColList.Columns[_sGridColumnCondition].Index
+                && dgvColList.CurrentCell.ColumnIndex != dgvColList.Columns[_sGridColumnDynamic].Index)
+            {
+                return; //选择、条件、MyBatis动态列
+            }
+            //选择
+            string sNew = "1".Equals(dgvColList.CurrentCell.Value.ToString()) ? "0" : "1";
+            foreach (DataGridViewCell item in dgvColList.SelectedCells)
+            {
+                item.Value = sNew;
+            }
+            dgvColList.CurrentCell.Value = sNew;
+
+            //解决当开始是全部选中，双击后全部取消选 中，但因为焦点没有离开选择列，显示还是选中状态的问题
+            dgvColList.ChangeCurrentCell(dgvColList.CurrentCell.ColumnIndex);
+        }
+
+        private void tsmiCleanDefault_Click(object sender, EventArgs e)
+        {
+            DataRow drCur = dgvColList.GetCurrentRow();
+            if (drCur == null) return;
+            drCur[DBColumnEntity.SqlString.Default] = string.Empty;
         }
     }
 }

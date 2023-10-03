@@ -304,6 +304,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             #region 判断并取得数据
             if (cmbType.SelectedValue == null) return;
             string sConnString = cbbConnString.SelectedValue.ToString();
+            string sLastAddKuoHao = ckbLastFengHao.Checked ? ");" : ")";
 
             if ("2".Equals(cmbType.SelectedValue.ToString()))
             {
@@ -345,7 +346,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                                                                                                // 数据拼接
                         string sDataChar = string.Format("&\"'\"&{0}2&\"'\"", sExcelCol);
                         string sDouhao = string.Format("&\"{0}\"", ",");
-                        string sLastKuohao = string.Format("&\"{0}\"", ")");
+                        string sLastKuohao = string.Format("&\"{0}\"", sLastAddKuoHao);
                         //拼接公式
                         sbHead.Append(isLast ? sColCharLast : sColChar);
                         sbTail.Append(isLast ? sDataChar + sLastKuohao : sDataChar + sDouhao);//加引号
@@ -358,7 +359,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                                                                                                // 数据拼接
                         string sDataChar = string.Format(",\"'\",{0}2,\"'\"", sExcelCol);
                         string sDouhao = string.Format(",\"{0}\"", ",");
-                        string sLastKuohao = string.Format(",\"{0}\"", ")");
+                        string sLastKuohao = string.Format(",\"{0}\"", sLastAddKuoHao);
                         //拼接公式
                         sbHead.Append(isLast ? sColCharLast : sColChar);
                         sbTail.Append(isLast ? sDataChar + sLastKuohao : sDataChar + sDouhao);//加引号
@@ -459,7 +460,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 string sDataChar = string.Format(",\"'\",{0}2,\"'\"", sExcelCol);
                 string sDataCharNo = string.Format(",{0}2", sExcelCol);
                 string sDouhao = string.Format(",\"{0}\"", ",");
-                string sLastKuohao = string.Format(",\"{0}\"", ")");
+                string sLastKuohao = string.Format(",\"{0}\"", sLastAddKuoHao);
                 if ("1".Equals(sConnString))
                 {
                     //&拼接
@@ -467,7 +468,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     sDataChar = string.Format("&\"'\"&{0}2&\"'\"", sExcelCol);
                     sDataCharNo = string.Format("&{0}2", sExcelCol);
                     sDouhao = string.Format("&\"{0}\"", ",");
-                    sLastKuohao = string.Format("&\"{0}\"", ")");
+                    sLastKuohao = string.Format("&\"{0}\"", sLastAddKuoHao);
                 }                    
 
                 if (!ckbCancelDefault.Checked && !string.IsNullOrEmpty(strColFixedValue))
@@ -610,6 +611,17 @@ namespace Breezee.WorkHelper.DBTool.UI
             
         }
 
+        /// <summary>
+        /// 清除默认值按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiRemoveDefault_Click(object sender, EventArgs e)
+        {
+            DataRow drCur = dgvColList.GetCurrentRow();
+            if (drCur == null) return;
+            drCur[DBColumnEntity.SqlString.Default] = string.Empty;
+        }
     }
 
 
