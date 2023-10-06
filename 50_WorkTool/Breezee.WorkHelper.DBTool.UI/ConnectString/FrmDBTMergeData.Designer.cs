@@ -46,6 +46,7 @@
             this.rtbConString = new System.Windows.Forms.RichTextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpImport = new System.Windows.Forms.TabPage();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.grbTable = new System.Windows.Forms.GroupBox();
             this.dgvExcel1 = new System.Windows.Forms.DataGridView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -64,13 +65,16 @@
             this.dgvResult = new System.Windows.Forms.DataGridView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.grbConSting.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpImport.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.grbTable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvExcel1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -83,10 +87,6 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -246,9 +246,9 @@
             this.label21.ForeColor = System.Drawing.Color.Red;
             this.label21.Location = new System.Drawing.Point(204, 2);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(107, 12);
+            this.label21.Size = new System.Drawing.Size(119, 12);
             this.label21.TabIndex = 13;
-            this.label21.Text = "条件格式：A=B,B=E";
+            this.label21.Text = "条件格式：A=A1,B=B1";
             // 
             // rtbConString
             // 
@@ -280,6 +280,23 @@
             this.tpImport.Size = new System.Drawing.Size(781, 354);
             this.tpImport.TabIndex = 0;
             this.tpImport.Text = "Excel列表";
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.grbTable);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.groupBox2);
+            this.splitContainer2.Size = new System.Drawing.Size(775, 348);
+            this.splitContainer2.SplitterDistance = 376;
+            this.splitContainer2.TabIndex = 3;
             // 
             // grbTable
             // 
@@ -477,23 +494,6 @@
             this.splitContainer1.SplitterDistance = 63;
             this.splitContainer1.TabIndex = 28;
             // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(3, 3);
-            this.splitContainer2.Name = "splitContainer2";
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.grbTable);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.groupBox2);
-            this.splitContainer2.Size = new System.Drawing.Size(775, 348);
-            this.splitContainer2.SplitterDistance = 376;
-            this.splitContainer2.TabIndex = 3;
-            // 
             // FrmDBTMergeData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -516,6 +516,10 @@
             this.grbConSting.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tpImport.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.grbTable.ResumeLayout(false);
             this.grbTable.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvExcel1)).EndInit();
@@ -531,10 +535,6 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -109,7 +109,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 int iMergeType = int.Parse(sType);
                 MergeDoubleDataStyle mergeTye = (MergeDoubleDataStyle)iMergeType;
 
-                string sErrorCondition = "条件格式不正确，正确示例为：A=B,B=E！";
+                string sErrorCondition = "条件格式不正确，正确示例为：A=A1,B=B1";
                 string[] arrCondition = rtbConString.Text.Trim().Split(',', '，');
                 if (arrCondition == null || arrCondition.Length == 0)
                 {
@@ -120,7 +120,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 IDictionary<string, string> dic = new Dictionary<string, string>();
                 foreach (var sOne in arrCondition)
                 {
-                    string[] arrColumn = rtbConString.Text.Trim().Split('=');
+                    string[] arrColumn = sOne.Trim().Split('=');
                     if (arrCondition == null || arrCondition.Length == 0 || arrColumn.Length != 2)
                     {
                         ShowInfo(sErrorCondition);
@@ -138,9 +138,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                         return;
                     }
                     dic.Add(arrColumn[0], arrColumn[1]);
-
-                    #endregion
                 }
+                #endregion
 
                 #region 表结构处理
                 DataTable dtMainCopy = dtMain.Copy();
