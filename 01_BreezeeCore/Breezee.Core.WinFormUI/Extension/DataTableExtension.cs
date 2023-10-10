@@ -104,7 +104,7 @@ namespace Breezee.Core.WinFormUI
         {
             if (!dt.Columns.Contains(strColumnName))
             {
-                dt.Columns.Add(strColumnName);
+                dt.Columns.Add(strColumnName,typeof(int));
             }
             for (int i = 0; i < dt.Rows.Count; i++)
             {
