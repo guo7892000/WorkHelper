@@ -151,6 +151,8 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 683F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Controls.Add(this.cbbSqlType, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.ckbAutoColumnName, 2, 0);
@@ -232,7 +234,7 @@
             this.grbConSting.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbConSting.Location = new System.Drawing.Point(0, 0);
             this.grbConSting.Name = "grbConSting";
-            this.grbConSting.Size = new System.Drawing.Size(789, 63);
+            this.grbConSting.Size = new System.Drawing.Size(789, 61);
             this.grbConSting.TabIndex = 26;
             this.grbConSting.TabStop = false;
             this.grbConSting.Text = "关联条件";
@@ -255,7 +257,7 @@
             this.rtbConString.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbConString.Location = new System.Drawing.Point(3, 17);
             this.rtbConString.Name = "rtbConString";
-            this.rtbConString.Size = new System.Drawing.Size(783, 43);
+            this.rtbConString.Size = new System.Drawing.Size(783, 41);
             this.rtbConString.TabIndex = 5;
             this.rtbConString.Text = "";
             // 
@@ -267,7 +269,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(789, 380);
+            this.tabControl1.Size = new System.Drawing.Size(789, 382);
             this.tabControl1.TabIndex = 27;
             // 
             // tpImport
@@ -277,7 +279,7 @@
             this.tpImport.Location = new System.Drawing.Point(4, 22);
             this.tpImport.Name = "tpImport";
             this.tpImport.Padding = new System.Windows.Forms.Padding(3);
-            this.tpImport.Size = new System.Drawing.Size(781, 354);
+            this.tpImport.Size = new System.Drawing.Size(781, 356);
             this.tpImport.TabIndex = 0;
             this.tpImport.Text = "Excel列表";
             // 
@@ -294,7 +296,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.groupBox2);
-            this.splitContainer2.Size = new System.Drawing.Size(775, 348);
+            this.splitContainer2.Size = new System.Drawing.Size(775, 350);
             this.splitContainer2.SplitterDistance = 376;
             this.splitContainer2.TabIndex = 3;
             // 
@@ -306,7 +308,7 @@
             this.grbTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbTable.Location = new System.Drawing.Point(0, 0);
             this.grbTable.Name = "grbTable";
-            this.grbTable.Size = new System.Drawing.Size(376, 348);
+            this.grbTable.Size = new System.Drawing.Size(376, 350);
             this.grbTable.TabIndex = 1;
             this.grbTable.TabStop = false;
             this.grbTable.Text = "粘贴的Excel1";
@@ -320,7 +322,7 @@
             this.dgvExcel1.Location = new System.Drawing.Point(3, 17);
             this.dgvExcel1.Name = "dgvExcel1";
             this.dgvExcel1.RowTemplate.Height = 23;
-            this.dgvExcel1.Size = new System.Drawing.Size(370, 328);
+            this.dgvExcel1.Size = new System.Drawing.Size(370, 330);
             this.dgvExcel1.TabIndex = 0;
             this.dgvExcel1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvExcel1_KeyDown);
             // 
@@ -367,7 +369,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(395, 348);
+            this.groupBox2.Size = new System.Drawing.Size(395, 350);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "粘贴的Excel2";
@@ -381,7 +383,7 @@
             this.dgvExcel2.Location = new System.Drawing.Point(3, 17);
             this.dgvExcel2.Name = "dgvExcel2";
             this.dgvExcel2.RowTemplate.Height = 23;
-            this.dgvExcel2.Size = new System.Drawing.Size(389, 328);
+            this.dgvExcel2.Size = new System.Drawing.Size(389, 330);
             this.dgvExcel2.TabIndex = 0;
             this.dgvExcel2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvExcel2_KeyDown);
             // 
@@ -405,7 +407,7 @@
             this.tpAutoSQL.Location = new System.Drawing.Point(4, 22);
             this.tpAutoSQL.Name = "tpAutoSQL";
             this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3);
-            this.tpAutoSQL.Size = new System.Drawing.Size(781, 354);
+            this.tpAutoSQL.Size = new System.Drawing.Size(781, 356);
             this.tpAutoSQL.TabIndex = 1;
             this.tpAutoSQL.Text = "生成结果";
             // 
@@ -419,7 +421,7 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(3, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(775, 348);
+            this.groupBox3.Size = new System.Drawing.Size(775, 350);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             // 
@@ -473,8 +475,9 @@
             this.dgvResult.Location = new System.Drawing.Point(3, 17);
             this.dgvResult.Name = "dgvResult";
             this.dgvResult.RowTemplate.Height = 23;
-            this.dgvResult.Size = new System.Drawing.Size(769, 328);
+            this.dgvResult.Size = new System.Drawing.Size(769, 330);
             this.dgvResult.TabIndex = 1;
+            this.dgvResult.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dgvResult_SortCompare);
             // 
             // splitContainer1
             // 
@@ -491,7 +494,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
             this.splitContainer1.Size = new System.Drawing.Size(789, 447);
-            this.splitContainer1.SplitterDistance = 63;
+            this.splitContainer1.SplitterDistance = 61;
             this.splitContainer1.TabIndex = 28;
             // 
             // FrmDBTMergeData

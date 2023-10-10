@@ -475,12 +475,12 @@ namespace Breezee.Core.WinFormUI
                 FileStream stream = new FileStream(name, FileMode.Create);
                 workbook.Write(stream);
 
-                MessageBox.Show("导出成功！保存的文件路径为：" + name);
+                MessageBox.Show("导出成功！保存的文件路径为：" + name,"温馨提示");
                 return true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("导出失败！" + ex.Message);
+                MessageBox.Show("导出失败！" + ex.Message, "错误信息");
                 return false;
             }
         }

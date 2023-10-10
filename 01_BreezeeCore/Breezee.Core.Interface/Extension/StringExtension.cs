@@ -247,15 +247,15 @@ namespace Breezee.Core.Interface
         /// <param name="isTrimData">是否去掉数据前后空格</param>
         /// <param name="isAddRowNum">是否增加序号列</param>
         /// <returns></returns>
-        public static DataTable GetStringTable(this string pasteText, bool AutoColumnName, DataTable dt = null, string autoColumnEndString = "",bool isTrimData=false,bool isAddRowNum = true)
+        public static DataTable GetStringTable(this string pasteText, bool AutoColumnName, DataTable dt = null, string autoColumnEndString = "",bool isTrimData=false,bool isAddRowNum = true,string sRowNumColumnName= "ROWNO")
         {
             if (dt == null)
             {
                 dt = new DataTable();
             }
-            if (!dt.Columns.Contains(GlobalKey.RowNum) && isAddRowNum)
+            if (!dt.Columns.Contains(sRowNumColumnName) && isAddRowNum)
             {
-                dt.Columns.Add(GlobalKey.RowNum);
+                dt.Columns.Add(sRowNumColumnName,typeof(int)); ////设置序号为整型
             }
 
             string[] rows = pasteText.Trim().Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);//分割的行数数组
@@ -293,7 +293,7 @@ namespace Breezee.Core.Interface
                     if (isAddRowNum)
                     {
                         // 有序号列
-                        dr[GlobalKey.RowNum] = i; //行号
+                        dr[sRowNumColumnName] = i; //行号
                         for (int j = 0; j < cols.Length; j++)
                         {
                             dr[j + 1] = isTrimData ? cols[j].Trim() : cols[j]; //第一列为序号，需要跳过

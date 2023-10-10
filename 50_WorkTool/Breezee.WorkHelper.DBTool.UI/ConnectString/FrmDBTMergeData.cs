@@ -32,7 +32,8 @@ namespace Breezee.WorkHelper.DBTool.UI
     {
         #region 变量
         private string _strAutoSqlSuccess = "生成成功，详细见“生成结果”页签！";
-        string sDealColumnName = "DataIsDealFlagColumnNameUniq";
+        string sRowNo1 = "ROWNUM_0";
+        string sRowNo2 = "ROWNUM_1";
         DataGridViewFindText dgvFindText;
         #endregion
 
@@ -40,19 +41,20 @@ namespace Breezee.WorkHelper.DBTool.UI
         public FrmDBTMergeData()
         {
             InitializeComponent();
-        } 
+        }
         #endregion
 
         #region 加载事件
         private void FrmCopyData_Load(object sender, EventArgs e)
         {
+            //算法类型
             _dicString.Add(((int)MergeDoubleDataStyle.InnerJoin).ToString(), "交集");
             _dicString.Add(((int)MergeDoubleDataStyle.LeftJoin).ToString(), "左集");
             _dicString.Add(((int)MergeDoubleDataStyle.RightJoin).ToString(), "右集");
             _dicString.Add(((int)MergeDoubleDataStyle.Diff).ToString(), "异集");
             _dicString.Add(((int)MergeDoubleDataStyle.UnionAll).ToString(), "并集");
             cbbSqlType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
-            
+
             DataTable dtCopy = new DataTable();
             dgvExcel1.BindAutoColumn(dtCopy);
             dgvExcel2.BindAutoColumn(dtCopy.Copy());
@@ -81,8 +83,32 @@ namespace Breezee.WorkHelper.DBTool.UI
                     DataTable dtMain = dgvExcel1.GetBindingTable();
                     dtMain.Clear();
                     dtMain.Columns.Clear();
-                    pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain);
-                    dgvExcel1.ShowRowNum();
+                    pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain, "", false, true, sRowNo1);
+                    dgvExcel1.ShowRowNum(false, sRowNo1);
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErr(ex.Message);
+            }
+        }
+        private void dgvExcel2_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Modifiers == Keys.Control && e.KeyCode == Keys.V)
+                {
+                    string pasteText = Clipboard.GetText().Trim();
+                    if (string.IsNullOrEmpty(pasteText))//包括IN的为生成的SQL，不用粘贴
+                    {
+                        return;
+                    }
+
+                    DataTable dtMain = dgvExcel2.GetBindingTable();
+                    dtMain.Clear();
+                    dtMain.Columns.Clear();
+                    pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain, "1", true, true, sRowNo2);
+                    dgvExcel2.ShowRowNum(false, sRowNo2);
                 }
             }
             catch (Exception ex)
@@ -144,19 +170,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                 #region 表结构处理
                 DataTable dtMainCopy = dtMain.Copy();
                 DataTable dtSecCopy = dtSec.Copy();
-                if (dtMainCopy.Columns.Contains(GlobalKey.RowNum))
-                {
-                    dtMainCopy.Columns.Remove(GlobalKey.RowNum);
-                }
-                if (dtSecCopy.Columns.Contains(GlobalKey.RowNum))
-                {
-                    dtSecCopy.Columns.Remove(GlobalKey.RowNum);
-                }
-                
-                if (!dtSecCopy.Columns.Contains(sDealColumnName))
-                {
-                    dtSecCopy.Columns.Add(sDealColumnName, typeof(string)); //增加处理列
-                }
 
                 DataTable dtResult = dgvResult.GetBindingTable();
                 dtResult.Columns.Clear();
@@ -165,19 +178,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     if (!dtResult.Columns.Contains(item.ColumnName))
                     {
-                        dtResult.Columns.Add(item.ColumnName);
+                        dtResult.Columns.Add(item.ColumnName,item.DataType); //这里要跟原表类型一致
                     }
                 }
                 foreach (DataColumn item in dtSecCopy.Columns)
                 {
                     if (!dtResult.Columns.Contains(item.ColumnName))
                     {
-                        dtResult.Columns.Add(item.ColumnName);
+                        dtResult.Columns.Add(item.ColumnName,item.DataType); //这里要跟原表类型一致
                     }
-                }
-                if (dgvResult.Columns.Contains(sDealColumnName))
-                {
-                    dgvResult.Columns[sDealColumnName].Visible = false;
                 }
                 #endregion
 
@@ -185,25 +194,28 @@ namespace Breezee.WorkHelper.DBTool.UI
                 tsbAutoSQL.Enabled = false;
                 ShowDestopTipMsg("正在异步处理数据，请稍等一会...");
                 var recordTime = System.Diagnostics.Stopwatch.StartNew();
-                SyncExcResult excResult;
-                excResult = await Task.Run(() => DataTableConnectString(dtMainCopy, dtSecCopy, dtResult, mergeTye, dic));//表合并数据异步处理数据
+                SyncExcResult excResult = null;
+                // 使用LINQ合并数据：速度快
+                excResult = await Task.Run(() => DataTableConnectStringByLinq(dtMainCopy, dtSecCopy, dtResult, mergeTye, dic));
+                // 使用循环合并数据：速度慢，已取消
+                //excResult = await Task.Run(() => DataTableConnectStringByLoop(dtMainCopy, dtSecCopy, dtResult, mergeTye, dic));
                 string sTotalSecode = "耗时: " + recordTime.Elapsed.ToString("ss") + "." + recordTime.Elapsed.ToString("fff") + " 秒。";
                 recordTime.Stop();
                 if (excResult.Success)
                 {
-                    dgvResult.BindAutoColumn(excResult.DtResult);
+                    //绑定已知的两个序号列
+                    dgvResult.BindAutoColumn(excResult.DtResult,false,new List<FlexGridColumn> { 
+                        new FlexGridColumn.Builder().Name(sRowNo1).Caption("序号1").Width(60).Build(),
+                        new FlexGridColumn.Builder().Name(sRowNo2).Caption("序号2").Width(60).Build()
+                    });
                     dgvResult.ShowRowNum(true);
-                    if (dgvResult.Columns.Contains(sDealColumnName))
-                    {
-                        dgvResult.Columns[sDealColumnName].Visible = false;
-                    }
                     tabControl1.SelectedTab = tpAutoSQL;
                     ShowInfo(_strAutoSqlSuccess + sTotalSecode);//生成SQL成功后提示
                 }
                 else
                 {
                     ShowErr(excResult.Message);//生成失败后提示
-                }                
+                }
             }
             catch (Exception ex)
             {
@@ -216,18 +228,353 @@ namespace Breezee.WorkHelper.DBTool.UI
         }
 
         /// <summary>
-        /// 表处理连接字符串
+        /// 使用LINQ处理表连接数据（速度快）
         /// </summary>
         /// <param name="dtMain"></param>
         /// <param name="dtSec"></param>
         /// <param name="dtResultIn"></param>
         /// <param name="sType"></param>
         /// <param name="dic"></param>
-        private async Task<SyncExcResult> DataTableConnectString(DataTable dtMain, DataTable dtSec, DataTable dtResultIn, MergeDoubleDataStyle sType, IDictionary<string, string> dic)
+        private async Task<SyncExcResult> DataTableConnectStringByLinq(DataTable dtMain, DataTable dtSec, DataTable dtResultIn, MergeDoubleDataStyle sType, IDictionary<string, string> dic)
+        {
+            try
+            {
+                SyncExcResult result = null;
+                DataTable dtResult = dtResultIn.Clone();
+                int iCondCount = dic.Keys.Count;
+                // 使用动态属性
+                //查询
+                var query = from f in dtMain.AsEnumerable()
+                            join s in dtSec.AsEnumerable()
+                on GetLinqDynamicCondtion(dic,f,true)
+                equals GetLinqDynamicCondtion(dic, s, false)
+                            select new { F1 = f, S1 = s };
+
+                //查询交集数据
+                var joinList = query.ToList();
+                var restult = query.ToList().Select(t => t.F1.ItemArray.Concat(t.S1.ItemArray).ToArray());
+                foreach (var item in restult)
+                {
+                    dtResult.Rows.Add(item); //增加行数据
+                }
+                //如是交集，则直接返回
+                switch (sType)
+                {
+                    case MergeDoubleDataStyle.InnerJoin:
+                        result = new SyncExcResult(true, "转换成功！", dtResult);
+                        break;
+                    case MergeDoubleDataStyle.LeftJoin:
+                        //左边独有部分
+                        var leftJoin = from f in dtMain.AsEnumerable()
+                                       where !joinList.Any(j => j.F1.Field<int>(sRowNo1) == f.Field<int>(sRowNo1))
+                                       select new { F1 = f };
+                        var LeftJoinRes = leftJoin.ToList();
+                        foreach (var item in LeftJoinRes)
+                        {
+                            dtResult.Rows.Add(item.F1.ItemArray.Concat(new object[dtSec.Columns.Count]).ToArray()); //增加行数据
+                        }
+                        result = new SyncExcResult(true, "转换成功！", dtResult);
+                        break;
+                    case MergeDoubleDataStyle.RightJoin:
+                        //右边独有部分
+                        var rightJoin = from f in dtSec.AsEnumerable()
+                                       where !joinList.Any(j => j.S1.Field<int>(sRowNo2) == f.Field<int>(sRowNo2))
+                                       select new { F1 = f };
+                        var rightJoinRes = rightJoin.ToList();
+                        foreach (var item in rightJoinRes)
+                        {
+                            dtResult.Rows.Add(new object[dtMain.Columns.Count].Concat(item.F1.ItemArray).ToArray()); //增加行数据
+                        }
+                        result = new SyncExcResult(true, "转换成功！", dtResult);
+                        break;
+                    case MergeDoubleDataStyle.Diff:
+                        DataTable dtResultDif = dtResultIn.Clone();
+                        //左边独有部分
+                        var leftJoin1 = from f in dtMain.AsEnumerable()
+                                       where !joinList.Any(j => j.F1.Field<int>(sRowNo1) == f.Field<int>(sRowNo1))
+                                       select new { F1 = f };
+                        var LeftJoinRes1 = leftJoin1.ToList();
+                        foreach (var item in LeftJoinRes1)
+                        {
+                            dtResultDif.Rows.Add(item.F1.ItemArray.Concat(new object[dtSec.Columns.Count]).ToArray()); //增加行数据
+                        }
+                        //右边独有部分
+                        var rightJoin1 = from f in dtSec.AsEnumerable()
+                                        where !joinList.Any(j => j.S1.Field<int>(sRowNo2) == f.Field<int>(sRowNo2))
+                                        select new { F1 = f };
+                        var rightJoinRes1 = rightJoin1.ToList();
+                        foreach (var item in rightJoinRes1)
+                        {
+                            dtResultDif.Rows.Add(new object[dtMain.Columns.Count].Concat(item.F1.ItemArray).ToArray()); //增加行数据
+                        }
+                        result = new SyncExcResult(true, "转换成功！", dtResultDif);
+                        break;
+                    case MergeDoubleDataStyle.UnionAll:
+                        //左边独有部分
+                        var leftJoin2 = from f in dtMain.AsEnumerable()
+                                        where !joinList.Any(j => j.F1.Field<int>(sRowNo1) == f.Field<int>(sRowNo1))
+                                        select new { F1 = f };
+                        var LeftJoinRes2 = leftJoin2.ToList();
+                        foreach (var item in LeftJoinRes2)
+                        {
+                            dtResult.Rows.Add(item.F1.ItemArray.Concat(new object[dtSec.Columns.Count]).ToArray()); //增加行数据
+                        }
+                        //右边独有部分
+                        var rightJoin2 = from f in dtSec.AsEnumerable()
+                                         where !joinList.Any(j => j.S1.Field<int>(sRowNo2) == f.Field<int>(sRowNo2))
+                                         select new { F1 = f };
+                        var rightJoinRes2 = rightJoin2.ToList();
+                        foreach (var item in rightJoinRes2)
+                        {
+                            dtResult.Rows.Add(new object[dtMain.Columns.Count].Concat(item.F1.ItemArray).ToArray()); //增加行数据
+                        }
+                        result = new SyncExcResult(true, "转换成功！", dtResult);
+                        break;
+                    default:
+                        break;
+                }
+                //返回结果
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new SyncExcResult(false, "转换失败：" + ex.Message, null);
+            }
+        }
+
+        /// <summary>
+        /// 获取LINQ动态条件
+        /// </summary>
+        /// <param name="dic"></param>
+        /// <param name="dr"></param>
+        /// <param name="isKey"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        private static object GetLinqDynamicCondtion(IDictionary<string, string> dic, DataRow dr,bool isKey)
+        {
+            int iCondCount = dic.Count();
+            if (iCondCount == 1)
+            {
+                return isKey ? new { c1 = dr.Field<string>(dic.ElementAt(0).Key) } : new { c1 = dr.Field<string>(dic.ElementAt(0).Value) };
+            }
+            else if (iCondCount == 2)
+            {
+                return isKey ? new
+                {
+                    c1 = dr.Field<string>(dic.ElementAt(0).Key),
+                    c2 = dr.Field<string>(dic.ElementAt(1).Key)
+                } :
+                new
+                {
+                    c1 = dr.Field<string>(dic.ElementAt(0).Value),
+                    c2 = dr.Field<string>(dic.ElementAt(1).Value)
+                };
+            }
+            else if (iCondCount == 3)
+            {
+                return isKey ? new
+                {
+                    c1 = dr.Field<string>(dic.ElementAt(0).Key),
+                    c2 = dr.Field<string>(dic.ElementAt(1).Key),
+                    c3 = dr.Field<string>(dic.ElementAt(2).Key)
+                } :
+                new
+                {
+                    c1 = dr.Field<string>(dic.ElementAt(0).Value),
+                    c2 = dr.Field<string>(dic.ElementAt(1).Value),
+                    c3 = dr.Field<string>(dic.ElementAt(2).Value)
+                };
+            }
+            else if (iCondCount == 4)
+            {
+                return isKey ? new
+                {
+                    c1 = dr.Field<string>(dic.ElementAt(0).Key),
+                    c2 = dr.Field<string>(dic.ElementAt(1).Key),
+                    c3 = dr.Field<string>(dic.ElementAt(2).Key),
+                    c4 = dr.Field<string>(dic.ElementAt(3).Key)
+                } :
+                new
+                {
+                    c1 = dr.Field<string>(dic.ElementAt(0).Value),
+                    c2 = dr.Field<string>(dic.ElementAt(1).Value),
+                    c3 = dr.Field<string>(dic.ElementAt(2).Value),
+                    c4 = dr.Field<string>(dic.ElementAt(3).Value)
+                };
+            }
+            else if (iCondCount == 5)
+            {
+                return isKey ? new
+                {
+                    c1 = dr.Field<string>(dic.ElementAt(0).Key),
+                    c2 = dr.Field<string>(dic.ElementAt(1).Key),
+                    c3 = dr.Field<string>(dic.ElementAt(2).Key),
+                    c4 = dr.Field<string>(dic.ElementAt(3).Key),
+                    c5 = dr.Field<string>(dic.ElementAt(4).Key)
+                } :
+                new
+                {
+                    c1 = dr.Field<string>(dic.ElementAt(0).Value),
+                    c2 = dr.Field<string>(dic.ElementAt(1).Value),
+                    c3 = dr.Field<string>(dic.ElementAt(2).Value),
+                    c4 = dr.Field<string>(dic.ElementAt(3).Value),
+                    c5 = dr.Field<string>(dic.ElementAt(4).Value)
+                };
+            }
+            else if (iCondCount == 6)
+            {
+                return isKey ? new
+                {
+                    c1 = dr.Field<string>(dic.ElementAt(0).Key),
+                    c2 = dr.Field<string>(dic.ElementAt(1).Key),
+                    c3 = dr.Field<string>(dic.ElementAt(2).Key),
+                    c4 = dr.Field<string>(dic.ElementAt(3).Key),
+                    c5 = dr.Field<string>(dic.ElementAt(4).Key),
+                    c6 = dr.Field<string>(dic.ElementAt(5).Key)
+                } :
+                new
+                {
+                    c1 = dr.Field<string>(dic.ElementAt(0).Value),
+                    c2 = dr.Field<string>(dic.ElementAt(1).Value),
+                    c3 = dr.Field<string>(dic.ElementAt(2).Value),
+                    c4 = dr.Field<string>(dic.ElementAt(3).Value),
+                    c5 = dr.Field<string>(dic.ElementAt(4).Value),
+                    c6 = dr.Field<string>(dic.ElementAt(5).Value)
+                };
+            }
+            else if (iCondCount == 7)
+            {
+                return isKey ? new
+                {
+                    c1 = dr.Field<string>(dic.ElementAt(0).Key),
+                    c2 = dr.Field<string>(dic.ElementAt(1).Key),
+                    c3 = dr.Field<string>(dic.ElementAt(2).Key),
+                    c4 = dr.Field<string>(dic.ElementAt(3).Key),
+                    c5 = dr.Field<string>(dic.ElementAt(4).Key),
+                    c6 = dr.Field<string>(dic.ElementAt(5).Key),
+                    c7 = dr.Field<string>(dic.ElementAt(6).Key)
+                } :
+                new
+                {
+                    c1 = dr.Field<string>(dic.ElementAt(0).Value),
+                    c2 = dr.Field<string>(dic.ElementAt(1).Value),
+                    c3 = dr.Field<string>(dic.ElementAt(2).Value),
+                    c4 = dr.Field<string>(dic.ElementAt(3).Value),
+                    c5 = dr.Field<string>(dic.ElementAt(4).Value),
+                    c6 = dr.Field<string>(dic.ElementAt(5).Value),
+                    c7 = dr.Field<string>(dic.ElementAt(6).Value)
+                };
+            }
+            else if (iCondCount == 8)
+            {
+                return isKey ? new
+                {
+                    c1 = dr.Field<string>(dic.ElementAt(0).Key),
+                    c2 = dr.Field<string>(dic.ElementAt(1).Key),
+                    c3 = dr.Field<string>(dic.ElementAt(2).Key),
+                    c4 = dr.Field<string>(dic.ElementAt(3).Key),
+                    c5 = dr.Field<string>(dic.ElementAt(4).Key),
+                    c6 = dr.Field<string>(dic.ElementAt(5).Key),
+                    c7 = dr.Field<string>(dic.ElementAt(6).Key),
+                    c8 = dr.Field<string>(dic.ElementAt(7).Key)
+                } :
+                new
+                {
+                    c1 = dr.Field<string>(dic.ElementAt(0).Value),
+                    c2 = dr.Field<string>(dic.ElementAt(1).Value),
+                    c3 = dr.Field<string>(dic.ElementAt(2).Value),
+                    c4 = dr.Field<string>(dic.ElementAt(3).Value),
+                    c5 = dr.Field<string>(dic.ElementAt(4).Value),
+                    c6 = dr.Field<string>(dic.ElementAt(5).Value),
+                    c7 = dr.Field<string>(dic.ElementAt(6).Value),
+                    c8 = dr.Field<string>(dic.ElementAt(7).Value)
+                };
+            }
+            else if (iCondCount == 9)
+            {
+                return isKey ? new
+                {
+                    c1 = dr.Field<string>(dic.ElementAt(0).Key),
+                    c2 = dr.Field<string>(dic.ElementAt(1).Key),
+                    c3 = dr.Field<string>(dic.ElementAt(2).Key),
+                    c4 = dr.Field<string>(dic.ElementAt(3).Key),
+                    c5 = dr.Field<string>(dic.ElementAt(4).Key),
+                    c6 = dr.Field<string>(dic.ElementAt(5).Key),
+                    c7 = dr.Field<string>(dic.ElementAt(6).Key),
+                    c8 = dr.Field<string>(dic.ElementAt(7).Key),
+                    c9 = dr.Field<string>(dic.ElementAt(8).Key)
+                } :
+                new
+                {
+                    c1 = dr.Field<string>(dic.ElementAt(0).Value),
+                    c2 = dr.Field<string>(dic.ElementAt(1).Value),
+                    c3 = dr.Field<string>(dic.ElementAt(2).Value),
+                    c4 = dr.Field<string>(dic.ElementAt(3).Value),
+                    c5 = dr.Field<string>(dic.ElementAt(4).Value),
+                    c6 = dr.Field<string>(dic.ElementAt(5).Value),
+                    c7 = dr.Field<string>(dic.ElementAt(6).Value),
+                    c8 = dr.Field<string>(dic.ElementAt(7).Value),
+                    c9 = dr.Field<string>(dic.ElementAt(8).Value)
+                };
+            }
+            else if (iCondCount == 10)
+            {
+                return isKey ? new
+                {
+                    c1 = dr.Field<string>(dic.ElementAt(0).Key),
+                    c2 = dr.Field<string>(dic.ElementAt(1).Key),
+                    c3 = dr.Field<string>(dic.ElementAt(2).Key),
+                    c4 = dr.Field<string>(dic.ElementAt(3).Key),
+                    c5 = dr.Field<string>(dic.ElementAt(4).Key),
+                    c6 = dr.Field<string>(dic.ElementAt(5).Key),
+                    c7 = dr.Field<string>(dic.ElementAt(6).Key),
+                    c8 = dr.Field<string>(dic.ElementAt(7).Key),
+                    c9 = dr.Field<string>(dic.ElementAt(8).Key),
+                    c10 = dr.Field<string>(dic.ElementAt(9).Key)
+                } :
+                new
+                {
+                    c1 = dr.Field<string>(dic.ElementAt(0).Value),
+                    c2 = dr.Field<string>(dic.ElementAt(1).Value),
+                    c3 = dr.Field<string>(dic.ElementAt(2).Value),
+                    c4 = dr.Field<string>(dic.ElementAt(3).Value),
+                    c5 = dr.Field<string>(dic.ElementAt(4).Value),
+                    c6 = dr.Field<string>(dic.ElementAt(5).Value),
+                    c7 = dr.Field<string>(dic.ElementAt(6).Value),
+                    c8 = dr.Field<string>(dic.ElementAt(7).Value),
+                    c9 = dr.Field<string>(dic.ElementAt(8).Value),
+                    c10 = dr.Field<string>(dic.ElementAt(9).Value)
+                };
+            }
+            else
+            {
+                throw new Exception("最多只能输入 10 个条件！");
+            }
+        }
+
+        /// <summary>
+        /// 循环处理表连接数据(速度慢)
+        /// </summary>
+        /// <param name="dtMain"></param>
+        /// <param name="dtSec"></param>
+        /// <param name="dtResultIn"></param>
+        /// <param name="sType"></param>
+        /// <param name="dic"></param>
+        private async Task<SyncExcResult> DataTableConnectStringByLoop(DataTable dtMain, DataTable dtSec, DataTable dtResultIn, MergeDoubleDataStyle sType, IDictionary<string, string> dic)
         {
             try
             {
                 DataTable dtResult = dtResultIn.Clone();
+                //为第二个Excel表增加一个未处理数据的列。最终结果表也要增加
+                string sDealColumnName = "DataIsDealFlagColumnNameUniq";
+                if (!dtSec.Columns.Contains(sDealColumnName))
+                {
+                    dtSec.Columns.Add(sDealColumnName, typeof(string)); //增加处理列
+                }
+                if (!dtResultIn.Columns.Contains(sDealColumnName))
+                {
+                    dtResultIn.Columns.Add(sDealColumnName, typeof(string)); //增加处理列
+                }
                 //确定要循环的表
                 if (sType == MergeDoubleDataStyle.RightJoin)
                 {
@@ -286,12 +633,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                                 sConndition += " and " + dic[sKey] + " = '" + sSource + "' "; //注：这里要取字典的值作为第二个表的过滤条件
                             }
 
-                            iStep++; 
+                            iStep++;
                         }
 
                         //合并能关联上的数据
                         DataRow[] arrSec = dtSec.Select(sConndition);
-                        if(arrSec.Length > 0)
+                        if (arrSec.Length > 0)
                         {
                             foreach (DataRow item in arrSec)
                             {
@@ -314,7 +661,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     //针对交集，直接退出
                     if (sType == MergeDoubleDataStyle.InnerJoin)
                     {
-                        return new SyncExcResult(true, "转换成功！",dtResult); 
+                        return new SyncExcResult(true, "转换成功！", dtResult);
                     }
                     //非左集，即异集或并集
                     if (sType != MergeDoubleDataStyle.LeftJoin)
@@ -326,11 +673,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                         }
                     }
                 }
-                return new SyncExcResult(true, "转换成功！",dtResult);
+                return new SyncExcResult(true, "转换成功！", dtResult);
             }
             catch (Exception ex)
             {
-                return new SyncExcResult(false, "转换失败：" + ex.Message,null);
+                return new SyncExcResult(false, "转换失败：" + ex.Message, null);
             }
         }
 
@@ -341,52 +688,35 @@ namespace Breezee.WorkHelper.DBTool.UI
         }
         #endregion
 
-        private void dgvExcel2_KeyDown(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.Modifiers == Keys.Control && e.KeyCode == Keys.V)
-                {
-                    string pasteText = Clipboard.GetText().Trim();
-                    if (string.IsNullOrEmpty(pasteText))//包括IN的为生成的SQL，不用粘贴
-                    {
-                        return;
-                    }
-
-                    DataTable dtMain = dgvExcel2.GetBindingTable();
-                    dtMain.Clear();
-                    dtMain.Columns.Clear();
-                    pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain,"1",true);
-                    dgvExcel2.ShowRowNum();
-                    dtMain.Columns.Add(sDealColumnName, typeof(string)); //增加处理列
-                    dgvExcel2.Columns[sDealColumnName].Visible = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                ShowErr(ex.Message);
-            }
-        }
-
         private void CkbLoadExampleData_CheckedChanged(object sender, EventArgs e)
         {
             if (CkbLoadExampleData.Checked)
             {
-                string sText = "CITY_ID\tPROVINCE_ID\r\n1\t1\r\n10\t6\r\n100\t30\r\n10000\t8";
-                DataTable dtMain = dgvExcel1.GetBindingTable();
-                dtMain.Clear();
-                dtMain.Columns.Clear();
-                sText.GetStringTable(ckbAutoColumnName.Checked, dtMain,"",true,false);
+                string sText = "CITY_ID\tPROVINCE_ID\tCITY_CODE\tCITY_NAME\r\n1\t1\t1\t北京\r\n10\t6\t10\t沈阳市\r\n100\t30\t100\t番禺\r\n10000\t8\t10000\t邢台\r\n10001\t8\t10001\t衡水";
+                DataTable dtMain = new DataTable();//dgvExcel1.GetBindingTable();
+                //dtMain.Clear();
+                //dtMain.Columns.Clear();
+                sText.GetStringTable(ckbAutoColumnName.Checked, dtMain, "", false, true, sRowNo1);
+                //dgvExcel1.BindAutoColumn(dtMain);
+                dgvExcel1.BindAutoColumn(dtMain, false, new List<FlexGridColumn> {
+                        new FlexGridColumn.Builder().Name(sRowNo1).Caption("序号1").Width(60).Build()
+                    });
+                dgvExcel1.ShowRowNum(false, sRowNo1);
 
-                sText = "CITY_CODE\tCITY_NAME\r\n1\t北京\r\n10\t沈阳市\r\n100\t番禺\r\n11\t茂名";
-                dtMain = dgvExcel2.GetBindingTable();
-                dtMain.Clear();
-                dtMain.Columns.Clear();
-                sText.GetStringTable(ckbAutoColumnName.Checked, dtMain, "1", true, false);
+                sText = "CITY_ID\tPROVINCE_ID\tCITY_CODE\r\n1\t1\t1\r\n10\t6\t10\r\n100\t303\t100\r\nA20\tB21\t测试";
+                dtMain = new DataTable();//dgvExcel2.GetBindingTable();
+                //dtMain.Clear();
+                //dtMain.Columns.Clear();
+                sText.GetStringTable(ckbAutoColumnName.Checked, dtMain, "1", false, true, sRowNo2);
+                //dgvExcel2.BindAutoColumn(dtMain);
+                dgvExcel2.BindAutoColumn(dtMain, false, new List<FlexGridColumn> {
+                        new FlexGridColumn.Builder().Name(sRowNo2).Caption("序号2").Width(60).Build()
+                    });
+                dgvExcel2.ShowRowNum(false, sRowNo2);
 
                 ckbAutoColumnName.Checked = true;
                 rtbConString.Text = "A=A1";
-                
+
             }
             else
             {
@@ -406,19 +736,19 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 dtRet.Clear();
             }
-            
+
         }
 
         private void tsbExport_Click(object sender, EventArgs e)
         {
             DataTable dtResult = dgvResult.GetBindingTable();
-            if (dtResult==null || dtResult.Rows.Count==0)
+            if (dtResult == null || dtResult.Rows.Count == 0)
             {
                 ShowErr("没有要导出的记录！", "提示");
                 return;
             }
             //导出Excel
-            ExportHelper.ExportExcel(dtResult, "合并后数据_" + DateTime.Now.ToString("yyyyMMddHHmmss"),true);
+            ExportHelper.ExportExcel(dtResult, "合并后数据_" + DateTime.Now.ToString("yyyyMMddHHmmss"), true);
         }
 
         private void tsmiClear_Click(object sender, EventArgs e)
@@ -454,7 +784,31 @@ namespace Breezee.WorkHelper.DBTool.UI
             lblFind.Text = dgvFindText.CurrentMsg;
         }
 
-        
+        /// <summary>
+        /// 列排充
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgvResult_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
+        {
+            if (e.Column.Name.Equals(sRowNo1,StringComparison.OrdinalIgnoreCase)
+                || e.Column.Name.Equals(sRowNo2, StringComparison.OrdinalIgnoreCase))
+            {
+                if (int.Parse(e.CellValue1.ToString()) > int.Parse(e.CellValue2.ToString()))
+                {
+                    e.SortResult = 1;
+                }
+                else if (int.Parse(e.CellValue1.ToString()) < int.Parse(e.CellValue2.ToString()))
+                {
+                    e.SortResult = -1;
+                }
+                else
+                {
+                    e.SortResult = 0;
+                }
+                e.Handled = true;
+            }
+        }
     }
 
     /// <summary>
@@ -465,15 +819,15 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <summary>
         /// 交集
         /// </summary>
-        InnerJoin=1,
+        InnerJoin = 1,
         /// <summary>
         /// 左集
         /// </summary>
-        LeftJoin=2,
+        LeftJoin = 2,
         /// <summary>
         /// 右集
         /// </summary>
-        RightJoin=3,
+        RightJoin = 3,
         /// <summary>
         /// 异集
         /// </summary>
@@ -481,7 +835,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <summary>
         /// 全集
         /// </summary>
-        UnionAll =5,
+        UnionAll = 5,
     }
 
     public class SyncExcResult

@@ -167,12 +167,12 @@ namespace Breezee.Core.WinFormUI
             private string ColumnName;
             private string ColumnCaption;
             private bool AllowEditing;
-            private DataGridViewContentAlignment Alignment;
-            private int ColumnWidth;
-            private bool ColumnVisible;
-            private DataGridViewColumnTypeEnum ColumnDisplayType;
+            private DataGridViewContentAlignment Alignment = DataGridViewContentAlignment.MiddleLeft;
+            private int ColumnWidth = 100;
+            private bool ColumnVisible = true;
+            private DataGridViewColumnTypeEnum ColumnDisplayType = DataGridViewColumnTypeEnum.TextBox;
             private int MaxLength;
-            private bool IsButtonColumn;
+            private bool IsButtonColumn = false;
 
             public Builder DBName(string sValue)
             {

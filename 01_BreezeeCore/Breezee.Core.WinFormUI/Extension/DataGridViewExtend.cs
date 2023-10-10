@@ -33,11 +33,11 @@ namespace Breezee.Core.WinFormUI
         /// </summary>
         /// <param name="dgv"></param>
         /// <param name="dtSource"></param>
-        public static void BindAutoColumn(this DataGridView dgv, DataTable dtSource, bool isAutoSize = false)
+        public static void BindAutoColumn(this DataGridView dgv, DataTable dtSource, bool isAutoSize = false,List<FlexGridColumn> fixCol = null)
         {
             BindingSource bs = new BindingSource();
             bs.DataSource = dtSource;
-            BindAutoColumn(dgv, bs, isAutoSize);
+            BindAutoColumn(dgv, bs, isAutoSize, fixCol);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Breezee.Core.WinFormUI
         /// <param name="dgv"></param>
         /// <param name="bs"></param>
         /// <param name="isAutoSize"></param>
-        public static void BindAutoColumn(this DataGridView dgv, BindingSource bs, bool isAutoSize = false)
+        public static void BindAutoColumn(this DataGridView dgv, BindingSource bs, bool isAutoSize = false, List<FlexGridColumn> fixCol = null)
         {
             dgv.DataSource = bs;
             if (isAutoSize)
@@ -60,11 +60,20 @@ namespace Breezee.Core.WinFormUI
                 //设置网格行高可手工调整
                 //dgv.AllowUserToResizeRows = true;
             }
+            //针对确定列名显示
+            if (fixCol != null)
+            {
+                foreach (var item in fixCol)
+                {
+                    dgv.Columns[item.ColumnName].HeaderText = item.ColumnCaption;
+                    dgv.Columns[item.ColumnName].Width = item.ColumnWidth;
+                }
+            }
         }
 
-        public static void BindAutoTable(this DataGridView dgv, DataTable dtSource, bool isAutoSize = false)
+        public static void BindAutoTable(this DataGridView dgv, DataTable dtSource, bool isAutoSize = false, List<FlexGridColumn> fixCol = null)
         {
-            BindAutoColumn(dgv, dtSource, isAutoSize);
+            BindAutoColumn(dgv, dtSource, isAutoSize,fixCol);
         }
 
         public static void BindTagTable(this DataGridView dgv, DataTable dtSource, bool IsUseTagHistoryConfig = true, GridPager gPage = null)
@@ -77,20 +86,21 @@ namespace Breezee.Core.WinFormUI
         /// </summary>
         /// <param name="dgv"></param>
         /// <param name="isResetRowNum"></param>
-        public static void ShowRowNum(this DataGridView dgv, bool isResetRowNum = false)
+        public static void ShowRowNum(this DataGridView dgv, bool isResetRowNum = false,string sRowNunColumnName="ROWNO")
         {
             int rowNumber = 1;
-            if (dgv.Columns.Contains(GlobalKey.RowNum))
+            if (dgv.Columns.Contains(sRowNunColumnName))
             {
-                dgv.Columns[GlobalKey.RowNum].HeaderText = "序号";
-                dgv.Columns[GlobalKey.RowNum].Width = 40;
+                dgv.Columns[sRowNunColumnName].HeaderText = "序号";
+                dgv.Columns[sRowNunColumnName].Width = 50;
+                dgv.Columns[sRowNunColumnName].ValueType = typeof(int); //设置序号为整型
                 dgv.RowHeadersVisible = false;//不显示行标题，即第一个空白列
                 if (!isResetRowNum)
                 {
                     return;
                 }
                 DataTable dtBind = dgv.GetBindingTable();
-                string sLineNumName = GlobalKey.RowNum;
+                string sLineNumName = sRowNunColumnName;
                 if (dtBind == null)
                 {
                     //没有绑定表
@@ -99,7 +109,8 @@ namespace Breezee.Core.WinFormUI
                         foreach (DataGridViewRow row in dgv.Rows)
                         {
                             if (row.IsNewRow) continue;
-                            row.Cells[sLineNumName].Value = rowNumber.ToString(); //这里必须是字符
+                            row.Cells[sLineNumName].Value = rowNumber; //这里必须是字符
+                            row.Cells[sLineNumName].ValueType = typeof(int); //设置序号为整型
                             rowNumber++;
                         }
                     }
@@ -113,7 +124,7 @@ namespace Breezee.Core.WinFormUI
                     }
                     foreach (DataRow row in dtBind.Rows)
                     {
-                        row[sLineNumName] = rowNumber.ToString(); //这里必须是字符
+                        row[sLineNumName] = rowNumber; //这里必须是字符
                         rowNumber++;
                     }
                 }
@@ -122,13 +133,14 @@ namespace Breezee.Core.WinFormUI
             else
             {
                 dgv.RowHeadersVisible = true;//显示行标题，即第一个空白列
+                dgv.RowHeadersWidth = 50;
                 foreach (DataGridViewRow row in dgv.Rows)
                 {
                     if (row.IsNewRow) continue;
-                    row.HeaderCell.Value = rowNumber.ToString(); //这里必须是字符
+                    row.HeaderCell.Value = rowNumber.ToString(); //这里必须是字符，才能显示在行标题中
                     rowNumber++;
                 }
-                dgv.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
+                //dgv.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
             }
         }
 
