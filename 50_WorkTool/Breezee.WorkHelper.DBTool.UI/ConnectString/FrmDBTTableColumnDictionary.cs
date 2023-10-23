@@ -1102,7 +1102,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             DataTable dt = dgvCommonCol.GetBindingTable();
             DataRow dataRow = dgvCommonCol.GetCurrentRow();
-            if (dataRow == null) return;
+            if (dataRow == null || dataRow.RowState == DataRowState.Detached) return;
             dt.Rows.Remove(dataRow);
         }
 
@@ -1122,7 +1122,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             DataGridView dgvSelect = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as DataGridView;
             DataTable dt = dgvSelect.GetBindingTable();
             DataRow dataRow = dgvSelect.GetCurrentRow();
-            if (dataRow == null) return;
+            if (dataRow == null || dataRow.RowState == DataRowState.Detached) return;
             dt.Rows.Remove(dataRow);
         }
 
@@ -1258,10 +1258,6 @@ private String #{1}#;
         {
             SelectAllOrCancel(dgvCommonCol, ref _allSelectCommon, e);
         }
-
-
-
-
         #endregion
 
         private void btnGenerate_Click(object sender, EventArgs e)

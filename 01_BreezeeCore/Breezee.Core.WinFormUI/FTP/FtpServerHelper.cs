@@ -10,6 +10,7 @@ using System.Drawing;
 using Breezee.Core.Entity;
 using Breezee.Core.Tool;
 using Breezee.Core.Interface;
+using System.Net.Sockets;
 
 /*********************************************************************		
  * 对象名称：		
@@ -90,7 +91,7 @@ namespace Breezee.Core.WinFormUI
         /// <param name="FtpRemotePath">指定FTP连接成功后的当前目录, 如果不指定即默认为根目录</param> 
         /// <param name="FtpUserID">用户名</param> 
         /// <param name="FtpPassword">密码</param> 
-        private void SetFtpServer(string FtpServerIP, string FtpRemotePath, string FtpUserID, string FtpPassword, string FtpUploadDir = "Upload", string FtpDownloadDir = "Download", string defaultFtpServerName = "")
+        public void SetFtpServer(string FtpServerIP, string FtpRemotePath, string FtpUserID, string FtpPassword, string FtpUploadDir = "Upload", string FtpDownloadDir = "Download", string defaultFtpServerName = "",FtpProtocolType protocolType = FtpProtocolType.FTP)
         {
             _ftpServer.IPAddr = FtpServerIP;
             _ftpServer.RemotePath = FtpRemotePath;
@@ -98,6 +99,7 @@ namespace Breezee.Core.WinFormUI
             _ftpServer.ftpPassword = FtpPassword;
             _ftpServer.UploadDir = FtpUploadDir;
             _ftpServer.DownloadDir = FtpDownloadDir;
+            string sProtocol = protocolType == FtpProtocolType.FTP ? "ftp" : "sftp";
             if (string.IsNullOrEmpty(defaultFtpServerName))
             {
                 _ftpServer.ConfigCode = _DefaultFtpServerName;
@@ -108,11 +110,11 @@ namespace Breezee.Core.WinFormUI
             }
             if (string.IsNullOrEmpty(FtpRemotePath))
             {
-                _ftpServer.ftpURI = "ftp://" + FtpServerIP + "/";
+                _ftpServer.ftpURI = sProtocol + "://" + FtpServerIP + "/";
             }
             else
             {
-                _ftpServer.ftpURI = "ftp://" + FtpServerIP + "/" + FtpRemotePath + "/";
+                _ftpServer.ftpURI = sProtocol + "://" + FtpServerIP + "/" + FtpRemotePath + "/";
             }
         }
         #endregion
@@ -770,7 +772,8 @@ namespace Breezee.Core.WinFormUI
             {
                 _ftpServer.RemotePath += DirectoryName + "/";
             }
-            _ftpServer.ftpURI = "ftp://" + _ftpServer.IPAddr + "/" + _ftpServer.RemotePath + "/";
+            string sProtocol = _ftpServer.Protocol == FtpProtocolType.FTP ? "ftp" : "sftp";
+            _ftpServer.ftpURI = sProtocol + "://" + _ftpServer.IPAddr + "/" + _ftpServer.RemotePath + "/";
         } 
         #endregion
     }

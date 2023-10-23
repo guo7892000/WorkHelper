@@ -12,16 +12,18 @@ namespace Breezee.Core.Entity
     {
         public string ConfigCode;//配置编码
         public string ConfigName;//配置名称：仅显示用
+
         public string IPAddr;//IP地址
         public string PortNum;//端口号
         public string RemotePath;//根目录
+        //
+        public string ftpUserID;
+        public string ftpPassword;
+        public FtpProtocolType Protocol = FtpProtocolType.FTP;
 
         public string UploadDir = "Upload";
         public string DownloadDir = "Download";
         public bool IsDefault = false;
-        //
-        public string ftpUserID;
-        public string ftpPassword;
         //
         public string ftpURI;//IPAddr:PortNum/RemotePath
 

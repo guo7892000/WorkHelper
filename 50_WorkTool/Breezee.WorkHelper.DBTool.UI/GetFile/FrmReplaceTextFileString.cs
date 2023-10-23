@@ -1,0 +1,1455 @@
+﻿using Breezee.AutoSQLExecutor.Core;
+using Breezee.Core.Entity;
+using Breezee.Core.Interface;
+using Breezee.Core.Tool;
+using Breezee.Core.WinFormUI;
+using Breezee.WorkHelper.DBTool.Entity;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using FluentFTP;
+using System.Threading;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using Breezee.Core;
+using Breezee.Core.Tool.Helper;
+using System.Collections;
+using org.breezee.MyPeachNet;
+using FluentFTP.Rules;
+using Renci.SshNet;
+using FluentFTP.Helpers;
+
+namespace Breezee.WorkHelper.DBTool.UI
+{
+    /// <summary>
+    /// 替换文本文件字符：将文本文件内容进行替换
+    /// @history:
+    ///   2023-10-15 huangguohui 新增    
+    /// </summary>
+    public partial class FrmReplaceTextFileString : BaseForm
+    {
+        private readonly string _sGridColumnSelect = "IsSelect";
+        private bool _allSelectFtp = false;//默认全选，这里取反
+        private bool _allSelectWait = false;//默认全选，这里取反
+        private bool _allSelectOldNewChar = false;//默认全选，这里取反
+        private bool _allSelectResult = false;//默认全选，这里取反
+        public FrmReplaceTextFileString()
+        {
+            InitializeComponent();
+        }
+
+        /// <summary>
+        /// 加载事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FrmReplaceTextFileString_Load(object sender, EventArgs e)
+        {
+            _dicString["1"] = "本地文件";
+            _dicString["2"] = "FTP远程文件";
+            cbbFileSource.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
+
+            _dicString.Clear();
+            _dicString["1"] = "先删后增";
+            _dicString["2"] = "覆盖";
+            _dicString["3"] = "备份";
+            cbbUploadReplaceType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
+            toolTip1.SetToolTip(cbbUploadReplaceType, "先删后增:会把FTP上的目录删除后，再新增；\r\n覆盖：使用原目录，文件存在会覆盖。\r\n备份：会将原目录移入备份目录，并加上日期重命名。");
+
+            _dicString.Clear();
+            _dicString["1"] = "FTP";
+            _dicString["2"] = "SFTP";
+            _dicString["3"] = "FTPS";
+            cbbFtpProtocol.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
+
+            _dicString.Clear();
+            _dicString["1"] = "先删后增";
+            _dicString["2"] = "覆盖";
+            _dicString["3"] = "仅新增";
+            cbbLocalCopyType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
+            toolTip1.SetToolTip(cbbLocalCopyType, "本地文件复制方式");
+
+            _dicString.Clear();
+            _dicString["utf-8"] = "utf-8";
+            _dicString["utf-8-Bom"] = "带有BOM的utf-8";
+            _dicString["gb2312"] = "gb2312";
+            _dicString["uft-16"] = "unicode";
+            _dicString["big5"] = "big5";
+            _dicString["GB18030"] = "GB18030";
+            _dicString["utf-32"] = "utf-32"; 
+            cbbCharSetEncode.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
+            toolTip1.SetToolTip(cbbCharSetEncode, "如出现乱码，记得要修改字符集！");
+
+            _dicString.Clear();
+            _dicString["1"] = "E3S-PLUS-FR";
+            cbbTemplateType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), true, true);
+
+            //设置Tag
+            SetTag();
+            LoadFuncConfig();
+
+            //其他
+            toolTip1.SetToolTip(txbExcludeFileName, "排除包含指定字符的文件名，以逗号分隔！");
+        }
+
+        private void LoadFuncConfig()
+        {
+            //加载设置值
+            cbbFileSource.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_FileSource, "1").Value;
+            txbSavePath.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_SavePath, "").Value;
+            txbIPAddr.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_FTP_IPAddr, "").Value;
+            txbPort.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_FTP_PortNum, "").Value;
+            txbUserName.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_FTP_UserName, "").Value;
+            txbPassword.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_FTP_Pwd, "").Value;
+            txbFtpInitDir.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_FTP_InitDir, "").Value;
+            cbbFtpProtocol.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_FTP_Protocol, "2").Value;
+            
+            txbFtpDownloadPath.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_FTP_DownloadLocalDir, "").Value;
+            txbFtpReadPath.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_FTP_ReadDir, "").Value;
+            ckbDownLoadAddList.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_FTP_DownLoadIsAddList, "1").Value) ? true : false;
+            ckbClearSaveDir.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_FTP_DownloadBeforeIsClearLocalDir, "1").Value) ? true : false;
+            txbFtpUploadPath.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_FTP_UploadDir, "").Value;
+            cbbUploadReplaceType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_FTP_UploadReplaceType, "1").Value;
+            txbExcludeFileName.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_FTP_ExcludeFileName, "").Value;
+            txbExcludeDir.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_FTP_ExcludeDirName, "").Value;
+            txbFtpUploadBackupDir.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_FTP_UploadBackupDir, "").Value;
+
+            cbbCharSetEncode.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_CharsetEncoding, "utf-8").Value;
+            cbbTemplateType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_TemplateType, "1").Value;
+            cbbLocalCopyType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_GenerateType, "1").Value;
+        }
+
+        private void SetTag()
+        {
+            //本地目录或文件
+            FlexGridColumnDefinition fdc = new FlexGridColumnDefinition();
+            fdc.AddColumn(
+                FlexGridColumn.NewRowNoCol(),
+                new FlexGridColumn.Builder().Name(_sGridColumnSelect).Caption("选择").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(50).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name("TYPE").Caption("类型").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(50).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name("FILE_PATH").Caption("路径").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(200).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name("COPY_PATH").Caption("复制相对路径").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(200).Edit(true).Visible().Build()
+                );
+            dgvFileListWaitFor.Tag = fdc.GetGridTagString();
+            dgvFileListWaitFor.BindDataGridView(null, false);
+            //新旧字符网格
+            fdc = new FlexGridColumnDefinition();
+            fdc.AddColumn(
+                FlexGridColumn.NewRowNoCol(),
+                new FlexGridColumn.Builder().Name(_sGridColumnSelect).Caption("选择").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(50).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name("OLD").Caption("旧字符").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name("NEW").Caption("新字符").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(true).Visible().Build()
+                );
+            dgvOldNewChar.Tag = fdc.GetGridTagString();
+            dgvOldNewChar.BindDataGridView(null, false);
+            //FTP清单网格
+            fdc = new FlexGridColumnDefinition();
+            fdc.AddColumn(
+                FlexGridColumn.NewRowNoCol(),
+                new FlexGridColumn.Builder().Name(_sGridColumnSelect).Caption("选择").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(50).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name("FILE_PATH").Caption("文件路径").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(600).Edit(true).Visible().Build()
+                );
+            dgvFtpFileList.Tag = fdc.GetGridTagString();
+            dgvFtpFileList.BindDataGridView(null, false);
+            //结果网格
+            fdc = new FlexGridColumnDefinition();
+            fdc.AddColumn(
+                FlexGridColumn.NewRowNoCol(),
+                new FlexGridColumn.Builder().Name(_sGridColumnSelect).Caption("选择").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(50).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name("FILE_PATH").Caption("文件全路径").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(200).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name("COPY_PATH").Caption("复制相对路径").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(200).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name("COPY_FILE").Caption("复制文件").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(200).Edit(true).Visible(false).Build()
+                );
+            dgvResult.Tag = fdc.GetGridTagString();
+            dgvResult.BindDataGridView(null, false);
+        }
+
+        /// <summary>
+        /// 生成文件按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsbAutoSQL_Click(object sender, EventArgs e)
+        {
+            string sSavePath = txbSavePath.Text.Trim();
+            if (string.IsNullOrEmpty(sSavePath))
+            {
+                ShowErr("【最终生成目录】不能为空！");
+                return;
+            }
+
+            string sGeneratType = cbbLocalCopyType.SelectedValue.ToString();
+            bool isOverWrite = true;
+            if ("1".Equals(sGeneratType))
+            {
+                if (Directory.Exists(sSavePath))
+                {
+                    Directory.Delete(sSavePath, true);
+                    Directory.CreateDirectory(sSavePath);
+                }
+                else
+                {
+                    Directory.CreateDirectory(sSavePath);
+                }
+            }
+            else if ("1".Equals(sGeneratType))
+            {
+                isOverWrite = true;
+            }
+            else
+            {
+                isOverWrite = false;
+            }
+
+            string sFileSource = cbbFileSource.SelectedValue.ToString();
+            bool isFtp = "2".Equals(sFileSource) ? true : false;
+
+            string sFtpDownloadPath = txbFtpDownloadPath.Text.Trim();
+
+            DataTable dtWillDeal = dgvFileListWaitFor.GetBindingTable();
+            DataRow[] drWill = dtWillDeal.Select(_sGridColumnSelect + "=  '1'");
+            if (drWill.Length == 0)
+            {
+                //非FTP或原FTP下载目录为空时
+                if (!isFtp || string.IsNullOrEmpty(sFtpDownloadPath))
+                {
+                    ShowErr("没有要生成的文件！");
+                    return;
+                }
+                else
+                {
+                    //FTP且原FTP下载目录非空时
+                    //读取原FTP下载目录进行复制
+                    FileInfo[] arrFiles = new DirectoryInfo(sFtpDownloadPath).GetFiles("*.*", SearchOption.AllDirectories);
+                    if (arrFiles.Length == 0)
+                    {
+                        ShowErr("FTP下载的【本地保存路径】下没有文件，请先从FTP服务器下载文件！");
+                        return;
+                    }
+                    //字符集
+                    Encoding encoding = GetEncoding();
+                    foreach (FileInfo file in arrFiles)
+                    {
+                        //复制文件到最终保存路径
+                        FileDirHelper.CopyFilesToDirKeepSrcDirName(file.FullName, sSavePath, false, isOverWrite);
+                    }
+                }
+            }
+            else
+            {
+                //待处理网格选中数据时：复制文件到保存目录
+                foreach (DataRow dr in drWill)
+                {
+                    string sFileType = dr["TYPE"].ToString().Trim();
+                    string sFileName = dr["FILE_PATH"].ToString().Trim();
+                    string sCopyPath = dr["COPY_PATH"].ToString().Trim();
+                    //复制文件到【最终生成目录】时，拼接上相对路径
+                    string sTargetPath = sSavePath + sCopyPath.Replace(@"/", @"\");
+                    if ("目录".Equals(sFileType))
+                    {
+                        if (!Directory.Exists(sFileName))
+                        {
+                            ShowErr(sFileName + "目录不存在！");
+                            return;
+                        }
+                        FileDirHelper.CopyFilesToDirKeepSrcDirName(sFileName, sTargetPath, false, isOverWrite);
+                    }
+                    else
+                    {
+                        FileInfo file = new FileInfo(sFileName);
+                        if (!File.Exists(file.FullName))
+                        {
+                            ShowErr(sFileName + "文件不存在！");
+                            return;
+                        }
+                        FileDirHelper.CopyFilesToDir(sFileName, sTargetPath, false, isOverWrite);
+                    }
+                }
+            }
+            //替换文件文本
+            ReplaceFileText(sSavePath);
+        }
+
+        /// <summary>
+        /// 已下载文件加入待处理清单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnHadDownAddToWait_Click(object sender, EventArgs e)
+        {
+            string sSavePath = txbSavePath.Text.Trim();
+            string sFtpDownloadPath = txbFtpDownloadPath.Text.Trim();
+            if (string.IsNullOrEmpty(sSavePath))
+            {
+                ShowErr("【最终生成目录】不能为空！");
+                return;
+            }
+            if (string.IsNullOrEmpty(sFtpDownloadPath))
+            {
+                ShowErr("FTP下载的【本地保存路径】不能为空！");
+                return;
+            }
+            //读取原FTP下载目录进行复制
+            FileInfo[] arrFiles = new DirectoryInfo(sFtpDownloadPath).GetFiles("*.*", SearchOption.AllDirectories);
+            if (arrFiles.Length == 0)
+            {
+                ShowErr("FTP下载的【本地保存路径】下没有文件，请先从FTP服务器下载文件！");
+                return;
+            }
+;
+            DataTable dtList = dgvFileListWaitFor.GetBindingTable();
+            dtList.Rows.Clear();
+            int iIndex = 1;
+            foreach (FileInfo file in arrFiles)
+            {
+                string sRelateDir = file.FullName.Replace(sFtpDownloadPath, "");
+                sRelateDir = sRelateDir.Substring(0, sRelateDir.LastIndexOf(@"\"));
+                dtList.Rows.Add(iIndex, "1", "文件", file.FullName, sRelateDir); //添加到待处理网格中
+                iIndex++;
+            }
+        }
+
+        /// <summary>
+        /// 替换文件文本
+        /// </summary>
+        /// <param name="sSavePath"></param>
+        private void ReplaceFileText(string sSavePath)
+        {
+            DataTable dtReplace = dgvOldNewChar.GetBindingTable();
+            DataRow[] drReplace = dtReplace.Select(_sGridColumnSelect + "= '1'");
+            if (drReplace.Length == 0)
+            {
+                ShowErr("没有需要替换的字符！");
+                return;
+            }
+            
+            if (ckbLoadFinalSaveDirFile.Checked)
+            {
+                DataTable dtSource = dgvFileListWaitFor.GetBindingTable();
+                DataRow[] drWillArr = dtSource.Select(_sGridColumnSelect + "= '1'");
+                if (drWillArr.Length == 0)
+                {
+                    ShowErr("没有要处理的文件，请先选择！");
+                    return;
+                }
+
+                DataTable dtResult = dgvResult.GetBindingTable();
+                dtResult.Rows.Clear();
+                int iIdx = 1;
+                //得到文件清单
+                var files = drWillArr.AsEnumerable().Select(t => t["FILE_PATH"].ToString()).ToList();
+                Encoding encoding = GetEncoding();//字符集
+                foreach (string file in files)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append(File.ReadAllText(file, encoding));
+                    foreach (DataRow dr in drReplace)
+                    {
+                        sb.Replace(dr["OLD"].ToString().Trim(), dr["NEW"].ToString().Trim());
+                    }
+                    // 处理每个文件
+                    File.WriteAllText(file, sb.ToString(), encoding);
+                    string sRelateDirFile = file.Replace(sSavePath, "");
+                    string sRelateDir = sRelateDirFile.Substring(0, sRelateDirFile.LastIndexOf(@"\"));
+                    string sRelateDirRealFile = sRelateDirFile.Substring(sRelateDirFile.LastIndexOf(@"\")).Replace("\\", "");
+                    //结果添加文件
+                    dtResult.Rows.Add(iIdx, "1", file, sRelateDir, sRelateDirRealFile);
+                    iIdx++;
+                }
+            }
+            else
+            {
+                //读取保存目录文件进行
+                FileInfo[] arrFiles = new DirectoryInfo(sSavePath).GetFiles("*.*", SearchOption.AllDirectories);
+                if (arrFiles.Length == 0)
+                {
+                    ShowErr("最终保存路径下没有文件，请先复制文件！");
+                    return;
+                }
+
+                DataTable dtResult = dgvResult.GetBindingTable();
+                dtResult.Rows.Clear();
+                int iIdx = 1;
+                //字符集
+                Encoding encoding = GetEncoding();
+
+                foreach (FileInfo file in arrFiles)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append(File.ReadAllText(file.FullName, encoding));
+                    foreach (DataRow dr in drReplace)
+                    {
+                        sb.Replace(dr["OLD"].ToString().Trim(), dr["NEW"].ToString().Trim());
+                    }
+                    // 处理每个文件
+                    File.WriteAllText(file.FullName, sb.ToString(), encoding);
+                    string sRelateDirFile = file.FullName.Replace(sSavePath, "");
+                    string sRelateDir = sRelateDirFile.Substring(0, sRelateDirFile.LastIndexOf(@"\"));
+                    string sRelateDirRealFile = sRelateDirFile.Substring(sRelateDirFile.LastIndexOf(@"\")).Replace("\\", "");
+                    //结果添加文件
+                    dtResult.Rows.Add(iIdx, "1", file.FullName, sRelateDir, sRelateDirRealFile);
+                    iIdx++;
+                }
+            }
+
+            SaveFuncConfig();//保存用户偏好值
+            tabControl1.SelectedTab = tpResult;
+            ShowInfo("文件替换完成！");
+        }
+        private void ckbLoadFinalSaveDirFile_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ckbLoadFinalSaveDirFile.Checked)
+            {
+                string sSavePath = txbSavePath.Text.Trim();
+                if (string.IsNullOrEmpty(sSavePath))
+                {
+                    ShowErr("【最终生成目录】不能为空！");
+                    return;
+                }
+                //读取保存目录文件进行
+                FileInfo[] arrFiles = new DirectoryInfo(sSavePath).GetFiles("*.*", SearchOption.AllDirectories);
+                if (arrFiles.Length == 0)
+                {
+                    ShowErr("最终保存路径下没有文件，请先复制文件！");
+                    return;
+                }
+                //将文件清单加载到网格中
+                DataTable dtWaitList = dgvFileListWaitFor.GetBindingTable();
+                dtWaitList.Rows.Clear();
+                int iIndex = 1;
+                foreach (FileInfo file in arrFiles)
+                {
+                    string sRelateDirFile = file.FullName.Replace(sSavePath, "");
+                    string sRelateDir = sRelateDirFile.Substring(0, sRelateDirFile.LastIndexOf(@"\"));
+                    string sRelateDirRealFile = sRelateDirFile.Substring(sRelateDirFile.LastIndexOf(@"\")).Replace("\\", "");
+                    //结果添加文件
+                    dtWaitList.Rows.Add(iIndex, "1", "文件", file.FullName, sRelateDir);
+                    iIndex++;
+                }
+            }
+            else
+            {
+                DataTable dtWaitList = dgvFileListWaitFor.GetBindingTable();
+                dtWaitList.Rows.Clear();
+            }
+        }
+        private Encoding GetEncoding()
+        {
+            Encoding encoding;
+            string sEncode = cbbCharSetEncode.SelectedValue.ToString();
+            if ("utf-8-Bom".Equals(sEncode, StringComparison.OrdinalIgnoreCase))
+            {
+                encoding = new UTF8Encoding(false);
+            }
+            else
+            {
+                encoding = Encoding.GetEncoding(sEncode);
+            }
+
+            return encoding;
+        }
+
+        private void btnCopyFileReplace_Click(object sender, EventArgs e)
+        {
+            tsbAutoSQL.PerformClick();
+        }
+
+        private void btnReplaceString_Click(object sender, EventArgs e)
+        {
+            string sSavePath = txbSavePath.Text.Trim();
+            if (string.IsNullOrEmpty(sSavePath))
+            {
+                ShowErr("最终生成目录不能为空！");
+                return;
+            }
+            //替换文件文本
+            ReplaceFileText(sSavePath);
+        }
+
+        /// <summary>
+        /// 显示所有FTP文件按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void btnFtpShowAll_Click(object sender, EventArgs e)
+        {
+            FtpServerInfo ftpServer = CheckFtpServerInfo();
+            if (ftpServer == null) return;
+
+            DataTable dtList = dgvFtpFileList.GetBindingTable();
+            dtList.Rows.Clear();
+
+            if (ftpServer.Protocol == FtpProtocolType.SFTP)
+            {
+                var token = new CancellationToken();
+                using (var client = new SftpClient(ftpServer.IPAddr, ftpServer.FtpUserID, ftpServer.FtpPassword))
+                {
+                    await client.ConnectAsync(token); //连接
+                    client.ChangeDirectory(ftpServer.CurWorkDir); //改变目录
+                    ListDirectory(client, ".", dtList); //递归查找文件
+                }
+            }
+            else
+            {
+                var token = new CancellationToken();
+                using (var conn = new AsyncFtpClient(ftpServer.IPAddr, ftpServer.FtpUserID, ftpServer.FtpPassword, ftpServer.PortNum))
+                {
+                    conn.Config.EncryptionMode = FtpEncryptionMode.None;
+                    conn.Config.ValidateAnyCertificate = true;
+                    conn.Encoding = Encoding.UTF8; //
+                    await conn.Connect(token); //连接
+                    await conn.SetWorkingDirectory(ftpServer.CurWorkDir);//改变目录
+
+                    int iIndex = 1;
+                    foreach (var item in await conn.GetListing(".", FtpListOption.Recursive, token))
+                    {
+                        switch (item.Type)
+                        {
+                            case FtpObjectType.File:
+                                dtList.Rows.Add(iIndex, "1", item.FullName); //文件清单加入到
+                                iIndex++;
+                                break;
+                            case FtpObjectType.Directory:
+                                break;
+                            case FtpObjectType.Link:
+                                break;
+                        }
+                    }
+
+                }
+            }
+        }
+
+        private void ListDirectory(SftpClient client, string dirName,DataTable dt)
+        {
+            foreach (var entry in client.ListDirectory(dirName))
+            {
+                if (entry.IsDirectory)
+                {
+                    //注：清单里会出现/.和/..的目录，这里一定要排除它们，不然会出现死循环
+                    if (!entry.FullName.endsWith(".")) 
+                    {
+                        ListDirectory(client, entry.FullName, dt);
+                    }
+                }
+                else if (entry.IsRegularFile)
+                {
+                    dt.Rows.Add(dt.Rows.Count + 1, "1", entry.FullName);
+                }
+            }
+        }
+
+        private void DownDirectory(SftpClient client, string dirName,string localPath)
+        {
+            foreach (var entry in client.ListDirectory(dirName))
+            {
+                if (entry.IsDirectory)
+                {
+                    //注：清单里会出现/.和/..的目录，这里一定要排除它们，不然会出现死循环
+                    if (!entry.FullName.endsWith("."))
+                    {
+                        DownDirectory(client, entry.FullName, localPath);
+                    }
+                }
+                else if (entry.IsRegularFile)
+                {
+                    var byt = client.ReadAllBytes(entry.FullName);
+                    if (byt.Length > 0)
+                    {
+                        File.WriteAllBytes(localPath + "/" + entry.Name, byt);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 下载所有文件按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void btnFtpDownLoad_Click(object sender, EventArgs e)
+        {
+            FtpServerInfo ftpServer = CheckFtpServerInfo();
+            if (ftpServer == null) return;
+
+            string sDownPath = txbFtpDownloadPath.Text.Trim();
+            string sReadPath = txbFtpReadPath.Text.Trim();
+            if (string.IsNullOrEmpty(sDownPath))
+            {
+                ShowErr("本地保存路径不能为空！");
+                return;
+            }
+            if (string.IsNullOrEmpty(sReadPath))
+            {
+                ShowErr("读取目录不能为空！");
+                return;
+            }
+
+            if (Directory.Exists(sDownPath))
+            {
+                //存在，且下载前清除目录选中时
+                if (ckbClearSaveDir.Checked)
+                {
+                    Directory.Delete(sDownPath,true);
+                    Directory.CreateDirectory(sDownPath);
+                }
+            }
+            else
+            {
+                //不存在就创建
+                Directory.CreateDirectory(sDownPath);
+            }
+
+            if (ftpServer.Protocol == FtpProtocolType.SFTP)
+            {
+                var token = new CancellationToken();
+                using (var client = new SftpClient(ftpServer.IPAddr, ftpServer.FtpUserID, ftpServer.FtpPassword))
+                {
+                    await client.ConnectAsync(token); //连接
+                    client.ChangeDirectory(ftpServer.CurWorkDir); //改变目录
+                    DownDirectory(client, ".", sDownPath); //递归下载文件
+                }
+            }
+            else
+            {
+                var token = new CancellationToken();
+                using (var conn = new AsyncFtpClient(ftpServer.IPAddr, ftpServer.FtpUserID, ftpServer.FtpPassword, ftpServer.PortNum))
+                {
+                    conn.Config.EncryptionMode = FtpEncryptionMode.None;
+                    conn.Config.ValidateAnyCertificate = true;
+                    conn.Encoding = Encoding.UTF8; //
+                    await conn.Connect(token);
+
+                    //更新模式：FtpFolderSyncMode.Update，源方式（删除多余文件）：FtpFolderSyncMode.Mirror
+                    var result = await conn.DownloadDirectory(sDownPath, sReadPath, FtpFolderSyncMode.Mirror, token: token);
+
+                    if (ckbDownLoadAddList.Checked)
+                    {
+                        DataTable dtList = dgvFileListWaitFor.GetBindingTable();
+                        dtList.Rows.Clear();
+                        int iIndex = 1;
+                        foreach (var item in result)
+                        {
+                            if (item.Type == FtpObjectType.File)
+                            {
+                                dtList.Rows.Add(iIndex, "1", "文件", item.LocalPath, item.RemotePath.Substring(0, item.RemotePath.LastIndexOf("/"))); //添加到待处理网格中
+                                iIndex++;
+                            }
+                        }
+                    }
+                }
+            }
+            SaveFuncConfig();//保存用户偏好值
+            ShowInfo("全部下载成功！");
+        }
+
+        /// <summary>
+        /// 下载FTP上部分选择的文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void btnFtpDownSelectFile_Click(object sender, EventArgs e)
+        {
+            FtpServerInfo ftpServer = CheckFtpServerInfo();
+            if (ftpServer == null) return;
+
+            DataTable dtList = dgvFtpFileList.GetBindingTable();
+            DataRow[] drWillArr = dtList.Select(_sGridColumnSelect + "= '1'");
+            if (drWillArr.Length == 0)
+            {
+                ShowErr("没有要下载的文件，请先选择！");
+                return;
+            }
+            string sDownPath = txbFtpDownloadPath.Text.Trim();
+            if (string.IsNullOrEmpty(sDownPath))
+            {
+                ShowErr("本地保存路径不能为空！");
+                return;
+            }
+
+            if (Directory.Exists(sDownPath))
+            {
+                //存在，且下载前清除目录选中时
+                if (ckbClearSaveDir.Checked)
+                {
+                    Directory.Delete(sDownPath, true);
+                    Directory.CreateDirectory(sDownPath);
+                }
+            }
+            else
+            {
+                //不存在就创建
+                Directory.CreateDirectory(sDownPath);
+            }
+
+            DataTable dtWaitList = dgvFileListWaitFor.GetBindingTable();
+            dtWaitList.Rows.Clear();
+            int iIndex = 1;
+            //得到文件清单
+            var files = drWillArr.AsEnumerable().Select(t => t["FILE_PATH"].ToString()).ToList();
+
+            if (ftpServer.Protocol == FtpProtocolType.SFTP)
+            {
+                var token = new CancellationToken();
+                using (var client = new SftpClient(ftpServer.IPAddr, ftpServer.FtpUserID, ftpServer.FtpPassword))
+                {
+                    await client.ConnectAsync(token); //连接
+                    client.ChangeDirectory(ftpServer.CurWorkDir); //改变目录
+
+                    foreach (string item in files)
+                    {
+                        string sLocal = sDownPath + item.Replace(@"/", @"\");
+                        var byt = client.ReadAllBytes(item);
+                        if (byt.Length > 0)
+                        {
+                            File.WriteAllBytes(sLocal, byt);
+                        }
+                        //下载并覆盖
+                        if (ckbDownLoadAddList.Checked)
+                        {
+                            dtWaitList.Rows.Add(iIndex, "1", "文件", sLocal, item.Substring(0, item.LastIndexOf("/"))); //添加到待处理网格中
+                            iIndex++;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                var token = new CancellationToken();
+                using (var conn = new AsyncFtpClient(ftpServer.IPAddr, ftpServer.FtpUserID, ftpServer.FtpPassword, ftpServer.PortNum))
+                {
+                    conn.Config.EncryptionMode = FtpEncryptionMode.None;
+                    conn.Config.ValidateAnyCertificate = true;
+                    conn.Encoding = Encoding.UTF8; //
+                    await conn.Connect(token);
+                   
+                    foreach (string item in files)
+                    {
+                        string sLocal = sDownPath + item.Replace(@"/", @"\");
+                        //下载并覆盖
+                        var result = await conn.DownloadFile(sLocal, item, FtpLocalExists.Overwrite, FtpVerify.None, token: token);
+                        if (ckbDownLoadAddList.Checked)
+                        {
+                            dtWaitList.Rows.Add(iIndex, "1", "文件", sLocal, item.Substring(0, item.LastIndexOf("/"))); //添加到待处理网格中
+                            iIndex++;
+                        }
+                    }
+                }
+            }
+            
+            SaveFuncConfig();//保存用户偏好值
+            ShowInfo("选择部分已下载成功！");
+        }
+
+        /// <summary>
+        /// 上传整个目录到FTP服务器
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void btnFtpUploadDir_Click(object sender, EventArgs e)
+        {
+            FtpServerInfo ftpServer = CheckFtpServerInfo();
+            if (ftpServer == null) return;
+
+            string sUploadPath = txbFtpUploadPath.Text.Trim();
+            if (string.IsNullOrEmpty(sUploadPath))
+            {
+                ShowErr("【上传目录】不能为空！");
+                return;
+            }
+            string sSavePath = txbSavePath.Text.Trim();
+            if (string.IsNullOrEmpty(sSavePath))
+            {
+                ShowErr("【最终生成目录】不能为空！");
+                return;
+            }
+
+            //读取保存目录文件进行
+            FileInfo[] arrFiles = new DirectoryInfo(sSavePath).GetFiles("*.*", SearchOption.AllDirectories);
+            if (arrFiles.Length == 0)
+            {
+                ShowErr("【最终保存路径】目录下没有要上传的文件！");
+                return;
+            }
+
+            //1先删后增、2覆盖、3备份
+            string sUploadType = cbbUploadReplaceType.SelectedValue.ToString();
+            string sFtpBackupDir = txbFtpUploadBackupDir.Text.Trim();
+            if ("3".Equals(sUploadType) && string.IsNullOrEmpty(sFtpBackupDir))
+            {
+                ShowErr("当【上传方式】为【备份】时，【备份目录】不能为空！");
+                txbFtpUploadBackupDir.Focus();
+                return;
+            }
+
+            if (ShowOkCancel("确定要将【最终生成目录】文件上传到FTP服务上？") == DialogResult.Cancel)
+                return;
+
+            bool isSuccess = false;
+
+            if (ftpServer.Protocol == FtpProtocolType.SFTP)
+            {
+                var token = new CancellationToken();
+                using (var client = new SftpClient(ftpServer.IPAddr, ftpServer.FtpUserID, ftpServer.FtpPassword))
+                {
+                    await client.ConnectAsync(token); //连接
+                    client.ChangeDirectory(ftpServer.CurWorkDir); //改变目录
+
+                    bool isExistDir = client.Exists(sUploadPath);
+                    if ("1".Equals(sUploadType))
+                    {
+                        //先删除后增加
+                        if (isExistDir)
+                        {
+                            client.DeleteDirectory(sUploadPath);
+                            client.CreateDirectory(sUploadPath);
+                        }
+                        else
+                        {
+                            client.CreateDirectory(sUploadPath);
+                        }
+                    }
+                    else if ("3".Equals(sUploadType))
+                    {
+                        //备份
+                        isExistDir = client.Exists(sFtpBackupDir);
+                        string sNewPath = Path.Combine(sFtpBackupDir, DateTime.Now.ToString("yyyyMMddHHmmss"));
+                        if (!isExistDir)
+                        {
+                            client.CreateDirectory(sFtpBackupDir);
+
+                        }
+                        client.CreateDirectory(sNewPath); //创建一个子目录
+                        //改变服务器上的文件路径：这里不知如何实现：todo
+                        //await conn.MoveDirectory(sUploadPath, sNewPath, FtpRemoteExists.Overwrite, token: token);
+                    }
+                    else
+                    {
+                        //覆盖方式
+
+                    }
+
+                    //上传文件：todo
+                    foreach (var item in arrFiles)
+                    {
+                        using(var fs = File.OpenRead(item.FullName))
+                        {
+                            client.UploadFile(fs, sUploadPath);
+                        }
+                    }                    ;
+                }
+            }
+            else
+            {
+                var token = new CancellationToken();
+                using (var conn = new AsyncFtpClient(ftpServer.IPAddr, ftpServer.FtpUserID, ftpServer.FtpPassword, ftpServer.PortNum))
+                {
+                    conn.Config.EncryptionMode = FtpEncryptionMode.None;
+                    conn.Config.ValidateAnyCertificate = true;
+                    conn.Encoding = Encoding.UTF8; //
+                    await conn.Connect(token);
+
+                    bool isExistDir = await conn.DirectoryExists(sUploadPath);
+                    if ("1".Equals(sUploadType))
+                    {
+                        //先删除后增加
+                        if (isExistDir)
+                        {
+                            await conn.DeleteDirectory(sUploadPath);
+                            await conn.CreateDirectory(sUploadPath);
+                        }
+                        else
+                        {
+                            await conn.CreateDirectory(sUploadPath);
+                        }
+                    }
+                    else if ("3".Equals(sUploadType))
+                    {
+                        //备份
+                        isExistDir = await conn.DirectoryExists(sFtpBackupDir);
+                        string sNewPath = Path.Combine(sFtpBackupDir, DateTime.Now.ToString("yyyyMMddHHmmss"));
+                        if (!isExistDir)
+                        {
+                            await conn.CreateDirectory(sFtpBackupDir);
+
+                        }
+                        await conn.CreateDirectory(sNewPath); //创建一个子目录
+                        await conn.MoveDirectory(sUploadPath, sNewPath, FtpRemoteExists.Overwrite, token: token);
+                    }
+                    else
+                    {
+                        //覆盖方式
+
+                    }
+                    //上传整个目录：Update方式为存在即更新；
+                    var result = await conn.UploadDirectory(sSavePath, sUploadPath, FtpFolderSyncMode.Update, token: token);
+                    isSuccess = result.Count > 0 ? true : false;
+                }
+            }
+
+            SaveFuncConfig();//保存用户偏好值
+            if(isSuccess)
+            {
+                ShowInfo("文件已成功上传！");
+            }
+            else
+            {
+                ShowErr("文件上传失败！");
+            }
+        }
+
+        /// <summary>
+        /// 选择指定文件上传到FTP服务器
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void btnFtpUpLoadSelectFile_Click(object sender, EventArgs e)
+        {
+            FtpServerInfo ftpServer = CheckFtpServerInfo();
+            if (ftpServer == null) return;
+
+            string sUploadPath = txbFtpUploadPath.Text.Trim();
+            if (string.IsNullOrEmpty(sUploadPath))
+            {
+                ShowErr("【上传目录】不能为空！");
+                return;
+            }
+            string sSavePath = txbSavePath.Text.Trim();
+            if (string.IsNullOrEmpty(sSavePath))
+            {
+                ShowErr("【最终生成目录】不能为空！");
+                return;
+            }
+
+            DataTable dtResult = dgvResult.GetBindingTable();
+            DataRow[] drWillArr = dtResult.Select(_sGridColumnSelect + "= '1'");
+            if (drWillArr.Length == 0)
+            {
+                ShowErr("没有要上传的文件！");
+                return;
+            }
+
+            //1先删后增、2覆盖、3备份
+            string sUploadType = cbbUploadReplaceType.SelectedValue.ToString();
+            string sFtpBackupDir = txbFtpUploadBackupDir.Text.Trim();
+            if ("3".Equals(sUploadType) && string.IsNullOrEmpty(sFtpBackupDir))
+            {
+                ShowErr("当【上传方式】为【备份】时，【备份目录】不能为空！");
+                txbFtpUploadBackupDir.Focus();
+                return;
+            }
+
+            if (ShowOkCancel("确定要将【最终生成目录】文件上传到FTP服务上？") == DialogResult.Cancel) 
+                return;
+
+            if (ftpServer.Protocol == FtpProtocolType.SFTP)
+            {
+                //tood:
+                var token = new CancellationToken();
+                using (var client = new SftpClient(ftpServer.IPAddr, ftpServer.FtpUserID, ftpServer.FtpPassword))
+                {
+                    await client.ConnectAsync(token); //连接
+                    client.ChangeDirectory(ftpServer.CurWorkDir); //改变目录
+
+                    bool isExistDir = client.Exists(sUploadPath);
+                    if ("1".Equals(sUploadType))
+                    {
+                        //先删除后增加
+                        if (isExistDir)
+                        {
+                            client.DeleteDirectory(sUploadPath);
+                            client.CreateDirectory(sUploadPath);
+                        }
+                        else
+                        {
+                            client.CreateDirectory(sUploadPath);
+                        }
+                    }
+                    else if ("3".Equals(sUploadType))
+                    {
+                        //备份
+                        isExistDir = client.Exists(sFtpBackupDir);
+                        string sNewPath = Path.Combine(sFtpBackupDir, DateTime.Now.ToString("yyyyMMddHHmmss"));
+                        if (!isExistDir)
+                        {
+                            client.CreateDirectory(sFtpBackupDir);
+
+                        }
+                        client.CreateDirectory(sNewPath); //创建一个子目录
+                        //改变服务器上的文件路径：这里不知如何实现：todo
+                        //await conn.MoveDirectory(sUploadPath, sNewPath, FtpRemoteExists.Overwrite, token: token);
+                    }
+                    else
+                    {
+                        //覆盖方式
+                    }
+
+                    //上传文件：todo
+                    var files = drWillArr.AsEnumerable().Select(t => t["COPY_FILE"].ToString()).ToList();//得到文件清单
+                    foreach (var item in files)
+                    {
+                        using (var fs = File.OpenRead(item))
+                        {
+                            client.UploadFile(fs, sUploadPath);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                var token = new CancellationToken();
+                using (var conn = new AsyncFtpClient(ftpServer.IPAddr, ftpServer.FtpUserID, ftpServer.FtpPassword, ftpServer.PortNum))
+                {
+                    conn.Config.EncryptionMode = FtpEncryptionMode.None;
+                    conn.Config.ValidateAnyCertificate = true;
+                    //conn.Config.SslProtocols = System.Security.Authentication.SslProtocols.None;
+                    conn.Encoding = Encoding.UTF8; //
+                    await conn.Connect(token);
+
+
+                    bool isExistDir = await conn.DirectoryExists(sUploadPath, token: token);
+                    if ("1".Equals(sUploadType))
+                    {
+                        //先删除后增加
+                        if (isExistDir)
+                        {
+                            await conn.DeleteDirectory(sUploadPath, token: token);
+                            await conn.CreateDirectory(sUploadPath, token: token);
+                        }
+                        else
+                        {
+                            await conn.CreateDirectory(sUploadPath, token: token);
+                        }
+                    }
+                    else if ("3".Equals(sUploadType))
+                    {
+                        //备份
+                        isExistDir = await conn.DirectoryExists(sFtpBackupDir);
+                        string sNewPath = Path.Combine(sFtpBackupDir, DateTime.Now.ToString("yyyyMMddHHmmss"));
+                        if (!isExistDir)
+                        {
+                            //目录不存在，则创建目录
+                            await conn.CreateDirectory(sFtpBackupDir);
+                        }
+                        else
+                        {
+                            //目录存在，则判断其下有没文件，有才备份
+                            FtpListItem[] listArr = await conn.GetListing(sUploadPath, token: token);
+                            if (listArr.Length > 0)
+                            {
+                                await conn.CreateDirectory(sNewPath); //创建一个子目录
+                                await conn.MoveDirectory(sUploadPath, sNewPath, FtpRemoteExists.Overwrite, token: token);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //覆盖方式
+                    }
+
+                    #region 已取消
+                    //方式一：逐个文件上传：如不创建子目录，则文件都会放根目录；但如创建子目录，放文件时会报拒绝访问错误，这个未解决！2023-10-22
+                    //var files = drWillArr.AsEnumerable().Select(t => new { path = t["FILE_PATH"].ToString(), absDir = t["COPY_PATH"].ToString() }).ToList(); //得到文件清单
+                    //foreach (var item in files)
+                    //{
+                    //    string sServerPath = sUploadPath + item.absDir.Replace("\\", "/");
+                    //    isExistDir = await conn.DirectoryExists(sServerPath);
+                    //    //上传
+                    //    if (!isExistDir)
+                    //    {
+                    //        await conn.CreateDirectory(sServerPath, token: token);
+                    //    }
+                    //    //以下代码报错：FtpCommandException: Code: 550 Message: Access is denied. 
+                    //    var result = await conn.UploadFile(item.path, sServerPath, FtpRemoteExists.Overwrite, true, token: token);
+                    //} 
+                    #endregion
+
+                    //方法二：上传目录：使用白名单
+                    var files = drWillArr.AsEnumerable().Select(t => t["COPY_FILE"].ToString()).ToList();//得到文件清单
+                    List<FtpRule> ftpRule = new List<FtpRule>();
+                    ftpRule.Add(new FtpFileNameRule(true, files));
+                    //上传整个目录：Update方式为存在即更新；
+                    var result = await conn.UploadDirectory(sSavePath, sUploadPath, FtpFolderSyncMode.Update, FtpRemoteExists.Overwrite, FtpVerify.None, ftpRule, token: token);
+
+                }
+            }
+
+            SaveFuncConfig();//保存用户偏好值
+            ShowInfo("文件已成功上传！");
+        }
+        private void cbbFileSource_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbbFileSource.SelectedValue == null) return;
+            if ("2".Equals(cbbFileSource.SelectedValue.ToString()))
+            {
+                pnlFtp.Visible = true;
+                splitContainer2.Panel1Collapsed = false; //设计左方非折叠
+            }
+            else
+            {
+                pnlFtp.Visible = false;
+                splitContainer2.Panel1Collapsed = true; //设计左方折叠
+            }
+        }
+
+        #region 目录或文件选择
+        /// <summary>
+        /// 右键选择目录事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiAddDir_Click(object sender, EventArgs e)
+        {
+            var dialog = new FolderBrowserDialog();
+            var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_RightAddDir, "").Value;
+
+            if (!string.IsNullOrEmpty(strLastSelectedPath))
+            {
+                dialog.SelectedPath = strLastSelectedPath;
+            }
+            dialog.Description = "请选择文件路径";
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                DataTable dt = dgvFileListWaitFor.GetBindingTable();
+                dt.Rows.Add(1, "1","目录", dialog.SelectedPath,""); //添加到待处理网格中
+                dgvFileListWaitFor.ShowRowNum(true);
+                //保存用户偏好值
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_RightAddDir, dialog.SelectedPath, "【文本文件字符替换】最后添加的目录");
+                WinFormContext.UserLoveSettings.Save();
+            }
+        }
+        /// <summary>
+        /// 右键选择文件事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiAddFile_Click(object sender, EventArgs e)
+        {
+            var dialog = new OpenFileDialog();
+            var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_RightAddFile, "").Value;
+
+            if (!string.IsNullOrEmpty(strLastSelectedPath))
+            {
+                dialog.InitialDirectory = strLastSelectedPath;
+            }
+            dialog.Title = "请选择文件";
+            dialog.Multiselect = true; //可以多选
+            string sLastDir = "";
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                foreach (string item in dialog.FileNames)
+                {
+                    DataTable dt = dgvFileListWaitFor.GetBindingTable();
+                    dt.Rows.Add(1, "1", "文件", item, ""); //添加到待处理网格中
+                    dgvFileListWaitFor.ShowRowNum(true);
+                    sLastDir = Path.GetFullPath(item);
+                }
+                //保存用户偏好值
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_RightAddFile, sLastDir, "【文本文件字符替换】最后添加的文件所在目录");
+                WinFormContext.UserLoveSettings.Save();
+            }
+        }
+
+        private void btnSavePath_Click(object sender, EventArgs e)
+        {
+            var dialog = new FolderBrowserDialog();
+            var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_SavePath, "").Value;
+
+            if (!string.IsNullOrEmpty(strLastSelectedPath))
+            {
+                dialog.SelectedPath = strLastSelectedPath;
+            }
+            dialog.Description = "请选择文件路径";
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                txbSavePath.Text = dialog.SelectedPath;
+                //保存用户偏好值
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_SavePath, dialog.SelectedPath, "【文本文件字符替换】最终生成目录");
+                WinFormContext.UserLoveSettings.Save();
+            }
+        }
+
+        private void btnSaveLocalPath_Click(object sender, EventArgs e)
+        {
+            var dialog = new FolderBrowserDialog();
+            var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_FTP_DownloadLocalDir, "").Value;
+
+            if (!string.IsNullOrEmpty(strLastSelectedPath))
+            {
+                dialog.SelectedPath = strLastSelectedPath;
+            }
+            dialog.Description = "请选择文件路径";
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                txbSavePath.Text = dialog.SelectedPath;
+                //保存用户偏好值
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_DownloadLocalDir, dialog.SelectedPath, "【文本文件字符替换】下载到本机的目录");
+                WinFormContext.UserLoveSettings.Save();
+            }
+        }
+        #endregion
+
+        #region 右键菜单
+        private void tsmiDelete_Click(object sender, EventArgs e)
+        {
+            DataGridView dgvSelect = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as DataGridView;
+            DataTable dt = dgvSelect.GetBindingTable();
+            DataRow dataRow = dgvSelect.GetCurrentRow();
+            if (dataRow == null || dataRow.RowState == DataRowState.Detached) return;
+            dt.Rows.Remove(dataRow);
+        }
+
+        private void tsmiClear_Click(object sender, EventArgs e)
+        {
+            DataGridView dgvSelect = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as DataGridView;
+            DataTable dt = dgvSelect.GetBindingTable();
+            dt.Rows.Clear();
+        }
+
+        /// <summary>
+        /// 右键菜单打开中事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+            ContextMenuStrip cu = sender as ContextMenuStrip;
+            DataGridView dgvSelect = cu.SourceControl as DataGridView;
+            if (dgvSelect == dgvOldNewChar)
+            {
+                //针对新旧字符网格，隐藏添加目录、添加文件菜单
+                cu.Items[0].Visible = false;
+                cu.Items[1].Visible = false;
+            }
+            else if (dgvSelect == dgvFileListWaitFor)
+            {
+                //针对非新旧字符网格，显示添加目录、添加文件菜单
+                cu.Items[0].Visible = true;
+                cu.Items[1].Visible = true;
+            }
+        } 
+        #endregion
+
+        private FtpServerInfo CheckFtpServerInfo()
+        {
+            string sFtpIP = txbIPAddr.Text.Trim();
+            string sFtpUserName = txbUserName.Text.Trim();
+            string sFtpPassword = txbPassword.Text.Trim();
+            string sFtpInitPath = txbFtpInitDir.Text.Trim();
+            string sFtpWorkDir = txbFtpReadPath.Text.Trim();
+            string sFtpPort = txbPort.Text.Trim();
+            int iPort = 21;
+            if (string.IsNullOrEmpty(sFtpIP))
+            {
+                ShowErr("FTP服务器地址不能为空！");
+                return null;
+            }
+            if (!string.IsNullOrEmpty(sFtpPort))
+            {
+                if (!int.TryParse(sFtpPort, out iPort))
+                {
+                    ShowErr("FTP服务器端口必须为整数！");
+                    return null;
+                }
+            }
+            if (string.IsNullOrEmpty(sFtpUserName))
+            {
+                ShowErr("FTP用户名不能为空！");
+                return null;
+            }
+            if (string.IsNullOrEmpty(sFtpPassword))
+            {
+                ShowErr("FTP用户密码不能为空！");
+                return null;
+            }
+            
+            string sProtocol = cbbFtpProtocol.SelectedValue.ToString();
+            FtpProtocolType protocolType = FtpProtocolType.FTP;
+            if ("1".Equals(sProtocol))
+            {
+                protocolType = FtpProtocolType.FTP;
+                if (string.IsNullOrEmpty(sFtpPort)) iPort = 21;
+            }
+            else if ("2".Equals(sProtocol))
+            {
+                protocolType = FtpProtocolType.SFTP;
+                if (string.IsNullOrEmpty(sFtpPort)) iPort = 22;
+            }
+            else
+            {
+                protocolType = FtpProtocolType.FTPS;
+                if (string.IsNullOrEmpty(sFtpPort)) iPort = 21;
+            }
+
+            if (string.IsNullOrEmpty(sFtpInitPath)) sFtpInitPath = "/"; //为空时取根目录
+            if (string.IsNullOrEmpty(sFtpWorkDir))
+            {
+                sFtpWorkDir = sFtpInitPath; //为空时取根目录
+            }
+            else
+            {
+                if(sFtpWorkDir.startsWith("/") || sFtpWorkDir.startsWith(@"\"))
+                {
+                    sFtpWorkDir = sFtpInitPath + "/" + sFtpWorkDir.Substring(1); //为空时取根目录
+                }
+                else
+                {
+                    sFtpWorkDir = sFtpInitPath + "/" + sFtpWorkDir; //为空时取根目录
+                }
+            }
+
+            FtpServerInfo ftpServer = new FtpServerInfo(sFtpIP, iPort, sFtpUserName, sFtpPassword, protocolType, sFtpInitPath, sFtpWorkDir);
+            SaveFuncConfig();//保存用户偏好值
+            return ftpServer;
+        }
+
+        private void cbbTemplateType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string sTempType = cbbTemplateType.SelectedValue.ToString();
+            DataTable dtReplace = dgvOldNewChar.GetBindingTable();
+            if ("1".Equals(sTempType))
+            {
+                dtReplace.Rows.Clear();
+                dtReplace.Rows.Add(1, "1", "-@DEV", "-@UAT");
+                dtReplace.Rows.Add(2, "1", "_@DEV", "_@UAT");
+                dtReplace.Rows.Add(3, "1", "E3SPLUS-DEV", "E3SPLUS-UAT");
+                dtReplace.Rows.Add(4, "1", "e3splus_ods_dev", "e3splus_ods_uat");
+                dtReplace.Rows.Add(5, "1", "e3splus_oms_dev", "e3splus_oms_uat");
+                dtReplace.Rows.Add(6, "1", "e3splus_pms_dev", "e3splus_pms_uat");
+            }
+        }
+
+        /// <summary>
+        /// 排除按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnExcludeSelect_Click(object sender, EventArgs e)
+        {
+            string sExcludeFileName = txbExcludeFileName.Text.Trim();
+            string sExcludeDirName = txbExcludeDir.Text.Trim();
+            if (string.IsNullOrEmpty(sExcludeFileName) || string.IsNullOrEmpty(sExcludeDirName))
+            {
+                return;
+            }
+
+            string[] sFilter = sExcludeFileName.Split(new char[] { ',', '，' });
+            string[] sFilterDir = sExcludeDirName.Split(new char[] { ',', '，' });
+
+            DataTable dtFtpFile = dgvFtpFileList.GetBindingTable();
+            if (dtFtpFile.Rows.Count == 0) return;
+
+            var query = from f in dtFtpFile.AsEnumerable()
+                        where GetLinqDynamicWhere(sFilter, sFilterDir,f)
+                        select f;
+            foreach (var item in query.ToList())
+            {
+                item[_sGridColumnSelect] = false; //设置为不选中
+            }
+
+            SaveFuncConfig();
+        }
+
+        private static bool GetLinqDynamicWhere(string[] filterArr, string[] filterDirArr, DataRow drF)
+        {
+            foreach (var item in filterArr)
+            {
+                string sFilePath = drF.Field<string>("FILE_PATH");
+                sFilePath= sFilePath.Substring(sFilePath.LastIndexOf("/")).Replace("/", "");
+                if (sFilePath.Contains(item))
+                {
+                    return true;
+                }
+            }
+            foreach (var item in filterDirArr)
+            {
+                string sFilePath = drF.Field<string>("FILE_PATH");
+                sFilePath = sFilePath.Substring(0,sFilePath.LastIndexOf("/"));
+                string[] arrSplit = sFilePath.Split(new char[] { '/' });
+                if (arrSplit.Contains(item))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 保存功能配置
+        /// </summary>
+        private void SaveFuncConfig()
+        {
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FileSource, cbbFileSource.SelectedValue.ToString(), "【文本文件字符替换】文件来源");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_SavePath, txbSavePath.Text.Trim(), "【文本文件字符替换】最终生成目录");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_CharsetEncoding, cbbCharSetEncode.SelectedValue.ToString(), "【文本文件字符替换】生成字符集类型");
+
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_ExcludeFileName, txbExcludeFileName.Text.Trim(), "【文本文件字符替换】排除包含的文件名");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_ExcludeDirName, txbExcludeDir.Text.Trim(), "【文本文件字符替换】排除包含的目录名");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_TemplateType, cbbTemplateType.SelectedValue.ToString(), "【文本文件字符替换】模板类型");
+
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_IPAddr, txbIPAddr.Text.Trim(), "【文本文件字符替换】Ftp服务器的IP");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_PortNum, txbPort.Text.Trim(), "【文本文件字符替换】Ftp服务器的端口号");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_UserName, txbUserName.Text.Trim(), "【文本文件字符替换】Ftp服务器的用户名");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_Pwd, txbPassword.Text.Trim(), "【文本文件字符替换】Ftp服务器的密码");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_InitDir, txbFtpInitDir.Text.Trim(), "【文本文件字符替换】Ftp服务器的初始目录");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_Protocol, cbbFtpProtocol.SelectedValue.ToString(), "【文本文件字符替换】Ftp服务器的协议");
+
+            
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_GenerateType, cbbLocalCopyType.SelectedValue.ToString(), "【文本文件字符替换】生成方式");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_DownloadLocalDir, txbFtpDownloadPath.Text.Trim(), "【文本文件字符替换】保存的本地目录");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_ReadDir, txbFtpReadPath.Text.Trim(), "【文本文件字符替换】Ftp读取目录");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_DownLoadIsAddList, ckbDownLoadAddList.Checked ? "1" : "0", "【文本文件字符替换】是否下载加入清单");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_DownloadBeforeIsClearLocalDir, ckbClearSaveDir.Checked ? "1" : "0", "【文本文件字符替换】是否下载前清除本地目录");
+
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_UploadDir, txbFtpUploadPath.Text.Trim(), "【文本文件字符替换】Ftp上传目录");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_UploadBackupDir, txbFtpUploadBackupDir.Text.Trim(), "【文本文件字符替换】Ftp上传备份目录");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_UploadReplaceType, cbbUploadReplaceType.SelectedValue.ToString(), "【文本文件字符替换】Ftp上传的替换类型");
+
+            WinFormContext.UserLoveSettings.Save();
+        }
+
+        private void tsbExit_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        #region 网格头双击全选
+        private void SelectAllOrCancel(DataGridView dgv, ref bool isSelect, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.ColumnIndex == dgv.Columns[_sGridColumnSelect].Index)
+            {
+                foreach (DataGridViewRow item in dgv.Rows)
+                {
+                    item.Cells[_sGridColumnSelect].Value = isSelect ? "1" : "0";
+                }
+                isSelect = !isSelect;
+            }
+        }
+        private void dgvFtpFileList_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            SelectAllOrCancel(dgvFtpFileList, ref _allSelectFtp, e);
+        }
+
+        private void dgvFileListWaitFor_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            SelectAllOrCancel(dgvFileListWaitFor, ref _allSelectWait, e);
+        }
+
+        private void dgvOldNewChar_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            SelectAllOrCancel(dgvOldNewChar, ref _allSelectOldNewChar, e);
+        }
+
+        private void dgvResult_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            SelectAllOrCancel(dgvResult, ref _allSelectResult, e);
+        }
+        #endregion
+    }
+}

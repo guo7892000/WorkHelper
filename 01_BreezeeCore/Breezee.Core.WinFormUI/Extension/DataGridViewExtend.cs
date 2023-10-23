@@ -67,6 +67,7 @@ namespace Breezee.Core.WinFormUI
                 {
                     dgv.Columns[item.ColumnName].HeaderText = item.ColumnCaption;
                     dgv.Columns[item.ColumnName].Width = item.ColumnWidth;
+                    dgv.Columns[item.ColumnName].DisplayIndex = (bs.DataSource as DataTable).Columns[item.ColumnName].Ordinal; //设置网格顺序跟表一致。
                 }
             }
         }
@@ -183,7 +184,7 @@ namespace Breezee.Core.WinFormUI
             {
                 throw new Exception(string.Format("请设置网格{0}的列定义，可以通过Tag或者NewColumnDefinition设置", dgv.Name));
             }
-            bool isDataNull = dtSource == null;
+            
             FlexGridColumnDefinition columnDef = dgv.Tag as FlexGridColumnDefinition;
             if (columnDef == null)
             {
@@ -193,6 +194,11 @@ namespace Breezee.Core.WinFormUI
             if (!columnDef.Columns.Exists(x => x.ColumnCaption == "序号"))
             {
                 columnDef.Columns.Insert(0, FlexGridColumn.NewRowNoCol());
+            }
+
+            if (dtSource == null)
+            {
+                dtSource = GenerateEmptyTable(columnDef.Columns);
             }
 
             if (IsUseTagHistoryConfig)
@@ -206,11 +212,6 @@ namespace Breezee.Core.WinFormUI
                 {
                     columnDef = defOther;
                     dgv.Tag = columnDef.GetGridTagString();
-                }
-
-                if (dtSource == null)
-                {
-                    dtSource = GenerateEmptyTable(columnDef.Columns);
                 }
                 #endregion
             }

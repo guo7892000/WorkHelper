@@ -18,12 +18,12 @@ namespace Breezee.Core.Tool.Helper
     /// </summary>
     public class FileDirHelper
     {
-        public static void CopyFilesToDirKeepSrcDirName(string srcPath, string destDir, bool isMove = false)
+        public static void CopyFilesToDirKeepSrcDirName(string srcPath, string destDir, bool isMove = false,bool isOverWrite = true)
         {
             if (Directory.Exists(srcPath))
             {
                 DirectoryInfo srcDirectory = new DirectoryInfo(srcPath);
-                CopyDirectory(srcPath, destDir + @"\" + srcDirectory.Name, isMove);
+                CopyDirectory(srcPath, destDir + @"\" + srcDirectory.Name, isMove, isOverWrite);
                 if (isMove)
                 {
                     srcDirectory.Delete();
@@ -31,14 +31,14 @@ namespace Breezee.Core.Tool.Helper
             }
             else
             {
-                CopyFile(srcPath, destDir, isMove);
+                CopyFile(srcPath, destDir, isMove, isOverWrite);
             }
         }
-        public static void CopyFilesToDir(string srcPath, string destDir, bool isMove = false)
+        public static void CopyFilesToDir(string srcPath, string destDir, bool isMove = false, bool isOverWrite = true)
         {
             if (Directory.Exists(srcPath))
             {
-                CopyDirectory(srcPath, destDir, isMove);
+                CopyDirectory(srcPath, destDir, isMove, isOverWrite);
                 if (isMove)
                 {
                     new DirectoryInfo(srcPath).Delete();
@@ -46,10 +46,10 @@ namespace Breezee.Core.Tool.Helper
             }
             else
             {
-                CopyFile(srcPath, destDir, isMove);
+                CopyFile(srcPath, destDir, isMove, isOverWrite);
             }
         }
-        private static void CopyDirectory(string srcDir, string destDir, bool isMove)
+        private static void CopyDirectory(string srcDir, string destDir, bool isMove, bool isOverWrite)
         {
             DirectoryInfo srcDirectory = new DirectoryInfo(srcDir);
             DirectoryInfo destDirectory = new DirectoryInfo(destDir);
@@ -73,14 +73,14 @@ namespace Breezee.Core.Tool.Helper
 
             for (int i = 0; i < files.Length; i++)
             {
-                CopyFile(files[i].FullName, destDirectory.FullName, isMove);
+                CopyFile(files[i].FullName, destDirectory.FullName, isMove, isOverWrite);
             }
 
             DirectoryInfo[] dirs = srcDirectory.GetDirectories();
 
             for (int j = 0; j < dirs.Length; j++)
             {
-                CopyDirectory(dirs[j].FullName, destDirectory.FullName + @"\" + dirs[j].Name, isMove);
+                CopyDirectory(dirs[j].FullName, destDirectory.FullName + @"\" + dirs[j].Name, isMove, isOverWrite);
                 if (isMove)
                 {
                     dirs[j].Delete();
@@ -88,7 +88,7 @@ namespace Breezee.Core.Tool.Helper
             }
         }
 
-        private static void CopyFile(string srcFile, string destDir, bool isMove)
+        private static void CopyFile(string srcFile, string destDir, bool isMove, bool isOverWrite)
         {
             DirectoryInfo destDirectory = new DirectoryInfo(destDir);
             string fileName = Path.GetFileName(srcFile);
@@ -105,6 +105,7 @@ namespace Breezee.Core.Tool.Helper
             string sTargetPath = Path.Combine(destDirectory.FullName, fileName);
             if (File.Exists(sTargetPath))
             {
+                if (!isOverWrite) return; //如果不覆盖，那么直接跳过这个文件
                 File.SetAttributes(sTargetPath, FileAttributes.Normal); //去除文件的只读属性
             }
             if (isMove)
@@ -113,7 +114,7 @@ namespace Breezee.Core.Tool.Helper
             }
             else
             {
-                File.Copy(srcFile, sTargetPath, true);
+                File.Copy(srcFile, sTargetPath, isOverWrite);
             }
         }
 
@@ -262,6 +263,61 @@ namespace Breezee.Core.Tool.Helper
                 myStream.Close();// Close the stream. 
                 return sReturn;
             }
+        }
+
+        /// <summary>
+        /// 取得一个文本文件流的编码方式。
+        /// </summary>
+        /// <param name="stream">文本文件流。</param>
+        /// <param name="defaultEncoding">默认编码方式。当该方法无法从文件的头部取得有效的前导符时，将返回该编码方式。</param>
+        /// <returns></returns>
+        public static Encoding GetEncoding(FileStream stream, Encoding defaultEncoding)
+        {
+            Encoding targetEncoding = defaultEncoding;
+            if (stream != null && stream.Length >= 2)
+            {
+                //保存文件流的前4个字节
+                byte byte1 = 0;
+                byte byte2 = 0;
+                byte byte3 = 0;
+                byte byte4 = 0;
+                //保存当前Seek位置
+                long origPos = stream.Seek(0, SeekOrigin.Begin);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                int nByte = stream.ReadByte();
+                byte1 = Convert.ToByte(nByte);
+                byte2 = Convert.ToByte(stream.ReadByte());
+                if (stream.Length >= 3)
+                {
+                    byte3 = Convert.ToByte(stream.ReadByte());
+                }
+                if (stream.Length >= 4)
+                {
+                    byte4 = Convert.ToByte(stream.ReadByte());
+                }
+
+                //根据文件流的前4个字节判断Encoding
+                //Unicode {0xFF, 0xFE};
+                //BE-Unicode {0xFE, 0xFF};
+                //UTF8 = {0xEF, 0xBB, 0xBF};
+                if (byte1 == 0xFE && byte2 == 0xFF)//UnicodeBe
+                {
+                    targetEncoding = Encoding.BigEndianUnicode;
+                }
+                if (byte1 == 0xFF && byte2 == 0xFE && byte3 != 0xFF)//Unicode
+                {
+                    targetEncoding = Encoding.Unicode;
+                }
+                if (byte1 == 0xEF && byte2 == 0xBB && byte3 == 0xBF)//UTF8
+                {
+                    targetEncoding = Encoding.UTF8;
+                }
+
+                //恢复Seek位置     
+                stream.Seek(origPos, SeekOrigin.Begin);
+            }
+            return targetEncoding;
         }
     }
 }

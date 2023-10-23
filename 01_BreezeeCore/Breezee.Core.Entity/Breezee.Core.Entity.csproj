@@ -47,11 +47,13 @@
     <Compile Include="EntityHelper.cs" />
     <Compile Include="Entity\ESYS_USER.cs" />
     <Compile Include="Entity\SYS_MENU.cs" />
+    <Compile Include="Entity\FtpServerInfo.cs" />
     <Compile Include="Entity\SYS_USER.cs" />
     <Compile Include="Enum\DateTimeFormatType.cs" />
     <Compile Include="Enum\DropDownListAllItemType.cs" />
     <Compile Include="Enum\MainFormModelEnum.cs" />
     <Compile Include="Enum\MenuShowStyle.cs" />
+    <Compile Include="Enum\FtpProtocolType.cs" />
     <Compile Include="Enum\MessageType.cs" />
     <Compile Include="Exception\BusinessException.cs" />
     <Compile Include="Exception\ConcurrencyException.cs" />
