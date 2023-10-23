@@ -445,6 +445,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             string sEncode = cbbCharSetEncode.SelectedValue.ToString();
             if ("utf-8-Bom".Equals(sEncode, StringComparison.OrdinalIgnoreCase))
             {
+                encoding = new UTF8Encoding(true);
+            }
+            else if ("utf-8".Equals(sEncode, StringComparison.OrdinalIgnoreCase))
+            {
                 encoding = new UTF8Encoding(false);
             }
             else
