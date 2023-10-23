@@ -834,5 +834,24 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             splitContainer1.Orientation = orientationNew;
         }
+
+        private void tsmiChooseOrNot_Click(object sender, EventArgs e)
+        {
+            if (dgvColList.SelectedCells == null || dgvColList.SelectedCells.Count == 0) return;
+            if (dgvColList.CurrentCell.ColumnIndex != dgvColList.Columns[_sGridColumnSelect].Index)
+            {
+                return; //选择、条件、MyBatis动态列
+            }
+            //选择
+            bool sNew = bool.Parse(dgvColList.CurrentCell.Value.ToString()) ? false : true;
+            foreach (DataGridViewCell item in dgvColList.SelectedCells)
+            {
+                item.Value = sNew;
+            }
+            dgvColList.CurrentCell.Value = sNew;
+
+            //解决当开始是全部选中，双击后全部取消选 中，但因为焦点没有离开选择列，显示还是选中状态的问题
+            dgvColList.ChangeCurrentCell(dgvColList.CurrentCell.ColumnIndex);
+        }
     }
 }

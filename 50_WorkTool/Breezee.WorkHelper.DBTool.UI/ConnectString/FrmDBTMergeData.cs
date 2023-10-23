@@ -47,11 +47,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 加载事件
         private void FrmCopyData_Load(object sender, EventArgs e)
         {
-            //算法类型
+            //合并类型
+            _dicString.Add(((int)MergeDoubleDataStyle.Diff).ToString(), "异集");
             _dicString.Add(((int)MergeDoubleDataStyle.InnerJoin).ToString(), "交集");
             _dicString.Add(((int)MergeDoubleDataStyle.LeftJoin).ToString(), "左集");
             _dicString.Add(((int)MergeDoubleDataStyle.RightJoin).ToString(), "右集");
-            _dicString.Add(((int)MergeDoubleDataStyle.Diff).ToString(), "异集");
             _dicString.Add(((int)MergeDoubleDataStyle.UnionAll).ToString(), "并集");
             cbbSqlType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
 
@@ -63,7 +63,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             lblTableData.Text = "可在Excel中复制数据后，点击网格后按ctrl + v粘贴即可。注：第一行为列名！";
             lblInfo2.Text = "可在Excel中复制数据后，点击网格后按ctrl + v粘贴即可。注：第一行为列名！";
             ckbAutoColumnName.Checked = true;
-            //rtbConString.Text = "A=A1";
+            toolTip1.SetToolTip(ckbNullNotEquals, "选中时为忽略条件中的空值，即两个空值不相等。如取消选中，且两个Excel中条件对应列存在较多空值时，\n就会因为大量的笛卡尔乘积记录消耗内存，而导致【System.OutOfMemoryException】内存不足错误！所以还是建议选中该项！");
         }
         #endregion
 
@@ -80,10 +80,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                         return;
                     }
 
-                    DataTable dtMain = dgvExcel1.GetBindingTable();
-                    dtMain.Clear();
-                    dtMain.Columns.Clear();
+                    DataTable dtMain = new DataTable();
                     pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain, "", false, true, sRowNo1);
+                    dgvExcel1.BindAutoColumn(dtMain, false, new List<FlexGridColumn> {
+                        new FlexGridColumn.Builder().Name(sRowNo1).Caption("序号1").Width(60).Build()
+                    });
                     dgvExcel1.ShowRowNum(false, sRowNo1);
                 }
             }
@@ -104,10 +105,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                         return;
                     }
 
-                    DataTable dtMain = dgvExcel2.GetBindingTable();
-                    dtMain.Clear();
-                    dtMain.Columns.Clear();
+                    DataTable dtMain = new DataTable();
                     pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain, "1", true, true, sRowNo2);
+                    dgvExcel2.BindAutoColumn(dtMain, false, new List<FlexGridColumn> {
+                        new FlexGridColumn.Builder().Name(sRowNo2).Caption("序号2").Width(60).Build()
+                    });
                     dgvExcel2.ShowRowNum(false, sRowNo2);
                 }
             }
@@ -168,20 +170,16 @@ namespace Breezee.WorkHelper.DBTool.UI
                 #endregion
 
                 #region 表结构处理
-                DataTable dtMainCopy = dtMain.Copy();
-                DataTable dtSecCopy = dtSec.Copy();
-
                 DataTable dtResult = dgvResult.GetBindingTable();
                 dtResult.Columns.Clear();
-                dtResult.Rows.Clear();
-                foreach (DataColumn item in dtMainCopy.Columns)
+                foreach (DataColumn item in dtMain.Columns)
                 {
                     if (!dtResult.Columns.Contains(item.ColumnName))
                     {
                         dtResult.Columns.Add(item.ColumnName,item.DataType); //这里要跟原表类型一致
                     }
                 }
-                foreach (DataColumn item in dtSecCopy.Columns)
+                foreach (DataColumn item in dtSec.Columns)
                 {
                     if (!dtResult.Columns.Contains(item.ColumnName))
                     {
@@ -196,9 +194,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                 var recordTime = System.Diagnostics.Stopwatch.StartNew();
                 SyncExcResult excResult = null;
                 // 使用LINQ合并数据：速度快
-                excResult = await Task.Run(() => DataTableConnectStringByLinq(dtMainCopy, dtSecCopy, dtResult, mergeTye, dic));
+                excResult = await Task.Run(() => DataTableConnectStringByLinq(dtMain, dtSec, dtResult, mergeTye, dic));
                 // 使用循环合并数据：速度慢，已取消
-                //excResult = await Task.Run(() => DataTableConnectStringByLoop(dtMainCopy, dtSecCopy, dtResult, mergeTye, dic));
+                //excResult = await Task.Run(() => DataTableConnectStringByLoop(dtMain, dtSec, dtResult, mergeTye, dic));
                 string sTotalSecode = "耗时: " + recordTime.Elapsed.ToString("ss") + "." + recordTime.Elapsed.ToString("fff") + " 秒。";
                 recordTime.Stop();
                 if (excResult.Success)
@@ -241,21 +239,23 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 SyncExcResult result = null;
                 DataTable dtResult = dtResultIn.Clone();
+
                 int iCondCount = dic.Keys.Count;
                 // 使用动态属性
                 //查询
                 var query = from f in dtMain.AsEnumerable()
                             join s in dtSec.AsEnumerable()
-                on GetLinqDynamicCondtion(dic,f,true)
-                equals GetLinqDynamicCondtion(dic, s, false)
+                            on GetLinqDynamicOnJoin(dic, f, true)
+                            equals GetLinqDynamicOnJoin(dic, s, false)
+                            where ckbNullNotEquals.Checked ? GetLinqDynamicWhere(dic, f, s) : true
                             select new { F1 = f, S1 = s };
 
                 //查询交集数据
                 var joinList = query.ToList();
-                var restult = query.ToList().Select(t => t.F1.ItemArray.Concat(t.S1.ItemArray).ToArray());
+                var restult = joinList.Select(t => t.F1.ItemArray.Concat(t.S1.ItemArray).ToArray()); //这里最后必须要加上ToArray
                 foreach (var item in restult)
                 {
-                    dtResult.Rows.Add(item); //增加行数据
+                    dtResult.Rows.Add(item); //增加行数据：当行太多时，这里会报内存溢出System.OutOfMemoryException错误
                 }
                 //如是交集，则直接返回
                 switch (sType)
@@ -350,7 +350,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="isKey"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        private static object GetLinqDynamicCondtion(IDictionary<string, string> dic, DataRow dr,bool isKey)
+        private static object GetLinqDynamicOnJoin(IDictionary<string, string> dic, DataRow dr,bool isKey)
         {
             int iCondCount = dic.Count();
             if (iCondCount == 1)
@@ -551,6 +551,172 @@ namespace Breezee.WorkHelper.DBTool.UI
                 throw new Exception("最多只能输入 10 个条件！");
             }
         }
+
+        /// <summary>
+        /// LINQ动态Where条件（去掉条件为空值的列）
+        /// </summary>
+        /// <param name="dic"></param>
+        /// <param name="drF"></param>
+        /// <param name="drS"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        private static bool GetLinqDynamicWhere(IDictionary<string, string> dic, DataRow drF, DataRow drS)
+        {
+            int iCondCount = dic.Count();
+            if (iCondCount == 1)
+            {
+                return !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(0).Key)) && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(0).Value));
+            }
+            else if (iCondCount == 2)
+            {
+                return !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(0).Key)) 
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(1).Key))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(0).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(1).Value))
+                    ;
+            }
+            else if (iCondCount == 3)
+            {
+                return !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(0).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(1).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(2).Key))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(0).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(1).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(2).Value))
+                    ;
+            }
+            else if (iCondCount == 4)
+            {
+                return !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(0).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(1).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(2).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(3).Key))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(0).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(1).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(2).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(3).Value))
+                    ;
+            }
+            else if (iCondCount == 5)
+            {
+                return !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(0).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(1).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(2).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(3).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(4).Key))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(0).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(1).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(2).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(3).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(4).Value))
+                    ;
+            }
+            else if (iCondCount == 6)
+            {
+                return !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(0).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(1).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(2).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(3).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(4).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(5).Key))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(0).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(1).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(2).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(3).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(4).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(5).Value))
+                    ;
+            }
+            else if (iCondCount == 7)
+            {
+                return !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(0).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(1).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(2).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(3).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(4).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(5).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(6).Key))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(0).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(1).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(2).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(3).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(4).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(5).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(6).Value))
+                    ;
+            }
+            else if (iCondCount == 8)
+            {
+                return !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(0).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(1).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(2).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(3).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(4).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(5).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(6).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(7).Key))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(0).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(1).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(2).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(3).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(4).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(5).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(6).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(7).Value))
+                    ;
+            }
+            else if (iCondCount == 9)
+            {
+                return !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(0).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(1).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(2).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(3).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(4).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(5).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(6).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(7).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(8).Key))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(0).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(1).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(2).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(3).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(4).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(5).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(6).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(7).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(8).Value))
+                    ;
+            }
+            else if (iCondCount == 10)
+            {
+                return !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(0).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(1).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(2).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(3).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(4).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(5).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(6).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(7).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(8).Key))
+                    && !string.IsNullOrEmpty(drF.Field<string>(dic.ElementAt(9).Key))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(0).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(1).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(2).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(3).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(4).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(5).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(6).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(7).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(8).Value))
+                    && !string.IsNullOrEmpty(drS.Field<string>(dic.ElementAt(9).Value))
+                    ;
+            }
+            else
+            {
+                throw new Exception("最多只能输入 10 个条件！");
+            }
+        }
+
 
         /// <summary>
         /// 循环处理表连接数据(速度慢)
@@ -763,7 +929,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             DataGridView dgvSelect = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as DataGridView;
             DataTable dt = dgvSelect.GetBindingTable();
             DataRow dataRow = dgvSelect.GetCurrentRow();
-            if (dataRow == null) return;
+            if (dataRow == null || dataRow.RowState == DataRowState.Detached) return;
             dt.Rows.Remove(dataRow);
         }
 
@@ -782,32 +948,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (string.IsNullOrEmpty(sSearch)) return;
             dgvResult.SeachText(sSearch, ref dgvFindText, null, isNext);
             lblFind.Text = dgvFindText.CurrentMsg;
-        }
-
-        /// <summary>
-        /// 列排充
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void dgvResult_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
-        {
-            if (e.Column.Name.Equals(sRowNo1,StringComparison.OrdinalIgnoreCase)
-                || e.Column.Name.Equals(sRowNo2, StringComparison.OrdinalIgnoreCase))
-            {
-                if (int.Parse(e.CellValue1.ToString()) > int.Parse(e.CellValue2.ToString()))
-                {
-                    e.SortResult = 1;
-                }
-                else if (int.Parse(e.CellValue1.ToString()) < int.Parse(e.CellValue2.ToString()))
-                {
-                    e.SortResult = -1;
-                }
-                else
-                {
-                    e.SortResult = 0;
-                }
-                e.Handled = true;
-            }
         }
     }
 

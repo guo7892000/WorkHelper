@@ -41,10 +41,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.cbbDbType = new System.Windows.Forms.ComboBox();
             this.lblDbType = new System.Windows.Forms.Label();
             this.cbbSqlType = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblWordConvert = new System.Windows.Forms.Label();
             this.cbbWordConvert = new System.Windows.Forms.ComboBox();
             this.ckbAutoColumnName = new System.Windows.Forms.CheckBox();
             this.ckbTrim = new System.Windows.Forms.CheckBox();
+            this.ckbResultNewLine = new System.Windows.Forms.CheckBox();
             this.grbConSting = new System.Windows.Forms.GroupBox();
             this.label21 = new System.Windows.Forms.Label();
             this.rtbConString = new System.Windows.Forms.RichTextBox();
@@ -59,7 +60,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.ckbResultNewLine = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -134,7 +134,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tableLayoutPanel1.Controls.Add(this.cbbDbType, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.lblDbType, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbbSqlType, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 4, 0);
+            this.tableLayoutPanel1.Controls.Add(this.lblWordConvert, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbbWordConvert, 5, 0);
             this.tableLayoutPanel1.Controls.Add(this.ckbAutoColumnName, 6, 0);
             this.tableLayoutPanel1.Controls.Add(this.ckbTrim, 7, 0);
@@ -190,16 +190,16 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.cbbSqlType.TabIndex = 2;
             this.cbbSqlType.SelectedIndexChanged += new System.EventHandler(this.cbbSqlType_SelectedIndexChanged);
             // 
-            // label2
+            // lblWordConvert
             // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label2.AutoSize = true;
-            this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(453, 7);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 12);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "字符转换：";
+            this.lblWordConvert.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblWordConvert.AutoSize = true;
+            this.lblWordConvert.ForeColor = System.Drawing.Color.Red;
+            this.lblWordConvert.Location = new System.Drawing.Point(453, 7);
+            this.lblWordConvert.Name = "lblWordConvert";
+            this.lblWordConvert.Size = new System.Drawing.Size(65, 12);
+            this.lblWordConvert.TabIndex = 3;
+            this.lblWordConvert.Text = "字符转换：";
             // 
             // cbbWordConvert
             // 
@@ -236,6 +236,19 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.ckbTrim.TabIndex = 4;
             this.ckbTrim.Text = "去掉前后空格";
             this.ckbTrim.UseVisualStyleBackColor = true;
+            // 
+            // ckbResultNewLine
+            // 
+            this.ckbResultNewLine.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbResultNewLine.AutoSize = true;
+            this.ckbResultNewLine.Checked = true;
+            this.ckbResultNewLine.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbResultNewLine.Location = new System.Drawing.Point(836, 5);
+            this.ckbResultNewLine.Name = "ckbResultNewLine";
+            this.ckbResultNewLine.Size = new System.Drawing.Size(72, 16);
+            this.ckbResultNewLine.TabIndex = 5;
+            this.ckbResultNewLine.Text = "结果换行";
+            this.ckbResultNewLine.UseVisualStyleBackColor = true;
             // 
             // grbConSting
             // 
@@ -394,19 +407,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.splitContainer1.SplitterDistance = 93;
             this.splitContainer1.TabIndex = 28;
             // 
-            // ckbResultNewLine
-            // 
-            this.ckbResultNewLine.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ckbResultNewLine.AutoSize = true;
-            this.ckbResultNewLine.Checked = true;
-            this.ckbResultNewLine.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbResultNewLine.Location = new System.Drawing.Point(836, 5);
-            this.ckbResultNewLine.Name = "ckbResultNewLine";
-            this.ckbResultNewLine.Size = new System.Drawing.Size(72, 16);
-            this.ckbResultNewLine.TabIndex = 5;
-            this.ckbResultNewLine.Text = "结果换行";
-            this.ckbResultNewLine.UseVisualStyleBackColor = true;
-            // 
             // FrmDBTCopyData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -468,7 +468,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private System.Windows.Forms.ContextMenuStrip cmsGird;
         private System.Windows.Forms.ToolStripMenuItem tsmiInsert;
         private System.Windows.Forms.CheckBox ckbTrim;
-        private Label label2;
+        private Label lblWordConvert;
         private ComboBox cbbWordConvert;
         private ToolStripMenuItem tsmiClear;
         private SplitContainer splitContainer1;

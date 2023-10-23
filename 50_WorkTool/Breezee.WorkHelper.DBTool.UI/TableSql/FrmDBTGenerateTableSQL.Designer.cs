@@ -36,6 +36,7 @@
             this.grbTable = new System.Windows.Forms.GroupBox();
             this.dgvTableList = new System.Windows.Forms.DataGridView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiChooseOrNot = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDirectShow = new System.Windows.Forms.ToolStripMenuItem();
             this.lblTableData = new System.Windows.Forms.Label();
             this.grbColumn = new System.Windows.Forms.GroupBox();
@@ -157,14 +158,22 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiChooseOrNot,
             this.tsmiDirectShow});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(149, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(154, 48);
+            // 
+            // tsmiChooseOrNot
+            // 
+            this.tsmiChooseOrNot.Name = "tsmiChooseOrNot";
+            this.tsmiChooseOrNot.Size = new System.Drawing.Size(153, 22);
+            this.tsmiChooseOrNot.Text = "选中/取消选中";
+            this.tsmiChooseOrNot.Click += new System.EventHandler(this.tsmiChooseOrNot_Click);
             // 
             // tsmiDirectShow
             // 
             this.tsmiDirectShow.Name = "tsmiDirectShow";
-            this.tsmiDirectShow.Size = new System.Drawing.Size(148, 22);
+            this.tsmiDirectShow.Size = new System.Drawing.Size(153, 22);
             this.tsmiDirectShow.Text = "显示方向切换";
             this.tsmiDirectShow.Click += new System.EventHandler(this.tsmiDirectShow_Click);
             // 
@@ -649,5 +658,6 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem tsmiDirectShow;
+        private System.Windows.Forms.ToolStripMenuItem tsmiChooseOrNot;
     }
 }
