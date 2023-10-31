@@ -227,7 +227,7 @@ namespace Breezee.Core.WinFormUI
             {
                 if(!string.IsNullOrEmpty(MenuName))
                 {
-                    Msg = string.Format("【{0}】{1}", MenuName, Msg);
+                    Msg = string.Format("【{0}】功能提示：{1}", MenuName, Msg);
                 }
                 LastestTipMsg = Msg;
                 ShowGlobalMsgEventArgs arg = new ShowGlobalMsgEventArgs(Msg);
