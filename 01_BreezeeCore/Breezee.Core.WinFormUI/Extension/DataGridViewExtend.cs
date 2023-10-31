@@ -219,9 +219,9 @@ namespace Breezee.Core.WinFormUI
             //ROWNO赋值
             if (!dtSource.Columns.Contains("ROWNO"))
             {
-                dtSource.Columns.Add("ROWNO", typeof(long));
+                dtSource.Columns.Add("ROWNO", typeof(int));
 
-                long i = 1;
+                int i = 1;
                 foreach (DataRow row in dtSource.Rows)
                 {
                     row["ROWNO"] = i++;
@@ -454,6 +454,7 @@ namespace Breezee.Core.WinFormUI
                             dgvc.Width = Convert.ToInt32(strWidth);
                             dgvc.DefaultCellStyle = dgvcs;
                             dgvc.ReadOnly = !isCanEdit;
+                            
                             if (strOnePropety.Length >= 9 && isCanEdit)
                             {
                                 ((DataGridViewTextBoxColumn)dgvc).MaxInputLength = int.Parse(strOnePropety[8]); //对可编辑列设置最大输入长度
@@ -461,6 +462,11 @@ namespace Breezee.Core.WinFormUI
                             if (isCanEdit)
                             {
                                 SetEditGridColumnStyle(dgvc);
+                            }
+                            //当是绑定序号列，设置值类型为整型
+                            if (strName.Equals("ROWNO", StringComparison.OrdinalIgnoreCase))
+                            {
+                                dgvc.ValueType = typeof(int);
                             }
                             break;
                         case "B"://按钮列
@@ -560,6 +566,11 @@ namespace Breezee.Core.WinFormUI
                             {
                                 SetEditGridColumnStyle(dgvc);
                             }
+                            //当是绑定序号列，设置值类型为整型
+                            if (strName.Equals("ROWNO", StringComparison.OrdinalIgnoreCase))
+                            {
+                                dgvc.ValueType = typeof(int);
+                            }
                             break;
                     }
                     #endregion
@@ -606,13 +617,21 @@ namespace Breezee.Core.WinFormUI
             DataTable dt = new DataTable();
             foreach (FlexGridColumn gridColumn in gridColums)
             {
-                DataColumn dc = dt.Columns.Add(gridColumn.ColumnName);
+                DataColumn dc;
+                if ("ROWNO".Equals(gridColumn.ColumnName, StringComparison.OrdinalIgnoreCase))
+                {
+                    dc = dt.Columns.Add(gridColumn.ColumnName, typeof(int));
+                }
+                else
+                {
+                    dc = dt.Columns.Add(gridColumn.ColumnName);
+                }
                 dc.Caption = gridColumn.ColumnCaption;
             }
 
             if (!dt.Columns.Contains("ROWNO"))
             {
-                dt.Columns.Add("ROWNO");
+                dt.Columns.Add("ROWNO",typeof(int));
             }
 
             return dt;

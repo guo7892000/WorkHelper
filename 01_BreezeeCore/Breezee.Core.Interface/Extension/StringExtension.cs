@@ -253,9 +253,11 @@ namespace Breezee.Core.Interface
             {
                 dt = new DataTable();
             }
+            bool addNumRow = false;
             if (!dt.Columns.Contains(sRowNumColumnName) && isAddRowNum)
             {
                 dt.Columns.Add(sRowNumColumnName,typeof(int)); ////设置序号为整型
+                addNumRow = true;
             }
 
             string[] rows = pasteText.Trim().Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);//分割的行数数组
@@ -290,23 +292,50 @@ namespace Breezee.Core.Interface
                 {
                     DataRow dr = dt.NewRow();
                     string[] cols = rows[i].Split(new string[] { "\t" }, StringSplitOptions.None);//注：这里不要去掉空白
-                    if (isAddRowNum)
+                    //增加数据列数与表列数的大小比较，防止访问表列的数组越界而报错
+                    if(cols.Length > dt.Columns.Count)
                     {
-                        // 有序号列
-                        dr[sRowNumColumnName] = i; //行号
-                        for (int j = 0; j < cols.Length; j++)
+                        //数据列数大于表列数
+                        if (addNumRow)
                         {
-                            dr[j + 1] = isTrimData ? cols[j].Trim() : cols[j]; //第一列为序号，需要跳过
+                            // 有序号列
+                            dr[sRowNumColumnName] = i; //行号
+                            for (int j = 0; j < dt.Columns.Count-1; j++)
+                            {
+                                dr[j + 1] = isTrimData ? cols[j].Trim() : cols[j]; //第一列为序号，需要跳过
+                            }
+                        }
+                        else
+                        {
+                            // 无序号列
+                            for (int j = 0; j < dt.Columns.Count; j++)
+                            {
+                                dr[j] = isTrimData ? cols[j].Trim() : cols[j]; //第一列为实际数据
+                            }
                         }
                     }
                     else
                     {
-                        // 无序号列
-                        for (int j = 0; j < cols.Length; j++)
+                        //数据列数小于等于表列数
+                        if (addNumRow)
                         {
-                            dr[j] = isTrimData ? cols[j].Trim() : cols[j]; //第一列为实际数据
+                            // 有序号列
+                            dr[sRowNumColumnName] = i; //行号
+                            for (int j = 0; j < cols.Length; j++)
+                            {
+                                dr[j + 1] = isTrimData ? cols[j].Trim() : cols[j]; //第一列为序号，需要跳过
+                            }
+                        }
+                        else
+                        {
+                            // 无序号列
+                            for (int j = 0; j < cols.Length; j++)
+                            {
+                                dr[j] = isTrimData ? cols[j].Trim() : cols[j]; //第一列为实际数据
+                            }
                         }
                     }
+                    
                     dt.Rows.Add(dr);
                 }
             }
