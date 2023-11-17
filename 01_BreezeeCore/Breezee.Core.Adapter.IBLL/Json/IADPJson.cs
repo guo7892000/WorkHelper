@@ -69,14 +69,14 @@ namespace Breezee.Core.Adapter.IBLL
         /// </summary>
         /// <param name="dt">Dt</param>
         /// <returns>JSON字符串</returns>
-        //string DataTableToJson(DataTable dt);
+        string DataTableToJson(DataTable dt);
 
         /// <summary>    
         /// 将获取的Json数据转换为DataTable    
         /// </summary>    
         /// <param name="strJson">Json字符串</param>   
         /// <returns></returns>    
-        //DataTable JsonToDataTable(string json);
+        DataTable JsonToDataTable(string json);
 
         /// <summary>
         /// 

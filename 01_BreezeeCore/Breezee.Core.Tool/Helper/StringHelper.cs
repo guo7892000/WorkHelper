@@ -360,7 +360,7 @@ namespace Breezee.Core.Tool
 
         #region 获取字符数组(针对剪贴板内容)
         /// <summary>
-        /// 获取字符数组(针对剪贴板内容)，以\n为行计算，\t为不同列
+        /// 获取字符数组(针对剪贴板内容)，以\n为行，\t为不同列
         /// </summary>
         /// <param name="pasteText"></param>
         /// <returns></returns>

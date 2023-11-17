@@ -117,11 +117,18 @@
       <DependentUpon>FrmVersionInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\KeyValue.cs" />
+    <Compile Include="Common\FTP\SftpTool.cs" />
     <Compile Include="Common\UC_DbConnection.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Common\UC_DbConnection.Designer.cs">
       <DependentUpon>UC_DbConnection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\UC_FtpDownUpload.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Common\UC_FtpDownUpload.Designer.cs">
+      <DependentUpon>UC_FtpDownUpload.cs</DependentUpon>
     </Compile>
     <Compile Include="ConnectString\FrmDBTCopyData.cs">
       <SubType>Form</SubType>
@@ -188,6 +195,12 @@
     </Compile>
     <Compile Include="GetFile\FrmGetUpdateDirectoryFile.Designer.cs">
       <DependentUpon>FrmGetUpdateDirectoryFile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GetFile\FrmReplaceTextFileStringUC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GetFile\FrmReplaceTextFileStringUC.Designer.cs">
+      <DependentUpon>FrmReplaceTextFileStringUC.cs</DependentUpon>
     </Compile>
     <Compile Include="GetFile\FrmReplaceTextFileString.cs">
       <SubType>Form</SubType>
@@ -334,6 +347,9 @@
     <EmbeddedResource Include="Common\UC_DbConnection.resx">
       <DependentUpon>UC_DbConnection.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Common\UC_FtpDownUpload.resx">
+      <DependentUpon>UC_FtpDownUpload.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ConnectString\FrmDBTCopyData.resx">
       <DependentUpon>FrmDBTCopyData.cs</DependentUpon>
     </EmbeddedResource>
@@ -366,6 +382,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GetFile\FrmGetUpdateDirectoryFile.resx">
       <DependentUpon>FrmGetUpdateDirectoryFile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GetFile\FrmReplaceTextFileStringUC.resx">
+      <DependentUpon>FrmReplaceTextFileStringUC.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GetFile\FrmReplaceTextFileString.resx">
       <DependentUpon>FrmReplaceTextFileString.cs</DependentUpon>
@@ -672,6 +691,24 @@
     <Content Include="Help\Html\DBTool\String\Images\StringSplitConn.001.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Help\Html\DBTool\String\Images\TextFileReplaceString.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\String\Images\TextFileReplaceString.002.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\String\Images\TextFileReplaceString.003.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\String\Images\TextFileReplaceStringUC.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\String\Images\TextFileReplaceStringUC.002.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\String\Images\TextFileReplaceStringUC.003.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\Html\DBTool\String\Images\TowExcelMerge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -682,6 +719,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\String\StringConnSplit.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\String\TextFileStringReplace.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\String\TextFileStringReplaceUC.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\String\TowExcelMerge.html">
@@ -725,6 +768,10 @@
     <ProjectReference Include="..\..\20_AutoSQLExcutor\Breezee.AutoSQLExecutor.Core\Breezee.AutoSQLExecutor.Core.csproj">
       <Project>{A975AFED-639E-40AA-9698-9A6F0FCD7421}</Project>
       <Name>Breezee.AutoSQLExecutor.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\40_MiniWinFormApp\Breezee.Framework.Mini.Entity\Breezee.Framework.Mini.Entity.csproj">
+      <Project>{86FC7217-A202-4750-9F05-BAC76CC77C22}</Project>
+      <Name>Breezee.Framework.Mini.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Breezee.WorkHelper.DBTool.Entity\Breezee.WorkHelper.DBTool.Entity.csproj">
       <Project>{2B001D7A-B4AC-441D-BB58-DD2004EF568E}</Project>

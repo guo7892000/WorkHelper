@@ -24,6 +24,10 @@ namespace Breezee.Core.WinFormUI
     public class DBColumnControlRelation
     {
         #region 针对所有控件
+        private DBColumnControlRelation()
+        {
+        }
+
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -32,7 +36,7 @@ namespace Breezee.Core.WinFormUI
         /// <param name="enReadSaveEnum">读取保存枚举</param>
         /// <param name="strEnptyJudgeTipName">非空提示名称</param>
         /// <param name="strSaveColumnName">保存列名</param>
-        public DBColumnControlRelation(string strReadColumnName, Control ctr, DBColumnControlReadSaveEnum enReadSaveEnum, string strEnptyJudgeTipName, string strSaveColumnName, int DecimalDigits)
+        public DBColumnControlRelation(string strReadColumnName, Control ctr, DBColumnControlReadSaveEnum enReadSaveEnum, string strEnptyJudgeTipName, string strSaveColumnName, int DecimalDigits,bool isMust)
         {
             _ReadColumnName = strReadColumnName;
             _ControlName = ctr;
@@ -40,10 +44,11 @@ namespace Breezee.Core.WinFormUI
             _SaveColumnName = strSaveColumnName;
             _NotNullJudgeTipName = strEnptyJudgeTipName;
             _DecimalDigits = DecimalDigits;//默认为-1，即不管
+            _isMust = isMust;
         }
 
-        public DBColumnControlRelation(string strReadColumnName, Control ctr, DBColumnControlReadSaveEnum enReadSaveEnum, string strEnptyJudgeTipName, string strSaveColumnName)
-            : this(strReadColumnName, ctr, enReadSaveEnum, strEnptyJudgeTipName, strSaveColumnName, -1)
+        public DBColumnControlRelation(string strReadColumnName, Control ctr, DBColumnControlReadSaveEnum enReadSaveEnum, string strEnptyJudgeTipName, string strSaveColumnName,bool isMust)
+            : this(strReadColumnName, ctr, enReadSaveEnum, strEnptyJudgeTipName, strSaveColumnName, -1,isMust)
         {
         }
 
@@ -52,14 +57,14 @@ namespace Breezee.Core.WinFormUI
         /// </summary>
         /// <param name="strReadSaveColumnName">读取保存列名</param>
         /// <param name="ctr">控件</param>
-        public DBColumnControlRelation(string strReadColumnName, Control ctr)
-            : this(strReadColumnName, ctr, DBColumnControlReadSaveEnum.ReadAndSave, string.Empty, strReadColumnName, -1)
+        public DBColumnControlRelation(string strReadColumnName, Control ctr, bool isMust=false)
+            : this(strReadColumnName, ctr, DBColumnControlReadSaveEnum.ReadAndSave, string.Empty, strReadColumnName, -1, isMust)
         {
 
         }
 
-        public DBColumnControlRelation(string strReadColumnName, Control ctr, int DecimalDigits)
-            : this(strReadColumnName, ctr, DBColumnControlReadSaveEnum.ReadAndSave, string.Empty, strReadColumnName, DecimalDigits)
+        public DBColumnControlRelation(string strReadColumnName, Control ctr, int DecimalDigits, bool isMust = false)
+            : this(strReadColumnName, ctr, DBColumnControlReadSaveEnum.ReadAndSave, string.Empty, strReadColumnName, DecimalDigits, isMust)
         {
         }
 
@@ -69,8 +74,8 @@ namespace Breezee.Core.WinFormUI
         /// <param name="strReadSaveColumnName">读取保存列名</param>
         /// <param name="ctr"></param>
         /// <param name="strEnptyJudgeTipName"></param>
-        public DBColumnControlRelation(string strReadColumnName, Control ctr, string strEnptyJudgeTipName)
-            : this(strReadColumnName, ctr, DBColumnControlReadSaveEnum.ReadAndSave, strEnptyJudgeTipName, strReadColumnName, -1)
+        public DBColumnControlRelation(string strReadColumnName, Control ctr, string strEnptyJudgeTipName, bool isMust = true)
+            : this(strReadColumnName, ctr, DBColumnControlReadSaveEnum.ReadAndSave, strEnptyJudgeTipName, strReadColumnName, -1, isMust)
         {
         }
 
@@ -80,13 +85,13 @@ namespace Breezee.Core.WinFormUI
         /// <param name="strReadColumnName"></param>
         /// <param name="ctr"></param>
         /// <param name="enReadSaveEnum"></param>
-        public DBColumnControlRelation(string strReadColumnName, Control ctr, DBColumnControlReadSaveEnum enReadSaveEnum)
-            : this(strReadColumnName, ctr, enReadSaveEnum, string.Empty, strReadColumnName, -1)
+        public DBColumnControlRelation(string strReadColumnName, Control ctr, DBColumnControlReadSaveEnum enReadSaveEnum, bool isMust = false)
+            : this(strReadColumnName, ctr, enReadSaveEnum, string.Empty, strReadColumnName, -1,isMust)
         {
         }
 
-        public DBColumnControlRelation(string strReadColumnName, Control ctr, DBColumnControlReadSaveEnum enReadSaveEnum, int DecimalDigits)
-            : this(strReadColumnName, ctr, enReadSaveEnum, string.Empty, strReadColumnName, DecimalDigits)
+        public DBColumnControlRelation(string strReadColumnName, Control ctr, DBColumnControlReadSaveEnum enReadSaveEnum, int DecimalDigits, bool isMust = false)
+            : this(strReadColumnName, ctr, enReadSaveEnum, string.Empty, strReadColumnName, DecimalDigits,isMust)
         {
         }
 
@@ -97,13 +102,13 @@ namespace Breezee.Core.WinFormUI
         /// <param name="ctr">控件</param>
         /// <param name="enReadSaveEnum">读取保存枚举</param>
         /// <param name="strEnptyJudgeTipName">非空提示名称</param>
-        public DBColumnControlRelation(string strReadColumnName, Control ctr, DBColumnControlReadSaveEnum enReadSaveEnum, string strEnptyJudgeTipName)
-            : this(strReadColumnName, ctr, enReadSaveEnum, strEnptyJudgeTipName, strReadColumnName, -1)
+        public DBColumnControlRelation(string strReadColumnName, Control ctr, DBColumnControlReadSaveEnum enReadSaveEnum, string strEnptyJudgeTipName, bool isMust = false)
+            : this(strReadColumnName, ctr, enReadSaveEnum, strEnptyJudgeTipName, strReadColumnName, -1, isMust)
         {
         }
 
-        public DBColumnControlRelation(string strReadColumnName, Control ctr, DBColumnControlReadSaveEnum enReadSaveEnum, string strEnptyJudgeTipName, int DecimalDigits)
-            : this(strReadColumnName, ctr, enReadSaveEnum, strEnptyJudgeTipName, strReadColumnName, DecimalDigits)
+        public DBColumnControlRelation(string strReadColumnName, Control ctr, DBColumnControlReadSaveEnum enReadSaveEnum, string strEnptyJudgeTipName, int DecimalDigits, bool isMust = false)
+            : this(strReadColumnName, ctr, enReadSaveEnum, strEnptyJudgeTipName, strReadColumnName, DecimalDigits, isMust)
         {
         }
         #endregion
@@ -165,6 +170,66 @@ namespace Breezee.Core.WinFormUI
         {
         }
         #endregion
+
+        #region 构建方法
+        public DBColumnControlRelation New()
+        {
+            return new DBColumnControlRelation();
+        }
+        public DBColumnControlRelation ReadCol(string strReadColumnName)
+        {
+            _ReadColumnName = strReadColumnName;
+            return this;
+        }
+
+        public DBColumnControlRelation SaveCol(string sSaveColumnName)
+        {
+            _SaveColumnName = sSaveColumnName;
+            return this;
+        }
+
+        public DBColumnControlRelation NullTip(string sTipMsg)
+        {
+            _NotNullJudgeTipName = sTipMsg;
+            return this;
+        }
+
+        public DBColumnControlRelation Ctl(Control controlName)
+        {
+            _ControlName = controlName;
+            return this;
+        }
+
+        public DBColumnControlRelation ReadSave(DBColumnControlReadSaveEnum readSave)
+        {
+            _ReadSaveEnum = readSave;
+            return this;
+        }
+
+        public DBColumnControlRelation CbbSave(DBColumnComboBoxSaveEnum cbbSaveEnum)
+        {
+            _ComboBoxSaveEnum = cbbSaveEnum;
+            return this;
+        }
+        public DBColumnControlRelation CbbSourceCol(string sourceTabele)
+        {
+            _ComboBoxSaveSourceTableColumnName = sourceTabele;
+            return this;
+        }
+
+        public DBColumnControlRelation Dec(int iDec)
+        {
+            _DecimalDigits = iDec;
+            return this;
+        }
+
+        public DBColumnControlRelation Must(bool isMust = true)
+        {
+            _isMust = isMust;
+            return this;
+        } 
+        #endregion
+
 
         #region 属性
         /// <summary>
@@ -251,6 +316,10 @@ namespace Breezee.Core.WinFormUI
             get { return _DecimalDigits; }
             set { _DecimalDigits = value; }
         }
+
+        public bool IsMust { get => _isMust; set => _isMust = value; }
+
+        private bool _isMust = false;
 
         #endregion
 

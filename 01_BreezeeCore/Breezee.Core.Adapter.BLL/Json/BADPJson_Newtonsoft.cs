@@ -105,7 +105,7 @@ namespace Breezee.Core.Adapter.BLL
         {
             IsoDateTimeConverter timeFormat = new IsoDateTimeConverter();
             timeFormat.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-            return JsonConvert.SerializeObject(entity, Newtonsoft.Json.Formatting.Indented, timeFormat);
+            return JsonConvert.SerializeObject(entity, Formatting.Indented, timeFormat);
         }
 
         /// <summary>
@@ -113,55 +113,22 @@ namespace Breezee.Core.Adapter.BLL
         /// </summary>
         /// <param name="dt">Dt</param>
         /// <returns>JSON字符串</returns>
-        //public string DataTableToJson(DataTable dt)
-        //{
-        //    JavaScriptSerializer js = new JavaScriptSerializer();
-        //    ArrayList dic = new ArrayList();
-        //    foreach (DataRow dr in dt.Rows)
-        //    {
-        //        Dictionary<string, object> drow = new Dictionary<string, object>();
-        //        foreach (DataColumn dc in dt.Columns)
-        //        {
-        //            drow.Add(dc.ColumnName, dr[dc.ColumnName]);
-        //        }
-        //        dic.Add(drow);
-
-        //    }
-        //    //序列化  
-        //    return js.Serialize(dic);
-        //}
+        public string DataTableToJson(DataTable dt)
+        {
+            string sJson = JsonConvert.SerializeObject(dt);
+            return sJson;
+        }
 
         /// <summary>    
         /// 将获取的Json数据转换为DataTable    
         /// </summary>    
         /// <param name="strJson">Json字符串</param>   
         /// <returns></returns>    
-        //public DataTable JsonToDataTable(string json)
-        //{
-        //    JavaScriptSerializer js = new JavaScriptSerializer();
-        //    ArrayList dic = js.Deserialize<ArrayList>(json);
-        //    DataTable dt = new DataTable();
-        //    if (dic.Count > 0)
-        //    {
-        //        foreach (Dictionary<string, object> drow in dic)
-        //        {
-        //            if (dt.Columns.Count == 0)
-        //            {
-        //                foreach (string key in drow.Keys)
-        //                {
-        //                    dt.Columns.Add(key, drow[key].GetType());
-        //                }
-        //            }
-        //            DataRow row = dt.NewRow();
-        //            foreach (string key in drow.Keys)
-        //            {
-        //                row[key] = drow[key];
-        //            }
-        //            dt.Rows.Add(row);
-        //        }
-        //    }
-        //    return dt;
-        //}
+        public DataTable JsonToDataTable(string json)
+        {
+            DataTable dt = JsonConvert.DeserializeObject<DataTable>(json);
+            return dt;
+        }
 
         /// <summary>
         /// 反序列化为对象集合

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 
@@ -41,6 +42,23 @@ namespace Breezee.Core.Interface
                 strReturn = " IN (" + sb.ToString().Substring(0, sb.Length - 1) + ")";
             }
             return strReturn;
+        }
+        #endregion
+
+        #region 根据列表来构造自定义表方法
+        /// <summary>
+        /// 根据列表来构造自定义表方法
+        /// </summary>
+        /// <param name="list">字符列表</param>
+        /// <returns></returns>
+        public static DataTable GetTable(this IList<string> list)
+        {
+            DataTable dtSource = new DataTable();
+            foreach (string strKey in list)
+            {
+                dtSource.Columns.Add(strKey);
+            }
+            return dtSource;
         }
         #endregion
 

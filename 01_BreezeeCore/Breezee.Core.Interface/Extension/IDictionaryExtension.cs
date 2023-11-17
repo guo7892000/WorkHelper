@@ -209,6 +209,24 @@ namespace Breezee.Core.Interface
         }
         #endregion
 
+        #region 根据字典来构造自定义表方法
+        /// <summary>
+        /// 根据字典来构造自定义表（列先后包括ID和Text）
+        /// </summary>
+        /// <param name="dic">字典集合，字典键是值，字典值显示文本</param>
+        /// <param name="bIncludeNull">是否包括空白行</param>
+        /// <returns></returns>
+        public static DataTable GetTable(this IDictionary<string, string> dic)
+        {
+            DataTable dtSource = new DataTable();
+            foreach (string strKey in dic.Keys)
+            {
+                dtSource.Columns.Add(strKey);
+            }
+            return dtSource;
+        }
+        #endregion
+
         #region 判断集合中是否包括所有【需验证的键清单】的非空值
         /// <summary>
         /// 判断集合中是否包括所有【需验证的键清单】的非空值
