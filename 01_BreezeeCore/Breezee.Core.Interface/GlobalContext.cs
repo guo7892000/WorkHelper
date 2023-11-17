@@ -17,7 +17,7 @@ namespace Breezee.Core.Interface
         /// <summary>
         /// 入口路径(不可变)
         /// </summary>
-        public static readonly string AppEntryAssemblyPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        public static readonly string AppEntryAssemblyPath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
         /// <summary>
         /// 基目录(不可变)
         /// </summary>

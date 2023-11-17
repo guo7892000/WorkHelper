@@ -35,6 +35,7 @@ namespace Breezee.Framework.Mini.StartUp
     {
         #region 变量
         public event EventHandler<EventArgs> FormClosed;
+        private delegate void ShowGlobalMsg(string msg);
         string _strAppPath = AppDomain.CurrentDomain.BaseDirectory;
         //string _strConfigFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WorkHelper/Config");
         int iStartMenu = 0;
@@ -761,7 +762,20 @@ namespace Breezee.Framework.Mini.StartUp
         #region 显示全局提示信息事件
         private void ShowGlobalMsg_Click(object sender, ShowGlobalMsgEventArgs e)
         {
-            txbGlobalMsg.Text = e.Msg;
+            if (txbGlobalMsg.InvokeRequired)
+            {
+                ShowGlobalMsg showGlobalMsg = new ShowGlobalMsg(SetGlobalMsg);
+                showGlobalMsg(e.Msg);
+            }
+            else
+            {
+                SetGlobalMsg(e.Msg);
+            }
+        }
+
+        private void SetGlobalMsg(string msg)
+        {
+            txbGlobalMsg.Text = msg;
         }
         #endregion
 

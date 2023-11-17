@@ -87,12 +87,15 @@ namespace Breezee.Core.WinFormUI
         /// </summary>
         public Type ValueType { get; private set; } = typeof(string);
 
-        #region 是否按钮属性
         /// <summary>
-        /// 判断是否为按钮，如果Name值为按钮则是
+        /// 是否按钮属性：判断是否为按钮，如果Name值为按钮则是
         /// </summary>
         public bool IsButtonColumn { get; private set; }
-        #endregion
+
+        /// <summary>
+        /// 是否行号列
+        /// </summary>
+        public bool IsRowNumColumn { get; private set; } = false;
 
         #endregion
 
@@ -111,6 +114,7 @@ namespace Breezee.Core.WinFormUI
             lst.Add(AllowEditing.ToString());//7可编辑
             lst.Add(MaxLength.ToString());//8可编辑列最大长度（可省略）
             lst.Add(ValueType.ToString());//9列类型（可省略）
+            lst.Add(IsRowNumColumn.ToString());//10是否行号列（可省略）
             return string.Join(StaticConstant.FRA_GRID_COLUMN_SPLIT_PROPERT_STR, lst);
         } 
         #endregion
@@ -148,7 +152,7 @@ namespace Breezee.Core.WinFormUI
         public static FlexGridColumn NewRowNoCol()
         {
             FlexGridColumn column = new FlexGridColumn.Builder().Name(StaticConstant.FRA_GRID_ROWNO_STR).Caption("序号").Type(DataGridViewColumnTypeEnum.TextBox)
-                .Visible(true).Width(40).Align(DataGridViewContentAlignment.MiddleRight).Edit(false).ValType(typeof(int)).Build();
+                .Visible(true).Width(40).Align(DataGridViewContentAlignment.MiddleRight).Edit(false).ValType(typeof(int)).IsRowNum().Build();
             return column;
         }
 
@@ -179,6 +183,7 @@ namespace Breezee.Core.WinFormUI
             private int MaxLength;
             private bool IsButtonColumn = false;
             private Type ValueType = typeof(string);
+            private bool IsRowNumColumn = false;
             public Builder DBName(string sValue)
             {
                 this.DBColumnName = sValue;
@@ -248,6 +253,12 @@ namespace Breezee.Core.WinFormUI
                 return this;
             }
 
+            public Builder IsRowNum(bool sValue = true)
+            {
+                this.IsRowNumColumn = sValue;
+                return this;
+            }
+
             public FlexGridColumn Build()
             {
                 FlexGridColumn column = new FlexGridColumn();
@@ -262,6 +273,7 @@ namespace Breezee.Core.WinFormUI
                 column.MaxLength = this.MaxLength;
                 column.IsButtonColumn = this.IsButtonColumn;
                 column.ValueType = this.ValueType;
+                column.IsRowNumColumn = this.IsRowNumColumn;
                 return column;
             }
 

@@ -618,13 +618,22 @@ namespace Breezee.Core.WinFormUI
             foreach (FlexGridColumn gridColumn in gridColums)
             {
                 DataColumn dc;
-                if ("ROWNO".Equals(gridColumn.ColumnName, StringComparison.OrdinalIgnoreCase))
+                //行号列，设置为自动增长
+                if ("ROWNO".Equals(gridColumn.ColumnName, StringComparison.OrdinalIgnoreCase) || gridColumn.IsRowNumColumn)
                 {
                     dc = dt.Columns.Add(gridColumn.ColumnName, typeof(int));
+                    //设置为自增长：但操作过程中删除行后，行号还是会自动增加
+                    dc.AutoIncrement = true;
+                    dc.AutoIncrementSeed = 1;
+                    dc.AutoIncrementStep = 1;
                 }
                 else
                 {
                     dc = dt.Columns.Add(gridColumn.ColumnName);
+                    if (gridColumn.ColumnDisplayType== DataGridViewColumnTypeEnum.CheckBox)
+                    {
+                        dc.DefaultValue = "1"; //设置默认值
+                    }
                 }
                 dc.Caption = gridColumn.ColumnCaption;
             }

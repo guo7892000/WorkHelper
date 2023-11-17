@@ -256,28 +256,28 @@
             // tsmiUserManual
             // 
             this.tsmiUserManual.Name = "tsmiUserManual";
-            this.tsmiUserManual.Size = new System.Drawing.Size(180, 22);
+            this.tsmiUserManual.Size = new System.Drawing.Size(148, 22);
             this.tsmiUserManual.Text = "用户手册(&U)";
             this.tsmiUserManual.Click += new System.EventHandler(this.tsmiUserManual_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.aboutToolStripMenuItem.Text = "关于(&A) ";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // tsmiOpenLatestDownURL
             // 
             this.tsmiOpenLatestDownURL.Name = "tsmiOpenLatestDownURL";
-            this.tsmiOpenLatestDownURL.Size = new System.Drawing.Size(180, 22);
+            this.tsmiOpenLatestDownURL.Size = new System.Drawing.Size(148, 22);
             this.tsmiOpenLatestDownURL.Text = "复制下载地址";
             this.tsmiOpenLatestDownURL.Click += new System.EventHandler(this.tsmiOpenLatestDownURL_Click);
             // 
             // tsbCheckUpdate
             // 
             this.tsbCheckUpdate.Name = "tsbCheckUpdate";
-            this.tsbCheckUpdate.Size = new System.Drawing.Size(180, 22);
+            this.tsbCheckUpdate.Size = new System.Drawing.Size(148, 22);
             this.tsbCheckUpdate.Text = "检查更新";
             this.tsbCheckUpdate.ToolTipText = "检测是否有新版本";
             this.tsbCheckUpdate.Click += new System.EventHandler(this.tsbCheckUpdate_Click);
@@ -398,6 +398,7 @@
             // 
             this.tvLeftMenu.ContextMenuStrip = this.cmsOpenTreeMenu;
             this.tvLeftMenu.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tvLeftMenu.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tvLeftMenu.Location = new System.Drawing.Point(0, 51);
             this.tvLeftMenu.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tvLeftMenu.Name = "tvLeftMenu";

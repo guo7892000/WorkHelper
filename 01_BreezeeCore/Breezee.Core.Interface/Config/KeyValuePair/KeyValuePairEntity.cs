@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Breezee.Core.Interface
 {
     /// <summary>
-    /// 键值对的XML配置实体
+    /// 键值对的配置实体
     /// </summary>
     public class KeyValuePairEntity
     {

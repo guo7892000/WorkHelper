@@ -105,6 +105,9 @@
     <Compile Include="BaseForm.Designer.cs">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Common\BaseUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Common\FrmMenuHtmlHelp.cs">
       <SubType>Form</SubType>
     </Compile>

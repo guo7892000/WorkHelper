@@ -10,7 +10,7 @@ namespace Breezee.WorkHelper.DBTool.UI
     /// 文件文本替换界面中的控件值
     /// 解决跨线程调用问题
     /// </summary>
-    internal class ReplaceTesfFileFormControleValue
+    public class ReplaceTesfFileFormControleValue
     {
         public string EncodingConnect { get; set; }
         public string EncodingFile { get; set; }

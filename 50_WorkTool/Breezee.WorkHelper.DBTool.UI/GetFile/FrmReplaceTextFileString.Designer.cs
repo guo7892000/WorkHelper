@@ -86,6 +86,7 @@
             this.tsmiAddFile = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiClear = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiRowNoReset = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.label19 = new System.Windows.Forms.Label();
@@ -154,6 +155,7 @@
             this.btnHadDownAddToWait = new System.Windows.Forms.Button();
             this.ckbDownPathExcludeFtpReadPath = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.lblReplaceInfo = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -799,9 +801,10 @@
             this.tsmiAddDir,
             this.tsmiAddFile,
             this.tsmiDelete,
-            this.tsmiClear});
+            this.tsmiClear,
+            this.tsmiRowNoReset});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(125, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(125, 114);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // tsmiAddDir
@@ -831,6 +834,13 @@
             this.tsmiClear.Size = new System.Drawing.Size(124, 22);
             this.tsmiClear.Text = "清空";
             this.tsmiClear.Click += new System.EventHandler(this.tsmiClear_Click);
+            // 
+            // tsmiRowNoReset
+            // 
+            this.tsmiRowNoReset.Name = "tsmiRowNoReset";
+            this.tsmiRowNoReset.Size = new System.Drawing.Size(124, 22);
+            this.tsmiRowNoReset.Text = "序号重置";
+            this.tsmiRowNoReset.Click += new System.EventHandler(this.tsmiRowNoReset_Click);
             // 
             // groupBox8
             // 
@@ -961,6 +971,7 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.lblReplaceInfo);
             this.groupBox4.Controls.Add(this.dgvOldNewChar);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(0, 51);
@@ -981,6 +992,8 @@
             this.dgvOldNewChar.Size = new System.Drawing.Size(323, 326);
             this.dgvOldNewChar.TabIndex = 0;
             this.dgvOldNewChar.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvOldNewChar_ColumnHeaderMouseDoubleClick);
+            this.dgvOldNewChar.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvOldNewChar_DataError);
+            this.dgvOldNewChar.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvOldNewChar_KeyDown);
             // 
             // groupBox7
             // 
@@ -1216,6 +1229,7 @@
             // dgvResultFilter
             // 
             this.dgvResultFilter.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvResultFilter.ContextMenuStrip = this.contextMenuStrip1;
             this.dgvResultFilter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvResultFilter.Location = new System.Drawing.Point(3, 17);
             this.dgvResultFilter.Name = "dgvResultFilter";
@@ -1660,6 +1674,16 @@
             this.ckbDownPathExcludeFtpReadPath.Text = "下载路径不含读取目录";
             this.ckbDownPathExcludeFtpReadPath.UseVisualStyleBackColor = true;
             // 
+            // lblReplaceInfo
+            // 
+            this.lblReplaceInfo.AutoSize = true;
+            this.lblReplaceInfo.ForeColor = System.Drawing.Color.Red;
+            this.lblReplaceInfo.Location = new System.Drawing.Point(107, 0);
+            this.lblReplaceInfo.Name = "lblReplaceInfo";
+            this.lblReplaceInfo.Size = new System.Drawing.Size(29, 12);
+            this.lblReplaceInfo.TabIndex = 3;
+            this.lblReplaceInfo.Text = "提示";
+            // 
             // FrmReplaceTextFileString
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1702,6 +1726,7 @@
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel6.PerformLayout();
             this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOldNewChar)).EndInit();
             this.groupBox7.ResumeLayout(false);
             this.tableLayoutPanel7.ResumeLayout(false);
@@ -1863,5 +1888,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiSortBySelectItem;
         private System.Windows.Forms.TextBox txbFileFileEndfix;
         private System.Windows.Forms.CheckBox ckbIsUseEndfix;
+        private System.Windows.Forms.ToolStripMenuItem tsmiRowNoReset;
+        private System.Windows.Forms.Label lblReplaceInfo;
     }
 }

@@ -570,10 +570,38 @@ namespace Breezee.Core.WinFormUI
         {
             try
             {
+                DataRow drEdit;
                 if (dtOneRow.Rows.Count == 0)
                 {
-                    dtOneRow.Rows.Add(dtOneRow.NewRow());
+                    drEdit = dtOneRow.NewRow();
+                    dtOneRow.Rows.Add(drEdit);
                 }
+                else
+                {
+                    drEdit = dtOneRow.Rows[0];
+                }
+                //调用赋值行方法
+                GetControlValue(listDBColumnControlRelation, drEdit, isAdd);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region 将控件值赋给行数据
+        /// <summary>
+        /// 将控件值赋给行数据
+        /// 说明：目前只支持文本框、下拉框、时间、复选框、RichTextBox
+        /// </summary>
+        /// <param name="listDBColumnControlRelation">列名与控件关系集合</param>
+        /// <param name="dtOneRow">写入值的表</param>
+        /// <param name="isAdd">true新增，false修改</param>
+        public static void GetControlValue(this List<DBColumnControlRelation> listDBColumnControlRelation, DataRow drEdit, bool isAdd)
+        {
+            try
+            {
                 foreach (DBColumnControlRelation kv in listDBColumnControlRelation)
                 {
                     if (kv.ReadSaveEnum == DBColumnControlReadSaveEnum.ReadOnly) //只读的
@@ -588,11 +616,11 @@ namespace Breezee.Core.WinFormUI
                         string strValue = ((TextBox)ctrl).Text.Trim();
                         if (string.IsNullOrEmpty(strValue))
                         {
-                            dtOneRow.Rows[0][strSaveColumnName] = DBNull.Value;
+                            drEdit[strSaveColumnName] = DBNull.Value;
                         }
                         else
                         {
-                            dtOneRow.Rows[0][strSaveColumnName] = strValue;
+                            drEdit[strSaveColumnName] = strValue;
                         }
                     }
                     else if (ctrl is ComboBox)
@@ -608,62 +636,62 @@ namespace Breezee.Core.WinFormUI
                             if (cbb.DataSource is BindingSource)
                             {
                                 DataRow dr = (DataRow)cbb.SelectedValue;
-                                dtOneRow.Rows[0][strSaveColumnName] = dr[kv.ComboBoxSaveSourceTableColumnName];
+                                drEdit[strSaveColumnName] = dr[kv.ComboBoxSaveSourceTableColumnName];
                             }
                             if (cbb.DataSource is DataTable)
                             {
                                 DataRow dr = (DataRow)cbb.SelectedValue;
-                                dtOneRow.Rows[0][strSaveColumnName] = dr[kv.ComboBoxSaveSourceTableColumnName];
+                                drEdit[strSaveColumnName] = dr[kv.ComboBoxSaveSourceTableColumnName];
                             }
                         }
                         else if (kv.ComboBoxSaveEnum == DBColumnComboBoxSaveEnum.Text)//取文本
                         {
-                            dtOneRow.Rows[0][strSaveColumnName] = cbb.Text.Trim();
+                            drEdit[strSaveColumnName] = cbb.Text.Trim();
                         }
                         else //取后台绑定值
                         {
                             if (cbb.SelectedValue == null || string.IsNullOrEmpty(cbb.SelectedValue.ToString()))
                             {
-                                dtOneRow.Rows[0][strSaveColumnName] = DBNull.Value;
+                                drEdit[strSaveColumnName] = DBNull.Value;
                             }
                             else
                             {
-                                dtOneRow.Rows[0][strSaveColumnName] = cbb.SelectedValue.ToString();
+                                drEdit[strSaveColumnName] = cbb.SelectedValue.ToString();
                             }
                         }
                         #endregion
                     }
                     else if (ctrl is DateTimePicker)
                     {
-                        dtOneRow.Rows[0][strSaveColumnName] = ((DateTimePicker)ctrl).Value.ToString();
+                        drEdit[strSaveColumnName] = ((DateTimePicker)ctrl).Value.ToString();
                     }
                     else if (ctrl is CheckBox)
                     {
-                        dtOneRow.Rows[0][strSaveColumnName] = ((CheckBox)ctrl).Checked == true ? "1" : "0";
+                        drEdit[strSaveColumnName] = ((CheckBox)ctrl).Checked == true ? "1" : "0";
                     }
                     else if (ctrl is RichTextBox)
                     {
                         string strValue = ((RichTextBox)ctrl).Text;
                         if (string.IsNullOrEmpty(strValue))
                         {
-                            dtOneRow.Rows[0][strSaveColumnName] = DBNull.Value;
+                            drEdit[strSaveColumnName] = DBNull.Value;
                         }
                         else
                         {
-                            dtOneRow.Rows[0][strSaveColumnName] = strValue;
+                            drEdit[strSaveColumnName] = strValue;
                         }
                     }
                 }
-                dtOneRow.Rows[0].AcceptChanges();
+                drEdit.AcceptChanges();
                 if (isAdd)
                 {
                     //设置行状态为新增
-                    dtOneRow.Rows[0].SetAdded();
+                    drEdit.SetAdded();
                 }
                 else
                 {
                     //设置行状态为修改
-                    dtOneRow.Rows[0].SetModified();
+                    drEdit.SetModified();
                 }
             }
             catch (Exception ex)
@@ -741,7 +769,7 @@ namespace Breezee.Core.WinFormUI
             {
                 string sKey = db.NotNullJudgeTipName;
                 Control ctrl = db.ControlName;
-                if (string.IsNullOrEmpty(sKey))
+                if (string.IsNullOrEmpty(sKey) || !db.IsMust)
                 {
                     continue;
                 }

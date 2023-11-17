@@ -42,7 +42,8 @@
 	  <Menu Guid="89205F44-3EF5-4A0B-A4CD-04DD8145F99E" Name="代码文件生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTDBAutoCodeFile"  HelpPath="/Help/Html/DBTool/DB/AutoFile.html"/>
 	  <Menu Guid="6DD928D5-B5A6-4E65-97AF-C894B2DF92DA" Name="实体文件生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTDBAutoEntityFile"  HelpPath="/Help/Html/DBTool/DB/AutoEntity.html"/>
 	  <Menu Guid="17ABFE5D-6EE6-41C6-988E-F8CABCA6759B" Name="获取变化的文件" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmGetUpdateDirectoryFile"  HelpPath="/Help/Html/DBTool/DB/GetUpdateFile.html"/>
-	  <Menu Guid="7B1FA770-C3FC-460A-956F-E193159EBB91" Name="文件字符替换" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmReplaceTextFileString"  HelpPath="/Help/Html/DBTool/DB/GetUpdateFile.html"/>
+	  <Menu Guid="7B1FA770-C3FC-460A-956F-E193159EBB91" Name="文件字符替换" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmReplaceTextFileString"  HelpPath="/Help/Html/DBTool/String/TextFileStringReplace.html"/>
+	  <Menu Guid="12D95961-3BA0-4092-A56A-376805363CB7" Name="文件字符替换UC" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmReplaceTextFileStringUC"  HelpPath="/Help/Html/DBTool/String/TextFileStringReplaceUC.html"/>
 	</Class>
     <Class Guid="07A30998-9277-4AC7-96AA-108AA04F1AF2" Name="综合" Code="M_DB_TOOL_ALL" ShortCutKey="">
 	  <Menu Guid="29B97B32-6AC1-465A-B794-47CEA6A8CEC6" Name="SQL查询执行" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTSqlExecutor"  HelpPath="/Help/Html/DBTool/DB/SqlQueryExecute.html"/>
