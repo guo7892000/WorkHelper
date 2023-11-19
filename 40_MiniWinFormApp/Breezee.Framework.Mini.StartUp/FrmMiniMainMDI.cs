@@ -20,6 +20,7 @@ using Breezee.Core.Tool.Helper;
 using System.Threading.Tasks;
 using Breezee.Core.IOC;
 using Breezee.Core.Adapter.IBLL;
+using System.Net;
 
 namespace Breezee.Framework.Mini.StartUp
 {
@@ -29,7 +30,8 @@ namespace Breezee.Framework.Mini.StartUp
     /// 创建日期：2016-10-20
     /// 创建作者：黄国辉
     /// 修改历史：
-    ///    2023-08-30 BreezeeHui 增加自动升级
+    ///   2023-08-30 BreezeeHui 增加自动升级
+    ///   2023-11-19 BreezeeHui 修改升级下载逻辑，使用有优先级的多个下载路径。
     /// </summary>
     public partial class FrmMiniMainMDI : Form, IMainForm, IForm
     {
@@ -877,6 +879,24 @@ namespace Breezee.Framework.Mini.StartUp
         {
             UpgradeSystem(true);
         }
+
+        private bool CheckWebFileExists(string path)
+        {
+            try
+            {
+                WebRequest request = WebRequest.Create(path);
+                request.Timeout= 2000; //连接超时时间（毫秒）
+                WebResponse  response= request.GetResponse();
+                response.Close();
+                request.Abort();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// 升级系统方法：TO：升级中不过退出，原压缩包要不要删除，还有一个配置文件删除不了
         /// </summary>
@@ -888,6 +908,10 @@ namespace Breezee.Framework.Mini.StartUp
                 /**
                  * 读取服务器的版本(blob为默认点开的网页形式)：https://gitee.com/breezee2000/WorkHelper/blob/master/LatestVersion.json
                  * 读取服务器的版本(raw为原始数据形式)：https://gitee.com/breezee2000/WorkHelper/raw/master/LatestVersion.json
+                 * 使用有优先级的多个下载路径：
+                 * 1、发布路径：包含版本号的压缩包
+                 * 2、发布备份路径：包含版本号的压缩包
+                 * 3、开发生成的目录：是目录名，没有版本号。本地需要创建目录名，并下载该目录所有文件
                  */
                 string sServerVersionJson = FileDirHelper.ReadWebText("https://gitee.com/breezee2000/WorkHelper/raw/master/LatestVersion.json").Trim();
                 LatestVerion ver = _IADPJson.Deserialize<LatestVerion>(sServerVersionJson);
@@ -926,12 +950,62 @@ namespace Breezee.Framework.Mini.StartUp
                     //异步获取文件
                     DirectoryInfo sPrePath = new DirectoryInfo(GlobalContext.AppEntryAssemblyPath);
                     string sLocalDir = _WinFormConfig.Get(GlobalKey.Upgrade_TempPath, sPrePath.Parent.FullName);//默认为当前运行程序的父目录
-                    string sServerZipUrl = string.Format("https://gitee.com/breezee2000/WorkHelper/releases/download/{0}/WorkHelper{1}.rar", sServerVersion, sServerVersion);
+                    //取消原来的写死下载路径，改为从配置文件上获取，下载优化先级：downUrlPublish => downUrlPublishBak => downUrlRelease
+                    //string sServerZipUrl = string.Format("https://gitee.com/breezee2000/WorkHelper/releases/download/{0}/WorkHelper{1}.rar", sServerVersion, sServerVersion);
+                    string sServerZipUrl = ver.downUrlPublish.Replace("#version#", sServerVersion);
+                    bool isHaveZipNewVersion = CheckWebFileExists(sServerZipUrl);
+                    if (!isHaveZipNewVersion)
+                    {
+                        //不存在时使用备份目录
+                        sServerZipUrl = ver.downUrlPublishBak.Replace("#version#", sServerVersion);
+                        isHaveZipNewVersion = CheckWebFileExists(sServerZipUrl);
+                    }
+
                     bool isDeleteNewVerZipFile = _WinFormConfig.Get(GlobalKey.Upgrade_IsDeleteNewVerZipFile, "1").Equals("1") ? true : false;
-                    //异步获取压缩包文件
-                    await Task.Run(() => FileDirHelper.DownloadWebZipAndUnZipAsync(sServerZipUrl, sLocalDir, isDeleteNewVerZipFile));
-                    WinFormContext.Instance.IsUpgradeRunning = false;
-                    
+                    if (isHaveZipNewVersion)
+                    {
+                        //存在版本压缩包时
+                        //异步获取压缩包文件
+                        await Task.Run(() => FileDirHelper.DownloadWebZipAndUnZipAsync(sServerZipUrl, sLocalDir, isDeleteNewVerZipFile));
+                    }
+                    else
+                    {
+                        //不存在版本压缩包时：这种方式下载的文件比较多，且没经过压缩比较大，不推荐！！
+                        string sFullLocalPath = Path.Combine(sLocalDir, "WorkHelper"+ sServerVersion);
+                        if (!Directory.Exists(sFullLocalPath))
+                        {
+                            Directory.CreateDirectory(sFullLocalPath);
+                        }
+                        else
+                        {
+                            //try
+                            //{
+                            //    Directory.Delete(sFullLocalPath);
+                            //}
+                            //catch (Exception ex)
+                            //{
+                            //    System.Console.WriteLine(ex.Message); //复制文件出错，只在控制台输入错误信息
+                            //}
+                            //Directory.CreateDirectory(sFullLocalPath);
+                        }
+
+                        //读取要下载的文件清单
+                        string sPublishFiles = FileDirHelper.ReadWebText("https://gitee.com/breezee2000/WorkHelper/raw/master/publishFileList.json").Trim();
+                        string[] arrPublishFiles = _IADPJson.Deserialize<string[]>(sPublishFiles);
+                        Uri downRri;
+                        //不存在版本压缩包时，直接下载开发的Release目录
+                        //TODO：要等所有文件下载完，才到后面流程：还要创建子目录
+                        foreach (string file in arrPublishFiles) 
+                        {
+                            using (var web = new WebClient())
+                            {
+                                downRri  = new Uri(ver.downUrlRelease+"/"+ file);
+                                web.DownloadFileAsync(downRri, sFullLocalPath+"\\"+file);
+                            }
+                        }
+                    }
+
+                    WinFormContext.Instance.IsUpgradeRunning = false;                   
                     if("release".Equals(sPrePath.Name,StringComparison.OrdinalIgnoreCase) || "bin".Equals(sPrePath.Name, StringComparison.OrdinalIgnoreCase))
                     {
                         _WinFormConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "当前版本所在的目录，为升级完后删除旧版本使用！"); //开发环境，不记录原版本
