@@ -191,7 +191,7 @@ namespace Breezee.Core.Tool.Helper
                 var tmpZipName = sFullZipPath + ".tmp";
                 using (var web = new WebClient())
                 {
-                    await web.DownloadFileTaskAsync(sSoureUrl, tmpZipName);
+                    await web.DownloadFileTaskAsync(sSoureUrl, tmpZipName); //TODO:这里下载失败
                 }
 
                 //重命名文件
