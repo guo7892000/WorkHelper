@@ -1,7 +1,7 @@
 {
   "version": "1.2.36",
-  "date": "2023-11-17",
+  "date": "2023-11-22",
   "downUrlPublishGitee": "https://gitee.com/breezee2000/WorkHelper/releases/download/#version#/WorkHelper#version#.rar",
-  "downUrlPublishGithub": "https://gitee.com/breezee2000/WorkHelper/raw/master/ReleaseLatest/WorkHelper#version#.rar",
-  "downUrlPublishGitlab": "https://gitee.com/breezee2000/WorkHelper/tree/master/Release"
+  "downUrlPublishGithub": "https://github.com/guo7892000/WorkHelper/releases/download/#version#/WorkHelper#version#.rar",
+  "downUrlPublishGitlab": "https://gitlab.com/guo7892000/WorkHelper/uploads/1c41da296dca4d999cf8bc08fc06d00e/WorkHelper#version#.rar"
 }
