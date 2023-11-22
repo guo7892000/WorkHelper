@@ -3,6 +3,7 @@ using Breezee.Core.Tool.Helper;
 using MyPeachNetTest;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,9 +52,14 @@ namespace ConsoleTest
 
         private static async void downLoadTet()
         {
-            string sResult = FileDirHelper.ReadWebText("https://gitee.com/breezee2000/WorkHelper/blob/master/README.md");
+            //string sResult = AppUpgradeTool.ReadWebText("https://gitee.com/breezee2000/WorkHelper/blob/master/README.md");
 
-            await FileDirHelper.DownloadWebZipAndUnZipAsync(@"https://gitee.com/breezee2000/WorkHelper/releases/download/1.2.24/WorkHelper1.2.24.rar", "E:\\mypeach");
+            //await AppUpgradeTool.DownloadWebZipAndUnZipAsync(@"https://gitee.com/breezee2000/WorkHelper/releases/download/1.2.24/WorkHelper1.2.24.rar", "E:\\mypeach");
+            await AppUpgradeTool.DownloadWebZipAndUnZipAsync("https://gitee.com/breezee2000/WorkHelper/raw/dev/ReleaseLatest/WorkHelper1.2.36.rar", "E:\\mypeach");
+            //while(new FileInfo(@"E:\mypeach\WorkHelper1.2.36.rar.tmp").Length< 1024 * 1024 * 100)
+            //{
+            //    await AppUpgradeTool.DownloadWebZipAndUnZipAsync(@"https://gitee.com/breezee2000/WorkHelper/raw/master/ReleaseLatest/WorkHelper1.2.36.rar", "E:\\mypeach");
+            //}
 
         }
     }

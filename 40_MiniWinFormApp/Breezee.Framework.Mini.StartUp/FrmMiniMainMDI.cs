@@ -898,7 +898,7 @@ namespace Breezee.Framework.Mini.StartUp
         }
 
         /// <summary>
-        /// 升级系统方法：TO：升级中不过退出，原压缩包要不要删除，还有一个配置文件删除不了
+        /// 升级系统方法
         /// </summary>
         /// <param name="isHandUpdate"></param>
         private async void UpgradeSystem(bool isHandUpdate)
@@ -909,11 +909,11 @@ namespace Breezee.Framework.Mini.StartUp
                  * 读取服务器的版本(blob为默认点开的网页形式)：https://gitee.com/breezee2000/WorkHelper/blob/master/LatestVersion.json
                  * 读取服务器的版本(raw为原始数据形式)：https://gitee.com/breezee2000/WorkHelper/raw/master/LatestVersion.json
                  * 使用有优先级的多个下载路径：
-                 * 1、发布路径：包含版本号的压缩包
-                 * 2、发布备份路径：包含版本号的压缩包
-                 * 3、开发生成的目录：是目录名，没有版本号。本地需要创建目录名，并下载该目录所有文件
+                 * 1、发布路径-Gitee：包含版本号的压缩包
+                 * 2、发布路径-Github：包含版本号的压缩包
+                 * 3、发布路径-Gitlab：包含版本号的压缩包
                  */
-                string sServerVersionJson = FileDirHelper.ReadWebText("https://gitee.com/breezee2000/WorkHelper/raw/master/LatestVersion.json").Trim();
+                string sServerVersionJson = AppUpgradeTool.ReadWebText("https://gitee.com/breezee2000/WorkHelper/raw/master/LatestVersion.json").Trim();
                 LatestVerion ver = _IADPJson.Deserialize<LatestVerion>(sServerVersionJson);
                 string sServerVersion = ver.version;
                 string sNowVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(); //本地版本
@@ -950,14 +950,21 @@ namespace Breezee.Framework.Mini.StartUp
                     //异步获取文件
                     DirectoryInfo sPrePath = new DirectoryInfo(GlobalContext.AppEntryAssemblyPath);
                     string sLocalDir = _WinFormConfig.Get(GlobalKey.Upgrade_TempPath, sPrePath.Parent.FullName);//默认为当前运行程序的父目录
-                    //取消原来的写死下载路径，改为从配置文件上获取，下载优化先级：downUrlPublish => downUrlPublishBak => downUrlRelease
+                    //取消原来的写死下载路径，改为从配置文件上获取，下载优化先级：downUrlPublishGitee => downUrlPublishGithub => downUrlPublishGitlab
                     //string sServerZipUrl = string.Format("https://gitee.com/breezee2000/WorkHelper/releases/download/{0}/WorkHelper{1}.rar", sServerVersion, sServerVersion);
-                    string sServerZipUrl = ver.downUrlPublish.Replace("#version#", sServerVersion);
+                    string sServerZipUrl = ver.downUrlPublishGitee.Replace("#version#", sServerVersion);
                     bool isHaveZipNewVersion = CheckWebFileExists(sServerZipUrl);
                     if (!isHaveZipNewVersion)
                     {
                         //不存在时使用备份目录
-                        sServerZipUrl = ver.downUrlPublishBak.Replace("#version#", sServerVersion);
+                        sServerZipUrl = ver.downUrlPublishGithub.Replace("#version#", sServerVersion);
+                        isHaveZipNewVersion = CheckWebFileExists(sServerZipUrl);
+                    }
+
+                    if (!isHaveZipNewVersion)
+                    {
+                        //不存在时使用备份目录
+                        sServerZipUrl = ver.downUrlPublishGitlab.Replace("#version#", sServerVersion);
                         isHaveZipNewVersion = CheckWebFileExists(sServerZipUrl);
                     }
 
@@ -966,43 +973,35 @@ namespace Breezee.Framework.Mini.StartUp
                     {
                         //存在版本压缩包时
                         //异步获取压缩包文件
-                        await Task.Run(() => FileDirHelper.DownloadWebZipAndUnZipAsync(sServerZipUrl, sLocalDir, isDeleteNewVerZipFile));
+                        await Task.Run(() => AppUpgradeTool.DownloadWebZipAndUnZipAsync(sServerZipUrl, sLocalDir, isDeleteNewVerZipFile));
                     }
                     else
                     {
-                        //不存在版本压缩包时：这种方式下载的文件比较多，且没经过压缩比较大，不推荐！！
-                        string sFullLocalPath = Path.Combine(sLocalDir, "WorkHelper"+ sServerVersion);
-                        if (!Directory.Exists(sFullLocalPath))
-                        {
-                            Directory.CreateDirectory(sFullLocalPath);
-                        }
-                        else
-                        {
-                            //try
-                            //{
-                            //    Directory.Delete(sFullLocalPath);
-                            //}
-                            //catch (Exception ex)
-                            //{
-                            //    System.Console.WriteLine(ex.Message); //复制文件出错，只在控制台输入错误信息
-                            //}
-                            //Directory.CreateDirectory(sFullLocalPath);
-                        }
+                        MsgHelper.ShowInfo(string.Format("升级失败，最新版本{0}发布包未找到，请联系作者！", sServerVersion));
+                        return;
+                        #region 已取消
+                        ////不存在版本压缩包时：这种方式下载的文件比较多，且没经过压缩比较大，不推荐！！并且不知是不是也要登录才能下载
+                        //string sFullLocalPath = Path.Combine(sLocalDir, "WorkHelper"+ sServerVersion);
+                        //if (!Directory.Exists(sFullLocalPath))
+                        //{
+                        //    Directory.CreateDirectory(sFullLocalPath);
+                        //}
 
-                        //读取要下载的文件清单
-                        string sPublishFiles = FileDirHelper.ReadWebText("https://gitee.com/breezee2000/WorkHelper/raw/master/publishFileList.json").Trim();
-                        string[] arrPublishFiles = _IADPJson.Deserialize<string[]>(sPublishFiles);
-                        Uri downRri;
-                        //不存在版本压缩包时，直接下载开发的Release目录
-                        //TODO：要等所有文件下载完，才到后面流程：还要创建子目录
-                        foreach (string file in arrPublishFiles) 
-                        {
-                            using (var web = new WebClient())
-                            {
-                                downRri  = new Uri(ver.downUrlRelease+"/"+ file);
-                                web.DownloadFileAsync(downRri, sFullLocalPath+"\\"+file);
-                            }
-                        }
+                        ////读取要下载的文件清单
+                        //string sPublishFiles = AppUpgradeTool.ReadWebText("https://gitee.com/breezee2000/WorkHelper/raw/master/publishFileList.json").Trim();
+                        //string[] arrPublishFiles = _IADPJson.Deserialize<string[]>(sPublishFiles);
+                        //Uri downRri;
+                        ////不存在版本压缩包时，直接下载开发的Release目录
+                        ////TODO：要等所有文件下载完，才到后面流程：还要创建子目录
+                        //foreach (string file in arrPublishFiles) 
+                        //{
+                        //    using (var web = new WebClient())
+                        //    {
+                        //        downRri  = new Uri(ver.downUrlPublishGitlab+"/"+ file);
+                        //        web.DownloadFileAsync(downRri, sFullLocalPath+"\\"+file);
+                        //    }
+                        //} 
+                        #endregion
                     }
 
                     WinFormContext.Instance.IsUpgradeRunning = false;                   
