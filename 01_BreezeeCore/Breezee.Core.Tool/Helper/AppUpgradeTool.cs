@@ -95,7 +95,8 @@ namespace Breezee.Core.Tool.Helper
                 using (var web = new WebClient())
                 {
                     /* 只有访问网站提供的发布目录才正常，如访问工程其他文件夹（master或dev分支的），是需要登录的，那样就下载不了发布包了。
-                     * 所以为了解决这个问题，只能在多个代码托管服务器发布，从其中任一个下载即可
+                     * 所以为了解决这个问题，只能在多个代码托管服务器发布，从其中任一个下载即可。
+                     * 注：gitee上发布包占用的空间是有限的。如果超了，发布包发布不上去的，删除之前的一些发布包，再重新发布即可。
                      */
                     await web.DownloadFileTaskAsync(sSoureUrl, tmpZipName); 
                 }

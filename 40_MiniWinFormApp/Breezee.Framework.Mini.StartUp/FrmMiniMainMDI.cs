@@ -45,8 +45,15 @@ namespace Breezee.Framework.Mini.StartUp
         IDictionary<string, MenuEntity> _MenuDic;
         ShortCutList _ShortCutMenuList;
         bool IsReLoad = false;
+        //升级相关
         bool IsUpgradeColseOldApp = false; //是否升级关闭旧应用
         string sUpgradeNewAppFullPath = ""; //升级后的应用路径
+        private delegate void UpgradeSuccessReloadApp();
+        private UpgradeSuccessReloadApp UpgradeSuccessReloadAppDeleagte;
+        string _sUpgradeMsg = "升级成功！是否关闭所有窗体，登录新版本？";
+        string _sExitMsg = "确定要关闭所有窗体退出吗？";
+        string _sDestopLastMsg = string.Empty;
+
         string MenuXmlFilePath = Path.Combine(GlobalContext.AppEntryAssemblyPath, MiniStaticString.ConfigDataPath, MiniStaticString.MenuFileName);
         public ToolStripStatusLabel StatusBarMessagePanel => throw new NotImplementedException();
         private string _FrameworkHelpPath = "/Help/Html/Mini/WorkHelper.html";
@@ -99,9 +106,10 @@ namespace Breezee.Framework.Mini.StartUp
             tsmiLock.Click += tsmiLock_Click;
             tsmiChangePassword.Click += tsmiChangePassword_Click;
             //自动检测是否有新版本
+            UpgradeSuccessReloadAppDeleagte += UpgradeReloadApp;
             if ("1".Equals(_WinFormConfig.Get(GlobalKey.Upgrade_IsAutoCheckVersion, "1")))
             {
-                Task.Run(() => UpgradeSystem(false)); 
+                Task.Run(() => UpgradeSystem(false));
             }
         }
         #endregion
@@ -334,6 +342,46 @@ namespace Breezee.Framework.Mini.StartUp
             {
                 childForm.Close();
             }
+        }
+        #endregion
+
+        #region 显示全局提示代理方法
+        private void ShowGlobalMsg_Click(object sender, ShowGlobalMsgEventArgs e)
+        {
+            if (txbGlobalMsg.InvokeRequired)
+            {
+                ShowGlobalMsg showGlobalMsg = new ShowGlobalMsg(SetGlobalMsg);
+                txbGlobalMsg.Invoke(showGlobalMsg, new object[] { e.Msg }); //跨线程调用时，要使用委托赋值
+            }
+            else
+            {
+                SetGlobalMsg(e.Msg);
+            }
+        }
+
+        private void SetGlobalMsg(string msg)
+        {
+            txbGlobalMsg.Text = msg;
+        }
+        #endregion
+
+        #region 升级后重启应用代理方法
+        private void UpgradeReloadApp()
+        {
+            if (WinFormContext.Instance.MdiForm.InvokeRequired)
+            {
+                UpgradeSuccessReloadApp reloadApp = new UpgradeSuccessReloadApp(ReloadApp);
+                WinFormContext.Instance.MdiForm.Invoke(reloadApp); //跨线程调用时，要使用委托执行关闭应用
+            }
+            else
+            {
+                ReloadApp();
+            }
+        }
+
+        private void ReloadApp()
+        {
+            WinFormContext.Instance.MdiForm.Close();
         } 
         #endregion
 
@@ -366,11 +414,12 @@ namespace Breezee.Framework.Mini.StartUp
         #region 窗体关闭中事件
         private void FrmMainMDI_FormClosing(object sender, FormClosingEventArgs e)
         {
-            string sTipInfo = IsUpgradeColseOldApp ? "升级成功！是否关闭所有窗体，登录新版本？" : "确定要关闭所有窗体退出吗？";
+            string sTipInfo = IsUpgradeColseOldApp ? _sUpgradeMsg : _sExitMsg;
             if (MsgHelper.ShowOkCancel(sTipInfo) == DialogResult.Cancel)
             {
                 e.Cancel = true; 
                 IsReLoad = false;
+                IsUpgradeColseOldApp = false; //取消了升级后重新登录，这里把其设置为false。
                 return;
             }
             //重新登录或升级登录新版本
@@ -559,6 +608,8 @@ namespace Breezee.Framework.Mini.StartUp
                 pnlDestop.Show();
                 pnlDestop.Dock = DockStyle.Fill;
                 txbMenuPath.Text = "桌面";
+                //显示桌面最后的信息，如升级成功信息！
+                ShowGlobalMsg_Click(this, new ShowGlobalMsgEventArgs(_sDestopLastMsg));
             }
             else
             {
@@ -761,26 +812,6 @@ namespace Breezee.Framework.Mini.StartUp
             }
         }
 
-        #region 显示全局提示信息事件
-        private void ShowGlobalMsg_Click(object sender, ShowGlobalMsgEventArgs e)
-        {
-            if (txbGlobalMsg.InvokeRequired)
-            {
-                ShowGlobalMsg showGlobalMsg = new ShowGlobalMsg(SetGlobalMsg);
-                showGlobalMsg(e.Msg);
-            }
-            else
-            {
-                SetGlobalMsg(e.Msg);
-            }
-        }
-
-        private void SetGlobalMsg(string msg)
-        {
-            txbGlobalMsg.Text = msg;
-        }
-        #endregion
-
         #region 帮助相关
         /// <summary>
         /// 关于菜单事件
@@ -875,9 +906,9 @@ namespace Breezee.Framework.Mini.StartUp
             closeAllToolStripMenuItem.PerformClick();
         }
 
-        private void tsbCheckUpdate_Click(object sender, EventArgs e)
+        private async void tsbCheckUpdate_Click(object sender, EventArgs e)
         {
-            UpgradeSystem(true);
+            await Task.Run(() => UpgradeSystem(true));
         }
 
         private bool CheckWebFileExists(string path)
@@ -944,64 +975,89 @@ namespace Breezee.Framework.Mini.StartUp
                     {
                         return;
                     }
-                    
+
+                    _sDestopLastMsg = sServerVersion + "版本压缩包正在后台下载中，请稍等...";
+                    ShowGlobalMsg_Click(this, new ShowGlobalMsgEventArgs(_sDestopLastMsg));
                     //版本升级
                     WinFormContext.Instance.IsUpgradeRunning = true;
                     //异步获取文件
                     DirectoryInfo sPrePath = new DirectoryInfo(GlobalContext.AppEntryAssemblyPath);
                     string sLocalDir = _WinFormConfig.Get(GlobalKey.Upgrade_TempPath, sPrePath.Parent.FullName);//默认为当前运行程序的父目录
-                    //取消原来的写死下载路径，改为从配置文件上获取，下载优化先级：downUrlPublishGitee => downUrlPublishGithub => downUrlPublishGitlab
-                    //string sServerZipUrl = string.Format("https://gitee.com/breezee2000/WorkHelper/releases/download/{0}/WorkHelper{1}.rar", sServerVersion, sServerVersion);
-                    string sServerZipUrl = ver.downUrlPublishGitee.Replace("#version#", sServerVersion);
-                    bool isHaveZipNewVersion = CheckWebFileExists(sServerZipUrl);
-                    if (!isHaveZipNewVersion)
-                    {
-                        //不存在时使用备份目录
-                        sServerZipUrl = ver.downUrlPublishGithub.Replace("#version#", sServerVersion);
-                        isHaveZipNewVersion = CheckWebFileExists(sServerZipUrl);
-                    }
-
-                    if (!isHaveZipNewVersion)
-                    {
-                        //不存在时使用备份目录
-                        sServerZipUrl = ver.downUrlPublishGitlab.Replace("#version#", sServerVersion);
-                        isHaveZipNewVersion = CheckWebFileExists(sServerZipUrl);
-                    }
-
                     bool isDeleteNewVerZipFile = _WinFormConfig.Get(GlobalKey.Upgrade_IsDeleteNewVerZipFile, "1").Equals("1") ? true : false;
-                    if (isHaveZipNewVersion)
+
+                    //取消原来的写死下载路径，改为从配置文件上获取，下载优化先级：downUrlPublishLatest => downUrlPublishGitee => downUrlPublishGithub
+                    //string sServerZipUrl = string.Format("https://gitee.com/breezee2000/WorkHelper/releases/download/{0}/WorkHelper{1}.rar", sServerVersion, sServerVersion);
+                    string sServerZipUrl = ver.downUrlPublishLatest.Replace("#version#", sServerVersion);
+                    bool isHaveZipNewVersion = CheckWebFileExists(sServerZipUrl);
+                    int iMaxDownCount = 20;
+                    int iDownCount = 1; //总共下载十次
+
+                    while(iDownCount <= iMaxDownCount)
                     {
-                        //存在版本压缩包时
-                        //异步获取压缩包文件
-                        await Task.Run(() => AppUpgradeTool.DownloadWebZipAndUnZipAsync(sServerZipUrl, sLocalDir, isDeleteNewVerZipFile));
+                        try
+                        {
+                            if (isHaveZipNewVersion)
+                            {
+                                try
+                                {
+                                    //通用最新版本存在版本压缩包时，异步获取压缩包文件
+                                    await Task.Run(() => AppUpgradeTool.DownloadWebZipAndUnZipAsync(sServerZipUrl, sLocalDir, isDeleteNewVerZipFile));
+                                    break;
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
+                            }
+                            //通用最新版本不存在版本压缩包时，取Gitee上的压缩包
+                            sServerZipUrl = ver.downUrlPublishGitee.Replace("#version#", sServerVersion);
+                            isHaveZipNewVersion = CheckWebFileExists(sServerZipUrl);
+                            if (isHaveZipNewVersion)
+                            {
+                                try
+                                {
+                                    //Gitee存在版本压缩包时，异步获取压缩包文件
+                                    await Task.Run(() => AppUpgradeTool.DownloadWebZipAndUnZipAsync(sServerZipUrl, sLocalDir, isDeleteNewVerZipFile));
+                                    break;
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
+                            }
+
+                            //Gitee不存在时使用Github
+                            sServerZipUrl = ver.downUrlPublishGithub.Replace("#version#", sServerVersion);
+                            isHaveZipNewVersion = CheckWebFileExists(sServerZipUrl);
+                            if (isHaveZipNewVersion)
+                            {
+                                try
+                                {
+                                    //Github存在版本压缩包时，异步获取压缩包文件
+                                    await Task.Run(() => AppUpgradeTool.DownloadWebZipAndUnZipAsync(sServerZipUrl, sLocalDir, isDeleteNewVerZipFile));
+                                    break;
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                        finally
+                        {
+                            iDownCount++;
+                        }
                     }
-                    else
+
+                    //试了最大次数还不成功，那么提示信息
+                    if (iDownCount >= iMaxDownCount)
                     {
                         MsgHelper.ShowInfo(string.Format("升级失败，最新版本{0}发布包未找到，请联系作者！", sServerVersion));
                         return;
-                        #region 已取消
-                        ////不存在版本压缩包时：这种方式下载的文件比较多，且没经过压缩比较大，不推荐！！并且不知是不是也要登录才能下载
-                        //string sFullLocalPath = Path.Combine(sLocalDir, "WorkHelper"+ sServerVersion);
-                        //if (!Directory.Exists(sFullLocalPath))
-                        //{
-                        //    Directory.CreateDirectory(sFullLocalPath);
-                        //}
-
-                        ////读取要下载的文件清单
-                        //string sPublishFiles = AppUpgradeTool.ReadWebText("https://gitee.com/breezee2000/WorkHelper/raw/master/publishFileList.json").Trim();
-                        //string[] arrPublishFiles = _IADPJson.Deserialize<string[]>(sPublishFiles);
-                        //Uri downRri;
-                        ////不存在版本压缩包时，直接下载开发的Release目录
-                        ////TODO：要等所有文件下载完，才到后面流程：还要创建子目录
-                        //foreach (string file in arrPublishFiles) 
-                        //{
-                        //    using (var web = new WebClient())
-                        //    {
-                        //        downRri  = new Uri(ver.downUrlPublishGitlab+"/"+ file);
-                        //        web.DownloadFileAsync(downRri, sFullLocalPath+"\\"+file);
-                        //    }
-                        //} 
-                        #endregion
                     }
 
                     WinFormContext.Instance.IsUpgradeRunning = false;                   
@@ -1023,9 +1079,14 @@ namespace Breezee.Framework.Mini.StartUp
                     //}
                     //设置新应用路径
                     sUpgradeNewAppFullPath = Path.Combine(sLocalDir, "WorkHelper" + sServerVersion, "Breezee.Framework.Mini.StartUp.exe");
-                    IsUpgradeColseOldApp = true;
                     _WinFormConfig.Save();//保存配置
-                    this.Close();//关闭当前窗体
+                    IsUpgradeColseOldApp = true;
+                    _sDestopLastMsg = "WorkHelper" + sServerVersion + "版本已成功下载并解压！";
+                    ShowGlobalMsg_Click(this, new ShowGlobalMsgEventArgs(_sDestopLastMsg));
+                    if (UpgradeSuccessReloadAppDeleagte != null)
+                    {
+                        UpgradeSuccessReloadAppDeleagte(); //升级成功，重启应用
+                    }
                 }
                 else
                 {
@@ -1041,9 +1102,14 @@ namespace Breezee.Framework.Mini.StartUp
                 {
                     MsgHelper.ShowInfo("升级出错：" + ex.Message);
                 }
+                else
+                {
+                    Console.WriteLine(ex.Message);
+                }
                 WinFormContext.Instance.IsUpgradeRunning = false;
             }
+
         }
-        
+
     }
 }

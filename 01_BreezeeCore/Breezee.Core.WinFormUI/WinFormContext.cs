@@ -54,6 +54,8 @@ namespace Breezee.Core.WinFormUI
         public bool IsUpgradeRunning = false;
         public AppConfigPair AppConfigPair { get; set; }
         public WinFormConfig WinFormConfig { get; set; }
+
+        public Form MdiForm => (Form)mMainForm; //主窗体
         /// <summary>
         /// 临时目录路径
         /// </summary>
