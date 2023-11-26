@@ -53,7 +53,9 @@
     <Compile Include="Config\Json\MiniJsonConfig.cs" />
     <Compile Include="Config\Json\FtpConfigEntity.cs" />
     <Compile Include="Config\Json\BJsonConfig.cs" />
-    <Compile Include="Entity\FileEncoding.cs" />
+    <Compile Include="Config\KeyValueGroup\MoreKeyValueEntity.cs" />
+    <Compile Include="Config\KeyValueGroup\MoreKeyValueGroupConfig.cs" />
+    <Compile Include="Entity\BaseFileEncoding.cs" />
     <Compile Include="Enum\FtpProtocolType.cs" />
     <Compile Include="Global\GlobalFile.cs" />
     <Compile Include="Global\GlobalDir.cs" />

@@ -801,6 +801,7 @@ namespace Breezee.Framework.Mini.StartUp
         }
         #endregion
 
+        #region 用户环境菜单事件
         private void TsmiUserEnvrSet_Click(object sender, EventArgs e)
         {
             FrmUserEnvironmentSet f = new FrmUserEnvironmentSet();
@@ -810,7 +811,8 @@ namespace Breezee.Framework.Mini.StartUp
             {
                 this.SetFormBackGroupStyle(_WinFormConfig.Get(GlobalKey.MainSkinType, BaseForm.ChildFormStyleType), _WinFormConfig.Get(GlobalKey.MainSkinValue, BaseForm.ChildFormStyleValue));//设置主窗体样式
             }
-        }
+        } 
+        #endregion
 
         #region 帮助相关
         /// <summary>
