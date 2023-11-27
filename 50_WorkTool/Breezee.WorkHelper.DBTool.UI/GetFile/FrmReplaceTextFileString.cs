@@ -1887,7 +1887,24 @@ namespace Breezee.WorkHelper.DBTool.UI
                 ShowErr("FTP用户密码不能为空！");
                 return null;
             }
-            
+
+            if (cbbConnCharset.SelectedValue == null || string.IsNullOrEmpty(cbbConnCharset.SelectedValue.ToString()))
+            {
+                ShowErr("请选择连接字符集！");
+                return null;
+            }
+
+            if (cbbCharSetEncode.SelectedValue == null || string.IsNullOrEmpty(cbbCharSetEncode.SelectedValue.ToString()))
+            {
+                ShowErr("请选择文件字符集！");
+                return null;
+            }
+
+            ftpServer.ConnEncodingString = cbbConnCharset.SelectedValue.ToString();
+            ftpServer.ConnEncoding = BaseFileEncoding.GetEncodingByKey(ftpServer.ConnEncodingString);
+            ftpServer.FileEncodingString = cbbCharSetEncode.SelectedValue.ToString();
+            ftpServer.FileEncoding = BaseFileEncoding.GetEncodingByKey(ftpServer.FileEncodingString);
+
             string sProtocol = cbbFtpProtocol.SelectedValue.ToString();
             FtpProtocolType protocolType = FtpProtocolType.FTP;
             if ("1".Equals(sProtocol))
@@ -2127,7 +2144,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_CopyExcludeDirName, txbCopyExcludeDir.Text.Trim(), "【文本文件字符替换】复制到本地时排除包含的目录名");
 
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_GenerateType, cbbLocalCopyType.SelectedValue.ToString(), "【文本文件字符替换】从已下载目录复制文件的方式");
-            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_TemplateType, cbbTemplateType.SelectedValue.ToString(), "【文本文件字符替换】模板类型");
+            string sTempType = cbbTemplateType.SelectedValue == null ? "" : cbbTemplateType.SelectedValue.ToString();
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_TemplateType, sTempType, "【文本文件字符替换】模板类型");
 
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_IPAddr, txbIPAddr.Text.Trim(), "【文本文件字符替换】Ftp服务器的IP");
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_PortNum, txbPort.Text.Trim(), "【文本文件字符替换】Ftp服务器的端口号");
@@ -2135,7 +2153,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_Pwd, txbPassword.Text.Trim(), "【文本文件字符替换】Ftp服务器的密码");
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_InitDir, txbFtpInitDir.Text.Trim(), "【文本文件字符替换】Ftp服务器的初始目录");
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_Protocol, cbbFtpProtocol.SelectedValue.ToString(), "【文本文件字符替换】Ftp服务器的协议");
-            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_CharsetEncodingConnection, cbbConnCharset.SelectedValue.ToString(), "【文本文件字符替换】FTP连接的字符集类型"); 
+            sTempType = cbbConnCharset.SelectedValue == null ? "" : cbbConnCharset.SelectedValue.ToString();
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_CharsetEncodingConnection, sTempType, "【文本文件字符替换】FTP连接的字符集类型"); 
 
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_DownloadLocalDir, txbFtpDownloadLocalPath.Text.Trim(), "【文本文件字符替换】保存的本地目录");
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_FTP_ReadDir, txbFtpReadPath.Text.Trim(), "【文本文件字符替换】Ftp读取目录");
@@ -2521,7 +2540,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void btnSaveReplaceTemplate_Click(object sender, EventArgs e)
         {
             string sTempName = txbReplaceTemplateName.Text.Trim();
-            string sKeyIDValue = cbbTemplateType.SelectedValue.ToString();
+            
             if (string.IsNullOrEmpty(sTempName))
             {
                 ShowInfo("模板名称不能为空！");
@@ -2541,11 +2560,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             string sValId = replaceStringData.MoreXmlConfig.MoreKeyValue.ValIdPropName;
             DataTable dtKeyConfig = replaceStringData.MoreXmlConfig.KeyData;
             DataTable dtValConfig = replaceStringData.MoreXmlConfig.ValData;
-            DataRow[] drArrKey = dtKeyConfig.Select(sKeyId + "='"+ sKeyIDValue + "'");
-            DataRow[] drArrVal = dtValConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
-            string sKeyIdNew = string.IsNullOrEmpty(cbbTemplateType.Text.Trim()) ? Guid.NewGuid().ToString() : sKeyIDValue;
-            if (drArrKey.Length == 0)
+
+            string sKeyIdNew = string.Empty;
+            bool isAdd = string.IsNullOrEmpty(cbbTemplateType.Text.Trim()) ? true : false;
+            if(isAdd)
             {
+                //新增
+                sKeyIdNew = Guid.NewGuid().ToString();
                 DataRow dr = dtKeyConfig.NewRow();
                 dr[sKeyId] = sKeyIdNew;
                 dr[ReplaceStringXmlConfig.KeyString.Name] = sTempName;
@@ -2553,16 +2574,30 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             else
             {
-                drArrKey[0][ReplaceStringXmlConfig.KeyString.Name] = sTempName;//修改名称
-            }
-
-            if (drArrVal.Length > 0)
-            {
-                foreach (DataRow dr in drArrVal)
+                //修改
+                string sKeyIDValue = cbbTemplateType.SelectedValue.ToString();
+                sKeyIdNew = sKeyIDValue;
+                DataRow[] drArrKey = dtKeyConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+                DataRow[] drArrVal = dtValConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+                if (drArrKey.Length == 0)
                 {
-                    dtValConfig.Rows.Remove(dr);
+                    DataRow dr = dtKeyConfig.NewRow();
+                    dr[sKeyId] = sKeyIdNew;
+                    dr[ReplaceStringXmlConfig.KeyString.Name] = sTempName;
+                    dtKeyConfig.Rows.Add(dr);
                 }
-                dtValConfig.AcceptChanges();
+                else
+                {
+                    drArrKey[0][ReplaceStringXmlConfig.KeyString.Name] = sTempName;//修改名称
+                }
+                if (drArrVal.Length > 0)
+                {
+                    foreach (DataRow dr in drArrVal)
+                    {
+                        dtValConfig.Rows.Remove(dr);
+                    }
+                    dtValConfig.AcceptChanges();
+                }
             }
 
             foreach (DataRow dr in dtReplace.Rows)

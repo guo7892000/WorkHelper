@@ -81,7 +81,7 @@ namespace Breezee.Core.Interface
                 _dicString[UTF8Bom] = "带有BOM的utf-8";
                 _dicString[UTF16] = "unicode";
                 _dicString[UTF32] = "utf-32";
-                _dicString[UTF32] = "gb2312";
+                _dicString[GB2312] = "gb2312";
                 _dicString[GB18030] = "GB18030";
                 _dicString[BIG5] = "big5";
                 _dicString[ISO88591] = "ISO-8859-1";

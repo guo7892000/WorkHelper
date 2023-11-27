@@ -1287,7 +1287,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void btnSaveReplaceTemplate_Click(object sender, EventArgs e)
         {
             string sTempName = txbReplaceTemplateName.Text.Trim();
-            string sKeyIDValue = cbbTemplateType.SelectedValue.ToString();
+
             if (string.IsNullOrEmpty(sTempName))
             {
                 ShowInfo("模板名称不能为空！");
@@ -1307,11 +1307,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             string sValId = replaceStringData.MoreXmlConfig.MoreKeyValue.ValIdPropName;
             DataTable dtKeyConfig = replaceStringData.MoreXmlConfig.KeyData;
             DataTable dtValConfig = replaceStringData.MoreXmlConfig.ValData;
-            DataRow[] drArrKey = dtKeyConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
-            DataRow[] drArrVal = dtValConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
-            string sKeyIdNew = string.IsNullOrEmpty(cbbTemplateType.Text.Trim()) ? Guid.NewGuid().ToString() : sKeyIDValue;
-            if (drArrKey.Length == 0)
+
+            string sKeyIdNew = string.Empty;
+            bool isAdd = string.IsNullOrEmpty(cbbTemplateType.Text.Trim()) ? true : false;
+            if (isAdd)
             {
+                //新增
+                sKeyIdNew = Guid.NewGuid().ToString();
                 DataRow dr = dtKeyConfig.NewRow();
                 dr[sKeyId] = sKeyIdNew;
                 dr[ReplaceStringXmlConfig.KeyString.Name] = sTempName;
@@ -1319,16 +1321,30 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             else
             {
-                drArrKey[0][ReplaceStringXmlConfig.KeyString.Name] = sTempName;//修改名称
-            }
-
-            if (drArrVal.Length > 0)
-            {
-                foreach (DataRow dr in drArrVal)
+                //修改
+                string sKeyIDValue = cbbTemplateType.SelectedValue.ToString();
+                sKeyIdNew = sKeyIDValue;
+                DataRow[] drArrKey = dtKeyConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+                DataRow[] drArrVal = dtValConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+                if (drArrKey.Length == 0)
                 {
-                    dtValConfig.Rows.Remove(dr);
+                    DataRow dr = dtKeyConfig.NewRow();
+                    dr[sKeyId] = sKeyIdNew;
+                    dr[ReplaceStringXmlConfig.KeyString.Name] = sTempName;
+                    dtKeyConfig.Rows.Add(dr);
                 }
-                dtValConfig.AcceptChanges();
+                else
+                {
+                    drArrKey[0][ReplaceStringXmlConfig.KeyString.Name] = sTempName;//修改名称
+                }
+                if (drArrVal.Length > 0)
+                {
+                    foreach (DataRow dr in drArrVal)
+                    {
+                        dtValConfig.Rows.Remove(dr);
+                    }
+                    dtValConfig.AcceptChanges();
+                }
             }
 
             foreach (DataRow dr in dtReplace.Rows)
