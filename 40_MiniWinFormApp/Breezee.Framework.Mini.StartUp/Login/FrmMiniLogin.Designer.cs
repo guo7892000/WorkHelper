@@ -75,7 +75,7 @@
             // 
             this.lblLoginTipInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblLoginTipInfo.AutoSize = true;
-            this.lblLoginTipInfo.Location = new System.Drawing.Point(257, 144);
+            this.lblLoginTipInfo.Location = new System.Drawing.Point(257, 143);
             this.lblLoginTipInfo.Name = "lblLoginTipInfo";
             this.lblLoginTipInfo.Size = new System.Drawing.Size(89, 12);
             this.lblLoginTipInfo.TabIndex = 107;
@@ -84,6 +84,7 @@
             // cbbUserName
             // 
             this.cbbUserName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbbUserName.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbbUserName.FormattingEnabled = true;
             this.cbbUserName.IntegralHeight = false;
             this.cbbUserName.Location = new System.Drawing.Point(266, 10);
@@ -137,7 +138,7 @@
             this.btnLogin.ErrorImage = null;
             this.btnLogin.Location = new System.Drawing.Point(258, 109);
             this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(164, 29);
+            this.btnLogin.Size = new System.Drawing.Size(156, 29);
             this.btnLogin.TabIndex = 3;
             this.btnLogin.TabStop = false;
             this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);

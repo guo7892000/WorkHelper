@@ -40,16 +40,21 @@ namespace Breezee.Core.Interface
         public static Encoding GetEncodingByKey(string sEncodingKey)
         {
             Encoding encoding;
-            if (FileEncodingString.UTF8Bom.Equals(sEncodingKey, StringComparison.OrdinalIgnoreCase))
+            //支持中间加-或不加-
+            if (FileEncodingString.UTF8Bom.Equals(sEncodingKey, StringComparison.OrdinalIgnoreCase)
+                || FileEncodingString.UTF8Bom.Replace("-","").Equals(sEncodingKey, StringComparison.OrdinalIgnoreCase))
             {
                 encoding = new UTF8Encoding(true);
             }
-            else if (FileEncodingString.UTF8.Equals(sEncodingKey, StringComparison.OrdinalIgnoreCase))
+            else if (FileEncodingString.UTF8.Equals(sEncodingKey, StringComparison.OrdinalIgnoreCase)
+                || FileEncodingString.UTF8.Replace("-", "").Equals(sEncodingKey, StringComparison.OrdinalIgnoreCase))
             {
                 encoding = new UTF8Encoding(false);
             }
             else
             {
+                //NetCore 6以后，System.Text命名空间中不再包含 “gb2312”字符编码。这时需要手动引入“System.Text.Encoding.CodePages”扩展包，并且给Encoding注册字符编码
+                //Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);//注册简体中文的支持：注NET 4不需要，NetCore 6才需要
                 encoding = Encoding.GetEncoding(sEncodingKey);
             }
 

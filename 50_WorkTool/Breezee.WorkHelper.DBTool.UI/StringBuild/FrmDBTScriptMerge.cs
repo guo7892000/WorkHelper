@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using System.Xml;
 using Breezee.Core.Interface;
 using System.Collections;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -35,7 +36,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void FrmDBTScriptMerge_Load(object sender, EventArgs e)
         {
             ckbAutoOpen.Checked = true;
-            lblMergeInfo.Text= "请保证配置的字符集类型（charset）正确，请考虑将所有文件另存为UTF-8，那样合并后就不会出现乱码！";
+            lblMergeInfo.Text= "请保证配置的字符集类型（charset）正确，请考虑将所有文件另存为UTF-8格式，并配置为UTF-8格式，那样合并后就不会出现乱码！";
+
+            DataTable dtEncode = BaseFileEncoding.GetEncodingTable(false);
+            cbbCharSetEncode.BindTypeValueDropDownList(dtEncode, false, true);
+            toolTip1.SetToolTip(cbbCharSetEncode, "如文件出现乱码，需要修改文件字符集！可在class节点的charset属性上设置（优先使用），\r\n当没在该属性上设置时，全部使用本下拉框所选择的字符集值！");
             //加载用户偏好值
             txbSelectPath.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.MergeScriptPath, Path.Combine(DBTGlobalValue.AppPath, DBTGlobalValue.StringBuild.Xml_MergeScript)).Value;
         }
@@ -108,16 +113,16 @@ namespace Breezee.WorkHelper.DBTool.UI
                 string sCharSet = cla.GetAttributeValue(ScriptMergeString.ClassProp.CharSet);
                 string sFileExt = cla.GetAttributeValue(ScriptMergeString.ClassProp.FileExt);
                 string sFinalPath = Path.Combine(sDirTarget, sOutFileName);
-                Encoding useEnc = Encoding.UTF8;
+                Encoding useEnc = Encoding.UTF8; //默认为UTF-8
                 if (!string.IsNullOrEmpty(sCharSet))
                 {
-                    if ("utf16".Equals(sCharSet, StringComparison.OrdinalIgnoreCase))
+                    useEnc = BaseFileEncoding.GetEncodingByKey(sCharSet);
+                }
+                else
+                {
+                    if (cbbCharSetEncode.SelectedValue != null && !string.IsNullOrEmpty(cbbCharSetEncode.SelectedValue.ToString()))
                     {
-                        useEnc = Encoding.Unicode;
-                    }
-                    else if ("utf32".Equals(sCharSet, StringComparison.OrdinalIgnoreCase))
-                    {
-                        useEnc = Encoding.UTF32;
+                        useEnc = BaseFileEncoding.GetEncodingByKey(cbbCharSetEncode.SelectedValue.ToString());
                     }
                 }
                 //得到目录文件清单

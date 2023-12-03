@@ -126,7 +126,7 @@ namespace Breezee.Core.WinFormUI
 
                 if (row >= _row && wid >= _maxWidth - 6)
                 {
-                    result += "。。。";
+                    result += "...";
                     IsMore = true;
                     return result;
                 }

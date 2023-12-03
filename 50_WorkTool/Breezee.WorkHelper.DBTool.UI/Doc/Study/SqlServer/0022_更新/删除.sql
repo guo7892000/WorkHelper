@@ -1,0 +1,15 @@
+/*删除重复值的一条*/
+SELECT * FROM PA_LP_DEAL 
+WHERE DEAL_ID IN (
+select MIN(DEAL_ID) 
+from   PA_LP_DEAL 
+WHERE BOOK_D_ID IN( select BOOK_D_ID from   PA_LP_DEAL 
+WHERE DEAL_TYPE='1' GROUP BY BOOK_D_ID 
+HAVING  COUNT (BOOK_D_ID) > 1
+  ) 
+GROUP BY BOOK_D_ID
+)
+
+/*不写日志删除数据*/
+TRUNCATE TABLE 表名;
+

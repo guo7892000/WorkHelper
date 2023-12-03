@@ -105,5 +105,8 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string TextFileReplace2_ResultCopyFileEndfix = "TextFileReplace2_ResultCopyFileEndfix"; //替换结果复制时文件后缀
         public static readonly string TextFileReplace2_ResultCopyFileIsUseEndfix = "TextFileReplace2_ResultCopyFileIsUseEndfix"; //替换结果复制时是否指定文件后缀 
         #endregion
+
+        //SQL总结
+        public static readonly string SQLStudy_FileCharsetEncoding = "SQLStudy_FileCharsetEncoding";
     }
 }

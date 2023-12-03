@@ -50,6 +50,9 @@
 	  <Menu Guid="C2BD872D-4019-4585-9230-552DED9F08DD" Name="自动参数化SQL验证" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTAutoSqlVerify"  HelpPath="/Help/Html/DBTool/DB/AutoParamVerify.html"/>
       <Menu Guid="FAC4990F-07F5-41C7-AE6A-86915CEFD282" Name="合并脚本" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTScriptMerge"  HelpPath="/Help/Html/DBTool/DB/MergeScript.html"/>
     </Class>
+	<Class Guid="1BB63F97-1161-4745-B5CB-B1B7C5498FA3" Name="学习" Code="M_DB_TOOL_STADY" ShortCutKey="">
+		<Menu Guid="0B8AA269-D819-40E7-B351-CCF9AF4664C2" Name="SQL总结" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTSqlStady"  HelpPath="/Help/Html/DBTool/DB/SqlQueryExecute.html"/>
+	</Class>
   </Model>
   
   <Model Guid="F0BB1849488147B0970762238A77E620" Name="字符处理" Code="" DLLName="" FormName="" ShortCutKey="C">

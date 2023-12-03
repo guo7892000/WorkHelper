@@ -4,7 +4,7 @@
 <configuration dbType="SqlServer" sourcePath="D:\javaAuto\03_SqlServer\001_DBObjects" targetPath="D:\javaAuto\11">
   <!--class：分类。每种分类生成一个文件。type中t(表)、f(函数)、v(视图)、p(存储过程)、d(数据)。finalName属性就是输出文件名-->
   <!--sourcePathAbs：读取的绝对路径（优先）。sourcePathRel：读取的相对目录。-->
-  <!--fileExt：文件扩展名（支持逗号分隔多个）。charset：字符集类型（单选，包括utf8,utf16,utf32）-->
+  <!--fileExt：文件扩展名（支持逗号分隔多个）。charset：字符集类型（单选，包括utf8,utf16,utf32,gb2312,utf8-Bom）-->
   <!--item：文件名，不需要相对路径-->
   <!--创建表-->
   <class objectType="t" finalName="01_table_all.sql" sourcePathRel="\01_Table" sourcePathAbs="" fileExt="" charset="">

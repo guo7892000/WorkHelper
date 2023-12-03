@@ -246,9 +246,9 @@
             // 
             this.helpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiUserManual,
-            this.aboutToolStripMenuItem,
             this.tsmiOpenLatestDownURL,
-            this.tsbCheckUpdate});
+            this.tsbCheckUpdate,
+            this.aboutToolStripMenuItem});
             this.helpMenu.Name = "helpMenu";
             this.helpMenu.Size = new System.Drawing.Size(61, 22);
             this.helpMenu.Text = "帮助(&H)";
@@ -256,28 +256,28 @@
             // tsmiUserManual
             // 
             this.tsmiUserManual.Name = "tsmiUserManual";
-            this.tsmiUserManual.Size = new System.Drawing.Size(148, 22);
-            this.tsmiUserManual.Text = "用户手册(&U)";
+            this.tsmiUserManual.Size = new System.Drawing.Size(180, 22);
+            this.tsmiUserManual.Text = "用户手册";
             this.tsmiUserManual.Click += new System.EventHandler(this.tsmiUserManual_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.aboutToolStripMenuItem.Text = "关于(&A) ";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Text = "关于我们";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // tsmiOpenLatestDownURL
             // 
             this.tsmiOpenLatestDownURL.Name = "tsmiOpenLatestDownURL";
-            this.tsmiOpenLatestDownURL.Size = new System.Drawing.Size(148, 22);
+            this.tsmiOpenLatestDownURL.Size = new System.Drawing.Size(180, 22);
             this.tsmiOpenLatestDownURL.Text = "复制下载地址";
             this.tsmiOpenLatestDownURL.Click += new System.EventHandler(this.tsmiOpenLatestDownURL_Click);
             // 
             // tsbCheckUpdate
             // 
             this.tsbCheckUpdate.Name = "tsbCheckUpdate";
-            this.tsbCheckUpdate.Size = new System.Drawing.Size(148, 22);
+            this.tsbCheckUpdate.Size = new System.Drawing.Size(180, 22);
             this.tsbCheckUpdate.Text = "检查更新";
             this.tsbCheckUpdate.ToolTipText = "检测是否有新版本";
             this.tsbCheckUpdate.Click += new System.EventHandler(this.tsbCheckUpdate_Click);
