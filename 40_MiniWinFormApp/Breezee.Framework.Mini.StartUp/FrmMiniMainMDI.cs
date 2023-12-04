@@ -405,6 +405,8 @@ namespace Breezee.Framework.Mini.StartUp
         /// <param name="e"></param>
         private void tsmiLock_Click(object sender, EventArgs e)
         {
+            if (MsgBox.Show("确定要锁定系统？", "温馨提示", MyButtons.OKCancel) == DialogResult.Cancel)
+                return;
             LockForm f = new LockForm();
             f.StartPosition = FormStartPosition.CenterScreen;
             f.ShowDialog();
@@ -448,11 +450,6 @@ namespace Breezee.Framework.Mini.StartUp
             {
                 return;
             }
-            
-            if (IsExpandTreeNode)
-            {
-                OpenTreeNodeMenu(dOpenMenu.Name);
-            }
 
             //判断窗体是否已经打开
             foreach (Form frm in MdiChildren)
@@ -478,6 +475,17 @@ namespace Breezee.Framework.Mini.StartUp
                     }
                     return;
                 }
+            }
+
+            if (this.GetChildCount() > WinFormContext.Instance.MaxOpenFormNum - 1)
+            {
+                MessageBox.Show(string.Format("您打开的窗口超过了最大配置数{0}，不能再打开更多窗体。你可以在【开始】->【环境设置】中修改！",WinFormContext.Instance.MaxOpenFormNum), "温馨提示");
+                return;
+            }
+
+            if (IsExpandTreeNode)
+            {
+                OpenTreeNodeMenu(dOpenMenu.Name);
             }
 
             //克隆一个新的菜单对象
@@ -668,7 +676,7 @@ namespace Breezee.Framework.Mini.StartUp
                 {
                     ExpandParentNode(tnFind);
                     MenuEntity findMenu = tnFind.Tag as MenuEntity;
-                    OpenMenu(findMenu, false);//打开菜单
+                    //OpenMenu(findMenu, false);//打开菜单，注：这里就不用再调用打开菜单了，只展开树即可，不然会多调用一次打开菜单方法。
                     break;
                 }
             }
@@ -1112,6 +1120,5 @@ namespace Breezee.Framework.Mini.StartUp
             }
 
         }
-
     }
 }

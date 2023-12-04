@@ -35,6 +35,13 @@ namespace Breezee.Core.Interface
         /// 目录名_网格样式
         /// </summary>
         public static string GridStyle = "DataGridStyle";
-        
+        /// <summary>
+        /// 目录名_Mini
+        /// </summary>
+        public static string Mini = "Mini";
+        /// <summary>
+        /// 目录名_DBTool
+        /// </summary>
+        public static string DBTool = "DBTool";
     }
 }

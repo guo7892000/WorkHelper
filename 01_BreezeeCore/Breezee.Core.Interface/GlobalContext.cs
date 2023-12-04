@@ -92,5 +92,13 @@ namespace Breezee.Core.Interface
 
         #endregion
 
+        /// <summary>
+        /// 运行目录下的配置文件目录
+        /// </summary>
+        /// <returns></returns>
+        public static string RunPathMiniData()
+        {
+            return Path.Combine(AppBaseDirectory, GlobalDir.Config, GlobalDir.Mini, GlobalDir.Data);
+        }
     }
 }

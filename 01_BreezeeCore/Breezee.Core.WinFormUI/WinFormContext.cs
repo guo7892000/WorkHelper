@@ -80,6 +80,14 @@ namespace Breezee.Core.WinFormUI
         /// </summary>
         public string CurrentClientVersion = "";
         /// <summary>
+        /// Net版本信息
+        /// </summary>
+        public string NetVersion = "4";
+        /// <summary>
+        /// 打开的最大窗体数
+        /// </summary>
+        public int MaxOpenFormNum = 15;
+        /// <summary>
         /// HTML格式的功能帮助清单
         /// </summary>
         public IList<EntMenuHelp> MenuHelpList = new List<EntMenuHelp>();
@@ -298,7 +306,7 @@ namespace Breezee.Core.WinFormUI
         /// <returns>调用成功返回FALSE,否则返回TRUE</returns>
         public bool GoToForm(SYS_MENU menu)
         {
-            if (mMainForm.GetChildCount() > 15)
+            if (mMainForm.GetChildCount() > MaxOpenFormNum)
             {
                 MessageBox.Show("您打开的窗口过多，请关闭其中一些再试。");
                 return false;
@@ -731,8 +739,13 @@ namespace Breezee.Core.WinFormUI
             Instance.AppConfigPair = appConfig;
             WinFormConfig winConfig = new WinFormConfig(GlobalContext.PathConfig(), GlobalFile.FormStyle, XmlConfigSaveType.Attribute);
             Instance.WinFormConfig = winConfig;
+            Instance.MaxOpenFormNum = int.Parse(winConfig.Get(GlobalKey.MaxOpenFormNum, "15"));
             appConfig.Save();
             winConfig.Save();
+
+            //读取Net Version
+            AppConfigPair versionConfig = new AppConfigPair(GlobalContext.RunPathMiniData(), GlobalFile.NetVersion, XmlConfigSaveType.Attribute);
+            Instance.NetVersion = versionConfig.Get("netVersion", "4");
         }
 
     }

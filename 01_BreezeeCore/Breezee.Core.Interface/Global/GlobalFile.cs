@@ -33,6 +33,10 @@ namespace Breezee.Core.Interface
         /// </summary>
         public static readonly string DbConfigDBTool = "DbConfigDBTool.xml";
         /// <summary>
+        /// Net版本配置
+        /// </summary>
+        public static readonly string NetVersion = "NetVersion.xml";
+        /// <summary>
         /// 文件名_数据库_Mini
         /// </summary>
         public static readonly string DbFileMini = "SQLite_Mini.db";

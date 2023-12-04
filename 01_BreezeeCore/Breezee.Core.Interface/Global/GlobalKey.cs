@@ -31,5 +31,6 @@ namespace Breezee.Core.Interface
         public static string Upgrade_PreVersionPath = "Upgrade_PreVersionPath"; //上个版本的路径
         //行号
         public static string RowNum = "ROWNO";
+        public static string MaxOpenFormNum = "MaxOpenFormNum";
     }
 }

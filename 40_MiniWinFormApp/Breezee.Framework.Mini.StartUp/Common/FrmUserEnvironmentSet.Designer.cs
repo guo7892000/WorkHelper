@@ -52,6 +52,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpBase = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.ckbUpgradeDelNewZipFile = new System.Windows.Forms.CheckBox();
             this.ckbDelOldNeedConfirm = new System.Windows.Forms.CheckBox();
             this.ckbUpgradeSuccessDelOldVerion = new System.Windows.Forms.CheckBox();
             this.btnSelectUpgradeTmpPath = new System.Windows.Forms.Button();
@@ -66,6 +67,8 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.cbbMsgType = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.nudMaxOpenForm = new System.Windows.Forms.NumericUpDown();
             this.tpUserSkin = new System.Windows.Forms.TabPage();
             this.tpOther = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -75,7 +78,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.fbdSelectPath = new System.Windows.Forms.FolderBrowserDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.ckbUpgradeDelNewZipFile = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -87,6 +89,7 @@
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMaxOpenForm)).BeginInit();
             this.tpUserSkin.SuspendLayout();
             this.tpOther.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -331,6 +334,16 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "升级配置";
             // 
+            // ckbUpgradeDelNewZipFile
+            // 
+            this.ckbUpgradeDelNewZipFile.AutoSize = true;
+            this.ckbUpgradeDelNewZipFile.Location = new System.Drawing.Point(411, 44);
+            this.ckbUpgradeDelNewZipFile.Name = "ckbUpgradeDelNewZipFile";
+            this.ckbUpgradeDelNewZipFile.Size = new System.Drawing.Size(144, 16);
+            this.ckbUpgradeDelNewZipFile.TabIndex = 6;
+            this.ckbUpgradeDelNewZipFile.Text = "升级成功删除新压缩包";
+            this.ckbUpgradeDelNewZipFile.UseVisualStyleBackColor = true;
+            // 
             // ckbDelOldNeedConfirm
             // 
             this.ckbDelOldNeedConfirm.AutoSize = true;
@@ -444,8 +457,8 @@
             this.tableLayoutPanel1.ColumnCount = 9;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
@@ -453,6 +466,8 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 378F));
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbbMsgType, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label7, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.nudMaxOpenForm, 3, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -479,6 +494,38 @@
             this.cbbMsgType.Name = "cbbMsgType";
             this.cbbMsgType.Size = new System.Drawing.Size(144, 20);
             this.cbbMsgType.TabIndex = 1;
+            // 
+            // label7
+            // 
+            this.label7.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(248, 7);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(101, 12);
+            this.label7.TabIndex = 2;
+            this.label7.Text = "打开窗体最大数：";
+            // 
+            // nudMaxOpenForm
+            // 
+            this.nudMaxOpenForm.Location = new System.Drawing.Point(355, 3);
+            this.nudMaxOpenForm.Maximum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.nudMaxOpenForm.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.nudMaxOpenForm.Name = "nudMaxOpenForm";
+            this.nudMaxOpenForm.Size = new System.Drawing.Size(47, 21);
+            this.nudMaxOpenForm.TabIndex = 3;
+            this.nudMaxOpenForm.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             // 
             // tpUserSkin
             // 
@@ -553,16 +600,6 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "网格样式临时文件：";
             // 
-            // ckbUpgradeDelNewZipFile
-            // 
-            this.ckbUpgradeDelNewZipFile.AutoSize = true;
-            this.ckbUpgradeDelNewZipFile.Location = new System.Drawing.Point(411, 44);
-            this.ckbUpgradeDelNewZipFile.Name = "ckbUpgradeDelNewZipFile";
-            this.ckbUpgradeDelNewZipFile.Size = new System.Drawing.Size(144, 16);
-            this.ckbUpgradeDelNewZipFile.TabIndex = 6;
-            this.ckbUpgradeDelNewZipFile.Text = "升级成功删除新压缩包";
-            this.ckbUpgradeDelNewZipFile.UseVisualStyleBackColor = true;
-            // 
             // FrmUserEnvironmentSet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -591,6 +628,7 @@
             this.groupBox3.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMaxOpenForm)).EndInit();
             this.tpUserSkin.ResumeLayout(false);
             this.tpOther.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
@@ -648,5 +686,7 @@
         private System.Windows.Forms.CheckBox ckbUpgradeSuccessDelOldVerion;
         private System.Windows.Forms.CheckBox ckbDelOldNeedConfirm;
         private System.Windows.Forms.CheckBox ckbUpgradeDelNewZipFile;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.NumericUpDown nudMaxOpenForm;
     }
 }

@@ -49,9 +49,9 @@
             this.arrangeIconsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiUserManual = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiOpenLatestDownURL = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbCheckUpdate = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.tstbMenuSearch = new System.Windows.Forms.ToolStripTextBox();
@@ -129,14 +129,14 @@
             // 
             this.tsbRestartMenu.Image = ((System.Drawing.Image)(resources.GetObject("tsbRestartMenu.Image")));
             this.tsbRestartMenu.Name = "tsbRestartMenu";
-            this.tsbRestartMenu.Size = new System.Drawing.Size(140, 22);
+            this.tsbRestartMenu.Size = new System.Drawing.Size(184, 26);
             this.tsbRestartMenu.Text = "重新登录(&R)";
             // 
             // tsmiUserEnvrSet
             // 
             this.tsmiUserEnvrSet.Image = ((System.Drawing.Image)(resources.GetObject("tsmiUserEnvrSet.Image")));
             this.tsmiUserEnvrSet.Name = "tsmiUserEnvrSet";
-            this.tsmiUserEnvrSet.Size = new System.Drawing.Size(140, 22);
+            this.tsmiUserEnvrSet.Size = new System.Drawing.Size(184, 26);
             this.tsmiUserEnvrSet.Text = "环境设置";
             this.tsmiUserEnvrSet.Click += new System.EventHandler(this.TsmiUserEnvrSet_Click);
             // 
@@ -144,25 +144,25 @@
             // 
             this.tsmiLock.Image = ((System.Drawing.Image)(resources.GetObject("tsmiLock.Image")));
             this.tsmiLock.Name = "tsmiLock";
-            this.tsmiLock.Size = new System.Drawing.Size(140, 22);
+            this.tsmiLock.Size = new System.Drawing.Size(184, 26);
             this.tsmiLock.Text = "锁定系统";
             // 
             // tsmiChangePassword
             // 
             this.tsmiChangePassword.Image = ((System.Drawing.Image)(resources.GetObject("tsmiChangePassword.Image")));
             this.tsmiChangePassword.Name = "tsmiChangePassword";
-            this.tsmiChangePassword.Size = new System.Drawing.Size(140, 22);
+            this.tsmiChangePassword.Size = new System.Drawing.Size(184, 26);
             this.tsmiChangePassword.Text = "修改密码";
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(137, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(181, 6);
             // 
             // tsbExitMenu
             // 
             this.tsbExitMenu.Name = "tsbExitMenu";
-            this.tsbExitMenu.Size = new System.Drawing.Size(140, 22);
+            this.tsbExitMenu.Size = new System.Drawing.Size(184, 26);
             this.tsbExitMenu.Text = "退出(&X)";
             this.tsbExitMenu.Click += new System.EventHandler(this.tsbExitMenu_Click);
             // 
@@ -256,31 +256,31 @@
             // tsmiUserManual
             // 
             this.tsmiUserManual.Name = "tsmiUserManual";
-            this.tsmiUserManual.Size = new System.Drawing.Size(180, 22);
+            this.tsmiUserManual.Size = new System.Drawing.Size(148, 22);
             this.tsmiUserManual.Text = "用户手册";
             this.tsmiUserManual.Click += new System.EventHandler(this.tsmiUserManual_Click);
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.aboutToolStripMenuItem.Text = "关于我们";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // tsmiOpenLatestDownURL
             // 
             this.tsmiOpenLatestDownURL.Name = "tsmiOpenLatestDownURL";
-            this.tsmiOpenLatestDownURL.Size = new System.Drawing.Size(180, 22);
+            this.tsmiOpenLatestDownURL.Size = new System.Drawing.Size(148, 22);
             this.tsmiOpenLatestDownURL.Text = "复制下载地址";
             this.tsmiOpenLatestDownURL.Click += new System.EventHandler(this.tsmiOpenLatestDownURL_Click);
             // 
             // tsbCheckUpdate
             // 
             this.tsbCheckUpdate.Name = "tsbCheckUpdate";
-            this.tsbCheckUpdate.Size = new System.Drawing.Size(180, 22);
+            this.tsbCheckUpdate.Size = new System.Drawing.Size(148, 22);
             this.tsbCheckUpdate.Text = "检查更新";
             this.tsbCheckUpdate.ToolTipText = "检测是否有新版本";
             this.tsbCheckUpdate.Click += new System.EventHandler(this.tsbCheckUpdate_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.aboutToolStripMenuItem.Text = "关于我们";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // toolStrip
             // 
