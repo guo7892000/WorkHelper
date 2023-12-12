@@ -560,6 +560,9 @@
     <Content Include="Doc\Study\Oracle\0100_触发器\触发器.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Doc\Study\Oracle\9000_实例\生成单号.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Doc\Study\Oracle\9000_实例\获取含字母的流水号.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -596,6 +599,9 @@
     <Content Include="Doc\Study\PostgreSQL\0100_触发器\触发器.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Doc\Study\PostgreSQL\9000_实例\加密解密.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Doc\Study\SQLite\0022_更新\更新.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -624,6 +630,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Doc\Study\SQLite\0060_视图\视图.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Doc\Study\SQLite\0100_触发器\触发器.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Doc\Study\SqlServer\0022_更新\删除.sql">
@@ -1038,7 +1047,6 @@
     <Folder Include="Doc\Study\PostgreSQL\0050_索引\" />
     <Folder Include="Doc\Study\PostgreSQL\0070_Job\" />
     <Folder Include="Doc\Study\PostgreSQL\0080_其他对象\" />
-    <Folder Include="Doc\Study\PostgreSQL\9000_实例\" />
     <Folder Include="Doc\Study\SqlServer\0050_索引\" />
     <Folder Include="Doc\Study\SqlServer\0080_其他对象\" />
   </ItemGroup>

@@ -713,6 +713,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 DataRow dr = dtColsNew.NewRow();
                 string sDataType = drSource[DBColumnEntity.SqlString.DataType].ToString();
                 string sDataLength = drSource[DBColumnEntity.SqlString.DataLength].ToString();
+                //string sDataPrecision = drSource[DBColumnEntity.SqlString.DataPrecision].ToString();
                 string sDataScale = drSource[DBColumnEntity.SqlString.DataScale].ToString();
                 dr[ColCommon.ExcelCol.ChangeType] = "新增";
                 dr[ColCommon.ExcelCol.TableCode] = drSource[DBColumnEntity.SqlString.TableName].ToString();
@@ -769,7 +770,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             bsCos.DataSource = dtColsNew;
             //dgvColList.DataSource= dtColsNew;
-            dgvColList.BindAutoColumn(bsCos);
+            dgvColList.BindAutoColumn(bsCos,true);
             dgvColList.ShowRowNum();
         }
         #endregion
@@ -846,8 +847,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             bool sNew = bool.Parse(dgvColList.CurrentCell.Value.ToString()) ? false : true;
             foreach (DataGridViewCell item in dgvColList.SelectedCells)
             {
-                item.Value = sNew;
+                //为了防止选了其他列，这里只针对选择列赋值
+                if(item.ColumnIndex == dgvColList.Columns[_sGridColumnSelect].Index)
+                {
+                    item.Value = sNew;
+                }
             }
+
             dgvColList.CurrentCell.Value = sNew;
 
             //解决当开始是全部选中，双击后全部取消选 中，但因为焦点没有离开选择列，显示还是选中状态的问题

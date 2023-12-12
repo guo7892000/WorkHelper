@@ -785,8 +785,8 @@ namespace Breezee.AutoSQLExecutor.SqlServer
                     A.NAME AS TABLE_NAME,
                     C.VALUE AS TABLE_COMMENT
             FROM    SYS.OBJECTS A
-                    JOIN SYS.SCHEMAS B ON A.SCHEMA_ID = B.SCHEMA_ID
-                    JOIN SYS.EXTENDED_PROPERTIES C ON C.MAJOR_ID=A.OBJECT_ID AND C.MINOR_ID=0
+            JOIN SYS.SCHEMAS B ON A.SCHEMA_ID = B.SCHEMA_ID
+            LEFT JOIN SYS.EXTENDED_PROPERTIES C ON C.MAJOR_ID=A.OBJECT_ID AND C.MINOR_ID=0
             WHERE   A.TYPE = 'U'
                     AND A.NAME = '#TABLE_NAME#'
                     AND B.NAME= '#TABLE_SCHEMA#'
@@ -915,7 +915,17 @@ namespace Breezee.AutoSQLExecutor.SqlServer
                 dr[DBColumnEntity.SqlString.Default] = drS["COLUMN_DEFAULT"];
                 dr[DBColumnEntity.SqlString.NotNull] = drS["IS_NULLABLE"].ToString().Equals("0") ? "1" : "";
                 dr[DBColumnEntity.SqlString.DataType] = drS["DATA_TYPE"];
-                dr[DBColumnEntity.SqlString.DataLength] = drS["CHARACTER_MAXIMUM_LENGTH"];
+                string sPrecision = drS["NUMERIC_PRECISION"].ToString();
+                if (!string.IsNullOrEmpty(sPrecision))
+                {
+                    dr[DBColumnEntity.SqlString.DataLength] = sPrecision;
+                    dr[DBColumnEntity.SqlString.DataPrecision] = sPrecision;
+                }
+                else
+                {
+                    dr[DBColumnEntity.SqlString.DataLength] = drS["CHARACTER_MAXIMUM_LENGTH"];
+                    dr[DBColumnEntity.SqlString.DataPrecision] = drS["NUMERIC_PRECISION"];
+                }
                 dr[DBColumnEntity.SqlString.KeyType] = drS["COLUMN_KEY"];
                 DBSchemaCommon.SetComment(dr, drS["COLUMN_COMMENT"].ToString(), false);
                 if (CharLengthTypes.Where(s => s.Equals(drS["DATA_TYPE"].ToString(), StringComparison.InvariantCultureIgnoreCase)).Count() > 0)

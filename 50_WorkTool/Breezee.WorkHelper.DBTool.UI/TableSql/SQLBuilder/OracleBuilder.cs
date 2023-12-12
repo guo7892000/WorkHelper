@@ -403,6 +403,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 case DataBaseType.Oracle:
                     break;
                 case DataBaseType.MySql:
+                    //类型
+                    sDbType = sDbType.ToLower().Replace("decimal", "number");
                     //默认值
                     sDefaultValue = sDefaultValue.ToLower().Replace("now()", "sysdate");
                     break;
