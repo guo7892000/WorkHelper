@@ -108,5 +108,8 @@ namespace Breezee.WorkHelper.DBTool.Entity
 
         //SQL总结
         public static readonly string SQLStudy_FileCharsetEncoding = "SQLStudy_FileCharsetEncoding";
+        //生成表SQL
+        public static readonly string GenerateTableSQL_IsExcludeColumn = "GenerateTableSQL_IsExcludeColumn";//是否排除文件名
+        public static readonly string GenerateTableSQL_ExcludeColumnList = "GenerateTableSQL_ExcludeColumnList";//是否排除文件列表
     }
 }

@@ -124,7 +124,6 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             //数据类型(类型+长度+小数点)
             string sDataType_Full = (_isAllConvert && !String.IsNullOrEmpty(drCol.allInOne.MySql_FullDataType)) ? drCol.allInOne.MySql_FullDataType : GetFullTypeString(drCol, strColDataType, strColLen, strColDecimalDigits);
-
             //列加上前后缀
             strColCode = "`" + strColCode + "`";
             if (tableDealType == TableChangeType.Create)

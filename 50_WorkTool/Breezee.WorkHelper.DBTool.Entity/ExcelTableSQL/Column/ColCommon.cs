@@ -1,4 +1,5 @@
-﻿using Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL;
+﻿using Breezee.Core.Interface;
+using Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -78,8 +79,8 @@ namespace Breezee.WorkHelper.DBTool.Entity
             {
                 sDataType_Full = AddRightBand(sDataType);
             }
-
-            return sDataType_Full;
+            //针对有些不需要长度的字符处理
+            return sDataType_Full.TableColTypeNotNeedLenDeal();
         }
 
         public static DataTable GetTable()

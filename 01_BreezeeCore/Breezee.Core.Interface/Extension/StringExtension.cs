@@ -381,5 +381,16 @@ namespace Breezee.Core.Interface
             return isUpper? sUnderLine.ToUpper() : sUnderLine.ToLower();
         }
 
+        /// <summary>
+        /// 表列中的类型不需要长度的处理
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string TableColTypeNotNeedLenDeal(this string str)
+        {
+            return str.Replace("datetime(7)", "datetime").Replace("date(7)", "date").Replace("decimal(22,0)", "int").Replace("decimal(22)", "int");
+        }
+
+        
     }
 }

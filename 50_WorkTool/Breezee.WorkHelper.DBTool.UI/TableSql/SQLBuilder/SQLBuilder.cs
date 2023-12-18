@@ -224,7 +224,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                 #endregion
             }
             #endregion
-            return sDataType_Full;
+
+            //针对有些不需要长度的字符处理
+            return sDataType_Full.TableColTypeNotNeedLenDeal(); 
         }
         #endregion
     }
