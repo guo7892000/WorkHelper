@@ -111,5 +111,6 @@ namespace Breezee.WorkHelper.DBTool.Entity
         //生成表SQL
         public static readonly string GenerateTableSQL_IsExcludeColumn = "GenerateTableSQL_IsExcludeColumn";//是否排除文件名
         public static readonly string GenerateTableSQL_ExcludeColumnList = "GenerateTableSQL_ExcludeColumnList";//是否排除文件列表
+        public static readonly string GenerateTableSQL_IsCacheAllColumn = "GenerateTableSQL_IsCacheAllColumn";//是否缓存所有列
     }
 }

@@ -75,6 +75,8 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.ckbExcludeColumn = new System.Windows.Forms.CheckBox();
             this.txbExcludeColumn = new System.Windows.Forms.TextBox();
+            this.ckbCaceAllTableColumn = new System.Windows.Forms.CheckBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
             this.tabControl1.SuspendLayout();
             this.tpImport.SuspendLayout();
@@ -584,7 +586,8 @@
             // 
             // tableLayoutPanel2
             // 
-            this.tableLayoutPanel2.ColumnCount = 7;
+            this.tableLayoutPanel2.ColumnCount = 8;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -594,9 +597,10 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 634F));
             this.tableLayoutPanel2.Controls.Add(this.lblTableName, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.cbbTableName, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.ckbExcludeColumn, 4, 0);
+            this.tableLayoutPanel2.Controls.Add(this.txbExcludeColumn, 5, 0);
+            this.tableLayoutPanel2.Controls.Add(this.ckbCaceAllTableColumn, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.ckbGetTableList, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this.ckbExcludeColumn, 3, 0);
-            this.tableLayoutPanel2.Controls.Add(this.txbExcludeColumn, 4, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -612,7 +616,7 @@
             this.ckbExcludeColumn.AutoSize = true;
             this.ckbExcludeColumn.Checked = true;
             this.ckbExcludeColumn.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbExcludeColumn.Location = new System.Drawing.Point(338, 5);
+            this.ckbExcludeColumn.Location = new System.Drawing.Point(428, 5);
             this.ckbExcludeColumn.Name = "ckbExcludeColumn";
             this.ckbExcludeColumn.Size = new System.Drawing.Size(60, 16);
             this.ckbExcludeColumn.TabIndex = 21;
@@ -622,10 +626,21 @@
             // 
             // txbExcludeColumn
             // 
-            this.txbExcludeColumn.Location = new System.Drawing.Point(404, 3);
+            this.txbExcludeColumn.Location = new System.Drawing.Point(494, 3);
             this.txbExcludeColumn.Name = "txbExcludeColumn";
             this.txbExcludeColumn.Size = new System.Drawing.Size(319, 21);
             this.txbExcludeColumn.TabIndex = 22;
+            // 
+            // ckbCaceAllTableColumn
+            // 
+            this.ckbCaceAllTableColumn.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbCaceAllTableColumn.AutoSize = true;
+            this.ckbCaceAllTableColumn.Location = new System.Drawing.Point(338, 5);
+            this.ckbCaceAllTableColumn.Name = "ckbCaceAllTableColumn";
+            this.ckbCaceAllTableColumn.Size = new System.Drawing.Size(84, 16);
+            this.ckbCaceAllTableColumn.TabIndex = 23;
+            this.ckbCaceAllTableColumn.Text = "缓存所有列";
+            this.ckbCaceAllTableColumn.UseVisualStyleBackColor = true;
             // 
             // uC_DbConnection1
             // 
@@ -726,5 +741,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.CheckBox ckbExcludeColumn;
         private System.Windows.Forms.TextBox txbExcludeColumn;
+        private System.Windows.Forms.CheckBox ckbCaceAllTableColumn;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

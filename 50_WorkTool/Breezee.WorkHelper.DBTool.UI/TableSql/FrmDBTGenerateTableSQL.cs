@@ -43,6 +43,8 @@ namespace Breezee.WorkHelper.DBTool.UI
         //private StringBuilder sbRemark = new StringBuilder();
         private DataTable dtTable;
         private DataTable dtAllCol;
+        private DataTable dtAllTableAllCol; //全部表的全部列
+
         private string createType;
         private string _ImportInput = "1";
         private readonly string _sGridTableSelect = "选择";
@@ -97,10 +99,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             #endregion
             //加载用户喜好值
             ckbExcludeColumn.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsExcludeColumn, "1").Value) ? true : false;
+            ckbCaceAllTableColumn.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsCacheAllColumn, "1").Value) ? true : false;
             txbExcludeColumn.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_ExcludeColumnList, "").Value;
             //设置下拉框查找数据源
             cbbTableName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cbbTableName.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            toolTip1.SetToolTip(ckbCaceAllTableColumn, "当选中时，会一次性查出所有表的列；然后选择表变化时，会根据之前的结果集来过滤！");
         }
 
         private void cbbDBConnName_SelectedIndexChanged(object sender, EventArgs e)
@@ -317,11 +321,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 dtTableCopy.TableName = _strTableName;
                 SetTableTag(dtTableCopy);
-                SetColTag(sSchma, templateType);
+                SetColTag(sSchma, sTableName, templateType);
 
                 //保存用户喜好值
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_ExcludeColumnList, txbExcludeColumn.Text.Trim(), "【生成表SQL】排除指定列清单");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsExcludeColumn, ckbExcludeColumn.Checked ? "1" : "0", "【生成表SQL】是否排除指定列");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsCacheAllColumn, ckbCaceAllTableColumn.Checked ? "1" : "0", "【生成表SQL】是否排除指定列");
                 WinFormContext.UserLoveSettings.Save();
             }
             //设置不能增加行
@@ -329,6 +334,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             dgvTableList.AllowUserToAddRows = false;
             dgvColList.AutoGenerateColumns = true;
             dgvColList.AllowUserToAddRows = false;
+            tabControl1.SelectedTab = tpImport;
 
         }
         #endregion
@@ -660,7 +666,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (cbbInputType.SelectedValue == null) return;
             if (_ImportInput.Equals(cbbInputType.SelectedValue.ToString()))
             {
-                gbTable.Visible = false;              
+                gbTable.Visible = false;
+                uC_DbConnection1.Visible = false;
                 tsbImport.Text = "导入";
                 ckbAllConvert.Checked = true;
                 ckbAllConvert.Visible = true;
@@ -670,6 +677,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 //连接数据库
                 gbTable.Visible = true;
+                uC_DbConnection1.Visible = true;
                 tsbImport.Text = "连接";
                 ckbAllConvert.Checked = false;
                 ckbAllConvert.Visible = false;
@@ -700,10 +708,30 @@ namespace Breezee.WorkHelper.DBTool.UI
         }
 
         #region 设置Tag方法
-        private void SetColTag(string sSchema, ColumnTemplateType templateType)
+        private void SetColTag(string sSchema, string sTableName, ColumnTemplateType templateType)
         {
-            DataTable dtCols = _dataAccess.GetSqlSchemaTableColumns(cbbTableName.Text.Trim(), sSchema);
-
+            DataTable dtCols;
+            if (ckbCaceAllTableColumn.Checked)
+            {
+                if(dtAllTableAllCol == null || dtAllTableAllCol.Rows.Count == 0)
+                {
+                    dtAllTableAllCol = _dataAccess.GetSqlSchemaTableColumns(string.Empty, sSchema);
+                }
+                string sFilter = string.IsNullOrEmpty(sSchema) ? DBColumnEntity.SqlString.TableName + "='" + sTableName + "'" : DBColumnEntity.SqlString.TableName + "='" + sTableName + "' AND " + DBColumnEntity.SqlString.TableSchema + "='" + sSchema + "'";
+                DataRow[] drArrCols = dtAllTableAllCol.Select(sFilter);
+                if (drArrCols.Length > 0)
+                {
+                    dtCols = drArrCols.CopyToDataTable();
+                }
+                else
+                {
+                    throw new Exception("表的列清单不存在，请重新打开本功能重试！");
+                }
+            }
+            else
+            {
+                dtCols = _dataAccess.GetSqlSchemaTableColumns(sTableName, sSchema);
+            }
             DataTable dtColsNew = EntCol.GetTable(templateType);
             bool isExclude = ckbExcludeColumn.Checked;
             string[] arrExclude = txbExcludeColumn.Text.Trim().ToLower().Split(new char[] { ',','，',';','；' }, StringSplitOptions.RemoveEmptyEntries);
