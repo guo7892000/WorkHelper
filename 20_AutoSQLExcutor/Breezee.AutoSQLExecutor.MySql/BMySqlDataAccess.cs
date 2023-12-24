@@ -744,7 +744,7 @@ namespace Breezee.AutoSQLExecutor.MySql
             //TABLE_SCHEMA为数据库存名。TABLE_SCHEMA,TABLE_NAME,TABLE_COMMENT,`ENGINE`
             string sSql = @"SELECT TABLE_SCHEMA,TABLE_NAME,TABLE_COMMENT
                     FROM information_schema.`TABLES`
-                    WHERE 1=1 AND TABLE_TYPE = 'BASE TABLE'
+                    WHERE TABLE_TYPE = 'BASE TABLE'
                     AND TABLE_SCHEMA = '#TABLE_SCHEMA#'
                     AND TABLE_NAME = '#TABLE_NAME#'
             ";

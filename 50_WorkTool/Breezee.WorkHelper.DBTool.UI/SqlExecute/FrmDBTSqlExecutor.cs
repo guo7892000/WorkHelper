@@ -35,13 +35,21 @@ namespace Breezee.WorkHelper.DBTool.UI
             DataTable dtConn = _IDBConfigSet.QueryDbConfig(_dicQuery).SafeGetDictionaryTable();
             uC_DbConnection1.SetDbConnComboBoxSource(dtConn);
             uC_DbConnection1.IsDbNameNotNull = true;
+            uC_DbConnection1.ShowGlobalMsg += ShowGlobalMsg_Click;
             //uC_DbConnection1.DBType_SelectedIndexChanged += cbbDatabaseType_SelectedIndexChanged;//数据库类型下拉框变化事件
             #endregion
         }
 
-        private void tsbImport_Click(object sender, EventArgs e)
+        #region 显示全局提示信息事件
+        private void ShowGlobalMsg_Click(object sender, string msg)
         {
-            _dbServer = uC_DbConnection1.GetDbServerInfo();
+            ShowDestopTipMsg(msg);
+        }
+        #endregion
+
+        private async void tsbImport_Click(object sender, EventArgs e)
+        {
+            _dbServer = await uC_DbConnection1.GetDbServerInfo();
             if (_dbServer == null)
             {
                 return;
@@ -49,9 +57,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dataAccess = AutoSQLExecutors.Connect(_dbServer);
         }
 
-        private void tsbAutoSQL_Click(object sender, EventArgs e)
+        private async void tsbAutoSQL_Click(object sender, EventArgs e)
         {
-            _dbServer = uC_DbConnection1.GetDbServerInfo();
+            _dbServer = await uC_DbConnection1.GetDbServerInfo();
             if (_dbServer == null)
             {
                 ShowErr("请选择一个连接！");

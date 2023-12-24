@@ -12,13 +12,15 @@ using Breezee.AutoSQLExecutor.Core;
 using Breezee.Core.WinFormUI;
 using Breezee.AutoSQLExecutor.Common;
 using Breezee.WorkHelper.DBTool.UI.StringBuild;
+using System.Threading.Tasks;
+using Breezee.Core.WinFormUI.Common;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
     /// <summary>
     /// 数据库连接用户控件
     /// </summary>
-    public partial class UC_DbConnection : UserControl
+    public partial class UC_DbConnection : BaseUserControl
     {
         #region 变量
         public bool IsDbNameNotNull = true;//是否数据库名非空
@@ -27,9 +29,12 @@ namespace Breezee.WorkHelper.DBTool.UI
         public EventHandler<EventArgs> DBConnName_SelectedIndexChanged;
         private IDictionary<string, DataTable> _dicConnUserTalbeList = new Dictionary<string, DataTable>();
         
-        public DataTable UserTableList;
+        public DataTable UserTableList; //用户所有表清单
+        public DataTable UserAllTableColumnList; //用户所有表的所有列：只根据schema来过滤
         public IDataAccess _dataAccess;
+        public DbServerInfo LatestDbServerInfo;//最后一次连接的服务器信息
 
+        public bool IsConnChange { get; private set; }
         public string DbConnName
         {
             get { return cbbDbConnName.Text.Trim(); }
@@ -176,8 +181,14 @@ namespace Breezee.WorkHelper.DBTool.UI
         }
         #endregion
 
-        #region 判断验证是否通过
-        public DbServerInfo GetDbServerInfo()
+        #region 获取数据服务器信息
+        /// <summary>
+        /// 获取数据服务器信息
+        /// </summary>
+        /// <param name="isQueryTableColumnRealTime">是否实时查询数据库表列信息：默认否</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<DbServerInfo> GetDbServerInfo(bool isQueryTableColumnRealTime = false)
         {
             var DbServer = new DbServerInfo()
             {
@@ -273,13 +284,42 @@ namespace Breezee.WorkHelper.DBTool.UI
                     return null;
                 }
             }
+
+            //最后的服务器：为空或与当前获取的服务器不一样，就重新连接
+            if (LatestDbServerInfo == null || !DbServerInfo.IsSameServer(DbServer, LatestDbServerInfo))
+            {
+                LatestDbServerInfo = DbServer;
+                ShowGlobalMsg(this, "正在异步获取数据库的表列信息，请稍等...");
+                await QueryTableColumns(isQueryTableColumnRealTime, DbServer);
+                ShowGlobalMsg(this, "异步获取数据库的表列信息完成！");
+                IsConnChange = true;
+            }
+            else
+            {
+                IsConnChange = false;
+            }
+            //返回
+            return DbServer;
+        }
+
+        /// <summary>
+        /// 查询表列信息
+        /// </summary>
+        /// <param name="isQueryTableColumnRealTime">是否实时查询数据库表列信息</param>
+        /// <param name="DbServer"></param>
+        /// <returns></returns>
+        private async Task QueryTableColumns(bool isQueryTableColumnRealTime, DbServerInfo DbServer)
+        {
             //得到数据库访问对象
             _dataAccess = AutoSQLExecutors.Connect(DbServer);
             //所有用户表：GetSqlSchemaTables 和 GetSqlSchemaTables
             //UserTableList = _dataAccess.GetSchemaTables();
             UserTableList = _dataAccess.GetSqlSchemaTables();
-            //返回
-            return DbServer;
+            //所有用户表的所有列
+            if (!isQueryTableColumnRealTime)
+            {
+                UserAllTableColumnList = _dataAccess.GetSqlSchemaTableColumns(string.Empty, DbServer.SchemaName);
+            }
         }
         #endregion
 

@@ -39,11 +39,13 @@
             this.txbSplitList = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.txbSplitListSplitChar = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cbbExample = new System.Windows.Forms.ComboBox();
             this.btnReset = new System.Windows.Forms.Button();
             this.ckbOneRowOneColumn = new System.Windows.Forms.CheckBox();
             this.ckbIgnoreEmptyData = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cbbExample = new System.Windows.Forms.ComboBox();
+            this.ckbEveryDataTrim = new System.Windows.Forms.CheckBox();
+            this.ckbNewLine = new System.Windows.Forms.CheckBox();
             this.lblInfo = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.rtbSplitList = new System.Windows.Forms.RichTextBox();
@@ -60,8 +62,7 @@
             this.btnConvert = new System.Windows.Forms.Button();
             this.btnSplit = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.ckbEveryDataTrim = new System.Windows.Forms.CheckBox();
-            this.ckbNewLine = new System.Windows.Forms.CheckBox();
+            this.ckbOnlySplitBySpace = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -154,6 +155,7 @@
             this.tableLayoutPanel1.Controls.Add(this.cbbExample, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.ckbEveryDataTrim, 6, 0);
             this.tableLayoutPanel1.Controls.Add(this.ckbNewLine, 7, 0);
+            this.tableLayoutPanel1.Controls.Add(this.ckbOnlySplitBySpace, 2, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(2, 16);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -198,11 +200,45 @@
             // 
             // txbSplitListSplitChar
             // 
-            this.txbSplitListSplitChar.Location = new System.Drawing.Point(329, 2);
+            this.txbSplitListSplitChar.Location = new System.Drawing.Point(338, 2);
             this.txbSplitListSplitChar.Margin = new System.Windows.Forms.Padding(2);
             this.txbSplitListSplitChar.Name = "txbSplitListSplitChar";
             this.txbSplitListSplitChar.Size = new System.Drawing.Size(50, 21);
             this.txbSplitListSplitChar.TabIndex = 2;
+            // 
+            // btnReset
+            // 
+            this.btnReset.Location = new System.Drawing.Point(873, 3);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(53, 23);
+            this.btnReset.TabIndex = 6;
+            this.btnReset.Text = "重置";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
+            // ckbOneRowOneColumn
+            // 
+            this.ckbOneRowOneColumn.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbOneRowOneColumn.AutoSize = true;
+            this.ckbOneRowOneColumn.Checked = true;
+            this.ckbOneRowOneColumn.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbOneRowOneColumn.Location = new System.Drawing.Point(393, 6);
+            this.ckbOneRowOneColumn.Name = "ckbOneRowOneColumn";
+            this.ckbOneRowOneColumn.Size = new System.Drawing.Size(108, 16);
+            this.ckbOneRowOneColumn.TabIndex = 7;
+            this.ckbOneRowOneColumn.Text = "单行汇总成一列";
+            this.ckbOneRowOneColumn.UseVisualStyleBackColor = true;
+            // 
+            // ckbIgnoreEmptyData
+            // 
+            this.ckbIgnoreEmptyData.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbIgnoreEmptyData.AutoSize = true;
+            this.ckbIgnoreEmptyData.Location = new System.Drawing.Point(507, 6);
+            this.ckbIgnoreEmptyData.Name = "ckbIgnoreEmptyData";
+            this.ckbIgnoreEmptyData.Size = new System.Drawing.Size(132, 16);
+            this.ckbIgnoreEmptyData.TabIndex = 8;
+            this.ckbIgnoreEmptyData.Text = "忽略分隔后的空数据";
+            this.ckbIgnoreEmptyData.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -223,39 +259,31 @@
             this.cbbExample.TabIndex = 4;
             this.cbbExample.SelectedIndexChanged += new System.EventHandler(this.cbbExample_SelectedIndexChanged);
             // 
-            // btnReset
+            // ckbEveryDataTrim
             // 
-            this.btnReset.Location = new System.Drawing.Point(864, 3);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(53, 23);
-            this.btnReset.TabIndex = 6;
-            this.btnReset.Text = "重置";
-            this.btnReset.UseVisualStyleBackColor = true;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            this.ckbEveryDataTrim.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbEveryDataTrim.AutoSize = true;
+            this.ckbEveryDataTrim.Checked = true;
+            this.ckbEveryDataTrim.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbEveryDataTrim.Location = new System.Drawing.Point(645, 6);
+            this.ckbEveryDataTrim.Name = "ckbEveryDataTrim";
+            this.ckbEveryDataTrim.Size = new System.Drawing.Size(144, 16);
+            this.ckbEveryDataTrim.TabIndex = 9;
+            this.ckbEveryDataTrim.Text = "每项剔除前后空白字符";
+            this.ckbEveryDataTrim.UseVisualStyleBackColor = true;
             // 
-            // ckbOneRowOneColumn
+            // ckbNewLine
             // 
-            this.ckbOneRowOneColumn.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ckbOneRowOneColumn.AutoSize = true;
-            this.ckbOneRowOneColumn.Checked = true;
-            this.ckbOneRowOneColumn.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbOneRowOneColumn.Location = new System.Drawing.Point(384, 6);
-            this.ckbOneRowOneColumn.Name = "ckbOneRowOneColumn";
-            this.ckbOneRowOneColumn.Size = new System.Drawing.Size(108, 16);
-            this.ckbOneRowOneColumn.TabIndex = 7;
-            this.ckbOneRowOneColumn.Text = "单行单列汇总值";
-            this.ckbOneRowOneColumn.UseVisualStyleBackColor = true;
-            // 
-            // ckbIgnoreEmptyData
-            // 
-            this.ckbIgnoreEmptyData.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ckbIgnoreEmptyData.AutoSize = true;
-            this.ckbIgnoreEmptyData.Location = new System.Drawing.Point(498, 6);
-            this.ckbIgnoreEmptyData.Name = "ckbIgnoreEmptyData";
-            this.ckbIgnoreEmptyData.Size = new System.Drawing.Size(132, 16);
-            this.ckbIgnoreEmptyData.TabIndex = 8;
-            this.ckbIgnoreEmptyData.Text = "忽略分隔后的空数据";
-            this.ckbIgnoreEmptyData.UseVisualStyleBackColor = true;
+            this.ckbNewLine.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbNewLine.AutoSize = true;
+            this.ckbNewLine.Checked = true;
+            this.ckbNewLine.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbNewLine.Location = new System.Drawing.Point(795, 6);
+            this.ckbNewLine.Name = "ckbNewLine";
+            this.ckbNewLine.Size = new System.Drawing.Size(72, 16);
+            this.ckbNewLine.TabIndex = 10;
+            this.ckbNewLine.Text = "结果换行";
+            this.ckbNewLine.UseVisualStyleBackColor = true;
             // 
             // lblInfo
             // 
@@ -444,31 +472,16 @@
             this.btnSplit.UseVisualStyleBackColor = true;
             this.btnSplit.Click += new System.EventHandler(this.btnSplit_Click);
             // 
-            // ckbEveryDataTrim
+            // ckbOnlySplitBySpace
             // 
-            this.ckbEveryDataTrim.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ckbEveryDataTrim.AutoSize = true;
-            this.ckbEveryDataTrim.Checked = true;
-            this.ckbEveryDataTrim.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbEveryDataTrim.Location = new System.Drawing.Point(636, 6);
-            this.ckbEveryDataTrim.Name = "ckbEveryDataTrim";
-            this.ckbEveryDataTrim.Size = new System.Drawing.Size(144, 16);
-            this.ckbEveryDataTrim.TabIndex = 9;
-            this.ckbEveryDataTrim.Text = "每项剔除前后空白字符";
-            this.ckbEveryDataTrim.UseVisualStyleBackColor = true;
-            // 
-            // ckbNewLine
-            // 
-            this.ckbNewLine.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ckbNewLine.AutoSize = true;
-            this.ckbNewLine.Checked = true;
-            this.ckbNewLine.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbNewLine.Location = new System.Drawing.Point(786, 6);
-            this.ckbNewLine.Name = "ckbNewLine";
-            this.ckbNewLine.Size = new System.Drawing.Size(72, 16);
-            this.ckbNewLine.TabIndex = 10;
-            this.ckbNewLine.Text = "结果换行";
-            this.ckbNewLine.UseVisualStyleBackColor = true;
+            this.ckbOnlySplitBySpace.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbOnlySplitBySpace.AutoSize = true;
+            this.ckbOnlySplitBySpace.Location = new System.Drawing.Point(201, 36);
+            this.ckbOnlySplitBySpace.Name = "ckbOnlySplitBySpace";
+            this.ckbOnlySplitBySpace.Size = new System.Drawing.Size(132, 16);
+            this.ckbOnlySplitBySpace.TabIndex = 11;
+            this.ckbOnlySplitBySpace.Text = "仅根据空白字符分隔";
+            this.ckbOnlySplitBySpace.UseVisualStyleBackColor = true;
             // 
             // FrmDBTSplitString
             // 
@@ -546,5 +559,6 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.CheckBox ckbEveryDataTrim;
         private System.Windows.Forms.CheckBox ckbNewLine;
+        private System.Windows.Forms.CheckBox ckbOnlySplitBySpace;
     }
 }

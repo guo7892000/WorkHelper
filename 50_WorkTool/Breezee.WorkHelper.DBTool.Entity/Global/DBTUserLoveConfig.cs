@@ -109,8 +109,10 @@ namespace Breezee.WorkHelper.DBTool.Entity
         //SQL总结
         public static readonly string SQLStudy_FileCharsetEncoding = "SQLStudy_FileCharsetEncoding";
         //生成表SQL
+        public static readonly string GenerateTableSQL_InputType = "GenerateTableSQL_InputType";//录入类型
+        public static readonly string GenerateTableSQL_TargetDbType = "GenerateTableSQL_TargetDbType";//目标数据库类型
         public static readonly string GenerateTableSQL_IsExcludeColumn = "GenerateTableSQL_IsExcludeColumn";//是否排除文件名
         public static readonly string GenerateTableSQL_ExcludeColumnList = "GenerateTableSQL_ExcludeColumnList";//是否排除文件列表
-        public static readonly string GenerateTableSQL_IsCacheAllColumn = "GenerateTableSQL_IsCacheAllColumn";//是否缓存所有列
+        public static readonly string GenerateTableSQL_QueryColumnRealTime = "GenerateTableSQL_QueryColumnRealTime";//是否实时查询列信息
     }
 }

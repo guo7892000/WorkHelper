@@ -77,6 +77,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             uC_DbConnection1.IsDbNameNotNull = false;
             uC_DbConnection1.DBType_SelectedIndexChanged += DataBaseType_SelectedChange;
             uC_DbConnection1.DBConnName_SelectedIndexChanged += DBConnName_SelectedChange;
+            uC_DbConnection1.ShowGlobalMsg += ShowGlobalMsg_Click;
             #endregion
 
             this.ckbGetTableList.CheckedChanged += new System.EventHandler(this.ckbGetTableList_CheckedChanged);
@@ -87,6 +88,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             //设置下拉框查找数据源
             cbbTableName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cbbTableName.AutoCompleteSource = AutoCompleteSource.CustomSource;
+        }
+        #endregion
+
+        #region 显示全局提示信息事件
+        private void ShowGlobalMsg_Click(object sender, string msg)
+        {
+            ShowDestopTipMsg(msg);
         }
         #endregion
 
@@ -132,12 +140,12 @@ namespace Breezee.WorkHelper.DBTool.UI
         #endregion
 
         #region 查询按钮事件
-        private void tsbImport_Click(object sender, EventArgs e)
+        private async void tsbImport_Click(object sender, EventArgs e)
         {
             try
             {
                 dsExcel = new DataSet();
-                _dbServer = uC_DbConnection1.GetDbServerInfo();
+                _dbServer = await uC_DbConnection1.GetDbServerInfo();
                 DataTable dtMain;
                 DataTable dtSec;
                 if (_dbServer == null)
@@ -704,14 +712,14 @@ namespace Breezee.WorkHelper.DBTool.UI
         #endregion
 
         #region 目标数据库类型选择变化
-        private void cbbTargetDbType_SelectedIndexChanged(object sender, EventArgs e)
+        private async void cbbTargetDbType_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(uC_DbConnection1.DbConnName)) return;
             //目标数据库类型
             int iDbType = int.Parse(cbbTargetDbType.SelectedValue.ToString());
             DataBaseType selectDBType = (DataBaseType)iDbType;
             ckbMainKeyInsert.Visible = false;
-            _dbServer = uC_DbConnection1.GetDbServerInfo();
+            _dbServer = await uC_DbConnection1.GetDbServerInfo();
             
             switch (_dbServer.DatabaseType)
             {
@@ -739,11 +747,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         #endregion
 
         #region 获取表清单复选框变化事件
-        private void ckbGetTableList_CheckedChanged(object sender, EventArgs e)
+        private async void ckbGetTableList_CheckedChanged(object sender, EventArgs e)
         {
             if (ckbGetTableList.Checked)
             {
-                _dbServer = uC_DbConnection1.GetDbServerInfo();
+                _dbServer = await uC_DbConnection1.GetDbServerInfo();
                 if (_dbServer == null)
                 {
                     return;

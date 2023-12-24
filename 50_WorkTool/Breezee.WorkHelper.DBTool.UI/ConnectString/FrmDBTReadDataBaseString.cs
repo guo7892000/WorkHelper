@@ -54,16 +54,24 @@ namespace Breezee.WorkHelper.DBTool.UI
             DataTable dtConn = _IDBConfigSet.QueryDbConfig(_dicQuery).SafeGetDictionaryTable();
             uC_DbConnection1.SetDbConnComboBoxSource(dtConn);
             uC_DbConnection1.IsDbNameNotNull = false;
+            uC_DbConnection1.ShowGlobalMsg += ShowGlobalMsg_Click;
             //
             lblTableWhereInfo.Text = "表名不为空时，Where条件作为表的过滤条件；表为空时，Where条件为自定义SQL。";
             //设置下拉框查找数据源
             cbbTableName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cbbTableName.AutoCompleteSource = AutoCompleteSource.CustomSource;
-        } 
+        }
+        #endregion
+
+        #region 显示全局提示信息事件
+        private void ShowGlobalMsg_Click(object sender, string msg)
+        {
+            ShowDestopTipMsg(msg);
+        }
         #endregion
 
         #region 连接按钮事件
-        private void tsbConnect_Click(object sender, EventArgs e)
+        private async void tsbConnect_Click(object sender, EventArgs e)
         {
             try
             {
@@ -87,7 +95,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     return;
                 }
                 //得到服务器对象
-                _dbServer = uC_DbConnection1.GetDbServerInfo();
+                _dbServer = await uC_DbConnection1.GetDbServerInfo();
                 if (_dbServer == null)
                 {
                     return;
@@ -182,11 +190,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         #endregion
 
         #region 获取表清单复选框变化事件
-        private void ckbGetTableList_CheckedChanged(object sender, EventArgs e)
+        private async void ckbGetTableList_CheckedChanged(object sender, EventArgs e)
         {
             if (ckbGetTableList.Checked)
             {
-                _dbServer = uC_DbConnection1.GetDbServerInfo();
+                _dbServer = await uC_DbConnection1.GetDbServerInfo();
                 if (_dbServer == null)
                 {
                     return;

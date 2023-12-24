@@ -181,6 +181,7 @@ namespace Breezee.Core.Interface
         /// 是否主要数据库
         /// </summary>
         public string IsMain { get; set; }
+        
         #endregion
 
         public static class XmlNodeString
@@ -236,6 +237,18 @@ namespace Breezee.Core.Interface
             dbServer.DatabaseType = (DataBaseType)Enum.Parse(typeof(DataBaseType), dr[XmlAttrString.dbType].ToString());
             dbServer._otherString = dr[XmlAttrString.otherString].ToString();
             return dbServer;
+        }
+
+        public static bool IsSameServer(DbServerInfo dbServer, DbServerInfo dbOtherServer)
+        {
+            if (dbServer == null || dbOtherServer == null) return false;
+            if (!dbServer.ServerName.Equals(dbOtherServer.ServerName, StringComparison.OrdinalIgnoreCase)) return false;
+            if (!dbServer.PortNo.Equals(dbOtherServer.PortNo, StringComparison.OrdinalIgnoreCase)) return false;
+            if (!dbServer.UserName.Equals(dbOtherServer.UserName, StringComparison.OrdinalIgnoreCase)) return false;
+            if (!dbServer.Password.Equals(dbOtherServer.Password, StringComparison.OrdinalIgnoreCase)) return false;
+            if (!dbServer.SchemaName.Equals(dbOtherServer.SchemaName, StringComparison.OrdinalIgnoreCase)) return false;
+            if (!dbServer.Database.Equals(dbOtherServer.Database, StringComparison.OrdinalIgnoreCase)) return false;
+            return true;
         }
     }
 }

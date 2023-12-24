@@ -67,6 +67,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             //设置数据库连接控件
             _IDBConfigSet = ContainerContext.Container.Resolve<IDBConfigSet>();
             DataTable dtConn = _IDBConfigSet.QueryDbConfig(_dicQuery).SafeGetDictionaryTable();
+            uC_DbConnection1.ShowGlobalMsg += ShowGlobalMsg_Click;
             uC_DbConnection1.SetDbConnComboBoxSource(dtConn);
             uC_DbConnection1.IsDbNameNotNull = false;
             uC_DbConnection1.DBConnName_SelectedIndexChanged += DBConnNameSelectedIndexChanged;
@@ -94,6 +95,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             dgvTableInfo.Tag = fdc.GetGridTagString();
         }
 
+        #region 显示全局提示信息事件
+        private void ShowGlobalMsg_Click(object sender, string msg)
+        {
+            ShowDestopTipMsg(msg);
+        }
+        #endregion
         private void DBConnNameSelectedIndexChanged(object sender, EventArgs e)
         {
             btnLinkServer.PerformClick();
@@ -299,11 +306,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         }
 
         #region 测试连接按钮事件
-        private void btnLinkServer_Click(object sender, EventArgs e)
+        private async void btnLinkServer_Click(object sender, EventArgs e)
         {
             try
             {
-                _dbServer = uC_DbConnection1.GetDbServerInfo();
+                _dbServer = await uC_DbConnection1.GetDbServerInfo();
                 if (_dbServer == null)
                 {
                     return;

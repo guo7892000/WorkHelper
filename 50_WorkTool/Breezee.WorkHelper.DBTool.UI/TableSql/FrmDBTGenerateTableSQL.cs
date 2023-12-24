@@ -43,7 +43,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         //private StringBuilder sbRemark = new StringBuilder();
         private DataTable dtTable;
         private DataTable dtAllCol;
-        private DataTable dtAllTableAllCol; //全部表的全部列
 
         private string createType;
         private string _ImportInput = "1";
@@ -96,16 +95,26 @@ namespace Breezee.WorkHelper.DBTool.UI
             uC_DbConnection1.IsDbNameNotNull = true;
             //uC_DbConnection1.DBType_SelectedIndexChanged += cbbDatabaseType_SelectedIndexChanged;//数据库类型下拉框变化事件
             uC_DbConnection1.DBConnName_SelectedIndexChanged += cbbDBConnName_SelectedIndexChanged;
+            uC_DbConnection1.ShowGlobalMsg += ShowGlobalMsg_Click;
             #endregion
             //加载用户喜好值
+            cbbInputType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_InputType, _ImportInput).Value;
+            cbbTargetDbType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_TargetDbType, ((int)DataBaseType.MySql).ToString()).Value;
             ckbExcludeColumn.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsExcludeColumn, "1").Value) ? true : false;
-            ckbCaceAllTableColumn.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsCacheAllColumn, "1").Value) ? true : false;
+            ckbQueryColumnRealTime.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_QueryColumnRealTime, "0").Value) ? true : false;
             txbExcludeColumn.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_ExcludeColumnList, "").Value;
             //设置下拉框查找数据源
             cbbTableName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cbbTableName.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            toolTip1.SetToolTip(ckbCaceAllTableColumn, "当选中时，会一次性查出所有表的列；然后选择表变化时，会根据之前的结果集来过滤！");
+            toolTip1.SetToolTip(ckbQueryColumnRealTime, "当选中时，会实时查询列信息，速度较慢，不建议选中！");
         }
+
+        #region 显示全局提示信息事件
+        private void ShowGlobalMsg_Click(object sender, string msg)
+        {
+            ShowDestopTipMsg(msg);
+        }
+        #endregion
 
         private void cbbDBConnName_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -132,11 +141,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         #endregion
 
         #region 获取表清单复选框变化事件
-        private void ckbGetTableList_CheckedChanged(object sender, EventArgs e)
+        private async void ckbGetTableList_CheckedChanged(object sender, EventArgs e)
         {
             if (ckbGetTableList.Checked)
             {
-                _dbServer = uC_DbConnection1.GetDbServerInfo();
+                _dbServer = await uC_DbConnection1.GetDbServerInfo();
                 if (_dbServer == null)
                 {
                     return;
@@ -154,7 +163,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         #endregion
 
         #region 导入按钮事件
-        private void tsbImport_Click(object sender, EventArgs e)
+        private async void tsbImport_Click(object sender, EventArgs e)
         {
             if (cbbInputType.SelectedValue == null) return;
 
@@ -241,11 +250,20 @@ namespace Breezee.WorkHelper.DBTool.UI
             else
             {
                 //查询数据库
-                _dbServer = uC_DbConnection1.GetDbServerInfo();
+                _dbServer = await uC_DbConnection1.GetDbServerInfo(ckbQueryColumnRealTime.Checked);
                 string sTableName = cbbTableName.Text.Trim();
                 if (_dbServer == null)
                 {
                     return;
+                }
+
+                //重新加载表清单下拉框
+                if (uC_DbConnection1.IsConnChange && ckbGetTableList.Checked)
+                {
+                    //绑定下拉框
+                    cbbTableName.BindDropDownList(uC_DbConnection1.UserTableList.Sort("TABLE_NAME"), "TABLE_NAME", "TABLE_NAME", true, false);
+                    //查找自动完成数据源
+                    cbbTableName.AutoCompleteCustomSource.AddRange(uC_DbConnection1.UserTableList.AsEnumerable().Select(x => x.Field<string>("TABLE_NAME")).ToArray());
                 }
 
                 switch (_dbServer.DatabaseType)
@@ -324,9 +342,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                 SetColTag(sSchma, sTableName, templateType);
 
                 //保存用户喜好值
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_InputType, cbbInputType.SelectedValue.ToString(), "【生成表SQL】录入方式");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_TargetDbType, cbbTargetDbType.SelectedValue.ToString(), "【生成表SQL】目标数据库类型");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_ExcludeColumnList, txbExcludeColumn.Text.Trim(), "【生成表SQL】排除指定列清单");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsExcludeColumn, ckbExcludeColumn.Checked ? "1" : "0", "【生成表SQL】是否排除指定列");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsCacheAllColumn, ckbCaceAllTableColumn.Checked ? "1" : "0", "【生成表SQL】是否排除指定列");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_QueryColumnRealTime, ckbQueryColumnRealTime.Checked ? "1" : "0", "【生成表SQL】是否实时查询列信息");
                 WinFormContext.UserLoveSettings.Save();
             }
             //设置不能增加行
@@ -711,14 +731,16 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void SetColTag(string sSchema, string sTableName, ColumnTemplateType templateType)
         {
             DataTable dtCols;
-            if (ckbCaceAllTableColumn.Checked)
+            if (ckbQueryColumnRealTime.Checked)
             {
-                if(dtAllTableAllCol == null || dtAllTableAllCol.Rows.Count == 0)
-                {
-                    dtAllTableAllCol = _dataAccess.GetSqlSchemaTableColumns(string.Empty, sSchema);
-                }
+                //实时查询列信息
+                dtCols = _dataAccess.GetSqlSchemaTableColumns(sTableName, sSchema);
+            }
+            else
+            {
+                //通过之前的查询结果过滤：速度快
                 string sFilter = string.IsNullOrEmpty(sSchema) ? DBColumnEntity.SqlString.TableName + "='" + sTableName + "'" : DBColumnEntity.SqlString.TableName + "='" + sTableName + "' AND " + DBColumnEntity.SqlString.TableSchema + "='" + sSchema + "'";
-                DataRow[] drArrCols = dtAllTableAllCol.Select(sFilter);
+                DataRow[] drArrCols = uC_DbConnection1.UserAllTableColumnList.Select(sFilter);
                 if (drArrCols.Length > 0)
                 {
                     dtCols = drArrCols.CopyToDataTable();
@@ -727,10 +749,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     throw new Exception("表的列清单不存在，请重新打开本功能重试！");
                 }
-            }
-            else
-            {
-                dtCols = _dataAccess.GetSqlSchemaTableColumns(sTableName, sSchema);
             }
             DataTable dtColsNew = EntCol.GetTable(templateType);
             bool isExclude = ckbExcludeColumn.Checked;

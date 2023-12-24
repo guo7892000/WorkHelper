@@ -103,6 +103,7 @@ namespace Breezee.Framework.Mini.StartUp
 
             MessageBox.Show(str, "ÏµÍ³´íÎó£¡", MessageBoxButtons.OK);
             //MsgHelper.ShowErr(str);
+            Clipboard.SetText(str);
         }
         #endregion
 

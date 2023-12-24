@@ -68,6 +68,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             uC_DbConnection1.SetDbConnComboBoxSource(dtConn);
             uC_DbConnection1.IsDbNameNotNull = true;
             uC_DbConnection1.DBType_SelectedIndexChanged += cbbDatabaseType_SelectedIndexChanged;//数据库类型下拉框变化事件
+            uC_DbConnection1.ShowGlobalMsg += ShowGlobalMsg_Click;
             #endregion
 
             rtbOther.Visible = false;
@@ -78,6 +79,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             //
             SetTableTag();
             SetColTag();
+        }
+        #endregion
+
+        #region 显示全局提示信息事件
+        private void ShowGlobalMsg_Click(object sender, string msg)
+        {
+            ShowDestopTipMsg(msg);
         }
         #endregion
 
@@ -100,9 +108,9 @@ namespace Breezee.WorkHelper.DBTool.UI
         #endregion
 
         #region 连接数据库事件
-        private void tsbImport_Click(object sender, EventArgs e)
+        private async void tsbImport_Click(object sender, EventArgs e)
         {
-            _dbServer = uC_DbConnection1.GetDbServerInfo();
+            _dbServer = await uC_DbConnection1.GetDbServerInfo();
             string sTableName = cbbTableName.Text.Trim();
             if (_dbServer == null || sTableName.IsNullOrEmpty())
             {
@@ -356,11 +364,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         #endregion
 
         #region 获取表清单复选框变化事件
-        private void ckbGetTableList_CheckedChanged(object sender, EventArgs e)
+        private async void ckbGetTableList_CheckedChanged(object sender, EventArgs e)
         {
             if (ckbGetTableList.Checked)
             {
-                _dbServer = uC_DbConnection1.GetDbServerInfo();
+                _dbServer = await uC_DbConnection1.GetDbServerInfo();
                 if (_dbServer == null)
                 {
                     return;

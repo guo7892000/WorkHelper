@@ -75,6 +75,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             uC_DbConnection1.IsDbNameNotNull = true;
             uC_DbConnection1.DBType_SelectedIndexChanged += cbbDatabaseType_SelectedIndexChanged;//数据库类型下拉框变化事件
             uC_DbConnection1.DBConnName_SelectedIndexChanged += cbbConnName_SelectedIndexChanged;
+            uC_DbConnection1.ShowGlobalMsg += ShowGlobalMsg_Click;
             #endregion
 
             SetColTag();
@@ -105,6 +106,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             //加载用户偏好值
             cbbInputType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDicConfirmColumnType, "2").Value;
         }
+
+        #region 显示全局提示信息事件
+        private void ShowGlobalMsg_Click(object sender, string msg)
+        {
+            ShowDestopTipMsg(msg);
+        }
+        #endregion
 
         /// <summary>
         /// 加载通用列数据
@@ -193,9 +201,9 @@ namespace Breezee.WorkHelper.DBTool.UI
         #endregion
 
         #region 连接数据库事件
-        private void tsbImport_Click(object sender, EventArgs e)
+        private async void tsbImport_Click(object sender, EventArgs e)
         {
-            _dbServer = uC_DbConnection1.GetDbServerInfo();
+            _dbServer = await uC_DbConnection1.GetDbServerInfo();
             if (_dbServer == null) return;
             _dataAccess = AutoSQLExecutors.Connect(_dbServer);
             DataTable dtTable = uC_DbConnection1.UserTableList;

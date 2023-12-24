@@ -75,7 +75,7 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.ckbExcludeColumn = new System.Windows.Forms.CheckBox();
             this.txbExcludeColumn = new System.Windows.Forms.TextBox();
-            this.ckbCaceAllTableColumn = new System.Windows.Forms.CheckBox();
+            this.ckbQueryColumnRealTime = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
             this.tabControl1.SuspendLayout();
@@ -599,7 +599,7 @@
             this.tableLayoutPanel2.Controls.Add(this.cbbTableName, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.ckbExcludeColumn, 4, 0);
             this.tableLayoutPanel2.Controls.Add(this.txbExcludeColumn, 5, 0);
-            this.tableLayoutPanel2.Controls.Add(this.ckbCaceAllTableColumn, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.ckbQueryColumnRealTime, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.ckbGetTableList, 2, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 17);
@@ -631,16 +631,16 @@
             this.txbExcludeColumn.Size = new System.Drawing.Size(319, 21);
             this.txbExcludeColumn.TabIndex = 22;
             // 
-            // ckbCaceAllTableColumn
+            // ckbQueryColumnRealTime
             // 
-            this.ckbCaceAllTableColumn.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ckbCaceAllTableColumn.AutoSize = true;
-            this.ckbCaceAllTableColumn.Location = new System.Drawing.Point(338, 5);
-            this.ckbCaceAllTableColumn.Name = "ckbCaceAllTableColumn";
-            this.ckbCaceAllTableColumn.Size = new System.Drawing.Size(84, 16);
-            this.ckbCaceAllTableColumn.TabIndex = 23;
-            this.ckbCaceAllTableColumn.Text = "缓存所有列";
-            this.ckbCaceAllTableColumn.UseVisualStyleBackColor = true;
+            this.ckbQueryColumnRealTime.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbQueryColumnRealTime.AutoSize = true;
+            this.ckbQueryColumnRealTime.Location = new System.Drawing.Point(338, 5);
+            this.ckbQueryColumnRealTime.Name = "ckbQueryColumnRealTime";
+            this.ckbQueryColumnRealTime.Size = new System.Drawing.Size(84, 16);
+            this.ckbQueryColumnRealTime.TabIndex = 23;
+            this.ckbQueryColumnRealTime.Text = "实时查询列";
+            this.ckbQueryColumnRealTime.UseVisualStyleBackColor = true;
             // 
             // uC_DbConnection1
             // 
@@ -741,7 +741,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.CheckBox ckbExcludeColumn;
         private System.Windows.Forms.TextBox txbExcludeColumn;
-        private System.Windows.Forms.CheckBox ckbCaceAllTableColumn;
+        private System.Windows.Forms.CheckBox ckbQueryColumnRealTime;
         private System.Windows.Forms.ToolTip toolTip1;
     }
 }

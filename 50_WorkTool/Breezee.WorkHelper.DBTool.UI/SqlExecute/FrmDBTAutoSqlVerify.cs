@@ -42,6 +42,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             uC_DbConnection1.SetDbConnComboBoxSource(dtConn);
             uC_DbConnection1.IsDbNameNotNull = true;
             //uC_DbConnection1.DBType_SelectedIndexChanged += cbbDatabaseType_SelectedIndexChanged;//数据库类型下拉框变化事件
+            uC_DbConnection1.ShowGlobalMsg += ShowGlobalMsg_Click;
             #endregion
 
             _dicString.Add("String", "String");
@@ -75,6 +76,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             lblFuncInfo.Text = "针对自动参数化SQL的个人项目（Java版和C#版）：MyPeach、MyPeach.Net的有效性验证！";
             rtbSqlOutput.ReadOnly= true;
         }
+
+        #region 显示全局提示信息事件
+        private void ShowGlobalMsg_Click(object sender, string msg)
+        {
+            ShowDestopTipMsg(msg);
+        }
+        #endregion
 
         private void SetTag()
         {
@@ -113,7 +121,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnGetCondition_Click(object sender, EventArgs e)
+        private async void btnGetCondition_Click(object sender, EventArgs e)
         {
             string sSqlBefore = rtbSqlInput.Text.Trim();
             if (string.IsNullOrEmpty(sSqlBefore))
@@ -121,7 +129,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 ShowErr("请输入要参数化的SQL！");
                 return;
             }
-            _dbServer = uC_DbConnection1.GetDbServerInfo();
+            _dbServer = await uC_DbConnection1.GetDbServerInfo();
             if (_dbServer == null)
             {
                 ShowErr("请选择一个连接！");
@@ -148,7 +156,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             btnGetCondition.PerformClick();
         }
 
-        private void tsbConvert_Click(object sender, EventArgs e)
+        private async void tsbConvert_Click(object sender, EventArgs e)
         {
             string sSql = rtbSqlInput.Text.Trim();
             if (string.IsNullOrEmpty(sSql))
@@ -157,7 +165,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 return;
             }
 
-            _dbServer = uC_DbConnection1.GetDbServerInfo();
+            _dbServer = await uC_DbConnection1.GetDbServerInfo();
             if (_dbServer == null)
             {
                 ShowErr("请选择一个连接！");
