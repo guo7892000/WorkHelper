@@ -695,6 +695,9 @@
     <Content Include="Doc\Study\SqlServer\9000_实例\存储过程实例-001.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Doc\Study\综合\大小写.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Doc\Study\综合\多表更新.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
