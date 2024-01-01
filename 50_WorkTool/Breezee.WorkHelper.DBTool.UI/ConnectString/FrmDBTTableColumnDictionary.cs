@@ -207,10 +207,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (_dbServer == null) return;
             _dataAccess = AutoSQLExecutors.Connect(_dbServer);
             DataTable dtTable = uC_DbConnection1.UserTableList;
-            //增加选择列
-            DataColumn dcSelected = new DataColumn(_sGridColumnSelect);
-            dcSelected.DefaultValue = "1";
-            dtTable.Columns.Add(dcSelected);
+            if (!dtTable.Columns.Contains(_sGridColumnSelect))
+            {
+                //增加选择列
+                DataColumn dcSelected = new DataColumn(_sGridColumnSelect);
+                dcSelected.DefaultValue = "1";
+                dtTable.Columns.Add(dcSelected);
+            }
             //排除分表
             ExcludeSplitTable(dtTable);
 

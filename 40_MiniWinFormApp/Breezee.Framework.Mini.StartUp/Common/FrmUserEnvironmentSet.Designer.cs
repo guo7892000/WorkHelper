@@ -78,6 +78,15 @@
             this.label5 = new System.Windows.Forms.Label();
             this.fbdSelectPath = new System.Windows.Forms.FolderBrowserDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.label8 = new System.Windows.Forms.Label();
+            this.cbbOddNumberRowColor = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.ckbIsDefineGridHeader = new System.Windows.Forms.CheckBox();
+            this.nudGridHeaderHight = new System.Windows.Forms.NumericUpDown();
+            this.label10 = new System.Windows.Forms.Label();
+            this.cbbGridHeaderColor = new System.Windows.Forms.ComboBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -93,6 +102,9 @@
             this.tpUserSkin.SuspendLayout();
             this.tpOther.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            this.groupBox7.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudGridHeaderHight)).BeginInit();
             this.SuspendLayout();
             // 
             // label2
@@ -529,6 +541,7 @@
             // 
             // tpUserSkin
             // 
+            this.tpUserSkin.Controls.Add(this.groupBox7);
             this.tpUserSkin.Controls.Add(this.groupBox2);
             this.tpUserSkin.Controls.Add(this.groupBox1);
             this.tpUserSkin.Location = new System.Drawing.Point(4, 22);
@@ -600,6 +613,117 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "网格样式临时文件：";
             // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.tableLayoutPanel4);
+            this.groupBox7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox7.Location = new System.Drawing.Point(3, 175);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(760, 76);
+            this.groupBox7.TabIndex = 9;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "网格样式";
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 6;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.Controls.Add(this.label8, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.ckbIsDefineGridHeader, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.cbbOddNumberRowColor, 1, 1);
+            this.tableLayoutPanel4.Controls.Add(this.label9, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.nudGridHeaderHight, 2, 0);
+            this.tableLayoutPanel4.Controls.Add(this.label10, 3, 0);
+            this.tableLayoutPanel4.Controls.Add(this.cbbGridHeaderColor, 4, 0);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 17);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 3;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(754, 57);
+            this.tableLayoutPanel4.TabIndex = 0;
+            // 
+            // label8
+            // 
+            this.label8.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(46, 34);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(77, 12);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "奇数行颜色：";
+            // 
+            // cbbOddNumberRowColor
+            // 
+            this.cbbOddNumberRowColor.FormattingEnabled = true;
+            this.cbbOddNumberRowColor.Location = new System.Drawing.Point(129, 30);
+            this.cbbOddNumberRowColor.Name = "cbbOddNumberRowColor";
+            this.cbbOddNumberRowColor.Size = new System.Drawing.Size(121, 20);
+            this.cbbOddNumberRowColor.TabIndex = 1;
+            // 
+            // label9
+            // 
+            this.label9.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(173, 7);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(77, 12);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "网格头高度：";
+            // 
+            // ckbIsDefineGridHeader
+            // 
+            this.ckbIsDefineGridHeader.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbIsDefineGridHeader.AutoSize = true;
+            this.ckbIsDefineGridHeader.Location = new System.Drawing.Point(3, 5);
+            this.ckbIsDefineGridHeader.Name = "ckbIsDefineGridHeader";
+            this.ckbIsDefineGridHeader.Size = new System.Drawing.Size(120, 16);
+            this.ckbIsDefineGridHeader.TabIndex = 3;
+            this.ckbIsDefineGridHeader.Text = "自定义网格头样式";
+            this.ckbIsDefineGridHeader.UseVisualStyleBackColor = true;
+            // 
+            // nudGridHeaderHight
+            // 
+            this.nudGridHeaderHight.Location = new System.Drawing.Point(256, 3);
+            this.nudGridHeaderHight.Minimum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.nudGridHeaderHight.Name = "nudGridHeaderHight";
+            this.nudGridHeaderHight.Size = new System.Drawing.Size(120, 21);
+            this.nudGridHeaderHight.TabIndex = 4;
+            this.nudGridHeaderHight.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            // 
+            // label10
+            // 
+            this.label10.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(382, 7);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(77, 12);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "网格头颜色：";
+            // 
+            // cbbGridHeaderColor
+            // 
+            this.cbbGridHeaderColor.FormattingEnabled = true;
+            this.cbbGridHeaderColor.Location = new System.Drawing.Point(465, 3);
+            this.cbbGridHeaderColor.Name = "cbbGridHeaderColor";
+            this.cbbGridHeaderColor.Size = new System.Drawing.Size(121, 20);
+            this.cbbGridHeaderColor.TabIndex = 1;
+            // 
             // FrmUserEnvironmentSet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -633,6 +757,10 @@
             this.tpOther.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudGridHeaderHight)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -688,5 +816,14 @@
         private System.Windows.Forms.CheckBox ckbUpgradeDelNewZipFile;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.NumericUpDown nudMaxOpenForm;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.CheckBox ckbIsDefineGridHeader;
+        private System.Windows.Forms.ComboBox cbbOddNumberRowColor;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.NumericUpDown nudGridHeaderHight;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.ComboBox cbbGridHeaderColor;
     }
 }

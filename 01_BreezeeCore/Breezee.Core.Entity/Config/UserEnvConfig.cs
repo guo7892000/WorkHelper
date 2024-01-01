@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -24,6 +25,23 @@ namespace Breezee.Core.Entity
         /// 保存提示方式
         /// </summary>
         public SaveMsgPromptTypeEnum SaveMsgPrompt = SaveMsgPromptTypeEnum.PopupPrompt;
+        /// <summary>
+        /// 设置奇数行的背景色
+        /// </summary>
+        public Color OddRowBackColor = Color.LightYellow;
+        /// <summary>
+        /// 是否使用自定义网格头
+        /// </summary>
+        public bool IsUsedMyDefineGridHeaderStyle = true;
+
+        /// <summary>
+        /// 设置网格头的背景色
+        /// </summary>
+        public Color GridHeaderBackColor = Color.LightBlue;
+        /// <summary>
+        /// 设置网格头的高度
+        /// </summary>
+        public int GridHeaderHeight = 30;
     }
 
     /// <summary>

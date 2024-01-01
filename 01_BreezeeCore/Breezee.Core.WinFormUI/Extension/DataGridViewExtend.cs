@@ -70,6 +70,30 @@ namespace Breezee.Core.WinFormUI
                     dgv.Columns[item.ColumnName].DisplayIndex = (bs.DataSource as DataTable).Columns[item.ColumnName].Ordinal; //设置网格顺序跟表一致。
                 }
             }
+            //设置行的交互颜色
+            SetRowColor(dgv);
+        }
+
+        /// <summary>
+        /// 设置行奇偶行的交替颜色
+        /// </summary>
+        /// <param name="dgv"></param>
+        private static void SetRowColor(DataGridView dgv)
+        {
+            if(WinFormContext.UserEnvConfig.IsUsedMyDefineGridHeaderStyle)
+            {
+                //设置第一行（列标题）高度
+                dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+                dgv.ColumnHeadersHeight = WinFormContext.UserEnvConfig.GridHeaderHeight; //获取配置的标题行高度
+                //设置列标题样式
+                dgv.EnableHeadersVisualStyles = false;
+                //dgv.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.Honeydew;
+                dgv.ColumnHeadersDefaultCellStyle.BackColor = WinFormContext.UserEnvConfig.GridHeaderBackColor; //获取配置的标题行的背景色
+                dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            }
+            //设置行的交替色
+            dgv.RowsDefaultCellStyle.BackColor = Color.White;
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = WinFormContext.UserEnvConfig.OddRowBackColor; //获取配置的奇数行的背景色
         }
 
         public static void BindAutoTable(this DataGridView dgv, DataTable dtSource, bool isAutoSize = false, List<FlexGridColumn> fixCol = null)
@@ -354,6 +378,7 @@ namespace Breezee.Core.WinFormUI
                 }
                 //设置不自动生成列
                 dgv.AutoGenerateColumns = false;
+
                 //清除所有列
                 if (dgv.Columns.Count > 0)
                 {
@@ -577,6 +602,9 @@ namespace Breezee.Core.WinFormUI
                     //数据浏览控制增加列
                     dgv.Columns.Add(dgvc);
                 }
+
+                //设置行的交替色
+                SetRowColor(dgv);
             }
             catch (Exception ex)
             {

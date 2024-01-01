@@ -287,8 +287,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                         throw new Exception("暂不支持该数据库类型！");
                 }
 
-                _dataAccess = AutoSQLExecutors.Connect(_dbServer);
-                
                 DataRow[] drArr = null;
                 string sFilter = DBTableEntity.SqlString.Name + "='" + sTableName + "'";
                 DataTable dtTable;
@@ -297,10 +295,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                 DataTable dtTableCopy = EntTable.GetTable();
                 if (uC_DbConnection1.UserTableList == null || uC_DbConnection1.UserTableList.Rows.Count == 0)
                 {
+                    _dataAccess = AutoSQLExecutors.Connect(_dbServer);
                     dtTable = _dataAccess.GetSchemaTables();
                 }
                 else
                 {
+                    if (ckbQueryColumnRealTime.Checked)
+                    {
+                        _dataAccess = AutoSQLExecutors.Connect(_dbServer);
+                    }
                     dtTable = uC_DbConnection1.UserTableList;
                     sSchma = dtTable.Rows[0][DBTableEntity.SqlString.Schema].ToString();
                 }

@@ -18,6 +18,11 @@ namespace Breezee.Core.Interface
         public static string CommonSkinType = "CommonSkinType";
         public static string CommonSkinValue = "CommonSkinValue";
         public static string CommonSkinColorName = "CommonSkinColorName";
+        //网格样式
+        public static string IsUsedMyDefineGridHeaderStyle = "IsUsedMyDefineGridHeaderStyle";//是否使用自定义网格头样式
+        public static string GridHeaderHeight = "GridHeaderHeight";//网格头高度
+        public static string GridHeaderBackColor = "GridHeaderBackColor";//网格头背景色
+        public static string GridOddRowBackColor = "GridOddRowBackColor";//奇数行背景色
         //保存提示类型
         public static string SavePromptType = "SavePromptType";
         //配置目录配置

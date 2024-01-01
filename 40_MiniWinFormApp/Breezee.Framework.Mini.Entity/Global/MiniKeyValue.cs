@@ -32,6 +32,12 @@ namespace Breezee.Framework.Mini.Entity
                 case MiniKeyEnum.SAVE_TIP:
                     dtR = KeyValue.GetValues("SAVE_TIP");
                     break;
+                case MiniKeyEnum.GRID_HEADER_COLOR:
+                    dtR = KeyValue.GetValues("GRID_HEADER_RBG_NAME");
+                    break;
+                case MiniKeyEnum.GRID_ODD_ROW_COLOR:
+                    dtR = KeyValue.GetValues("GRID_ODD_ROW_RBG_NAME");
+                    break;
                 default:
                     dtR = null;
                     break;
@@ -46,6 +52,7 @@ namespace Breezee.Framework.Mini.Entity
         RBG_NAME,
         FORM_SKIN_TYPE,
         SAVE_TIP,
-
+        GRID_HEADER_COLOR,
+        GRID_ODD_ROW_COLOR,
     }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Breezee.Core.Entity;
+using Breezee.Core.Interface;
 using Breezee.Core.Tool;
 
 /*********************************************************************		
@@ -109,7 +110,15 @@ namespace Breezee.Core.WinFormUI
             {
                 EntMenuHelp entMenuHelp = e.Node.Tag as EntMenuHelp;
                 Text = string.Format("【{0}】帮助说明", entMenuHelp.MenuName);
-                webBrowser1.Navigate("file:///" + Environment.CurrentDirectory + entMenuHelp.HelpPath);
+                //当升级完成后重新登录，使用Environment.CurrentDirectory时会访问不到新目录中的帮助文件
+                //webBrowser1.Navigate("file:///" + Environment.CurrentDirectory + entMenuHelp.HelpPath);
+                string sRootPath = GlobalContext.AppBaseDirectory;
+                if (sRootPath.EndsWith("\\"))
+                {
+                    sRootPath = sRootPath.Substring(0, sRootPath.LastIndexOf("\\"));
+                }
+                Uri sPath = new Uri("file:///" + sRootPath + entMenuHelp.HelpPath);
+                webBrowser1.Navigate(sPath);
             }
         }
     }

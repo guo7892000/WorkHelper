@@ -294,7 +294,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     break;
                 case DataBaseType.Oracle:
                     //类型
-                    sDbType = sDbType.ToLower().Replace("varchar2", "varchar").Replace("date", "datetime").Replace("number", "decimal");
+                    sDbType = sDbType.ToLower().Replace("varchar2", "varchar").Replace("date", "datetime").Replace("number", "decimal").Replace("timestamp", "datetime");
                     //默认值
                     sDefaultValue = sDefaultValue.ToLower().Replace("sysdate", "now()");
                     break;

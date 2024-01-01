@@ -26,5 +26,18 @@
     <value vid="1" name="弹出提示"/>
     <value vid="2" name="不弹出提示(仅显示)"/>
   </key>
-
+    <key kid="GRID_HEADER_RBG_NAME" name ="网格头颜色">
+	    <value vid="LightBlue" name="浅蓝色"/>
+		<value vid="LightPink" name="浅粉色"/>
+		<value vid="Thistle" name="蓟"/>
+		<value vid="NavajoWhite" name="Navajo白"/>
+		<value vid="Lavender" name="淡紫色"/>
+	</key>
+	<key kid="GRID_ODD_ROW_RBG_NAME" name ="奇数行颜色">
+		<value vid="LightYellow" name="浅黄色"/>
+		<value vid="PapayaWhip" name="番木瓜"/>
+		<value vid="LightCyan" name="淡青色"/>
+		<value vid="Honeydew" name="蜂蜜"/>
+		<value vid="MistyRose" name="薄雾玫瑰"/>
+	</key>
 </xml>  

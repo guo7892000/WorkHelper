@@ -593,8 +593,8 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 634F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.Controls.Add(this.lblTableName, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.cbbTableName, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.ckbExcludeColumn, 4, 0);
@@ -626,9 +626,11 @@
             // 
             // txbExcludeColumn
             // 
+            this.txbExcludeColumn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel2.SetColumnSpan(this.txbExcludeColumn, 2);
             this.txbExcludeColumn.Location = new System.Drawing.Point(494, 3);
             this.txbExcludeColumn.Name = "txbExcludeColumn";
-            this.txbExcludeColumn.Size = new System.Drawing.Size(319, 21);
+            this.txbExcludeColumn.Size = new System.Drawing.Size(506, 21);
             this.txbExcludeColumn.TabIndex = 22;
             // 
             // ckbQueryColumnRealTime

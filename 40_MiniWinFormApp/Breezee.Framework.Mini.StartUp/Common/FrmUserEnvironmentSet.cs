@@ -51,10 +51,16 @@ namespace Breezee.Framework.Mini.StartUp
             DataTable dtSaveTip = MiniKeyValue.GetValue(MiniKeyEnum.SAVE_TIP);
             _dtColorNum = MiniKeyValue.GetValue(MiniKeyEnum.RBG_VALUE);
             _dtColorName = MiniKeyValue.GetValue(MiniKeyEnum.RBG_NAME);
+            //网格头和奇数行颜色
+            DataTable dtGridHeaderColor = MiniKeyValue.GetValue(MiniKeyEnum.GRID_HEADER_COLOR);
+            DataTable dtGridOddRowColor = MiniKeyValue.GetValue(MiniKeyEnum.GRID_ODD_ROW_COLOR);
+
             //绑定下拉框
             cbbSkinTypeMain.BindXmlTypeValueDropDownList(dtFormSksy, false, true);
             cbbSkinTypeCommon.BindXmlTypeValueDropDownList(dtFormSksy, false, true);
             cbbMsgType.BindXmlTypeValueDropDownList(dtSaveTip, false, true);
+            cbbGridHeaderColor.BindXmlTypeValueDropDownList(dtGridHeaderColor, false, true);
+            cbbOddNumberRowColor.BindXmlTypeValueDropDownList(dtGridOddRowColor, false, true);
             cbbMsgType.SelectedValue = _WinFormConfig.Get(GlobalKey.SavePromptType, "2");
             //主窗体皮肤类型
             string sMainSkinType = _WinFormConfig.Get(GlobalKey.MainSkinType, "0");
@@ -92,6 +98,11 @@ namespace Breezee.Framework.Mini.StartUp
             txbUpgradeTempDir.Text = _WinFormConfig.Get(GlobalKey.Upgrade_TempPath, GlobalContext.PathTemp());
             //显示最大窗体数
             nudMaxOpenForm.Value = int.Parse(_WinFormConfig.Get(GlobalKey.MaxOpenFormNum, "15"));
+            //网格头配置
+            ckbIsDefineGridHeader.Checked = _WinFormConfig.Get(GlobalKey.IsUsedMyDefineGridHeaderStyle, "1").Equals("1") ? true : false;
+            nudGridHeaderHight.Value = decimal.Parse(_WinFormConfig.Get(GlobalKey.GridHeaderHeight, "30"));
+            cbbGridHeaderColor.SelectedValue = _WinFormConfig.Get(GlobalKey.GridHeaderBackColor, "LightBlue");
+            cbbOddNumberRowColor.SelectedValue = _WinFormConfig.Get(GlobalKey.GridOddRowBackColor, "LightYellow");
         }
         #endregion
 
@@ -208,6 +219,17 @@ namespace Breezee.Framework.Mini.StartUp
                 }
                 #endregion
             }
+
+            //网格头样式
+            WinFormContext.UserEnvConfig.IsUsedMyDefineGridHeaderStyle = ckbIsDefineGridHeader.Checked;
+            WinFormContext.UserEnvConfig.GridHeaderHeight = int.Parse(nudGridHeaderHight.Value.ToString());
+            WinFormContext.UserEnvConfig.GridHeaderBackColor = Color.FromName(cbbGridHeaderColor.SelectedValue.ToString());
+            WinFormContext.UserEnvConfig.OddRowBackColor = Color.FromName(cbbOddNumberRowColor.SelectedValue.ToString());
+            _WinFormConfig.Set(GlobalKey.IsUsedMyDefineGridHeaderStyle, ckbIsDefineGridHeader.Checked ? "1" : "0", "是否自定义网格头信息");
+            _WinFormConfig.Set(GlobalKey.GridHeaderHeight, nudGridHeaderHight.Value.ToString(), "网格头高度");
+            _WinFormConfig.Set(GlobalKey.GridHeaderBackColor, cbbGridHeaderColor.SelectedValue.ToString(), "网格头颜色");
+            _WinFormConfig.Set(GlobalKey.GridOddRowBackColor, cbbOddNumberRowColor.SelectedValue.ToString(), "奇数行颜色");
+
             //升级配置
             _WinFormConfig.Set(GlobalKey.Upgrade_IsAutoCheckVersion, ckbAutoCheckVersion.Checked ? "1" : "0", "是否自动检测新版本");
             _WinFormConfig.Set(GlobalKey.Upgrade_IsDeleteOldVersion, ckbUpgradeSuccessDelOldVerion.Checked ? "1" : "0", "是否在新版本升级成功后删除旧版本");
