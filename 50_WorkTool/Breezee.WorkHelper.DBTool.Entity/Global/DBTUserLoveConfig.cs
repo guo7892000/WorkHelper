@@ -12,10 +12,16 @@ namespace Breezee.WorkHelper.DBTool.Entity
     /// </summary>
     public class DBTUserLoveConfig
     {
+        //Excel复制拼接
         public static readonly string ExcelCopyDataConnect = "ExcelCopyDataConnect";
+        //列转行
         public static readonly string ExcelCol2Row_FixRowCount = "ExcelCol2Row_FixRowCount";
         public static readonly string ExcelCol2Row_EachDataRowCount = "ExcelCol2Row_EachDataRowCount";
-        public static readonly string ColumnDicConfirmColumnType = "ColumnDicConfirmColumnType";
+        //数据字典
+        public static readonly string ColumnDic_ConfirmColumnType = "ColumnDic_ConfirmColumnType";
+        public static readonly string ColumnDic_TemplateType = "ColumnDic_TemplateType";
+        public static readonly string ColumnDic_IsPage = "ColumnDic_IsPage";
+        //点击复制
         public static readonly string ClickCopyPath = "ClickCopyPath";
         public static readonly string DirStringLastSelectedPath = "DirStringLastSelectedPath";
         public static readonly string DbGetSql_ParamType = "DbGetSql_ParamType";
@@ -114,5 +120,7 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string GenerateTableSQL_IsExcludeColumn = "GenerateTableSQL_IsExcludeColumn";//是否排除文件名
         public static readonly string GenerateTableSQL_ExcludeColumnList = "GenerateTableSQL_ExcludeColumnList";//是否排除文件列表
         public static readonly string GenerateTableSQL_QueryColumnRealTime = "GenerateTableSQL_QueryColumnRealTime";//是否实时查询列信息
+        public static readonly string GenerateTableSQL_IsFullType = "GenerateTableSQL_IsFullType";//是否全类型
+        public static readonly string GenerateTableSQL_IsLYTemplate = "GenerateTableSQL_IsLYTemplate";//是否LY模板
     }
 }

@@ -80,10 +80,9 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             SetColTag();
             //模板
-            _dicString.Add("1", "YAPI参数格式");
-            _dicString.Add("2", "YAPI查询结果(不分页)");
-            _dicString.Add("3", "YAPI查询结果(分页)");
-            _dicString.Add("4", "YAPI查询条件(分页)");
+            _dicString.Add("1", "YAPI查询条件");
+            _dicString.Add("2", "YAPI查询结果");
+            _dicString.Add("9", "YAPI参数格式");
             _dicString.Add("11", "Mybatis表实体属性");
             _dicString.Add("12", "通用实体属性");
             _dicString.Add("13", "Mybatis查询条件");
@@ -91,9 +90,9 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             //
             _dicString.Clear();
-            _dicString["1"]= "粘贴列";
-            _dicString["2"] = "查询表";
-            _dicString["3"] = "参数筛选";
+            _dicString["1"] = "匹配SQL条件";
+            _dicString["2"] = "匹配SQL结果";
+            _dicString["3"] = "粘贴列";
             cbbInputType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
 
             //初始化网格
@@ -104,7 +103,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             //加载通用列内容
             LoadCommonColumnData();
             //加载用户偏好值
-            cbbInputType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDicConfirmColumnType, "2").Value;
+            cbbInputType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_ConfirmColumnType, "2").Value;
+            cbbModuleString.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_TemplateType, "2").Value;
+            ckbIsPage.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_IsPage, "0").Value) ? true : false;//是否分页
         }
 
         #region 显示全局提示信息事件
@@ -361,6 +362,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             return isChangeTap;
         }
 
+        private void btnMatchGenerate_Click(object sender, EventArgs e)
+        {
+            btnMatch.PerformClick();
+            tsbAutoSQL.PerformClick();
+        }
+
         /// <summary>
         /// 匹配按钮事件
         /// </summary>
@@ -382,8 +389,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 sInputType = cbbInputType.SelectedValue.ToString();
                 string sSql = rtbInputSql.Text.Trim();
-                if("2".Equals(sInputType) || "3".Equals(sInputType))
+                if ("1".Equals(sInputType) || "2".Equals(sInputType))
                 {
+                    //1查询条件和2查询结果处理
                     if (string.IsNullOrEmpty(sSql))
                     {
                         string sErr = "2".Equals(sInputType) ? "请输入查询空数据的SQL，这里只用到查询结果的列编码！" : "请输入条件字符（以@或:开头，或前后#的参数）";
@@ -399,12 +407,16 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 if ("2".Equals(sInputType))
                 {
+                    //2查询结果处理
                     try
                     {
                         DataTable dtSql = _dataAccess.QueryAutoParamSqlData(sSql);
                         foreach (DataColumn dc in dtSql.Columns)
                         {
-                            dtInput.Rows.Add(dc.ColumnName);
+                            if (dtInput.Select(_sInputColCode + "='" + dc.ColumnName + "'").Length == 0)
+                            {
+                                dtInput.Rows.Add(dc.ColumnName);
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -413,8 +425,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                         return;
                     }
                 }
-                else if ("3".Equals(sInputType))
+                else if ("1".Equals(sInputType))
                 {
+                    //1查询条件处理
                     string remarkPatter = "--.*|(/\\*.*/*/)";
                     Regex regex = new Regex(remarkPatter, RegexOptions.IgnoreCase);
                     MatchCollection mcColl = regex.Matches(sSql);
@@ -436,17 +449,40 @@ namespace Breezee.WorkHelper.DBTool.UI
                             .Replace("#", "")
                             .Replace("{", "")
                             .Replace("}", "");
-                        dtInput.Rows.Add(sCol);
+                        //列名不存在，才添加
+                        if(dtInput.Select(_sInputColCode + "='"+ sCol + "'").Length == 0)
+                        {
+                            dtInput.Rows.Add(sCol);
+                        }
                     }
                 }
             }
 
             //保存用户偏好值
-            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDicConfirmColumnType, cbbInputType.SelectedValue.ToString(), "【数据字典】确认列类型");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_ConfirmColumnType, cbbInputType.SelectedValue.ToString(), "【数据字典】确认列类型");
             WinFormContext.UserLoveSettings.Save();
- 
-            DataTable dtCommonCol = dgvCommonCol.GetBindingTable();
 
+            DataTable dtCommonCol = dgvCommonCol.GetBindingTable();
+            //得到表清单
+            List<string> listTable = new List<string>();
+            if ("1".Equals(sInputType) || "2".Equals(sInputType))
+            {
+                string sSql = rtbInputSql.Text.Trim();
+                string tablePattern = @"\s*(FROM|JOIN)\s+\w+\s+";//前面为*，是因为有可能在拆分时，去掉了前面的空格
+                Regex regex = new Regex(tablePattern, RegexOptions.IgnoreCase);
+                MatchCollection mc = regex.Matches(sSql);
+                foreach (Match item in mc)
+                {
+                    string sValue = item.Value.Trim();
+                    string sTableName = sValue.Substring(sValue.LastIndexOf(" ")).Trim();
+                    if (!listTable.Contains(sTableName))
+                    {
+                        listTable.Add(sTableName);
+                    }
+                }
+            }
+
+            //循环输入的列清单
             foreach (DataRow dr in dtInput.Rows)
             {
                 string sCol = dr[_sInputColCode].ToString();
@@ -476,30 +512,24 @@ namespace Breezee.WorkHelper.DBTool.UI
                     AND A.CITY_CODE ='#CITY_CODE#'
                     AND B.PROVINCE_NAME ='#PROVINCE_NAME#'
                  *************************************************/
-                //针对2和3，找到语句中的表，优先从这些表里边找
-                if ("2".Equals(sInputType) || "3".Equals(sInputType))
+                //针对1和2，找到语句中的表，优先从这些表里边找
+                if ("1".Equals(sInputType) || "2".Equals(sInputType))
                 {
-                    List<string> listTable = new List<string>();
                     bool isFind = false;
-                    string sSql = rtbInputSql.Text.Trim();
-                    string tablePattern = @"\s*(FROM|JOIN)\s+\w+\s+";//前面为*，是因为有可能在拆分时，去掉了前面的空格
-                    Regex regex = new Regex(tablePattern, RegexOptions.IgnoreCase);
-                    MatchCollection mc = regex.Matches(sSql);
-                    foreach (Match item in mc)
+                    foreach (string sTableName in listTable)
                     {
-                        string sValue = item.Value.Trim();
-                        string sTableName = sValue.Substring(sValue.LastIndexOf(" ")).Trim();
                         sFiter = string.Format("{0}='{1}' and {2}='{3}'", DBColumnSimpleEntity.SqlString.TableName, sTableName, DBColumnSimpleEntity.SqlString.Name, sCol);
-                        //查找通用列中是否存在
                         drArr = dtAllCol.Select(sFiter);
-                        if (drArr.Length > 0)
+                        sFiter = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.Name, sCol);
+                        //判断优先表中是否存在列，且未加入清单
+                        if (drArr.Length > 0 && dtSelect.Select(sFiter).Length == 0)
                         {
                             dtSelect.ImportRow(drArr[0]);
                             isFind = true;
-                            continue;
+                            break; //字段已找到，中止循环表
                         }
                     }
-                    //已从优先表中找到，那么直接下一个处理
+                    //已从优先表中找到，那么直接下一个字段处理
                     if (isFind)
                     {
                         continue;
@@ -708,6 +738,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                 YapiModuleStringDeal(sbAllSql);
                 rtbResult.AppendText(sbAllSql.ToString() + "\n");
                 Clipboard.SetData(DataFormats.UnicodeText, sbAllSql.ToString());
+                //保存喜好设置
+                //保存用户偏好值
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_TemplateType, cbbModuleString.SelectedValue.ToString(), "【数据字典】模板类型");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_IsPage, ckbIsPage.Checked ? "1" : "0", "【生成表SQL】是否分页");
+                WinFormContext.UserLoveSettings.Save();
 
                 tabControl1.SelectedTab = tpAutoSQL;
                 //生成SQL成功后提示
@@ -727,43 +762,51 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void YapiModuleStringDeal(StringBuilder sbAllSql)
         {
             string sModule = cbbModuleString.SelectedValue.ToString();
-            if ("2".Equals(sModule))
+            if ("1".Equals(sModule))
             {
-                sbAllSql.Insert(0, @"{
+                //查询条件
+                if (ckbIsPage.Checked)
+                {
+                    //分页
+                    sbAllSql.Insert(0, @"{
   ""type"": ""object"",
   ""title"": ""empty object"",
   ""properties"": {
-    ""result"": {
-      ""type"": ""string"",
-      ""description"": ""执行结果""
-    },
-    ""msg"": {
-      ""type"": ""string"",
-      ""description"": ""返回信息""
-    },
-    ""rows"": {
-      ""type"": ""array"",
-      ""items"": {
-        ""type"": ""object"",
-        ""properties"": {
-           ");
-
-                sbAllSql.AppendLine(@"
-           }
+    ""pageindex"": {
+      ""type"": ""number"",
+      ""description"": ""当前页数""
       },
-      ""description"": ""结果集""
+    ""pagesize"": {
+      ""type"": ""number"",
+      ""description"": ""每页条数""
+      },
+    ");
+
+                    sbAllSql.AppendLine(@"
     }
-  },
-  ""required"": [
-    ""rows"",
-    ""msg"",
-    ""result""
-  ]
 }");
+                }
+                else
+                {
+                    //不分页
+                    sbAllSql.Insert(0, @"{
+  ""type"": ""object"",
+  ""title"": ""empty object"",
+  ""properties"": {
+    ");
+
+                    sbAllSql.AppendLine(@"
+    }
+}");
+                }
             }
-            else if ("3".Equals(sModule))
+            else if ("2".Equals(sModule))
             {
-                sbAllSql.Insert(0, @"{
+                //查询结果
+                if (ckbIsPage.Checked)
+                {
+                    //分页
+                    sbAllSql.Insert(0, @"{
   ""type"": ""object"",
   ""title"": ""empty object"",
   ""properties"": {
@@ -791,33 +834,49 @@ namespace Breezee.WorkHelper.DBTool.UI
       ""type"": ""object"",
       ""properties"": {
         ");
-                sbAllSql.AppendLine(@"
+                    sbAllSql.AppendLine(@"
         },
       ""description"": ""结果集"",
       ""required"": []
     }
   }
 }");
-            }
-            else if ("4".Equals(sModule))
-            {
-                sbAllSql.Insert(0, @"{
+                }
+                else
+                {
+                    //不分页
+                    sbAllSql.Insert(0, @"{
   ""type"": ""object"",
   ""title"": ""empty object"",
   ""properties"": {
-    ""pageindex"": {
-      ""type"": ""number"",
-      ""description"": ""当前页数""
-      },
-    ""pagesize"": {
-      ""type"": ""number"",
-      ""description"": ""每页条数""
-      },
-    ");
+    ""result"": {
+      ""type"": ""string"",
+      ""description"": ""执行结果""
+    },
+    ""msg"": {
+      ""type"": ""string"",
+      ""description"": ""返回信息""
+    },
+    ""rows"": {
+      ""type"": ""array"",
+      ""items"": {
+        ""type"": ""object"",
+        ""properties"": {
+           ");
 
-                sbAllSql.AppendLine(@"
+                    sbAllSql.AppendLine(@"
+           }
+      },
+      ""description"": ""结果集""
     }
+  },
+  ""required"": [
+    ""rows"",
+    ""msg"",
+    ""result""
+  ]
 }");
+                }
             }
         }
         #endregion
@@ -1172,18 +1231,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 string sModule = cbbModuleString.SelectedValue.ToString();
                 rtbConString.Clear();
-                if ("1".Equals(sModule) || "2".Equals(sModule) || "3".Equals(sModule) || "4".Equals(sModule))
-                {
-                    rtbConString.AppendText(@"""#C3#"":{
-    ""type"":""string"",
-    ""description"":""#C1#""
-    },");
-                    if (!"1".Equals(sModule))
-                    {
-                        ckbRemoveLastChar.Checked = true;
-                    }
-                }
-                else if ("11".Equals(sModule))
+                if ("11".Equals(sModule))
                 {
                     rtbConString.AppendText(string.Format(@"    @ApiModelProperty(""#{0}#"")
     @TableField(""#{1}#"")
@@ -1202,6 +1250,17 @@ private String #{1}#;
  AND  t.#C# =  #{param.#C3#}
 </if>");
                 }
+                else
+                {
+                    rtbConString.AppendText(@"""#C3#"":{
+    ""type"":""string"",
+    ""description"":""#C1#""
+    },");
+                    if (!"1".Equals(sModule))
+                    {
+                        ckbRemoveLastChar.Checked = true;
+                    }
+                }
             }
         }
 
@@ -1212,29 +1271,34 @@ private String #{1}#;
                 string sType = cbbInputType.SelectedValue.ToString();
                 if("1".Equals(sType))
                 {
-                    grbInputSql.Visible = false;
+                    //匹配SQL的查询条件
+                    spcQuerySql.Panel1Collapsed = false;  //设计上方不折叠
+                    ckbOnlyMatchQueryResult.Checked = true;
+                    grbInputSql.Text = "查询SQL";
+                    ckbOnlyMatchQueryResult.Text = "仅匹配SQL中的条件参数名称";
+                    toolTip1.SetToolTip(cbbInputType, "根据参数字符来匹配所有列，支持#{param.colName}、#{colName}、@colName、:colName、#colName#格式");
+                    toolTip1.SetToolTip(ckbOnlyMatchQueryResult, "选中后点【匹配】按钮会清空【粘贴或查询的列】网格");
+                    cbbModuleString.SelectedValue = "1"; //YAPI查询条件
+                }
+                else if ("2".Equals(sType))
+                {
+                    //匹配SQL的查询结果
+                    spcQuerySql.Panel1Collapsed = false;  //设计上方不折叠
+                    ckbOnlyMatchQueryResult.Checked = true;
+                    grbInputSql.Text = "查询SQL";
+                    ckbOnlyMatchQueryResult.Text = "仅匹配查询结果中所有列名";
+                    toolTip1.SetToolTip(cbbInputType, "根据查询的SQL来得到所有列（注：SQL必须运行不报错，且最好是查询空数据）");
+                    toolTip1.SetToolTip(ckbOnlyMatchQueryResult, "选中后点【匹配】按钮会清空【粘贴或查询的列】网格");
+                    cbbModuleString.SelectedValue = "2";//YAPI查询结果
+                }
+                else
+                {
+                    //粘贴列
+                    spcQuerySql.Panel1Collapsed = true;  //设计上方折叠
                     ckbOnlyMatchQueryResult.Checked = true;
                     ckbOnlyMatchQueryResult.Text = "追加列";
                     toolTip1.SetToolTip(cbbInputType, "粘贴列编码");
                     toolTip1.SetToolTip(ckbOnlyMatchQueryResult, "选中后支持多次复制追加数据");
-                }
-                else if ("2".Equals(sType))
-                {
-                    grbInputSql.Visible = true;
-                    ckbOnlyMatchQueryResult.Checked = true;
-                    grbInputSql.Text = "查询SQL";
-                    ckbOnlyMatchQueryResult.Text = "仅匹配查询结果";
-                    toolTip1.SetToolTip(cbbInputType, "根据查询的SQL来得到所有列（注：SQL必须运行不报错，且最好是查询空数据）");
-                    toolTip1.SetToolTip(ckbOnlyMatchQueryResult, "选中后点【匹配】按钮会清空【粘贴或查询的列】网格");
-                }
-                else
-                {
-                    grbInputSql.Visible = true;
-                    ckbOnlyMatchQueryResult.Checked = true;
-                    grbInputSql.Text = "参数字符";
-                    ckbOnlyMatchQueryResult.Text = "仅匹配参数";
-                    toolTip1.SetToolTip(cbbInputType, "根据参数字符来匹配所有列，支持#{param.colName}、#{colName}、@colName、:colName、#colName#格式");
-                    toolTip1.SetToolTip(ckbOnlyMatchQueryResult, "选中后点【匹配】按钮会清空【粘贴或查询的列】网格");
                 }
             }
         }

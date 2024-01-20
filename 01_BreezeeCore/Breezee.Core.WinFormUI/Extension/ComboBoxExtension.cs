@@ -42,6 +42,7 @@ namespace Breezee.Core.Tool
             {
                 cbbControl.DropDownStyle = ComboBoxStyle.DropDownList;
             }
+            cbbControl.Font = new System.Drawing.Font("微软雅黑", 9); //宋体、Segoe UI、微软雅黑、等线、Arial、、、
         }
         #endregion
 
