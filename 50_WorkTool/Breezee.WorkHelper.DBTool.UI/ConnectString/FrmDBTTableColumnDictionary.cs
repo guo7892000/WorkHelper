@@ -106,6 +106,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             cbbInputType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_ConfirmColumnType, "2").Value;
             cbbModuleString.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_TemplateType, "2").Value;
             ckbIsPage.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_IsPage, "0").Value) ? true : false;//是否分页
+            ckbAutoParamQuery.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_IsAutoParam, "1").Value) ? true : false;//自动参数化查询
+            toolTip1.SetToolTip(ckbAutoParamQuery, "当未选中时，请保证SQL是可以直接执行的。");
         }
 
         #region 显示全局提示信息事件
@@ -410,7 +412,16 @@ namespace Breezee.WorkHelper.DBTool.UI
                     //2查询结果处理
                     try
                     {
-                        DataTable dtSql = _dataAccess.QueryAutoParamSqlData(sSql);
+                        DataTable dtSql;
+                        if (ckbAutoParamQuery.Checked)
+                        {
+                            dtSql = _dataAccess.QueryAutoParamSqlData(sSql, new Dictionary<string, string>()); //先调用自动参数化方法，再查询
+                        }
+                        else
+                        {
+                            dtSql = _dataAccess.QueryHadParamSqlData(sSql, new Dictionary<string, string>()); //直接调用查询方法
+                        }
+                        
                         foreach (DataColumn dc in dtSql.Columns)
                         {
                             if (dtInput.Select(_sInputColCode + "='" + dc.ColumnName + "'").Length == 0)
@@ -742,6 +753,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //保存用户偏好值
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_TemplateType, cbbModuleString.SelectedValue.ToString(), "【数据字典】模板类型");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_IsPage, ckbIsPage.Checked ? "1" : "0", "【生成表SQL】是否分页");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_IsAutoParam, ckbAutoParamQuery.Checked ? "1" : "0", "【生成表SQL】是否自动参数化查询");
                 WinFormContext.UserLoveSettings.Save();
 
                 tabControl1.SelectedTab = tpAutoSQL;

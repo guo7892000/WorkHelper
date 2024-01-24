@@ -21,6 +21,7 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string ColumnDic_ConfirmColumnType = "ColumnDic_ConfirmColumnType";
         public static readonly string ColumnDic_TemplateType = "ColumnDic_TemplateType";
         public static readonly string ColumnDic_IsPage = "ColumnDic_IsPage";
+        public static readonly string ColumnDic_IsAutoParam = "ColumnDic_IsAutoParam";
         //点击复制
         public static readonly string ClickCopyPath = "ClickCopyPath";
         public static readonly string DirStringLastSelectedPath = "DirStringLastSelectedPath";
