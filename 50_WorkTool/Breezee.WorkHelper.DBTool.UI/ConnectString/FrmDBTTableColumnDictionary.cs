@@ -54,6 +54,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private BindingSource bsFindColumn = new BindingSource();
         //IDictionary<string, string> _dicColCodeRelation = new Dictionary<string, string>();
         MiniXmlConfig commonColumn;
+        DataGridViewFindText dgvFindText;
         #endregion
 
         #region 构造函数
@@ -107,7 +108,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             cbbModuleString.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_TemplateType, "2").Value;
             ckbIsPage.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_IsPage, "0").Value) ? true : false;//是否分页
             ckbAutoParamQuery.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_IsAutoParam, "1").Value) ? true : false;//自动参数化查询
+            ckbIsAutoExclude.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_IsAutoExcludeTable, "1").Value) ? true : false;//自动排除表名
+            txbExcludeTable.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_ExcludeTableList, "_bak,_temp,_tmp").Value; //排除表列表
             toolTip1.SetToolTip(ckbAutoParamQuery, "当未选中时，请保证SQL是可以直接执行的。");
+            toolTip1.SetToolTip(txbExcludeTable, "排除包括逗号分隔列表中所有字符的表名。");
         }
 
         #region 显示全局提示信息事件
@@ -236,6 +240,15 @@ namespace Breezee.WorkHelper.DBTool.UI
             dgvTableList.BindDataGridView(dtTable, true);
             dgvTableList.ShowRowNum();
             tabControl2.SelectedTab = tpTable;//选中表页签
+
+            if (ckbIsAutoExclude.Checked)
+            {
+                btnExcludeTable.PerformClick();
+            }
+            //保存喜好值
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_IsAutoExcludeTable, ckbIsAutoExclude.Checked ? "1" : "0", "【数据字典】是否自动排除表名");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_ExcludeTableList, txbExcludeTable.Text.Trim(), "【数据字典】排除表列表");
+            WinFormContext.UserLoveSettings.Save();
 
             //是否清除数据
             if (ckbClearAllCol.Checked)
@@ -1431,6 +1444,63 @@ AND  A.#C# =  #{param.#C3#}
                 dgvSelect.Rows[e.RowIndex].Cells[DBColumnSimpleEntity.SqlString.NameUpper].Value = dgvSelect.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().FirstLetterUpper();
                 dgvSelect.Rows[e.RowIndex].Cells[DBColumnSimpleEntity.SqlString.NameLower].Value = dgvSelect.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().FirstLetterUpper(false);
             }
+        }
+
+        private void btnFindNext_Click(object sender, EventArgs e)
+        {
+            FindGridText(true);
+        }
+
+        private void btnFindFront_Click(object sender, EventArgs e)
+        {
+            FindGridText(false);
+        }
+
+        private void FindGridText(bool isNext)
+        {
+            string sSearch = txbSearchTableName.Text.Trim();
+            if (string.IsNullOrEmpty(sSearch)) return;
+            dgvTableList.SeachText(sSearch, ref dgvFindText, null, isNext);
+            lblFind.Text = dgvFindText.CurrentMsg; 
+        }
+
+        private void btnExcludeTable_Click(object sender, EventArgs e)
+        {
+            string sExcludeFileName = txbExcludeTable.Text.Trim();
+            if (string.IsNullOrEmpty(sExcludeFileName))
+            {
+                return;
+            }
+
+            string[] sFilter = sExcludeFileName.Split(new char[] { ',', '，' }, StringSplitOptions.RemoveEmptyEntries);
+            DataTable dtFtpFile = dgvTableList.GetBindingTable();
+            if (dtFtpFile.Rows.Count == 0) return;
+
+            var query = from f in dtFtpFile.AsEnumerable()
+                        where GetLinqDynamicWhere(sFilter, f)
+                        select f;
+            foreach (var item in query.ToList())
+            {
+                item[_sGridColumnSelect] = "0"; //设置为不选中
+            }
+
+            //保存喜好值
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_IsAutoExcludeTable, ckbIsAutoExclude.Checked ? "1" : "0", "【数据字典】是否自动排除表名");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_ExcludeTableList, txbExcludeTable.Text.Trim(), "【数据字典】排除表列表");
+            WinFormContext.UserLoveSettings.Save();
+        }
+
+        private static bool GetLinqDynamicWhere(string[] filterArr,DataRow drF)
+        {
+            foreach (var item in filterArr)
+            {
+                string sFilePath = drF.Field<string>(DBTableEntity.SqlString.Name);
+                if (sFilePath.Contains(item))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 
