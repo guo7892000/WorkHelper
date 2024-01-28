@@ -191,7 +191,14 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 #region 列备注的处理
                 //备注
-                sbRemark.Append(" COMMENT ON COLUMN " + strTableCode + "." + strColCode + " IS '" + strColName + ":" + strColRemark + "';\n");
+                if (string.IsNullOrEmpty(strColRemark))
+                {
+                    sbRemark.Append(" COMMENT ON COLUMN " + strTableCode + "." + strColCode + " IS '" + strColName + "';\n");
+                }
+                else
+                {
+                    sbRemark.Append(" COMMENT ON COLUMN " + strTableCode + "." + strColCode + " IS '" + strColName + "：" + strColRemark + "';\n");
+                }
                 #endregion
 
                 #region 增加逗号

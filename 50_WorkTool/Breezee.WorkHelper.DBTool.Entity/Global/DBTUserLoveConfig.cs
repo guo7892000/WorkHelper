@@ -125,5 +125,6 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string GenerateTableSQL_QueryColumnRealTime = "GenerateTableSQL_QueryColumnRealTime";//是否实时查询列信息
         public static readonly string GenerateTableSQL_IsFullType = "GenerateTableSQL_IsFullType";//是否全类型
         public static readonly string GenerateTableSQL_IsLYTemplate = "GenerateTableSQL_IsLYTemplate";//是否LY模板
+        public static readonly string GenerateTableSQL_IsOnlyRemark = "GenerateTableSQL_IsOnlyRemark";//是否仅使用备注作为表或列的注释
     }
 }

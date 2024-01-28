@@ -47,10 +47,13 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// </summary>
         /// <param name="tabControl"></param>
         /// <param name="tableList"></param>
-        /// <param name="columnList"></param>
-        public static void Generate(TabControl tabControl, DataTable tableList, DataTable columnList, bool useDataTypeFull, bool useLYTemplate)
+        /// <param name="columnList">列清单</param>
+        /// <param name="useDataTypeFull">全类型</param>
+        /// <param name="useLYTemplate">是否使用LY模板</param>
+        /// <param name="useNameRemark">是否使用包括列名的备注</param>
+        public static void Generate(TabControl tabControl, DataTable tableList, DataTable columnList, bool useDataTypeFull, bool useLYTemplate, bool useNameRemark)
         {
-            HtmlString = GenerateHtmlString(tableList, columnList, useDataTypeFull, useLYTemplate);
+            HtmlString = GenerateHtmlString(tableList, columnList, useDataTypeFull, useLYTemplate, useNameRemark);
 
             if (!tabControl.TabPages.ContainsKey(TABKEY_TABLE_STRUCT))
             {
@@ -86,7 +89,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="tableList">表清单</param>
         /// <param name="columnList">列清单</param>
         /// <returns></returns>
-        private static string GenerateHtmlString(DataTable tableList, DataTable columnList,bool useDataTypeFull, bool useLYTemplate)
+        private static string GenerateHtmlString(DataTable tableList, DataTable columnList,bool useDataTypeFull, bool useLYTemplate, bool useNameRemark)
         {
             string htmlTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Html);
             string tableTemplate;
@@ -135,8 +138,19 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                     //是否使用全类型替换
                     string sDataType = useDataTypeFull ? row[ColCommon.ExcelCol.DataTypeFullNew].ToString() : row[ColCommon.ExcelCol.DataTypeNew].ToString();
-
-                    string columnString = columnsTemplate.Replace("${ColumnName}", row[ColCommon.ExcelCol.Name].ToString())
+                    string sColName = row[ColCommon.ExcelCol.Name].ToString();
+                    string sSourceRemark = row[ColCommon.ExcelCol.Remark].ToString();
+                    string sColRemark;
+                    if (useNameRemark)
+                    {
+                        sColRemark = string.IsNullOrEmpty(sSourceRemark) ? sColName : sColName + "：" + sSourceRemark;
+                    }
+                    else
+                    {
+                        sColRemark = sSourceRemark;
+                    }
+                    //列Web字符
+                    string columnString = columnsTemplate.Replace("${ColumnName}", sColName)
                         .Replace("${ColumnCode}", row[ColCommon.ExcelCol.Code].ToString())
                         .Replace("${ColumnType}", sDataType)
                         .Replace("${ColumnWidth}", row[ColCommon.ExcelCol.DataLength].ToString())
@@ -144,23 +158,36 @@ namespace Breezee.WorkHelper.DBTool.UI
                         .Replace("${PrimaryKey}", row[ColCommon.ExcelCol.KeyType].ToString())
                         .Replace("${DefaultValue}", row[ColCommon.ExcelCol.Default].ToString())
                         .Replace("${Rule}", row[ColCommon.ExcelCol.NotNull].ToString())
-                        .Replace("${Remark}", row[ColCommon.ExcelCol.Remark].ToString())
+                        .Replace("${Remark}", sColRemark)
                         .Replace("$(No)", index.ToString())
                         .Replace("${ChangeType}", strColumnChangeType);
                     columnBuilder.Append(columnString);
                     index++;
                 }
 
+                //表相关
                 string sTableChangeType = rowTable[EntTable.ExcelTable.ChangeType].ToString();
                 if (useLYTemplate)
                 {
                     sTableChangeType = sTableChangeType.Replace("新增","创建") +"表";
                 }
+                string sTableName = rowTable[EntTable.ExcelTable.Name].ToString();
+                string sTableSoureRemark = rowTable[EntTable.ExcelTable.Remark].ToString();
+                string sTableRemark;
+                if (useNameRemark)
+                {
+                    sTableRemark = string.IsNullOrEmpty(sTableSoureRemark) ? sTableName : sTableName + "：" + sTableSoureRemark;
+                }
+                else
+                {
+                    sTableRemark = sTableSoureRemark;
+                }
+
                 string tableString = tableTemplate.Replace("$$(ColumnsHolder)", columnBuilder.ToString())
-                    .Replace("${tableName}", rowTable[EntTable.ExcelTable.Name].ToString())
+                    .Replace("${tableName}", sTableName)
                     .Replace("${tableCode}", rowTable[EntTable.ExcelTable.Code].ToString())
                     .Replace("${changeType}", sTableChangeType)
-                    .Replace("${tableRemark}", rowTable[EntTable.ExcelTable.Remark].ToString());
+                    .Replace("${tableRemark}", sTableRemark);
                 tableBuilder.Append(tableString);
             }
 

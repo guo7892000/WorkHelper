@@ -173,8 +173,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                 #endregion
 
                 #region 列备注的处理
-                //备注为空时
-                sbSql.Append(" COMMENT " + "'" + strColName + ":" + strColRemark + "'");
+                if(string.IsNullOrEmpty(strColRemark)) 
+                {
+                    //备注为空时
+                    sbSql.Append(" COMMENT " + "'" + strColName  + "'");
+                }
+                else
+                {
+                    sbSql.Append(" COMMENT " + "'" + strColName + "：" + strColRemark + "'");
+                }
                 #endregion
 
                 #region 增加逗号

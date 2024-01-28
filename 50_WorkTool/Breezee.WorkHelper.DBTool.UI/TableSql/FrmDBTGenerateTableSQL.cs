@@ -105,10 +105,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             txbExcludeColumn.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_ExcludeColumnList, "").Value;
             ckbFullTypeDoc.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsFullType, "0").Value) ? true : false;
             ckbLYTemplate.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsLYTemplate, "0").Value) ? true : false;
+            ckbOnlyRemark.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsOnlyRemark, "0").Value) ? true : false;
             //设置下拉框查找数据源
             cbbTableName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cbbTableName.AutoCompleteSource = AutoCompleteSource.CustomSource;
             toolTip1.SetToolTip(ckbQueryColumnRealTime, "当选中时，会实时查询列信息，速度较慢，不建议选中！");
+            toolTip1.SetToolTip(ckbOnlyRemark, "选中时，表示备注里已包含了表或列名称，将只使用备注作为表或列的注释；否则使用列名称+备注作为表或列的备注！"); 
         }
 
         #region 显示全局提示信息事件
@@ -324,7 +326,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     dr[EntTable.ExcelTable.Name] = drArr[0][DBTableEntity.SqlString.NameCN].ToString();
                     dr[EntTable.ExcelTable.ChangeType] = "新增";
                     dr[EntTable.ExcelTable.CommonColumnTableCode] = "";
-                    dr[EntTable.ExcelTable.Remark] = drArr[0][DBTableEntity.SqlString.Comments].ToString();
+                    dr[EntTable.ExcelTable.Remark] = drArr[0][DBTableEntity.SqlString.Extra].ToString();
                     dtTableCopy.Rows.Add(dr);
                 }
                 else
@@ -338,7 +340,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         dr[EntTable.ExcelTable.Name] = drSource[DBTableEntity.SqlString.NameCN].ToString();
                         dr[EntTable.ExcelTable.ChangeType] = "新增";
                         dr[EntTable.ExcelTable.CommonColumnTableCode] = "";
-                        dr[EntTable.ExcelTable.Remark] = drSource[DBTableEntity.SqlString.Comments].ToString();
+                        dr[EntTable.ExcelTable.Remark] = drSource[DBTableEntity.SqlString.Extra].ToString();
                         dtTableCopy.Rows.Add(dr);
                     }
                 }
@@ -354,6 +356,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_QueryColumnRealTime, ckbQueryColumnRealTime.Checked ? "1" : "0", "【生成表SQL】是否实时查询列信息");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsFullType, ckbFullTypeDoc.Checked ? "1" : "0", "【生成表SQL】是否全类型");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsLYTemplate, ckbLYTemplate.Checked ? "1" : "0", "【生成表SQL】是否LY模板");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsOnlyRemark, ckbOnlyRemark.Checked ? "1" : "0", "【生成表SQL】是否仅使用备注作为表或列的说明");
                 WinFormContext.UserLoveSettings.Save();
             }
             //设置不能增加行
@@ -535,7 +538,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             //增加生成表结构的功能
             dtAllCol.AcceptChanges();
-            TableStructGenerator.Generate(tabControl1, dtTalbeSelect, dtColumnSelect,ckbFullTypeDoc.Checked,ckbLYTemplate.Checked);
+            TableStructGenerator.Generate(tabControl1, dtTalbeSelect, dtColumnSelect,ckbFullTypeDoc.Checked,ckbLYTemplate.Checked,ckbOnlyRemark.Checked);
             //生成SQL成功后提示
             ShowSuccessMsg(_strAutoSqlSuccess);
             //初始化控件
@@ -760,7 +763,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             DataTable dtColsNew = EntCol.GetTable(templateType);
             bool isExclude = ckbExcludeColumn.Checked;
             string[] arrExclude = txbExcludeColumn.Text.Trim().ToLower().Split(new char[] { ',','，',';','；' }, StringSplitOptions.RemoveEmptyEntries);
-            //增加选择列
+            //增加选择列：注用BindDataGridView时，就不用指定表的列类型为bool类型；只有使用BindAutoColumn时，才需要指定表的列类型为bool类型。
             DataColumn dcSelected = new DataColumn(_sGridColumnSelect, typeof(bool));
             dcSelected.DefaultValue = "True";
             dtColsNew.Columns.Add(dcSelected);
@@ -788,7 +791,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 dr[ColCommon.ExcelCol.Default] = drSource[DBColumnEntity.SqlString.Default].ToString();
                 dr[ColCommon.ExcelCol.KeyType] = drSource[DBColumnEntity.SqlString.KeyType].ToString();
                 dr[ColCommon.ExcelCol.NotNull] = "1".Equals(drSource[DBColumnEntity.SqlString.NotNull].ToString()) ? "是" : "";
-                dr[ColCommon.ExcelCol.Remark] = drSource[DBColumnEntity.SqlString.Comments].ToString();
+                dr[ColCommon.ExcelCol.Remark] = drSource[DBColumnEntity.SqlString.Extra].ToString();
                 dr[ColCommon.ExcelCol.DataTypeFullNew] = ColCommon.GetFullDataType(sDataType, sDataLength, sDataScale); //全类型
                 //统一主键处理
                 string sPKName = "PK_" + drSource[DBColumnEntity.SqlString.TableName].ToString();
@@ -859,6 +862,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             if(ckbLYTemplate.Checked)
             {
                 ckbFullTypeDoc.Checked = true;
+                ckbOnlyRemark.Checked = true;
             }
         }
 

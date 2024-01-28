@@ -151,7 +151,12 @@ namespace Breezee.Core.WinFormUI
         /// <returns></returns>
         public static FlexGridColumn NewRowNoCol()
         {
-            FlexGridColumn column = new FlexGridColumn.Builder().Name(StaticConstant.FRA_GRID_ROWNO_STR).Caption("序号").Type(DataGridViewColumnTypeEnum.TextBox)
+            return NewRowNoCol(StaticConstant.FRA_GRID_ROWNO_STR);
+        }
+
+        public static FlexGridColumn NewRowNoCol(string sColumnName)
+        {
+            FlexGridColumn column = new FlexGridColumn.Builder().Name(sColumnName).Caption("序号").Type(DataGridViewColumnTypeEnum.TextBox)
                 .Visible(true).Width(40).Align(DataGridViewContentAlignment.MiddleRight).Edit(false).ValType(typeof(int)).IsRowNum().Build();
             return column;
         }

@@ -172,6 +172,12 @@
     <Compile Include="ConnectString\FrmDBTTableColumnDictionary.Designer.cs">
       <DependentUpon>FrmDBTTableColumnDictionary.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConnectString\FrmDBTTableColumnDiff.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConnectString\FrmDBTTableColumnDiff.Designer.cs">
+      <DependentUpon>FrmDBTTableColumnDiff.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConnectString\FrmDBTTableColumnString.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -377,6 +383,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConnectString\FrmDBTTableColumnDictionary.resx">
       <DependentUpon>FrmDBTTableColumnDictionary.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConnectString\FrmDBTTableColumnDiff.resx">
+      <DependentUpon>FrmDBTTableColumnDiff.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConnectString\FrmDBTTableColumnString.resx">
       <DependentUpon>FrmDBTTableColumnString.cs</DependentUpon>

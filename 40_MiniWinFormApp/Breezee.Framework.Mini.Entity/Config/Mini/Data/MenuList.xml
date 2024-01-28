@@ -21,8 +21,9 @@
       <!--表SQL生成-->
       <Menu Guid="04FC80B7-1DE5-4717-A7FF-E948BCD230CD" Name="表结构SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTExcelGenerateTableSQL"  HelpPath="/Help/Html/DBTool/DB/SqlTableConstuct.html"/>
       <Menu Guid="629E907C-7790-4897-9126-37E43CE5F80A" Name="增删改查SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTGetTableQuerySql"  HelpPath="/Help/Html/DBTool/DB/SqlDBQuery.html"/>
+		<Menu Guid="2A1A51C1-1C3E-4451-920F-CB6942D8CF4C" Name="表列差异比较" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTTableColumnDiff"  HelpPath="/Help/Html/DBTool/DB/SqlTableColumnRemark.html"/>
       <Menu Guid="0DF72AF9-7BF1-44E0-B68C-A209572C5B90" Name="表列注释SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTTableExtendProperty"  HelpPath="/Help/Html/DBTool/DB/SqlTableColumnRemark.html"/>
-    </Class>
+	</Class>
     
     <Class Guid="A72D3A5E-F499-468C-884A-B506004A459D" Name="数据SQL生成" Code="M_DB_TOOL_DATA_SQL" ShortCutKey="">
       <!--数据SQL生成-->

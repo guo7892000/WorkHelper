@@ -1,0 +1,26 @@
+SELECT A.OUT_STORE_CODE    AS RELATE_ORDER_CODE /*出库单号*/,
+      A.OUT_STORE_ID      AS RELATE_ORDER_ID /*出库单ID*/,
+      A.UPDATE_CONTROL_ID,
+      IFNULL('#TAX_RATE#', 0) AS TAX_RATE
+FROM t_scm_pa_bu_oem_out_store A
+JOIN t_scm_pa_bu_oem_out_store_d B
+   ON A.OUT_STORE_ID = B.OUT_STORE_ID
+ LEFT JOIN (SELECT IFNULL(SUM(J.IN_STORE_NUM), 0) AS IN_STORE_NUM,
+                   J.RELATE_ORDER_D_ID
+              FROM t_scm_pa_bu_dlr_in_store I
+             INNER JOIN t_scm_pa_bu_dlr_in_store_d J
+                ON I.IN_STORE_ID = J.IN_STORE_ID
+             WHERE 1 = 1
+               AND I.DLR_ID = '#DLR_ID#'
+               AND I.BILL_TYPE = '#BILL_TYPE#'
+             GROUP BY J.RELATE_ORDER_D_ID) K
+   ON B.OUT_STORE_D_ID = K.RELATE_ORDER_D_ID
+WHERE 1 = 1
+  AND A.OUT_STORE_STATUS IN ('0', '1')
+  AND A.OUT_STORE_TYPE IN ('P01', 'PU1') /*正常出库，紧急出库*/
+  AND A.DLR_ID = '#DLR_ID#'
+  AND A.PUR_ORDER_CODE = '#PUR_ORDER_CODE#'
+  AND (('#BILL_TYPE#' = '1' AND A.LOGISTICS_FLAG IS NULL) OR
+      ('#BILL_TYPE#' = '5' AND A.LOGISTICS_FLAG IS NOT NULL))
+  AND B.OUT_STORE_NUM > IFNULL(K.IN_STORE_NUM, 0)
+GROUP BY A.OUT_STORE_ID, A.OUT_STORE_CODE, A.UPDATE_CONTROL_ID

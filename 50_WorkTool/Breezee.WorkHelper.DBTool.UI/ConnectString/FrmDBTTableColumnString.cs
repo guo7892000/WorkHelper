@@ -195,7 +195,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void SetColTag()
         {
             DataTable dtColsNew = DBColumnSimpleEntity.GetTableStruct();
-            //增加选择列
+            //增加选择列：注用BindDataGridView时，就不用指定表的列类型为bool类型；只有使用BindAutoColumn时，才需要指定表的列类型为bool类型。
             DataColumn dcSelected = new DataColumn(_sGridColumnSelect);
             dcSelected.DefaultValue = "1";
             dtColsNew.Columns.Add(dcSelected);
