@@ -109,6 +109,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             ckbIsPage.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_IsPage, "0").Value) ? true : false;//是否分页
             ckbAutoParamQuery.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_IsAutoParam, "1").Value) ? true : false;//自动参数化查询
             ckbIsAutoExclude.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_IsAutoExcludeTable, "1").Value) ? true : false;//自动排除表名
+            ckbReMatchSqlTable.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_IsOnlyMatchSqlTable, "1").Value) ? true : false;//仅匹配SQL表
             txbExcludeTable.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_ExcludeTableList, "_bak,_temp,_tmp").Value; //排除表列表
             toolTip1.SetToolTip(ckbAutoParamQuery, "当未选中时，请保证SQL是可以直接执行的。");
             toolTip1.SetToolTip(txbExcludeTable, "排除包括逗号分隔列表中所有字符的表名。");
@@ -393,33 +394,95 @@ namespace Breezee.WorkHelper.DBTool.UI
             DataTable dtInput = dgvInput.GetBindingTable();
             DataTable dtSelect = dgvSelect.GetBindingTable();
             DataTable dtAllCol = dgvColList.GetBindingTable();
-            if (dtAllCol.Rows.Count == 0)
-            {
-                ShowInfo("请先选择表，并点击【加载数据】后，再匹配数据！");
-                return;
-            }
-            string sInputType = string.Empty;
+            List<string> listTable = new List<string>(); //表清单
+            string sSql = string.Empty; //SQL信息
 
-            if (cbbInputType.SelectedValue != null)
+            string sInputType = cbbInputType.SelectedValue == null ? string.Empty : cbbInputType.SelectedValue.ToString();
+            //得到表清单
+            if ("1".Equals(sInputType) || "2".Equals(sInputType))
             {
-                sInputType = cbbInputType.SelectedValue.ToString();
-                string sSql = rtbInputSql.Text.Trim();
-                if ("1".Equals(sInputType) || "2".Equals(sInputType))
+                sSql = rtbInputSql.Text.Trim();
+                //1查询条件和2查询结果处理
+                if (string.IsNullOrEmpty(sSql))
                 {
-                    //1查询条件和2查询结果处理
-                    if (string.IsNullOrEmpty(sSql))
+                    string sErr = "2".Equals(sInputType) ? "请输入查询空数据的SQL，这里只用到查询结果的列编码！" : "请输入条件字符（以@或:开头，或前后#的参数）";
+                    ShowInfo(sErr);
+                    return;
+                }
+                if (ckbOnlyMatchQueryResult.Checked)
+                {
+                    dtInput.Clear();
+                    dtSelect.Clear();
+                }
+
+                //针对JOIN形式的表名
+                string tablePattern = @"\s*(FROM|JOIN)\s+\w+\s*";//前面为*，是因为有可能在拆分时，去掉了前面的空格
+                Regex regex = new Regex(tablePattern, RegexOptions.IgnoreCase);
+                MatchCollection mc = regex.Matches(sSql);
+                foreach (Match item in mc)
+                {
+                    string sValue = item.Value.Trim();
+                    string sTableName = sValue.Substring(sValue.LastIndexOf(" ")).Trim();
+                    if (!listTable.Contains(sTableName))
                     {
-                        string sErr = "2".Equals(sInputType) ? "请输入查询空数据的SQL，这里只用到查询结果的列编码！" : "请输入条件字符（以@或:开头，或前后#的参数）";
-                        ShowInfo(sErr);
-                        return;
-                    }
-                    if (ckbOnlyMatchQueryResult.Checked)
-                    {
-                        dtInput.Clear();
-                        dtSelect.Clear();
+                        listTable.Add(sTableName);
                     }
                 }
 
+                /*针对逗号分隔的表名：以下为示例
+                 * select * from   tab1   A  ,    tab2 B   ,
+                    tab3 C 
+                    where a.id=b.id
+                 * */
+                tablePattern = @"\s*(FROM)\s+\w+(\s*\w*\s*,\s*\w+\s*)*";//前面为*，是因为有可能在拆分时，去掉了前面的空格
+                regex = new Regex(tablePattern, RegexOptions.IgnoreCase);
+                mc = regex.Matches(sSql);
+                foreach (Match item in mc)
+                {
+                    string sValue = item.Value.Trim();
+                    sValue = sValue.Substring(sValue.IndexOf("FROM", StringComparison.OrdinalIgnoreCase)+4).Trim(); //去掉开头的FROM
+                    string[] tableArr = sValue.Split(new char[] { ',' });
+                    foreach (string oneTable in tableArr)
+                    {
+                        string sTableName = oneTable.Trim();
+                        sTableName = sTableName.Split(new char[] { ' ' })[0]; 
+                        if (!listTable.Contains(sTableName))
+                        {
+                            listTable.Add(sTableName);
+                        }
+                    }
+                }
+
+                //仅匹配SQL中的表
+                if (ckbReMatchSqlTable.Checked)
+                { 
+                    DataTable dtTable = dgvTableList.GetBindingTable();
+                    foreach (DataRow dr in dtTable.Rows)
+                    {
+                        dr[_sGridColumnSelect] = "0";
+                    }
+                    foreach (string sTableCode in listTable)
+                    {
+                        DataRow[] drArr = dtTable.Select(DBTableEntity.SqlString.Name + "='" + sTableCode + "'");
+                        if (drArr.Length > 0)
+                        {
+                            drArr[0][_sGridColumnSelect] = "1";
+                        }
+                    }
+                    btnLoadData_Click(null,null);
+                }
+            }
+            else
+            {
+                if (dtAllCol.Rows.Count == 0)
+                {
+                    ShowInfo("请先选择表，并点击【加载数据】后，再匹配数据！");
+                    return;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(sInputType))
+            {
                 if ("2".Equals(sInputType))
                 {
                     //2查询结果处理
@@ -484,28 +547,10 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             //保存用户偏好值
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_ConfirmColumnType, cbbInputType.SelectedValue.ToString(), "【数据字典】确认列类型");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_IsOnlyMatchSqlTable, ckbReMatchSqlTable.Checked ? "1" : "0", "【数据字典】是否仅匹配SQL表");
             WinFormContext.UserLoveSettings.Save();
 
             DataTable dtCommonCol = dgvCommonCol.GetBindingTable();
-            //得到表清单
-            List<string> listTable = new List<string>();
-            if ("1".Equals(sInputType) || "2".Equals(sInputType))
-            {
-                string sSql = rtbInputSql.Text.Trim();
-                string tablePattern = @"\s*(FROM|JOIN)\s+\w+\s+";//前面为*，是因为有可能在拆分时，去掉了前面的空格
-                Regex regex = new Regex(tablePattern, RegexOptions.IgnoreCase);
-                MatchCollection mc = regex.Matches(sSql);
-                foreach (Match item in mc)
-                {
-                    string sValue = item.Value.Trim();
-                    string sTableName = sValue.Substring(sValue.LastIndexOf(" ")).Trim();
-                    if (!listTable.Contains(sTableName))
-                    {
-                        listTable.Add(sTableName);
-                    }
-                }
-            }
-
             //循环输入的列清单
             foreach (DataRow dr in dtInput.Rows)
             {
