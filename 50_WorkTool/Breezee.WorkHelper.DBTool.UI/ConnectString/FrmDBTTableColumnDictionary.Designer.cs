@@ -59,6 +59,15 @@
             this.btnCommonSave = new System.Windows.Forms.Button();
             this.btnFindCommon = new System.Windows.Forms.Button();
             this.txbSearchCommon = new System.Windows.Forms.TextBox();
+            this.tpCodeName = new System.Windows.Forms.TabPage();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.dgvCodeNameCol = new System.Windows.Forms.DataGridView();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.btnRemoveSelectCodeName = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.btnSaveCodeName = new System.Windows.Forms.Button();
+            this.btnFindCodeName = new System.Windows.Forms.Button();
+            this.txbSearchCodeName = new System.Windows.Forms.TextBox();
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.btnLoadData = new System.Windows.Forms.Button();
@@ -68,6 +77,7 @@
             this.cmsRemoveSelect = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiRemoveSelect = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiRemoveSelectAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiAddCodeName = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tpTable = new System.Windows.Forms.TabPage();
@@ -102,6 +112,7 @@
             this.btnMatch = new System.Windows.Forms.Button();
             this.ckbOnlyMatchQueryResult = new System.Windows.Forms.CheckBox();
             this.ckbAutoParamQuery = new System.Windows.Forms.CheckBox();
+            this.ckbReMatchSqlTable = new System.Windows.Forms.CheckBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.rtbConString = new System.Windows.Forms.RichTextBox();
@@ -114,7 +125,6 @@
             this.cbbModuleString = new System.Windows.Forms.ComboBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
-            this.ckbReMatchSqlTable = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpAllTableCol.SuspendLayout();
@@ -127,6 +137,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvCommonCol)).BeginInit();
             this.cmsRemoveCommon.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.tpCodeName.SuspendLayout();
+            this.groupBox8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCodeNameCol)).BeginInit();
+            this.groupBox9.SuspendLayout();
             this.tpAutoSQL.SuspendLayout();
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSelect)).BeginInit();
@@ -218,6 +232,7 @@
             // 
             this.tabControl1.Controls.Add(this.tpAllTableCol);
             this.tabControl1.Controls.Add(this.tpCommonCol);
+            this.tabControl1.Controls.Add(this.tpCodeName);
             this.tabControl1.Controls.Add(this.tpAutoSQL);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
@@ -465,6 +480,107 @@
             this.txbSearchCommon.Size = new System.Drawing.Size(155, 21);
             this.txbSearchCommon.TabIndex = 2;
             // 
+            // tpCodeName
+            // 
+            this.tpCodeName.Controls.Add(this.groupBox8);
+            this.tpCodeName.Controls.Add(this.groupBox9);
+            this.tpCodeName.Location = new System.Drawing.Point(4, 22);
+            this.tpCodeName.Name = "tpCodeName";
+            this.tpCodeName.Size = new System.Drawing.Size(466, 480);
+            this.tpCodeName.TabIndex = 3;
+            this.tpCodeName.Text = "编码名称";
+            this.tpCodeName.UseVisualStyleBackColor = true;
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
+            this.groupBox8.Controls.Add(this.dgvCodeNameCol);
+            this.groupBox8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox8.Location = new System.Drawing.Point(0, 43);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(466, 437);
+            this.groupBox8.TabIndex = 13;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "列清单";
+            // 
+            // dgvCodeNameCol
+            // 
+            this.dgvCodeNameCol.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvCodeNameCol.ContextMenuStrip = this.cmsRemoveCommon;
+            this.dgvCodeNameCol.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvCodeNameCol.Location = new System.Drawing.Point(3, 17);
+            this.dgvCodeNameCol.Name = "dgvCodeNameCol";
+            this.dgvCodeNameCol.RowTemplate.Height = 23;
+            this.dgvCodeNameCol.Size = new System.Drawing.Size(460, 417);
+            this.dgvCodeNameCol.TabIndex = 0;
+            this.dgvCodeNameCol.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCodeNameCol_CellEndEdit);
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.btnRemoveSelectCodeName);
+            this.groupBox9.Controls.Add(this.label5);
+            this.groupBox9.Controls.Add(this.btnSaveCodeName);
+            this.groupBox9.Controls.Add(this.btnFindCodeName);
+            this.groupBox9.Controls.Add(this.txbSearchCodeName);
+            this.groupBox9.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox9.Location = new System.Drawing.Point(0, 0);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(466, 43);
+            this.groupBox9.TabIndex = 12;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "查找";
+            // 
+            // btnRemoveSelectCodeName
+            // 
+            this.btnRemoveSelectCodeName.Location = new System.Drawing.Point(278, 15);
+            this.btnRemoveSelectCodeName.Name = "btnRemoveSelectCodeName";
+            this.btnRemoveSelectCodeName.Size = new System.Drawing.Size(75, 23);
+            this.btnRemoveSelectCodeName.TabIndex = 15;
+            this.btnRemoveSelectCodeName.Text = "移除所选";
+            this.btnRemoveSelectCodeName.UseVisualStyleBackColor = true;
+            this.btnRemoveSelectCodeName.Click += new System.EventHandler(this.btnRemoveSelectCodeName_Click);
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label5.AutoSize = true;
+            this.label5.ForeColor = System.Drawing.Color.Red;
+            this.label5.Location = new System.Drawing.Point(133, 2);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(119, 12);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "只支持C、C1、C2定位";
+            // 
+            // btnSaveCodeName
+            // 
+            this.btnSaveCodeName.Location = new System.Drawing.Point(223, 15);
+            this.btnSaveCodeName.Name = "btnSaveCodeName";
+            this.btnSaveCodeName.Size = new System.Drawing.Size(49, 23);
+            this.btnSaveCodeName.TabIndex = 3;
+            this.btnSaveCodeName.Text = "保存";
+            this.btnSaveCodeName.UseVisualStyleBackColor = true;
+            this.btnSaveCodeName.Click += new System.EventHandler(this.btnSaveCodeName_Click);
+            // 
+            // btnFindCodeName
+            // 
+            this.btnFindCodeName.Location = new System.Drawing.Point(168, 15);
+            this.btnFindCodeName.Name = "btnFindCodeName";
+            this.btnFindCodeName.Size = new System.Drawing.Size(49, 23);
+            this.btnFindCodeName.TabIndex = 3;
+            this.btnFindCodeName.Text = "定位";
+            this.toolTip1.SetToolTip(this.btnFindCodeName, "只查找第一个匹配项");
+            this.btnFindCodeName.UseVisualStyleBackColor = true;
+            this.btnFindCodeName.Click += new System.EventHandler(this.btnFindCodeName_Click);
+            // 
+            // txbSearchCodeName
+            // 
+            this.txbSearchCodeName.Location = new System.Drawing.Point(6, 17);
+            this.txbSearchCodeName.Name = "txbSearchCodeName";
+            this.txbSearchCodeName.Size = new System.Drawing.Size(155, 21);
+            this.txbSearchCodeName.TabIndex = 2;
+            // 
             // tpAutoSQL
             // 
             this.tpAutoSQL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
@@ -539,23 +655,31 @@
             // 
             this.cmsRemoveSelect.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiRemoveSelect,
-            this.tsmiRemoveSelectAll});
+            this.tsmiRemoveSelectAll,
+            this.tsmiAddCodeName});
             this.cmsRemoveSelect.Name = "cmsRemove";
-            this.cmsRemoveSelect.Size = new System.Drawing.Size(137, 48);
+            this.cmsRemoveSelect.Size = new System.Drawing.Size(149, 70);
             // 
             // tsmiRemoveSelect
             // 
             this.tsmiRemoveSelect.Name = "tsmiRemoveSelect";
-            this.tsmiRemoveSelect.Size = new System.Drawing.Size(136, 22);
+            this.tsmiRemoveSelect.Size = new System.Drawing.Size(148, 22);
             this.tsmiRemoveSelect.Text = "移除";
             this.tsmiRemoveSelect.Click += new System.EventHandler(this.tsmiRemoveSelect_Click);
             // 
             // tsmiRemoveSelectAll
             // 
             this.tsmiRemoveSelectAll.Name = "tsmiRemoveSelectAll";
-            this.tsmiRemoveSelectAll.Size = new System.Drawing.Size(136, 22);
+            this.tsmiRemoveSelectAll.Size = new System.Drawing.Size(148, 22);
             this.tsmiRemoveSelectAll.Text = "移除所有行";
             this.tsmiRemoveSelectAll.Click += new System.EventHandler(this.tsmiRemoveSelectAll_Click);
+            // 
+            // tsmiAddCodeName
+            // 
+            this.tsmiAddCodeName.Name = "tsmiAddCodeName";
+            this.tsmiAddCodeName.Size = new System.Drawing.Size(148, 22);
+            this.tsmiAddCodeName.Text = "加入编码名称";
+            this.tsmiAddCodeName.Click += new System.EventHandler(this.tsmiAddCodeName_Click);
             // 
             // splitContainer1
             // 
@@ -980,6 +1104,16 @@
             this.ckbAutoParamQuery.Text = "自动参数化查询";
             this.ckbAutoParamQuery.UseVisualStyleBackColor = true;
             // 
+            // ckbReMatchSqlTable
+            // 
+            this.ckbReMatchSqlTable.AutoSize = true;
+            this.ckbReMatchSqlTable.Location = new System.Drawing.Point(3, 32);
+            this.ckbReMatchSqlTable.Name = "ckbReMatchSqlTable";
+            this.ckbReMatchSqlTable.Size = new System.Drawing.Size(90, 16);
+            this.ckbReMatchSqlTable.TabIndex = 10;
+            this.ckbReMatchSqlTable.Text = "仅匹配SQL表";
+            this.ckbReMatchSqlTable.UseVisualStyleBackColor = true;
+            // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1112,16 +1246,6 @@
             this.uC_DbConnection1.Size = new System.Drawing.Size(1230, 78);
             this.uC_DbConnection1.TabIndex = 35;
             // 
-            // ckbReMatchSqlTable
-            // 
-            this.ckbReMatchSqlTable.AutoSize = true;
-            this.ckbReMatchSqlTable.Location = new System.Drawing.Point(3, 32);
-            this.ckbReMatchSqlTable.Name = "ckbReMatchSqlTable";
-            this.ckbReMatchSqlTable.Size = new System.Drawing.Size(90, 16);
-            this.ckbReMatchSqlTable.TabIndex = 10;
-            this.ckbReMatchSqlTable.Text = "仅匹配SQL表";
-            this.ckbReMatchSqlTable.UseVisualStyleBackColor = true;
-            // 
             // FrmDBTTableColumnDictionary
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1150,6 +1274,11 @@
             this.cmsRemoveCommon.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.tpCodeName.ResumeLayout(false);
+            this.groupBox8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCodeNameCol)).EndInit();
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
             this.tpAutoSQL.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
@@ -1282,5 +1411,15 @@
         private System.Windows.Forms.TextBox txbSearchTableName;
         private System.Windows.Forms.CheckBox ckbIsAutoExclude;
         private System.Windows.Forms.CheckBox ckbReMatchSqlTable;
+        private System.Windows.Forms.TabPage tpCodeName;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.DataGridView dgvCodeNameCol;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.Button btnRemoveSelectCodeName;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button btnSaveCodeName;
+        private System.Windows.Forms.Button btnFindCodeName;
+        private System.Windows.Forms.TextBox txbSearchCodeName;
+        private System.Windows.Forms.ToolStripMenuItem tsmiAddCodeName;
     }
 }

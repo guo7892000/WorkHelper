@@ -59,6 +59,7 @@
     <Compile Include="Schema\DBDataBaseEntity.cs" />
     <Compile Include="Schema\DBSchemaCommon.cs" />
     <Compile Include="Schema\DBTableEntity.cs" />
+    <Compile Include="SqlAnalyze\SqlAnalyzer.cs" />
     <Compile Include="SqlBuilder\Base\BaseSqlBuilder.cs" />
     <Compile Include="SqlBuilder\Base\SqlConfig.cs" />
     <Compile Include="SqlBuilder\ExecuteNonQuerySqlBuilder.cs" />

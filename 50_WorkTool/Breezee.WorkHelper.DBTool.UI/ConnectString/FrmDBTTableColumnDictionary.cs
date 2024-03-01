@@ -18,6 +18,8 @@ using System.Security.Policy;
 using System.IO;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
+using System.Reflection.Emit;
+using LibGit2Sharp;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -31,6 +33,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private readonly string _strColName = "变更列清单";
 
         private readonly string _sGridColumnSelect = "IsSelect";
+        private readonly string _sGridColumnIsNoCnRemark = "IsNoCnRemark";
 
         private bool _allSelect = false;//默认全选，这里取反
         private bool _allSelectAll = false;//默认全选，这里取反
@@ -54,6 +57,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private BindingSource bsFindColumn = new BindingSource();
         //IDictionary<string, string> _dicColCodeRelation = new Dictionary<string, string>();
         MiniXmlConfig commonColumn;
+        MiniXmlConfig codeNameColumn;
         DataGridViewFindText dgvFindText;
         #endregion
 
@@ -101,7 +105,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             dtIn.Columns.Add(_sInputColCode, typeof(string));
             bsFindColumn.DataSource = dtIn;
             dgvInput.DataSource = bsFindColumn;
-            //加载通用列内容
+            //加载通用列等内容
             LoadCommonColumnData();
             //加载用户偏好值
             cbbInputType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_ConfirmColumnType, "2").Value;
@@ -181,7 +185,32 @@ namespace Breezee.WorkHelper.DBTool.UI
             //
             dgvCommonCol.Tag = fdc.GetGridTagString();
             dgvCommonCol.BindDataGridView(dtCommonCol, true);
-            
+
+            //编码名称配置网格相关
+            list = new List<string>();
+            list.AddRange(new string[] {
+                DBColumnSimpleEntity.SqlString.Name,
+                DBColumnSimpleEntity.SqlString.NameCN,
+                DBColumnSimpleEntity.SqlString.NameUpper,
+                DBColumnSimpleEntity.SqlString.NameLower
+            });
+            codeNameColumn = new MiniXmlConfig(GlobalContext.PathData(), "CodeNameColumnConfig.xml", list, DBColumnSimpleEntity.SqlString.Name);
+            DataTable dtCodeNameCol = codeNameColumn.Load();
+            dcSelected = new DataColumn(_sGridColumnSelect);
+            dcSelected.DefaultValue = "1";
+            dtCodeNameCol.Columns.Add(dcSelected);
+            fdc = new FlexGridColumnDefinition();
+            fdc.AddColumn(
+                FlexGridColumn.NewRowNoCol(),
+                new FlexGridColumn.Builder().Name(_sGridColumnSelect).Caption("选择").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(40).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.Name).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameCN).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameUpper).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameLower).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
+            );
+            //
+            dgvCodeNameCol.Tag = fdc.GetGridTagString();
+            dgvCodeNameCol.BindDataGridView(dtCodeNameCol, true);
         }
 
         private void cbbConnName_SelectedIndexChanged(object sender, EventArgs e)
@@ -380,8 +409,10 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private void btnMatchGenerate_Click(object sender, EventArgs e)
         {
-            btnMatch.PerformClick();
-            tsbAutoSQL.PerformClick();
+            if (MatchData())
+            {
+                tsbAutoSQL.PerformClick();
+            }
         }
 
         /// <summary>
@@ -391,9 +422,15 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="e"></param>
         private void btnMatch_Click(object sender, EventArgs e)
         {
+            MatchData();
+        }
+
+        private bool MatchData()
+        {
             DataTable dtInput = dgvInput.GetBindingTable();
             DataTable dtSelect = dgvSelect.GetBindingTable();
             DataTable dtAllCol = dgvColList.GetBindingTable();
+            DataTable dtNameCodeCol = dgvCodeNameCol.GetBindingTable();
             List<string> listTable = new List<string>(); //表清单
             string sSql = string.Empty; //SQL信息
 
@@ -407,69 +444,44 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     string sErr = "2".Equals(sInputType) ? "请输入查询空数据的SQL，这里只用到查询结果的列编码！" : "请输入条件字符（以@或:开头，或前后#的参数）";
                     ShowInfo(sErr);
-                    return;
+                    return false;
                 }
+
+                //判断是否已输入了原无字段中文名但输入了
+                string sFiter = string.Format("{0}='1' and {1} is not null", _sGridColumnIsNoCnRemark, DBColumnSimpleEntity.SqlString.NameCN);
+                if (dtSelect.Select(sFiter).Length > 0)
+                {
+                    if (ShowOkCancel("将重新加载【选择列】网格中的所有内容，已录入的信息将丢失，确定继续？") == DialogResult.Cancel)
+                    {
+                        return false;
+                    }
+                }
+
                 if (ckbOnlyMatchQueryResult.Checked)
                 {
                     dtInput.Clear();
                     dtSelect.Clear();
                 }
 
-                //针对JOIN形式的表名
-                string tablePattern = @"\s*(FROM|JOIN)\s+\w+\s*";//前面为*，是因为有可能在拆分时，去掉了前面的空格
-                Regex regex = new Regex(tablePattern, RegexOptions.IgnoreCase);
-                MatchCollection mc = regex.Matches(sSql);
-                foreach (Match item in mc)
+                //从SQL中获取表清单
+                List<string> tables = SqlAnalyzer.GetTableList(sSql);
+                foreach (string sTableName in tables)
                 {
-                    string sValue = item.Value.Trim();
-                    string sTableName = sValue.Substring(sValue.LastIndexOf(" ")).Trim();
+                    sFiter = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.TableName, sTableName);
+                    if (dtAllCol.Select(sFiter).Length > 0)
+                    {
+                        continue;
+                    }
                     if (!listTable.Contains(sTableName))
                     {
                         listTable.Add(sTableName);
                     }
                 }
 
-                /*针对逗号分隔的表名：以下为示例
-                 * select * from   tab1   A  ,    tab2 B   ,
-                    tab3 C 
-                    where a.id=b.id
-                 * */
-                tablePattern = @"\s*(FROM)\s+\w+(\s*\w*\s*,\s*\w+\s*)*";//前面为*，是因为有可能在拆分时，去掉了前面的空格
-                regex = new Regex(tablePattern, RegexOptions.IgnoreCase);
-                mc = regex.Matches(sSql);
-                foreach (Match item in mc)
-                {
-                    string sValue = item.Value.Trim();
-                    sValue = sValue.Substring(sValue.IndexOf("FROM", StringComparison.OrdinalIgnoreCase)+4).Trim(); //去掉开头的FROM
-                    string[] tableArr = sValue.Split(new char[] { ',' });
-                    foreach (string oneTable in tableArr)
-                    {
-                        string sTableName = oneTable.Trim();
-                        sTableName = sTableName.Split(new char[] { ' ' })[0]; 
-                        if (!listTable.Contains(sTableName))
-                        {
-                            listTable.Add(sTableName);
-                        }
-                    }
-                }
-
                 //仅匹配SQL中的表
                 if (ckbReMatchSqlTable.Checked)
-                { 
-                    DataTable dtTable = dgvTableList.GetBindingTable();
-                    foreach (DataRow dr in dtTable.Rows)
-                    {
-                        dr[_sGridColumnSelect] = "0";
-                    }
-                    foreach (string sTableCode in listTable)
-                    {
-                        DataRow[] drArr = dtTable.Select(DBTableEntity.SqlString.Name + "='" + sTableCode + "'");
-                        if (drArr.Length > 0)
-                        {
-                            drArr[0][_sGridColumnSelect] = "1";
-                        }
-                    }
-                    btnLoadData_Click(null,null);
+                {
+                    AddAllColumns(dtAllCol, listTable);//添加所有列
                 }
             }
             else
@@ -477,7 +489,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (dtAllCol.Rows.Count == 0)
                 {
                     ShowInfo("请先选择表，并点击【加载数据】后，再匹配数据！");
-                    return;
+                    return false;
                 }
             }
 
@@ -497,7 +509,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         {
                             dtSql = _dataAccess.QueryHadParamSqlData(sSql, new Dictionary<string, string>()); //直接调用查询方法
                         }
-                        
+
                         foreach (DataColumn dc in dtSql.Columns)
                         {
                             if (dtInput.Select(_sInputColCode + "='" + dc.ColumnName + "'").Length == 0)
@@ -509,7 +521,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     catch (Exception ex)
                     {
                         ShowErr("执行查询SQL报错，请保证SQL的正确性，详细信息：" + ex.Message);
-                        return;
+                        return false;
                     }
                 }
                 else if ("1".Equals(sInputType))
@@ -537,7 +549,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                             .Replace("{", "")
                             .Replace("}", "");
                         //列名不存在，才添加
-                        if(dtInput.Select(_sInputColCode + "='"+ sCol + "'").Length == 0)
+                        if (dtInput.Select(_sInputColCode + "='" + sCol + "'").Length == 0)
                         {
                             dtInput.Rows.Add(sCol);
                         }
@@ -622,6 +634,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                     continue;
                 }
 
+                //查找编码名称列中是否存在
+                drArr = dtNameCodeCol.Select(sFiter);
+                if (drArr.Length > 0)
+                {
+                    dtSelect.ImportRow(drArr[0]);
+                    continue;
+                }
+
                 //判断是否包括下横线：如不包含，那么转换为下横线找找看
                 if (!sCol.Contains("_") && !"2".Equals(sInputType))
                 {
@@ -652,10 +672,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                     drNew[DBColumnSimpleEntity.SqlString.NameUpper] = sCol.FirstLetterUpper();
                     drNew[DBColumnSimpleEntity.SqlString.NameLower] = sCol.FirstLetterUpper(false);
                     drNew[_sGridColumnSelect] = "1";
+                    drNew[_sGridColumnIsNoCnRemark] = "1"; //没有中文备注的列
                     dtSelect.Rows.Add(drNew);
                 }
             }
             dgvSelect.ShowRowNum(true); //显示行号
+            return true;
         }
 
         #region 设置Tag方法
@@ -717,7 +739,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.TableNameUpper).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
             );
             dgvSelect.Tag = fdc.GetGridTagString();
-            dgvSelect.BindDataGridView(dtColsAll.Clone(), true);
+            DataTable dtSelect = dtColsAll.Clone();
+            dcSelected = new DataColumn(_sGridColumnIsNoCnRemark);
+            dcSelected.DefaultValue = "0";
+            dtSelect.Columns.Add(dcSelected);
+            dgvSelect.BindDataGridView(dtSelect, true);
         }
         #endregion
 
@@ -807,7 +833,29 @@ namespace Breezee.WorkHelper.DBTool.UI
                 YapiModuleStringDeal(sbAllSql);
                 rtbResult.AppendText(sbAllSql.ToString() + "\n");
                 Clipboard.SetData(DataFormats.UnicodeText, sbAllSql.ToString());
-                //保存喜好设置
+
+                //针对无表名，但输入了中文名的新列，加入到
+                sFiter = string.Format("{0}='1'", _sGridColumnIsNoCnRemark);
+                DataTable dtNameCode = dgvCodeNameCol.GetBindingTable();
+                bool isNeedSave = false;
+                foreach (DataRow dr in dtSec.Select(sFiter))
+                {
+                    if (string.IsNullOrEmpty(dr[DBColumnSimpleEntity.SqlString.NameCN].ToString()))
+                    {
+                        continue;
+                    }
+                    sFiter = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.Name, dr[DBColumnSimpleEntity.SqlString.Name]);
+                    if (dtNameCode.Select(sFiter).Length == 0)
+                    {
+                        dtNameCode.ImportRow(dr); //对非修改，不是排除列就导入
+                        isNeedSave = true;
+                    }
+                }
+                if (isNeedSave)
+                {
+                    codeNameColumn.Save(dtNameCode);//保存新的编码名称
+                }
+
                 //保存用户偏好值
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_TemplateType, cbbModuleString.SelectedValue.ToString(), "【数据字典】模板类型");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_IsPage, ckbIsPage.Checked ? "1" : "0", "【生成表SQL】是否分页");
@@ -1117,6 +1165,22 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
         }
 
+        private void btnFindCodeName_Click(object sender, EventArgs e)
+        {
+            string sSearch = txbSearchCodeName.Text.Trim();
+            if (string.IsNullOrEmpty(sSearch)) return;
+
+            bool isFind = FindData(dgvCodeNameCol, sSearch, DBColumnSimpleEntity.SqlString.Name);
+            if (!isFind)
+            {
+                isFind = FindData(dgvCodeNameCol, sSearch, DBColumnSimpleEntity.SqlString.NameCN);
+            }
+            if (!isFind)
+            {
+                isFind = FindData(dgvCodeNameCol, sSearch, DBColumnSimpleEntity.SqlString.NameUpper);
+            }
+        }
+
         private bool FindData(DataGridView dgv,string sSearch,string sColumnName)
         {
             BindingSource bs = dgv.DataSource as BindingSource;
@@ -1143,6 +1207,28 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (MsgHelper.ShowYesNo("确定要保存？") == DialogResult.Yes)
                 {
                     commonColumn.Save(dtSave);
+                    ShowInfo("保存成功！");
+                }
+            }
+            else
+            {
+                ShowInfo("没有要保存的数据！");
+            }
+        }
+
+        /// <summary>
+        /// 保存编码名称列配置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnSaveCodeName_Click(object sender, EventArgs e)
+        {
+            DataTable dtSave = dgvCodeNameCol.GetBindingTable();
+            if (dtSave.Rows.Count > 0)
+            {
+                if (MsgHelper.ShowYesNo("确定要保存？") == DialogResult.Yes)
+                {
+                    codeNameColumn.Save(dtSave);
                     ShowInfo("保存成功！");
                 }
             }
@@ -1217,9 +1303,23 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="e"></param>
         private void tsmiAddCommonCol_Click(object sender, EventArgs e)
         {
+            label3.Focus();
             DataRow dataRow = dgvColList.GetCurrentRow();
             if (dataRow == null) return;
             dgvCommonCol.GetBindingTable().ImportRow(dataRow);
+        }
+
+        /// <summary>
+        /// 加入通过列右键按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiAddCodeName_Click(object sender, EventArgs e)
+        {
+            label3.Focus();
+            DataRow dataRow = dgvSelect.GetCurrentRow();
+            if (dataRow == null) return;
+            dgvCodeNameCol.GetBindingTable().ImportRow(dataRow);
         }
 
         /// <summary>
@@ -1249,6 +1349,17 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void btnCommonRemoveSelect_Click(object sender, EventArgs e)
         {
             DataTable dt = dgvCommonCol.GetBindingTable();
+            string sFiter = string.Format("{0}='1'", _sGridColumnSelect);
+            DataRow[] drArr = dt.Select(sFiter);
+            foreach (DataRow dr in drArr)
+            {
+                dt.Rows.Remove(dr);
+            }
+        }
+
+        private void btnRemoveSelectCodeName_Click(object sender, EventArgs e)
+        {
+            DataTable dt = dgvCodeNameCol.GetBindingTable();
             string sFiter = string.Format("{0}='1'", _sGridColumnSelect);
             DataRow[] drArr = dt.Select(sFiter);
             foreach (DataRow dr in drArr)
@@ -1546,6 +1657,15 @@ AND  A.#C# =  #{param.#C3#}
                 }
             }
             return false;
+        }
+
+        private void dgvCodeNameCol_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == dgvCodeNameCol.Columns[DBColumnSimpleEntity.SqlString.Name].Index)
+            {
+                dgvCodeNameCol.Rows[e.RowIndex].Cells[DBColumnSimpleEntity.SqlString.NameUpper].Value = dgvCodeNameCol.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().FirstLetterUpper();
+                dgvCodeNameCol.Rows[e.RowIndex].Cells[DBColumnSimpleEntity.SqlString.NameLower].Value = dgvCodeNameCol.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().FirstLetterUpper(false);
+            }
         }
     }
 
