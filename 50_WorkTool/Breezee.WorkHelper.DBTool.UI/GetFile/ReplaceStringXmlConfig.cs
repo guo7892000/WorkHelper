@@ -12,11 +12,11 @@ namespace Breezee.WorkHelper.DBTool.UI
     public class ReplaceStringXmlConfig
     {
         public MoreKeyValueGroupConfig MoreXmlConfig { get; set; }
-        public ReplaceStringXmlConfig()
+        public ReplaceStringXmlConfig(string sFileName)
         {
             var entity = new MoreKeyValueEntity();
             entity.DirectoryName = GlobalContext.PathData();
-            entity.FileName = "ReplaceStringConfig.xml";
+            entity.FileName = sFileName;
             entity.ColKeys.Add(KeyString.Name);
             entity.ColVals.Add(ValueString.IsSelected);
             entity.ColVals.Add(ValueString.OldString);

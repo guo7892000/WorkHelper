@@ -65,6 +65,15 @@ namespace Breezee.WorkHelper.DBTool.Entity
 
         }
 
+        public static class ReplaceTextFileString
+        {
+            public static string Xml_FileName = "ReplaceStringConfig.xml";
+        }
+
+        public static class TableColumnDictionary
+        {
+            public static string Xml_FileName = "ColumnDictionaryReplaceStringConfig.xml";
+        }
 
         public static string AppPath
         {

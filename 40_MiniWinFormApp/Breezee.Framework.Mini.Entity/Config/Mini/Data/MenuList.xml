@@ -21,7 +21,7 @@
       <!--表SQL生成-->
       <Menu Guid="04FC80B7-1DE5-4717-A7FF-E948BCD230CD" Name="表结构SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTExcelGenerateTableSQL"  HelpPath="/Help/Html/DBTool/DB/SqlTableConstuct.html"/>
       <Menu Guid="629E907C-7790-4897-9126-37E43CE5F80A" Name="增删改查SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTGetTableQuerySql"  HelpPath="/Help/Html/DBTool/DB/SqlDBQuery.html"/>
-		<Menu Guid="2A1A51C1-1C3E-4451-920F-CB6942D8CF4C" Name="表列差异比较" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTTableColumnDiff"  HelpPath="/Help/Html/DBTool/DB/SqlTableColumnRemark.html"/>
+		<Menu Guid="2A1A51C1-1C3E-4451-920F-CB6942D8CF4C" Name="表列差异比较" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTTableColumnDiff"  HelpPath="/Help/Html/DBTool/DB/DBColumnDifferentCompare.html"/>
       <Menu Guid="0DF72AF9-7BF1-44E0-B68C-A209572C5B90" Name="表列注释SQL生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTTableExtendProperty"  HelpPath="/Help/Html/DBTool/DB/SqlTableColumnRemark.html"/>
 	</Class>
     
@@ -65,7 +65,7 @@
     <Class Guid="9D1E9003-C19A-4137-B191-28358AB9B459" Name="字符拼接" Code="" DLLName="" FormName="" ShortCutKey="">
       <Menu Guid="57C49904-07F5-41C7-AE6A-86915CEFD282" Name="IN清单拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTInList"  HelpPath="/Help/Html/DBTool/DB/DataStringIn.html"/>
       <Menu Guid="9D9AB487-ACAD-4791-995E-1DBE6F62A502" Name="左右交换字符" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.StringBuild.FrmDBTExchangeStringPlace" ShortCutKey=""  HelpPath="/Help/Html/DBTool/String/StringConnChange.html"/>
-      <Menu Guid="641651C7-1497-4129-A2F7-61EFF811654B" Name="字符分割拼接" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.StringBuild.FrmDBTSplitString" ShortCutKey=""  HelpPath="/Help/Html/DBTool/String/StringConnSplit.html"/>      
+      <Menu Guid="641651C7-1497-4129-A2F7-61EFF811654B" Name="字符分隔拼接" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.StringBuild.FrmDBTSplitString" ShortCutKey=""  HelpPath="/Help/Html/DBTool/String/StringConnSplit.html"/>      
     </Class>
     <Class Guid="8CEE1701-C80A-46C1-871D-8AF519F75239" Name="字符工具" Code="" DLLName="" FormName="" ShortCutKey="">
       <Menu Guid="D8993FE6FF1244A990EC37206A87C694" Name="点击复制字符" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.StringBuild.FrmDBTClickCopyStringAuto" ShortCutKey=""  HelpPath="/Help/Html/DBTool/String/CommonCopyString.html"/>

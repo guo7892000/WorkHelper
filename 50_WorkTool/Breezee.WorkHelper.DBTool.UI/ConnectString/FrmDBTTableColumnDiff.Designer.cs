@@ -75,7 +75,6 @@
             this.dgvResult = new System.Windows.Forms.DataGridView();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.txbTableRemark = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.cbbTargetDbType = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -84,6 +83,7 @@
             this.txbTableCN = new System.Windows.Forms.TextBox();
             this.btnGenerateDbDoc = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
+            this.txbTableRemark = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.grbOrcNet.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -661,15 +661,6 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1317, 67);
             this.tableLayoutPanel2.TabIndex = 13;
             // 
-            // txbTableRemark
-            // 
-            this.txbTableRemark.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel2.SetColumnSpan(this.txbTableRemark, 2);
-            this.txbTableRemark.Location = new System.Drawing.Point(300, 32);
-            this.txbTableRemark.Name = "txbTableRemark";
-            this.txbTableRemark.Size = new System.Drawing.Size(229, 21);
-            this.txbTableRemark.TabIndex = 12;
-            // 
             // label1
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -744,6 +735,15 @@
             this.label4.Size = new System.Drawing.Size(53, 12);
             this.label4.TabIndex = 11;
             this.label4.Text = "表备注：";
+            // 
+            // txbTableRemark
+            // 
+            this.txbTableRemark.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel2.SetColumnSpan(this.txbTableRemark, 2);
+            this.txbTableRemark.Location = new System.Drawing.Point(300, 32);
+            this.txbTableRemark.Name = "txbTableRemark";
+            this.txbTableRemark.Size = new System.Drawing.Size(229, 21);
+            this.txbTableRemark.TabIndex = 12;
             // 
             // FrmDBTTableColumnDiff
             // 

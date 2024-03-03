@@ -147,7 +147,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             toolTip1.SetToolTip(cbbFileContentCharSetEncode, "如文件出现乱码，需要修改文件字符集！");
 
             //加载模板数据
-            replaceStringData = new ReplaceStringXmlConfig();
+            replaceStringData = new ReplaceStringXmlConfig(DBTGlobalValue.ReplaceTextFileString.Xml_FileName);
             string sColName = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
             cbbTemplateType.BindDropDownList(replaceStringData.MoreXmlConfig.KeyData, sColName, ReplaceStringXmlConfig.KeyString.Name, true, true);
         }

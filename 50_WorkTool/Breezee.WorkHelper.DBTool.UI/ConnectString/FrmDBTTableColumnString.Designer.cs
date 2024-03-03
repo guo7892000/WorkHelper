@@ -164,7 +164,7 @@
             this.cbbTableName.FormattingEnabled = true;
             this.cbbTableName.Location = new System.Drawing.Point(50, 3);
             this.cbbTableName.Name = "cbbTableName";
-            this.cbbTableName.Size = new System.Drawing.Size(246, 20);
+            this.cbbTableName.Size = new System.Drawing.Size(276, 20);
             this.cbbTableName.TabIndex = 2;
             this.cbbTableName.SelectedIndexChanged += new System.EventHandler(this.cbbTableName_SelectedIndexChanged);
             // 
@@ -172,7 +172,7 @@
             // 
             this.ckbGetTableList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.ckbGetTableList.AutoSize = true;
-            this.ckbGetTableList.Location = new System.Drawing.Point(302, 5);
+            this.ckbGetTableList.Location = new System.Drawing.Point(332, 5);
             this.ckbGetTableList.Name = "ckbGetTableList";
             this.ckbGetTableList.Size = new System.Drawing.Size(84, 16);
             this.ckbGetTableList.TabIndex = 3;
@@ -183,7 +183,7 @@
             // cbbModule
             // 
             this.cbbModule.FormattingEnabled = true;
-            this.cbbModule.Location = new System.Drawing.Point(439, 3);
+            this.cbbModule.Location = new System.Drawing.Point(469, 3);
             this.cbbModule.Name = "cbbModule";
             this.cbbModule.Size = new System.Drawing.Size(121, 20);
             this.cbbModule.TabIndex = 4;
@@ -193,7 +193,7 @@
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(392, 7);
+            this.label1.Location = new System.Drawing.Point(422, 7);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(41, 12);
             this.label1.TabIndex = 1;

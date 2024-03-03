@@ -19,11 +19,11 @@
                  <td style="width:100pt;">列名称</td>
                  <td style="width:130pt;">列编码</td>
                  <td style="width:60pt;">类型</td>
-                 <td style="width:50pt;">长度</td>
+                 <td style="width:50pt;">列长度</td>
                  <td style="width:60pt;">键</td>
-                 <td style="width:60pt;">必填</td>
-                 <td>约束</td>
-                 <td style="width:130pt;">备注</td>
+                 <td style="width:60pt;">是否必填</td>
+                 <td>默认值</td>
+                 <td style="width:130pt;">列备注</td>
                  <td>变更类型</td>
             </tr>
 			$$(ColumnsHolder)

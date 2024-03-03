@@ -34,6 +34,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private readonly string _sGridColumnSelect = "IsSelect";
         private readonly string _sGridColumnIsNoCnRemark = "IsNoCnRemark";
+        private bool _allSelectOldNewChar = false;//默认全选，这里取反
 
         private bool _allSelect = false;//默认全选，这里取反
         private bool _allSelectAll = false;//默认全选，这里取反
@@ -59,6 +60,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         MiniXmlConfig commonColumn;
         MiniXmlConfig codeNameColumn;
         DataGridViewFindText dgvFindText;
+        ReplaceStringXmlConfig replaceStringData;//替换字符模板XML配置
         #endregion
 
         #region 构造函数
@@ -117,6 +119,22 @@ namespace Breezee.WorkHelper.DBTool.UI
             txbExcludeTable.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_ExcludeTableList, "_bak,_temp,_tmp").Value; //排除表列表
             toolTip1.SetToolTip(ckbAutoParamQuery, "当未选中时，请保证SQL是可以直接执行的。");
             toolTip1.SetToolTip(txbExcludeTable, "排除包括逗号分隔列表中所有字符的表名。");
+
+            //加载模板数据
+            replaceStringData = new ReplaceStringXmlConfig(DBTGlobalValue.TableColumnDictionary.Xml_FileName);
+            string sColName = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            cbbTemplateType.BindDropDownList(replaceStringData.MoreXmlConfig.KeyData, sColName, ReplaceStringXmlConfig.KeyString.Name, true, true);
+            //新旧字符网格
+            FlexGridColumnDefinition fdc = new FlexGridColumnDefinition();
+            fdc.AddColumn(
+                FlexGridColumn.NewRowNoCol(),
+                new FlexGridColumn.Builder().Name(_sGridColumnSelect).Caption("选择").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(50).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name("OLD").Caption("旧字符").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name("NEW").Caption("新字符").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(true).Visible().Build()
+                );
+            dgvOldNewChar.Tag = fdc.GetGridTagString();
+            dgvOldNewChar.BindDataGridView(null, false);
+            dgvOldNewChar.AllowUserToAddRows = true;
         }
 
         #region 显示全局提示信息事件
@@ -827,6 +845,17 @@ namespace Breezee.WorkHelper.DBTool.UI
                     sLast = sLast.Substring(0, sLast.Length - 1);
                     sbAllSql.Clear();
                     sbAllSql.Append(sLast);
+                }
+
+                //二次替换处理
+                DataTable dtReplace = dgvOldNewChar.GetBindingTable();
+                DataRow[] drReplace = dtReplace.Select(_sGridColumnSelect + "= '1'");
+                if (drReplace.Length > 0)
+                {
+                    foreach (DataRow dr in drReplace)
+                    {
+                        sbAllSql.Replace(dr["OLD"].ToString().Trim(), dr["NEW"].ToString().Trim());
+                    }
                 }
 
                 //YAPI的字符模板处理
@@ -1667,6 +1696,222 @@ AND  A.#C# =  #{param.#C3#}
                 dgvCodeNameCol.Rows[e.RowIndex].Cells[DBColumnSimpleEntity.SqlString.NameLower].Value = dgvCodeNameCol.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().FirstLetterUpper(false);
             }
         }
+
+        #region 字符替换模板加载和保存相关
+        private void btnSaveReplaceTemplate_Click(object sender, EventArgs e)
+        {
+            string sTempName = txbReplaceTemplateName.Text.Trim();
+
+            if (string.IsNullOrEmpty(sTempName))
+            {
+                ShowInfo("模板名称不能为空！");
+                return;
+            }
+            DataTable dtReplace = dgvOldNewChar.GetBindingTable();
+            dtReplace.DeleteNullRow();
+            if (dtReplace.Rows.Count == 0)
+            {
+                ShowInfo("请录入要替换的新旧字符！");
+                return;
+            }
+
+            if (ShowOkCancel("确定要保存模板？") == DialogResult.Cancel) return;
+
+            string sKeyId = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            string sValId = replaceStringData.MoreXmlConfig.MoreKeyValue.ValIdPropName;
+            DataTable dtKeyConfig = replaceStringData.MoreXmlConfig.KeyData;
+            DataTable dtValConfig = replaceStringData.MoreXmlConfig.ValData;
+
+            string sKeyIdNew = string.Empty;
+            bool isAdd = string.IsNullOrEmpty(cbbTemplateType.Text.Trim()) ? true : false;
+            if (isAdd)
+            {
+                //新增
+                sKeyIdNew = Guid.NewGuid().ToString();
+                DataRow dr = dtKeyConfig.NewRow();
+                dr[sKeyId] = sKeyIdNew;
+                dr[ReplaceStringXmlConfig.KeyString.Name] = sTempName;
+                dtKeyConfig.Rows.Add(dr);
+            }
+            else
+            {
+                //修改
+                string sKeyIDValue = cbbTemplateType.SelectedValue.ToString();
+                sKeyIdNew = sKeyIDValue;
+                DataRow[] drArrKey = dtKeyConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+                DataRow[] drArrVal = dtValConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+                if (drArrKey.Length == 0)
+                {
+                    DataRow dr = dtKeyConfig.NewRow();
+                    dr[sKeyId] = sKeyIdNew;
+                    dr[ReplaceStringXmlConfig.KeyString.Name] = sTempName;
+                    dtKeyConfig.Rows.Add(dr);
+                }
+                else
+                {
+                    drArrKey[0][ReplaceStringXmlConfig.KeyString.Name] = sTempName;//修改名称
+                }
+                if (drArrVal.Length > 0)
+                {
+                    foreach (DataRow dr in drArrVal)
+                    {
+                        dtValConfig.Rows.Remove(dr);
+                    }
+                    dtValConfig.AcceptChanges();
+                }
+            }
+
+            foreach (DataRow dr in dtReplace.Rows)
+            {
+                DataRow drNew = dtValConfig.NewRow();
+                drNew[sValId] = Guid.NewGuid().ToString();
+                drNew[sKeyId] = sKeyIdNew;
+                drNew[ReplaceStringXmlConfig.ValueString.IsSelected] = dr[ReplaceStringXmlConfig.ValueString.IsSelected].ToString();
+                drNew[ReplaceStringXmlConfig.ValueString.OldString] = dr[ReplaceStringXmlConfig.ValueString.OldString].ToString();
+                drNew[ReplaceStringXmlConfig.ValueString.NewString] = dr[ReplaceStringXmlConfig.ValueString.NewString].ToString();
+                dtValConfig.Rows.Add(drNew);
+            }
+            replaceStringData.MoreXmlConfig.Save();
+            //重新绑定下拉框
+            cbbTemplateType.BindDropDownList(replaceStringData.MoreXmlConfig.KeyData, sKeyId, ReplaceStringXmlConfig.KeyString.Name, true, true);
+            ShowInfo("模板保存成功！");
+        }
+
+        private void btnRemoveTemplate_Click(object sender, EventArgs e)
+        {
+            if (cbbTemplateType.SelectedValue == null)
+            {
+                ShowInfo("请选择一个模板！");
+                return;
+            }
+            string sKeyIDValue = cbbTemplateType.SelectedValue.ToString();
+            if (string.IsNullOrEmpty(sKeyIDValue))
+            {
+                ShowInfo("请选择一个模板！");
+                return;
+            }
+
+            if (ShowOkCancel("确定要删除该模板？") == DialogResult.Cancel) return;
+
+            string sKeyId = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            string sValId = replaceStringData.MoreXmlConfig.MoreKeyValue.ValIdPropName;
+            DataTable dtKeyConfig = replaceStringData.MoreXmlConfig.KeyData;
+            DataTable dtValConfig = replaceStringData.MoreXmlConfig.ValData;
+            DataRow[] drArrKey = dtKeyConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+            DataRow[] drArrVal = dtValConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+
+            if (drArrVal.Length > 0)
+            {
+                foreach (DataRow dr in drArrVal)
+                {
+                    dtValConfig.Rows.Remove(dr);
+                }
+                dtValConfig.AcceptChanges();
+            }
+
+            if (drArrKey.Length > 0)
+            {
+                foreach (DataRow dr in drArrKey)
+                {
+                    dtKeyConfig.Rows.Remove(dr);
+                }
+                dtKeyConfig.AcceptChanges();
+            }
+            replaceStringData.MoreXmlConfig.Save();
+            //重新绑定下拉框
+            cbbTemplateType.BindDropDownList(replaceStringData.MoreXmlConfig.KeyData, sKeyId, ReplaceStringXmlConfig.KeyString.Name, true, true);
+            ShowInfo("模板删除成功！");
+        }
+
+        private void dgvOldNewChar_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            if (this.dgvOldNewChar.Columns[e.ColumnIndex].Name == _sGridColumnSelect)
+            {
+                return;
+            }
+        }
+
+        private void dgvOldNewChar_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            SelectAllOrCancel(dgvOldNewChar, ref _allSelectOldNewChar, e);
+        }
+
+        private void dgvOldNewChar_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Modifiers == Keys.Control && e.KeyCode == Keys.V)
+                {
+                    string pasteText = Clipboard.GetText().Trim();
+                    if (string.IsNullOrEmpty(pasteText))//包括IN的为生成的SQL，不用粘贴
+                    {
+                        return;
+                    }
+
+                    int iRow = 0;
+                    int iColumn = 0;
+                    Object[,] data = StringHelper.GetStringArray(ref pasteText, ref iRow, ref iColumn);
+                    if (iRow == 0 || iColumn < 2)
+                    {
+                        return;
+                    }
+
+                    DataTable dtMain = dgvOldNewChar.GetBindingTable();
+                    dtMain.Rows.Clear();
+                    //获取获取当前选中单元格所在的行序号
+                    for (int j = 0; j < iRow; j++)
+                    {
+                        string strData = data[j, 0].ToString().Trim();
+                        string strData2 = data[j, 1].ToString().Trim();
+                        if (string.IsNullOrEmpty(strData) || string.IsNullOrEmpty(strData2))
+                        {
+                            continue;
+                        }
+
+                        if (dtMain.Select("OLD='" + data[j, 0] + "'").Length == 0)
+                        {
+                            dtMain.Rows.Add(dtMain.Rows.Count + 1, "1", strData, strData2);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErr(ex.Message);
+            }
+        }
+
+        private void cbbTemplateType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbbTemplateType.SelectedValue == null) return;
+            string sTempType = cbbTemplateType.SelectedValue.ToString();
+            if (string.IsNullOrEmpty(sTempType))
+            {
+                //txbReplaceTemplateName.ReadOnly = false;
+                txbReplaceTemplateName.Text = string.Empty;
+                return;
+            }
+
+            txbReplaceTemplateName.Text = cbbTemplateType.Text;
+            //txbReplaceTemplateName.ReadOnly = true;
+            string sKeyId = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            DataRow[] drArr = replaceStringData.MoreXmlConfig.ValData.Select(sKeyId + "='" + sTempType + "'");
+
+            DataTable dtReplace = dgvOldNewChar.GetBindingTable();
+            if (drArr.Length > 0)
+            {
+                dtReplace.Rows.Clear();
+                foreach (DataRow dr in drArr)
+                {
+                    dtReplace.Rows.Add(dtReplace.Rows.Count + 1, dr[ReplaceStringXmlConfig.ValueString.IsSelected].ToString(), dr[ReplaceStringXmlConfig.ValueString.OldString].ToString(), dr[ReplaceStringXmlConfig.ValueString.NewString].ToString());
+                }
+            }
+            else if (dtReplace != null)
+            {
+                dtReplace.Clear();
+            }
+        } 
+        #endregion
     }
 
     public enum MybatisStringType

@@ -108,7 +108,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             toolTip1.SetToolTip(cbbBackupDirType, "FTP服务器端哪个目录的文件需要备份！");
 
             //加载模板数据
-            replaceStringData = new ReplaceStringXmlConfig();
+            replaceStringData = new ReplaceStringXmlConfig(DBTGlobalValue.ReplaceTextFileString.Xml_FileName);
             string sColName = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
             cbbTemplateType.BindDropDownList(replaceStringData.MoreXmlConfig.KeyData, sColName, ReplaceStringXmlConfig.KeyString.Name, true, true);
 
