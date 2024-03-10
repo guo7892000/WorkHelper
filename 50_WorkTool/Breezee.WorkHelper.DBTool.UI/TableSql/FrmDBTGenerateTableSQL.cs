@@ -134,6 +134,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
 
             }
+            //调用【获取表清单复选框变化事件】
+            ckbGetTableList_CheckedChanged(null, null);
         }
         #endregion
 
@@ -936,7 +938,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 string[] arrExclude = txbExcludeColumn.Text.Trim().ToLower().Split(new char[] { ',', '，', ';', '；' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (DataRow drSource in dtCol.Rows)
                 {
-                    string sColName = drSource[DBColumnEntity.SqlString.Name].ToString();
+                    string sColName = drSource[ColCommon.ExcelCol.Code].ToString(); //注：这里要使用Excel的列名
                     if (isExclude && arrExclude.Length > 0 && arrExclude.Contains(sColName.ToLower()))
                     {
                         drSource[_sGridColumnSelect] = "False";

@@ -68,6 +68,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             uC_DbConnection1.SetDbConnComboBoxSource(dtConn);
             uC_DbConnection1.IsDbNameNotNull = true;
             uC_DbConnection1.DBType_SelectedIndexChanged += cbbDatabaseType_SelectedIndexChanged;//数据库类型下拉框变化事件
+            uC_DbConnection1.DBConnName_SelectedIndexChanged += cbbDBConnName_SelectedIndexChanged;
             uC_DbConnection1.ShowGlobalMsg += ShowGlobalMsg_Click;
             #endregion
 
@@ -79,6 +80,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             //
             SetTableTag();
             SetColTag();
+        }
+
+        private void cbbDBConnName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ckbGetTableList_CheckedChanged(null,null);
         }
         #endregion
 

@@ -2,7 +2,8 @@
 SELECT a 
 FROM t1 WHERE a=10 AND B=1 
 ORDER BY a 
-LIMIT 10;
+LIMIT 10
+;
 
 /*分组动态化：可能取一个最全最细化的所有列作为分组列，然后根据分组条件不同，看取固定值（相当于忽略该分组条件）还是具体值*/
 SELECT case when t.AUTH_STATUS='3' then t.AUTH_PASS_DATE else t.AUTH_APPLY_DATE end,count(1) 

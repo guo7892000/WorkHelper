@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("工作助手")]
-[assembly: AssemblyDescription("2024-3-3")]
+[assembly: AssemblyDescription("2024-3-10")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("BreezeeHui")]
+[assembly: AssemblyCompany("微风")]
 [assembly: AssemblyProduct("Work Helper")]
 [assembly: AssemblyCopyright("Copyright © BreezeeHui 2024")]
 [assembly: AssemblyTrademark("")]
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 //可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值
 //通过使用 "*"，如下所示:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.2.41.3")]
-[assembly: AssemblyFileVersion("1.2.41.3")]
+[assembly: AssemblyVersion("1.2.41.5")]
+[assembly: AssemblyFileVersion("1.2.41.5")]

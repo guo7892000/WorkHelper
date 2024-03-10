@@ -160,7 +160,7 @@ namespace Breezee.WorkHelper.DBTool.Entity
 
                 if (dtAllCol.Select(EntTable.ExcelTable.Code + "='" + strTableCode + "' and " + ColCommon.ExcelCol.KeyType + "='PK'").Length == 0)
                 {
-                    sb.AppendLine("新增的表" + strTableCode + "没有主键！");
+                    sb.AppendLine("新增的表" + strTableCode + "没有主键！请设置其中某一行的【"+ ColCommon.ExcelCol.KeyType + "】列的值为【PK】即可。");
                 }
             }
             //返回结果

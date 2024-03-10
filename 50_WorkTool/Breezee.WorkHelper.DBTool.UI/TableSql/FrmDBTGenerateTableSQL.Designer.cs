@@ -288,7 +288,7 @@
             this.tpAutoSQL.Location = new System.Drawing.Point(4, 22);
             this.tpAutoSQL.Name = "tpAutoSQL";
             this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3);
-            this.tpAutoSQL.Size = new System.Drawing.Size(1122, 274);
+            this.tpAutoSQL.Size = new System.Drawing.Size(1008, 274);
             this.tpAutoSQL.TabIndex = 1;
             this.tpAutoSQL.Text = "生成结果";
             // 
@@ -297,7 +297,7 @@
             this.rtbResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbResult.Location = new System.Drawing.Point(3, 3);
             this.rtbResult.Name = "rtbResult";
-            this.rtbResult.Size = new System.Drawing.Size(1116, 268);
+            this.rtbResult.Size = new System.Drawing.Size(1002, 268);
             this.rtbResult.TabIndex = 3;
             this.rtbResult.Text = "";
             // 
@@ -522,7 +522,7 @@
             this.ckbGetTableList.Name = "ckbGetTableList";
             this.ckbGetTableList.Size = new System.Drawing.Size(84, 16);
             this.ckbGetTableList.TabIndex = 20;
-            this.ckbGetTableList.Text = "加载表清单";
+            this.ckbGetTableList.Text = "获取表清单";
             this.ckbGetTableList.UseVisualStyleBackColor = true;
             this.ckbGetTableList.CheckedChanged += new System.EventHandler(this.ckbGetTableList_CheckedChanged);
             // 

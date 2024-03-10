@@ -82,6 +82,7 @@
             this.tsbCloseAll = new System.Windows.Forms.ToolStripMenuItem();
             this.tpgDesktop = new System.Windows.Forms.TabPage();
             this.pnlDestop = new System.Windows.Forms.Panel();
+            this.tsmiDowloadLatestStableVersion = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -245,6 +246,7 @@
             this.helpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiUserManual,
             this.tsbCheckUpdate,
+            this.tsmiDowloadLatestStableVersion,
             this.aboutToolStripMenuItem});
             this.helpMenu.Name = "helpMenu";
             this.helpMenu.Size = new System.Drawing.Size(61, 22);
@@ -253,14 +255,14 @@
             // tsmiUserManual
             // 
             this.tsmiUserManual.Name = "tsmiUserManual";
-            this.tsmiUserManual.Size = new System.Drawing.Size(124, 22);
+            this.tsmiUserManual.Size = new System.Drawing.Size(180, 22);
             this.tsmiUserManual.Text = "用户手册";
             this.tsmiUserManual.Click += new System.EventHandler(this.tsmiUserManual_Click);
             // 
             // tsbCheckUpdate
             // 
             this.tsbCheckUpdate.Name = "tsbCheckUpdate";
-            this.tsbCheckUpdate.Size = new System.Drawing.Size(124, 22);
+            this.tsbCheckUpdate.Size = new System.Drawing.Size(180, 22);
             this.tsbCheckUpdate.Text = "检查更新";
             this.tsbCheckUpdate.ToolTipText = "检测是否有新版本";
             this.tsbCheckUpdate.Click += new System.EventHandler(this.tsbCheckUpdate_Click);
@@ -268,7 +270,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "关于我们";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -571,6 +573,13 @@
             this.pnlDestop.Size = new System.Drawing.Size(1075, 47);
             this.pnlDestop.TabIndex = 8;
             // 
+            // tsmiDowloadLatestStableVersion
+            // 
+            this.tsmiDowloadLatestStableVersion.Name = "tsmiDowloadLatestStableVersion";
+            this.tsmiDowloadLatestStableVersion.Size = new System.Drawing.Size(180, 22);
+            this.tsmiDowloadLatestStableVersion.Text = "下载最新稳定版";
+            this.tsmiDowloadLatestStableVersion.Click += new System.EventHandler(this.tsmiDowloadLatestStableVersion_Click);
+            // 
             // FrmMiniMainMDI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -664,6 +673,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiOpenNewForm;
         private System.Windows.Forms.ToolStripMenuItem tsbCloseAll;
         private System.Windows.Forms.ToolStripMenuItem tsbCheckUpdate;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDowloadLatestStableVersion;
     }
 }
 

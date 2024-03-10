@@ -89,10 +89,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                     {
                         return;
                     }
+                    if (!ckbIsPasteAppend.Checked && dtMain.Rows.Count>0)
+                    {
+                        dtMain.Clear();
+                    }
                     foreach (DataRow dr in dtMain.Select("IN字段 is null or IN字段=''"))
                     {
                         dtMain.Rows.Remove(dr);
-                    }
+                    }                
                     dtMain.AcceptChanges();
                     int rowindex = dtMain.Rows.Count;
                     int iGoodDataNum = 0;//有效数据号

@@ -10,6 +10,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -37,7 +38,9 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             DataTable dtEncode = BaseFileEncoding.GetEncodingTable(false);
             cbbCharSetEncode.BindTypeValueDropDownList(dtEncode, false, true);
+            cbbCharSetEncodeNew.BindTypeValueDropDownList(dtEncode.Copy(), false, true);
             toolTip1.SetToolTip(cbbCharSetEncode, "如文件出现乱码，需要修改文件字符集！");
+            toolTip1.SetToolTip(cbbCharSetEncodeNew, "可选择新的文件字符集，然后点击【文件字符集覆盖为】即可！");
             //加载配置
             cbbCharSetEncode.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.SQLStudy_FileCharsetEncoding, BaseFileEncoding.FileEncodingString.GB2312).Value;
             //加载树数据
@@ -149,6 +152,63 @@ namespace Breezee.WorkHelper.DBTool.UI
                 return;
             }
             trSelect.Collapse(false);
+        }
+
+        /// <summary>
+        /// 编码下拉框变化事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cbbCharSetEncode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TreeNode trSelect = tvList.SelectedNode;
+            if (trSelect == null)
+            {
+                return;
+            }
+            string sEncode = string.Empty;
+            if (cbbCharSetEncode.SelectedValue == null || string.IsNullOrEmpty(cbbCharSetEncode.SelectedValue.ToString()))
+            {
+                sEncode = BaseFileEncoding.FileEncodingString.GB2312;
+            }
+            else
+            {
+                sEncode = cbbCharSetEncode.SelectedValue.ToString();
+            }
+
+            rtbFileContent.Clear();
+            rtbFileContent.Text = File.ReadAllText(trSelect.Name, BaseFileEncoding.GetEncodingByKey(sEncode));
+           
+        }
+
+        private void btnCharSetOverWriteTo_Click(object sender, EventArgs e)
+        {
+            string sContent = rtbFileContent.Text.Trim();
+            if (string.IsNullOrEmpty(sContent))
+            {
+                ShowInfo("没有可保存的内容！");
+                return;
+            }
+            TreeNode trSelect = tvList.SelectedNode;
+            if (trSelect == null)
+            {
+                ShowInfo("请选择一个节点！");
+                return;
+            }
+            string sEncode = string.Empty;
+            if (cbbCharSetEncodeNew.SelectedValue == null || string.IsNullOrEmpty(cbbCharSetEncodeNew.SelectedValue.ToString()))
+            {
+                sEncode = BaseFileEncoding.FileEncodingString.GB2312;
+            }
+            else
+            {
+                sEncode = cbbCharSetEncodeNew.SelectedValue.ToString();
+            }
+
+            if (ShowOkCancel("确定要修改文件字符集？") == DialogResult.Cancel) return;
+            File.Delete(trSelect.Name);
+            File.WriteAllText(trSelect.Name, sContent, BaseFileEncoding.GetEncodingByKey(sEncode));
+            ShowInfo("保存成功！");
         }
     }
 }

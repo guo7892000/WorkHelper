@@ -70,10 +70,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             uC_DbConnectionSource.SetDbConnComboBoxSource(dtConn);
             uC_DbConnectionSource.IsDbNameNotNull = true;
             uC_DbConnectionSource.ShowGlobalMsg += ShowGlobalMsg_Click;
+            uC_DbConnectionSource.DBConnName_SelectedIndexChanged += cbbDBConnNameSource_SelectedIndexChanged;
             //数据库2
             uC_DbConnectionTarget.SetDbConnComboBoxSource(dtConn.Copy());
             uC_DbConnectionTarget.IsDbNameNotNull = true;
             uC_DbConnectionTarget.ShowGlobalMsg += ShowGlobalMsg_Click;
+            uC_DbConnectionTarget.DBConnName_SelectedIndexChanged += cbbDBConnNameTarget_SelectedIndexChanged;
             #endregion
 
             DataTable dtDbType = DBToolUIHelper.GetBaseDataTypeTable(false);
@@ -85,6 +87,16 @@ namespace Breezee.WorkHelper.DBTool.UI
             cbbTableNameSource.AutoCompleteSource = AutoCompleteSource.CustomSource;
 
             SetColTag();
+        }
+
+        private void cbbDBConnNameTarget_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ckbGetTableListTarget_CheckedChanged(null, null);
+        }
+
+        private void cbbDBConnNameSource_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ckbGetTableList_CheckedChanged(null,null);
         }
         #endregion
 

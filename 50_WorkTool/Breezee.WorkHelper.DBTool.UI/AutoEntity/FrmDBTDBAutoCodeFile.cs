@@ -109,10 +109,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         #endregion
         private void cbbConnName_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ckbGetTableList.Checked)
-            {
-                ckbGetTableList.Checked = false;
-            }
+            ckbGetTableList_CheckedChanged(null,null);
         }
         #endregion
 

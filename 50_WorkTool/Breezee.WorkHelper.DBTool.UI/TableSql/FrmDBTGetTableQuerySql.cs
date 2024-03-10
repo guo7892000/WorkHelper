@@ -103,6 +103,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             uC_DbConnection1.SetDbConnComboBoxSource(dtConn);
             uC_DbConnection1.IsDbNameNotNull = true;
             uC_DbConnection1.DBType_SelectedIndexChanged += cbbDatabaseType_SelectedIndexChanged;//数据库类型下拉框变化事件
+            uC_DbConnection1.DBConnName_SelectedIndexChanged+= DBConnName_SelectedIndexChanged;
             uC_DbConnection1.ShowGlobalMsg += ShowGlobalMsg_Click;
             #endregion
 
@@ -115,6 +116,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             cbbWordConvert.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbGetSql_FirstWordType, "1").Value;
             //设置上部分分隔的高度
             splitContainer1.SplitterDistance = 40;
+        }
+
+        private void DBConnName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //调用【获取表清单复选框变化事件】
+            ckbGetTableList_CheckedChanged(null, null);
         }
         #endregion
 
@@ -805,12 +812,13 @@ namespace Breezee.WorkHelper.DBTool.UI
                         }
                         else //尾行
                         {
-                            sbInsertColums.Append(sqlEntity.Tab + strTableAliasAndDot + strColCode + "" + sqlEntity.NewLine + ")" + sqlEntity.NewLine);
                             if (bDynamicCol)
                             {
+                                sColInsert = sColInsertDynamic;
                                 sColValueComment = sColValueDynamic;
                             }
                             //最后一行不用加逗号
+                            sbInsertColums.Append(sqlEntity.Tab + strTableAliasAndDot + sColInsert + ")" + sqlEntity.NewLine);
                             sbInsertVale.Append(sColValueComment + sqlEntity.NewLine + ")" + sqlEntity.NewLine);
                         }
                         #endregion

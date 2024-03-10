@@ -63,8 +63,8 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.523809F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.523809F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.523809F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 47.61905F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.89606F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.82796F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
             this.tableLayoutPanel.Size = new System.Drawing.Size(455, 291);
             this.tableLayoutPanel.TabIndex = 0;
@@ -76,7 +76,7 @@
             this.logoPictureBox.Location = new System.Drawing.Point(3, 3);
             this.logoPictureBox.Name = "logoPictureBox";
             this.tableLayoutPanel.SetRowSpan(this.logoPictureBox, 6);
-            this.logoPictureBox.Size = new System.Drawing.Size(144, 272);
+            this.logoPictureBox.Size = new System.Drawing.Size(144, 273);
             this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.logoPictureBox.TabIndex = 12;
             this.logoPictureBox.TabStop = false;
@@ -84,6 +84,7 @@
             // labelProductName
             // 
             this.labelProductName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelProductName.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.labelProductName.Location = new System.Drawing.Point(156, 0);
             this.labelProductName.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
             this.labelProductName.MaximumSize = new System.Drawing.Size(0, 16);
@@ -96,6 +97,7 @@
             // labelVersion
             // 
             this.labelVersion.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelVersion.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.labelVersion.Location = new System.Drawing.Point(156, 26);
             this.labelVersion.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
             this.labelVersion.MaximumSize = new System.Drawing.Size(0, 16);
@@ -108,6 +110,7 @@
             // labelCopyright
             // 
             this.labelCopyright.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelCopyright.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.labelCopyright.Location = new System.Drawing.Point(156, 52);
             this.labelCopyright.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
             this.labelCopyright.MaximumSize = new System.Drawing.Size(0, 16);
@@ -120,6 +123,7 @@
             // labelCompanyName
             // 
             this.labelCompanyName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelCompanyName.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.labelCompanyName.Location = new System.Drawing.Point(156, 78);
             this.labelCompanyName.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
             this.labelCompanyName.MaximumSize = new System.Drawing.Size(0, 16);
@@ -132,13 +136,14 @@
             // textBoxDescription
             // 
             this.textBoxDescription.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxDescription.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.textBoxDescription.Location = new System.Drawing.Point(156, 107);
             this.textBoxDescription.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             this.textBoxDescription.Multiline = true;
             this.textBoxDescription.Name = "textBoxDescription";
             this.textBoxDescription.ReadOnly = true;
             this.textBoxDescription.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxDescription.Size = new System.Drawing.Size(296, 128);
+            this.textBoxDescription.Size = new System.Drawing.Size(296, 136);
             this.textBoxDescription.TabIndex = 23;
             this.textBoxDescription.TabStop = false;
             this.textBoxDescription.Text = "欢迎使用工作助手，希望能给你的开发工作带来便利！如有问题，请反馈给我们，谢谢！\r\nEmail：guo7892000@126.com\r\nQQ：6455879\r\n微信" +
@@ -151,16 +156,16 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.Controls.Add(this.okButton);
             this.panel1.Controls.Add(this.btnOpenDownLoad);
-            this.panel1.Location = new System.Drawing.Point(153, 241);
+            this.panel1.Location = new System.Drawing.Point(153, 249);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(299, 34);
+            this.panel1.Size = new System.Drawing.Size(299, 27);
             this.panel1.TabIndex = 26;
             // 
             // okButton
             // 
             this.okButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.okButton.Location = new System.Drawing.Point(221, 6);
+            this.okButton.Location = new System.Drawing.Point(221, 2);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 23);
             this.okButton.TabIndex = 25;
@@ -171,7 +176,7 @@
             // 
             this.btnOpenDownLoad.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.btnOpenDownLoad.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnOpenDownLoad.Location = new System.Drawing.Point(5, 5);
+            this.btnOpenDownLoad.Location = new System.Drawing.Point(5, 1);
             this.btnOpenDownLoad.Name = "btnOpenDownLoad";
             this.btnOpenDownLoad.Size = new System.Drawing.Size(88, 23);
             this.btnOpenDownLoad.TabIndex = 24;

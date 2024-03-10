@@ -102,8 +102,9 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void DBConnName_SelectedChange(object sender, EventArgs e)
         {
             cbbTableName.DataSource = null;
-            ckbGetTableList.Checked = false;
             tsbExport.Enabled = false;
+            //调用【获取表清单复选框变化事件】
+            ckbGetTableList_CheckedChanged(null, null);
         }
         #endregion
 

@@ -55,11 +55,17 @@ namespace Breezee.WorkHelper.DBTool.UI
             uC_DbConnection1.SetDbConnComboBoxSource(dtConn);
             uC_DbConnection1.IsDbNameNotNull = false;
             uC_DbConnection1.ShowGlobalMsg += ShowGlobalMsg_Click;
+            uC_DbConnection1.DBConnName_SelectedIndexChanged += cbbDBConnName_SelectedIndexChanged;
             //
             lblTableWhereInfo.Text = "表名不为空时，Where条件作为表的过滤条件；表为空时，Where条件为自定义SQL。";
             //设置下拉框查找数据源
             cbbTableName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cbbTableName.AutoCompleteSource = AutoCompleteSource.CustomSource;
+        }
+
+        private void cbbDBConnName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ckbGetTableList_CheckedChanged(null,null);
         }
         #endregion
 

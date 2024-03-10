@@ -1043,7 +1043,7 @@
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(365, 55);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(365, 61);
             this.tableLayoutPanel7.TabIndex = 6;
             // 
             // label14
@@ -1082,7 +1082,7 @@
             // 
             this.label21.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(3, 36);
+            this.label21.Location = new System.Drawing.Point(3, 39);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(65, 12);
             this.label21.TabIndex = 5;
@@ -1091,7 +1091,7 @@
             // txbReplaceTemplateName
             // 
             this.txbReplaceTemplateName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbReplaceTemplateName.Location = new System.Drawing.Point(74, 32);
+            this.txbReplaceTemplateName.Location = new System.Drawing.Point(74, 34);
             this.txbReplaceTemplateName.Name = "txbReplaceTemplateName";
             this.txbReplaceTemplateName.Size = new System.Drawing.Size(148, 21);
             this.txbReplaceTemplateName.TabIndex = 6;

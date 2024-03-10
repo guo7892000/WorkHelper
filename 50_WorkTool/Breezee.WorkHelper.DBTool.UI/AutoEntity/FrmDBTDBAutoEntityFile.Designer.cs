@@ -43,6 +43,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.btnPath = new System.Windows.Forms.Button();
             this.txbRemoveTablePre = new System.Windows.Forms.TextBox();
+            this.txbModuleFileSuffix = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tvDataBaseInfo = new System.Windows.Forms.TreeView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -62,8 +64,6 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
-            this.txbModuleFileSuffix = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.ctxmBuilt.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableInfo)).BeginInit();
@@ -122,7 +122,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(963, 199);
+            this.groupBox2.Size = new System.Drawing.Size(963, 196);
             this.groupBox2.TabIndex = 22;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "表的列信息";
@@ -134,7 +134,7 @@
             this.dgvTableInfo.Location = new System.Drawing.Point(3, 17);
             this.dgvTableInfo.Name = "dgvTableInfo";
             this.dgvTableInfo.RowTemplate.Height = 23;
-            this.dgvTableInfo.Size = new System.Drawing.Size(957, 179);
+            this.dgvTableInfo.Size = new System.Drawing.Size(957, 176);
             this.dgvTableInfo.TabIndex = 6;
             // 
             // groupBox4
@@ -237,13 +237,31 @@
             this.txbRemoveTablePre.Size = new System.Drawing.Size(49, 21);
             this.txbRemoveTablePre.TabIndex = 4;
             // 
+            // txbModuleFileSuffix
+            // 
+            this.txbModuleFileSuffix.Location = new System.Drawing.Point(303, 3);
+            this.txbModuleFileSuffix.Name = "txbModuleFileSuffix";
+            this.txbModuleFileSuffix.Size = new System.Drawing.Size(49, 21);
+            this.txbModuleFileSuffix.TabIndex = 4;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.Black;
+            this.label1.Location = new System.Drawing.Point(232, 8);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 12);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "文件后缀：";
+            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.tvDataBaseInfo);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(0, 80);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(376, 479);
+            this.groupBox3.Size = new System.Drawing.Size(376, 473);
             this.groupBox3.TabIndex = 15;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "数据库清单";
@@ -254,7 +272,7 @@
             this.tvDataBaseInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tvDataBaseInfo.Location = new System.Drawing.Point(3, 17);
             this.tvDataBaseInfo.Name = "tvDataBaseInfo";
-            this.tvDataBaseInfo.Size = new System.Drawing.Size(370, 459);
+            this.tvDataBaseInfo.Size = new System.Drawing.Size(370, 453);
             this.tvDataBaseInfo.TabIndex = 5;
             this.tvDataBaseInfo.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvDataBaseInfo_AfterSelect);
             this.tvDataBaseInfo.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvDataBaseInfo_NodeMouseClick);
@@ -274,7 +292,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl2);
-            this.splitContainer1.Size = new System.Drawing.Size(963, 356);
+            this.splitContainer1.Size = new System.Drawing.Size(963, 353);
             this.splitContainer1.SplitterDistance = 520;
             this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 1;
@@ -288,7 +306,7 @@
             this.groupBox7.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox7.Size = new System.Drawing.Size(520, 356);
+            this.groupBox7.Size = new System.Drawing.Size(520, 353);
             this.groupBox7.TabIndex = 4;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "实体文件内容总模板";
@@ -299,7 +317,7 @@
             this.rtbEntityTemplate.Location = new System.Drawing.Point(2, 16);
             this.rtbEntityTemplate.Margin = new System.Windows.Forms.Padding(2);
             this.rtbEntityTemplate.Name = "rtbEntityTemplate";
-            this.rtbEntityTemplate.Size = new System.Drawing.Size(516, 338);
+            this.rtbEntityTemplate.Size = new System.Drawing.Size(516, 335);
             this.rtbEntityTemplate.TabIndex = 1;
             this.rtbEntityTemplate.Text = "";
             // 
@@ -312,7 +330,7 @@
             this.tabControl2.Location = new System.Drawing.Point(0, 0);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(440, 356);
+            this.tabControl2.Size = new System.Drawing.Size(440, 353);
             this.tabControl2.TabIndex = 20;
             // 
             // tabPage1
@@ -321,7 +339,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(432, 330);
+            this.tabPage1.Size = new System.Drawing.Size(432, 327);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "自定义变量";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -333,7 +351,7 @@
             this.dgvMyDefine.Location = new System.Drawing.Point(3, 3);
             this.dgvMyDefine.Name = "dgvMyDefine";
             this.dgvMyDefine.RowTemplate.Height = 23;
-            this.dgvMyDefine.Size = new System.Drawing.Size(426, 324);
+            this.dgvMyDefine.Size = new System.Drawing.Size(426, 321);
             this.dgvMyDefine.TabIndex = 2;
             // 
             // tabPage2
@@ -420,7 +438,7 @@
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 98);
+            this.splitContainer2.Location = new System.Drawing.Point(0, 104);
             this.splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
@@ -431,7 +449,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer3);
-            this.splitContainer2.Size = new System.Drawing.Size(1343, 559);
+            this.splitContainer2.Size = new System.Drawing.Size(1343, 553);
             this.splitContainer2.SplitterDistance = 376;
             this.splitContainer2.TabIndex = 16;
             // 
@@ -449,8 +467,8 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.splitContainer1);
-            this.splitContainer3.Size = new System.Drawing.Size(963, 559);
-            this.splitContainer3.SplitterDistance = 199;
+            this.splitContainer3.Size = new System.Drawing.Size(963, 553);
+            this.splitContainer3.SplitterDistance = 196;
             this.splitContainer3.TabIndex = 23;
             // 
             // uC_DbConnection1
@@ -459,26 +477,8 @@
             this.uC_DbConnection1.Location = new System.Drawing.Point(0, 27);
             this.uC_DbConnection1.Margin = new System.Windows.Forms.Padding(4);
             this.uC_DbConnection1.Name = "uC_DbConnection1";
-            this.uC_DbConnection1.Size = new System.Drawing.Size(1343, 71);
+            this.uC_DbConnection1.Size = new System.Drawing.Size(1343, 77);
             this.uC_DbConnection1.TabIndex = 20;
-            // 
-            // txbFileExtName
-            // 
-            this.txbModuleFileSuffix.Location = new System.Drawing.Point(303, 3);
-            this.txbModuleFileSuffix.Name = "txbFileExtName";
-            this.txbModuleFileSuffix.Size = new System.Drawing.Size(49, 21);
-            this.txbModuleFileSuffix.TabIndex = 4;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(232, 8);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 12);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "文件后缀：";
             // 
             // FrmDBTDBAutoEntityFile
             // 

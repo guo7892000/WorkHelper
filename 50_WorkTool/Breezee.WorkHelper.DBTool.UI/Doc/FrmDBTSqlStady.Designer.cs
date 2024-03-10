@@ -31,25 +31,28 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDBTSqlStady));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.tsbReload = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.tvList = new System.Windows.Forms.TreeView();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.rtbFileContent = new System.Windows.Forms.RichTextBox();
+            this.btnCharSetOverWriteTo = new System.Windows.Forms.Button();
+            this.cbbCharSetEncodeNew = new System.Windows.Forms.ComboBox();
             this.label16 = new System.Windows.Forms.Label();
             this.cbbCharSetEncode = new System.Windows.Forms.ComboBox();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.tsbReload = new System.Windows.Forms.ToolStripButton();
+            this.tvList = new System.Windows.Forms.TreeView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiExpandAll = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiCloseAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.rtbFileContent = new System.Windows.Forms.RichTextBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.label1 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -64,6 +67,15 @@
             this.toolStrip1.TabIndex = 23;
             this.toolStrip1.Text = "toolStrip1";
             // 
+            // tsbReload
+            // 
+            this.tsbReload.Image = ((System.Drawing.Image)(resources.GetObject("tsbReload.Image")));
+            this.tsbReload.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbReload.Name = "tsbReload";
+            this.tsbReload.Size = new System.Drawing.Size(80, 24);
+            this.tsbReload.Text = "重新加载";
+            this.tsbReload.Click += new System.EventHandler(this.tsbReload_Click);
+            // 
             // tsbExit
             // 
             this.tsbExit.Image = ((System.Drawing.Image)(resources.GetObject("tsbExit.Image")));
@@ -76,6 +88,9 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.btnCharSetOverWriteTo);
+            this.groupBox1.Controls.Add(this.cbbCharSetEncodeNew);
             this.groupBox1.Controls.Add(this.label16);
             this.groupBox1.Controls.Add(this.cbbCharSetEncode);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -86,6 +101,44 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "选项";
             // 
+            // btnCharSetOverWriteTo
+            // 
+            this.btnCharSetOverWriteTo.Location = new System.Drawing.Point(486, 20);
+            this.btnCharSetOverWriteTo.Name = "btnCharSetOverWriteTo";
+            this.btnCharSetOverWriteTo.Size = new System.Drawing.Size(52, 23);
+            this.btnCharSetOverWriteTo.TabIndex = 9;
+            this.btnCharSetOverWriteTo.Text = "保存";
+            this.btnCharSetOverWriteTo.UseVisualStyleBackColor = true;
+            this.btnCharSetOverWriteTo.Click += new System.EventHandler(this.btnCharSetOverWriteTo_Click);
+            // 
+            // cbbCharSetEncodeNew
+            // 
+            this.cbbCharSetEncodeNew.FormattingEnabled = true;
+            this.cbbCharSetEncodeNew.Location = new System.Drawing.Point(359, 20);
+            this.cbbCharSetEncodeNew.Name = "cbbCharSetEncodeNew";
+            this.cbbCharSetEncodeNew.Size = new System.Drawing.Size(121, 20);
+            this.cbbCharSetEncodeNew.TabIndex = 8;
+            // 
+            // label16
+            // 
+            this.label16.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label16.AutoSize = true;
+            this.label16.ForeColor = System.Drawing.Color.Red;
+            this.label16.Location = new System.Drawing.Point(12, 24);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(77, 12);
+            this.label16.TabIndex = 6;
+            this.label16.Text = "文件字符集：";
+            // 
+            // cbbCharSetEncode
+            // 
+            this.cbbCharSetEncode.FormattingEnabled = true;
+            this.cbbCharSetEncode.Location = new System.Drawing.Point(95, 20);
+            this.cbbCharSetEncode.Name = "cbbCharSetEncode";
+            this.cbbCharSetEncode.Size = new System.Drawing.Size(121, 20);
+            this.cbbCharSetEncode.TabIndex = 7;
+            this.cbbCharSetEncode.SelectedIndexChanged += new System.EventHandler(this.cbbCharSetEncode_SelectedIndexChanged);
+            // 
             // tvList
             // 
             this.tvList.ContextMenuStrip = this.contextMenuStrip1;
@@ -95,6 +148,28 @@
             this.tvList.Size = new System.Drawing.Size(274, 469);
             this.tvList.TabIndex = 36;
             this.tvList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvList_AfterSelect);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiExpandAll,
+            this.tsmiCloseAll});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(125, 48);
+            // 
+            // tsmiExpandAll
+            // 
+            this.tsmiExpandAll.Name = "tsmiExpandAll";
+            this.tsmiExpandAll.Size = new System.Drawing.Size(124, 22);
+            this.tsmiExpandAll.Text = "全部展开";
+            this.tsmiExpandAll.Click += new System.EventHandler(this.tsmiExpandAll_Click);
+            // 
+            // tsmiCloseAll
+            // 
+            this.tsmiCloseAll.Name = "tsmiCloseAll";
+            this.tsmiCloseAll.Size = new System.Drawing.Size(124, 22);
+            this.tsmiCloseAll.Text = "全部收缩";
+            this.tsmiCloseAll.Click += new System.EventHandler(this.tsmiCloseAll_Click);
             // 
             // splitContainer1
             // 
@@ -122,55 +197,16 @@
             this.rtbFileContent.TabIndex = 0;
             this.rtbFileContent.Text = "";
             // 
-            // label16
+            // label1
             // 
-            this.label16.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label16.AutoSize = true;
-            this.label16.ForeColor = System.Drawing.Color.Red;
-            this.label16.Location = new System.Drawing.Point(12, 24);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(77, 12);
-            this.label16.TabIndex = 6;
-            this.label16.Text = "文件字符集：";
-            // 
-            // cbbCharSetEncode
-            // 
-            this.cbbCharSetEncode.FormattingEnabled = true;
-            this.cbbCharSetEncode.Location = new System.Drawing.Point(95, 20);
-            this.cbbCharSetEncode.Name = "cbbCharSetEncode";
-            this.cbbCharSetEncode.Size = new System.Drawing.Size(121, 20);
-            this.cbbCharSetEncode.TabIndex = 7;
-            // 
-            // tsbReload
-            // 
-            this.tsbReload.Image = ((System.Drawing.Image)(resources.GetObject("tsbReload.Image")));
-            this.tsbReload.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbReload.Name = "tsbReload";
-            this.tsbReload.Size = new System.Drawing.Size(80, 24);
-            this.tsbReload.Text = "重新加载";
-            this.tsbReload.Click += new System.EventHandler(this.tsbReload_Click);
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiExpandAll,
-            this.tsmiCloseAll});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
-            // 
-            // tsmiExpandAll
-            // 
-            this.tsmiExpandAll.Name = "tsmiExpandAll";
-            this.tsmiExpandAll.Size = new System.Drawing.Size(180, 22);
-            this.tsmiExpandAll.Text = "全部展开";
-            this.tsmiExpandAll.Click += new System.EventHandler(this.tsmiExpandAll_Click);
-            // 
-            // tsmiCloseAll
-            // 
-            this.tsmiCloseAll.Name = "tsmiCloseAll";
-            this.tsmiCloseAll.Size = new System.Drawing.Size(180, 22);
-            this.tsmiCloseAll.Text = "全部收缩";
-            this.tsmiCloseAll.Click += new System.EventHandler(this.tsmiCloseAll_Click);
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.Location = new System.Drawing.Point(264, 24);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(89, 12);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "文件新字符集：";
             // 
             // FrmDBTSqlStady
             // 
@@ -189,11 +225,11 @@
             this.toolStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -214,5 +250,8 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem tsmiExpandAll;
         private System.Windows.Forms.ToolStripMenuItem tsmiCloseAll;
+        private System.Windows.Forms.Button btnCharSetOverWriteTo;
+        private System.Windows.Forms.ComboBox cbbCharSetEncodeNew;
+        private System.Windows.Forms.Label label1;
     }
 }

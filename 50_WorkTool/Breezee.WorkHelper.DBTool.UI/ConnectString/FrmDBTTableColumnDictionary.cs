@@ -483,8 +483,15 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 //从SQL中获取表清单
                 List<string> tables = SqlAnalyzer.GetTableList(sSql);
+                DataTable dtTableList = dgvTableList.GetBindingTable();
                 foreach (string sTableName in tables)
                 {
+                    sFiter = string.Format("{0}='{1}'", DBTableEntity.SqlString.Name, sTableName);
+                    if(dtTableList.Select(sFiter).Length == 0)
+                    {
+                        continue;
+                    }
+
                     sFiter = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.TableName, sTableName);
                     if (dtAllCol.Select(sFiter).Length > 0)
                     {
@@ -497,7 +504,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
 
                 //仅匹配SQL中的表
-                if (ckbReMatchSqlTable.Checked)
+                if (ckbReMatchSqlTable.Checked && listTable.Count>0)
                 {
                     AddAllColumns(dtAllCol, listTable);//添加所有列
                 }
@@ -878,7 +885,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                     {
                         dtNameCode.ImportRow(dr); //对非修改，不是排除列就导入
                         isNeedSave = true;
+                        //重新修改其值为已有中文备注
+                        dr[_sGridColumnIsNoCnRemark] = "0";
                     }
+
                 }
                 if (isNeedSave)
                 {

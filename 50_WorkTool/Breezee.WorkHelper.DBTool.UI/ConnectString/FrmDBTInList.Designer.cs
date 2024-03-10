@@ -34,6 +34,7 @@
             this.tsbAutoSQL = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblRuleInfo = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.cbbSqlType = new System.Windows.Forms.ComboBox();
             this.grbInputString = new System.Windows.Forms.GroupBox();
@@ -54,7 +55,7 @@
             this.lblTableData = new System.Windows.Forms.Label();
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
-            this.lblRuleInfo = new System.Windows.Forms.Label();
+            this.ckbIsPasteAppend = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.grbInputString.SuspendLayout();
@@ -100,6 +101,7 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
+            this.groupBox1.Controls.Add(this.ckbIsPasteAppend);
             this.groupBox1.Controls.Add(this.lblRuleInfo);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.cbbSqlType);
@@ -109,6 +111,16 @@
             this.groupBox1.Size = new System.Drawing.Size(592, 48);
             this.groupBox1.TabIndex = 29;
             this.groupBox1.TabStop = false;
+            // 
+            // lblRuleInfo
+            // 
+            this.lblRuleInfo.AutoSize = true;
+            this.lblRuleInfo.ForeColor = System.Drawing.Color.Red;
+            this.lblRuleInfo.Location = new System.Drawing.Point(77, 0);
+            this.lblRuleInfo.Name = "lblRuleInfo";
+            this.lblRuleInfo.Size = new System.Drawing.Size(53, 12);
+            this.lblRuleInfo.TabIndex = 4;
+            this.lblRuleInfo.Text = "规则说明";
             // 
             // label1
             // 
@@ -327,15 +339,17 @@
             this.rtbResult.TabIndex = 3;
             this.rtbResult.Text = "";
             // 
-            // lblInfo
+            // ckbIsPasteAppend
             // 
-            this.lblRuleInfo.AutoSize = true;
-            this.lblRuleInfo.ForeColor = System.Drawing.Color.Red;
-            this.lblRuleInfo.Location = new System.Drawing.Point(77, 0);
-            this.lblRuleInfo.Name = "lblInfo";
-            this.lblRuleInfo.Size = new System.Drawing.Size(53, 12);
-            this.lblRuleInfo.TabIndex = 4;
-            this.lblRuleInfo.Text = "规则说明";
+            this.ckbIsPasteAppend.AutoSize = true;
+            this.ckbIsPasteAppend.Checked = true;
+            this.ckbIsPasteAppend.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbIsPasteAppend.Location = new System.Drawing.Point(227, 19);
+            this.ckbIsPasteAppend.Name = "ckbIsPasteAppend";
+            this.ckbIsPasteAppend.Size = new System.Drawing.Size(72, 16);
+            this.ckbIsPasteAppend.TabIndex = 5;
+            this.ckbIsPasteAppend.Text = "粘贴累加";
+            this.ckbIsPasteAppend.UseVisualStyleBackColor = true;
             // 
             // FrmDBTInList
             // 
@@ -397,5 +411,6 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem tsmiClear;
         private System.Windows.Forms.Label lblRuleInfo;
+        private System.Windows.Forms.CheckBox ckbIsPasteAppend;
     }
 }

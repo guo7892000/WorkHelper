@@ -1127,5 +1127,98 @@ namespace Breezee.Framework.Mini.StartUp
             }
 
         }
+
+        /// <summary>
+        /// 下载最后稳定版本
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void tsmiDowloadLatestStableVersion_Click(object sender, EventArgs e)
+        {
+            bool isHandUpdate = true;
+            try
+            {
+                /**
+                 * 读取服务器的版本(blob为默认点开的网页形式)：https://gitee.com/breezee2000/WorkHelper/blob/master/LatestVersion.json
+                 * 读取服务器的版本(raw为原始数据形式)：https://gitee.com/breezee2000/WorkHelper/raw/master/LatestVersion.json
+                 * 使用有优先级的多个下载路径：
+                 * 1、发布路径-Gitee：包含版本号的压缩包
+                 * 2、发布路径-Github：包含版本号的压缩包
+                 * 3、发布路径-Gitlab：包含版本号的压缩包
+                 */
+                string sServerVersionJson = AppUpgradeTool.ReadWebText("https://gitee.com/breezee2000/WorkHelper/raw/master/LatestVersion.json").Trim();
+                LatestVerion ver = _IADPJson.Deserialize<LatestVerion>(sServerVersionJson);
+                string sServerVersion = ver.stableVersion;
+                string sNowVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(); //本地版本
+
+                if (MsgHelper.ShowOkCancel("确定要下载稳定版本：" + sServerVersion + "？" + System.Environment.NewLine + "下载过程在后台运行，不影响正常使用，完成后会提示。") == DialogResult.Cancel)
+                {
+                    return;
+                }
+
+                _sDestopLastMsg = sServerVersion + "稳定版的压缩包正在后台下载中，请稍等...";
+                ShowGlobalMsg_Click(this, new ShowGlobalMsgEventArgs(_sDestopLastMsg));
+                //异步获取文件
+                DirectoryInfo sPrePath = new DirectoryInfo(GlobalContext.AppEntryAssemblyPath);
+                string sLocalDir = _WinFormConfig.Get(GlobalKey.Upgrade_TempPath, sPrePath.Parent.FullName);//默认为当前运行程序的父目录
+                bool isDeleteNewVerZipFile = _WinFormConfig.Get(GlobalKey.Upgrade_IsDeleteNewVerZipFile, "1").Equals("1") ? true : false;
+
+                //取消原来的写死下载路径，改为从配置文件上获取，下载优化先级：downUrlPublishLatest => downUrlPublishGitee => downUrlPublishGithub
+                //string sServerZipUrl = string.Format("https://gitee.com/breezee2000/WorkHelper/releases/download/{0}/WorkHelper{1}.rar", sServerVersion, sServerVersion);
+                string sServerZipUrl = ver.stableDownUrlPublish.Replace("#version#", sServerVersion);
+                bool isHaveZipNewVersion = CheckWebFileExists(sServerZipUrl);
+                int iMaxDownCount = 20;
+                int iDownCount = 1; //总共下载十次
+
+                while (iDownCount <= iMaxDownCount)
+                {
+                    try
+                    {
+                        if (isHaveZipNewVersion)
+                        {
+                            try
+                            {
+                                //通用最新版本存在版本压缩包时，异步获取压缩包文件
+                                await Task.Run(() => AppUpgradeTool.DownloadWebZipAndUnZipAsync(sServerZipUrl, sLocalDir, isDeleteNewVerZipFile));
+                                break;
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    finally
+                    {
+                        iDownCount++;
+                    }
+                }
+
+                //试了最大次数还不成功，那么提示信息
+                if (iDownCount >= iMaxDownCount)
+                {
+                    MsgHelper.ShowInfo(string.Format("下载失败，稳定版{0}发布包未找到，请联系作者！", sServerVersion));
+                    return;
+                }
+                _sDestopLastMsg = "WorkHelper" + sServerVersion + "稳定版已成功下载并解压！";
+                ShowGlobalMsg_Click(this, new ShowGlobalMsgEventArgs(_sDestopLastMsg));
+            }
+            catch (Exception ex)
+            {
+                if (isHandUpdate)
+                {
+                    MsgHelper.ShowInfo("升级出错：" + ex.Message);
+                }
+                else
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                WinFormContext.Instance.IsUpgradeRunning = false;
+            }
+        }
     }
 }

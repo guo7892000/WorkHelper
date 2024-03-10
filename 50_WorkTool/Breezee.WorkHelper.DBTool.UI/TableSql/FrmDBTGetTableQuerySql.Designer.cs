@@ -282,7 +282,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.cbbParaType.FormattingEnabled = true;
             this.cbbParaType.Location = new System.Drawing.Point(632, 3);
             this.cbbParaType.Name = "cbbParaType";
-            this.cbbParaType.Size = new System.Drawing.Size(112, 20);
+            this.cbbParaType.Size = new System.Drawing.Size(125, 20);
             this.cbbParaType.TabIndex = 8;
             this.cbbParaType.SelectedIndexChanged += new System.EventHandler(this.CbbParaType_SelectedIndexChanged);
             // 
@@ -290,7 +290,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 
             this.lblParam.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lblParam.AutoSize = true;
-            this.lblParam.Location = new System.Drawing.Point(750, 7);
+            this.lblParam.Location = new System.Drawing.Point(763, 7);
             this.lblParam.Name = "lblParam";
             this.lblParam.Size = new System.Drawing.Size(65, 12);
             this.lblParam.TabIndex = 7;
@@ -298,7 +298,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 
             // txbParamPre
             // 
-            this.txbParamPre.Location = new System.Drawing.Point(821, 3);
+            this.txbParamPre.Location = new System.Drawing.Point(834, 3);
             this.txbParamPre.Name = "txbParamPre";
             this.txbParamPre.Size = new System.Drawing.Size(32, 21);
             this.txbParamPre.TabIndex = 9;
@@ -308,7 +308,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 
             this.lblDefineFormat.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lblDefineFormat.AutoSize = true;
-            this.lblDefineFormat.Location = new System.Drawing.Point(859, 7);
+            this.lblDefineFormat.Location = new System.Drawing.Point(872, 7);
             this.lblDefineFormat.Name = "lblDefineFormat";
             this.lblDefineFormat.Size = new System.Drawing.Size(77, 12);
             this.lblDefineFormat.TabIndex = 7;
@@ -317,7 +317,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             // txbDefineFormart
             // 
             this.txbDefineFormart.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txbDefineFormart.Location = new System.Drawing.Point(942, 3);
+            this.txbDefineFormart.Location = new System.Drawing.Point(955, 3);
             this.txbDefineFormart.Name = "txbDefineFormart";
             this.txbDefineFormart.Size = new System.Drawing.Size(100, 21);
             this.txbDefineFormart.TabIndex = 6;
@@ -365,7 +365,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.cbbWordConvert.FormattingEnabled = true;
             this.cbbWordConvert.Location = new System.Drawing.Point(632, 30);
             this.cbbWordConvert.Name = "cbbWordConvert";
-            this.cbbWordConvert.Size = new System.Drawing.Size(112, 20);
+            this.cbbWordConvert.Size = new System.Drawing.Size(125, 20);
             this.cbbWordConvert.TabIndex = 8;
             this.cbbWordConvert.SelectedIndexChanged += new System.EventHandler(this.CbbParaType_SelectedIndexChanged);
             // 
@@ -585,7 +585,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tpAutoSQL.Location = new System.Drawing.Point(4, 22);
             this.tpAutoSQL.Name = "tpAutoSQL";
             this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3);
-            this.tpAutoSQL.Size = new System.Drawing.Size(1079, 312);
+            this.tpAutoSQL.Size = new System.Drawing.Size(1079, 303);
             this.tpAutoSQL.TabIndex = 1;
             this.tpAutoSQL.Text = "生成结果";
             // 
@@ -594,7 +594,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.rtbResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbResult.Location = new System.Drawing.Point(3, 3);
             this.rtbResult.Name = "rtbResult";
-            this.rtbResult.Size = new System.Drawing.Size(1073, 306);
+            this.rtbResult.Size = new System.Drawing.Size(1073, 297);
             this.rtbResult.TabIndex = 3;
             this.rtbResult.Text = "";
             // 

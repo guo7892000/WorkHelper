@@ -37,5 +37,19 @@ namespace Breezee.Framework.Mini.StartUp
         /// 发布路径-Github
         /// </summary>
         public string downUrlPublishGithub;
+
+        /// <summary>
+        /// 稳定版-版本号
+        /// </summary>
+        public string stableVersion;
+        /// <summary>
+        /// 稳定版-发布日期
+        /// </summary>
+        public string stableDate;
+        /// <summary>
+        /// 稳定版-发布路径
+        /// </summary>
+        public string stableDownUrlPublish;
+
     }
 }
