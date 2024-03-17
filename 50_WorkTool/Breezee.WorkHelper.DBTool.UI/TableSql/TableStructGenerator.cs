@@ -7,6 +7,7 @@ using System.Reflection;
 using System.IO;
 using Breezee.WorkHelper.DBTool.Entity;
 using Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL;
+using org.breezee.MyPeachNet;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -51,9 +52,9 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="useDataTypeFull">全类型</param>
         /// <param name="useLYTemplate">是否使用LY模板</param>
         /// <param name="useNameRemark">是否使用包括列名的备注</param>
-        public static void Generate(TabControl tabControl, DataTable tableList, DataTable columnList, bool useDataTypeFull, bool useLYTemplate, bool useNameRemark)
+        public static void Generate(TabControl tabControl, DataTable tableList, DataTable columnList, TableStructGeneratorParamEntity docEntity)
         {
-            HtmlString = GenerateHtmlString(tableList, columnList, useDataTypeFull, useLYTemplate, useNameRemark);
+            HtmlString = GenerateHtmlString(tableList, columnList, docEntity);
 
             if (!tabControl.TabPages.ContainsKey(TABKEY_TABLE_STRUCT))
             {
@@ -89,21 +90,29 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="tableList">表清单</param>
         /// <param name="columnList">列清单</param>
         /// <returns></returns>
-        private static string GenerateHtmlString(DataTable tableList, DataTable columnList,bool useDataTypeFull, bool useLYTemplate, bool useNameRemark)
+        private static string GenerateHtmlString(DataTable tableList, DataTable columnList, TableStructGeneratorParamEntity docEntity)
         {
             string htmlTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Html);
             string tableTemplate;
             string columnsTemplate;
-            if (useLYTemplate)
+            if (docEntity.useOldColumnCode)
             {
                 tableTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Table_LY);
-                columnsTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Column_LY);
+                columnsTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Column_Move);
             }
             else
             {
-                tableTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Table);
-                columnsTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Column);
-            }
+                if (docEntity.useLYTemplate)
+                {
+                    tableTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Table_LY);
+                    columnsTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Column_LY);
+                }
+                else
+                {
+                    tableTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Table);
+                    columnsTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Column);
+                }
+            }            
 
             StringBuilder tableBuilder = new StringBuilder();
             foreach(DataRow rowTable in tableList.Rows)
@@ -137,18 +146,32 @@ namespace Breezee.WorkHelper.DBTool.UI
                     }
 
                     //是否使用全类型替换
-                    string sDataType = useDataTypeFull ? row[ColCommon.ExcelCol.DataTypeFullNew].ToString() : row[ColCommon.ExcelCol.DataTypeNew].ToString();
+                    string sDataType = docEntity.useDataTypeFull ? row[ColCommon.ExcelCol.DataTypeFullNew].ToString() : row[ColCommon.ExcelCol.DataTypeNew].ToString();
                     string sColName = row[ColCommon.ExcelCol.Name].ToString();
                     string sSourceRemark = row[ColCommon.ExcelCol.Remark].ToString();
                     string sColRemark;
-                    if (useNameRemark)
+                    string sColNameAndRemark = sColName + "：" + sSourceRemark;
+                    if (docEntity.useNameSameWithRemark)
                     {
-                        sColRemark = string.IsNullOrEmpty(sSourceRemark) ? sColName : sColName + "：" + sSourceRemark;
+                        //如列名称同备注，那么列名和备注都将使用【列名称：列说明】
+                        sColName = sColNameAndRemark;
+                        sColRemark = sColNameAndRemark;
                     }
                     else
                     {
-                        sColRemark = sSourceRemark;
+                        if (docEntity.useRemarkContainsName)
+                        {
+                            sColRemark = string.IsNullOrEmpty(sSourceRemark) ? sColName : sColNameAndRemark;
+                        }
+                        else
+                        {
+                            sColRemark = sSourceRemark;
+                        }
                     }
+
+                    //默认值转换
+                    string sDefaultValue = row[ColCommon.ExcelCol.Default].ToString();
+                    docEntity.builder.ConvertDBTypeDefaultValueString(ref sDataType,ref sDefaultValue,docEntity.importDBType);
                     //列Web字符
                     string columnString = columnsTemplate.Replace("${ColumnName}", sColName)
                         .Replace("${ColumnCode}", row[ColCommon.ExcelCol.Code].ToString())
@@ -156,7 +179,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         .Replace("${ColumnWidth}", row[ColCommon.ExcelCol.DataLength].ToString())
                         .Replace("${DecimalPlace}", row[ColCommon.ExcelCol.DataDotLength].ToString())
                         .Replace("${PrimaryKey}", row[ColCommon.ExcelCol.KeyType].ToString())
-                        .Replace("${DefaultValue}", row[ColCommon.ExcelCol.Default].ToString())
+                        .Replace("${DefaultValue}", sDefaultValue)
                         .Replace("${Rule}", row[ColCommon.ExcelCol.NotNull].ToString())
                         .Replace("${Remark}", sColRemark)
                         .Replace("$(No)", index.ToString())
@@ -167,14 +190,14 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 //表相关
                 string sTableChangeType = rowTable[EntTable.ExcelTable.ChangeType].ToString();
-                if (useLYTemplate)
+                if (docEntity.useLYTemplate)
                 {
                     sTableChangeType = sTableChangeType.Replace("新增","创建") +"表";
                 }
                 string sTableName = rowTable[EntTable.ExcelTable.Name].ToString();
                 string sTableSoureRemark = rowTable[EntTable.ExcelTable.Remark].ToString();
                 string sTableRemark;
-                if (useNameRemark)
+                if (docEntity.useRemarkContainsName)
                 {
                     sTableRemark = string.IsNullOrEmpty(sTableSoureRemark) ? sTableName : sTableName + "：" + sTableSoureRemark;
                 }

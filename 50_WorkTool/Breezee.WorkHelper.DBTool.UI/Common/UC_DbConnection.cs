@@ -14,6 +14,8 @@ using Breezee.AutoSQLExecutor.Common;
 using Breezee.WorkHelper.DBTool.UI.StringBuild;
 using System.Threading.Tasks;
 using Breezee.Core.WinFormUI.Common;
+using Breezee.Core;
+using System.Linq;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -27,10 +29,13 @@ namespace Breezee.WorkHelper.DBTool.UI
         public bool IsFilterDbExtnedFile = true;//是否过滤db后缀名的数据库文件
         public EventHandler<DBTypeSelectedChangeEventArgs> DBType_SelectedIndexChanged;
         public EventHandler<EventArgs> DBConnName_SelectedIndexChanged;
+        public EventHandler<EventArgs> ColumnDefaultValue_LoadCompleted;//列默认值加载完成
         private IDictionary<string, DataTable> _dicConnUserTalbeList = new Dictionary<string, DataTable>();
-        
-        public DataTable UserTableList; //用户所有表清单
-        public DataTable UserAllTableColumnList; //用户所有表的所有列：只根据schema来过滤
+        //每个功能实例内共用，不作为类静态变量
+        public IDictionary<string, DataTable> userTableDic = new Dictionary<string, DataTable>(); //用户所有表清单
+        public IDictionary<string, DataTable> userColumnDic = new Dictionary<string, DataTable>(); //用户所有表的所有列：只根据schema来过滤
+        //用户所有表所有列的默认值清单：因为查询比较慢，所以作为类静态变量，所有功能共用
+        public static IDictionary<string, DataTable> defaultValueDic = new Dictionary<string, DataTable>(); 
         public IDataAccess _dataAccess;
         public DbServerInfo LatestDbServerInfo;//最后一次连接的服务器信息
 
@@ -201,7 +206,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                 UserName = txbUserName.Text.Trim(),
                 UseConnString = ckbUseConString.Checked,
                 ConnString = txbDBConString.Text.Trim(),
+                DbConnConfigName = cbbDbConnName.Text.Trim(),
             };
+            DbServerInfo.ResetConnKey(DbServer);
 
             int iDbType = int.Parse(cbbDatabaseType.SelectedValue.ToString());
             DataBaseType selectDBType = (DataBaseType)iDbType;
@@ -286,11 +293,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
 
             //最后的服务器：为空或与当前获取的服务器不一样，就重新连接
-            if (LatestDbServerInfo == null || !DbServerInfo.IsSameServer(DbServer, LatestDbServerInfo))
+            bool isSameServer = DbServerInfo.IsSameServer(DbServer, LatestDbServerInfo);
+            if (LatestDbServerInfo == null || !isSameServer)
             {
                 LatestDbServerInfo = DbServer;
                 ShowGlobalMsg(this, "正在异步获取数据库的表列信息，请稍等...");
-                await QueryTableColumns(isQueryTableColumnRealTime, DbServer);
+                await QueryTableColumns(DbServer,isQueryTableColumnRealTime, isSameServer);
                 ShowGlobalMsg(this, "异步获取数据库的表列信息完成！");
                 IsConnChange = true;
             }
@@ -308,17 +316,93 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="isQueryTableColumnRealTime">是否实时查询数据库表列信息</param>
         /// <param name="DbServer"></param>
         /// <returns></returns>
-        private async Task QueryTableColumns(bool isQueryTableColumnRealTime, DbServerInfo DbServer)
+        private async Task QueryTableColumns(DbServerInfo DbServer, bool isQueryTableColumnRealTime,bool isSameServer)
         {
             //得到数据库访问对象
             _dataAccess = AutoSQLExecutors.Connect(DbServer);
-            //所有用户表：GetSqlSchemaTables 和 GetSqlSchemaTables
-            //UserTableList = _dataAccess.GetSchemaTables();
-            UserTableList = _dataAccess.GetSqlSchemaTables();
-            //所有用户表的所有列
-            if (!isQueryTableColumnRealTime)
+            //判断是否实时查询
+            if (isQueryTableColumnRealTime)
             {
-                UserAllTableColumnList = _dataAccess.GetSqlSchemaTableColumns(string.Empty, DbServer.SchemaName);
+                //所有用户表：GetSqlSchemaTables 和 GetSqlSchemaTables
+                userTableDic[DbServer.DbConnKey] = _dataAccess.GetSqlSchemaTables();
+                //所有用户表的所有列
+                userColumnDic[DbServer.DbConnKey] = _dataAccess.GetSqlSchemaTableColumns(string.Empty, DbServer.SchemaName);
+            }
+            else
+            {
+                if (!isSameServer || userTableDic.ContainsKey(DbServer.DbConnKey) || userTableDic[DbServer.DbConnKey].Rows.Count == 0)
+                {
+                    //所有用户表：GetSqlSchemaTables 和 GetSqlSchemaTables
+                    userTableDic[DbServer.DbConnKey] = _dataAccess.GetSqlSchemaTables();
+                }
+                if (!isSameServer || userColumnDic.ContainsKey(DbServer.DbConnKey) || userColumnDic[DbServer.DbConnKey].Rows.Count == 0)
+                {
+                    //所有用户表的所有列
+                    userColumnDic[DbServer.DbConnKey] = _dataAccess.GetSqlSchemaTableColumns(string.Empty, DbServer.SchemaName);
+                }
+            }
+            //默认值处理
+            if (!defaultValueDic.ContainsKey(DbServer.DbConnKey))
+            {
+                //异步查询默认值
+                Task.Run(() => QueryColumnsDefaultValue(DbServer));
+            }
+            else
+            {
+                ReplaceColumnListDefault(DbServer.DbConnKey); //设置列清单的默认值
+            }
+        }
+
+        /// <summary>
+        /// 设置列清单的默认值
+        /// </summary>
+        /// <param name="sKey"></param>
+        private void ReplaceColumnListDefault(string sKey)
+        {
+            //使用LINQ：速度比较快
+            var query = from f in defaultValueDic[sKey].AsEnumerable()
+                        join s in userColumnDic[sKey].AsEnumerable()
+                        on new
+                        {
+                            c1 = f.Field<string>(DBColumnEntity.SqlString.TableName),
+                            c2 = f.Field<string>(DBColumnEntity.SqlString.Name)
+                        }
+                        equals new
+                        {
+                            c1 = s.Field<string>(DBColumnEntity.SqlString.TableName),
+                            c2 = s.Field<string>(DBColumnEntity.SqlString.Name)
+                        }
+                        select new { F1 = f, S1 = s };
+            var joinList = query.ToList();
+            //用当前默认值来覆盖列清单
+            foreach (var item in joinList)
+            {
+                item.S1[DBColumnEntity.SqlString.Default] = item.F1[DBColumnEntity.SqlString.Default].ToString();
+            }
+        }
+
+        /// <summary>
+        /// 查询表列的默认值信息
+        /// </summary>
+        /// <param name="DbServer"></param>
+        /// <returns></returns>
+        public async Task QueryColumnsDefaultValue(DbServerInfo DbServer)
+        {
+            if (string.IsNullOrEmpty(DbServer.DbConnConfigName))
+            {
+                return;
+            }
+            ShowGlobalMsg(this, "准备异步查询列的默认值信息，过程会有点慢，请耐心等待...");
+            //得到数据库访问对象
+            _dataAccess = AutoSQLExecutors.Connect(DbServer);
+            //这里查询所有表的默认值：解决不了查询慢的问题
+            defaultValueDic[DbServer.DbConnKey] = _dataAccess.GetSqlTableColumnsDefaultValue(new List<string>());
+            //设置列清单的默认值
+            ReplaceColumnListDefault(DbServer.DbConnKey);
+            //调用绑定的代理方法
+            if (ColumnDefaultValue_LoadCompleted != null)
+            {
+                ColumnDefaultValue_LoadCompleted(this, new EventArgs() { });
             }
         }
         #endregion

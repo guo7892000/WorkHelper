@@ -13,7 +13,7 @@
             .celltr
             {
                 border-width:thin;border-style:solid;border-color:Black;
-                background-color:#FFFF00;font-family:"微软雅黑";font-size:10pt;text-indent:2pt;    
+                background-color:#FFFFF4;font-family:"微软雅黑";font-size:10pt;text-indent:2pt;    
             }
             .tabletr {font-family:"微软雅黑";font-size:10pt;font-weight:bold;}
             .align-center{text-align:center;}

@@ -103,6 +103,7 @@ namespace Breezee.WorkHelper.DBTool.Entity
                 new DataColumn(ExcelCol.DataTypeFull),
                 new DataColumn(ExcelCol.DataTypeNew),
                 new DataColumn(ExcelCol.DataTypeFullNew),
+                new DataColumn(ExcelCol.OrderNo),
             });
             return dt;
         }
@@ -116,22 +117,53 @@ namespace Breezee.WorkHelper.DBTool.Entity
             return "(" + strColCode + ")";
         }
 
-        public static bool ValidateData(DataTable dtTable, DataTable dtAllCol, out StringBuilder sb)
+        public static bool ValidateData(DataTable dtTable, DataTable dtAllCol, GenerateParamEntity paramEntity, out StringBuilder sb)
         {
             sb = new StringBuilder();
-
+            DataRow[] drErrorArray;
             if (dtTable.Select(ExcelCol.ChangeType + " not in ('新增','修改')").Length > 0)
             {
                 sb.AppendLine(ExcelCol.ChangeType + "只能是“新增”或“修改”！");
             }
-            if (dtTable.Select(ExcelCol.ChangeType + "='新增' and (" + ExcelTable.Name + "='' or " + ExcelTable.Code + "='')").Length > 0)
+            if (dtTable.Select(ExcelCol.ChangeType + "='新增' and " + ExcelTable.Code + "=''").Length > 0)
             {
-                sb.AppendLine("新增的表，其“" + ExcelTable.Name + "、" + ExcelTable.Code + "”都不能为空！");
+                sb.AppendLine("新增的表，其“" + ExcelTable.Code + "”都不能为空！");
+            }
+            drErrorArray = dtTable.Select(ExcelCol.ChangeType + "='新增' and " + ExcelTable.Name + "=''");
+            if (drErrorArray.Length > 0)
+            {
+                foreach (DataRow dr in drErrorArray)
+                {
+                    if (paramEntity.isDefaultColNameCN)
+                    {
+                        dr[ExcelTable.Name] = paramEntity.defaultColNameCN + "表";//直接给为空的表中文名赋值
+                    }
+                    else
+                    {
+                        sb.AppendLine("新增的表，其“" + ExcelTable.Name + "”都不能为空！");
+                    }
+                }
             }
             if (dtAllCol.Select(ExcelTable.Code + "=''").Length > 0)
             {
                 sb.AppendLine("新增的列中" + ExcelTable.Code + "不能为空！");
             }
+            drErrorArray = dtAllCol.Select(ExcelCol.Name + "=''");
+            if (drErrorArray.Length > 0)
+            {
+                foreach (DataRow dr in drErrorArray)
+                {
+                    if (paramEntity.isDefaultColNameCN)
+                    {
+                        dr[ExcelCol.Name] = paramEntity.defaultColNameCN + "列";//直接给为空的列中文名赋值
+                    }
+                    else
+                    {
+                        sb.AppendLine("表编码：" + dr[ExcelTable.Code].ToString() + ",列编码：" + dr[ExcelCol.Code].ToString() + "，其列名称不能为空！");
+                    }
+                }
+            }
+
             if (dtAllCol.Select(ExcelTable.Code + "='' or " + ExcelCol.Name + "='' or " + ExcelCol.Code + "='' or " + ExcelCol.DataType + "=''").Length > 0)
             {
                 sb.AppendLine("新增的列中" + ExcelTable.Code + "、" + ExcelCol.Name + "、" + ExcelCol.Code + "、" + ExcelCol.DataType + "不能为空！");
@@ -142,27 +174,43 @@ namespace Breezee.WorkHelper.DBTool.Entity
                 sb.AppendLine(dr[ExcelTable.Code].ToString() + "的" + dr[ExcelCol.Code].ToString() + "，其" + dr[ExcelCol.DataType].ToString() + "类型的长度不能为空！");
             }
 
-            DataRow[] drNewArray = dtTable.Select(ColCommon.ExcelCol.ChangeType + "='新增'");
-
+            DataRow[] drNewArray = dtTable.Select(ExcelCol.ChangeType + "='新增'");
+            List<string> listTable = new List<string>();
             foreach (DataRow drNew in drNewArray)
             {
-                string strTableCode = drNew[EntTable.ExcelTable.Code].ToString();
-                string strTableName = drNew[EntTable.ExcelTable.Name].ToString();
-                string strChangeType = drNew[ColCommon.ExcelCol.ChangeType].ToString();
-                if (dtAllCol.Select(EntTable.ExcelTable.Code + "='" + strTableCode + "'").Length == 0)
+                string strTableCode = drNew[ExcelTable.Code].ToString();
+                string strTableName = drNew[ExcelTable.Name].ToString();
+                string strChangeType = drNew[ExcelCol.ChangeType].ToString();
+                if (listTable.Contains(strTableCode))
+                {
+                    continue;
+                }
+
+                if (dtAllCol.Select(ExcelTable.Code + "='" + strTableCode + "'").Length == 0)
                 {
                     sb.AppendLine("表" + strTableCode + "中没有本次更变的列，请删除该表或新增列！");
                 }
-                if (dtAllCol.Select(EntTable.ExcelTable.Code + "='" + strTableCode + "' and (" + ColCommon.ExcelCol.ChangeType + " is not null and " + ColCommon.ExcelCol.ChangeType + "<>'新增')").Length > 0)
+                if (dtAllCol.Select(ExcelTable.Code + "='" + strTableCode + "' and (" + ExcelCol.ChangeType + " is not null and " + ExcelCol.ChangeType + "<>'新增')").Length > 0)
                 {
                     sb.AppendLine("新增的表" + strTableCode + "中，只能全部为新增列！");
                 }
 
-                if (dtAllCol.Select(EntTable.ExcelTable.Code + "='" + strTableCode + "' and " + ColCommon.ExcelCol.KeyType + "='PK'").Length == 0)
+                drErrorArray = dtAllCol.Select(ExcelTable.Code + "='" + strTableCode + "' and " + ExcelCol.KeyType + "='PK'");
+                if (drErrorArray.Length == 0)
                 {
-                    sb.AppendLine("新增的表" + strTableCode + "没有主键！请设置其中某一行的【"+ ColCommon.ExcelCol.KeyType + "】列的值为【PK】即可。");
+                    if (paramEntity.isDefaultPK)
+                    {
+                        drErrorArray = dtAllCol.Select(ExcelTable.Code + "='" + strTableCode + "'", ExcelCol.OrderNo);
+                        drErrorArray[0][ExcelCol.KeyType] = "PK";
+                    }
+                    else
+                    {
+                        sb.AppendLine("新增的表" + strTableCode + "没有主键！请设置其中某一行的【" + ExcelCol.KeyType + "】列的值为【PK】即可。");
+                    }
                 }
+                listTable.Add(strTableCode);
             }
+
             //返回结果
             return string.IsNullOrEmpty(sb.ToString());
         }
@@ -183,6 +231,7 @@ namespace Breezee.WorkHelper.DBTool.Entity
             public static string Default = "默认值";
             public static string Remark = "备注";
             //这个不在Excel模板内，会自动转换
+            public static string OrderNo = "排序号";
             public static string DataTypeFull = "类型长度";
             public static string DataTypeNew = "新类型";
             public static string DataTypeFullNew = "新类型长度";

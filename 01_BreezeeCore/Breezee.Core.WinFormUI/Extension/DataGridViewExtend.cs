@@ -114,10 +114,11 @@ namespace Breezee.Core.WinFormUI
         public static void ShowRowNum(this DataGridView dgv, bool isResetRowNum = false,string sRowNunColumnName="ROWNO")
         {
             int rowNumber = 1;
+            int rowWidth = 60;
             if (dgv.Columns.Contains(sRowNunColumnName))
             {
                 dgv.Columns[sRowNunColumnName].HeaderText = "序号";
-                dgv.Columns[sRowNunColumnName].Width = 50;
+                dgv.Columns[sRowNunColumnName].Width = rowWidth;
                 dgv.Columns[sRowNunColumnName].ValueType = typeof(int); //设置序号为整型
                 dgv.RowHeadersVisible = false;//不显示行标题，即第一个空白列
                 if (!isResetRowNum)
@@ -158,10 +159,13 @@ namespace Breezee.Core.WinFormUI
             else
             {
                 dgv.RowHeadersVisible = true;//显示行标题，即第一个空白列
-                dgv.RowHeadersWidth = 50;
+                dgv.RowHeadersWidth = rowWidth;
                 foreach (DataGridViewRow row in dgv.Rows)
                 {
-                    if (row.IsNewRow) continue;
+                    if (row.IsNewRow)
+                    {
+                        continue;
+                    }
                     row.HeaderCell.Value = rowNumber.ToString(); //这里必须是字符，才能显示在行标题中
                     rowNumber++;
                 }

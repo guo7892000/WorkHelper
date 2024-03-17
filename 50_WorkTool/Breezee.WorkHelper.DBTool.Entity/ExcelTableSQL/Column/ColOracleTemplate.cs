@@ -28,7 +28,7 @@ namespace Breezee.WorkHelper.DBTool.Entity
             return ent;
         }
 
-        public static bool ValidateData(DataTable dtTable, DataTable dtAllCol, out StringBuilder sb)
+        public static bool ValidateData(DataTable dtTable, DataTable dtAllCol, GenerateParamEntity paramEntity, out StringBuilder sb)
         {
             sb = new StringBuilder();
             DataRow[] drNewArray = dtTable.Select(ColCommon.ExcelCol.ChangeType + "='新增'");

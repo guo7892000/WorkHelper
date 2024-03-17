@@ -96,6 +96,7 @@
     <Compile Include="Extension\XmlExtension.cs" />
     <Compile Include="GlobalContext.cs" />
     <Compile Include="Global\GlobalKey.cs" />
+    <Compile Include="Enum\IDValueType.cs" />
     <Compile Include="Interface\IConfig.cs" />
     <Compile Include="Interface\IDbEntity.cs" />
     <Compile Include="Interface\IDll.cs" />

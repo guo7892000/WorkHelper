@@ -285,6 +285,7 @@ namespace Breezee.Framework.Mini.StartUp
                     UseConnString = false,
                     ConnString = "",
                 };
+                DbServerInfo.ResetConnKey(DbServer);
 
                 int iDbType = int.Parse(cbbDatabaseType.SelectedValue.ToString());
                 DataBaseType selectDBType = (DataBaseType)iDbType;

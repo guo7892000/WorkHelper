@@ -27,7 +27,7 @@ namespace Breezee.Core.Interface
         public DataTable KeyData { get; private set; }
         public DataTable ValData { get; private set; }
         public MoreKeyValueEntity MoreKeyValue { get; private set; }
-
+        
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -87,7 +87,6 @@ namespace Breezee.Core.Interface
             ValData = GenerateValDataStruct();
             if (!File.Exists(sFullName))
             {
-                
                 return;
             }
             FileInfo f = new FileInfo(sFullName);
@@ -244,7 +243,17 @@ namespace Breezee.Core.Interface
                 KeyData.Columns.Add(s, typeof(string));
             }
             KeyData.PrimaryKey = new DataColumn[] { KeyData.Columns[MoreKeyValue.KeyIdPropName] };
-            KeyData.Columns[MoreKeyValue.KeyIdPropName].DefaultValue = Guid.NewGuid().ToString();
+            if(MoreKeyValue.ValueType == IDValueType.Guid)
+            {
+                KeyData.Columns[MoreKeyValue.KeyIdPropName].DefaultValue = Guid.NewGuid().ToString();
+            }
+            else
+            {
+                KeyData.Columns[MoreKeyValue.KeyIdPropName].AutoIncrement= true;
+                KeyData.Columns[MoreKeyValue.KeyIdPropName].AutoIncrementSeed = 1;
+                KeyData.Columns[MoreKeyValue.KeyIdPropName].AutoIncrementStep = 1;
+            }
+            
             return KeyData;
         }
 
@@ -256,7 +265,16 @@ namespace Breezee.Core.Interface
                 ValData.Columns.Add(s, typeof(string));
             }
             ValData.PrimaryKey = new DataColumn[] { ValData.Columns[MoreKeyValue.ValIdPropName] };
-            ValData.Columns[MoreKeyValue.ValIdPropName].DefaultValue = Guid.NewGuid().ToString();
+            if (MoreKeyValue.ValueType == IDValueType.Guid)
+            {
+                ValData.Columns[MoreKeyValue.ValIdPropName].DefaultValue = Guid.NewGuid().ToString();
+            }
+            else
+            {
+                ValData.Columns[MoreKeyValue.ValIdPropName].AutoIncrement = true;
+                ValData.Columns[MoreKeyValue.ValIdPropName].AutoIncrementSeed = 1;
+                ValData.Columns[MoreKeyValue.ValIdPropName].AutoIncrementStep = 1;
+            }
             return ValData;
         }
 

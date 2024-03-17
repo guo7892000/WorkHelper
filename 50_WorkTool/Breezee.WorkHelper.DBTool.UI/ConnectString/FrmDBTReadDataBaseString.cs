@@ -206,9 +206,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                     return;
                 }
                 //绑定下拉框
-                cbbTableName.BindDropDownList(uC_DbConnection1.UserTableList.Sort("TABLE_NAME"), "TABLE_NAME", "TABLE_NAME", false);
+                cbbTableName.BindDropDownList(uC_DbConnection1.userTableDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey].Sort("TABLE_NAME"), "TABLE_NAME", "TABLE_NAME", false);
                 //查找自动完成数据源
-                cbbTableName.AutoCompleteCustomSource.AddRange(uC_DbConnection1.UserTableList.AsEnumerable().Select(x => x.Field<string>("TABLE_NAME")).ToArray());
+                cbbTableName.AutoCompleteCustomSource.AddRange(uC_DbConnection1.userTableDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey].AsEnumerable().Select(x => x.Field<string>("TABLE_NAME")).ToArray());
             }
             else
             {

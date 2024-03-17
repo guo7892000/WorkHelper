@@ -128,13 +128,13 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             DataRow[] drArr;
             string sFilter = DBTableEntity.SqlString.Name + "='" + sTableName + "'";
-            if (uC_DbConnection1.UserTableList == null || uC_DbConnection1.UserTableList.Rows.Count == 0)
+            if (uC_DbConnection1.userTableDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey] == null || uC_DbConnection1.userTableDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey].Rows.Count == 0)
             {
                 drArr = _dataAccess.GetSchemaTables().Select(sFilter);
             }
             else
             {
-                drArr = uC_DbConnection1.UserTableList.Select(sFilter);
+                drArr = uC_DbConnection1.userTableDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey].Select(sFilter);
             }
             if (drArr.Count() == 0)
             {
@@ -380,9 +380,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                     return;
                 }
                 //绑定下拉框
-                cbbTableName.BindDropDownList(uC_DbConnection1.UserTableList.Sort("TABLE_NAME"), "TABLE_NAME", "TABLE_NAME", false);
+                cbbTableName.BindDropDownList(uC_DbConnection1.userTableDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey].Sort("TABLE_NAME"), "TABLE_NAME", "TABLE_NAME", false);
                 //查找自动完成数据源
-                cbbTableName.AutoCompleteCustomSource.AddRange(uC_DbConnection1.UserTableList.AsEnumerable().Select(x => x.Field<string>("TABLE_NAME")).ToArray());
+                cbbTableName.AutoCompleteCustomSource.AddRange(uC_DbConnection1.userTableDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey].AsEnumerable().Select(x => x.Field<string>("TABLE_NAME")).ToArray());
             }
             else
             {

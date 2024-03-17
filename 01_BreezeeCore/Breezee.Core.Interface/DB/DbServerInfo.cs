@@ -32,6 +32,10 @@ namespace Breezee.Core.Interface
 
         private bool _useConnString = false;
         private string _ConnString = "";
+        private string _dbConnConfigName;//连接配置的名称
+        private string _dbConnKey;//连接配置的关键词
+
+        private static string _splitChar = "||";
         #endregion
 
         #region 构造函数
@@ -40,7 +44,7 @@ namespace Breezee.Core.Interface
 
         }
 
-        public DbServerInfo(DataBaseType databaseType, string serverName, string userName, string password, string database, string portNo, string schemaName, string otherString)
+        public DbServerInfo(DataBaseType databaseType, string serverName, string userName, string password, string database, string portNo, string schemaName, string otherString, string dbConnConfigName=null)
         {
             _databaseType = databaseType;
             _serverName = serverName;
@@ -50,7 +54,9 @@ namespace Breezee.Core.Interface
             _portNo = portNo;
             _schemaName = schemaName;
             _otherString = otherString;
-
+            DbConnConfigName = dbConnConfigName;
+            //重新设置键
+            ResetConnKey(this);
         }
         #endregion
 
@@ -181,7 +187,9 @@ namespace Breezee.Core.Interface
         /// 是否主要数据库
         /// </summary>
         public string IsMain { get; set; }
-        
+        public string DbConnConfigName { get => _dbConnConfigName; set => _dbConnConfigName = value; }
+        public string DbConnKey { get => _dbConnKey; private set => _dbConnKey = value; }
+
         #endregion
 
         public static class XmlNodeString
@@ -236,7 +244,42 @@ namespace Breezee.Core.Interface
             //转换为枚举
             dbServer.DatabaseType = (DataBaseType)Enum.Parse(typeof(DataBaseType), dr[XmlAttrString.dbType].ToString());
             dbServer._otherString = dr[XmlAttrString.otherString].ToString();
+            //重新设置连接键
+            ResetConnKey(dbServer);
             return dbServer;
+        }
+
+        /// <summary>
+        /// 重新设置连接键
+        /// </summary>
+        /// <param name="dbServer"></param>
+        public static void ResetConnKey(DbServerInfo dbServer)
+        {
+            if (dbServer == null) return;
+            string sCommonName = getRightKeyChar(dbServer.ServerName + _splitChar + dbServer.Database);
+            switch (dbServer.DatabaseType)
+            {
+                case DataBaseType.SqlServer:
+                case DataBaseType.PostgreSql:
+                case DataBaseType.MySql:
+                    dbServer.DbConnKey = sCommonName;
+                    break;
+                case DataBaseType.Oracle:
+                    dbServer.DbConnKey = getRightKeyChar(dbServer.ServerName + _splitChar + dbServer.UserName);
+                    break;
+                case DataBaseType.SQLite:
+                    dbServer.DbConnKey = getRightKeyChar(dbServer.ServerName);
+                    break;
+                case DataBaseType.None:
+                default:
+                    dbServer.DbConnKey = string.IsNullOrEmpty(dbServer.Key) ? Guid.NewGuid().ToString() : dbServer.Key;
+                    break;
+            }
+        }
+
+        private static string getRightKeyChar(string sKey)
+        {
+            return sKey.Trim().Replace("/","").Replace("\\", "").Replace(":", "").Replace("|", "");
         }
 
         public static bool IsSameServer(DbServerInfo dbServer, DbServerInfo dbOtherServer)

@@ -296,6 +296,7 @@
     <Compile Include="TableSql\FrmDBTTableExtendProperty.Designer.cs">
       <DependentUpon>FrmDBTTableExtendProperty.cs</DependentUpon>
     </Compile>
+    <Compile Include="TableSql\StandardColumnClassXmlConfig.cs" />
     <Compile Include="TableSql\SQLBuilder\MySQLBuilder.cs" />
     <Compile Include="TableSql\SQLBuilder\OracleBuilder.cs" />
     <Compile Include="TableSql\SQLBuilder\PostgreSQLBuilder.cs" />
@@ -303,6 +304,7 @@
     <Compile Include="TableSql\SQLBuilder\SQLiteBuilder.cs" />
     <Compile Include="TableSql\SQLBuilder\SQLServerBuilder.cs" />
     <Compile Include="TableSql\TableStructGenerator.cs" />
+    <Compile Include="TableSql\TableStructGeneratorParamEntity.cs" />
     <Compile Include="TableSql\WordUpperType.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -458,6 +460,7 @@
     <EmbeddedResource Include="DataTemplate\DBTool\TableSQL\Table.txt" />
     <EmbeddedResource Include="DataTemplate\DBTool\TableSQL\LY\Table.txt" />
     <EmbeddedResource Include="DataTemplate\DBTool\TableSQL\LY\Columns.txt" />
+    <EmbeddedResource Include="DataTemplate\DBTool\TableSQL\LY\ColumnsMove.txt" />
     <Content Include="Doc\Study\MySql\0032_函数\函数.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

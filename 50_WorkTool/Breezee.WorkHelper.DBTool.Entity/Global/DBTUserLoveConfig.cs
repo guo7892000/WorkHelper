@@ -127,5 +127,8 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string GenerateTableSQL_IsFullType = "GenerateTableSQL_IsFullType";//是否全类型
         public static readonly string GenerateTableSQL_IsLYTemplate = "GenerateTableSQL_IsLYTemplate";//是否LY模板
         public static readonly string GenerateTableSQL_IsOnlyRemark = "GenerateTableSQL_IsOnlyRemark";//是否仅使用备注作为表或列的注释
+        public static readonly string GenerateTableSQL_IsDefaultPK = "GenerateTableSQL_IsDefaultPK";//是否默认主键：当没有主键时，默认以第一行的列为主键列。
+        public static readonly string GenerateTableSQL_IsDefaultColNameCN = "GenerateTableSQL_IsDefaultColNameCN";//是否使用默认列中文名
+        public static readonly string GenerateTableSQL_DefaultColNameCN = "GenerateTableSQL_DefaultColNameCN";//列中文名为空时使用的列名
     }
 }

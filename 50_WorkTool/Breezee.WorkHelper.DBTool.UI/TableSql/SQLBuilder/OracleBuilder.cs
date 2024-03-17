@@ -406,7 +406,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     //类型
                     sDbType = sDbType.ToLower().Replace("decimal", "number");
                     //默认值
-                    sDefaultValue = sDefaultValue.ToLower().Replace("now()", "sysdate");
+                    sDefaultValue = sDefaultValue.ToLower().Replace("now()", "sysdate").Replace("uuid()", "sys_guid()");
                     break;
                 case DataBaseType.SQLite:
                     //默认值

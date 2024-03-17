@@ -14,6 +14,9 @@ using System.Linq;
 using Breezee.AutoSQLExecutor.Core;
 using Breezee.AutoSQLExecutor.Common;
 using Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL;
+using System.Collections.Generic;
+using static Breezee.WorkHelper.DBTool.Entity.DBTGlobalValue;
+using System.ComponentModel;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -29,10 +32,9 @@ namespace Breezee.WorkHelper.DBTool.UI
         private DataBaseType importDBType;//导入数据库类型
         private DataBaseType targetDBType;//目标数据库类型
         private bool _isAllConvert = false;//是否综合转换，即导入一种数据库模块，而生成另一种数据库类型
+        private bool _allSelectOldNewChar = false;//默认全选，这里取反
         //
         private DataSet _dsExcelData;
-        private BindingSource bsTable = new BindingSource();
-        private BindingSource bsCos = new BindingSource();
         //
         private string _strAutoSqlSuccess = "生成成功，并已复制到了粘贴板。详细见“生成的SQL”页签！";
         private string _strImportSuccess = "导入成功！可点“生成SQL”按钮得到本次导入的变更SQL。";
@@ -48,6 +50,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private string _ImportInput = "1";
         private readonly string _sGridTableSelect = "选择";
         private readonly string _sGridColumnSelect = "选择";
+        private readonly string _sGridColumnSelectEn = "IsSelect";
         private bool _allTableSelect = false;//默认全选，这里取反
         private bool _allColumnSelect = false;//默认全选，这里取反
         DataGridViewFindText dgvFindText;
@@ -55,6 +58,9 @@ namespace Breezee.WorkHelper.DBTool.UI
         private IDBConfigSet _IDBConfigSet;
         private DbServerInfo _dbServer;
         private IDataAccess _dataAccess;
+
+        MiniXmlConfig commonColumn;
+        StandardColumnClassXmlConfig replaceStringData;//标准列分类配置
         #endregion
 
         #region 构造函数
@@ -93,8 +99,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             DataTable dtConn = _IDBConfigSet.QueryDbConfig(_dicQuery).SafeGetDictionaryTable();
             uC_DbConnection1.SetDbConnComboBoxSource(dtConn);
             uC_DbConnection1.IsDbNameNotNull = true;
-            //uC_DbConnection1.DBType_SelectedIndexChanged += cbbDatabaseType_SelectedIndexChanged;//数据库类型下拉框变化事件
+            uC_DbConnection1.DBType_SelectedIndexChanged += cbbDatabaseType_SelectedIndexChanged;//数据库类型下拉框变化事件
             uC_DbConnection1.DBConnName_SelectedIndexChanged += cbbDBConnName_SelectedIndexChanged;
+            uC_DbConnection1.ColumnDefaultValue_LoadCompleted += columnDefaultValue_LoadCompleted;
             uC_DbConnection1.ShowGlobalMsg += ShowGlobalMsg_Click;
             #endregion
             //加载用户喜好值
@@ -106,11 +113,68 @@ namespace Breezee.WorkHelper.DBTool.UI
             ckbFullTypeDoc.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsFullType, "0").Value) ? true : false;
             ckbLYTemplate.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsLYTemplate, "0").Value) ? true : false;
             ckbOnlyRemark.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsOnlyRemark, "0").Value) ? true : false;
+            ckbDefaulePK.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsDefaultPK, "0").Value) ? true : false;
+            ckbDefaultColNameCn.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsDefaultColNameCN, "0").Value) ? true : false;
+            txbDefaultColNameCN.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_DefaultColNameCN, "未知").Value;
             //设置下拉框查找数据源
             cbbTableName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cbbTableName.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            toolTip1.SetToolTip(ckbQueryColumnRealTime, "当选中时，会实时查询列信息，速度较慢，不建议选中！");
-            toolTip1.SetToolTip(ckbOnlyRemark, "选中时，表示备注里已包含了表或列名称，将只使用备注作为表或列的注释；否则使用列名称+备注作为表或列的备注！"); 
+            toolTip1.SetToolTip(ckbQueryColumnRealTime, "当选中时，会实时准确的查询表和列信息，速度较慢。\n如原库表结构没有变化，就不建议选中！");
+            toolTip1.SetToolTip(ckbOnlyRemark, "选中时，表示备注里已包含了表或列名称，将只使用备注作为表或列的注释；\n否则使用列名称+备注作为表或列的备注！");
+            toolTip1.SetToolTip(ckbDefaulePK, "当选中时，某些表没有主键时，则默认以第一行的列作为主键！");
+            toolTip1.SetToolTip(ckbDefaultColNameCn, "当选中时，某些表或列没有中文名称时，会以其后的名称作为列名称+“表”或“列”生成SQL。后续请自行修改这些名称！");
+            toolTip1.SetToolTip(ckbUpdateDefault, "该选项只针对Oracle。当选中时，会在查询完列信息后，异步查询和更新全局默认值信息。\n否则都是使用应用启动后，第一次查询所在库的默认值！");
+            toolTip1.SetToolTip(ckbDoubleColName, "当选中时，多显示一列【列编码】。作用：当新字段名修改时，还有一列旧字段名给数据迁移使用！");
+            toolTip1.SetToolTip(ckbColNameSameRemark, "当选中时，列名和备注都将使用【列名称：列说明】！");
+            
+        }
+
+        /// <summary>
+        /// 默认值加载完成事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void columnDefaultValue_LoadCompleted(object sender, EventArgs e)
+        {
+            DataTable dtDefault;
+            if (UC_DbConnection.defaultValueDic.TryGetValue(uC_DbConnection1.LatestDbServerInfo.DbConnKey, out dtDefault))
+            {
+                if (dtDefault.Rows.Count == 0) return;
+
+                DataTable dtAllColumns = dgvColList.GetBindingTable();
+                if (dtAllColumns == null) return;
+
+                dtAllColumns = dtAllColumns.Copy();
+                try
+                {
+                    ShowDestopTipMsg("正在异步加载列的默认值信息...");
+                    //使用LINQ：速度比较快
+                    var query = from f in dtDefault.AsEnumerable()
+                                join s in dtAllColumns.AsEnumerable()
+                                on new
+                                {
+                                    c1 = f.Field<string>(DBColumnEntity.SqlString.TableName),
+                                    c2 = f.Field<string>(DBColumnEntity.SqlString.Name)
+                                }
+                                equals new
+                                {
+                                    c1 = s.Field<string>(ColCommon.ExcelCol.TableCode),
+                                    c2 = s.Field<string>(ColCommon.ExcelCol.Code)
+                                }
+                                select new { F1 = f, S1 = s };
+                    var joinList = query.ToList();
+                    foreach (var item in joinList)
+                    {
+                        item.S1[ColCommon.ExcelCol.Default] = item.F1[DBColumnEntity.SqlString.Default].ToString();
+                    }
+                    dgvColList.BindAutoColumn(dtAllColumns);
+                    ShowDestopTipMsg("加载列的默认值信息完成！");
+                }
+                catch(Exception ex)
+                {
+                    ShowDestopTipMsg(ex.Message);
+                }
+            }
         }
 
         #region 显示全局提示信息事件
@@ -120,6 +184,93 @@ namespace Breezee.WorkHelper.DBTool.UI
         }
         #endregion
 
+        /// <summary>
+        /// 加载通用列数据
+        /// </summary>
+        private void LoadCommonColumnData()
+        {
+            //通用列相关
+            List<string> list = new List<string>();
+            list.AddRange(new string[] {
+                DBColumnSimpleEntity.SqlString.Name,
+                DBColumnSimpleEntity.SqlString.NameCN,
+                DBColumnSimpleEntity.SqlString.NameUpper,
+                DBColumnSimpleEntity.SqlString.NameLower,
+                DBColumnSimpleEntity.SqlString.DataType,
+                DBColumnSimpleEntity.SqlString.DataLength,
+                DBColumnSimpleEntity.SqlString.DataPrecision,
+                DBColumnSimpleEntity.SqlString.DataScale,
+                DBColumnSimpleEntity.SqlString.DataTypeFull,
+                DBColumnSimpleEntity.SqlString.NotNull,
+                DBColumnSimpleEntity.SqlString.Default,
+                DBColumnSimpleEntity.SqlString.KeyType,
+                DBColumnSimpleEntity.SqlString.Comments,
+                DBColumnSimpleEntity.SqlString.Extra,
+                //DBColumnSimpleEntity.SqlString.TableName,
+                //DBColumnSimpleEntity.SqlString.TableNameCN,
+                //DBColumnSimpleEntity.SqlString.TableNameUpper
+            });
+            commonColumn = new MiniXmlConfig(GlobalContext.PathData(), "CommonColumnConfig.xml", list, DBColumnSimpleEntity.SqlString.Name);
+            DataTable dtCommonCol = commonColumn.Load();
+            //增加选择列
+            DataColumn dcSelected = new DataColumn(_sGridColumnSelectEn);
+            dcSelected.DefaultValue = "1";
+            dtCommonCol.Columns.Add(dcSelected);
+            //通用列网格跟所有列网格结构一样
+            FlexGridColumnDefinition fdc = new FlexGridColumnDefinition();
+            fdc.AddColumn(
+                FlexGridColumn.NewRowNoCol(),
+                new FlexGridColumn.Builder().Name(_sGridColumnSelectEn).Caption("选择").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(40).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.Name).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameCN).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameUpper).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameLower).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.DataType).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.DataLength).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(60).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.DataPrecision).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(40).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.DataScale).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(40).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.DataTypeFull).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit().Visible().Build(),
+                //new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.SortNum).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NotNull).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(40).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.Default).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.KeyType).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.Comments).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(300).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.Extra).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit().Visible().Build()
+            //new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.TableName).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+            //new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.TableNameCN).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+            //new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.TableNameUpper).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
+            );
+            //
+            dgvDataDictionary.Tag = fdc.GetGridTagString();
+            dgvDataDictionary.BindDataGridView(dtCommonCol, true);
+
+            //分类网格
+            replaceStringData = new StandardColumnClassXmlConfig(DBTGlobalValue.TableSQL.Xml_StandardClassFileName);
+            string sColName = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            cbbTemplateType.BindDropDownList(replaceStringData.MoreXmlConfig.KeyData, sColName, StandardColumnClassXmlConfig.KeyString.Name, true, true);
+            dgvOldNewChar.Tag = fdc.GetGridTagString();
+            dgvOldNewChar.BindDataGridView(dtCommonCol.Clone(), true);
+            //新表名相关
+            DataTable dtTableCopy = EntTable.GetTable();
+            dcSelected = new DataColumn(_sGridColumnSelect);
+            dcSelected.DefaultValue = "1";
+            dtTableCopy.Columns.Add(dcSelected);
+
+            dcSelected = new DataColumn(EntTable.ExcelTable.Code + "_OLD");
+            dtTableCopy.Columns.Add(dcSelected);
+            fdc = new FlexGridColumnDefinition();
+            fdc.AddColumn(
+                FlexGridColumn.NewRowNoCol(),
+                new FlexGridColumn.Builder().Name(_sGridColumnSelect).Caption("选择").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(40).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(EntTable.ExcelTable.Code + "_OLD").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name(EntTable.ExcelTable.Code).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name(EntTable.ExcelTable.Name).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name(EntTable.ExcelTable.Remark).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(true).Visible().Build()
+            );
+            //
+            dgvNewTableInfo.Tag = fdc.GetGridTagString();
+            dgvNewTableInfo.BindDataGridView(dtTableCopy, true);
+        }
         private void cbbDBConnName_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbbInputType.SelectedValue == null) return;
@@ -132,7 +283,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                     cbbImportDBType.SelectedValue = sDbType;
                     cbbImportDBType.SetControlReadOnly();
                 }
-
             }
             //调用【获取表清单复选框变化事件】
             ckbGetTableList_CheckedChanged(null, null);
@@ -142,7 +292,17 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 数据库类型下拉框变化事件
         private void cbbDatabaseType_SelectedIndexChanged(object sender, DBTypeSelectedChangeEventArgs e)
         {
+            //导入类型为查询的数据库类型
+            string sDbType = uC_DbConnection1.getSelectedDatabaseType();
+            if (!string.IsNullOrEmpty(sDbType))
+            {
+                cbbImportDBType.SelectedValue = sDbType;
+                cbbImportDBType.SetControlReadOnly();
 
+                int iDbType = int.Parse(sDbType);
+                //只有Oracle才显示实时更新默认值
+                ckbUpdateDefault.Visible = (DataBaseType)iDbType == DataBaseType.Oracle ? true : false;
+            }
         }
         #endregion
 
@@ -157,9 +317,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                     return;
                 }
                 //绑定下拉框
-                cbbTableName.BindDropDownList(uC_DbConnection1.UserTableList.Sort("TABLE_NAME"), "TABLE_NAME", "TABLE_NAME", true,false);
+                cbbTableName.BindDropDownList(uC_DbConnection1.userTableDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey].Sort("TABLE_NAME"), "TABLE_NAME", "TABLE_NAME", true,false);
                 //查找自动完成数据源
-                cbbTableName.AutoCompleteCustomSource.AddRange(uC_DbConnection1.UserTableList.AsEnumerable().Select(x => x.Field<string>("TABLE_NAME")).ToArray());
+                cbbTableName.AutoCompleteCustomSource.AddRange(uC_DbConnection1.userTableDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey].AsEnumerable().Select(x => x.Field<string>("TABLE_NAME")).ToArray());
             }
             else
             {
@@ -200,9 +360,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                         dtTable.Rows.Remove(dr);
                     }
                     //绑定网格
-                    bsTable.DataSource = dtTable;
+                    //bsTable.DataSource = dtTable;
                     //dgvTableList.DataSource = bsTable;
-                    dgvTableList.BindAutoColumn(bsTable);
+                    dgvTableList.BindAutoColumn(dtTable);
                     dgvTableList.ShowRowNum();
                     //绑定列
                     dtTable = _dsExcelData.Tables[GetExcelSheetNameCol(importDBType)];
@@ -215,23 +375,47 @@ namespace Breezee.WorkHelper.DBTool.UI
                             {
                                 //统一主键处理
                                 string sPKName = "PK_" + dr[ColCommon.ExcelCol.TableCode].ToString();
-                                //针对特殊数据的字段赋值
-                                switch (importDBType)
+                                if (ckbAllConvert.Checked)
                                 {
-                                    case DataBaseType.SqlServer:
-                                    case DataBaseType.MySql:
-                                        break;
-                                    case DataBaseType.Oracle:
-                                        dr[ColOracleTemplate.ExcelCol.PKName] = sPKName;
-                                        break;
-                                    case DataBaseType.SQLite:
-                                        dr[ColSQLiteTemplate.ExcelCol.PKName] = sPKName;
-                                        break;
-                                    case DataBaseType.PostgreSql:
-                                        dr[ColPostgreSqlTemplate.ExcelCol.PKName] = sPKName;
-                                        break;
-                                    default:
-                                        throw new Exception("暂不支持该数据库类型！");
+                                    //针对特殊数据的字段赋值
+                                    switch (importDBType)
+                                    {
+                                        case DataBaseType.SqlServer:
+                                        case DataBaseType.MySql:
+                                            break;
+                                        case DataBaseType.Oracle:
+                                            dr[ColAllInOne.ExcelCol.Oracle.PKName] = sPKName;
+                                            break;
+                                        case DataBaseType.SQLite:
+                                            dr[ColAllInOne.ExcelCol.SQLite.PKName] = sPKName;
+                                            break;
+                                        case DataBaseType.PostgreSql:
+                                            dr[ColAllInOne.ExcelCol.PostgreSql.PKName] = sPKName;
+                                            break;
+                                        default:
+                                            throw new Exception("暂不支持该数据库类型！");
+                                    }
+                                }
+                                else
+                                {
+                                    //针对特殊数据的字段赋值
+                                    switch (importDBType)
+                                    {
+                                        case DataBaseType.SqlServer:
+                                        case DataBaseType.MySql:
+                                            break;
+                                        case DataBaseType.Oracle:
+                                            dr[ColOracleTemplate.ExcelCol.PKName] = sPKName;
+                                            break;
+                                        case DataBaseType.SQLite:
+                                            dr[ColSQLiteTemplate.ExcelCol.PKName] = sPKName;
+                                            break;
+                                        case DataBaseType.PostgreSql:
+                                            dr[ColPostgreSqlTemplate.ExcelCol.PKName] = sPKName;
+                                            break;
+                                        default:
+                                            throw new Exception("暂不支持该数据库类型！");
+                                    }
                                 }
                             }
                         }
@@ -246,9 +430,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                         dtTable.Rows.Remove(dr);
                     }
                     //绑定网格
-                    bsCos.DataSource = dtTable;
+                    //bsCos.DataSource = dtTable;
                     //dgvColList.DataSource = bsCos;
-                    dgvColList.BindAutoColumn(bsCos);
+                    dgvColList.BindAutoColumn(dtTable);
                     dgvColList.ShowRowNum();
                     ShowInfo(_strImportSuccess);
                 }
@@ -267,9 +451,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (uC_DbConnection1.IsConnChange && ckbGetTableList.Checked)
                 {
                     //绑定下拉框
-                    cbbTableName.BindDropDownList(uC_DbConnection1.UserTableList.Sort("TABLE_NAME"), "TABLE_NAME", "TABLE_NAME", true, false);
+                    cbbTableName.BindDropDownList(uC_DbConnection1.userTableDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey].Sort("TABLE_NAME"), "TABLE_NAME", "TABLE_NAME", true, false);
                     //查找自动完成数据源
-                    cbbTableName.AutoCompleteCustomSource.AddRange(uC_DbConnection1.UserTableList.AsEnumerable().Select(x => x.Field<string>("TABLE_NAME")).ToArray());
+                    cbbTableName.AutoCompleteCustomSource.AddRange(uC_DbConnection1.userTableDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey].AsEnumerable().Select(x => x.Field<string>("TABLE_NAME")).ToArray());
                 }
 
                 switch (_dbServer.DatabaseType)
@@ -299,7 +483,13 @@ namespace Breezee.WorkHelper.DBTool.UI
                 string sSchma = "";
 
                 DataTable dtTableCopy = EntTable.GetTable();
-                if (uC_DbConnection1.UserTableList == null || uC_DbConnection1.UserTableList.Rows.Count == 0)
+                //增加选择列
+                DataColumn dcSelected = new DataColumn(_sGridTableSelect, typeof(bool));
+                dcSelected.DefaultValue = "True";
+                dtTableCopy.Columns.Add(dcSelected);
+                dtTableCopy.Columns[_sGridColumnSelect].SetOrdinal(0);//设置选择列在最前面
+
+                if (uC_DbConnection1.userTableDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey] == null || uC_DbConnection1.userTableDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey].Rows.Count == 0)
                 {
                     _dataAccess = AutoSQLExecutors.Connect(_dbServer);
                     dtTable = _dataAccess.GetSchemaTables();
@@ -310,7 +500,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     {
                         _dataAccess = AutoSQLExecutors.Connect(_dbServer);
                     }
-                    dtTable = uC_DbConnection1.UserTableList;
+                    dtTable = uC_DbConnection1.userTableDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey];
                     sSchma = dtTable.Rows[0][DBTableEntity.SqlString.Schema].ToString();
                 }
 
@@ -337,29 +527,25 @@ namespace Breezee.WorkHelper.DBTool.UI
                     foreach (DataRow drSource in dtTable.Rows)
                     {
                         DataRow dr = dtTableCopy.NewRow();
+                        string sTableCode = drSource[DBTableEntity.SqlString.Name].ToString();
                         dr[EntTable.ExcelTable.Num] = i++;
-                        dr[EntTable.ExcelTable.Code] = drSource[DBTableEntity.SqlString.Name].ToString();
+                        dr[EntTable.ExcelTable.Code] = sTableCode;
                         dr[EntTable.ExcelTable.Name] = drSource[DBTableEntity.SqlString.NameCN].ToString();
                         dr[EntTable.ExcelTable.ChangeType] = "新增";
                         dr[EntTable.ExcelTable.CommonColumnTableCode] = "";
                         dr[EntTable.ExcelTable.Remark] = drSource[DBTableEntity.SqlString.Extra].ToString();
+                        if (sTableCode.Contains("$"))
+                        {
+                            dr[_sGridTableSelect] = "False";
+                        }
                         dtTableCopy.Rows.Add(dr);
                     }
                 }
                 dtTableCopy.TableName = _strTableName;
                 SetTableTag(dtTableCopy);
                 SetColTag(sSchma, sTableName, templateType);
-
-                //保存用户喜好值
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_InputType, cbbInputType.SelectedValue.ToString(), "【生成表SQL】录入方式");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_TargetDbType, cbbTargetDbType.SelectedValue.ToString(), "【生成表SQL】目标数据库类型");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_ExcludeColumnList, txbExcludeColumn.Text.Trim(), "【生成表SQL】排除指定列清单");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsExcludeColumn, ckbExcludeColumn.Checked ? "1" : "0", "【生成表SQL】是否排除指定列");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_QueryColumnRealTime, ckbQueryColumnRealTime.Checked ? "1" : "0", "【生成表SQL】是否实时查询列信息");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsFullType, ckbFullTypeDoc.Checked ? "1" : "0", "【生成表SQL】是否全类型");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsLYTemplate, ckbLYTemplate.Checked ? "1" : "0", "【生成表SQL】是否LY模板");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsOnlyRemark, ckbOnlyRemark.Checked ? "1" : "0", "【生成表SQL】是否仅使用备注作为表或列的说明");
-                WinFormContext.UserLoveSettings.Save();
+                //保存用户喜好配置
+                SaveUserLoveConfig();
             }
             //设置不能增加行
             dgvTableList.AutoGenerateColumns = true;
@@ -368,6 +554,24 @@ namespace Breezee.WorkHelper.DBTool.UI
             dgvColList.AllowUserToAddRows = false;
             tabControl1.SelectedTab = tpImport;
 
+        }
+
+        private void SaveUserLoveConfig()
+        {
+            //保存用户喜好值
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_InputType, cbbInputType.SelectedValue.ToString(), "【生成表SQL】录入方式");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_TargetDbType, cbbTargetDbType.SelectedValue.ToString(), "【生成表SQL】目标数据库类型");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_ExcludeColumnList, txbExcludeColumn.Text.Trim(), "【生成表SQL】排除指定列清单");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsExcludeColumn, ckbExcludeColumn.Checked ? "1" : "0", "【生成表SQL】是否排除指定列");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_QueryColumnRealTime, ckbQueryColumnRealTime.Checked ? "1" : "0", "【生成表SQL】是否实时查询列信息");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsFullType, ckbFullTypeDoc.Checked ? "1" : "0", "【生成表SQL】是否全类型");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsLYTemplate, ckbLYTemplate.Checked ? "1" : "0", "【生成表SQL】是否LY模板");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsOnlyRemark, ckbOnlyRemark.Checked ? "1" : "0", "【生成表SQL】是否仅使用备注作为表或列的说明");
+
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsDefaultPK, ckbDefaulePK.Checked ? "1" : "0", "【生成表SQL】是否使用默认主键");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsDefaultColNameCN, ckbDefaultColNameCn.Checked ? "1" : "0", "【生成表SQL】是否使用默认列中文名");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_DefaultColNameCN, txbDefaultColNameCN.Text.Trim(), "【生成表SQL】列中文名为空时使用的列名");
+            WinFormContext.UserLoveSettings.Save();
         }
         #endregion
 
@@ -416,9 +620,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             label3.Focus();
 
             #region 结束编辑处理
-            bsTable.EndEdit();
-            dtTable = (DataTable)bsTable.DataSource;
-            dtAllCol = (DataTable)bsCos.DataSource;
+            //bsTable.EndEdit();
+            dtTable = dgvTableList.GetBindingTable();
+            dtAllCol = dgvColList.GetBindingTable();
+            string sFilter;
 
             if (dtTable == null || dtTable.Rows.Count == 0)
             {
@@ -426,7 +631,27 @@ namespace Breezee.WorkHelper.DBTool.UI
                 return;
             }
 
-            string sFilter = EntTable.ExcelTable.Code + " is null or " + EntTable.ExcelTable.Num + " is null";
+            
+
+            DataTable dtNewTable = dgvNewTableInfo.GetBindingTable();
+            if (dgvNewTableInfo.Rows.Count > 0)
+            {
+                DataRow[] newTableArr = dtTable.Select(_sGridColumnSelect + "='True'");
+                foreach (var item in newTableArr)
+                {
+                    item[_sGridColumnSelect] = "False"; //设置为不选中
+                }
+
+                var query = from f in dtTable.AsEnumerable()
+                            where GetLinqDynamicWhere(dtNewTable.Rows, f)
+                            select f;
+                foreach (var item in query.ToList())
+                {
+                    item[_sGridColumnSelect] = "True"; //设置为不选中
+                }
+            }
+            
+            sFilter = EntTable.ExcelTable.Code + " is null or " + EntTable.ExcelTable.Num + " is null";
             //移除空行
             foreach (DataRow dr in dtTable.Select(sFilter))
             {
@@ -448,7 +673,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                 dtTalbeSelect.ImportRow(dr);
             }
 
-            
             DataTable dtColumnSelect = dtAllCol.Clone();
             foreach (DataRow drT in dtTalbeSelect.Rows)
             {
@@ -464,7 +688,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                 ShowErr("请至少选择一个表及它的列！");
                 return;
             }
-
             #endregion
 
             int importDbType = int.Parse(cbbImportDBType.SelectedValue.ToString());
@@ -482,13 +705,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                 ShowInfo("请选择【目标数据库类型】");
                 return;
             }
-            //创建方式
-            createType = cbbCreateType.SelectedValue.ToString();
 
-            if (!ValidateData(importDBType, targetDBType, dtTalbeSelect, dtColumnSelect))//校验数据
+            if(ckbDefaultColNameCn.Checked && string.IsNullOrEmpty(txbDefaultColNameCN.Text.Trim()))
             {
+                ShowInfo("当选中【默认列名称】时，其后的文本框不能为空！");
                 return;
             }
+
+            //创建方式
+            createType = cbbCreateType.SelectedValue.ToString();
 
             SQLBuilder builder;
             switch (targetDBType)
@@ -533,26 +758,178 @@ namespace Breezee.WorkHelper.DBTool.UI
                 dr[ColCommon.ExcelCol.DataTypeFullNew] = ColCommon.GetFullDataType(sDataType, sDataLength, sDataDotLength);
             }
 
-            string sSql = builder.GenerateTableContruct(dtTalbeSelect, dtColumnSelect, (SQLCreateType)int.Parse(createType), importDBType, targetDBType, _isAllConvert) + "\n";
+            #region 通过模板的处理
+            //模板名称
+            string sCommonTable = cbbTemplateType.Text.Trim();
+            if (!string.IsNullOrEmpty(sCommonTable))
+            {
+                foreach (DataRow dr in dtTalbeSelect.Rows)
+                {
+                    dr[EntTable.ExcelTable.CommonColumnTableCode] = sCommonTable;
+                }
+                DataTable dtStandarCol = dgvOldNewChar.GetBindingTable();
+                foreach (DataRow drSource in dtStandarCol.Rows)
+                {
+                    DataRow dr = dtColumnSelect.NewRow();
+                    /**
+                     *  public static string TableName = "T";//表编码
+                        public static string TableNameCN = "T1";
+                        public static string TableNameUpper = "T2";//表编码的大驼峰式
+                        public static string TableNameLower = "T3";//表编码的小驼峰式
+                        public static string TableComments = "T7";
+                        public static string TableExtra = "T8";
+                        public static string TableSchema = "T9";
+
+                        public static string Name = "C";//列名
+                        public static string NameCN = "C1";//列中文名称：从列备注中拆分
+                        public static string NameUpper = "C2";//列编码的大驼峰式
+                        public static string NameLower = "C3";//列编码的小驼峰式
+            
+                        public static string DataType = "D";//列类型（不含长度或精度）
+                        public static string DataLength = "D1";//长度
+                        public static string DataPrecision = "D2";//精度
+                        public static string DataScale = "D3";//尺度，数值范围
+                        public static string DataTypeFull = "D9";//类型全称，如decimail(14,4)
+
+                        public static string Default = "F";//默认值
+                        public static string NotNull = "N";//非空
+                        public static string KeyType = "K";//主外键：PK主键，FK外键
+                        public static string SortNum = "S";//排序号
+
+                        public static string Comments = "R";//包括列名称和额外信息
+                        public static string Extra = "R1";//列额外信息：从列备注中拆分
+                     */
+                    string sDataType = drSource[DBColumnSimpleEntity.SqlString.DataType].ToString();
+                    string sDataLength = drSource[DBColumnSimpleEntity.SqlString.DataLength].ToString();
+                    //string sDataPrecision = drSource[DBColumnSimpleEntity.SqlString.DataPrecision].ToString();
+                    string sDataScale = drSource[DBColumnSimpleEntity.SqlString.DataScale].ToString();
+                    string sColName = drSource[DBColumnSimpleEntity.SqlString.Name].ToString();
+                    dr[_sGridColumnSelect] = "True";
+                    dr[ColCommon.ExcelCol.ChangeType] = "新增";
+                    dr[ColCommon.ExcelCol.TableCode] = sCommonTable;
+                    dr[ColCommon.ExcelCol.Code] = sColName;
+                    dr[ColCommon.ExcelCol.Name] = drSource[DBColumnSimpleEntity.SqlString.NameCN].ToString();
+                    dr[ColCommon.ExcelCol.DataType] = sDataType;
+                    dr[ColCommon.ExcelCol.DataLength] = sDataLength;
+                    dr[ColCommon.ExcelCol.DataDotLength] = sDataScale;
+                    dr[ColCommon.ExcelCol.Default] = drSource[DBColumnSimpleEntity.SqlString.Default].ToString();
+                    dr[ColCommon.ExcelCol.KeyType] = drSource[DBColumnSimpleEntity.SqlString.KeyType].ToString();
+                    dr[ColCommon.ExcelCol.NotNull] = "1".Equals(drSource[DBColumnSimpleEntity.SqlString.NotNull].ToString()) ? "是" : "";
+                    dr[ColCommon.ExcelCol.Remark] = drSource[DBColumnSimpleEntity.SqlString.Extra].ToString();
+                    dr[ColCommon.ExcelCol.DataTypeFullNew] = ColCommon.GetFullDataType(sDataType, sDataLength, sDataScale); //全类型
+                                                                                                                            //统一主键处理
+                    //string sPKName = "PK_" + drSource[DBColumnSimpleEntity.SqlString.TableName].ToString();
+                    //针对特殊数据的字段赋值
+                    switch (_dbServer.DatabaseType)
+                    {
+                        case DataBaseType.SqlServer:
+                            dr[ColSqlServerTemplate.ExcelCol.FK] = "";
+                            break;
+                        case DataBaseType.Oracle:
+                            dr[ColOracleTemplate.ExcelCol.FK] = "";
+                            break;
+                        case DataBaseType.MySql:
+                            dr[ColMySqlTemplate.ExcelCol.FK] = "";
+                            break;
+                        case DataBaseType.SQLite:
+                            dr[ColSQLiteTemplate.ExcelCol.FK] = "";
+                            break;
+                        case DataBaseType.PostgreSql:
+                            dr[ColPostgreSqlTemplate.ExcelCol.FK] = "";
+
+                            break;
+                        default:
+                            throw new Exception("暂不支持该数据库类型！");
+                    }
+
+                    dtColumnSelect.Rows.Add(dr);
+                }
+            }
+
+            string sFilterNew = "";
+            foreach (DataRow dr in dtNewTable.Rows)
+            {
+                string sOldTableCode = dr[EntTable.ExcelTable.Code + "_OLD"].ToString();
+                string sNewTableCode = dr[EntTable.ExcelTable.Code].ToString();
+                string sRemark = dr[EntTable.ExcelTable.Remark].ToString();
+                if(string.IsNullOrEmpty(sOldTableCode) || string.IsNullOrEmpty(sNewTableCode))
+                {
+                    continue;
+                }
+                sFilterNew = EntTable.ExcelTable.Code + "='" + sOldTableCode + "'";
+                DataRow[] drArrNew = dtTalbeSelect.Select(sFilterNew);
+                if (drArrNew.Length==0) continue;
+                //修改表名
+                drArrNew[0][EntTable.ExcelTable.Code] = sNewTableCode;
+                drArrNew[0][EntTable.ExcelTable.Remark] = sRemark;
+                //修改列清单
+                sFilterNew = ColCommon.ExcelCol.TableCode + "='" + sOldTableCode + "'";
+                DataRow[] drArrCols = dtColumnSelect.Select(sFilterNew);
+                foreach (DataRow drCol in drArrCols)
+                {
+                    drCol[ColCommon.ExcelCol.TableCode] = sNewTableCode;
+                }
+            }
+            #endregion
+
+            //构造实体并赋值
+            GenerateParamEntity paramEntity = new GenerateParamEntity();
+            paramEntity.sqlCreateType = (SQLCreateType)int.Parse(createType);
+            paramEntity.importDBType = importDBType;
+            paramEntity.targetDBType = targetDBType;
+            paramEntity.isAllConvert = _isAllConvert;
+            paramEntity.isDefaultPK = ckbDefaulePK.Checked;
+            paramEntity.isDefaultColNameCN = ckbDefaultColNameCn.Checked;
+            paramEntity.defaultColNameCN = txbDefaultColNameCN.Text.Trim();
+
+            if (!ValidateData(dtTalbeSelect, dtColumnSelect, paramEntity))//校验数据
+            {
+                return;
+            }
+            //调用生成SQL方法
+            string sSql = builder.GenerateTableContruct(dtTalbeSelect, dtColumnSelect, paramEntity) + "\n";
             rtbResult.AppendText(sSql);
             Clipboard.SetData(DataFormats.UnicodeText, sSql);
             tabControl1.SelectedTab = tpAutoSQL;
 
             //增加生成表结构的功能
             dtAllCol.AcceptChanges();
-            TableStructGenerator.Generate(tabControl1, dtTalbeSelect, dtColumnSelect,ckbFullTypeDoc.Checked,ckbLYTemplate.Checked,ckbOnlyRemark.Checked);
+            TableStructGeneratorParamEntity docEntity = new TableStructGeneratorParamEntity();
+            docEntity.builder = builder;
+            docEntity.importDBType = importDBType;
+            docEntity.useDataTypeFull = ckbFullTypeDoc.Checked;
+            docEntity.useLYTemplate = ckbLYTemplate.Checked;
+            docEntity.useRemarkContainsName = ckbOnlyRemark.Checked;
+            docEntity.useNameSameWithRemark = ckbColNameSameRemark.Checked;
+            docEntity.useOldColumnCode = ckbDoubleColName.Checked; //重复列编码：数据迁移使用
+            TableStructGenerator.Generate(tabControl1, dtTalbeSelect, dtColumnSelect, docEntity);
             //生成SQL成功后提示
             ShowSuccessMsg(_strAutoSqlSuccess);
+            //保存用户喜好配置
+            SaveUserLoveConfig();
             //初始化控件
             ckbAllConvert.Enabled = true;
+        }
+
+        private static bool GetLinqDynamicWhere(DataRowCollection filterArr, DataRow drF)
+        {
+            foreach (DataRow item in filterArr)
+            {
+                string sFilePath = drF.Field<string>(EntTable.ExcelTable.Code);
+                if (sFilePath.Equals(item[EntTable.ExcelTable.Code + "_OLD"].ToString(), StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         #endregion
 
         #region 检查数据的有效性
-        private bool ValidateData(DataBaseType importDbType, DataBaseType targetDbType,DataTable dtTalbeSelect, DataTable dtColumnSelect)
+        private bool ValidateData(DataTable dtTalbeSelect, DataTable dtColumnSelect, GenerateParamEntity paramEntity)
         {
             //通用的判断
-            if(!ColCommon.ValidateData(dtTalbeSelect, dtColumnSelect, out StringBuilder sb))
+            if(!ColCommon.ValidateData(dtTalbeSelect, dtColumnSelect, paramEntity,out StringBuilder sb))
             {
                 ShowErr(sb.ToString()); 
                 return false;
@@ -561,18 +938,18 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (_isAllConvert)
             {
                 //综合转换判断
-                if (!ColAllInOne.ValidateData(dtTalbeSelect, dtColumnSelect, targetDBType, out StringBuilder sbAll))
+                if (!ColAllInOne.ValidateData(dtTalbeSelect, dtColumnSelect, targetDBType, paramEntity, out StringBuilder sbAll))
                 {
                     ShowErr(sbAll.ToString());
                     return false;
                 }
             }
-            else if(importDbType == targetDbType)
+            else if(paramEntity.importDBType == paramEntity.targetDBType)
             {
                 #region 非综合转换，且导入类型跟目标类型一致的判断
                 if (targetDBType == DataBaseType.Oracle)
                 {
-                    if (!ColOracleTemplate.ValidateData(dtTalbeSelect, dtColumnSelect, out StringBuilder sbAll))
+                    if (!ColOracleTemplate.ValidateData(dtTalbeSelect, dtColumnSelect, paramEntity, out StringBuilder sbAll))
                     {
                         ShowErr(sbAll.ToString());
                         return false;
@@ -580,7 +957,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 else if (targetDBType == DataBaseType.SqlServer)
                 {
-                    if (!ColSqlServerTemplate.ValidateData(dtTalbeSelect, dtColumnSelect, out StringBuilder sbAll))
+                    if (!ColSqlServerTemplate.ValidateData(dtTalbeSelect, dtColumnSelect, paramEntity, out StringBuilder sbAll))
                     {
                         ShowErr(sbAll.ToString());
                         return false;
@@ -588,7 +965,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 else if (targetDBType == DataBaseType.MySql)
                 {
-                    if (!ColMySqlTemplate.ValidateData(dtTalbeSelect, dtColumnSelect, out StringBuilder sbAll))
+                    if (!ColMySqlTemplate.ValidateData(dtTalbeSelect, dtColumnSelect, paramEntity, out StringBuilder sbAll))
                     {
                         ShowErr(sbAll.ToString());
                         return false;
@@ -596,7 +973,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 else if (targetDBType == DataBaseType.SQLite)
                 {
-                    if (!ColSQLiteTemplate.ValidateData(dtTalbeSelect, dtColumnSelect, out StringBuilder sbAll))
+                    if (!ColSQLiteTemplate.ValidateData(dtTalbeSelect, dtColumnSelect, paramEntity, out StringBuilder sbAll))
                     {
                         ShowErr(sbAll.ToString());
                         return false;
@@ -604,7 +981,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 else if (targetDBType == DataBaseType.PostgreSql)
                 {
-                    if (!ColPostgreSqlTemplate.ValidateData(dtTalbeSelect, dtColumnSelect, out StringBuilder sbAll))
+                    if (!ColPostgreSqlTemplate.ValidateData(dtTalbeSelect, dtColumnSelect, paramEntity, out StringBuilder sbAll))
                     {
                         ShowErr(sbAll.ToString());
                         return false;
@@ -642,8 +1019,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 dtCol.Columns.Add(dcSelected);
                 dtCol.Columns[_sGridTableSelect].SetOrdinal(0);//设置选择列在最前面
             }
-
-            bsCos.DataSource = dtCol;
+            dgvColList.BindAutoColumn(dtCol);
+            //bsCos.DataSource = dtCol;
             if (!ckbAllConvert.Checked)
             {
                 cbbTargetDbType.SelectedValue = cbbImportDBType.SelectedValue;
@@ -704,6 +1081,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 ckbAllConvert.Checked = true;
                 ckbAllConvert.Visible = true;
                 cbbImportDBType.SetControlReadOnly(false);
+                tpDataStandard.Parent = null;
             }
             else
             {
@@ -714,6 +1092,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 ckbAllConvert.Checked = false;
                 ckbAllConvert.Visible = false;
                 cbbImportDBType.SetControlReadOnly(true);
+                tabControl1.TabPages.Insert(1, tpDataStandard);
+                LoadCommonColumnData();
             }
             dgvTableList.Columns.Clear();
             dgvTableList.DataSource = null;
@@ -729,13 +1109,8 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private void SetTableTag(DataTable dt)
         {
-            //增加选择列
-            DataColumn dcSelected = new DataColumn(_sGridTableSelect,typeof(bool));
-            dcSelected.DefaultValue = "True";
-            dt.Columns.Add(dcSelected);
-            dt.Columns[_sGridColumnSelect].SetOrdinal(0);//设置选择列在最前面
-            bsTable.DataSource = dt;
-            dgvTableList.BindAutoColumn(bsTable);
+            //bsTable.DataSource = dt;
+            dgvTableList.BindAutoColumn(dt);
             dgvTableList.ShowRowNum();
         }
 
@@ -747,21 +1122,37 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 //实时查询列信息
                 dtCols = _dataAccess.GetSqlSchemaTableColumns(sTableName, sSchema);
+                
             }
             else
             {
+                
                 //通过之前的查询结果过滤：速度快
-                string sFilter = string.IsNullOrEmpty(sSchema) ? DBColumnEntity.SqlString.TableName + "='" + sTableName + "'" : DBColumnEntity.SqlString.TableName + "='" + sTableName + "' AND " + DBColumnEntity.SqlString.TableSchema + "='" + sSchema + "'";
-                DataRow[] drArrCols = uC_DbConnection1.UserAllTableColumnList.Select(sFilter);
-                if (drArrCols.Length > 0)
+                if (!string.IsNullOrEmpty(sTableName))
                 {
-                    dtCols = drArrCols.CopyToDataTable();
+                    string sFilter = string.IsNullOrEmpty(sSchema) ? DBColumnEntity.SqlString.TableName + "='" + sTableName + "'" : DBColumnEntity.SqlString.TableName + "='" + sTableName + "' AND " + DBColumnEntity.SqlString.TableSchema + "='" + sSchema + "'";
+                    DataRow[] drArrCols = uC_DbConnection1.userColumnDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey].Select(sFilter); 
+                    if (drArrCols.Length > 0)
+                    {
+                        dtCols = drArrCols.CopyToDataTable();
+                    }
+                    else
+                    {
+                        throw new Exception("表的列清单不存在，请重新打开本功能重试！");
+                    }
                 }
                 else
                 {
-                    throw new Exception("表的列清单不存在，请重新打开本功能重试！");
+                    dtCols = uC_DbConnection1.userColumnDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey];
                 }
             }
+
+            //如果选中更新默认值，那么直接调用
+            if (ckbUpdateDefault.Checked)
+            {
+                uC_DbConnection1.QueryColumnsDefaultValue(uC_DbConnection1.LatestDbServerInfo);
+            }
+
             DataTable dtColsNew = EntCol.GetTable(templateType);
             bool isExclude = ckbExcludeColumn.Checked;
             string[] arrExclude = txbExcludeColumn.Text.Trim().ToLower().Split(new char[] { ',','，',';','；' }, StringSplitOptions.RemoveEmptyEntries);
@@ -783,6 +1174,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     dr[_sGridColumnSelect] = "False";
                 }
+                if (sColName.Contains("$"))
+                {
+                    dr[_sGridColumnSelect] = "False";//默认有美元符号的，也不选中
+                }
+
                 dr[ColCommon.ExcelCol.ChangeType] = "新增";
                 dr[ColCommon.ExcelCol.TableCode] = drSource[DBColumnEntity.SqlString.TableName].ToString();
                 dr[ColCommon.ExcelCol.Code] = sColName;
@@ -795,6 +1191,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 dr[ColCommon.ExcelCol.NotNull] = "1".Equals(drSource[DBColumnEntity.SqlString.NotNull].ToString()) ? "是" : "";
                 dr[ColCommon.ExcelCol.Remark] = drSource[DBColumnEntity.SqlString.Extra].ToString();
                 dr[ColCommon.ExcelCol.DataTypeFullNew] = ColCommon.GetFullDataType(sDataType, sDataLength, sDataScale); //全类型
+                dr[ColCommon.ExcelCol.OrderNo] = drSource[DBColumnEntity.SqlString.SortNum].ToString(); //排序号
                 //统一主键处理
                 string sPKName = "PK_" + drSource[DBColumnEntity.SqlString.TableName].ToString();
                 //针对特殊数据的字段赋值
@@ -836,9 +1233,9 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             dtColsNew.TableName = _strColName;
 
-            bsCos.DataSource = dtColsNew;
+            //bsCos.DataSource = dtColsNew;
             //dgvColList.DataSource= dtColsNew;
-            dgvColList.BindAutoColumn(bsCos,true);
+            dgvColList.BindAutoColumn(dtColsNew, false);
             dgvColList.ShowRowNum();
         }
         #endregion
@@ -907,33 +1304,34 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private void tsmiChooseOrNot_Click(object sender, EventArgs e)
         {
-            if (dgvColList.SelectedCells == null || dgvColList.SelectedCells.Count == 0) return;
-            if (dgvColList.CurrentCell.ColumnIndex != dgvColList.Columns[_sGridColumnSelect].Index)
+            DataGridView dgvOldNewChar = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as DataGridView;
+            if (dgvOldNewChar.SelectedCells == null || dgvOldNewChar.SelectedCells.Count == 0) return;
+            if (dgvOldNewChar.CurrentCell.ColumnIndex != dgvOldNewChar.Columns[_sGridColumnSelect].Index)
             {
                 return; //选择、条件、MyBatis动态列
             }
             //选择
-            bool sNew = bool.Parse(dgvColList.CurrentCell.Value.ToString()) ? false : true;
-            foreach (DataGridViewCell item in dgvColList.SelectedCells)
+            bool sNew = bool.Parse(dgvOldNewChar.CurrentCell.Value.ToString()) ? false : true;
+            foreach (DataGridViewCell item in dgvOldNewChar.SelectedCells)
             {
                 //为了防止选了其他列，这里只针对选择列赋值
-                if(item.ColumnIndex == dgvColList.Columns[_sGridColumnSelect].Index)
+                if(item.ColumnIndex == dgvOldNewChar.Columns[_sGridColumnSelect].Index)
                 {
                     item.Value = sNew;
                 }
             }
 
-            dgvColList.CurrentCell.Value = sNew;
+            dgvOldNewChar.CurrentCell.Value = sNew;
 
             //解决当开始是全部选中，双击后全部取消选 中，但因为焦点没有离开选择列，显示还是选中状态的问题
-            dgvColList.ChangeCurrentCell(dgvColList.CurrentCell.ColumnIndex);
+            dgvOldNewChar.ChangeCurrentCell(dgvOldNewChar.CurrentCell.ColumnIndex);
         }
 
         private void ckbExcludeColumn_CheckedChanged(object sender, EventArgs e)
         {
-            if (ckbExcludeColumn.Checked && bsCos.DataSource != null)
+            DataTable dtCol = dgvColList.GetBindingTable();
+            if (ckbExcludeColumn.Checked && dtCol != null)
             {
-                DataTable dtCol = bsCos.DataSource as DataTable;
                 bool isExclude = ckbExcludeColumn.Checked;
                 string[] arrExclude = txbExcludeColumn.Text.Trim().ToLower().Split(new char[] { ',', '，', ';', '；' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (DataRow drSource in dtCol.Rows)
@@ -945,6 +1343,297 @@ namespace Breezee.WorkHelper.DBTool.UI
                     }
                 }
             }
+        }
+
+        #region 字符替换模板加载和保存相关
+        private void btnSaveReplaceTemplate_Click(object sender, EventArgs e)
+        {
+            string sTempName = txbReplaceTemplateName.Text.Trim();
+
+            if (string.IsNullOrEmpty(sTempName))
+            {
+                ShowInfo("分类名称不能为空！");
+                return;
+            }
+            DataTable dtReplace = dgvOldNewChar.GetBindingTable();
+            dtReplace.DeleteNullRow();
+            if (dtReplace.Rows.Count == 0)
+            {
+                ShowInfo("请录入【分类数据列清单】！");
+                return;
+            }
+
+            if (ShowOkCancel("确定要保存分类？") == DialogResult.Cancel) return;
+
+            string sKeyId = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            string sValId = replaceStringData.MoreXmlConfig.MoreKeyValue.ValIdPropName;
+            DataTable dtKeyConfig = replaceStringData.MoreXmlConfig.KeyData;
+            DataTable dtValConfig = replaceStringData.MoreXmlConfig.ValData;
+
+            string sKeyIdNew = string.Empty;
+            bool isAdd = string.IsNullOrEmpty(cbbTemplateType.Text.Trim()) ? true : false;
+            if (isAdd)
+            {
+                //新增
+                sKeyIdNew = Guid.NewGuid().ToString();
+                DataRow dr = dtKeyConfig.NewRow();
+                dr[sKeyId] = sKeyIdNew;
+                dr[StandardColumnClassXmlConfig.KeyString.Name] = sTempName;
+                dtKeyConfig.Rows.Add(dr);
+            }
+            else
+            {
+                //修改
+                string sKeyIDValue = cbbTemplateType.SelectedValue.ToString();
+                sKeyIdNew = sKeyIDValue;
+                DataRow[] drArrKey = dtKeyConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+                DataRow[] drArrVal = dtValConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+                if (drArrKey.Length == 0)
+                {
+                    DataRow dr = dtKeyConfig.NewRow();
+                    dr[sKeyId] = sKeyIdNew;
+                    dr[StandardColumnClassXmlConfig.KeyString.Name] = sTempName;
+                    dtKeyConfig.Rows.Add(dr);
+                }
+                else
+                {
+                    drArrKey[0][StandardColumnClassXmlConfig.KeyString.Name] = sTempName;//修改名称
+                }
+                if (drArrVal.Length > 0)
+                {
+                    foreach (DataRow dr in drArrVal)
+                    {
+                        dtValConfig.Rows.Remove(dr);
+                    }
+                    dtValConfig.AcceptChanges();
+                }
+            }
+
+            foreach (DataRow dr in dtReplace.Rows)
+            {
+                DataRow drNew = dtValConfig.NewRow();
+                drNew[sValId] = Guid.NewGuid().ToString();
+                drNew[sKeyId] = sKeyIdNew;
+                drNew[StandardColumnClassXmlConfig.ValueString.IsSelected] = dr[StandardColumnClassXmlConfig.ValueString.IsSelected].ToString();
+                drNew[StandardColumnClassXmlConfig.ValueString.Name] = dr[StandardColumnClassXmlConfig.ValueString.Name].ToString();
+                drNew[StandardColumnClassXmlConfig.ValueString.NameCN] = dr[StandardColumnClassXmlConfig.ValueString.NameCN].ToString();
+                drNew[StandardColumnClassXmlConfig.ValueString.NameUpper] = dr[StandardColumnClassXmlConfig.ValueString.NameUpper].ToString();
+                drNew[StandardColumnClassXmlConfig.ValueString.NameLower] = dr[StandardColumnClassXmlConfig.ValueString.NameLower].ToString();
+                drNew[StandardColumnClassXmlConfig.ValueString.DataType] = dr[StandardColumnClassXmlConfig.ValueString.DataType].ToString();
+                drNew[StandardColumnClassXmlConfig.ValueString.DataLength] = dr[StandardColumnClassXmlConfig.ValueString.DataLength].ToString();
+                drNew[StandardColumnClassXmlConfig.ValueString.DataPrecision] = dr[StandardColumnClassXmlConfig.ValueString.DataPrecision].ToString();
+                drNew[StandardColumnClassXmlConfig.ValueString.DataScale] = dr[StandardColumnClassXmlConfig.ValueString.DataScale].ToString();
+                drNew[StandardColumnClassXmlConfig.ValueString.DataTypeFull] = dr[StandardColumnClassXmlConfig.ValueString.DataTypeFull].ToString();
+                drNew[StandardColumnClassXmlConfig.ValueString.NotNull] = dr[StandardColumnClassXmlConfig.ValueString.NotNull].ToString();
+                drNew[StandardColumnClassXmlConfig.ValueString.Default] = dr[StandardColumnClassXmlConfig.ValueString.Default].ToString();
+                drNew[StandardColumnClassXmlConfig.ValueString.KeyType] = dr[StandardColumnClassXmlConfig.ValueString.KeyType].ToString();
+                drNew[StandardColumnClassXmlConfig.ValueString.Comments] = dr[StandardColumnClassXmlConfig.ValueString.Comments].ToString();
+                drNew[StandardColumnClassXmlConfig.ValueString.Extra] = dr[StandardColumnClassXmlConfig.ValueString.Extra].ToString();
+                dtValConfig.Rows.Add(drNew);
+            }
+            replaceStringData.MoreXmlConfig.Save();
+            //重新绑定下拉框
+            cbbTemplateType.BindDropDownList(replaceStringData.MoreXmlConfig.KeyData, sKeyId, StandardColumnClassXmlConfig.KeyString.Name, true, true);
+            ShowInfo("分类保存成功！");
+        }
+
+        private void btnRemoveTemplate_Click(object sender, EventArgs e)
+        {
+            if (cbbTemplateType.SelectedValue == null)
+            {
+                ShowInfo("请选择一个分类！");
+                return;
+            }
+            string sKeyIDValue = cbbTemplateType.SelectedValue.ToString();
+            if (string.IsNullOrEmpty(sKeyIDValue))
+            {
+                ShowInfo("请选择一个分类！");
+                return;
+            }
+
+            if (ShowOkCancel("确定要删除该分类？") == DialogResult.Cancel) return;
+
+            string sKeyId = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            string sValId = replaceStringData.MoreXmlConfig.MoreKeyValue.ValIdPropName;
+            DataTable dtKeyConfig = replaceStringData.MoreXmlConfig.KeyData;
+            DataTable dtValConfig = replaceStringData.MoreXmlConfig.ValData;
+            DataRow[] drArrKey = dtKeyConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+            DataRow[] drArrVal = dtValConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+
+            if (drArrVal.Length > 0)
+            {
+                foreach (DataRow dr in drArrVal)
+                {
+                    dtValConfig.Rows.Remove(dr);
+                }
+                dtValConfig.AcceptChanges();
+            }
+
+            if (drArrKey.Length > 0)
+            {
+                foreach (DataRow dr in drArrKey)
+                {
+                    dtKeyConfig.Rows.Remove(dr);
+                }
+                dtKeyConfig.AcceptChanges();
+            }
+            replaceStringData.MoreXmlConfig.Save();
+            //重新绑定下拉框
+            cbbTemplateType.BindDropDownList(replaceStringData.MoreXmlConfig.KeyData, sKeyId, StandardColumnClassXmlConfig.KeyString.Name, true, true);
+            ShowInfo("分类删除成功！");
+        }
+
+        private void dgvOldNewChar_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            if (this.dgvOldNewChar.Columns[e.ColumnIndex].Name == _sGridColumnSelectEn)
+            {
+                return;
+            }
+        }
+
+        private void SelectAllOrCancel(DataGridView dgv, ref bool isSelect, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.ColumnIndex == dgv.Columns[_sGridColumnSelectEn].Index)
+            {
+                foreach (DataGridViewRow item in dgv.Rows)
+                {
+                    item.Cells[_sGridColumnSelectEn].Value = isSelect ? "1" : "0";
+                }
+                isSelect = !isSelect;
+            }
+        }
+        private void dgvOldNewChar_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            SelectAllOrCancel(dgvOldNewChar, ref _allSelectOldNewChar, e);
+        }
+
+        private void cbbTemplateType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbbTemplateType.SelectedValue == null) return;
+            string sTempType = cbbTemplateType.SelectedValue.ToString();
+            if (string.IsNullOrEmpty(sTempType))
+            {
+                //txbReplaceTemplateName.ReadOnly = false;
+                txbReplaceTemplateName.Text = string.Empty;
+                return;
+            }
+
+            txbReplaceTemplateName.Text = cbbTemplateType.Text;
+            //txbReplaceTemplateName.ReadOnly = true;
+            string sKeyId = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            DataRow[] drArr = replaceStringData.MoreXmlConfig.ValData.Select(sKeyId + "='" + sTempType + "'");
+
+            DataTable dtReplace = dgvOldNewChar.GetBindingTable();
+            if (drArr.Length > 0)
+            {
+                dtReplace.Rows.Clear();
+                foreach (DataRow dr in drArr)
+                {
+                    dtReplace.Rows.Add(
+                        dr[StandardColumnClassXmlConfig.ValueString.Name].ToString(),
+                        dr[StandardColumnClassXmlConfig.ValueString.NameCN].ToString(),
+                        dr[StandardColumnClassXmlConfig.ValueString.NameUpper].ToString(),
+                        dr[StandardColumnClassXmlConfig.ValueString.NameLower].ToString(),
+                        dr[StandardColumnClassXmlConfig.ValueString.DataType].ToString(),
+                        dr[StandardColumnClassXmlConfig.ValueString.DataLength].ToString(),
+                        dr[StandardColumnClassXmlConfig.ValueString.DataPrecision].ToString(),
+                        dr[StandardColumnClassXmlConfig.ValueString.DataScale].ToString(),
+                        dr[StandardColumnClassXmlConfig.ValueString.DataTypeFull].ToString(),
+                        dr[StandardColumnClassXmlConfig.ValueString.NotNull].ToString(),
+                        dr[StandardColumnClassXmlConfig.ValueString.Default].ToString(),
+                        dr[StandardColumnClassXmlConfig.ValueString.KeyType].ToString(),
+                        dr[StandardColumnClassXmlConfig.ValueString.Comments].ToString(),
+                        dr[StandardColumnClassXmlConfig.ValueString.Extra].ToString(),
+                        dr[StandardColumnClassXmlConfig.ValueString.IsSelected].ToString(),
+                        dtReplace.Rows.Count + 1
+                        );
+                }
+            }
+            else if (dtReplace != null)
+            {
+                dtReplace.Clear();
+            }
+        }
+        #endregion
+
+        private void tsmiRemove_Click(object sender, EventArgs e)
+        {
+            DataGridView dgvOldNewChar = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as DataGridView;
+            DataTable dt = dgvOldNewChar.GetBindingTable();
+            DataRow dataRow = dgvOldNewChar.GetCurrentRow();
+            if (dataRow == null || dataRow.RowState == DataRowState.Detached) return;
+            dt.Rows.Remove(dataRow);
+        }
+
+        private void tsmiAdd_Click(object sender, EventArgs e)
+        {
+            label3.Focus();
+            DataRow dataRow = dgvDataDictionary.GetCurrentRow();
+            if (dataRow == null) return;
+            dgvOldNewChar.GetBindingTable().ImportRow(dataRow);
+        }
+
+        private void dgvNewTableInfo_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Modifiers == Keys.Control && e.KeyCode == Keys.V)
+                {
+                    string pasteText = Clipboard.GetText().Trim();
+                    if (string.IsNullOrEmpty(pasteText))//包括IN的为生成的SQL，不用粘贴
+                    {
+                        return;
+                    }
+
+                    int iRow = 0;
+                    int iColumn = 0;
+                    Object[,] data = StringHelper.GetStringArray(ref pasteText, ref iRow, ref iColumn);
+                    if (iRow == 0 || iColumn < 4)
+                    {
+                        return;
+                    }
+
+                    DataTable dtMain = dgvNewTableInfo.GetBindingTable();
+                    dtMain.Rows.Clear();
+                    //获取获取当前选中单元格所在的行序号
+                    for (int j = 0; j < iRow; j++)
+                    {
+                        string strData = data[j, 0].ToString().Trim();
+                        string strData2 = data[j, 1].ToString().Trim();
+                        string strData3 = data[j, 2].ToString().Trim();
+                        string strData4 = data[j, 3].ToString().Trim();
+                        if (string.IsNullOrEmpty(strData) || string.IsNullOrEmpty(strData2))
+                        {
+                            continue;
+                        }
+
+                        if (dtMain.Select(EntTable.ExcelTable.Code+"_OLD" + "='" + data[j, 0] + "'").Length == 0)
+                        {
+                            DataRow drNew = dtMain.NewRow();
+                            drNew[EntTable.ExcelTable.Code + "_OLD"] = strData;
+                            drNew[EntTable.ExcelTable.Code ] = strData2;
+                            drNew[EntTable.ExcelTable.Name] = strData3;
+                            drNew[EntTable.ExcelTable.Remark] = strData4;
+                            dtMain.Rows.Add(drNew);
+                        }
+                    }
+                    if(dtMain.Rows.Count > 0)
+                    {
+                        ckbIsOnlyReplaceTable.Checked = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErr(ex.Message);
+            }
+        }
+
+        private void tsmiSortBySelectItem_Click(object sender, EventArgs e)
+        {
+            //按选中状态反选
+            DataGridView dgvSelect = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as DataGridView;
+            dgvSelect.Sort(dgvSelect.Columns[_sGridColumnSelect], ListSortDirection.Descending);
         }
     }
 }

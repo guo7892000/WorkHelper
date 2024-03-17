@@ -56,5 +56,7 @@ namespace Breezee.Core.Interface
         /// 值主键属性名
         /// </summary>
         public string ValIdPropName { get; set; } = "vid";
+
+        public IDValueType ValueType { get; set; } = IDValueType.Guid;
     }
 }

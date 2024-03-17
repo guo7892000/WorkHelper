@@ -261,7 +261,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dbServer = await uC_DbConnection1.GetDbServerInfo();
             if (_dbServer == null) return;
             _dataAccess = AutoSQLExecutors.Connect(_dbServer);
-            DataTable dtTable = uC_DbConnection1.UserTableList;
+            DataTable dtTable = uC_DbConnection1.userTableDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey];
             if (!dtTable.Columns.Contains(_sGridColumnSelect))
             {
                 //增加选择列
@@ -1913,7 +1913,10 @@ AND  A.#C# =  #{param.#C3#}
                 dtReplace.Rows.Clear();
                 foreach (DataRow dr in drArr)
                 {
-                    dtReplace.Rows.Add(dtReplace.Rows.Count + 1, dr[ReplaceStringXmlConfig.ValueString.IsSelected].ToString(), dr[ReplaceStringXmlConfig.ValueString.OldString].ToString(), dr[ReplaceStringXmlConfig.ValueString.NewString].ToString());
+                    dtReplace.Rows.Add(dtReplace.Rows.Count + 1, 
+                        dr[ReplaceStringXmlConfig.ValueString.IsSelected].ToString(), 
+                        dr[ReplaceStringXmlConfig.ValueString.OldString].ToString(), 
+                        dr[ReplaceStringXmlConfig.ValueString.NewString].ToString());
                 }
             }
             else if (dtReplace != null)

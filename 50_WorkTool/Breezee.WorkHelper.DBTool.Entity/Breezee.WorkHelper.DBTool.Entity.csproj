@@ -65,6 +65,7 @@
     <Compile Include="ExcelTableSQL\EntExcelSheet.cs" />
     <Compile Include="ExcelTableSQL\EntTable.cs" />
     <Compile Include="ExcelTableSQL\Enum\TableSqlEnum.cs" />
+    <Compile Include="ExcelTableSQL\GenerateParamEntity.cs" />
     <Compile Include="ExcelTableSQL\TableSqlCommon.cs" />
     <Compile Include="Global\DBTGlobalValue.cs" />
     <Compile Include="Global\DBTUserLoveConfig.cs" />

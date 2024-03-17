@@ -303,7 +303,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     //类型
                     sDbType = sDbType.ToLower().Replace("varchar2", "varchar").Replace("date", "datetime").Replace("number", "decimal").Replace("timestamp", "datetime");
                     //默认值
-                    sDefaultValue = sDefaultValue.ToLower().Replace("sysdate", "now()");
+                    sDefaultValue = sDefaultValue.ToLower().Replace("sysdate", "now()").Replace("sys_guid()", "uuid()");
                     break;
                 case DataBaseType.MySql:
                     break;

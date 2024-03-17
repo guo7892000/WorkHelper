@@ -32,15 +32,15 @@ namespace Breezee.WorkHelper.DBTool.UI
         protected List<EntTable> entTables;
         protected List<EntCol> entCols;
 
-        public string GenerateTableContruct(DataTable dtTable, DataTable dtCols, SQLCreateType createType, DataBaseType importDBType, DataBaseType targetDBType, bool isAllConvert)
+        public string GenerateTableContruct(DataTable dtTable, DataTable dtCols, GenerateParamEntity paramEntity)
         {
             sbSqlFisrt = new StringBuilder();//SQL前缀
             sbSql = new StringBuilder();           
 
-            this.createType = createType;
-            this.importDBType = importDBType;
-            this.targetDBType = targetDBType;
-            this._isAllConvert = isAllConvert;
+            this.createType = paramEntity.sqlCreateType;
+            this.importDBType = paramEntity.importDBType;
+            this.targetDBType = paramEntity.targetDBType;
+            this._isAllConvert = paramEntity.isAllConvert;
 
             if (_isAllConvert)
             {

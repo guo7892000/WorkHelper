@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using Breezee.Core;
 using FluentFTP;
 using Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL;
+using static Breezee.Core.WinFormUI.FlexGridColumn;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -146,13 +147,13 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             DataRow[] drArr;
             string sFilter = DBTableEntity.SqlString.Name + "='" + sTableName + "'";
-            if (uC_DbConnectionSource.UserTableList == null || uC_DbConnectionSource.UserTableList.Rows.Count == 0)
+            if (!uC_DbConnectionSource.userTableDic.ContainsKey(uC_DbConnectionSource.LatestDbServerInfo.DbConnKey)|| uC_DbConnectionSource.userTableDic[uC_DbConnectionSource.LatestDbServerInfo.DbConnKey].Rows.Count == 0)
             {
                 drArr = _dataAccess.GetSchemaTables().Select(sFilter);
             }
             else
             {
-                drArr = uC_DbConnectionSource.UserTableList.Select(sFilter);
+                drArr = uC_DbConnectionSource.userTableDic[uC_DbConnectionSource.LatestDbServerInfo.DbConnKey].Select(sFilter);
             }
             if (drArr.Count() == 0)
             {
@@ -202,13 +203,13 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             DataRow[] drArr;
             string sFilter = DBTableEntity.SqlString.Name + "='" + sTableName + "'";
-            if (uC_DbConnectionTarget.UserTableList == null || uC_DbConnectionTarget.UserTableList.Rows.Count == 0)
+            if (!uC_DbConnectionTarget.userTableDic.ContainsKey(uC_DbConnectionTarget.LatestDbServerInfo.DbConnKey) || uC_DbConnectionTarget.userTableDic[uC_DbConnectionTarget.LatestDbServerInfo.DbConnKey].Rows.Count == 0)
             {
                 drArr = _dataAccess.GetSchemaTables().Select(sFilter);
             }
             else
             {
-                drArr = uC_DbConnectionTarget.UserTableList.Select(sFilter);
+                drArr = uC_DbConnectionTarget.userTableDic[uC_DbConnectionTarget.LatestDbServerInfo.DbConnKey].Select(sFilter);
             }
             if (drArr.Count() == 0)
             {
@@ -462,9 +463,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                     return;
                 }
                 //绑定下拉框
-                cbbTableNameSource.BindDropDownList(uC_DbConnectionSource.UserTableList.Sort("TABLE_NAME"), "TABLE_NAME", "TABLE_NAME", false);
+                cbbTableNameSource.BindDropDownList(uC_DbConnectionSource.userTableDic[uC_DbConnectionSource.LatestDbServerInfo.DbConnKey].Sort("TABLE_NAME"), "TABLE_NAME", "TABLE_NAME", false);
                 //查找自动完成数据源
-                cbbTableNameSource.AutoCompleteCustomSource.AddRange(uC_DbConnectionSource.UserTableList.AsEnumerable().Select(x => x.Field<string>("TABLE_NAME")).ToArray());
+                cbbTableNameSource.AutoCompleteCustomSource.AddRange(uC_DbConnectionSource.userTableDic[uC_DbConnectionSource.LatestDbServerInfo.DbConnKey].AsEnumerable().Select(x => x.Field<string>("TABLE_NAME")).ToArray());
             }
             else
             {
@@ -481,9 +482,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                     return;
                 }
                 //绑定下拉框
-                cbbTableNameTarget.BindDropDownList(uC_DbConnectionTarget.UserTableList.Sort("TABLE_NAME"), "TABLE_NAME", "TABLE_NAME", false);
+                cbbTableNameTarget.BindDropDownList(uC_DbConnectionTarget.userTableDic[uC_DbConnectionTarget.LatestDbServerInfo.DbConnKey].Sort("TABLE_NAME"), "TABLE_NAME", "TABLE_NAME", false);
                 //查找自动完成数据源
-                cbbTableNameTarget.AutoCompleteCustomSource.AddRange(uC_DbConnectionTarget.UserTableList.AsEnumerable().Select(x => x.Field<string>("TABLE_NAME")).ToArray());
+                cbbTableNameTarget.AutoCompleteCustomSource.AddRange(uC_DbConnectionTarget.userTableDic[uC_DbConnectionTarget.LatestDbServerInfo.DbConnKey].AsEnumerable().Select(x => x.Field<string>("TABLE_NAME")).ToArray());
             }
             else
             {
@@ -747,7 +748,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             ColumnTemplateType templateType;
             DataBaseType dataBaseType  = (DataBaseType)int.Parse(cbbTargetDbType.SelectedValue.ToString());
             SQLBuilder sqlBuilder;
-            DataBaseType importBaseType;
+            DataBaseType importBaseType = DataBaseType.Oracle;
             DbServerInfo sourceServer = await uC_DbConnectionSource.GetDbServerInfo();
             DbServerInfo targetServer = await uC_DbConnectionTarget.GetDbServerInfo();
 
@@ -812,7 +813,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                 dr[ColCommon.ExcelCol.DataTypeFullNew] = ColCommon.GetFullDataType(sDataType, sDataLength, sDataScale); //全类型：未转换
                 dtColsNew.Rows.Add(dr);
             }
-            TableStructGenerator.Generate(tabControl2, dtTableCopy, dtColsNew, true, true, true);
+
+            TableStructGeneratorParamEntity docEntity = new TableStructGeneratorParamEntity();
+            docEntity.builder = sqlBuilder;
+            docEntity.importDBType = importBaseType;
+            docEntity.useDataTypeFull = true;
+            docEntity.useLYTemplate = true;
+            docEntity.useRemarkContainsName = true;
+            TableStructGenerator.Generate(tabControl2, dtTableCopy, dtColsNew, docEntity);
             tabControl2.SelectTab(TableStructGenerator.TABKEY_TABLE_STRUCT);
         }
     }
