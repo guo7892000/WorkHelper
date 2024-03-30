@@ -10,7 +10,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 {
     public class MySQLBuilder : SQLBuilder
     {
-        public override void GenerateTableSQL(EntTable entTable)
+        public override void GenerateTableSQL(EntTable entTable, GenerateParamEntity paramEntity)
         {
             string strTableCode = entTable.Code;
             string strTableName = entTable.Name;
@@ -41,7 +41,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                 sbSql.Append("/*" + iCalNum.ToString() + "、新增表：" + strTableName + AddLeftRightKuoHao(strTableCode) + "*/\n");
                 sbSql.Append(AddRightBand("CREATE TABLE IF NOT EXISTS") + AddRightBand(strTableCode) + "(\n");
                 //表说明SQL
-                sbRemark.Append(string.Format("ALTER TABLE {0} COMMENT '{1}';\n", strTableCode, strTableName + "：" + strTableRemark));
+                if (string.IsNullOrEmpty(strTableRemark))
+                {
+                    sbRemark.Append(string.Format("ALTER TABLE {0} COMMENT '{1}';\n", strTableCode, strTableName));
+                }
+                else
+                {
+                    sbRemark.Append(string.Format("ALTER TABLE {0} COMMENT '{1}';\n", strTableCode, strTableName + "：" + strTableRemark));
+                }
 
                 int j = tableCols.Count();
                 //string strDefaultList = "";//默认值

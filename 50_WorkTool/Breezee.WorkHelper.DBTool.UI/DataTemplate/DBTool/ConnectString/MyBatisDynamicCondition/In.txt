@@ -1,0 +1,14 @@
+<if test="param.#C3# != null and param.#C3# !=''">
+ <choose>
+  <when test='param.#C3#.contains(",") == false'>
+	AND A.#C# = #{param.#C3#}
+  </when>
+  <otherwise>
+   AND  A.#C# IN
+   <foreach item="item" collection="param.#C3#.split(',')"
+    index="index" open="(" separator="," close=")">
+	 #{item}
+   </foreach>
+  </otherwise>
+ </choose>
+</if>

@@ -1,0 +1,18 @@
+﻿{
+  "type": "object",
+  "title": "empty object",
+  "properties": {
+    "pageindex": {
+      "type": "number",
+      "description": "当前页数"
+      },
+    "pagesize": {
+      "type": "number",
+      "description": "每页条数"
+      },
+      #COLUMN_DESC#
+  },
+  "required": [
+    #COLUMN_MUST#
+  ]
+}

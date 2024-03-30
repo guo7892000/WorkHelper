@@ -78,6 +78,7 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static class TableColumnDictionary
         {
             public static string Xml_FileName = "ColumnDictionaryReplaceStringConfig.xml";
+            public static string Xml_StringTemplateFileName = "ColumnDictionary_StringTemplateConfig.xml"; //字符模板配置文件
         }
 
         public static string AppPath

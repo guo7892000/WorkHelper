@@ -169,9 +169,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                         }
                     }
 
-                    //默认值转换
-                    string sDefaultValue = row[ColCommon.ExcelCol.Default].ToString();
-                    docEntity.builder.ConvertDBTypeDefaultValueString(ref sDataType,ref sDefaultValue,docEntity.importDBType);
                     //列Web字符
                     string columnString = columnsTemplate.Replace("${ColumnName}", sColName)
                         .Replace("${ColumnCode}", row[ColCommon.ExcelCol.Code].ToString())
@@ -179,7 +176,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         .Replace("${ColumnWidth}", row[ColCommon.ExcelCol.DataLength].ToString())
                         .Replace("${DecimalPlace}", row[ColCommon.ExcelCol.DataDotLength].ToString())
                         .Replace("${PrimaryKey}", row[ColCommon.ExcelCol.KeyType].ToString())
-                        .Replace("${DefaultValue}", sDefaultValue)
+                        .Replace("${DefaultValue}", row[ColCommon.ExcelCol.Default].ToString())
                         .Replace("${Rule}", row[ColCommon.ExcelCol.NotNull].ToString())
                         .Replace("${Remark}", sColRemark)
                         .Replace("$(No)", index.ToString())
@@ -195,6 +192,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                     sTableChangeType = sTableChangeType.Replace("新增","创建") +"表";
                 }
                 string sTableName = rowTable[EntTable.ExcelTable.Name].ToString();
+                if(string.IsNullOrEmpty(sTableName))
+                {
+                    sTableName = docEntity.defaultColumnOrTableName + "表";
+                }
                 string sTableSoureRemark = rowTable[EntTable.ExcelTable.Remark].ToString();
                 string sTableRemark;
                 if (docEntity.useRemarkContainsName)

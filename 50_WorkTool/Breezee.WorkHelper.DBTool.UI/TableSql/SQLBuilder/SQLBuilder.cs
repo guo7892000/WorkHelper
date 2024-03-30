@@ -89,6 +89,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 EntTable ent = EntTable.GetEntity(dr);
                 entTables.Add(ent);
+                if (string.IsNullOrEmpty(ent.Name))
+                {
+                    ent.Name = paramEntity.defaultColNameCN + "表";
+                }
 
                 string sTableDealTypeName = ent.ChangeTypeEnum == TableChangeType.Create ? "新增" : "修改";
                 sbSqlFisrt.Append("      " + iTable + " " + sTableDealTypeName + ent.Name + "（" + ent.Code + "）\n");
@@ -106,7 +110,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             foreach (EntTable entTable in entTables)
             {
                 sbRemark = new StringBuilder();
-                GenerateTableSQL(entTable);               
+                GenerateTableSQL(entTable, paramEntity);               
             }
             sbSqlFisrt.Append(sbDelete.ToString());
             sbSql.Insert(0, sbSqlFisrt.ToString());
@@ -118,7 +122,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             return sbSql.ToString();
         }
 
-        public abstract void GenerateTableSQL(EntTable entTable);
+        public abstract void GenerateTableSQL(EntTable entTable, GenerateParamEntity paramEntity);
         public abstract void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue,DataBaseType impDbType);
         private static readonly string _strBlank = " "; //空格
 

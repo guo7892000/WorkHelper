@@ -25,6 +25,8 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string ColumnDic_IsAutoExcludeTable = "ColumnDic_IsAutoExcludeTable";
         public static readonly string ColumnDic_ExcludeTableList = "ColumnDic_ExcludeTableList";
         public static readonly string ColumnDic_IsOnlyMatchSqlTable = "ColumnDic_IsOnlyMatchSqlTable";
+        public static readonly string ColumnDic_QueryResultType = "ColumnDic_QueryResultType";
+        public static readonly string ColumnDic_IsColumnMust = "ColumnDic_IsColumnMust";
         //点击复制
         public static readonly string ClickCopyPath = "ClickCopyPath";
         public static readonly string DirStringLastSelectedPath = "DirStringLastSelectedPath";

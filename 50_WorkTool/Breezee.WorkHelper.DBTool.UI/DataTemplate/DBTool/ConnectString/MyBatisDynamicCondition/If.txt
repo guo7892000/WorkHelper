@@ -1,0 +1,3 @@
+<if test="param.#C3# != null and param.#C3# != ''">
+AND  A.#C# =  #{param.#C3#}
+</if>

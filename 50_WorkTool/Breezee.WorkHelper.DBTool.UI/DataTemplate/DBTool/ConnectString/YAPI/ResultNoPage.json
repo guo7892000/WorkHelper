@@ -1,0 +1,29 @@
+﻿{
+  "type": "object",
+  "title": "empty object",
+  "properties": {
+    "result": {
+      "type": "string",
+      "description": "执行结果"
+    },
+    "msg": {
+      "type": "string",
+      "description": "返回信息"
+    },
+    "rows": {
+      "type": "object",
+      "description": "结果集",
+      "properties": {
+        "#COLUMN_DESC#"
+      },
+      "required": [
+        "#COLUMN_MUST#"
+      ]
+    }
+  },
+  "required": [
+    "rows",
+    "msg",
+    "result"
+  ]
+}

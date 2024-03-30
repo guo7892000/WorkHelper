@@ -11,10 +11,11 @@ namespace Breezee.WorkHelper.DBTool.UI
     public class OracleBuilder : SQLBuilder
     {
         string strUqueList = "";//唯一性
-        public override void GenerateTableSQL(EntTable entTable)
+        public override void GenerateTableSQL(EntTable entTable, GenerateParamEntity paramEntity)
         {
             string strTableCode = entTable.Code;
             string strTableName = entTable.Name;
+
             TableChangeType strTableDealType = entTable.ChangeTypeEnum;
             string strTableRemark = entTable.Remark;
 
@@ -58,8 +59,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                 sbSql.Append("/*" + iCalNum.ToString() + "、新增表：" + strTableName + AddLeftRightKuoHao(strTableCode) + "*/\n");
                 sbSql.Append(AddRightBand("CREATE TABLE") + AddRightBand(strTableCode) + "(\n");
                 //表说明SQL
-                sbRemark.Append("comment on table " + strTableCode + " is '" + strTableName + "：" + strTableRemark + "';\n");
-
+                if (string.IsNullOrEmpty(strTableRemark))
+                {
+                    sbRemark.Append("comment on table " + strTableCode + " is '" + strTableName + "';\n");
+                }
+                else
+                {
+                    sbRemark.Append("comment on table " + strTableCode + " is '" + strTableName + "：" + strTableRemark + "';\n");
+                }
+                    
                 int j = tableCols.Count();
                 //string strDefaultList = "";//默认值
 

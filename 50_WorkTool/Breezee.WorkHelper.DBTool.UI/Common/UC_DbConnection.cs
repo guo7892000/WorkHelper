@@ -59,7 +59,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             #region 绑定下拉框
             //数据库类型
             DataTable dtDbType = DBToolUIHelper.GetBaseDataTypeTable();
-            cbbDatabaseType.BindTypeValueDropDownList(dtDbType, false, true);
+            cbbDatabaseType.BindTypeValueDropDownList(dtDbType, true, true);
             
             #endregion
             //数据库类型为只读
@@ -195,10 +195,12 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <exception cref="Exception"></exception>
         public async Task<DbServerInfo> GetDbServerInfo(bool isQueryTableColumnRealTime = false)
         {
+            DataBaseType curDatabaseType = cbbDatabaseType.SelectedValue == null || string.IsNullOrEmpty(cbbDatabaseType.SelectedValue.ToString()) ? DataBaseType.None : (DataBaseType)int.Parse(cbbDatabaseType.SelectedValue.ToString());
+
             var DbServer = new DbServerInfo()
             {
                 Database = txbDbName.Text.Trim(),
-                DatabaseType = (DataBaseType)int.Parse(cbbDatabaseType.SelectedValue.ToString()),
+                DatabaseType = curDatabaseType,
                 Password = txbPassword.Text.Trim(),
                 PortNo = txbPortNO.Text.Trim(),
                 SchemaName = txbSchemaName.Text.Trim(),
@@ -210,8 +212,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             };
             DbServerInfo.ResetConnKey(DbServer);
 
-            int iDbType = int.Parse(cbbDatabaseType.SelectedValue.ToString());
-            DataBaseType selectDBType = (DataBaseType)iDbType;
+            DataBaseType selectDBType = curDatabaseType;
 
             if (!ckbUseConString.Checked)
             {
@@ -392,9 +393,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 return;
             }
-            ShowGlobalMsg(this, "准备异步查询列的默认值信息，过程会有点慢，请耐心等待...");
             //得到数据库访问对象
             _dataAccess = AutoSQLExecutors.Connect(DbServer);
+            if(DbServer.DatabaseType== DataBaseType.Oracle)
+            {
+                ShowGlobalMsg(this, "准备异步查询列的默认值信息，过程会有点慢，请耐心等待...");
+            }
             //这里查询所有表的默认值：解决不了查询慢的问题
             defaultValueDic[DbServer.DbConnKey] = _dataAccess.GetSqlTableColumnsDefaultValue(new List<string>());
             //设置列清单的默认值

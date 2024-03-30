@@ -1,0 +1,6 @@
+<if test="param.#C3#Begin != null and param.#C3#Begin != ''">
+ AND A.#C# <![CDATA[ >= ]]> #{param.#C3#Begin}
+</if>
+<if test="param.#C3#End != null and param.#C3#End != ''">
+ AND A.#C# <![CDATA[ < ]]> DATE_ADD(#{param.#C3#End},INTERVAL 1 DAY)
+</if>

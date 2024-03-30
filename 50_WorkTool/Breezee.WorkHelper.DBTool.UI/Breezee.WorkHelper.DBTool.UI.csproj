@@ -184,6 +184,7 @@
     <Compile Include="ConnectString\FrmDBTTableColumnString.Designer.cs">
       <DependentUpon>FrmDBTTableColumnString.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConnectString\TableColumnDicTemplate.cs" />
     <Compile Include="DataSql\FrmDBTExcelImportData.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -313,6 +314,24 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="DataTemplate\DBTool\AutoFile\模板_生成代码文件.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="DataTemplate\DBTool\ConnectString\YAPI\ConditionNoPage.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="DataTemplate\DBTool\ConnectString\YAPI\ConditionPage.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="DataTemplate\DBTool\ConnectString\YAPI\ResultArrayNoPage.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="DataTemplate\DBTool\ConnectString\YAPI\ResultNoPage.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="DataTemplate\DBTool\ConnectString\YAPI\ResultArrayPage.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="DataTemplate\DBTool\ConnectString\YAPI\ResultPage.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="DataTemplate\DBTool\DataSQL\模板_生成数据.xlsx">
@@ -446,6 +465,27 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DataTemplate\DBTool\ConnectString\MyBatisDynamicCondition\Date.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataTemplate\DBTool\ConnectString\MyBatisDynamicCondition\If.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataTemplate\DBTool\ConnectString\MyBatisDynamicCondition\In.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataTemplate\DBTool\ConnectString\StringTemplate\CommonEntity.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataTemplate\DBTool\ConnectString\StringTemplate\MyBatisDynamicConditon.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataTemplate\DBTool\ConnectString\StringTemplate\MyBatisTableEntity.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataTemplate\DBTool\ConnectString\StringTemplate\YapiColumnDesc.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="DataTemplate\DBTool\StringBuild\模板_合并脚本配置.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

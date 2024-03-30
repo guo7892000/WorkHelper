@@ -13,10 +13,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         //private string _tableColumnAroundChar_Left = "[";//围绕表或列名的左字符，例如SqlServer的[
         //private string _tableColumnAroundChar_Right = "]";//围绕表或列名的左字符，例如SqlServer的]
         private bool _isSqlServerDefaultValueNameAuto = false;
-        public override void GenerateTableSQL(EntTable entTable)
+        public override void GenerateTableSQL(EntTable entTable, GenerateParamEntity paramEntity)
         {
             string strTableCode = entTable.Code;
             string strTableName = entTable.Name;
+
             IEnumerable<EntCol> tableCols;
 
             if (string.IsNullOrEmpty(entTable.CommonColumnTableCode))
@@ -29,7 +30,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                 tableCols = entCols.Where(t => t.commonCol.TableCode == entTable.Code).Union(entCols.Where(t => t.commonCol.TableCode == entTable.CommonColumnTableCode));
             }
             
-
             string strPK = "";
             if ((entTable.ChangeTypeEnum == TableChangeType.Create))
             {
@@ -52,7 +52,8 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 sbSql.Append(AddRightBand("CREATE TABLE") + AddRightBand(strTableCode) + AddRightBand("\n(\n"));
                 //表说明SQL
-                sbRemark.Append("EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'" + strTableName + "：" + entTable.Remark + "',\n" +
+                string sTableRemark = string.IsNullOrEmpty(entTable.Remark) ? strTableName : strTableName + "：" + entTable.Remark;
+                sbRemark.Append("EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'" + sTableRemark + "',\n" +
                         "   @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'" + strTableCode + "'\n");
                 int j = tableCols.Count();
                 string strDefaultList = "";//默认值

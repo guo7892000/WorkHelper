@@ -10,7 +10,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 {
     public class PostgreSQLBuilder : SQLBuilder
     {
-        public override void GenerateTableSQL(EntTable entTable)
+        public override void GenerateTableSQL(EntTable entTable, GenerateParamEntity paramEntity)
         {
             string strTableCode = entTable.Code;
             string strTableName = entTable.Name;
@@ -43,8 +43,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                 sbSql.Append(AddRightBand("CREATE TABLE IF NOT EXISTS") + AddRightBand(strTableCode) + "(\n");
 
                 //表说明SQL
-                sbRemark.Append("COMMENT ON TABLE " + strTableCode + " IS '" + strTableName + "：" + strTableRemark + "';\n");
-
+                if (string.IsNullOrEmpty(strTableRemark))
+                {
+                    sbRemark.Append("COMMENT ON TABLE " + strTableCode + " IS '" + strTableName + "';\n");
+                }
+                else
+                {
+                    sbRemark.Append("COMMENT ON TABLE " + strTableCode + " IS '" + strTableName + "：" + strTableRemark + "';\n");
+                }
+                    
                 int j = tableCols.Count();
                 //string strDefaultList = "";//默认值
                 //string strUqueList = "";

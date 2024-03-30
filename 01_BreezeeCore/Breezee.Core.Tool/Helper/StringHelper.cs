@@ -364,7 +364,7 @@ namespace Breezee.Core.Tool
         /// </summary>
         /// <param name="pasteText"></param>
         /// <returns></returns>
-        public static Object[,] GetStringArray(ref string pasteText, ref int iRow, ref int iColumn)
+        public static object[,] GetStringArray(ref string pasteText, ref int iRow, ref int iColumn)
         {
             string strReplace = pasteText.Trim();
             int tnum = 0;
@@ -378,14 +378,19 @@ namespace Breezee.Core.Tool
                 }
             }
             //返回的数据
-            Object[,] data;
-            //如果只有一个数据
+            object[,] data;
+            //如果只有一条数据
             if (strReplace.IndexOf("\n")<0)
             {
-                data = new object[1,1];//定义一个二维数组
-                data[0,0] = strReplace;
                 iRow = 1;
-                iColumn = 1;
+                string[] arrCol = strReplace.Split('\t');
+                iColumn = arrCol.Length;
+                data = new object[iRow, iColumn];//定义一个二维数组
+                //确定列数
+                for (int i = 0; i < arrCol.Length; i++)
+                {
+                    data[0, i] = arrCol[i];
+                }
                 return data;
             }
 
@@ -409,7 +414,7 @@ namespace Breezee.Core.Tool
             iColumn = tnum + 1;
             data = new object[nnum + 1, tnum + 1];//定义一个二维数组
 
-            String rowstr;
+            string rowstr;
             rowstr = "";
             //对数组赋值
             for (int i = 0; i < iRow; i++)

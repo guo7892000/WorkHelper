@@ -10,7 +10,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 {
     public class SQLiteBuilder : SQLBuilder
     {
-        public override void GenerateTableSQL(EntTable entTable)
+        public override void GenerateTableSQL(EntTable entTable, GenerateParamEntity paramEntity)
         {
             string _tableColumnAroundChar_Left = "\"";
             string _tableColumnAroundChar_Right = "\"";
@@ -42,7 +42,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 #region 新增处理
                 sbSql.Append("/*" + iCalNum.ToString() + "、新增表：" + strTableName + AddLeftRightKuoHao(strTableCode) + "*/\n");
                 sbSql.Append(AddRightBand("CREATE TABLE IF NOT EXISTS") + AddRightBand(_tableColumnAroundChar_Left + strTableCode + _tableColumnAroundChar_Right) + "(\n");
-                //无表说明SQL
+                //表说明SQL：注SQLite不支持表说明
                 int j = tableCols.Count();
                 //string strDefaultList = "";//默认值
                 //string strUqueList = "";

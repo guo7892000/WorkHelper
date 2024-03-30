@@ -20,6 +20,10 @@ using System.Xml.Linq;
 using System.Text.RegularExpressions;
 using System.Reflection.Emit;
 using LibGit2Sharp;
+using org.breezee.MyPeachNet;
+using static Breezee.WorkHelper.DBTool.UI.TableColumnDicTemplate;
+using Breezee.Core.Entity;
+using FluentFTP;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -33,6 +37,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private readonly string _strColName = "变更列清单";
 
         private readonly string _sGridColumnSelect = "IsSelect";
+        private readonly string _sGridColumnIsMust = "ColumnIsMust";
         private readonly string _sGridColumnIsNoCnRemark = "IsNoCnRemark";
         private bool _allSelectOldNewChar = false;//默认全选，这里取反
 
@@ -40,6 +45,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private bool _allSelectAll = false;//默认全选，这里取反
         private bool _allSelectTable = false;//默认全选，这里取反
         private bool _allSelectCommon = false;//默认全选，这里取反
+        private bool _allSelectColumnIsMust = false;//默认全选，这里取反
         //常量
         private static string strTableAlias = "A"; //查询和修改中的表别名
         private static string strTableAliasAndDot = "";
@@ -55,12 +61,14 @@ namespace Breezee.WorkHelper.DBTool.UI
         DBSqlEntity sqlEntity;
 
         private readonly string _sInputColCode = "列编码";
-        private BindingSource bsFindColumn = new BindingSource();
-        //IDictionary<string, string> _dicColCodeRelation = new Dictionary<string, string>();
+        private readonly string _sInputColName = "列名称";
         MiniXmlConfig commonColumn;
         MiniXmlConfig codeNameColumn;
+        MiniXmlConfig stringTemplate;
         DataGridViewFindText dgvFindText;
         ReplaceStringXmlConfig replaceStringData;//替换字符模板XML配置
+        IDictionary<string, string> _dicSystemStringTemplate = new Dictionary<string, string>();
+        IDictionary<string,string> _dicYapiTemplate = new Dictionary<string,string>();
         #endregion
 
         #region 构造函数
@@ -75,6 +83,26 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             _IDBDefaultValue = ContainerContext.Container.Resolve<IDBDefaultValue>();
 
+            //读取文件模板
+            string sPath = YapiDirPath;
+            _dicYapiTemplate[YapiString.ConditionNoPage] = File.ReadAllText(Path.Combine(sPath, YapiString.ConditionNoPage), Encoding.UTF8);
+            _dicYapiTemplate[YapiString.ConditionPage] = File.ReadAllText(Path.Combine(sPath, YapiString.ConditionPage), Encoding.UTF8);
+            _dicYapiTemplate[YapiString.ResultNoPage] = File.ReadAllText(Path.Combine(sPath, YapiString.ResultNoPage), Encoding.UTF8);
+            _dicYapiTemplate[YapiString.ResultPage] = File.ReadAllText(Path.Combine(sPath, YapiString.ResultPage), Encoding.UTF8);
+            _dicYapiTemplate[YapiString.ResultArrayNoPage] = File.ReadAllText(Path.Combine(sPath, YapiString.ResultArrayNoPage), Encoding.UTF8);
+            _dicYapiTemplate[YapiString.ResultArrayPage] = File.ReadAllText(Path.Combine(sPath, YapiString.ResultArrayPage), Encoding.UTF8);
+            //读取字符模板
+            sPath = StringTempDirPath;
+            _dicYapiTemplate[StringTemplate.MyBatisDynamicConditon] = File.ReadAllText(Path.Combine(sPath, StringTemplate.MyBatisDynamicConditon), Encoding.UTF8);
+            _dicYapiTemplate[StringTemplate.MyBatisTableEntity] = File.ReadAllText(Path.Combine(sPath, StringTemplate.MyBatisTableEntity), Encoding.UTF8);
+            _dicYapiTemplate[StringTemplate.CommonEntity] = File.ReadAllText(Path.Combine(sPath, StringTemplate.CommonEntity), Encoding.UTF8);
+            _dicYapiTemplate[StringTemplate.YapiColumnDesc] = File.ReadAllText(Path.Combine(sPath, StringTemplate.YapiColumnDesc), Encoding.UTF8);
+            //MyBatis动态条件字符模板
+            sPath = MyBatisDynDirPath;
+            _dicYapiTemplate[MyBatisDynamicCond.If] = File.ReadAllText(Path.Combine(sPath, MyBatisDynamicCond.If), Encoding.UTF8);
+            _dicYapiTemplate[MyBatisDynamicCond.In] = File.ReadAllText(Path.Combine(sPath, MyBatisDynamicCond.In), Encoding.UTF8);
+            _dicYapiTemplate[MyBatisDynamicCond.Date] = File.ReadAllText(Path.Combine(sPath, MyBatisDynamicCond.Date), Encoding.UTF8);
+
             #region 设置数据库连接控件
             _IDBConfigSet = ContainerContext.Container.Resolve<IDBConfigSet>();
             DataTable dtConn = _IDBConfigSet.QueryDbConfig(_dicQuery).SafeGetDictionaryTable();
@@ -87,39 +115,68 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             SetColTag();
             //模板
-            _dicString.Add("1", "YAPI查询条件");
-            _dicString.Add("2", "YAPI查询结果");
-            _dicString.Add("9", "YAPI参数格式");
-            _dicString.Add("11", "Mybatis表实体属性");
-            _dicString.Add("12", "通用实体属性");
-            _dicString.Add("13", "Mybatis查询条件");
-            cbbModuleString.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), true, true);
-
+            _dicSystemStringTemplate.Add("1", "YAPI查询条件");
+            _dicSystemStringTemplate.Add("2", "YAPI查询结果");
+            _dicSystemStringTemplate.Add("9", "YAPI参数格式");
+            _dicSystemStringTemplate.Add("11", "Mybatis表实体属性");
+            _dicSystemStringTemplate.Add("12", "通用实体属性");
+            _dicSystemStringTemplate.Add("13", "Mybatis查询条件");
+            DataTable dtStringTemplate = _dicSystemStringTemplate.GetTextValueTable(false);
+            //编码名称配置网格相关
+            var list = new List<string>();
+            list.AddRange(new string[] {
+                StringTemplateConfig.Id,
+                StringTemplateConfig.Name,
+                StringTemplateConfig.TemplateString
+            });
+            stringTemplate = new MiniXmlConfig(GlobalContext.PathData(), "ColumnDictionary_StringTemplateConfig.xml", list, StringTemplateConfig.Id);
+            DataTable dtStringTemp = stringTemplate.Load();
+            foreach (DataRow dr in dtStringTemp.Rows)
+            {
+                dtStringTemplate.Rows.Add(dr[StringTemplateConfig.Id].ToString(), dr[StringTemplateConfig.Name].ToString());
+                _dicYapiTemplate[dr[StringTemplateConfig.Id].ToString()] = dr[StringTemplateConfig.TemplateString].ToString();
+            }
+            cbbModuleString.BindTypeValueDropDownList(dtStringTemplate, true, true);
             //
             _dicString.Clear();
             _dicString["1"] = "匹配SQL条件";
             _dicString["2"] = "匹配SQL结果";
             _dicString["3"] = "粘贴列";
             cbbInputType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
-
+            //
+            _dicString.Clear();
+            _dicString["array"] = "array";
+            _dicString["object"] = "object";
+            cbbQueryResultType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
             //初始化网格
             DataTable dtIn = new DataTable();
             dtIn.Columns.Add(_sInputColCode, typeof(string));
-            bsFindColumn.DataSource = dtIn;
-            dgvInput.DataSource = bsFindColumn;
+            dgvInput.BindAutoColumn(dtIn);
             //加载通用列等内容
             LoadCommonColumnData();
             //加载用户偏好值
             cbbInputType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_ConfirmColumnType, "2").Value;
             cbbModuleString.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_TemplateType, "2").Value;
+            cbbQueryResultType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_QueryResultType, "array").Value; //查询结果类型
             ckbIsPage.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_IsPage, "0").Value) ? true : false;//是否分页
             ckbAutoParamQuery.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_IsAutoParam, "1").Value) ? true : false;//自动参数化查询
             ckbIsAutoExclude.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_IsAutoExcludeTable, "1").Value) ? true : false;//自动排除表名
             ckbReMatchSqlTable.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_IsOnlyMatchSqlTable, "1").Value) ? true : false;//仅匹配SQL表
             txbExcludeTable.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_ExcludeTableList, "_bak,_temp,_tmp").Value; //排除表列表
-            toolTip1.SetToolTip(ckbAutoParamQuery, "当未选中时，请保证SQL是可以直接执行的。");
-            toolTip1.SetToolTip(txbExcludeTable, "排除包括逗号分隔列表中所有字符的表名。");
+            ckbColumnMust.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_IsColumnMust, "1").Value) ? true : false;//是否必填
 
+            toolTip1.SetToolTip(ckbAutoParamQuery, "当选中时，是使用MyPeach.Net自动参数化SQL后，再执行的；否则是直接运行SQL。");
+            toolTip1.SetToolTip(txbExcludeTable, "排除包括逗号分隔列表中所有字符的表名。");
+            toolTip1.SetToolTip(ckbRemoveLastChar, "选中后，在生成时会去掉最后一个字符。"); 
+            toolTip1.SetToolTip(cbbQueryResultType, "查询结果集的类型：\n为array时，其下会有一个item对象，其下才是数组对象的属性；\n为object时，其下直接是属性。");
+            toolTip1.SetToolTip(ckbClearAllCol, "指加载数据时，会先清空【所有表列】页签下，【列清单】网格中的所有内容。");
+            toolTip1.SetToolTip(ckbClearCopyCol, "指加载数据时，会先清空【列清单】页签下，【粘贴或查询的列】网格中的所有内容。");
+            toolTip1.SetToolTip(ckbClearSelect, "指加载数据时，会先清空【已选择】网格下的所有内容。");
+            toolTip1.SetToolTip(ckbIsAutoExclude, "指加载数据时，会排除包含其后的文本内容（逗号分隔多个）的表名。");
+            toolTip1.SetToolTip(ckbAllTableColumns, "指加载数据时，会查询和加载所有表下面的列清单。");
+            toolTip1.SetToolTip(ckbColumnMust, "选中后，在匹配列时，已选择网格中的【必填】列会处理选中状态，\n那样生成的YAPI参数是必填的。");
+            toolTip1.SetToolTip(ckbIsPage, "选中后，在生成的YAPI参数里会包括分页相关参数。");
+            toolTip1.SetToolTip(ckbNotFoundAdd, "选中后，在匹配时，如果找不到相关列信息，但还是会加到【已选择】网格中。");
             //加载模板数据
             replaceStringData = new ReplaceStringXmlConfig(DBTGlobalValue.TableColumnDictionary.Xml_FileName);
             string sColName = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
@@ -135,6 +192,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             dgvOldNewChar.Tag = fdc.GetGridTagString();
             dgvOldNewChar.BindDataGridView(null, false);
             dgvOldNewChar.AllowUserToAddRows = true;
+            
         }
 
         #region 显示全局提示信息事件
@@ -229,6 +287,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             //
             dgvCodeNameCol.Tag = fdc.GetGridTagString();
             dgvCodeNameCol.BindDataGridView(dtCodeNameCol, true);
+
         }
 
         private void cbbConnName_SelectedIndexChanged(object sender, EventArgs e)
@@ -457,6 +516,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             if ("1".Equals(sInputType) || "2".Equals(sInputType))
             {
                 sSql = rtbInputSql.Text.Trim();
+                //移除列名
+                if (dtInput.Columns.Contains(_sInputColName))
+                {
+                    dtInput.Columns.Remove(_sInputColName);
+                }
                 //1查询条件和2查询结果处理
                 if (string.IsNullOrEmpty(sSql))
                 {
@@ -516,40 +580,23 @@ namespace Breezee.WorkHelper.DBTool.UI
                     ShowInfo("请先选择表，并点击【加载数据】后，再匹配数据！");
                     return false;
                 }
+                //针对粘贴列，重新匹配时，也清空选择列网格
+                if (ckbOnlyMatchQueryResult.Checked)
+                {
+                    dtSelect.Clear();
+                }
+                //移除空行
+                string sFilter = _sInputColCode + " is null";
+                foreach (DataRow dr in dtInput.Select(sFilter))
+                {
+                    dtInput.Rows.Remove(dr);
+                }
             }
 
             if (!string.IsNullOrEmpty(sInputType))
             {
-                if ("2".Equals(sInputType))
-                {
-                    //2查询结果处理
-                    try
-                    {
-                        DataTable dtSql;
-                        if (ckbAutoParamQuery.Checked)
-                        {
-                            dtSql = _dataAccess.QueryAutoParamSqlData(sSql, new Dictionary<string, string>()); //先调用自动参数化方法，再查询
-                        }
-                        else
-                        {
-                            dtSql = _dataAccess.QueryHadParamSqlData(sSql, new Dictionary<string, string>()); //直接调用查询方法
-                        }
-
-                        foreach (DataColumn dc in dtSql.Columns)
-                        {
-                            if (dtInput.Select(_sInputColCode + "='" + dc.ColumnName + "'").Length == 0)
-                            {
-                                dtInput.Rows.Add(dc.ColumnName);
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        ShowErr("执行查询SQL报错，请保证SQL的正确性，详细信息：" + ex.Message);
-                        return false;
-                    }
-                }
-                else if ("1".Equals(sInputType))
+                IDictionary<string,string> dicCondition = new Dictionary<string,string>();
+                if ("1".Equals(sInputType) || "2".Equals(sInputType))
                 {
                     //1查询条件处理
                     string remarkPatter = "--.*|(/\\*.*/*/)";
@@ -573,12 +620,63 @@ namespace Breezee.WorkHelper.DBTool.UI
                             .Replace("#", "")
                             .Replace("{", "")
                             .Replace("}", "");
-                        //列名不存在，才添加
-                        if (dtInput.Select(_sInputColCode + "='" + sCol + "'").Length == 0)
+                        dicCondition[sCol] = sCol;
+                        if ("1".Equals(sInputType))
                         {
-                            dtInput.Rows.Add(sCol);
+                            //列名不存在，才添加
+                            if (dtInput.Select(_sInputColCode + "='" + sCol + "'").Length == 0)
+                            {
+                                dtInput.Rows.Add(sCol);
+                            }
                         }
                     }
+                }
+
+                if ("2".Equals(sInputType))
+                {
+                    //2查询结果处理
+                    bool isOk = false;
+                    DataTable dtSql = new DataTable();
+                    try
+                    {
+                        if (ckbAutoParamQuery.Checked)
+                        {
+                            dtSql = _dataAccess.QueryAutoParamSqlData(sSql, dicCondition); //先调用自动参数化方法，再查询
+                        }
+                        else
+                        {
+                            dtSql = _dataAccess.QueryHadParamSqlData(sSql, dicCondition); //直接调用查询方法
+                        }
+                        isOk = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        isOk = false;
+                    }
+
+                    //当执行出错时，已按参数化的方法重新执行一次
+                    if (!isOk)
+                    {
+                        try
+                        {
+                            dtSql = _dataAccess.QueryHadParamSqlData(sSql, dicCondition); //直接调用查询方法
+                        }
+                        catch (Exception ex)
+                        {
+                            ShowErr("执行查询SQL报错，请保证SQL的正确性，详细信息：" + ex.Message);
+                            return false;
+                        }
+                    }
+
+                    //将表中的列添加到表中
+                    foreach (DataColumn dc in dtSql.Columns)
+                    {
+                        if (dtInput.Select(_sInputColCode + "='" + dc.ColumnName + "'").Length == 0)
+                        {
+                            dtInput.Rows.Add(dc.ColumnName);
+                        }
+                    }
+
                 }
             }
 
@@ -588,10 +686,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             WinFormContext.UserLoveSettings.Save();
 
             DataTable dtCommonCol = dgvCommonCol.GetBindingTable();
+            bool isInputHasColName = dtInput.Columns.Contains(_sInputColName);
             //循环输入的列清单
             foreach (DataRow dr in dtInput.Rows)
             {
                 string sCol = dr[_sInputColCode].ToString();
+                string sColName = isInputHasColName ? dr[_sInputColName].ToString() : string.Empty;
                 string sFiter = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.Name, sCol);
                 //判断列是否已加入
                 DataRow[] drArr = dtSelect.Select(sFiter);
@@ -648,6 +748,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (drArr.Length > 0)
                 {
                     dtSelect.ImportRow(drArr[0]);
+                    if (isInputHasColName && !string.IsNullOrEmpty(sColName))
+                    {
+                        dtSelect.Rows[dtSelect.Rows.Count - 1][DBColumnSimpleEntity.SqlString.NameCN] = sColName;
+                    }
+                    //必填字段赋值
+                    dtSelect.Rows[dtSelect.Rows.Count - 1][_sGridColumnIsMust] = ckbColumnMust.Checked ? "1" : "0";
                     continue;
                 }
 
@@ -656,6 +762,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (drArr.Length > 0)
                 {
                     dtSelect.ImportRow(drArr[0]);
+                    if (isInputHasColName && !string.IsNullOrEmpty(sColName))
+                    {
+                        dtSelect.Rows[dtSelect.Rows.Count - 1][DBColumnSimpleEntity.SqlString.NameCN] = sColName;
+                    }
+                    //必填字段赋值
+                    dtSelect.Rows[dtSelect.Rows.Count - 1][_sGridColumnIsMust] = ckbColumnMust.Checked ? "1" : "0";
                     continue;
                 }
 
@@ -664,6 +776,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (drArr.Length > 0)
                 {
                     dtSelect.ImportRow(drArr[0]);
+                    if (isInputHasColName && !string.IsNullOrEmpty(sColName))
+                    {
+                        dtSelect.Rows[dtSelect.Rows.Count - 1][DBColumnSimpleEntity.SqlString.NameCN] = sColName;
+                    }
+                    //必填字段赋值
+                    dtSelect.Rows[dtSelect.Rows.Count - 1][_sGridColumnIsMust] = ckbColumnMust.Checked ? "1" : "0";
                     continue;
                 }
 
@@ -676,6 +794,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                     if (drArr.Length > 0)
                     {
                         dtSelect.ImportRow(drArr[0]);
+                        if (isInputHasColName && !string.IsNullOrEmpty(sColName))
+                        {
+                            dtSelect.Rows[dtSelect.Rows.Count - 1][DBColumnSimpleEntity.SqlString.NameCN] = sColName;
+                        }
+                        //必填字段赋值
+                        dtSelect.Rows[dtSelect.Rows.Count - 1][_sGridColumnIsMust] = ckbColumnMust.Checked ? "1" : "0";
                         continue;
                     }
 
@@ -684,6 +808,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                     if (drArr.Length > 0)
                     {
                         dtSelect.ImportRow(drArr[0]);
+                        if (isInputHasColName && !string.IsNullOrEmpty(sColName))
+                        {
+                            dtSelect.Rows[dtSelect.Rows.Count - 1][DBColumnSimpleEntity.SqlString.NameCN] = sColName;
+                        }
+                        //必填字段赋值
+                        dtSelect.Rows[dtSelect.Rows.Count - 1][_sGridColumnIsMust] = ckbColumnMust.Checked ? "1" : "0";
                         continue;
                     }
                 }
@@ -698,7 +828,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                     drNew[DBColumnSimpleEntity.SqlString.NameLower] = sCol.FirstLetterUpper(false);
                     drNew[_sGridColumnSelect] = "1";
                     drNew[_sGridColumnIsNoCnRemark] = "1"; //没有中文备注的列
+                    if (isInputHasColName && !string.IsNullOrEmpty(sColName))
+                    {
+                        drNew[DBColumnSimpleEntity.SqlString.NameCN] = sColName;
+                    }
+                    //必填字段赋值
+                    drNew[_sGridColumnIsMust] = ckbColumnMust.Checked ? "1" : "0";
                     dtSelect.Rows.Add(drNew);
+                    
                 }
             }
             dgvSelect.ShowRowNum(true); //显示行号
@@ -745,6 +882,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             fdc.AddColumn(
                 FlexGridColumn.NewRowNoCol(),
                 new FlexGridColumn.Builder().Name(_sGridColumnSelect).Caption("选择").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(40).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(_sGridColumnIsMust).Caption("必填").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(40).Edit().Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.TableName).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.Name).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(true).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameCN).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(true).Visible().Build(),
@@ -765,8 +903,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             );
             dgvSelect.Tag = fdc.GetGridTagString();
             DataTable dtSelect = dtColsAll.Clone();
+            //无中文名称列
             dcSelected = new DataColumn(_sGridColumnIsNoCnRemark);
             dcSelected.DefaultValue = "0";
+            dtSelect.Columns.Add(dcSelected);
+            //必填列
+            dcSelected = new DataColumn(_sGridColumnIsMust);
+            dcSelected.DefaultValue = "1";
             dtSelect.Columns.Add(dcSelected);
             dgvSelect.BindDataGridView(dtSelect, true);
         }
@@ -779,7 +922,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             rtbConString.Focus();
             //取得数据源
             DataTable dtSec = dgvSelect.GetBindingTable();
-            StringBuilder sbAllSql = new StringBuilder();
+            StringBuilder sbAllSql = new StringBuilder(); //模板字符接接
+            StringBuilder sbAllMust = new StringBuilder(); //必填列字符接接
             if (dtSec == null) return;
             //移除空行
             dtSec.DeleteNullRow();
@@ -800,12 +944,25 @@ namespace Breezee.WorkHelper.DBTool.UI
                 return;
             }
 
-            if (string.IsNullOrEmpty(rtbConString.Text.Trim()))
+            string sTemplateString = rtbConString.Text;
+            if (string.IsNullOrEmpty(sTemplateString.Trim()))
             {
                 ShowInfo("请输入拼接的字符格式！");
                 return;
             }
             #endregion
+
+            //取出第一个符合#列名#的
+            //1查询条件处理
+            string firstParamPatter = @"#\w+#";
+            Regex regex = new Regex(firstParamPatter, RegexOptions.IgnoreCase);
+            MatchCollection mcColl = regex.Matches(sTemplateString);
+            string sMustColumnName = string.Empty;
+            foreach (Match mt in mcColl)
+            {
+                sMustColumnName = mt.Value.Replace("#","");
+                break;
+            }
 
             try
             {
@@ -815,19 +972,20 @@ namespace Breezee.WorkHelper.DBTool.UI
                     string strOneData = rtbConString.Text;
                     if ("13".Equals(sModule))
                     {
+                        //13：Mybatis查询条件
                         string sDataType = dtColumnSelect.Rows[i][DBColumnSimpleEntity.SqlString.DataType].ToString();
                         string sColumnName = dtColumnSelect.Rows[i][DBColumnSimpleEntity.SqlString.Name].ToString();
                         if ("date".Equals(sDataType, StringComparison.OrdinalIgnoreCase)|| "datetime".Equals(sDataType, StringComparison.OrdinalIgnoreCase))
                         {
-                            strOneData = getMybatiString(MybatisStringType.Datetime);
+                            strOneData = rtbDate.Text.Trim();
                         }
                         else if(sColumnName.EndsWith("list",StringComparison.OrdinalIgnoreCase))
                         {
-                            strOneData = getMybatiString(MybatisStringType.List);
+                            strOneData = rtbIn.Text.Trim();
                         }
                         else
                         {
-                            strOneData = getMybatiString(MybatisStringType.If);
+                            strOneData = rtbConString.Text.Trim();
                         }
                     }
                     foreach (DataColumn dc in dtColumnSelect.Columns)
@@ -843,15 +1001,28 @@ namespace Breezee.WorkHelper.DBTool.UI
                     }
                     //所有SQL文本累加
                     sbAllSql.Append(strOneData + "\n");
+                    if ("1".Equals(dtColumnSelect.Rows[i][_sGridColumnIsMust].ToString()) && dtColumnSelect.Columns.Contains(sMustColumnName))
+                    {
+                        sbAllMust.AppendLine("\""+ dtColumnSelect.Rows[i][sMustColumnName].ToString()+"\",");
+                    }
                 }
                 rtbResult.Clear();
 
                 if (ckbRemoveLastChar.Checked)
                 {
+                    //列信息去掉最后一个字符
                     string sLast = sbAllSql.ToString().Trim();
                     sLast = sLast.Substring(0, sLast.Length - 1);
                     sbAllSql.Clear();
                     sbAllSql.Append(sLast);
+                    //必填项去掉最后一个字符
+                    sLast = sbAllMust.ToString().Trim();
+                    if (!string.IsNullOrEmpty(sLast))
+                    {
+                        sLast = sLast.Substring(0, sLast.Length - 1);
+                    }
+                    sbAllMust.Clear();
+                    sbAllMust.Append(sLast);
                 }
 
                 //二次替换处理
@@ -866,7 +1037,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
 
                 //YAPI的字符模板处理
-                YapiModuleStringDeal(sbAllSql);
+                YapiModuleStringDealTemplate(sbAllSql, sbAllMust);
+
                 rtbResult.AppendText(sbAllSql.ToString() + "\n");
                 Clipboard.SetData(DataFormats.UnicodeText, sbAllSql.ToString());
 
@@ -897,8 +1069,10 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 //保存用户偏好值
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_TemplateType, cbbModuleString.SelectedValue.ToString(), "【数据字典】模板类型");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_QueryResultType, cbbQueryResultType.SelectedValue.ToString(), "【数据字典】查询结果类型");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_IsPage, ckbIsPage.Checked ? "1" : "0", "【生成表SQL】是否分页");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_IsAutoParam, ckbAutoParamQuery.Checked ? "1" : "0", "【生成表SQL】是否自动参数化查询");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_IsColumnMust, ckbColumnMust.Checked ? "1" : "0", "【生成表SQL】参数是否必填");
                 WinFormContext.UserLoveSettings.Save();
 
                 tabControl1.SelectedTab = tpAutoSQL;
@@ -912,130 +1086,35 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
         }
 
-        /// <summary>
-        /// YAPI的字符模板处理
-        /// </summary>
-        /// <param name="sbAllSql"></param>
-        private void YapiModuleStringDeal(StringBuilder sbAllSql)
+        private void YapiModuleStringDealTemplate(StringBuilder sbAllSql, StringBuilder sbAllMust)
         {
             string sModule = cbbModuleString.SelectedValue.ToString();
+            string sTemplate = string.Empty;
             if ("1".Equals(sModule))
             {
                 //查询条件
-                if (ckbIsPage.Checked)
-                {
-                    //分页
-                    sbAllSql.Insert(0, @"{
-  ""type"": ""object"",
-  ""title"": ""empty object"",
-  ""properties"": {
-    ""pageindex"": {
-      ""type"": ""number"",
-      ""description"": ""当前页数""
-      },
-    ""pagesize"": {
-      ""type"": ""number"",
-      ""description"": ""每页条数""
-      },
-    ");
-
-                    sbAllSql.AppendLine(@"
-    }
-}");
-                }
-                else
-                {
-                    //不分页
-                    sbAllSql.Insert(0, @"{
-  ""type"": ""object"",
-  ""title"": ""empty object"",
-  ""properties"": {
-    ");
-
-                    sbAllSql.AppendLine(@"
-    }
-}");
-                }
+                sTemplate = ckbIsPage.Checked ? _dicYapiTemplate[YapiString.ConditionPage] : _dicYapiTemplate[YapiString.ConditionNoPage];
             }
             else if ("2".Equals(sModule))
             {
                 //查询结果
-                if (ckbIsPage.Checked)
+                if (cbbQueryResultType.SelectedValue== null || "object".Equals(cbbQueryResultType.SelectedValue.ToString()))
                 {
-                    //分页
-                    sbAllSql.Insert(0, @"{
-  ""type"": ""object"",
-  ""title"": ""empty object"",
-  ""properties"": {
-    ""pageindex"": {
-      ""type"": ""number"",
-      ""description"": ""页号""
-      },
-    ""pages"": {
-      ""type"": ""number"",
-      ""description"": ""总页数""
-      },
-    ""records"": {
-      ""type"": ""number"",
-      ""description"": ""总记录数""
-      },
-    ""result"": {
-      ""type"": ""number"",
-      ""description"": ""执行结果""
-      },
-    ""msg"": {
-      ""type"": ""string"",
-      ""description"": ""返回信息""
-      },
-    ""rows"": {
-      ""type"": ""object"",
-      ""properties"": {
-        ");
-                    sbAllSql.AppendLine(@"
-        },
-      ""description"": ""结果集"",
-      ""required"": []
-    }
-  }
-}");
+                    sTemplate = ckbIsPage.Checked ? _dicYapiTemplate[YapiString.ResultPage] : _dicYapiTemplate[YapiString.ResultNoPage];
                 }
                 else
                 {
-                    //不分页
-                    sbAllSql.Insert(0, @"{
-  ""type"": ""object"",
-  ""title"": ""empty object"",
-  ""properties"": {
-    ""result"": {
-      ""type"": ""string"",
-      ""description"": ""执行结果""
-    },
-    ""msg"": {
-      ""type"": ""string"",
-      ""description"": ""返回信息""
-    },
-    ""rows"": {
-      ""type"": ""array"",
-      ""items"": {
-        ""type"": ""object"",
-        ""properties"": {
-           ");
-
-                    sbAllSql.AppendLine(@"
-           }
-      },
-      ""description"": ""结果集""
-    }
-  },
-  ""required"": [
-    ""rows"",
-    ""msg"",
-    ""result""
-  ]
-}");
+                    sTemplate = ckbIsPage.Checked ? _dicYapiTemplate[YapiString.ResultArrayPage] : _dicYapiTemplate[YapiString.ResultArrayNoPage];
                 }
             }
+            if ("1".Equals(sModule) || "2".Equals(sModule))
+            {
+                sTemplate = sTemplate.Replace("#COLUMN_DESC#", sbAllSql.ToString()).Replace("#COLUMN_MUST#", sbAllMust.ToString());
+                sbAllSql.Clear();
+                sbAllSql.append(sTemplate);
+            }
         }
+
         #endregion
 
         #region 退出按钮事件
@@ -1293,27 +1372,52 @@ namespace Breezee.WorkHelper.DBTool.UI
                     {
                         return;
                     }
-                    DataTable dtMain = ((BindingSource)dgvInput.DataSource).DataSource as DataTable;
-                    if(!ckbOnlyMatchQueryResult.Checked)
+                    DataTable dtMain = dgvInput.GetBindingTable();
+                    if(!ckbIsAppendCol.Checked)
                     {
                         dtMain.Clear(); //非追加，则清除所有数据
                     }
-
+                    
                     int iRow = 0;
                     int iColumn = 0;
-                    Object[,] data = StringHelper.GetStringArray(ref pasteText, ref iRow, ref iColumn);
+                    object[,] data = StringHelper.GetStringArray(ref pasteText, ref iRow, ref iColumn);
  
                     foreach (DataRow dr in dtMain.Select(_sInputColCode+ " is null or "+ _sInputColCode + "=''"))
                     {
                         dtMain.Rows.Remove(dr);
                     }
                     dtMain.AcceptChanges();
+
+                    //判断是否要加上列名称
+                    if (iColumn <2)
+                    {
+                        //粘贴列数量小于2，即只有一列，那么移除列名称
+                        if(dtMain.Columns.Contains(_sInputColName))
+                        {
+                            dtMain.Columns.Remove(_sInputColName);
+                        }
+                    }
+                    else
+                    {
+                        //粘贴列数量大于等于2，需要增加列名称
+                        if (!dtMain.Columns.Contains(_sInputColName))
+                        {
+                            dtMain.Columns.Add(_sInputColName);
+                        }
+                    }
+
                     int rowindex = dtMain.Rows.Count;
                     int iGoodDataNum = 0;//有效数据号
                     //获取获取当前选中单元格所在的行序号
                     for (int j = 0; j < iRow; j++)
                     {
                         string strData = data[j, 0].ToString().Trim();
+                        string sColName = string.Empty;
+                        if (iColumn >= 2)
+                        {
+                            sColName = data[j, 1].ToString().Trim();
+                        }
+
                         if (string.IsNullOrEmpty(strData))
                         {
                             continue;
@@ -1322,6 +1426,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                         {
                             dtMain.Rows.Add(dtMain.NewRow());
                             dtMain.Rows[rowindex + iGoodDataNum][0] = strData;
+                            if (dtMain.Columns.Contains(_sInputColName))
+                            {
+                                dtMain.Rows[rowindex + iGoodDataNum][1] = sColName;
+                            }
                             iGoodDataNum++;
                         }
                     }
@@ -1450,37 +1558,70 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (cbbModuleString.SelectedValue != null && !string.IsNullOrEmpty(cbbModuleString.SelectedValue.ToString()))
             {
                 string sModule = cbbModuleString.SelectedValue.ToString();
+                txbStringTemplateName.ReadOnly = true;
                 rtbConString.Clear();
+                txbStringTemplateName.Text = string.Empty;
+                string sTemplate = string.Empty;
+                if (!"13".Equals(sModule))
+                {
+                    tpIn.Parent = null;
+                    tpDate.Parent = null;
+                    tpTemplate.Text = "字符模板";
+                }
+
                 if ("11".Equals(sModule))
                 {
-                    rtbConString.AppendText(string.Format(@"    @ApiModelProperty(""#{0}#"")
-    @TableField(""#{1}#"")
-    private String #{2}#;
-", DBColumnSimpleEntity.SqlString.NameCN, DBColumnSimpleEntity.SqlString.Name, DBColumnSimpleEntity.SqlString.NameLower));
+                    //11：Mybatis表实体属性
+                    sTemplate = _dicYapiTemplate[StringTemplate.MyBatisTableEntity];
+                    rtbConString.AppendText(sTemplate);
+                    toolTip1.SetToolTip(cbbModuleString, "生成表实体属性(不含GET和SET，如需要请自行在IDE中生成)。");
                 }
                 else if ("12".Equals(sModule))
                 {
-                    rtbConString.AppendText(string.Format(@"@ApiModelProperty(""#{0}#"")
-private String #{1}#;
-", DBColumnSimpleEntity.SqlString.NameCN, DBColumnSimpleEntity.SqlString.NameLower));
+                    //12：通用实体属性
+                    sTemplate = _dicYapiTemplate[StringTemplate.CommonEntity];
+                    rtbConString.AppendText(sTemplate);
+                    toolTip1.SetToolTip(cbbModuleString, "生成通用实体属性(不含GET和SET，如需要请自行在IDE中生成)。");
                 }
-                else if("13".Equals(sModule))
+                else if ("13".Equals(sModule))
                 {
-                    rtbConString.AppendText(@"<if test=""param.#C3# != null and param.#C3# != ''"">
- AND  t.#C# =  #{param.#C3#}
-</if>");
+                    //13：Mybatis查询条件
+                    rtbIn.Clear();
+                    rtbDate.Clear();
+                    rtbConString.AppendText(_dicYapiTemplate[MyBatisDynamicCond.If]);
+                    rtbIn.AppendText(_dicYapiTemplate[MyBatisDynamicCond.In]);
+                    rtbDate.AppendText(_dicYapiTemplate[MyBatisDynamicCond.Date]);
+
+                    tpIn.Parent = tabStringTemplate;
+                    tpDate.Parent = tabStringTemplate;
+                    tpTemplate.Text = "If";
+                    toolTip1.SetToolTip(cbbModuleString, "当列为DateTime或Date类型时，会使用Date模板拼接；\n当列名以_LIST结尾时，会使用In模板拼接；\n其他以If模板接接。");
                 }
-                else
+                else if ("1".Equals(sModule) || "2".Equals(sModule) || "9".Equals(sModule))
                 {
-                    rtbConString.AppendText(@"""#C3#"":{
-    ""type"":""string"",
-    ""description"":""#C1#""
-    },");
-                    if (!"1".Equals(sModule))
+                    //1：YAPI查询条件，2：YAPI查询结果，9：YAPI参数格式
+                    sTemplate = _dicYapiTemplate[StringTemplate.YapiColumnDesc];
+                    rtbConString.AppendText(sTemplate);
+                    if (!"9".Equals(sModule))
                     {
                         ckbRemoveLastChar.Checked = true;
                     }
+                    toolTip1.SetToolTip(cbbModuleString, "生成JSON格式的YAPI入参、出参、中间参数部分信息。");
                 }
+                else
+                {
+                    if (_dicYapiTemplate.ContainsKey(sModule))
+                    {
+                        rtbConString.AppendText(_dicYapiTemplate[sModule]);
+                    }
+                    txbStringTemplateName.Text = cbbModuleString.Text.Trim();
+                    txbStringTemplateName.ReadOnly = false;
+                    toolTip1.SetToolTip(cbbModuleString, "这是自定义的字符模板，可修改或删除。");
+                }
+            }
+            else
+            {
+                txbStringTemplateName.ReadOnly = false;
             }
         }
 
@@ -1499,6 +1640,7 @@ private String #{1}#;
                     toolTip1.SetToolTip(cbbInputType, "根据参数字符来匹配所有列，支持#{param.colName}、#{colName}、@colName、:colName、#colName#格式");
                     toolTip1.SetToolTip(ckbOnlyMatchQueryResult, "选中后点【匹配】按钮会清空【粘贴或查询的列】网格");
                     cbbModuleString.SelectedValue = "1"; //YAPI查询条件
+                    ckbIsAppendCol.Visible = false;
                 }
                 else if ("2".Equals(sType))
                 {
@@ -1510,15 +1652,18 @@ private String #{1}#;
                     toolTip1.SetToolTip(cbbInputType, "根据查询的SQL来得到所有列（注：SQL必须运行不报错，且最好是查询空数据）");
                     toolTip1.SetToolTip(ckbOnlyMatchQueryResult, "选中后点【匹配】按钮会清空【粘贴或查询的列】网格");
                     cbbModuleString.SelectedValue = "2";//YAPI查询结果
+                    ckbIsAppendCol.Visible = false;
                 }
                 else
                 {
                     //粘贴列
                     spcQuerySql.Panel1Collapsed = true;  //设计上方折叠
                     ckbOnlyMatchQueryResult.Checked = true;
-                    ckbOnlyMatchQueryResult.Text = "追加列";
+                    ckbOnlyMatchQueryResult.Text = "重新匹配";
                     toolTip1.SetToolTip(cbbInputType, "粘贴列编码");
-                    toolTip1.SetToolTip(ckbOnlyMatchQueryResult, "选中后支持多次复制追加数据");
+                    toolTip1.SetToolTip(ckbOnlyMatchQueryResult, "选中后点【匹配】按钮会清空【已选择】网格后，重新根据粘贴的列匹配！");
+                    toolTip1.SetToolTip(ckbIsAppendCol, "选中后支持多次复制追加数据");
+                    ckbIsAppendCol.Visible = true;
                 }
             }
         }
@@ -1546,7 +1691,22 @@ private String #{1}#;
 
         private void dgvSelect_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            SelectAllOrCancel(dgvSelect, ref _allSelect, e);
+            if (e.ColumnIndex == dgvSelect.Columns[_sGridColumnSelect].Index)
+            {
+                foreach (DataGridViewRow item in dgvSelect.Rows)
+                {
+                    item.Cells[_sGridColumnSelect].Value = _allSelect ? "1" : "0";
+                }
+                _allSelect = !_allSelect;
+            }
+            else if(e.ColumnIndex == dgvSelect.Columns[_sGridColumnIsMust].Index)
+            {
+                foreach (DataGridViewRow item in dgvSelect.Rows)
+                {
+                    item.Cells[_sGridColumnIsMust].Value = _allSelectColumnIsMust ? "1" : "0";
+                }
+                _allSelectColumnIsMust = !_allSelectColumnIsMust;
+            }
         }
 
         private void dgvCommonCol_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -1585,46 +1745,6 @@ private String #{1}#;
         {
             DataTable dt = dgvTableList.GetBindingTable();
             ExcludeSplitTable(dt);
-        }
-
-        private string getMybatiString(MybatisStringType mybatisStringType)
-        {
-            StringBuilder sb = new StringBuilder();
-            switch (mybatisStringType)
-            {
-                case MybatisStringType.If:
-                    sb.Append(@"<if test=""param.#C3# != null and param.#C3# != ''"">
-AND  A.#C# =  #{param.#C3#}
-</if>");
-                    break;
-                case MybatisStringType.List:
-                    sb.Append(@"<if test=""param.#C3# != null and param.#C3# !=''"">
- <choose>
-  <when test='param.#C3#.contains("","") == false'>
-	AND A.#C# = #{param.#C3#}
-  </when>
-  <otherwise>
-   AND  A.#C# IN
-   <foreach item=""item"" collection=""param.#C3#.split(',')""
-    index=""index"" open=""("" separator="","" close="")"">
-	 #{item}
-   </foreach>
-  </otherwise>
- </choose>
-</if>");
-                    break;
-                case MybatisStringType.Datetime:
-                    sb.Append(@"<if test=""param.#C3#Begin != null and param.#C3#Begin != ''"">
- AND A.#C# <![CDATA[ >= ]]> #{param.#C3#Begin}
-</if>
-<if test=""param.#C3#End != null and param.#C3#End != ''"">
- AND A.#C# <![CDATA[ < ]]> DATE_ADD(#{param.#C3#End},INTERVAL 1 DAY)
-</if>");
-                    break;
-                default:
-                    break;
-            }
-            return sb.ToString();
         }
 
         /// <summary>
@@ -1922,6 +2042,134 @@ AND  A.#C# =  #{param.#C3#}
             else if (dtReplace != null)
             {
                 dtReplace.Clear();
+            }
+        }
+        #endregion
+
+        #region 字符模板维护
+        private void btnStringTemplateSave_Click(object sender, EventArgs e)
+        {
+            DataTable dtSave = stringTemplate.Data;
+            string sCurTemplateName = string.Empty;
+            string sFilter = string.Empty;
+            string sTemplateString = rtbConString.Text.Trim();
+            DataRow drNewOrEdit = null;
+            string sCurTemplateId;
+            bool isAdd = false;
+            if (string.IsNullOrEmpty(sTemplateString))
+            {
+                ShowInfo("请输入模板字符！");
+                return;
+            }
+            if (cbbModuleString.SelectedValue == null || string.IsNullOrEmpty(cbbModuleString.Text.Trim()))
+            {
+                //新增场景
+                sCurTemplateName = txbStringTemplateName.Text.Trim();
+                if (string.IsNullOrEmpty(sCurTemplateName))
+                {
+                    ShowInfo("请输入模板名称！");
+                    return;
+                }
+                if (_dicSystemStringTemplate.ContainsKey(sCurTemplateName) || _dicSystemStringTemplate.Values.Contains(sCurTemplateName))
+                {
+                    ShowInfo("模板名称不能跟现有的系统模板重复，请修改模板名称！");
+                    return;
+                }
+                sFilter = StringTemplateConfig.Name + "='" + sCurTemplateName + "'";
+                DataRow[] drArr = dtSave.Select(sFilter);
+                if (drArr.Length > 0)
+                {
+                    ShowInfo("模板名称不能跟现有的系统模板重复，请修改模板名称！");
+                    return;
+                }
+                //增加行
+                sCurTemplateId = Guid.NewGuid().ToString();
+                drNewOrEdit = dtSave.Rows.Add(sCurTemplateId, sCurTemplateName, sTemplateString);
+                isAdd = true;
+            }
+            else
+            {
+                //修改场景
+                sCurTemplateId = cbbModuleString.SelectedValue.ToString();
+                sCurTemplateName = txbStringTemplateName.Text.Trim();
+                if (string.IsNullOrEmpty(sCurTemplateName))
+                {
+                    ShowInfo("请输入模板名称！");
+                    return;
+                }
+                sFilter = StringTemplateConfig.Id + "='" + sCurTemplateId + "'";
+                DataRow[] drArr = dtSave.Select(sFilter);
+                if (drArr.Length > 0)
+                {
+                    drArr[0][StringTemplateConfig.Name] = sCurTemplateName;
+                    drArr[0][StringTemplateConfig.TemplateString] = sTemplateString;
+                    drNewOrEdit = drArr[0];
+                }
+            }
+
+            if (MsgHelper.ShowYesNo("确定要保存？") == DialogResult.Yes)
+            {
+                stringTemplate.Save(dtSave);
+                ShowInfo("保存成功！");
+                //修改全局模板文本内容
+                _dicYapiTemplate[sCurTemplateId] = drNewOrEdit[StringTemplateConfig.TemplateString].ToString();
+                DataTable dtStringTemaplate = cbbModuleString.DataSource as DataTable;
+                //修改模板下拉框的数据源
+                if (isAdd)
+                {
+                    //增加下拉框项
+                    dtStringTemaplate.Rows.Add(drNewOrEdit[StringTemplateConfig.Id].ToString(), drNewOrEdit[StringTemplateConfig.Name].ToString());
+                }
+                else
+                {
+                    //修改模板下拉框中的模板名称
+                    sFilter = DT_BAS_VALUE.VALUE_CODE + "='" + sCurTemplateId + "'";
+                    DataRow[] drArr = dtStringTemaplate.Select(sFilter);
+                    if (drArr.Length > 0)
+                    {
+                        drArr[0][DT_BAS_VALUE.VALUE_NAME] = sCurTemplateName;
+                    }
+                }
+            }
+        }
+
+        private void btnStringTemplateDelete_Click(object sender, EventArgs e)
+        {
+            if (cbbModuleString.SelectedValue == null || string.IsNullOrEmpty(cbbModuleString.Text.Trim()))
+            {
+                ShowInfo("请选择要删除的模板！");
+                return;
+            }
+            string sTemplateId = cbbModuleString.SelectedValue.ToString();
+            if (_dicSystemStringTemplate.ContainsKey(sTemplateId))
+            {
+                ShowInfo("系统自带的模板不能删除！");
+                return;
+            }
+
+            string sFilter = StringTemplateConfig.Id + "='" + sTemplateId + "'";
+            DataRow[] drArr = stringTemplate.Data.Select(sFilter);
+            if (drArr.Length > 0)
+            {
+                if (MsgHelper.ShowYesNo("确定要删除？") == DialogResult.No)
+                {
+                    return;
+                }
+                stringTemplate.Data.Rows.Remove(drArr[0]);
+                stringTemplate.Save();
+                ShowInfo("删除成功！");
+                //重新绑定下拉框
+                DataTable dtStringTemaplate = cbbModuleString.DataSource as DataTable;
+                sFilter = DT_BAS_VALUE.VALUE_CODE + "='" + sTemplateId + "'";
+                DataRow[] drArrCbb = dtStringTemaplate.Select(sFilter);
+                if (drArrCbb.Length > 0)
+                {
+                    dtStringTemaplate.Rows.Remove(drArrCbb[0]);
+                }
+            }
+            else
+            {
+                ShowInfo("未找到要删除的数据！");
             }
         } 
         #endregion

@@ -37,5 +37,13 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// 导入数据库类型
         /// </summary>
         public DataBaseType importDBType { get; set; }
+        /// <summary>
+        /// 是否查询数据库
+        /// </summary>
+        public bool isQueryDataBase { get; set; }
+        /// <summary>
+        /// 默认表名或列名
+        /// </summary>
+        public string defaultColumnOrTableName { get; set; }
     }
 }

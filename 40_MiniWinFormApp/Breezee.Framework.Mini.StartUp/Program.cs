@@ -67,6 +67,11 @@ namespace Breezee.Framework.Mini.StartUp
                                 winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "清空上个版本文件夹");
                                 winConfig.Save();
                             }
+                            else
+                            {
+                                winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "清空上个版本文件夹");
+                                winConfig.Save();
+                            }
                         }
                     }
                     else

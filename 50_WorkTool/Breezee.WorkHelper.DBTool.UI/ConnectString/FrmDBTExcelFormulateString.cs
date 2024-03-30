@@ -130,7 +130,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             DataRow[] drArr;
             string sFilter = DBTableEntity.SqlString.Name + "='" + sTableName + "'";
-            if (uC_DbConnection1.userTableDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey] == null || uC_DbConnection1.userTableDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey].Rows.Count == 0)
+            if (!uC_DbConnection1.userTableDic.ContainsKey(uC_DbConnection1.LatestDbServerInfo.DbConnKey) || uC_DbConnection1.userTableDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey].Rows.Count == 0)
             {
                 drArr = _dataAccess.GetSchemaTables().Select(sFilter);
             }

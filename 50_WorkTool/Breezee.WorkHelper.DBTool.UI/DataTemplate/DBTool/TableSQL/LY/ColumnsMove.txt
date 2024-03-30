@@ -11,4 +11,5 @@
                  <td>${ChangeType}</td>
                  <td>${ColumnCode}</td>
                  <td>${ColumnName}</td>
+                 <td>${tableCode}</td>
 </tr>
