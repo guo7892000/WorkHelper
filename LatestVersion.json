@@ -1,10 +1,10 @@
 {
-  "version": "1.2.42.4",
-  "date": "2024-03-30",
+  "version": "1.2.42.5",
+  "date": "2024-04-07",
   "downUrlPublishLatest": "https://gitee.com/breezee2000/WorkHelper/releases/download/Latest/WorkHelper#version#.rar",
   "downUrlPublishGitee": "https://gitee.com/breezee2000/WorkHelper/releases/download/#version#/WorkHelper#version#.rar",
   "downUrlPublishGithub": "https://github.com/guo7892000/WorkHelper/releases/download/#version#/WorkHelper#version#.rar",
-  "stableVersion": "1.2.42.2",
-  "stableDate": "2024-03-20",
+  "stableVersion": "1.2.42.4",
+  "stableDate": "2024-03-30",
   "stableDownUrlPublish": "https://gitee.com/breezee2000/WorkHelper/releases/download/StableRealse/WorkHelper#version#.rar"
 }
