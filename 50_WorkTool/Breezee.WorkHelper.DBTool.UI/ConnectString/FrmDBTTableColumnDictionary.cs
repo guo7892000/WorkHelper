@@ -66,6 +66,9 @@ namespace Breezee.WorkHelper.DBTool.UI
         MiniXmlConfig codeNameColumn;
         MiniXmlConfig stringTemplate;
         DataGridViewFindText dgvFindText;
+        DataGridViewFindText dgvFindTextAllColumn;
+        DataGridViewFindText dgvFindTextCommonCol;
+        DataGridViewFindText dgvFindTextCodeNameCol;
         ReplaceStringXmlConfig replaceStringData;//替换字符模板XML配置
         IDictionary<string, string> _dicSystemStringTemplate = new Dictionary<string, string>();
         IDictionary<string,string> _dicYapiTemplate = new Dictionary<string,string>();
@@ -577,8 +580,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 if (dtAllCol.Rows.Count == 0)
                 {
-                    ShowInfo("请先选择表，并点击【加载数据】后，再匹配数据！");
-                    return false;
+                    if (!dtInput.Columns.Contains(_sInputColName))
+                    {
+                        ShowInfo("请先选择表，并点击【加载数据】后，再匹配数据！");
+                        return false;
+                    }
                 }
                 //针对粘贴列，重新匹配时，也清空选择列网格
                 if (ckbOnlyMatchQueryResult.Checked)
@@ -966,7 +972,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             try
             {
-                string sModule = cbbModuleString.SelectedValue.ToString();
+                string sModule = cbbModuleString.SelectedValue == null ? string.Empty : cbbModuleString.SelectedValue.ToString();
                 for (int i = 0; i < dtColumnSelect.Rows.Count; i++)
                 {
                     string strOneData = rtbConString.Text;
@@ -1251,66 +1257,64 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         #endregion
 
+        #region 查找按钮事件
         private void btnFind_Click(object sender, EventArgs e)
         {
-            string sSearch = txbSearchCol.Text.Trim();
-            if (string.IsNullOrEmpty(sSearch)) return;
-
-            bool isFind = FindData(dgvColList, sSearch, DBColumnSimpleEntity.SqlString.Name);
-            if (!isFind)
-            {
-                isFind = FindData(dgvColList, sSearch, DBColumnSimpleEntity.SqlString.NameCN);
-            }
-            if (!isFind)
-            {
-                isFind = FindData(dgvColList, sSearch, DBColumnSimpleEntity.SqlString.NameUpper);
-            }
+            FindAllColumnGridText(true);
         }
 
         private void btnFindCommon_Click(object sender, EventArgs e)
         {
-            string sSearch = txbSearchCommon.Text.Trim();
-            if (string.IsNullOrEmpty(sSearch)) return;
-
-            bool isFind = FindData(dgvCommonCol, sSearch, DBColumnSimpleEntity.SqlString.Name);
-            if (!isFind)
-            {
-                isFind = FindData(dgvCommonCol, sSearch, DBColumnSimpleEntity.SqlString.NameCN);
-            }
-            if (!isFind)
-            {
-                isFind = FindData(dgvCommonCol, sSearch, DBColumnSimpleEntity.SqlString.NameUpper);
-            }
+            FindCommonColumnGridText(true);
         }
 
         private void btnFindCodeName_Click(object sender, EventArgs e)
         {
+            FindCodeNameColumnGridText(true);
+        }
+
+        private void btnFindNext_Click(object sender, EventArgs e)
+        {
+            FindGridText(true);
+        }
+
+        private void btnFindFront_Click(object sender, EventArgs e)
+        {
+            FindGridText(false);
+        }
+
+        private void FindGridText(bool isNext)
+        {
+            string sSearch = txbSearchTableName.Text.Trim();
+            if (string.IsNullOrEmpty(sSearch)) return;
+            dgvTableList.SeachText(sSearch, ref dgvFindText, null, isNext);
+            lblFind.Text = dgvFindText.CurrentMsg;
+        }
+
+        private void FindAllColumnGridText(bool isNext)
+        {
+            string sSearch = txbSearchCol.Text.Trim();
+            if (string.IsNullOrEmpty(sSearch)) return;
+            dgvColList.SeachText(sSearch, ref dgvFindTextAllColumn, null, isNext);
+            lblColumnInfo.Text = dgvFindTextAllColumn.CurrentMsg;
+        }
+
+        private void FindCommonColumnGridText(bool isNext)
+        {
+            string sSearch = txbSearchCommon.Text.Trim();
+            if (string.IsNullOrEmpty(sSearch)) return;
+            dgvCommonCol.SeachText(sSearch, ref dgvFindTextCommonCol, null, isNext);
+            lblCommonColumnInfo.Text = dgvFindTextCommonCol.CurrentMsg;
+        }
+
+        private void FindCodeNameColumnGridText(bool isNext)
+        {
             string sSearch = txbSearchCodeName.Text.Trim();
             if (string.IsNullOrEmpty(sSearch)) return;
-
-            bool isFind = FindData(dgvCodeNameCol, sSearch, DBColumnSimpleEntity.SqlString.Name);
-            if (!isFind)
-            {
-                isFind = FindData(dgvCodeNameCol, sSearch, DBColumnSimpleEntity.SqlString.NameCN);
-            }
-            if (!isFind)
-            {
-                isFind = FindData(dgvCodeNameCol, sSearch, DBColumnSimpleEntity.SqlString.NameUpper);
-            }
+            dgvCodeNameCol.SeachText(sSearch, ref dgvFindTextCodeNameCol, null, isNext);
+            lblCodeNameInfo.Text = dgvFindTextCodeNameCol.CurrentMsg;
         }
-
-        private bool FindData(DataGridView dgv,string sSearch,string sColumnName)
-        {
-            BindingSource bs = dgv.DataSource as BindingSource;
-            int iCureent = bs.Find(sColumnName, sSearch);
-            if (iCureent > -1)
-            {
-                dgv.CurrentCell.Selected = false;
-                dgv.Rows[iCureent].Cells[sColumnName].Selected = true;
-                return true;
-            }
-            return false;
-        }
+        #endregion
 
         /// <summary>
         /// 保存通用列配置
@@ -1759,24 +1763,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                 dgvSelect.Rows[e.RowIndex].Cells[DBColumnSimpleEntity.SqlString.NameUpper].Value = dgvSelect.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().FirstLetterUpper();
                 dgvSelect.Rows[e.RowIndex].Cells[DBColumnSimpleEntity.SqlString.NameLower].Value = dgvSelect.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().FirstLetterUpper(false);
             }
-        }
-
-        private void btnFindNext_Click(object sender, EventArgs e)
-        {
-            FindGridText(true);
-        }
-
-        private void btnFindFront_Click(object sender, EventArgs e)
-        {
-            FindGridText(false);
-        }
-
-        private void FindGridText(bool isNext)
-        {
-            string sSearch = txbSearchTableName.Text.Trim();
-            if (string.IsNullOrEmpty(sSearch)) return;
-            dgvTableList.SeachText(sSearch, ref dgvFindText, null, isNext);
-            lblFind.Text = dgvFindText.CurrentMsg; 
         }
 
         private void btnExcludeTable_Click(object sender, EventArgs e)

@@ -773,18 +773,6 @@ namespace Breezee.Framework.Mini.StartUp
         } 
         #endregion
 
-        #region 菜单Tag页位置
-        private void cmsMenuTabPositionUp_Click(object sender, EventArgs e)
-        {
-            tcMenu.Dock = DockStyle.Top;
-        }
-
-        private void cmsMenuTabPositionDown_Click(object sender, EventArgs e)
-        {
-            tcMenu.Dock = DockStyle.Bottom;
-        }
-        #endregion
-
         #region 实现IMainForm接口
         private void tsmiUserManual_Click(object sender, EventArgs e)
         {
@@ -886,6 +874,74 @@ namespace Breezee.Framework.Mini.StartUp
         private void TcMenu_DoubleClick(object sender, EventArgs e)
         {
             WinFormContext.Instance.CurrentForm.Close();
+        }
+        private void tsmiPutFirst_Click(object sender, EventArgs e)
+        {
+            TabPage curPage = tcMenu.SelectedTab;
+            tcMenu.TabPages.Remove(curPage);
+            tcMenu.TabPages.Insert(1, curPage);
+            tcMenu.SelectedTab = curPage;
+        }
+
+        private void tsmiPutLast_Click(object sender, EventArgs e)
+        {
+            TabPage curPage = tcMenu.SelectedTab;
+            tcMenu.TabPages.Remove(curPage);
+            tcMenu.TabPages.Add(curPage);
+            tcMenu.SelectedTab = curPage;
+        }
+
+        private void tsmiMoveRightOne_Click(object sender, EventArgs e)
+        {
+            int iCur = tcMenu.SelectedIndex;
+            TabPage curPage = tcMenu.SelectedTab;
+            TabPage nextPage = null;
+            bool isFound = false;
+            foreach (TabPage page in tcMenu.TabPages)
+            {
+                if (isFound)
+                {
+                    nextPage = page;
+                    break;
+                }
+                if(page== curPage)
+                {
+                    isFound = true;
+                }
+            }
+            if (nextPage != null)
+            {
+                tcMenu.TabPages.Remove(curPage);
+                tcMenu.TabPages.Remove(nextPage);
+                tcMenu.TabPages.Insert(iCur, nextPage);
+                tcMenu.TabPages.Insert(iCur + 1, curPage);
+                tcMenu.SelectedTab = curPage;
+            }
+            
+        }
+
+        private void tsmiMoveLeftOne_Click(object sender, EventArgs e)
+        {
+            int iCur = tcMenu.SelectedIndex;
+            TabPage curPage = tcMenu.SelectedTab;
+            TabPage beforePage = null;
+            foreach (TabPage page in tcMenu.TabPages)
+            {
+                if (page == curPage)
+                {
+                    break;
+                }
+
+                beforePage = page;
+            }
+            if (beforePage != null && beforePage!= tpgDesktop)
+            {
+                tcMenu.TabPages.Remove(curPage);
+                tcMenu.TabPages.Remove(beforePage);
+                tcMenu.TabPages.Insert(iCur-1, curPage);
+                tcMenu.TabPages.Insert(iCur, beforePage);
+                tcMenu.SelectedTab = curPage;
+            }
         }
         #endregion
 
@@ -1220,5 +1276,7 @@ namespace Breezee.Framework.Mini.StartUp
                 WinFormContext.Instance.IsUpgradeRunning = false;
             }
         }
+
+        
     }
 }

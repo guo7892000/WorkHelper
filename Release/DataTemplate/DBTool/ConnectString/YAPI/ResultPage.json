@@ -2,28 +2,43 @@
   "type": "object",
   "title": "empty object",
   "properties": {
+    "pageindex": {
+      "type": "number",
+      "description": "页号"
+      },
+    "pages": {
+      "type": "number",
+      "description": "总页数"
+      },
+    "records": {
+      "type": "number",
+      "description": "总记录数"
+      },
     "result": {
-      "type": "string",
+      "type": "number",
       "description": "执行结果"
-    },
+      },
     "msg": {
       "type": "string",
       "description": "返回信息"
-    },
+      },
     "rows": {
       "type": "object",
       "description": "结果集",
       "properties": {
         #COLUMN_DESC#
-      },
+        },
       "required": [
         #COLUMN_MUST#
       ]
     }
   },
   "required": [
-    "rows",
+    "pageindex",
+    "pages",
+    "records",
+    "result",
     "msg",
-    "result"
+    "rows"
   ]
 }

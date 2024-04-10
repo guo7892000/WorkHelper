@@ -50,6 +50,7 @@
             this.helpMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiUserManual = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbCheckUpdate = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDowloadLatestStableVersion = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
@@ -80,9 +81,12 @@
             this.tsmiMenuSheetBottom = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiCloseMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbCloseAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiPutLast = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiPutFirst = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiMoveRightOne = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiMoveLeftOne = new System.Windows.Forms.ToolStripMenuItem();
             this.tpgDesktop = new System.Windows.Forms.TabPage();
             this.pnlDestop = new System.Windows.Forms.Panel();
-            this.tsmiDowloadLatestStableVersion = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -255,22 +259,29 @@
             // tsmiUserManual
             // 
             this.tsmiUserManual.Name = "tsmiUserManual";
-            this.tsmiUserManual.Size = new System.Drawing.Size(180, 22);
+            this.tsmiUserManual.Size = new System.Drawing.Size(160, 22);
             this.tsmiUserManual.Text = "用户手册";
             this.tsmiUserManual.Click += new System.EventHandler(this.tsmiUserManual_Click);
             // 
             // tsbCheckUpdate
             // 
             this.tsbCheckUpdate.Name = "tsbCheckUpdate";
-            this.tsbCheckUpdate.Size = new System.Drawing.Size(180, 22);
+            this.tsbCheckUpdate.Size = new System.Drawing.Size(160, 22);
             this.tsbCheckUpdate.Text = "检查更新";
             this.tsbCheckUpdate.ToolTipText = "检测是否有新版本";
             this.tsbCheckUpdate.Click += new System.EventHandler(this.tsbCheckUpdate_Click);
             // 
+            // tsmiDowloadLatestStableVersion
+            // 
+            this.tsmiDowloadLatestStableVersion.Name = "tsmiDowloadLatestStableVersion";
+            this.tsmiDowloadLatestStableVersion.Size = new System.Drawing.Size(160, 22);
+            this.tsmiDowloadLatestStableVersion.Text = "下载最新稳定版";
+            this.tsmiDowloadLatestStableVersion.Click += new System.EventHandler(this.tsmiDowloadLatestStableVersion_Click);
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.aboutToolStripMenuItem.Text = "关于我们";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -502,6 +513,7 @@
             // tcMenu
             // 
             this.tcMenu.Alignment = System.Windows.Forms.TabAlignment.Bottom;
+            this.tcMenu.AllowDrop = true;
             this.tcMenu.ContextMenuStrip = this.cmsMenuSheet;
             this.tcMenu.Controls.Add(this.tpgDesktop);
             this.tcMenu.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -521,37 +533,71 @@
             this.tsmiMenuSheetTop,
             this.tsmiMenuSheetBottom,
             this.tsmiCloseMenu,
-            this.tsbCloseAll});
+            this.tsbCloseAll,
+            this.tsmiPutLast,
+            this.tsmiPutFirst,
+            this.tsmiMoveRightOne,
+            this.tsmiMoveLeftOne});
             this.cmsMenuSheet.Name = "cmsMenuSheet";
-            this.cmsMenuSheet.Size = new System.Drawing.Size(125, 92);
+            this.cmsMenuSheet.Size = new System.Drawing.Size(181, 202);
             // 
             // tsmiMenuSheetTop
             // 
             this.tsmiMenuSheetTop.Name = "tsmiMenuSheetTop";
-            this.tsmiMenuSheetTop.Size = new System.Drawing.Size(124, 22);
+            this.tsmiMenuSheetTop.Size = new System.Drawing.Size(180, 22);
             this.tsmiMenuSheetTop.Text = "置顶部";
             this.tsmiMenuSheetTop.Click += new System.EventHandler(this.TsmiMenuSheetTop_Click);
             // 
             // tsmiMenuSheetBottom
             // 
             this.tsmiMenuSheetBottom.Name = "tsmiMenuSheetBottom";
-            this.tsmiMenuSheetBottom.Size = new System.Drawing.Size(124, 22);
+            this.tsmiMenuSheetBottom.Size = new System.Drawing.Size(180, 22);
             this.tsmiMenuSheetBottom.Text = "置底部";
             this.tsmiMenuSheetBottom.Click += new System.EventHandler(this.TsmiMenuSheetBottom_Click);
             // 
             // tsmiCloseMenu
             // 
             this.tsmiCloseMenu.Name = "tsmiCloseMenu";
-            this.tsmiCloseMenu.Size = new System.Drawing.Size(124, 22);
+            this.tsmiCloseMenu.Size = new System.Drawing.Size(180, 22);
             this.tsmiCloseMenu.Text = "关闭";
             this.tsmiCloseMenu.Click += new System.EventHandler(this.TsmiCloseMenu_Click);
             // 
             // tsbCloseAll
             // 
             this.tsbCloseAll.Name = "tsbCloseAll";
-            this.tsbCloseAll.Size = new System.Drawing.Size(124, 22);
+            this.tsbCloseAll.Size = new System.Drawing.Size(180, 22);
             this.tsbCloseAll.Text = "关闭所有";
             this.tsbCloseAll.Click += new System.EventHandler(this.tsbCloseAll_Click);
+            // 
+            // tsmiPutLast
+            // 
+            this.tsmiPutLast.Name = "tsmiPutLast";
+            this.tsmiPutLast.Size = new System.Drawing.Size(180, 22);
+            this.tsmiPutLast.Text = "移到最右边";
+            this.tsmiPutLast.Click += new System.EventHandler(this.tsmiPutLast_Click);
+            // 
+            // tsmiPutFirst
+            // 
+            this.tsmiPutFirst.Name = "tsmiPutFirst";
+            this.tsmiPutFirst.Size = new System.Drawing.Size(180, 22);
+            this.tsmiPutFirst.Text = "移到最左边";
+            this.tsmiPutFirst.Click += new System.EventHandler(this.tsmiPutFirst_Click);
+            // 
+            // tsmiMoveRightOne
+            // 
+            this.tsmiMoveRightOne.Name = "tsmiMoveRightOne";
+            this.tsmiMoveRightOne.Size = new System.Drawing.Size(180, 22);
+            this.tsmiMoveRightOne.Text = "右移一位";
+            this.tsmiMoveRightOne.ToolTipText = "往右边移动一位";
+            this.tsmiMoveRightOne.Click += new System.EventHandler(this.tsmiMoveRightOne_Click);
+            // 
+            // tsmiMoveLeftOne
+            // 
+            this.tsmiMoveLeftOne.Name = "tsmiMoveLeftOne";
+            this.tsmiMoveLeftOne.Size = new System.Drawing.Size(180, 22);
+            this.tsmiMoveLeftOne.Text = "左移一位";
+            this.tsmiMoveLeftOne.ToolTipText = "往左边移动一位";
+            this.tsmiMoveLeftOne.Click += new System.EventHandler(this.tsmiMoveLeftOne_Click);
             // 
             // tpgDesktop
             // 
@@ -572,13 +618,6 @@
             this.pnlDestop.Name = "pnlDestop";
             this.pnlDestop.Size = new System.Drawing.Size(1075, 47);
             this.pnlDestop.TabIndex = 8;
-            // 
-            // tsmiDowloadLatestStableVersion
-            // 
-            this.tsmiDowloadLatestStableVersion.Name = "tsmiDowloadLatestStableVersion";
-            this.tsmiDowloadLatestStableVersion.Size = new System.Drawing.Size(180, 22);
-            this.tsmiDowloadLatestStableVersion.Text = "下载最新稳定版";
-            this.tsmiDowloadLatestStableVersion.Click += new System.EventHandler(this.tsmiDowloadLatestStableVersion_Click);
             // 
             // FrmMiniMainMDI
             // 
@@ -674,6 +713,10 @@
         private System.Windows.Forms.ToolStripMenuItem tsbCloseAll;
         private System.Windows.Forms.ToolStripMenuItem tsbCheckUpdate;
         private System.Windows.Forms.ToolStripMenuItem tsmiDowloadLatestStableVersion;
+        private System.Windows.Forms.ToolStripMenuItem tsmiPutLast;
+        private System.Windows.Forms.ToolStripMenuItem tsmiPutFirst;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMoveRightOne;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMoveLeftOne;
     }
 }
 
