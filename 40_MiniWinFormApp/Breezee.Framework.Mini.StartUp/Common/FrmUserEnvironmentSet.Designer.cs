@@ -70,6 +70,49 @@
             this.label7 = new System.Windows.Forms.Label();
             this.nudMaxOpenForm = new System.Windows.Forms.NumericUpDown();
             this.tpUserSkin = new System.Windows.Forms.TabPage();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.label8 = new System.Windows.Forms.Label();
+            this.ckbIsDefineGridHeader = new System.Windows.Forms.CheckBox();
+            this.cbbOddNumberRowColor = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.nudGridHeaderHight = new System.Windows.Forms.NumericUpDown();
+            this.label10 = new System.Windows.Forms.Label();
+            this.cbbGridHeaderColor = new System.Windows.Forms.ComboBox();
+            this.tpLog = new System.Windows.Forms.TabPage();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnErrLogReset = new System.Windows.Forms.Button();
+            this.btnSelectErrLogPath = new System.Windows.Forms.Button();
+            this.ckbErrEnableLog = new System.Windows.Forms.CheckBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.nudErrKeepDays = new System.Windows.Forms.NumericUpDown();
+            this.txbErrLogPath = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.cbbErrAppendType = new System.Windows.Forms.ComboBox();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnOkLogReset = new System.Windows.Forms.Button();
+            this.btnSelectOkLogPath = new System.Windows.Forms.Button();
+            this.ckbOkEnableLog = new System.Windows.Forms.CheckBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.nudOkKeepDays = new System.Windows.Forms.NumericUpDown();
+            this.label13 = new System.Windows.Forms.Label();
+            this.txbOkLogPath = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.cbbOkAppendType = new System.Windows.Forms.ComboBox();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnSelectLogPath = new System.Windows.Forms.Button();
+            this.ckbEnableLog = new System.Windows.Forms.CheckBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.nudKeepDays = new System.Windows.Forms.NumericUpDown();
+            this.txbLogPath = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.cbbAppendType = new System.Windows.Forms.ComboBox();
+            this.btnLogReset = new System.Windows.Forms.Button();
             this.tpOther = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.lblDgvStyleInfo = new System.Windows.Forms.Label();
@@ -78,15 +121,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.fbdSelectPath = new System.Windows.Forms.FolderBrowserDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.label8 = new System.Windows.Forms.Label();
-            this.cbbOddNumberRowColor = new System.Windows.Forms.ComboBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.ckbIsDefineGridHeader = new System.Windows.Forms.CheckBox();
-            this.nudGridHeaderHight = new System.Windows.Forms.NumericUpDown();
-            this.label10 = new System.Windows.Forms.Label();
-            this.cbbGridHeaderColor = new System.Windows.Forms.ComboBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -100,11 +134,21 @@
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxOpenForm)).BeginInit();
             this.tpUserSkin.SuspendLayout();
-            this.tpOther.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudGridHeaderHight)).BeginInit();
+            this.tpLog.SuspendLayout();
+            this.groupBox9.SuspendLayout();
+            this.tableLayoutPanel6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudErrKeepDays)).BeginInit();
+            this.groupBox8.SuspendLayout();
+            this.tableLayoutPanel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudOkKeepDays)).BeginInit();
+            this.groupBox10.SuspendLayout();
+            this.tableLayoutPanel7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudKeepDays)).BeginInit();
+            this.tpOther.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // label2
@@ -124,7 +168,7 @@
             this.tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(774, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(784, 25);
             this.toolStrip1.TabIndex = 6;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -152,7 +196,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(760, 82);
+            this.groupBox1.Size = new System.Drawing.Size(768, 82);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "主窗体样式设置";
@@ -177,7 +221,7 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(754, 62);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(762, 62);
             this.tableLayoutPanel3.TabIndex = 9;
             // 
             // btnSelectPicMain
@@ -236,7 +280,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox2.Location = new System.Drawing.Point(3, 85);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(760, 90);
+            this.groupBox2.Size = new System.Drawing.Size(768, 90);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "子窗体样式设置";
@@ -261,7 +305,7 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(754, 70);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(762, 70);
             this.tableLayoutPanel2.TabIndex = 9;
             // 
             // btnSelectPicCommon
@@ -308,12 +352,13 @@
             // 
             this.tabControl1.Controls.Add(this.tpBase);
             this.tabControl1.Controls.Add(this.tpUserSkin);
+            this.tabControl1.Controls.Add(this.tpLog);
             this.tabControl1.Controls.Add(this.tpOther);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 25);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(774, 434);
+            this.tabControl1.Size = new System.Drawing.Size(784, 434);
             this.tabControl1.TabIndex = 9;
             // 
             // tpBase
@@ -324,7 +369,7 @@
             this.tpBase.Location = new System.Drawing.Point(4, 22);
             this.tpBase.Name = "tpBase";
             this.tpBase.Padding = new System.Windows.Forms.Padding(3);
-            this.tpBase.Size = new System.Drawing.Size(766, 408);
+            this.tpBase.Size = new System.Drawing.Size(774, 408);
             this.tpBase.TabIndex = 1;
             this.tpBase.Text = "基本配置";
             this.tpBase.UseVisualStyleBackColor = true;
@@ -341,7 +386,7 @@
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox6.Location = new System.Drawing.Point(3, 104);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(760, 67);
+            this.groupBox6.Size = new System.Drawing.Size(768, 67);
             this.groupBox6.TabIndex = 2;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "升级配置";
@@ -421,7 +466,7 @@
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox4.Location = new System.Drawing.Point(3, 55);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(760, 49);
+            this.groupBox4.Size = new System.Drawing.Size(768, 49);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "个性化配置路径";
@@ -450,7 +495,7 @@
             this.txbMyLoveSettingPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txbMyLoveSettingPath.Location = new System.Drawing.Point(101, 18);
             this.txbMyLoveSettingPath.Name = "txbMyLoveSettingPath";
-            this.txbMyLoveSettingPath.Size = new System.Drawing.Size(643, 21);
+            this.txbMyLoveSettingPath.Size = new System.Drawing.Size(651, 21);
             this.txbMyLoveSettingPath.TabIndex = 1;
             // 
             // groupBox3
@@ -459,7 +504,7 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox3.Location = new System.Drawing.Point(3, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(760, 52);
+            this.groupBox3.Size = new System.Drawing.Size(768, 52);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "保存提示设置";
@@ -486,7 +531,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(754, 32);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(762, 32);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // label3
@@ -547,10 +592,517 @@
             this.tpUserSkin.Location = new System.Drawing.Point(4, 22);
             this.tpUserSkin.Name = "tpUserSkin";
             this.tpUserSkin.Padding = new System.Windows.Forms.Padding(3);
-            this.tpUserSkin.Size = new System.Drawing.Size(766, 408);
+            this.tpUserSkin.Size = new System.Drawing.Size(774, 408);
             this.tpUserSkin.TabIndex = 0;
             this.tpUserSkin.Text = "窗体皮肤设置";
             this.tpUserSkin.UseVisualStyleBackColor = true;
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.tableLayoutPanel4);
+            this.groupBox7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox7.Location = new System.Drawing.Point(3, 175);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(768, 76);
+            this.groupBox7.TabIndex = 9;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "网格样式";
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 6;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 165F));
+            this.tableLayoutPanel4.Controls.Add(this.label8, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.ckbIsDefineGridHeader, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.cbbOddNumberRowColor, 1, 1);
+            this.tableLayoutPanel4.Controls.Add(this.label9, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.nudGridHeaderHight, 2, 0);
+            this.tableLayoutPanel4.Controls.Add(this.label10, 3, 0);
+            this.tableLayoutPanel4.Controls.Add(this.cbbGridHeaderColor, 4, 0);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 17);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 3;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(762, 57);
+            this.tableLayoutPanel4.TabIndex = 0;
+            // 
+            // label8
+            // 
+            this.label8.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(46, 34);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(77, 12);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "奇数行颜色：";
+            // 
+            // ckbIsDefineGridHeader
+            // 
+            this.ckbIsDefineGridHeader.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbIsDefineGridHeader.AutoSize = true;
+            this.ckbIsDefineGridHeader.Location = new System.Drawing.Point(3, 5);
+            this.ckbIsDefineGridHeader.Name = "ckbIsDefineGridHeader";
+            this.ckbIsDefineGridHeader.Size = new System.Drawing.Size(120, 16);
+            this.ckbIsDefineGridHeader.TabIndex = 3;
+            this.ckbIsDefineGridHeader.Text = "自定义网格头样式";
+            this.ckbIsDefineGridHeader.UseVisualStyleBackColor = true;
+            // 
+            // cbbOddNumberRowColor
+            // 
+            this.cbbOddNumberRowColor.FormattingEnabled = true;
+            this.cbbOddNumberRowColor.Location = new System.Drawing.Point(129, 30);
+            this.cbbOddNumberRowColor.Name = "cbbOddNumberRowColor";
+            this.cbbOddNumberRowColor.Size = new System.Drawing.Size(121, 20);
+            this.cbbOddNumberRowColor.TabIndex = 1;
+            // 
+            // label9
+            // 
+            this.label9.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(173, 7);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(77, 12);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "网格头高度：";
+            // 
+            // nudGridHeaderHight
+            // 
+            this.nudGridHeaderHight.Location = new System.Drawing.Point(256, 3);
+            this.nudGridHeaderHight.Minimum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.nudGridHeaderHight.Name = "nudGridHeaderHight";
+            this.nudGridHeaderHight.Size = new System.Drawing.Size(120, 21);
+            this.nudGridHeaderHight.TabIndex = 4;
+            this.nudGridHeaderHight.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            // 
+            // label10
+            // 
+            this.label10.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(382, 7);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(77, 12);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "网格头颜色：";
+            // 
+            // cbbGridHeaderColor
+            // 
+            this.cbbGridHeaderColor.FormattingEnabled = true;
+            this.cbbGridHeaderColor.Location = new System.Drawing.Point(465, 3);
+            this.cbbGridHeaderColor.Name = "cbbGridHeaderColor";
+            this.cbbGridHeaderColor.Size = new System.Drawing.Size(121, 20);
+            this.cbbGridHeaderColor.TabIndex = 1;
+            // 
+            // tpLog
+            // 
+            this.tpLog.Controls.Add(this.groupBox9);
+            this.tpLog.Controls.Add(this.groupBox8);
+            this.tpLog.Controls.Add(this.groupBox10);
+            this.tpLog.Location = new System.Drawing.Point(4, 22);
+            this.tpLog.Name = "tpLog";
+            this.tpLog.Size = new System.Drawing.Size(776, 408);
+            this.tpLog.TabIndex = 3;
+            this.tpLog.Text = "日志";
+            this.tpLog.UseVisualStyleBackColor = true;
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.tableLayoutPanel6);
+            this.groupBox9.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox9.Location = new System.Drawing.Point(0, 111);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(776, 55);
+            this.groupBox9.TabIndex = 7;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "异常SQL日志配置";
+            // 
+            // tableLayoutPanel6
+            // 
+            this.tableLayoutPanel6.ColumnCount = 10;
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 42F));
+            this.tableLayoutPanel6.Controls.Add(this.btnErrLogReset, 8, 0);
+            this.tableLayoutPanel6.Controls.Add(this.btnSelectErrLogPath, 3, 0);
+            this.tableLayoutPanel6.Controls.Add(this.ckbErrEnableLog, 0, 0);
+            this.tableLayoutPanel6.Controls.Add(this.label12, 1, 0);
+            this.tableLayoutPanel6.Controls.Add(this.nudErrKeepDays, 5, 0);
+            this.tableLayoutPanel6.Controls.Add(this.txbErrLogPath, 2, 0);
+            this.tableLayoutPanel6.Controls.Add(this.label15, 4, 0);
+            this.tableLayoutPanel6.Controls.Add(this.label16, 6, 0);
+            this.tableLayoutPanel6.Controls.Add(this.cbbErrAppendType, 7, 0);
+            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 17);
+            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
+            this.tableLayoutPanel6.RowCount = 2;
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(770, 32);
+            this.tableLayoutPanel6.TabIndex = 0;
+            // 
+            // btnErrLogReset
+            // 
+            this.btnErrLogReset.Location = new System.Drawing.Point(689, 3);
+            this.btnErrLogReset.Name = "btnErrLogReset";
+            this.btnErrLogReset.Size = new System.Drawing.Size(75, 23);
+            this.btnErrLogReset.TabIndex = 10;
+            this.btnErrLogReset.Text = "还原默认值";
+            this.btnErrLogReset.UseVisualStyleBackColor = true;
+            this.btnErrLogReset.Click += new System.EventHandler(this.btnErrLogReset_Click);
+            // 
+            // btnSelectErrLogPath
+            // 
+            this.btnSelectErrLogPath.Location = new System.Drawing.Point(334, 3);
+            this.btnSelectErrLogPath.Name = "btnSelectErrLogPath";
+            this.btnSelectErrLogPath.Size = new System.Drawing.Size(20, 22);
+            this.btnSelectErrLogPath.TabIndex = 9;
+            this.btnSelectErrLogPath.Text = "...";
+            this.btnSelectErrLogPath.UseVisualStyleBackColor = true;
+            this.btnSelectErrLogPath.Click += new System.EventHandler(this.btnSelectErrLogPath_Click);
+            // 
+            // ckbErrEnableLog
+            // 
+            this.ckbErrEnableLog.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbErrEnableLog.AutoSize = true;
+            this.ckbErrEnableLog.Location = new System.Drawing.Point(3, 6);
+            this.ckbErrEnableLog.Name = "ckbErrEnableLog";
+            this.ckbErrEnableLog.Size = new System.Drawing.Size(72, 16);
+            this.ckbErrEnableLog.TabIndex = 2;
+            this.ckbErrEnableLog.Text = "启用日志";
+            this.ckbErrEnableLog.UseVisualStyleBackColor = true;
+            // 
+            // label12
+            // 
+            this.label12.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(81, 8);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(65, 12);
+            this.label12.TabIndex = 0;
+            this.label12.Text = "日志路径：";
+            // 
+            // nudErrKeepDays
+            // 
+            this.nudErrKeepDays.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.nudErrKeepDays.Location = new System.Drawing.Point(431, 4);
+            this.nudErrKeepDays.Name = "nudErrKeepDays";
+            this.nudErrKeepDays.Size = new System.Drawing.Size(48, 21);
+            this.nudErrKeepDays.TabIndex = 3;
+            // 
+            // txbErrLogPath
+            // 
+            this.txbErrLogPath.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.txbErrLogPath.Location = new System.Drawing.Point(152, 4);
+            this.txbErrLogPath.Name = "txbErrLogPath";
+            this.txbErrLogPath.Size = new System.Drawing.Size(176, 21);
+            this.txbErrLogPath.TabIndex = 2;
+            // 
+            // label15
+            // 
+            this.label15.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(360, 8);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(65, 12);
+            this.label15.TabIndex = 0;
+            this.label15.Text = "保留天数：";
+            // 
+            // label16
+            // 
+            this.label16.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(485, 8);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(65, 12);
+            this.label16.TabIndex = 0;
+            this.label16.Text = "追加方式：";
+            // 
+            // cbbErrAppendType
+            // 
+            this.cbbErrAppendType.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cbbErrAppendType.FormattingEnabled = true;
+            this.cbbErrAppendType.Location = new System.Drawing.Point(556, 4);
+            this.cbbErrAppendType.Name = "cbbErrAppendType";
+            this.cbbErrAppendType.Size = new System.Drawing.Size(127, 20);
+            this.cbbErrAppendType.TabIndex = 4;
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.tableLayoutPanel5);
+            this.groupBox8.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox8.Location = new System.Drawing.Point(0, 55);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(776, 56);
+            this.groupBox8.TabIndex = 6;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "正常SQL日志配置";
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 10;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel5.Controls.Add(this.btnOkLogReset, 8, 0);
+            this.tableLayoutPanel5.Controls.Add(this.btnSelectOkLogPath, 3, 0);
+            this.tableLayoutPanel5.Controls.Add(this.ckbOkEnableLog, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.label11, 1, 0);
+            this.tableLayoutPanel5.Controls.Add(this.nudOkKeepDays, 5, 0);
+            this.tableLayoutPanel5.Controls.Add(this.label13, 4, 0);
+            this.tableLayoutPanel5.Controls.Add(this.txbOkLogPath, 2, 0);
+            this.tableLayoutPanel5.Controls.Add(this.label14, 6, 0);
+            this.tableLayoutPanel5.Controls.Add(this.cbbOkAppendType, 7, 0);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 17);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 2;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(770, 33);
+            this.tableLayoutPanel5.TabIndex = 0;
+            // 
+            // btnOkLogReset
+            // 
+            this.btnOkLogReset.Location = new System.Drawing.Point(689, 3);
+            this.btnOkLogReset.Name = "btnOkLogReset";
+            this.btnOkLogReset.Size = new System.Drawing.Size(75, 23);
+            this.btnOkLogReset.TabIndex = 10;
+            this.btnOkLogReset.Text = "还原默认值";
+            this.btnOkLogReset.UseVisualStyleBackColor = true;
+            this.btnOkLogReset.Click += new System.EventHandler(this.btnOkLogReset_Click);
+            // 
+            // btnSelectOkLogPath
+            // 
+            this.btnSelectOkLogPath.Location = new System.Drawing.Point(334, 3);
+            this.btnSelectOkLogPath.Name = "btnSelectOkLogPath";
+            this.btnSelectOkLogPath.Size = new System.Drawing.Size(20, 23);
+            this.btnSelectOkLogPath.TabIndex = 10;
+            this.btnSelectOkLogPath.Text = "...";
+            this.btnSelectOkLogPath.UseVisualStyleBackColor = true;
+            this.btnSelectOkLogPath.Click += new System.EventHandler(this.btnSelectOkLogPath_Click);
+            // 
+            // ckbOkEnableLog
+            // 
+            this.ckbOkEnableLog.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbOkEnableLog.AutoSize = true;
+            this.ckbOkEnableLog.Location = new System.Drawing.Point(3, 6);
+            this.ckbOkEnableLog.Name = "ckbOkEnableLog";
+            this.ckbOkEnableLog.Size = new System.Drawing.Size(72, 16);
+            this.ckbOkEnableLog.TabIndex = 1;
+            this.ckbOkEnableLog.Text = "启用日志";
+            this.ckbOkEnableLog.UseVisualStyleBackColor = true;
+            // 
+            // label11
+            // 
+            this.label11.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(81, 8);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(65, 12);
+            this.label11.TabIndex = 0;
+            this.label11.Text = "日志路径：";
+            // 
+            // nudOkKeepDays
+            // 
+            this.nudOkKeepDays.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.nudOkKeepDays.Location = new System.Drawing.Point(431, 4);
+            this.nudOkKeepDays.Name = "nudOkKeepDays";
+            this.nudOkKeepDays.Size = new System.Drawing.Size(48, 21);
+            this.nudOkKeepDays.TabIndex = 3;
+            // 
+            // label13
+            // 
+            this.label13.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(360, 8);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(65, 12);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "保留天数：";
+            // 
+            // txbOkLogPath
+            // 
+            this.txbOkLogPath.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.txbOkLogPath.Location = new System.Drawing.Point(152, 4);
+            this.txbOkLogPath.Name = "txbOkLogPath";
+            this.txbOkLogPath.Size = new System.Drawing.Size(176, 21);
+            this.txbOkLogPath.TabIndex = 2;
+            // 
+            // label14
+            // 
+            this.label14.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(485, 8);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(65, 12);
+            this.label14.TabIndex = 0;
+            this.label14.Text = "追加方式：";
+            // 
+            // cbbOkAppendType
+            // 
+            this.cbbOkAppendType.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cbbOkAppendType.FormattingEnabled = true;
+            this.cbbOkAppendType.Location = new System.Drawing.Point(556, 4);
+            this.cbbOkAppendType.Name = "cbbOkAppendType";
+            this.cbbOkAppendType.Size = new System.Drawing.Size(127, 20);
+            this.cbbOkAppendType.TabIndex = 4;
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.Controls.Add(this.tableLayoutPanel7);
+            this.groupBox10.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox10.Location = new System.Drawing.Point(0, 0);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(776, 55);
+            this.groupBox10.TabIndex = 4;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "全局日志配置";
+            // 
+            // tableLayoutPanel7
+            // 
+            this.tableLayoutPanel7.ColumnCount = 10;
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel7.Controls.Add(this.btnSelectLogPath, 3, 0);
+            this.tableLayoutPanel7.Controls.Add(this.ckbEnableLog, 0, 0);
+            this.tableLayoutPanel7.Controls.Add(this.label17, 1, 0);
+            this.tableLayoutPanel7.Controls.Add(this.nudKeepDays, 5, 0);
+            this.tableLayoutPanel7.Controls.Add(this.txbLogPath, 2, 0);
+            this.tableLayoutPanel7.Controls.Add(this.label18, 4, 0);
+            this.tableLayoutPanel7.Controls.Add(this.label19, 6, 0);
+            this.tableLayoutPanel7.Controls.Add(this.cbbAppendType, 7, 0);
+            this.tableLayoutPanel7.Controls.Add(this.btnLogReset, 8, 0);
+            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 17);
+            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
+            this.tableLayoutPanel7.RowCount = 2;
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(770, 32);
+            this.tableLayoutPanel7.TabIndex = 0;
+            // 
+            // btnSelectLogPath
+            // 
+            this.btnSelectLogPath.Location = new System.Drawing.Point(334, 3);
+            this.btnSelectLogPath.Name = "btnSelectLogPath";
+            this.btnSelectLogPath.Size = new System.Drawing.Size(20, 23);
+            this.btnSelectLogPath.TabIndex = 8;
+            this.btnSelectLogPath.Text = "...";
+            this.btnSelectLogPath.UseVisualStyleBackColor = true;
+            this.btnSelectLogPath.Click += new System.EventHandler(this.btnSelectLogPath_Click);
+            // 
+            // ckbEnableLog
+            // 
+            this.ckbEnableLog.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbEnableLog.AutoSize = true;
+            this.ckbEnableLog.Location = new System.Drawing.Point(3, 6);
+            this.ckbEnableLog.Name = "ckbEnableLog";
+            this.ckbEnableLog.Size = new System.Drawing.Size(72, 16);
+            this.ckbEnableLog.TabIndex = 2;
+            this.ckbEnableLog.Text = "启用日志";
+            this.ckbEnableLog.UseVisualStyleBackColor = true;
+            // 
+            // label17
+            // 
+            this.label17.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(81, 8);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(65, 12);
+            this.label17.TabIndex = 0;
+            this.label17.Text = "日志路径：";
+            // 
+            // nudKeepDays
+            // 
+            this.nudKeepDays.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.nudKeepDays.Location = new System.Drawing.Point(431, 4);
+            this.nudKeepDays.Name = "nudKeepDays";
+            this.nudKeepDays.Size = new System.Drawing.Size(48, 21);
+            this.nudKeepDays.TabIndex = 3;
+            // 
+            // txbLogPath
+            // 
+            this.txbLogPath.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.txbLogPath.Location = new System.Drawing.Point(152, 4);
+            this.txbLogPath.Name = "txbLogPath";
+            this.txbLogPath.Size = new System.Drawing.Size(176, 21);
+            this.txbLogPath.TabIndex = 2;
+            // 
+            // label18
+            // 
+            this.label18.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(360, 8);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(65, 12);
+            this.label18.TabIndex = 0;
+            this.label18.Text = "保留天数：";
+            // 
+            // label19
+            // 
+            this.label19.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(485, 8);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(65, 12);
+            this.label19.TabIndex = 0;
+            this.label19.Text = "追加方式：";
+            // 
+            // cbbAppendType
+            // 
+            this.cbbAppendType.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cbbAppendType.FormattingEnabled = true;
+            this.cbbAppendType.Location = new System.Drawing.Point(556, 4);
+            this.cbbAppendType.Name = "cbbAppendType";
+            this.cbbAppendType.Size = new System.Drawing.Size(127, 20);
+            this.cbbAppendType.TabIndex = 4;
+            // 
+            // btnLogReset
+            // 
+            this.btnLogReset.Location = new System.Drawing.Point(689, 3);
+            this.btnLogReset.Name = "btnLogReset";
+            this.btnLogReset.Size = new System.Drawing.Size(75, 23);
+            this.btnLogReset.TabIndex = 9;
+            this.btnLogReset.Text = "还原默认值";
+            this.btnLogReset.UseVisualStyleBackColor = true;
+            this.btnLogReset.Click += new System.EventHandler(this.btnLogReset_Click);
             // 
             // tpOther
             // 
@@ -558,7 +1110,7 @@
             this.tpOther.Location = new System.Drawing.Point(4, 22);
             this.tpOther.Name = "tpOther";
             this.tpOther.Padding = new System.Windows.Forms.Padding(3);
-            this.tpOther.Size = new System.Drawing.Size(766, 408);
+            this.tpOther.Size = new System.Drawing.Size(774, 408);
             this.tpOther.TabIndex = 2;
             this.tpOther.Text = "其他";
             this.tpOther.UseVisualStyleBackColor = true;
@@ -572,7 +1124,7 @@
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox5.Location = new System.Drawing.Point(3, 3);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(760, 46);
+            this.groupBox5.Size = new System.Drawing.Size(768, 46);
             this.groupBox5.TabIndex = 0;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "临时文件";
@@ -613,122 +1165,11 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "网格样式临时文件：";
             // 
-            // groupBox7
-            // 
-            this.groupBox7.Controls.Add(this.tableLayoutPanel4);
-            this.groupBox7.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox7.Location = new System.Drawing.Point(3, 175);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(760, 76);
-            this.groupBox7.TabIndex = 9;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "网格样式";
-            // 
-            // tableLayoutPanel4
-            // 
-            this.tableLayoutPanel4.ColumnCount = 6;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.Controls.Add(this.label8, 0, 1);
-            this.tableLayoutPanel4.Controls.Add(this.ckbIsDefineGridHeader, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.cbbOddNumberRowColor, 1, 1);
-            this.tableLayoutPanel4.Controls.Add(this.label9, 1, 0);
-            this.tableLayoutPanel4.Controls.Add(this.nudGridHeaderHight, 2, 0);
-            this.tableLayoutPanel4.Controls.Add(this.label10, 3, 0);
-            this.tableLayoutPanel4.Controls.Add(this.cbbGridHeaderColor, 4, 0);
-            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 17);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 3;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(754, 57);
-            this.tableLayoutPanel4.TabIndex = 0;
-            // 
-            // label8
-            // 
-            this.label8.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(46, 34);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(77, 12);
-            this.label8.TabIndex = 0;
-            this.label8.Text = "奇数行颜色：";
-            // 
-            // cbbOddNumberRowColor
-            // 
-            this.cbbOddNumberRowColor.FormattingEnabled = true;
-            this.cbbOddNumberRowColor.Location = new System.Drawing.Point(129, 30);
-            this.cbbOddNumberRowColor.Name = "cbbOddNumberRowColor";
-            this.cbbOddNumberRowColor.Size = new System.Drawing.Size(121, 20);
-            this.cbbOddNumberRowColor.TabIndex = 1;
-            // 
-            // label9
-            // 
-            this.label9.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(173, 7);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(77, 12);
-            this.label9.TabIndex = 2;
-            this.label9.Text = "网格头高度：";
-            // 
-            // ckbIsDefineGridHeader
-            // 
-            this.ckbIsDefineGridHeader.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ckbIsDefineGridHeader.AutoSize = true;
-            this.ckbIsDefineGridHeader.Location = new System.Drawing.Point(3, 5);
-            this.ckbIsDefineGridHeader.Name = "ckbIsDefineGridHeader";
-            this.ckbIsDefineGridHeader.Size = new System.Drawing.Size(120, 16);
-            this.ckbIsDefineGridHeader.TabIndex = 3;
-            this.ckbIsDefineGridHeader.Text = "自定义网格头样式";
-            this.ckbIsDefineGridHeader.UseVisualStyleBackColor = true;
-            // 
-            // nudGridHeaderHight
-            // 
-            this.nudGridHeaderHight.Location = new System.Drawing.Point(256, 3);
-            this.nudGridHeaderHight.Minimum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.nudGridHeaderHight.Name = "nudGridHeaderHight";
-            this.nudGridHeaderHight.Size = new System.Drawing.Size(120, 21);
-            this.nudGridHeaderHight.TabIndex = 4;
-            this.nudGridHeaderHight.Value = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            // 
-            // label10
-            // 
-            this.label10.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(382, 7);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(77, 12);
-            this.label10.TabIndex = 0;
-            this.label10.Text = "网格头颜色：";
-            // 
-            // cbbGridHeaderColor
-            // 
-            this.cbbGridHeaderColor.FormattingEnabled = true;
-            this.cbbGridHeaderColor.Location = new System.Drawing.Point(465, 3);
-            this.cbbGridHeaderColor.Name = "cbbGridHeaderColor";
-            this.cbbGridHeaderColor.Size = new System.Drawing.Size(121, 20);
-            this.cbbGridHeaderColor.TabIndex = 1;
-            // 
             // FrmUserEnvironmentSet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(774, 459);
+            this.ClientSize = new System.Drawing.Size(784, 459);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
@@ -754,13 +1195,26 @@
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxOpenForm)).EndInit();
             this.tpUserSkin.ResumeLayout(false);
-            this.tpOther.ResumeLayout(false);
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudGridHeaderHight)).EndInit();
+            this.tpLog.ResumeLayout(false);
+            this.groupBox9.ResumeLayout(false);
+            this.tableLayoutPanel6.ResumeLayout(false);
+            this.tableLayoutPanel6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudErrKeepDays)).EndInit();
+            this.groupBox8.ResumeLayout(false);
+            this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudOkKeepDays)).EndInit();
+            this.groupBox10.ResumeLayout(false);
+            this.tableLayoutPanel7.ResumeLayout(false);
+            this.tableLayoutPanel7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudKeepDays)).EndInit();
+            this.tpOther.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -825,5 +1279,39 @@
         private System.Windows.Forms.NumericUpDown nudGridHeaderHight;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ComboBox cbbGridHeaderColor;
+        private System.Windows.Forms.TabPage tpLog;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
+        private System.Windows.Forms.CheckBox ckbErrEnableLog;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.NumericUpDown nudErrKeepDays;
+        private System.Windows.Forms.TextBox txbErrLogPath;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.ComboBox cbbErrAppendType;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
+        private System.Windows.Forms.CheckBox ckbOkEnableLog;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.NumericUpDown nudOkKeepDays;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox txbOkLogPath;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.ComboBox cbbOkAppendType;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
+        private System.Windows.Forms.CheckBox ckbEnableLog;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.NumericUpDown nudKeepDays;
+        private System.Windows.Forms.TextBox txbLogPath;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.ComboBox cbbAppendType;
+        private System.Windows.Forms.Button btnSelectErrLogPath;
+        private System.Windows.Forms.Button btnSelectOkLogPath;
+        private System.Windows.Forms.Button btnSelectLogPath;
+        private System.Windows.Forms.Button btnErrLogReset;
+        private System.Windows.Forms.Button btnOkLogReset;
+        private System.Windows.Forms.Button btnLogReset;
     }
 }

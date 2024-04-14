@@ -20,17 +20,21 @@ namespace Breezee.Core.Interface
         /// </summary>
         public static string Config = "Config";
         /// <summary>
+        /// 目录名_Data
+        /// </summary>
+        public static string Data = "Data";
+        /// <summary>
+        /// 目录名_Log
+        /// </summary>
+        public static string Log = "Log";
+        /// <summary>
         /// 目录名_临时
         /// </summary>
         public static string Temp = "Temp";
         /// <summary>
         /// 目录名_DB
         /// </summary>
-        public static string Db = "DB";
-        /// <summary>
-        /// 目录名_Data
-        /// </summary>
-        public static string Data = "Data";
+        public static string Db = "DB";       
         /// <summary>
         /// 目录名_网格样式
         /// </summary>

@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -41,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\SqlLogConfig.cs" />
     <Compile Include="Entity\BaseEntityField.cs" />
     <Compile Include="Entity\IBaseEntity.cs" />
     <Compile Include="Entity\PageParam.cs" />
@@ -50,6 +52,7 @@
     <Compile Include="Enum\EntityFieldType.cs" />
     <Compile Include="Enum\EntityType.cs" />
     <Compile Include="Enum\PercentSignStyle.cs" />
+    <Compile Include="Enum\SqlLogType.cs" />
     <Compile Include="Enum\SqlStringType.cs" />
     <Compile Include="IDataAccess.cs" />
     <Compile Include="ISqlDifferent.cs" />

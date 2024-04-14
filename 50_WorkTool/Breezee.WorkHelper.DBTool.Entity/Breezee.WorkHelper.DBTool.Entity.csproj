@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="AutoEntity\EntityInfo.cs" />
     <Compile Include="DBToolHelper.cs" />
+    <Compile Include="ExcelTableSQL\EntlColLY.cs" />
     <Compile Include="Enum\SqlType.cs" />
     <Compile Include="ExcelTableSQL\Column\ColAllInOne.cs" />
     <Compile Include="ExcelTableSQL\Column\ColCommon.cs" />

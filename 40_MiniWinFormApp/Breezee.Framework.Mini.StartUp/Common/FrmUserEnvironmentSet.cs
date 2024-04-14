@@ -13,6 +13,7 @@ using Breezee.Framework.Mini.Entity;
 using Breezee.Core.WinFormUI;
 using System.IO;
 using Breezee.Core.Tool.Helper;
+using Breezee.AutoSQLExecutor.Core;
 
 namespace Breezee.Framework.Mini.StartUp
 {
@@ -61,6 +62,14 @@ namespace Breezee.Framework.Mini.StartUp
             cbbMsgType.BindXmlTypeValueDropDownList(dtSaveTip, false, true);
             cbbGridHeaderColor.BindXmlTypeValueDropDownList(dtGridHeaderColor, false, true);
             cbbOddNumberRowColor.BindXmlTypeValueDropDownList(dtGridOddRowColor, false, true);
+
+            _dicString["1"] = "插入到开始位置";
+            _dicString["2"] = "追加到末层";
+            DataTable dtAppType = _dicString.GetTextValueTable(false);
+            cbbAppendType.BindTypeValueDropDownList(dtAppType, false, true);
+            cbbOkAppendType.BindTypeValueDropDownList(dtAppType.Copy(), false, true);
+            cbbErrAppendType.BindTypeValueDropDownList(dtAppType.Copy(), false, true);
+
             cbbMsgType.SelectedValue = _WinFormConfig.Get(GlobalKey.SavePromptType, "2");
             //主窗体皮肤类型
             string sMainSkinType = _WinFormConfig.Get(GlobalKey.MainSkinType, "0");
@@ -96,6 +105,22 @@ namespace Breezee.Framework.Mini.StartUp
             ckbUpgradeDelNewZipFile.Checked = _WinFormConfig.Get(GlobalKey.Upgrade_IsDeleteNewVerZipFile, "1").Equals("1") ? true : false; //默认升级新版本成功后删除新版本的压缩包
             toolTip1.SetToolTip(ckbUpgradeSuccessDelOldVerion, "如选中本项，升级完成后会自动删除旧版本，一些杀毒软件会误报为病毒，所以我们可以不选中本项，升级完成后自行删除旧版本！");
             txbUpgradeTempDir.Text = _WinFormConfig.Get(GlobalKey.Upgrade_TempPath, GlobalContext.PathTemp());
+            //日志配置
+            ckbEnableLog.Checked = _WinFormConfig.Get(GlobalKey.GlobalLog_IsEnableLog, "0").Equals("1") ? true : false;
+            txbLogPath.Text = _WinFormConfig.Get(GlobalKey.GlobalLog_LogPath, @"\Log");
+            nudKeepDays.Value = int.Parse(_WinFormConfig.Get(GlobalKey.GlobalLog_KeepDays, "0"));
+            cbbAppendType.SelectedValue = _WinFormConfig.Get(GlobalKey.GlobalLog_AppendType, "1");
+            //正常SQL日志配置
+            ckbOkEnableLog.Checked = _WinFormConfig.Get(GlobalKey.OkSqlLog_IsEnableLog, "0").Equals("1") ? true : false;
+            txbOkLogPath.Text = _WinFormConfig.Get(GlobalKey.OkSqlLog_LogPath, @"\SqlLog\ok");
+            nudOkKeepDays.Value = int.Parse(_WinFormConfig.Get(GlobalKey.OkSqlLog_KeepDays, "0"));
+            cbbOkAppendType.SelectedValue = _WinFormConfig.Get(GlobalKey.OkSqlLog_AppendType, "1");
+            //异常SQL日志配置
+            ckbErrEnableLog.Checked = _WinFormConfig.Get(GlobalKey.ErrSqlLog_IsEnableLog, "0").Equals("1") ? true : false;
+            txbErrLogPath.Text = _WinFormConfig.Get(GlobalKey.ErrSqlLog_LogPath, @"\SqlLog\err");
+            nudErrKeepDays.Value = int.Parse(_WinFormConfig.Get(GlobalKey.ErrSqlLog_KeepDays, "0"));
+            cbbErrAppendType.SelectedValue = _WinFormConfig.Get(GlobalKey.ErrSqlLog_AppendType, "1");
+
             //显示最大窗体数
             nudMaxOpenForm.Value = int.Parse(_WinFormConfig.Get(GlobalKey.MaxOpenFormNum, "15"));
             //网格头配置
@@ -229,7 +254,7 @@ namespace Breezee.Framework.Mini.StartUp
             _WinFormConfig.Set(GlobalKey.GridHeaderHeight, nudGridHeaderHight.Value.ToString(), "网格头高度");
             _WinFormConfig.Set(GlobalKey.GridHeaderBackColor, cbbGridHeaderColor.SelectedValue.ToString(), "网格头颜色");
             _WinFormConfig.Set(GlobalKey.GridOddRowBackColor, cbbOddNumberRowColor.SelectedValue.ToString(), "奇数行颜色");
-
+            
             //升级配置
             _WinFormConfig.Set(GlobalKey.Upgrade_IsAutoCheckVersion, ckbAutoCheckVersion.Checked ? "1" : "0", "是否自动检测新版本");
             _WinFormConfig.Set(GlobalKey.Upgrade_IsDeleteOldVersion, ckbUpgradeSuccessDelOldVerion.Checked ? "1" : "0", "是否在新版本升级成功后删除旧版本");
@@ -238,6 +263,34 @@ namespace Breezee.Framework.Mini.StartUp
             _WinFormConfig.Set(GlobalKey.Upgrade_TempPath, txbUpgradeTempDir.Text.Trim(),"临时升级文件保存路径");
             _WinFormConfig.Set(GlobalKey.MaxOpenFormNum, nudMaxOpenForm.Value.ToString(), "打开窗体的最大数");
             WinFormContext.Instance.MaxOpenFormNum = int.Parse(nudMaxOpenForm.Value.ToString());//重新给全局变量赋值
+
+            //日志配置
+            _WinFormConfig.Set(GlobalKey.GlobalLog_IsEnableLog, ckbEnableLog.Checked ? "1" : "0", "是否启用全局日志");
+            _WinFormConfig.Set(GlobalKey.GlobalLog_LogPath, txbLogPath.Text.Trim(), "全局日志路径");
+            _WinFormConfig.Set(GlobalKey.GlobalLog_KeepDays, nudKeepDays.Value.ToString(), "全局日志保留天数");
+            _WinFormConfig.Set(GlobalKey.GlobalLog_AppendType, cbbAppendType.SelectedValue.ToString(), "全局日志追加方式");
+            //正常SQL日志配置
+            _WinFormConfig.Set(GlobalKey.OkSqlLog_IsEnableLog, ckbOkEnableLog.Checked ? "1" : "0", "是否启用正常SQL日志");
+            _WinFormConfig.Set(GlobalKey.OkSqlLog_LogPath, txbOkLogPath.Text.Trim(), "正常SQL日志路径");
+            _WinFormConfig.Set(GlobalKey.OkSqlLog_KeepDays, nudOkKeepDays.Value.ToString(), "正常SQL日志保留天数");
+            _WinFormConfig.Set(GlobalKey.OkSqlLog_AppendType, cbbOkAppendType.SelectedValue.ToString(), "正常SQL日志追加方式");
+            //异常SQL日志配置
+            _WinFormConfig.Set(GlobalKey.ErrSqlLog_IsEnableLog, ckbErrEnableLog.Checked ? "1" : "0", "是否启用异常SQL日志");
+            _WinFormConfig.Set(GlobalKey.ErrSqlLog_LogPath, txbErrLogPath.Text.Trim(), "异常SQL日志路径");
+            _WinFormConfig.Set(GlobalKey.ErrSqlLog_KeepDays, nudErrKeepDays.Value.ToString(), "异常SQL日志保留天数");
+            _WinFormConfig.Set(GlobalKey.ErrSqlLog_AppendType, cbbErrAppendType.SelectedValue.ToString(), "异常SQL日志追加方式");
+            //SQL日志配置静态类的变量赋值
+            //正常日志
+            SqlLogConfig.IsEnableRigthSqlLog = ckbOkEnableLog.Checked;
+            SqlLogConfig.RigthSqlLogPath = txbOkLogPath.Text.Trim();
+            SqlLogConfig.RightSqlLogKeepDays = int.Parse(nudOkKeepDays.Value.ToString());
+            SqlLogConfig.RightSqlLogAddType = "1".Equals(cbbOkAppendType.SelectedValue.ToString())? SqlLogAddType.InsertBegin: SqlLogAddType.AppendEnd;
+            //异常日志
+            SqlLogConfig.IsEnableErrorSqlLog = ckbErrEnableLog.Checked;
+            SqlLogConfig.ErrorSqlLogPath = txbErrLogPath.Text.Trim();
+            SqlLogConfig.ErrorSqlLogKeepDays = int.Parse(nudErrKeepDays.Value.ToString());
+            SqlLogConfig.ErrorSqlLogAddType = "1".Equals(cbbErrAppendType.SelectedValue.ToString()) ? SqlLogAddType.InsertBegin : SqlLogAddType.AppendEnd;
+
             _WinFormConfig.Save();
             ShowInfo("【用户环境设置】保存成功！");
             DialogResult = System.Windows.Forms.DialogResult.OK;
@@ -443,5 +496,78 @@ namespace Breezee.Framework.Mini.StartUp
             if (fbdSelectPath.ShowDialog() != DialogResult.OK) return;
             txbUpgradeTempDir.Text = fbdSelectPath.SelectedPath;
         }
+
+        #region 选择日志路径相关
+        private void btnSelectLogPath_Click(object sender, EventArgs e)
+        {
+            if (fbdSelectPath.ShowDialog() != DialogResult.OK) return;
+            string sDirName = fbdSelectPath.SelectedPath;
+            if (Directory.GetFiles(sDirName, "*.*", SearchOption.AllDirectories).Length == 0)
+            {
+                txbLogPath.Text = sDirName;
+            }
+            else
+            {
+                MsgHelper.ShowErr("请选择一个空目录！");
+            }
+        }
+
+        private void btnSelectOkLogPath_Click(object sender, EventArgs e)
+        {
+            if (fbdSelectPath.ShowDialog() != DialogResult.OK) return;
+            string sDirName = fbdSelectPath.SelectedPath;
+            if (Directory.GetFiles(sDirName, "*.*", SearchOption.AllDirectories).Length == 0)
+            {
+                txbOkLogPath.Text = sDirName;
+            }
+            else
+            {
+                MsgHelper.ShowErr("请选择一个空目录！");
+            }
+        }
+
+        private void btnSelectErrLogPath_Click(object sender, EventArgs e)
+        {
+            if (fbdSelectPath.ShowDialog() != DialogResult.OK) return;
+            string sDirName = fbdSelectPath.SelectedPath;
+            if (Directory.GetFiles(sDirName, "*.*", SearchOption.AllDirectories).Length == 0)
+            {
+                txbErrLogPath.Text = sDirName;
+            }
+            else
+            {
+                MsgHelper.ShowErr("请选择一个空目录！");
+            }
+        }
+        #endregion
+
+        #region 还原日志默认值
+        private void btnLogReset_Click(object sender, EventArgs e)
+        {
+            //日志配置
+            //ckbEnableLog.Checked = false;
+            txbLogPath.Text = @"\Log";
+            nudKeepDays.Value = 0;
+            cbbAppendType.SelectedValue = "1";
+        }
+
+        private void btnOkLogReset_Click(object sender, EventArgs e)
+        {
+            //正常SQL日志配置
+            //ckbOkEnableLog.Checked = false;
+            txbOkLogPath.Text = @"\SqlLog\ok";
+            nudOkKeepDays.Value = 0;
+            cbbOkAppendType.SelectedValue = "1";
+        }
+
+        private void btnErrLogReset_Click(object sender, EventArgs e)
+        {
+            //异常SQL日志配置
+            //ckbErrEnableLog.Checked = false;
+            txbErrLogPath.Text = @"\SqlLog\err";
+            nudErrKeepDays.Value = 0;
+            cbbErrAppendType.SelectedValue = "1";
+        } 
+        #endregion
     }
 }

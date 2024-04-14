@@ -17,6 +17,7 @@ using Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL;
 using System.Collections.Generic;
 using static Breezee.WorkHelper.DBTool.Entity.DBTGlobalValue;
 using System.ComponentModel;
+using static Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL.EntTable;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -48,6 +49,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private string createType;
         private string _ImportInput = "1";
+        private string _ImportInputLY = "3";
         private readonly string _sGridTableSelect = "选择";
         private readonly string _sGridColumnSelect = "选择";
         private readonly string _sGridColumnSelectEn = "IsSelect";
@@ -88,6 +90,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             //录入方式
             _dicString.Add(_ImportInput, "模板导入");
             _dicString.Add("2", "读取数据库");
+            _dicString.Add(_ImportInputLY, "LY模板导入");
             cbbInputType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
             //设置表、列的删除提示
             lblTableData.Text = strTipInfo;
@@ -351,8 +354,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             int iDbType = int.Parse(cbbImportDBType.SelectedValue.ToString());
             importDBType = (DataBaseType)iDbType;
             ColumnTemplateType templateType;
+
             if (_ImportInput.Equals(cbbInputType.SelectedValue.ToString()))
             {
+                #region 正常导入模板处理
                 //导入
                 if (importDBType == DataBaseType.None)
                 {
@@ -447,7 +452,140 @@ namespace Breezee.WorkHelper.DBTool.UI
                     dgvColList.BindAutoColumn(dtTable);
                     dgvColList.ShowRowNum();
                     ShowInfo(_strImportSuccess);
+                } 
+                #endregion
+            }
+            else if (_ImportInputLY.Equals(cbbInputType.SelectedValue.ToString()))
+            {
+                #region LY模板导入的处理
+                if (importDBType == DataBaseType.None)
+                {
+                    ShowInfo("请选择【导入数据库类型】");
+                    return;
                 }
+
+                _dsExcelData = ExportHelper.GetExcelDataSet();//得到Excel数据
+                if (_dsExcelData != null)
+                {
+                    //得到表结构的信息
+                    DataTable dtExcelSource = _dsExcelData.Tables[EntlColLY.ExcelCol.SheetName];
+                    //移除空行
+                    foreach (DataRow dr in dtExcelSource.Select(EntlColLY.ExcelCol.Name + " is null"))
+                    {
+                        dtExcelSource.Rows.Remove(dr);
+                    }
+                    //得到表结构
+                    DataTable dtTable = EntTable.GetTable();
+                    DataColumn dcSelected = new DataColumn(_sGridTableSelect, typeof(bool));
+                    dcSelected.DefaultValue = "True";
+                    dtTable.Columns.Add(dcSelected);
+                    dtTable.Columns[_sGridTableSelect].SetOrdinal(0);//设置选择列在最前面
+                    
+                    //得到导入模板类型
+                    switch (importDBType)
+                    {
+                        case DataBaseType.SqlServer:
+                            templateType = ColumnTemplateType.SqlServer;
+                            break;
+                        case DataBaseType.Oracle:
+                            templateType = ColumnTemplateType.Oracle;
+                            break;
+                        case DataBaseType.MySql:
+                            templateType = ColumnTemplateType.MySql;
+                            break;
+                        case DataBaseType.SQLite:
+                            templateType = ColumnTemplateType.SQLite;
+                            break;
+                        case DataBaseType.PostgreSql:
+                            templateType = ColumnTemplateType.PostgreSql;
+                            break;
+                        default:
+                            throw new Exception("暂不支持该数据库类型！");
+                    }
+
+                    //获取列结构
+                    DataTable dtColumn = EntCol.GetTable(templateType);
+                    //新增选择列
+                    dcSelected = new DataColumn(_sGridColumnSelect, typeof(bool));
+                    dcSelected.DefaultValue = "True";
+                    dtColumn.Columns.Add(dcSelected);
+                    dtColumn.Columns[_sGridColumnSelect].SetOrdinal(0);//设置选择列在最前面
+                    //表清单处理
+                    DataRow drNew = null;
+                    DataRow drColNew = null;
+                    int iTalbe = 1;
+                    int iColumn = 1;
+                    string sTableCode = string.Empty;
+                    string sTableName = string.Empty;
+
+                    string sFullDataType = string.Empty;
+                    string sDataType = string.Empty;
+                    string sDataLength = string.Empty;
+                    string sDataDotLength = string.Empty;
+                    foreach (DataRow dr in dtExcelSource.Rows)
+                    {
+                        string sColNameCn = dr[EntlColLY.ExcelCol.Name].ToString().Trim();
+                        if (sColNameCn.StartsWith("表名称:") || sColNameCn.StartsWith("表名称："))
+                        {
+                            //表编码和名称处理
+                            drNew = dtTable.NewRow();
+                            sTableCode = dr[EntlColLY.ExcelCol.DataType].ToString().Trim().Replace("表编码:", "").Replace("表编码：", "");
+                            sTableName = sColNameCn.Replace("表名称:", "").Replace("表名称：", ""); 
+                            drNew[ExcelTable.Num] = iTalbe;
+                            drNew[ExcelTable.Name] = sTableName;
+                            drNew[ExcelTable.Code] = sTableCode;
+                            drNew[ExcelTable.ChangeType] = dr[EntlColLY.ExcelCol.ChangeType].ToString().Trim().Replace("创建表", "新增").Replace("修改表", "修改");
+                            dtTable.Rows.Add(drNew);
+                            iTalbe++;
+                            iColumn = 1;
+                        }
+                        else if(sColNameCn.StartsWith("约束说明:") || sColNameCn.StartsWith("约束说明：")) //约束说明: 
+                        {
+                            //表更多注释处理
+                            string sRemark = sColNameCn.Replace("约束说明:", "").Replace("约束说明：", "").Trim();
+                            if (drNew!=null && !sRemark.Equals(drNew[ExcelTable.Name].ToString()))
+                            {
+                                drNew[ExcelTable.Remark] = sRemark;
+                            }
+                        }
+                        else if("列名称".Equals(sColNameCn))
+                        {
+                            continue; //跳过列头信息
+                        }
+                        else
+                        {
+                            //列处理
+                            drColNew = dtColumn.NewRow();
+                            drColNew[ColCommon.ExcelCol.TableCode] = sTableCode;
+                            drColNew[ColCommon.ExcelCol.OrderNo] = iColumn;
+                            drColNew[ColCommon.ExcelCol.Name] = dr[EntlColLY.ExcelCol.Name].ToString().Trim();
+                            drColNew[ColCommon.ExcelCol.Code] = dr[EntlColLY.ExcelCol.Code].ToString().Trim();
+
+                            sFullDataType = dr[EntlColLY.ExcelCol.DataType].ToString().Trim();
+                            drColNew[ColCommon.ExcelCol.DataTypeFull] = sFullDataType; //全类型
+                            ColCommon.SplitFullDataType(sFullDataType,ref sDataType, ref sDataLength, ref sDataDotLength);
+                            drColNew[ColCommon.ExcelCol.DataType] = sDataType;
+                            drColNew[ColCommon.ExcelCol.DataLength] = sDataLength;
+                            drColNew[ColCommon.ExcelCol.DataDotLength] = sDataDotLength;
+                            drColNew[ColCommon.ExcelCol.KeyType] = dr[EntlColLY.ExcelCol.KeyType].ToString().Trim();
+                            drColNew[ColCommon.ExcelCol.NotNull] = dr[EntlColLY.ExcelCol.NotNull].ToString().Trim();
+                            drColNew[ColCommon.ExcelCol.Default] = dr[EntlColLY.ExcelCol.Default].ToString().Trim();
+                            drColNew[ColCommon.ExcelCol.Remark] = dr[EntlColLY.ExcelCol.Remark].ToString().Trim(); 
+                            drColNew[ColCommon.ExcelCol.ChangeType] = dr[EntlColLY.ExcelCol.ChangeType].ToString().Trim();
+                            dtColumn.Rows.Add(drColNew);
+                            iColumn++;
+                        }
+                    }
+
+                    //绑定表网格
+                    dgvTableList.BindAutoColumn(dtTable);
+                    dgvTableList.ShowRowNum();
+                    //绑定列网格
+                    dgvColList.BindAutoColumn(dtColumn);
+                    dgvColList.ShowRowNum();
+                    ShowInfo(_strImportSuccess);
+                } 
+                #endregion
             }
             else
             {
@@ -794,7 +932,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                 foreach (DataRow dr in dtTalbeSelect.Rows)
                 {
                     //所有选中的表，其通用列都加上所选的模板名称
-                    dr[EntTable.ExcelTable.CommonColumnTableCode] = sCommonTable;
+                    if ("新增".Equals(dr[ExcelTable.ChangeType].ToString()))
+                    {
+                        dr[ExcelTable.CommonColumnTableCode] = sCommonTable; //只针对新增表加上通用列
+                    }
                 }
                 DataTable dtStandarCol = dgvOldNewChar.GetBindingTable();
                 foreach (DataRow drSource in dtStandarCol.Rows)
@@ -1038,7 +1179,12 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void tsbDownLoad_Click(object sender, EventArgs e)
         {
             DBToolUIHelper.DownloadFile(DBTGlobalValue.TableSQL.Excel_TableColumn, "模板_表列结构变更", true);
-        } 
+        }
+
+        private void tsbDownloadLYTemplate_Click(object sender, EventArgs e)
+        {
+            DBToolUIHelper.DownloadFile(DBTGlobalValue.TableSQL.Excel_TableColumnLY, "模板_LY数据库变更", true);
+        }
         #endregion
 
         #region 退出按钮事件
@@ -1089,6 +1235,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                 ckbAllConvert.Visible = true;
                 cbbImportDBType.SetControlReadOnly(false);
                 //tpDataStandard.Parent = null;
+            }
+            else if (_ImportInputLY.Equals(cbbInputType.SelectedValue.ToString()))
+            {
+                gbTable.Visible = false;
+                uC_DbConnection1.Visible = false;
+                tsbImport.Text = "导入";
+                ckbAllConvert.Checked = false;
+                ckbAllConvert.Visible = false;
+                cbbImportDBType.SetControlReadOnly(false);
             }
             else
             {
@@ -1653,5 +1808,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             tsbAutoSQL.PerformClick();
         }
+
+        
     }
 }

@@ -33,6 +33,7 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static class TableSQL
         {
             public static string Excel_TableColumn = TableSQL_Pre + "模板_表列结构.xlsx";
+            public static string Excel_TableColumnLY = TableSQL_Pre + @"\LY\模板_LY数据库变更.xlsm";
             public static string Excel_TableColumnRemark = TableSQL_Pre + "模板_表列备注扩展信息.xlsx";
             //资源路径
             public static string Html_Html = DataSQL_SourcePre + "Html.txt";

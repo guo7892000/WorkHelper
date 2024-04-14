@@ -37,5 +37,20 @@ namespace Breezee.Core.Interface
         //行号
         public static string RowNum = "ROWNO";
         public static string MaxOpenFormNum = "MaxOpenFormNum";
+        //日志配置
+        public static string GlobalLog_IsEnableLog= "GlobalLog_IsEnableLog"; //是否启用日志：1是，0否
+        public static string GlobalLog_LogPath = "GlobalLog_LogPath"; //日志路径
+        public static string GlobalLog_KeepDays = "GlobalLog_KeepDays"; //日志保留天数
+        public static string GlobalLog_AppendType = "GlobalLog_AppendType"; //追加方式：1插入到开始位置，2追加到末层
+        //正常SQL日志配置
+        public static string OkSqlLog_IsEnableLog = "OkSqlLog_IsEnableLog"; //是否启用日志：1是，0否
+        public static string OkSqlLog_LogPath = "OkSqlLog_LogPath"; //日志路径
+        public static string OkSqlLog_KeepDays = "OkSqlLog_KeepDays"; //日志保留天数
+        public static string OkSqlLog_AppendType = "OkSqlLog_AppendType"; //追加方式：1插入到开始位置，2追加到末层
+        //异常SQL日志配置
+        public static string ErrSqlLog_IsEnableLog = "ErrSqlLog_IsEnableLog"; //是否启用日志：1是，0否
+        public static string ErrSqlLog_LogPath = "ErrSqlLog_LogPath"; //日志路径
+        public static string ErrSqlLog_KeepDays = "ErrSqlLog_KeepDays"; //日志保留天数
+        public static string ErrSqlLog_AppendType = "ErrSqlLog_AppendType"; //追加方式：1插入到开始位置，2追加到末层
     }
 }

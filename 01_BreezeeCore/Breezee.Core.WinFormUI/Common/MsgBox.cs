@@ -499,9 +499,9 @@ namespace Breezee.Core.WinFormUI
             return ShowException(msg);
         }
 
-        public static DialogResult ShowException(string strException)
+        public static DialogResult ShowException(string sException)
         {
-            return ShowExceptionInternal("系统出现异常，请联系管理员！" + Environment.NewLine, strException);
+            return ShowExceptionInternal("系统出现异常，请联系管理员！" + Environment.NewLine, sException);
         }
 
         public static DialogResult ShowException(string message, Exception ex)
@@ -510,15 +510,15 @@ namespace Breezee.Core.WinFormUI
             return ShowExceptionInternal(message, strException);
         }
 
-        private static DialogResult ShowExceptionInternal(string message, string strException)
+        private static DialogResult ShowExceptionInternal(string message, string sException)
         {
             MsgBox mmbox = new MsgBox();
-            mmbox.error = strException;
-            mmbox.SetInformation(message, "信息提示", strException);
+            mmbox.error = sException;
+            mmbox.SetInformation(message, "信息提示", sException);
             mmbox.SetBtn(MyButtons.OKError);
             mmbox.setPicIcon(MyIcon.Error);
             //写日志
-            //LogHelper.Error(message + "。\n"+strException);
+            WinFormContext.Instance.LogErr(message + "。\n"+sException);
             //显示对话框
             mmbox.ShowDialog();
             return mmbox.DialogResult;
@@ -530,7 +530,10 @@ namespace Breezee.Core.WinFormUI
             StackTrace trace = new System.Diagnostics.StackTrace(ex, true);
             if (trace != null && trace.FrameCount > 0)
             {
-                msg = "文件位置:" + trace.GetFrame(0).GetFileName() + ";\r\n行号:" + trace.GetFrame(0).GetFileLineNumber().ToString(System.Globalization.NumberFormatInfo.InvariantInfo) + ";\r\n类名:" + trace.GetFrame(0).GetMethod().DeclaringType.FullName + ";\r\n方法名：" + trace.GetFrame(0).GetMethod().Name + ";\r\n";
+                msg = "文件位置:" + trace.GetFrame(0).GetFileName() 
+                    + ";\r\n行号:" + trace.GetFrame(0).GetFileLineNumber().ToString(System.Globalization.NumberFormatInfo.InvariantInfo) 
+                    + ";\r\n类名:" + trace.GetFrame(0).GetMethod().DeclaringType.FullName 
+                    + ";\r\n方法名：" + trace.GetFrame(0).GetMethod().Name + ";\r\n";
             }
             msg += ex.Message;
             return msg;

@@ -29,7 +29,7 @@ namespace Breezee.Core.Interface
         public static readonly string AppStartConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), GlobalDir.App);
         #endregion
 
-        #region 可变配置路径
+        #region 根路径(可变)
         /// <summary>
         /// 配置根路径(可变)
         /// 默认为用户数据目录/应用名
@@ -53,7 +53,9 @@ namespace Breezee.Core.Interface
         {
             return Path.Combine(AppRootPath, GlobalDir.Config);
         }
+        #endregion
 
+        #region 根目录下的第一层子目录
         /// <summary>
         /// 获取数据文件配置目录
         /// </summary>
@@ -64,14 +66,25 @@ namespace Breezee.Core.Interface
         }
 
         /// <summary>
+        /// 获取日志文件配置目录
+        /// </summary>
+        /// <returns></returns>
+        public static string PathLog()
+        {
+            return Path.Combine(AppRootPath, GlobalDir.Log);
+        }
+
+        /// <summary>
         /// 获取临时文件配置目录
         /// </summary>
         /// <returns></returns>
         public static string PathTemp()
         {
-            return Path.Combine(PathConfig(), GlobalDir.Temp);
+            return Path.Combine(AppRootPath, GlobalDir.Temp);
         }
+        #endregion
 
+        #region 相对子目录
         /// <summary>
         /// 获取数据库配置目录
         /// </summary>
@@ -90,15 +103,14 @@ namespace Breezee.Core.Interface
             return Path.Combine(PathTemp(), GlobalDir.GridStyle);
         }
 
-        #endregion
-
         /// <summary>
-        /// 运行目录下的配置文件目录
+        /// 运行目录下的配置文件目录（Mini）
         /// </summary>
         /// <returns></returns>
         public static string RunPathMiniData()
         {
             return Path.Combine(AppBaseDirectory, GlobalDir.Config, GlobalDir.Mini, GlobalDir.Data);
-        }
+        } 
+        #endregion
     }
 }

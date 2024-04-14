@@ -151,6 +151,7 @@
     <Compile Include="Entity\LoginUserInfo.cs" />
     <Compile Include="Enum\DataGridViewColumnTypeEnum.cs" />
     <Compile Include="Enum\FormOpenStatusEnum.cs" />
+    <Compile Include="Enum\SystemLogTypeEnum.cs" />
     <Compile Include="Extension\ComboBoxExtension.cs" />
     <Compile Include="Extension\ControlExtension.cs" />
     <Compile Include="Extension\DataGridViewExtend.cs" />

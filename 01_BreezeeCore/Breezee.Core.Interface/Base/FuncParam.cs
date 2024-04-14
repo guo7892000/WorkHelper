@@ -41,6 +41,10 @@ namespace Breezee.Core.Interface
             InputType = inputType;
             Value = value;
         }
+        public override string ToString()
+        {
+            return string.Format("参数编码：{0}，参数值：{1}，参数类型：{2}，是否必须的参数：{3}", Code, Value.ToString(), FuncParamType.ToString(), InputType.ToString());
+        }
     }
 
     /// <summary>

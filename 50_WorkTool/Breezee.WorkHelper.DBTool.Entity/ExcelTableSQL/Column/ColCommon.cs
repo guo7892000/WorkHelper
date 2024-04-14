@@ -56,6 +56,13 @@ namespace Breezee.WorkHelper.DBTool.Entity
             return ent;
         }
 
+        /// <summary>
+        /// 获取全类型
+        /// </summary>
+        /// <param name="sDataType"></param>
+        /// <param name="sDataLength"></param>
+        /// <param name="sDataDotLength"></param>
+        /// <returns></returns>
         public static string GetFullDataType(string sDataType,string sDataLength,string sDataDotLength)
         {
             //得到全类型
@@ -81,6 +88,41 @@ namespace Breezee.WorkHelper.DBTool.Entity
             }
             //针对有些不需要长度的字符处理
             return sDataType_Full.TableColTypeNotNeedLenDeal();
+        }
+
+        /// <summary>
+        /// 拆分全类型
+        /// </summary>
+        /// <param name="sDataType"></param>
+        /// <param name="sDataLength"></param>
+        /// <param name="sDataDotLength"></param>
+        /// <returns></returns>
+        public static void SplitFullDataType(string sFullType,ref string sDataType, ref string sDataLength, ref string sDataDotLength)
+        {
+            //得到全类型
+            if (!sFullType.Contains("("))
+            {
+                sDataLength = string.Empty;
+                sDataDotLength = string.Empty;
+                sDataType = sFullType;
+                return;
+            }
+
+            string[] sArr = sFullType.Split(new char[] { '(', ')', '（', '）' });
+            if(sArr.Length > 1 ) 
+            {
+                sDataType = sArr[0];
+                if (sArr[1].Contains(",") || sArr[1].Contains("，")) 
+                {
+                    string[] sArrDot = sArr[1].Split(new char[] { ',','，' });
+                    sDataLength = sArrDot[0];
+                    sDataDotLength = sArrDot[1];
+                }
+                else
+                {
+                    sDataLength = sArr[1];
+                }
+            }
         }
 
         public static DataTable GetTable()

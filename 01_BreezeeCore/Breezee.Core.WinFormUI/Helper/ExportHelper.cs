@@ -743,7 +743,7 @@ namespace Breezee.Core.WinFormUI
             ExcelFileInfo excelFileInfo = new ExcelFileInfo();
 
             OpenFileDialog opd = new OpenFileDialog();
-            opd.Filter = "Excel文件(*.xls,*.xlsx)|*.xls;*.xlsx";  //支持2003、2007以上格式的Excel
+            opd.Filter = "Excel文件(*.xls,*.xlsx,*.xlsm)|*.xls;*.xlsx;*.xlsm";  //支持2003、2007以上格式的Excel
             //opd.Filter = "Excel文件(*.xlsx)|*.xlsx"; //只支持2007以上格式的Excel
             opd.FilterIndex = 0;
             opd.Title = "选择对应类型的导入模板Excel文件";
@@ -763,7 +763,7 @@ namespace Breezee.Core.WinFormUI
                 excelFileInfo.suffix = ExcelSuffixType.xls;
                 excelFileInfo.OleDbConnection = @"Provider=Microsoft.jet.OleDb.4.0;Data Source=" + excelFileInfo.FileName + ";Extended Properties='Excel 8.0;IMEX=1'";
             }
-            else if (strFileFormart == "xlsx")
+            else if (strFileFormart == "xlsx" || strFileFormart == "xlsm")
             {
                 excelFileInfo.suffix = ExcelSuffixType.xlsx;
                 excelFileInfo.OleDbConnection = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + excelFileInfo.FileName + "; Extended Properties='Excel 12.0 Xml;IMEX=1'";

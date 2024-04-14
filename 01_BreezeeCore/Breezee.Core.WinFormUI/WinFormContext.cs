@@ -8,6 +8,8 @@ using System.Data;
 using System.IO;
 using System.Reflection;
 using Breezee.Core.Interface;
+using static System.Windows.Forms.AxHost;
+using System.Security.AccessControl;
 
 /*********************************************************************		
  * 对象名称：		
@@ -747,6 +749,122 @@ namespace Breezee.Core.WinFormUI
             AppConfigPair versionConfig = new AppConfigPair(GlobalContext.RunPathMiniData(), GlobalFile.NetVersion, XmlConfigSaveType.Attribute);
             Instance.NetVersion = versionConfig.Get("netVersion", "4");
         }
+
+        #region 记录系统日志
+        /// <summary>
+        /// 记录系统日志
+        /// </summary>
+        /// <param name="systemLogType"></param>
+        /// <param name="sLogContent"></param>
+        /// <param name="sLogTitle"></param>
+        /// <param name="isLogDate"></param>
+        private void Log(SystemLogTypeEnum systemLogType, string sLogContent, string sLogTitle = "",bool isLogDate=true)
+        {
+            try
+            {
+                //日志配置
+                bool isLog = WinFormConfig.Get(GlobalKey.GlobalLog_IsEnableLog, "0").Equals("1") ? true : false;
+                string sPath = WinFormConfig.Get(GlobalKey.GlobalLog_LogPath, @"\Log");
+                int iDays = int.Parse(WinFormConfig.Get(GlobalKey.GlobalLog_KeepDays, "0"));
+                string sAppendType = WinFormConfig.Get(GlobalKey.GlobalLog_AppendType, "1");
+                if (!isLog) return;
+
+                if (!sPath.EndsWith("\\"))
+                {
+                    sPath = sPath + "\\";
+                }
+
+                string sPre = "";
+                switch (systemLogType)
+                {
+                    case SystemLogTypeEnum.Error:
+                        sPath = sPath + "err\\";
+                        sPre = "err.";
+                        break;
+                    case SystemLogTypeEnum.Warn:
+                        sPath = sPath + "warn\\";
+                        sPre = "warn.";
+                        break;
+                    case SystemLogTypeEnum.Info:
+                    default:
+                        sPath = sPath + "info\\";
+                        sPre = "info.";
+                        break;
+                }
+
+                string sLogFileName = sPre + DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
+                if (sPath.IndexOf(":\\") < 0)
+                {
+                    sPath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + sPath;
+                }
+                if (!Directory.Exists(sPath))
+                {
+                    Directory.CreateDirectory(sPath);
+                }
+                else
+                {
+                    FileInfo[] arrFiles = new DirectoryInfo(sPath).GetFiles("*.*", SearchOption.AllDirectories);
+                    foreach (FileInfo file in arrFiles)
+                    {
+                        if (DateTime.Now.Subtract(file.CreationTime.AddDays(iDays)).TotalHours > 0)
+                        {
+                            file.Delete(); //删除文件
+                        }
+                    }
+                }
+
+                string sFileName = sPath + sLogFileName;
+                StringBuilder sb = new StringBuilder();
+                if (isLogDate)
+                {
+                    if (!string.IsNullOrEmpty(sLogTitle))
+                    {
+                        sb.AppendLine(string.Format("*******************【{0}】【{1}】**************************", sLogTitle, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
+                    }
+                    else
+                    {
+                        sb.AppendLine(string.Format("*******************【{0}】**************************", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
+                    }
+                }
+                
+                sb.AppendLine(sLogContent); //记录日志内容             
+                sb.Append(Environment.NewLine);
+
+                if (int.Parse(sAppendType) == (int)SqlLogAddType.InsertBegin)
+                {
+                    string sOldContent = string.Empty;
+                    if (File.Exists(sFileName))
+                    {
+                        sOldContent = File.ReadAllText(sFileName);
+                    }
+                    File.WriteAllText(sFileName, sb.ToString() + sOldContent, Encoding.UTF8); //最新内容写在前面
+                }
+                else
+                {
+                    File.AppendAllText(sFileName, sb.ToString(), Encoding.UTF8); //追加日志内容
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        public void LogErr(string sLogContent, string sLogTitle = "", bool isLogDate = true)
+        {
+            Log(SystemLogTypeEnum.Error, sLogContent, sLogTitle, isLogDate);
+        }
+
+        public void LogWarn(string sLogContent, string sLogTitle = "", bool isLogDate = true)
+        {
+            Log(SystemLogTypeEnum.Warn, sLogContent, sLogTitle, isLogDate);
+        }
+
+        public void LogInfo(string sLogContent, string sLogTitle = "", bool isLogDate = true)
+        {
+            Log(SystemLogTypeEnum.Info, sLogContent, sLogTitle, isLogDate);
+        } 
+        #endregion
 
     }
 }

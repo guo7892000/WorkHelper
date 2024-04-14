@@ -101,6 +101,7 @@
             this.tsbImport = new System.Windows.Forms.ToolStripButton();
             this.tsbAutoSQL = new System.Windows.Forms.ToolStripButton();
             this.tsbDownLoad = new System.Windows.Forms.ToolStripButton();
+            this.tsbDownloadLYTemplate = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.gbTable = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -706,7 +707,7 @@
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label3.AutoSize = true;
             this.label3.ForeColor = System.Drawing.Color.Red;
-            this.label3.Location = new System.Drawing.Point(3, 6);
+            this.label3.Location = new System.Drawing.Point(3, 7);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(68, 17);
             this.label3.TabIndex = 1;
@@ -716,7 +717,7 @@
             // 
             this.cbbInputType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbInputType.FormattingEnabled = true;
-            this.cbbInputType.Location = new System.Drawing.Point(77, 4);
+            this.cbbInputType.Location = new System.Drawing.Point(77, 3);
             this.cbbInputType.Name = "cbbInputType";
             this.cbbInputType.Size = new System.Drawing.Size(96, 25);
             this.cbbInputType.TabIndex = 18;
@@ -727,7 +728,7 @@
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(179, 6);
+            this.label2.Location = new System.Drawing.Point(179, 7);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(68, 17);
             this.label2.TabIndex = 1;
@@ -737,7 +738,7 @@
             // 
             this.cbbImportDBType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbImportDBType.FormattingEnabled = true;
-            this.cbbImportDBType.Location = new System.Drawing.Point(253, 4);
+            this.cbbImportDBType.Location = new System.Drawing.Point(253, 3);
             this.cbbImportDBType.Name = "cbbImportDBType";
             this.cbbImportDBType.Size = new System.Drawing.Size(121, 25);
             this.cbbImportDBType.TabIndex = 4;
@@ -747,7 +748,7 @@
             // 
             this.cbbTargetDbType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbTargetDbType.FormattingEnabled = true;
-            this.cbbTargetDbType.Location = new System.Drawing.Point(454, 4);
+            this.cbbTargetDbType.Location = new System.Drawing.Point(454, 3);
             this.cbbTargetDbType.Name = "cbbTargetDbType";
             this.cbbTargetDbType.Size = new System.Drawing.Size(121, 25);
             this.cbbTargetDbType.TabIndex = 3;
@@ -757,7 +758,7 @@
             this.lblThree.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblThree.AutoSize = true;
             this.lblThree.ForeColor = System.Drawing.Color.Red;
-            this.lblThree.Location = new System.Drawing.Point(581, 6);
+            this.lblThree.Location = new System.Drawing.Point(581, 7);
             this.lblThree.Name = "lblThree";
             this.lblThree.Size = new System.Drawing.Size(68, 17);
             this.lblThree.TabIndex = 1;
@@ -767,7 +768,7 @@
             // 
             this.cbbCreateType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbCreateType.FormattingEnabled = true;
-            this.cbbCreateType.Location = new System.Drawing.Point(655, 4);
+            this.cbbCreateType.Location = new System.Drawing.Point(655, 3);
             this.cbbCreateType.Name = "cbbCreateType";
             this.cbbCreateType.Size = new System.Drawing.Size(102, 25);
             this.cbbCreateType.TabIndex = 5;
@@ -776,7 +777,7 @@
             // 
             this.ckbAllConvert.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbAllConvert.AutoSize = true;
-            this.ckbAllConvert.Location = new System.Drawing.Point(763, 4);
+            this.ckbAllConvert.Location = new System.Drawing.Point(763, 5);
             this.ckbAllConvert.Name = "ckbAllConvert";
             this.ckbAllConvert.Size = new System.Drawing.Size(75, 21);
             this.ckbAllConvert.TabIndex = 7;
@@ -789,7 +790,7 @@
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.Red;
-            this.label1.Location = new System.Drawing.Point(380, 6);
+            this.label1.Location = new System.Drawing.Point(380, 7);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(68, 17);
             this.label1.TabIndex = 1;
@@ -799,7 +800,7 @@
             // 
             this.ckbDefaulePK.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbDefaulePK.AutoSize = true;
-            this.ckbDefaulePK.Location = new System.Drawing.Point(844, 4);
+            this.ckbDefaulePK.Location = new System.Drawing.Point(844, 5);
             this.ckbDefaulePK.Name = "ckbDefaulePK";
             this.ckbDefaulePK.Size = new System.Drawing.Size(75, 21);
             this.ckbDefaulePK.TabIndex = 25;
@@ -810,7 +811,7 @@
             // 
             this.ckbDefaultColNameCn.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbDefaultColNameCn.AutoSize = true;
-            this.ckbDefaultColNameCn.Location = new System.Drawing.Point(925, 4);
+            this.ckbDefaultColNameCn.Location = new System.Drawing.Point(925, 5);
             this.ckbDefaultColNameCn.Name = "ckbDefaultColNameCn";
             this.ckbDefaultColNameCn.Size = new System.Drawing.Size(111, 21);
             this.ckbDefaultColNameCn.TabIndex = 26;
@@ -820,7 +821,7 @@
             // txbDefaultColNameCN
             // 
             this.txbDefaultColNameCN.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbDefaultColNameCN.Location = new System.Drawing.Point(1042, 3);
+            this.txbDefaultColNameCN.Location = new System.Drawing.Point(1042, 4);
             this.txbDefaultColNameCN.Name = "txbDefaultColNameCN";
             this.txbDefaultColNameCN.Size = new System.Drawing.Size(142, 23);
             this.txbDefaultColNameCN.TabIndex = 27;
@@ -921,7 +922,7 @@
             // 
             this.cbbTableName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbTableName.FormattingEnabled = true;
-            this.cbbTableName.Location = new System.Drawing.Point(53, 6);
+            this.cbbTableName.Location = new System.Drawing.Point(53, 4);
             this.cbbTableName.Name = "cbbTableName";
             this.cbbTableName.Size = new System.Drawing.Size(291, 25);
             this.cbbTableName.TabIndex = 19;
@@ -934,6 +935,7 @@
             this.tsbImport,
             this.tsbAutoSQL,
             this.tsbDownLoad,
+            this.tsbDownloadLYTemplate,
             this.tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
@@ -967,6 +969,15 @@
             this.tsbDownLoad.Size = new System.Drawing.Size(97, 24);
             this.tsbDownLoad.Text = "下载模板(&D)";
             this.tsbDownLoad.Click += new System.EventHandler(this.tsbDownLoad_Click);
+            // 
+            // tsbDownloadLYTemplate
+            // 
+            this.tsbDownloadLYTemplate.Image = ((System.Drawing.Image)(resources.GetObject("tsbDownloadLYTemplate.Image")));
+            this.tsbDownloadLYTemplate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbDownloadLYTemplate.Name = "tsbDownloadLYTemplate";
+            this.tsbDownloadLYTemplate.Size = new System.Drawing.Size(110, 24);
+            this.tsbDownloadLYTemplate.Text = "下载LY模板(&D)";
+            this.tsbDownloadLYTemplate.Click += new System.EventHandler(this.tsbDownloadLYTemplate_Click);
             // 
             // tsbExit
             // 
@@ -1282,5 +1293,6 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Button btnGenerateSql;
+        private System.Windows.Forms.ToolStripButton tsbDownloadLYTemplate;
     }
 }
