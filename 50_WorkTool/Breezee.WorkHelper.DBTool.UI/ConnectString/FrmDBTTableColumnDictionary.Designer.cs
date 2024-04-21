@@ -115,6 +115,7 @@
             this.grbInputSql = new System.Windows.Forms.GroupBox();
             this.rtbInputSql = new System.Windows.Forms.RichTextBox();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.dgvInput = new System.Windows.Forms.DataGridView();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -810,11 +811,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(84, 0);
+            this.label2.Location = new System.Drawing.Point(65, 2);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 12);
+            this.label2.Size = new System.Drawing.Size(161, 12);
             this.label2.TabIndex = 13;
-            this.label2.Text = "提示信息";
+            this.label2.Text = "支持粘贴列编码及列名称替换";
             // 
             // dgvSelect
             // 
@@ -828,6 +829,7 @@
             this.dgvSelect.TabIndex = 0;
             this.dgvSelect.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSelect_CellEndEdit);
             this.dgvSelect.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvSelect_ColumnHeaderMouseDoubleClick);
+            this.dgvSelect.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvSelect_KeyDown);
             // 
             // cmsRemoveSelect
             // 
@@ -1154,6 +1156,7 @@
             // 
             // groupBox11
             // 
+            this.groupBox11.Controls.Add(this.label1);
             this.groupBox11.Controls.Add(this.dgvInput);
             this.groupBox11.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox11.Location = new System.Drawing.Point(0, 0);
@@ -1162,6 +1165,19 @@
             this.groupBox11.TabIndex = 19;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "粘贴或查询的列";
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.Location = new System.Drawing.Point(119, 1);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(185, 12);
+            this.label1.TabIndex = 14;
+            this.label1.Text = "支持粘贴列编码及列名称优先匹配";
             // 
             // dgvInput
             // 
@@ -1644,6 +1660,7 @@
             this.spcQuerySql.ResumeLayout(false);
             this.grbInputSql.ResumeLayout(false);
             this.groupBox11.ResumeLayout(false);
+            this.groupBox11.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInput)).EndInit();
             this.groupBox10.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -1790,5 +1807,6 @@
         private System.Windows.Forms.TabPage tpDate;
         private System.Windows.Forms.RichTextBox rtbIn;
         private System.Windows.Forms.RichTextBox rtbDate;
+        private System.Windows.Forms.Label label1;
     }
 }

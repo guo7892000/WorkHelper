@@ -64,6 +64,7 @@
             this.btnSavePath = new System.Windows.Forms.Button();
             this.btnImportPath = new System.Windows.Forms.Button();
             this.btnExport = new System.Windows.Forms.Button();
+            this.btnGenerate = new System.Windows.Forms.Button();
             this.label21 = new System.Windows.Forms.Label();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -172,7 +173,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1070, 279);
+            this.tabControl1.Size = new System.Drawing.Size(1070, 271);
             this.tabControl1.TabIndex = 43;
             // 
             // tpImport
@@ -183,7 +184,7 @@
             this.tpImport.Location = new System.Drawing.Point(4, 22);
             this.tpImport.Name = "tpImport";
             this.tpImport.Padding = new System.Windows.Forms.Padding(3);
-            this.tpImport.Size = new System.Drawing.Size(1062, 253);
+            this.tpImport.Size = new System.Drawing.Size(1062, 245);
             this.tpImport.TabIndex = 0;
             this.tpImport.Text = "导入清单";
             // 
@@ -195,7 +196,7 @@
             this.grbColumn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbColumn.Location = new System.Drawing.Point(3, 74);
             this.grbColumn.Name = "grbColumn";
-            this.grbColumn.Size = new System.Drawing.Size(1056, 176);
+            this.grbColumn.Size = new System.Drawing.Size(1056, 168);
             this.grbColumn.TabIndex = 8;
             this.grbColumn.TabStop = false;
             this.grbColumn.Text = "列清单";
@@ -220,7 +221,7 @@
             this.dgvColList.Location = new System.Drawing.Point(3, 17);
             this.dgvColList.Name = "dgvColList";
             this.dgvColList.RowTemplate.Height = 23;
-            this.dgvColList.Size = new System.Drawing.Size(1050, 156);
+            this.dgvColList.Size = new System.Drawing.Size(1050, 148);
             this.dgvColList.TabIndex = 0;
             this.dgvColList.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvColList_ColumnHeaderMouseDoubleClick);
             // 
@@ -353,7 +354,7 @@
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 99);
+            this.splitContainer2.Location = new System.Drawing.Point(0, 115);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -364,8 +365,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer1);
-            this.splitContainer2.Size = new System.Drawing.Size(1070, 561);
-            this.splitContainer2.SplitterDistance = 279;
+            this.splitContainer2.Size = new System.Drawing.Size(1070, 545);
+            this.splitContainer2.SplitterDistance = 271;
             this.splitContainer2.TabIndex = 44;
             // 
             // splitContainer1
@@ -382,7 +383,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer3);
-            this.splitContainer1.Size = new System.Drawing.Size(1070, 278);
+            this.splitContainer1.Size = new System.Drawing.Size(1070, 270);
             this.splitContainer1.SplitterDistance = 558;
             this.splitContainer1.TabIndex = 15;
             // 
@@ -393,7 +394,7 @@
             this.dgvModule.Location = new System.Drawing.Point(0, 82);
             this.dgvModule.Name = "dgvModule";
             this.dgvModule.RowTemplate.Height = 23;
-            this.dgvModule.Size = new System.Drawing.Size(558, 196);
+            this.dgvModule.Size = new System.Drawing.Size(558, 188);
             this.dgvModule.TabIndex = 1;
             this.dgvModule.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvModule_CellClick);
             this.dgvModule.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvModule_ColumnHeaderMouseDoubleClick);
@@ -421,7 +422,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 45F));
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.txbRemoveTablePre, 1, 1);
@@ -433,6 +434,7 @@
             this.tableLayoutPanel1.Controls.Add(this.btnSavePath, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnImportPath, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnExport, 5, 0);
+            this.tableLayoutPanel1.Controls.Add(this.btnGenerate, 6, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
@@ -494,9 +496,10 @@
             // txbEntityNameCN
             // 
             this.txbEntityNameCN.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.SetColumnSpan(this.txbEntityNameCN, 2);
             this.txbEntityNameCN.Location = new System.Drawing.Point(405, 30);
             this.txbEntityNameCN.Name = "txbEntityNameCN";
-            this.txbEntityNameCN.Size = new System.Drawing.Size(135, 21);
+            this.txbEntityNameCN.Size = new System.Drawing.Size(96, 21);
             this.txbEntityNameCN.TabIndex = 10;
             // 
             // txbSavePath
@@ -542,6 +545,19 @@
             this.btnExport.UseVisualStyleBackColor = true;
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
+            // btnGenerate
+            // 
+            this.btnGenerate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnGenerate.BackColor = System.Drawing.SystemColors.Control;
+            this.btnGenerate.ForeColor = System.Drawing.Color.Red;
+            this.btnGenerate.Location = new System.Drawing.Point(456, 3);
+            this.btnGenerate.Name = "btnGenerate";
+            this.btnGenerate.Size = new System.Drawing.Size(45, 20);
+            this.btnGenerate.TabIndex = 11;
+            this.btnGenerate.Text = "生成";
+            this.btnGenerate.UseVisualStyleBackColor = false;
+            this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
+            // 
             // label21
             // 
             this.label21.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -568,7 +584,7 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.tabControl2);
-            this.splitContainer3.Size = new System.Drawing.Size(508, 278);
+            this.splitContainer3.Size = new System.Drawing.Size(508, 270);
             this.splitContainer3.SplitterDistance = 215;
             this.splitContainer3.TabIndex = 20;
             // 
@@ -579,7 +595,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(215, 278);
+            this.groupBox2.Size = new System.Drawing.Size(215, 270);
             this.groupBox2.TabIndex = 18;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "模板内容";
@@ -589,7 +605,7 @@
             this.rtbConString.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbConString.Location = new System.Drawing.Point(3, 54);
             this.rtbConString.Name = "rtbConString";
-            this.rtbConString.Size = new System.Drawing.Size(209, 221);
+            this.rtbConString.Size = new System.Drawing.Size(209, 213);
             this.rtbConString.TabIndex = 14;
             this.rtbConString.Text = "";
             // 
@@ -623,7 +639,7 @@
             this.tabControl2.Location = new System.Drawing.Point(0, 0);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(289, 278);
+            this.tabControl2.Size = new System.Drawing.Size(289, 270);
             this.tabControl2.TabIndex = 19;
             // 
             // tabPage1
@@ -632,7 +648,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(281, 252);
+            this.tabPage1.Size = new System.Drawing.Size(281, 244);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "自定义变量";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -644,7 +660,7 @@
             this.dgvMyDefine.Location = new System.Drawing.Point(3, 3);
             this.dgvMyDefine.Name = "dgvMyDefine";
             this.dgvMyDefine.RowTemplate.Height = 23;
-            this.dgvMyDefine.Size = new System.Drawing.Size(275, 246);
+            this.dgvMyDefine.Size = new System.Drawing.Size(275, 238);
             this.dgvMyDefine.TabIndex = 2;
             // 
             // tabPage2
@@ -693,7 +709,7 @@
             this.uC_DbConnection1.Dock = System.Windows.Forms.DockStyle.Top;
             this.uC_DbConnection1.Location = new System.Drawing.Point(0, 27);
             this.uC_DbConnection1.Name = "uC_DbConnection1";
-            this.uC_DbConnection1.Size = new System.Drawing.Size(1070, 72);
+            this.uC_DbConnection1.Size = new System.Drawing.Size(1070, 88);
             this.uC_DbConnection1.TabIndex = 35;
             // 
             // FrmDBTDBAutoCodeFile
@@ -805,5 +821,6 @@
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button btnUpdate;
+        private System.Windows.Forms.Button btnGenerate;
     }
 }

@@ -174,8 +174,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox5);
-            this.splitContainer1.Size = new System.Drawing.Size(457, 607);
-            this.splitContainer1.SplitterDistance = 362;
+            this.splitContainer1.Size = new System.Drawing.Size(457, 600);
+            this.splitContainer1.SplitterDistance = 357;
             this.splitContainer1.TabIndex = 35;
             // 
             // groupBox3
@@ -185,7 +185,7 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(0, 0);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(457, 362);
+            this.groupBox3.Size = new System.Drawing.Size(457, 357);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "最终参数化后的SQL";
@@ -208,7 +208,7 @@
             this.rtbSqlOutput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbSqlOutput.Location = new System.Drawing.Point(3, 17);
             this.rtbSqlOutput.Name = "rtbSqlOutput";
-            this.rtbSqlOutput.Size = new System.Drawing.Size(451, 342);
+            this.rtbSqlOutput.Size = new System.Drawing.Size(451, 337);
             this.rtbSqlOutput.TabIndex = 0;
             this.rtbSqlOutput.Text = "";
             // 
@@ -218,7 +218,7 @@
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox5.Location = new System.Drawing.Point(0, 0);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(457, 241);
+            this.groupBox5.Size = new System.Drawing.Size(457, 239);
             this.groupBox5.TabIndex = 1;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "查询结果";
@@ -230,7 +230,7 @@
             this.dgvQuery.Location = new System.Drawing.Point(3, 17);
             this.dgvQuery.Name = "dgvQuery";
             this.dgvQuery.RowTemplate.Height = 23;
-            this.dgvQuery.Size = new System.Drawing.Size(451, 221);
+            this.dgvQuery.Size = new System.Drawing.Size(451, 219);
             this.dgvQuery.TabIndex = 0;
             // 
             // groupBox6
@@ -239,7 +239,7 @@
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox6.Location = new System.Drawing.Point(0, 42);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(426, 603);
+            this.groupBox6.Size = new System.Drawing.Size(426, 596);
             this.groupBox6.TabIndex = 0;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "参数化前配置的SQL";
@@ -249,7 +249,7 @@
             this.rtbSqlInput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbSqlInput.Location = new System.Drawing.Point(3, 17);
             this.rtbSqlInput.Name = "rtbSqlInput";
-            this.rtbSqlInput.Size = new System.Drawing.Size(420, 583);
+            this.rtbSqlInput.Size = new System.Drawing.Size(420, 576);
             this.rtbSqlInput.TabIndex = 1;
             this.rtbSqlInput.Text = "";
             // 
@@ -269,7 +269,7 @@
             // splitContainer3
             // 
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer3.Location = new System.Drawing.Point(0, 106);
+            this.splitContainer3.Location = new System.Drawing.Point(0, 113);
             this.splitContainer3.Name = "splitContainer3";
             // 
             // splitContainer3.Panel1
@@ -280,7 +280,7 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer3.Size = new System.Drawing.Size(1100, 645);
+            this.splitContainer3.Size = new System.Drawing.Size(1100, 638);
             this.splitContainer3.SplitterDistance = 426;
             this.splitContainer3.TabIndex = 1;
             // 
@@ -339,7 +339,7 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer1);
             this.splitContainer2.Panel2.Controls.Add(this.groupBox8);
-            this.splitContainer2.Size = new System.Drawing.Size(670, 645);
+            this.splitContainer2.Size = new System.Drawing.Size(670, 638);
             this.splitContainer2.SplitterDistance = 209;
             this.splitContainer2.TabIndex = 3;
             // 
@@ -357,8 +357,8 @@
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.groupBox4);
-            this.splitContainer4.Size = new System.Drawing.Size(209, 645);
-            this.splitContainer4.SplitterDistance = 322;
+            this.splitContainer4.Size = new System.Drawing.Size(209, 638);
+            this.splitContainer4.SplitterDistance = 318;
             this.splitContainer4.TabIndex = 4;
             // 
             // groupBox2
@@ -367,7 +367,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(209, 322);
+            this.groupBox2.Size = new System.Drawing.Size(209, 318);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "参数化前传入的条件";
@@ -379,7 +379,7 @@
             this.dgvConditionInput.Location = new System.Drawing.Point(3, 17);
             this.dgvConditionInput.Name = "dgvConditionInput";
             this.dgvConditionInput.RowTemplate.Height = 23;
-            this.dgvConditionInput.Size = new System.Drawing.Size(203, 302);
+            this.dgvConditionInput.Size = new System.Drawing.Size(203, 298);
             this.dgvConditionInput.TabIndex = 0;
             // 
             // groupBox4
@@ -388,7 +388,7 @@
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(209, 319);
+            this.groupBox4.Size = new System.Drawing.Size(209, 316);
             this.groupBox4.TabIndex = 2;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "最终参数化的条件";
@@ -400,7 +400,7 @@
             this.dgvConditionOutput.Location = new System.Drawing.Point(3, 17);
             this.dgvConditionOutput.Name = "dgvConditionOutput";
             this.dgvConditionOutput.RowTemplate.Height = 23;
-            this.dgvConditionOutput.Size = new System.Drawing.Size(203, 299);
+            this.dgvConditionOutput.Size = new System.Drawing.Size(203, 296);
             this.dgvConditionOutput.TabIndex = 1;
             // 
             // groupBox8
@@ -453,7 +453,7 @@
             this.uC_DbConnection1.Dock = System.Windows.Forms.DockStyle.Top;
             this.uC_DbConnection1.Location = new System.Drawing.Point(0, 27);
             this.uC_DbConnection1.Name = "uC_DbConnection1";
-            this.uC_DbConnection1.Size = new System.Drawing.Size(1100, 79);
+            this.uC_DbConnection1.Size = new System.Drawing.Size(1100, 86);
             this.uC_DbConnection1.TabIndex = 33;
             // 
             // FrmDBTAutoSqlVerify

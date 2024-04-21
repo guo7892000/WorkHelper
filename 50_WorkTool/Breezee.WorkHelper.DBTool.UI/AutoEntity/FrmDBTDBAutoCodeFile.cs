@@ -785,6 +785,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             
         }
+
+        private void btnGenerate_Click(object sender, EventArgs e)
+        {
+            tsbAutoSQL.PerformClick();
+        }
     }
 
     

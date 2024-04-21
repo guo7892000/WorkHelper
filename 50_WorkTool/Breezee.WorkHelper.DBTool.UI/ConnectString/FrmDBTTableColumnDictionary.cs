@@ -177,9 +177,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             toolTip1.SetToolTip(ckbClearSelect, "指加载数据时，会先清空【已选择】网格下的所有内容。");
             toolTip1.SetToolTip(ckbIsAutoExclude, "指加载数据时，会排除包含其后的文本内容（逗号分隔多个）的表名。");
             toolTip1.SetToolTip(ckbAllTableColumns, "指加载数据时，会查询和加载所有表下面的列清单。");
-            toolTip1.SetToolTip(ckbColumnMust, "选中后，在匹配列时，已选择网格中的【必填】列会处理选中状态，\n那样生成的YAPI参数是必填的。");
+            toolTip1.SetToolTip(ckbColumnMust, "选中后，在匹配列时，已选择网格中的【必填】列会处理选中状态，\r\n那样生成的YAPI参数是必填的。");
             toolTip1.SetToolTip(ckbIsPage, "选中后，在生成的YAPI参数里会包括分页相关参数。");
             toolTip1.SetToolTip(ckbNotFoundAdd, "选中后，在匹配时，如果找不到相关列信息，但还是会加到【已选择】网格中。");
+            toolTip1.SetToolTip(cbbTemplateType, "如果我们需要对生成的字符，做进一步字符替换处理时，\r\n可选择预保存好的字符替换模板。");
             //加载模板数据
             replaceStringData = new ReplaceStringXmlConfig(DBTGlobalValue.TableColumnDictionary.Xml_FileName);
             string sColName = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
@@ -2157,8 +2158,61 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 ShowInfo("未找到要删除的数据！");
             }
-        } 
+        }
         #endregion
+
+        private void dgvSelect_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Modifiers == Keys.Control && e.KeyCode == Keys.V)
+                {
+                    string pasteText = Clipboard.GetText().Trim();
+                    if (string.IsNullOrEmpty(pasteText))//包括IN的为生成的SQL，不用粘贴
+                    {
+                        return;
+                    }
+
+                    int iRow = 0;
+                    int iColumn = 0;
+                    Object[,] data = StringHelper.GetStringArray(ref pasteText, ref iRow, ref iColumn);
+                    if (iRow == 0 || iColumn < 2)
+                    {
+                        return;
+                    }
+
+                    DataTable dtMain = dgvSelect.GetBindingTable();
+                    //获取获取当前选中单元格所在的行序号
+                    for (int j = 0; j < iRow; j++)
+                    {
+                        string strData = data[j, 0].ToString().Trim();
+                        string strData2 = data[j, 1].ToString().Trim();
+                        if (string.IsNullOrEmpty(strData) || string.IsNullOrEmpty(strData2))
+                        {
+                            continue;
+                        }
+
+                        DataRow[] drArr = dtMain.Select(DBColumnSimpleEntity.SqlString.Name + "='" + strData + "'");
+                        if (drArr.Length > 0)
+                        {
+                            drArr[0][DBColumnSimpleEntity.SqlString.NameCN] = strData2;
+                        }
+                        else
+                        {
+                            drArr = dtMain.Select(DBColumnSimpleEntity.SqlString.Name + "='" + strData2 + "'");
+                            if (drArr.Length > 0)
+                            {
+                                drArr[0][DBColumnSimpleEntity.SqlString.NameCN] = strData;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErr(ex.Message);
+            }
+        }
     }
 
     public enum MybatisStringType

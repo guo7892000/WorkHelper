@@ -36,12 +36,12 @@
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnExecute = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.rtbSql = new System.Windows.Forms.RichTextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dgvQuery = new System.Windows.Forms.DataGridView();
-            this.btnExecute = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -108,24 +108,34 @@
             this.uC_DbConnection1.Dock = System.Windows.Forms.DockStyle.Top;
             this.uC_DbConnection1.Location = new System.Drawing.Point(0, 27);
             this.uC_DbConnection1.Name = "uC_DbConnection1";
-            this.uC_DbConnection1.Size = new System.Drawing.Size(934, 74);
+            this.uC_DbConnection1.Size = new System.Drawing.Size(934, 87);
             this.uC_DbConnection1.TabIndex = 33;
             // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.btnExecute);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox3.Location = new System.Drawing.Point(0, 101);
+            this.groupBox3.Location = new System.Drawing.Point(0, 114);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(934, 48);
             this.groupBox3.TabIndex = 35;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "选项";
             // 
+            // btnExecute
+            // 
+            this.btnExecute.Location = new System.Drawing.Point(25, 19);
+            this.btnExecute.Name = "btnExecute";
+            this.btnExecute.Size = new System.Drawing.Size(75, 23);
+            this.btnExecute.TabIndex = 0;
+            this.btnExecute.Text = "执行";
+            this.btnExecute.UseVisualStyleBackColor = true;
+            this.btnExecute.Click += new System.EventHandler(this.btnExecute_Click);
+            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 149);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 162);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -136,8 +146,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox2);
-            this.splitContainer1.Size = new System.Drawing.Size(934, 442);
-            this.splitContainer1.SplitterDistance = 207;
+            this.splitContainer1.Size = new System.Drawing.Size(934, 429);
+            this.splitContainer1.SplitterDistance = 200;
             this.splitContainer1.TabIndex = 36;
             // 
             // groupBox1
@@ -146,7 +156,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(934, 207);
+            this.groupBox1.Size = new System.Drawing.Size(934, 200);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "SQL输入";
@@ -156,7 +166,7 @@
             this.rtbSql.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbSql.Location = new System.Drawing.Point(3, 17);
             this.rtbSql.Name = "rtbSql";
-            this.rtbSql.Size = new System.Drawing.Size(928, 187);
+            this.rtbSql.Size = new System.Drawing.Size(928, 180);
             this.rtbSql.TabIndex = 0;
             this.rtbSql.Text = "";
             // 
@@ -166,7 +176,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(934, 231);
+            this.groupBox2.Size = new System.Drawing.Size(934, 225);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "查询结果";
@@ -178,18 +188,8 @@
             this.dgvQuery.Location = new System.Drawing.Point(3, 17);
             this.dgvQuery.Name = "dgvQuery";
             this.dgvQuery.RowTemplate.Height = 23;
-            this.dgvQuery.Size = new System.Drawing.Size(928, 211);
+            this.dgvQuery.Size = new System.Drawing.Size(928, 205);
             this.dgvQuery.TabIndex = 0;
-            // 
-            // btnExecute
-            // 
-            this.btnExecute.Location = new System.Drawing.Point(25, 19);
-            this.btnExecute.Name = "btnExecute";
-            this.btnExecute.Size = new System.Drawing.Size(75, 23);
-            this.btnExecute.TabIndex = 0;
-            this.btnExecute.Text = "执行";
-            this.btnExecute.UseVisualStyleBackColor = true;
-            this.btnExecute.Click += new System.EventHandler(this.btnExecute_Click);
             // 
             // FrmDBTSqlExecutor
             // 

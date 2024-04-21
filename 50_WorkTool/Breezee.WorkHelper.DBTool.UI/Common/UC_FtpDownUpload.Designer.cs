@@ -784,7 +784,7 @@
             this.label25.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label25.AutoSize = true;
             this.label25.ForeColor = System.Drawing.Color.Red;
-            this.label25.Location = new System.Drawing.Point(204, 125);
+            this.label25.Location = new System.Drawing.Point(204, 124);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(80, 17);
             this.label25.TabIndex = 4;
@@ -794,7 +794,7 @@
             // 
             this.cbbConnCharset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbConnCharset.FormattingEnabled = true;
-            this.cbbConnCharset.Location = new System.Drawing.Point(290, 121);
+            this.cbbConnCharset.Location = new System.Drawing.Point(290, 122);
             this.cbbConnCharset.Name = "cbbConnCharset";
             this.cbbConnCharset.Size = new System.Drawing.Size(161, 25);
             this.cbbConnCharset.TabIndex = 5;
@@ -824,7 +824,7 @@
             this.label12.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label12.AutoSize = true;
             this.label12.ForeColor = System.Drawing.Color.Black;
-            this.label12.Location = new System.Drawing.Point(3, 125);
+            this.label12.Location = new System.Drawing.Point(3, 124);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(68, 17);
             this.label12.TabIndex = 0;
@@ -833,7 +833,7 @@
             // txbFtpInitDir
             // 
             this.txbFtpInitDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbFtpInitDir.Location = new System.Drawing.Point(77, 122);
+            this.txbFtpInitDir.Location = new System.Drawing.Point(77, 121);
             this.txbFtpInitDir.Name = "txbFtpInitDir";
             this.txbFtpInitDir.Size = new System.Drawing.Size(121, 23);
             this.txbFtpInitDir.TabIndex = 1;
@@ -843,7 +843,7 @@
             this.label10.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label10.AutoSize = true;
             this.label10.ForeColor = System.Drawing.Color.Red;
-            this.label10.Location = new System.Drawing.Point(27, 156);
+            this.label10.Location = new System.Drawing.Point(27, 151);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(44, 17);
             this.label10.TabIndex = 0;
@@ -852,7 +852,7 @@
             // cbbFtpProtocol
             // 
             this.cbbFtpProtocol.FormattingEnabled = true;
-            this.cbbFtpProtocol.Location = new System.Drawing.Point(77, 152);
+            this.cbbFtpProtocol.Location = new System.Drawing.Point(77, 150);
             this.cbbFtpProtocol.Name = "cbbFtpProtocol";
             this.cbbFtpProtocol.Size = new System.Drawing.Size(121, 25);
             this.cbbFtpProtocol.TabIndex = 3;
@@ -862,7 +862,7 @@
             this.label15.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label15.AutoSize = true;
             this.label15.ForeColor = System.Drawing.Color.Red;
-            this.label15.Location = new System.Drawing.Point(204, 156);
+            this.label15.Location = new System.Drawing.Point(204, 151);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(80, 17);
             this.label15.TabIndex = 4;
@@ -872,7 +872,7 @@
             // 
             this.cbbFileCharSetEncode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbFileCharSetEncode.FormattingEnabled = true;
-            this.cbbFileCharSetEncode.Location = new System.Drawing.Point(290, 152);
+            this.cbbFileCharSetEncode.Location = new System.Drawing.Point(290, 150);
             this.cbbFileCharSetEncode.Name = "cbbFileCharSetEncode";
             this.cbbFileCharSetEncode.Size = new System.Drawing.Size(161, 25);
             this.cbbFileCharSetEncode.TabIndex = 5;
@@ -884,7 +884,7 @@
             this.panel1.Controls.Add(this.btnSaveConfig);
             this.panel1.Controls.Add(this.btnRemoveConfig);
             this.panel1.Controls.Add(this.btnCopyAdd);
-            this.panel1.Location = new System.Drawing.Point(3, 183);
+            this.panel1.Location = new System.Drawing.Point(3, 176);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(448, 23);
             this.panel1.TabIndex = 7;
@@ -894,7 +894,7 @@
             this.btnSaveConfig.ForeColor = System.Drawing.Color.Red;
             this.btnSaveConfig.Location = new System.Drawing.Point(2, 0);
             this.btnSaveConfig.Name = "btnSaveConfig";
-            this.btnSaveConfig.Size = new System.Drawing.Size(75, 23);
+            this.btnSaveConfig.Size = new System.Drawing.Size(75, 24);
             this.btnSaveConfig.TabIndex = 7;
             this.btnSaveConfig.Text = "保存配置";
             this.btnSaveConfig.UseVisualStyleBackColor = true;
@@ -904,7 +904,7 @@
             // 
             this.btnRemoveConfig.Location = new System.Drawing.Point(164, 0);
             this.btnRemoveConfig.Name = "btnRemoveConfig";
-            this.btnRemoveConfig.Size = new System.Drawing.Size(75, 23);
+            this.btnRemoveConfig.Size = new System.Drawing.Size(75, 24);
             this.btnRemoveConfig.TabIndex = 7;
             this.btnRemoveConfig.Text = "删除配置";
             this.btnRemoveConfig.UseVisualStyleBackColor = true;
@@ -914,7 +914,7 @@
             // 
             this.btnCopyAdd.Location = new System.Drawing.Point(83, 0);
             this.btnCopyAdd.Name = "btnCopyAdd";
-            this.btnCopyAdd.Size = new System.Drawing.Size(75, 23);
+            this.btnCopyAdd.Size = new System.Drawing.Size(75, 24);
             this.btnCopyAdd.TabIndex = 7;
             this.btnCopyAdd.Text = "复制新增";
             this.btnCopyAdd.UseVisualStyleBackColor = true;

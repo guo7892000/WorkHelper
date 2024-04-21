@@ -68,8 +68,12 @@
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.label14 = new System.Windows.Forms.Label();
-            this.btnReplaceString = new System.Windows.Forms.Button();
             this.cbbTemplateType = new System.Windows.Forms.ComboBox();
+            this.btnReplaceString = new System.Windows.Forms.Button();
+            this.label21 = new System.Windows.Forms.Label();
+            this.txbReplaceTemplateName = new System.Windows.Forms.TextBox();
+            this.btnSaveReplaceTemplate = new System.Windows.Forms.Button();
+            this.btnRemoveTemplate = new System.Windows.Forms.Button();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiSortBySelectItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -103,10 +107,6 @@
             this.ckbOnlySaleSelected = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.uC_FtpDownUpload1 = new Breezee.WorkHelper.DBTool.UI.UC_FtpDownUpload();
-            this.label21 = new System.Windows.Forms.Label();
-            this.txbReplaceTemplateName = new System.Windows.Forms.TextBox();
-            this.btnSaveReplaceTemplate = new System.Windows.Forms.Button();
-            this.btnRemoveTemplate = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -297,7 +297,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox4);
             this.splitContainer1.Panel2.Controls.Add(this.groupBox7);
-            this.splitContainer1.Size = new System.Drawing.Size(1230, 439);
+            this.splitContainer1.Size = new System.Drawing.Size(1230, 418);
             this.splitContainer1.SplitterDistance = 688;
             this.splitContainer1.TabIndex = 25;
             // 
@@ -307,7 +307,7 @@
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox5.Location = new System.Drawing.Point(0, 109);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(688, 330);
+            this.groupBox5.Size = new System.Drawing.Size(688, 309);
             this.groupBox5.TabIndex = 1;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "待复制的本地源目录或源文件";
@@ -320,7 +320,7 @@
             this.dgvFileListWaitFor.Location = new System.Drawing.Point(3, 17);
             this.dgvFileListWaitFor.Name = "dgvFileListWaitFor";
             this.dgvFileListWaitFor.RowTemplate.Height = 23;
-            this.dgvFileListWaitFor.Size = new System.Drawing.Size(682, 310);
+            this.dgvFileListWaitFor.Size = new System.Drawing.Size(682, 289);
             this.dgvFileListWaitFor.TabIndex = 0;
             this.dgvFileListWaitFor.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvFileListWaitFor_ColumnHeaderMouseDoubleClick);
             // 
@@ -505,7 +505,7 @@
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(0, 81);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(538, 358);
+            this.groupBox4.Size = new System.Drawing.Size(538, 337);
             this.groupBox4.TabIndex = 0;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "替换的新旧字符";
@@ -528,7 +528,7 @@
             this.dgvOldNewChar.Location = new System.Drawing.Point(3, 17);
             this.dgvOldNewChar.Name = "dgvOldNewChar";
             this.dgvOldNewChar.RowTemplate.Height = 23;
-            this.dgvOldNewChar.Size = new System.Drawing.Size(532, 338);
+            this.dgvOldNewChar.Size = new System.Drawing.Size(532, 317);
             this.dgvOldNewChar.TabIndex = 0;
             this.dgvOldNewChar.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvOldNewChar_ColumnHeaderMouseDoubleClick);
             this.dgvOldNewChar.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvOldNewChar_DataError);
@@ -552,7 +552,7 @@
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 167F));
             this.tableLayoutPanel7.Controls.Add(this.label14, 0, 0);
             this.tableLayoutPanel7.Controls.Add(this.cbbTemplateType, 1, 0);
             this.tableLayoutPanel7.Controls.Add(this.btnReplaceString, 2, 0);
@@ -581,6 +581,16 @@
             this.label14.TabIndex = 5;
             this.label14.Text = "模板类型：";
             // 
+            // cbbTemplateType
+            // 
+            this.cbbTemplateType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbbTemplateType.FormattingEnabled = true;
+            this.cbbTemplateType.Location = new System.Drawing.Point(74, 4);
+            this.cbbTemplateType.Name = "cbbTemplateType";
+            this.cbbTemplateType.Size = new System.Drawing.Size(148, 20);
+            this.cbbTemplateType.TabIndex = 0;
+            this.cbbTemplateType.SelectedIndexChanged += new System.EventHandler(this.cbbTemplateType_SelectedIndexChanged);
+            // 
             // btnReplaceString
             // 
             this.btnReplaceString.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -593,15 +603,47 @@
             this.btnReplaceString.UseVisualStyleBackColor = true;
             this.btnReplaceString.Click += new System.EventHandler(this.btnReplaceString_Click);
             // 
-            // cbbTemplateType
+            // label21
             // 
-            this.cbbTemplateType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbbTemplateType.FormattingEnabled = true;
-            this.cbbTemplateType.Location = new System.Drawing.Point(74, 4);
-            this.cbbTemplateType.Name = "cbbTemplateType";
-            this.cbbTemplateType.Size = new System.Drawing.Size(148, 20);
-            this.cbbTemplateType.TabIndex = 0;
-            this.cbbTemplateType.SelectedIndexChanged += new System.EventHandler(this.cbbTemplateType_SelectedIndexChanged);
+            this.label21.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(3, 39);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(65, 12);
+            this.label21.TabIndex = 6;
+            this.label21.Text = "模板名称：";
+            // 
+            // txbReplaceTemplateName
+            // 
+            this.txbReplaceTemplateName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbReplaceTemplateName.Location = new System.Drawing.Point(74, 34);
+            this.txbReplaceTemplateName.Name = "txbReplaceTemplateName";
+            this.txbReplaceTemplateName.Size = new System.Drawing.Size(148, 21);
+            this.txbReplaceTemplateName.TabIndex = 7;
+            // 
+            // btnSaveReplaceTemplate
+            // 
+            this.btnSaveReplaceTemplate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnSaveReplaceTemplate.Location = new System.Drawing.Point(228, 33);
+            this.btnSaveReplaceTemplate.Name = "btnSaveReplaceTemplate";
+            this.btnSaveReplaceTemplate.Size = new System.Drawing.Size(62, 23);
+            this.btnSaveReplaceTemplate.TabIndex = 8;
+            this.btnSaveReplaceTemplate.Text = "保存模板";
+            this.toolTip1.SetToolTip(this.btnSaveReplaceTemplate, "保存模板");
+            this.btnSaveReplaceTemplate.UseVisualStyleBackColor = true;
+            this.btnSaveReplaceTemplate.Click += new System.EventHandler(this.btnSaveReplaceTemplate_Click);
+            // 
+            // btnRemoveTemplate
+            // 
+            this.btnRemoveTemplate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnRemoveTemplate.Location = new System.Drawing.Point(296, 33);
+            this.btnRemoveTemplate.Name = "btnRemoveTemplate";
+            this.btnRemoveTemplate.Size = new System.Drawing.Size(66, 23);
+            this.btnRemoveTemplate.TabIndex = 9;
+            this.btnRemoveTemplate.Text = "删除模板";
+            this.toolTip1.SetToolTip(this.btnRemoveTemplate, "删除模板");
+            this.btnRemoveTemplate.UseVisualStyleBackColor = true;
+            this.btnRemoveTemplate.Click += new System.EventHandler(this.btnRemoveTemplate_Click);
             // 
             // contextMenuStrip2
             // 
@@ -622,10 +664,10 @@
             this.tabControl1.Controls.Add(this.tpDeal);
             this.tabControl1.Controls.Add(this.tpResult);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 286);
+            this.tabControl1.Location = new System.Drawing.Point(0, 307);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1244, 471);
+            this.tabControl1.Size = new System.Drawing.Size(1244, 450);
             this.tabControl1.TabIndex = 26;
             // 
             // tpDeal
@@ -634,7 +676,7 @@
             this.tpDeal.Location = new System.Drawing.Point(4, 22);
             this.tpDeal.Name = "tpDeal";
             this.tpDeal.Padding = new System.Windows.Forms.Padding(3);
-            this.tpDeal.Size = new System.Drawing.Size(1236, 445);
+            this.tpDeal.Size = new System.Drawing.Size(1236, 424);
             this.tpDeal.TabIndex = 0;
             this.tpDeal.Text = "待处理";
             this.tpDeal.UseVisualStyleBackColor = true;
@@ -645,7 +687,7 @@
             this.tpResult.Location = new System.Drawing.Point(4, 22);
             this.tpResult.Name = "tpResult";
             this.tpResult.Padding = new System.Windows.Forms.Padding(3);
-            this.tpResult.Size = new System.Drawing.Size(1236, 445);
+            this.tpResult.Size = new System.Drawing.Size(1236, 429);
             this.tpResult.TabIndex = 1;
             this.tpResult.Text = "处理结果";
             this.tpResult.UseVisualStyleBackColor = true;
@@ -665,7 +707,7 @@
             this.splitContainer3.Panel2.Controls.Add(this.groupBox10);
             this.splitContainer3.Panel2.Controls.Add(this.groupBox11);
             this.splitContainer3.Panel2.Controls.Add(this.groupBox9);
-            this.splitContainer3.Size = new System.Drawing.Size(1230, 439);
+            this.splitContainer3.Size = new System.Drawing.Size(1230, 423);
             this.splitContainer3.SplitterDistance = 707;
             this.splitContainer3.TabIndex = 3;
             // 
@@ -681,7 +723,7 @@
             this.groupBox6.Location = new System.Drawing.Point(0, 0);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Padding = new System.Windows.Forms.Padding(5);
-            this.groupBox6.Size = new System.Drawing.Size(707, 439);
+            this.groupBox6.Size = new System.Drawing.Size(707, 423);
             this.groupBox6.TabIndex = 2;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "转换成功文件清单";
@@ -746,7 +788,7 @@
             this.dgvResult.Location = new System.Drawing.Point(5, 19);
             this.dgvResult.Name = "dgvResult";
             this.dgvResult.RowTemplate.Height = 23;
-            this.dgvResult.Size = new System.Drawing.Size(697, 415);
+            this.dgvResult.Size = new System.Drawing.Size(697, 399);
             this.dgvResult.TabIndex = 0;
             this.dgvResult.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvResult_ColumnHeaderMouseDoubleClick);
             // 
@@ -757,7 +799,7 @@
             this.groupBox10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox10.Location = new System.Drawing.Point(0, 182);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(519, 257);
+            this.groupBox10.Size = new System.Drawing.Size(519, 241);
             this.groupBox10.TabIndex = 1;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "查找文件清单";
@@ -780,7 +822,7 @@
             this.dgvResultFilter.Location = new System.Drawing.Point(3, 17);
             this.dgvResultFilter.Name = "dgvResultFilter";
             this.dgvResultFilter.RowTemplate.Height = 23;
-            this.dgvResultFilter.Size = new System.Drawing.Size(513, 237);
+            this.dgvResultFilter.Size = new System.Drawing.Size(513, 221);
             this.dgvResultFilter.TabIndex = 0;
             this.dgvResultFilter.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvResultFilter_KeyDown);
             // 
@@ -979,50 +1021,8 @@
             this.uC_FtpDownUpload1.Dock = System.Windows.Forms.DockStyle.Top;
             this.uC_FtpDownUpload1.Location = new System.Drawing.Point(0, 73);
             this.uC_FtpDownUpload1.Name = "uC_FtpDownUpload1";
-            this.uC_FtpDownUpload1.Size = new System.Drawing.Size(1244, 213);
+            this.uC_FtpDownUpload1.Size = new System.Drawing.Size(1244, 234);
             this.uC_FtpDownUpload1.TabIndex = 27;
-            // 
-            // label21
-            // 
-            this.label21.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(3, 39);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(65, 12);
-            this.label21.TabIndex = 6;
-            this.label21.Text = "模板名称：";
-            // 
-            // txbReplaceTemplateName
-            // 
-            this.txbReplaceTemplateName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbReplaceTemplateName.Location = new System.Drawing.Point(74, 34);
-            this.txbReplaceTemplateName.Name = "txbReplaceTemplateName";
-            this.txbReplaceTemplateName.Size = new System.Drawing.Size(148, 21);
-            this.txbReplaceTemplateName.TabIndex = 7;
-            // 
-            // btnSaveReplaceTemplate
-            // 
-            this.btnSaveReplaceTemplate.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnSaveReplaceTemplate.Location = new System.Drawing.Point(228, 33);
-            this.btnSaveReplaceTemplate.Name = "btnSaveReplaceTemplate";
-            this.btnSaveReplaceTemplate.Size = new System.Drawing.Size(62, 23);
-            this.btnSaveReplaceTemplate.TabIndex = 8;
-            this.btnSaveReplaceTemplate.Text = "保存模板";
-            this.toolTip1.SetToolTip(this.btnSaveReplaceTemplate, "保存模板");
-            this.btnSaveReplaceTemplate.UseVisualStyleBackColor = true;
-            this.btnSaveReplaceTemplate.Click += new System.EventHandler(this.btnSaveReplaceTemplate_Click);
-            // 
-            // btnRemoveTemplate
-            // 
-            this.btnRemoveTemplate.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnRemoveTemplate.Location = new System.Drawing.Point(296, 33);
-            this.btnRemoveTemplate.Name = "btnRemoveTemplate";
-            this.btnRemoveTemplate.Size = new System.Drawing.Size(66, 23);
-            this.btnRemoveTemplate.TabIndex = 9;
-            this.btnRemoveTemplate.Text = "删除模板";
-            this.toolTip1.SetToolTip(this.btnRemoveTemplate, "删除模板");
-            this.btnRemoveTemplate.UseVisualStyleBackColor = true;
-            this.btnRemoveTemplate.Click += new System.EventHandler(this.btnRemoveTemplate_Click);
             // 
             // FrmReplaceTextFileStringUC
             // 

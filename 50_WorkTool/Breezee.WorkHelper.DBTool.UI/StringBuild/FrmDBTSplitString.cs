@@ -37,6 +37,8 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             cbbExample.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), true, true);
             toolTip1.SetToolTip(ckbOneRowOneColumn, "选中时，如数据只有一行时，分隔后所有值都在A列中");
             toolTip1.SetToolTip(ckbIgnoreEmptyData, "选中时，分隔的空字符将被去掉，即列值会前移");
+            toolTip1.SetToolTip(txbSplitListSplitChar, "分隔符清单中的分隔符，如分隔符清单为【,-;-|】，横杆为其分隔符，\r\n那么分隔符清单就为：逗号、分号、竖线。");
+            toolTip1.SetToolTip(txbSplitList, "分隔符清单，即有哪些分隔符，使用固定字符分隔表示。");
         }
         private void btnSplit_Click(object sender, EventArgs e)
         {

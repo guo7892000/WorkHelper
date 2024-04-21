@@ -41,6 +41,7 @@
             this.cbbTableName = new System.Windows.Forms.ComboBox();
             this.rtbWhere = new System.Windows.Forms.RichTextBox();
             this.ckbGetTableList = new System.Windows.Forms.CheckBox();
+            this.ckbResultNewLine = new System.Windows.Forms.CheckBox();
             this.lblTableWhereInfo = new System.Windows.Forms.Label();
             this.grbConSting = new System.Windows.Forms.GroupBox();
             this.label21 = new System.Windows.Forms.Label();
@@ -62,7 +63,6 @@
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.ckbResultNewLine = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -124,7 +124,7 @@
             this.groupBox2.Controls.Add(this.tableLayoutPanel1);
             this.groupBox2.Controls.Add(this.lblTableWhereInfo);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox2.Location = new System.Drawing.Point(0, 104);
+            this.groupBox2.Location = new System.Drawing.Point(0, 114);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(893, 95);
             this.groupBox2.TabIndex = 37;
@@ -208,6 +208,19 @@
             this.ckbGetTableList.UseVisualStyleBackColor = true;
             this.ckbGetTableList.CheckedChanged += new System.EventHandler(this.ckbGetTableList_CheckedChanged);
             // 
+            // ckbResultNewLine
+            // 
+            this.ckbResultNewLine.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbResultNewLine.AutoSize = true;
+            this.ckbResultNewLine.Checked = true;
+            this.ckbResultNewLine.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbResultNewLine.Location = new System.Drawing.Point(422, 5);
+            this.ckbResultNewLine.Name = "ckbResultNewLine";
+            this.ckbResultNewLine.Size = new System.Drawing.Size(72, 16);
+            this.ckbResultNewLine.TabIndex = 6;
+            this.ckbResultNewLine.Text = "结果换行";
+            this.ckbResultNewLine.UseVisualStyleBackColor = true;
+            // 
             // lblTableWhereInfo
             // 
             this.lblTableWhereInfo.AutoSize = true;
@@ -226,7 +239,7 @@
             this.grbConSting.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbConSting.Location = new System.Drawing.Point(0, 0);
             this.grbConSting.Name = "grbConSting";
-            this.grbConSting.Size = new System.Drawing.Size(893, 88);
+            this.grbConSting.Size = new System.Drawing.Size(893, 85);
             this.grbConSting.TabIndex = 38;
             this.grbConSting.TabStop = false;
             this.grbConSting.Text = "拼接字符";
@@ -249,7 +262,7 @@
             this.rtbConString.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbConString.Location = new System.Drawing.Point(3, 17);
             this.rtbConString.Name = "rtbConString";
-            this.rtbConString.Size = new System.Drawing.Size(887, 68);
+            this.rtbConString.Size = new System.Drawing.Size(887, 65);
             this.rtbConString.TabIndex = 5;
             this.rtbConString.Text = "";
             // 
@@ -261,7 +274,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(893, 251);
+            this.tabControl1.Size = new System.Drawing.Size(893, 244);
             this.tabControl1.TabIndex = 39;
             // 
             // tpImport
@@ -271,7 +284,7 @@
             this.tpImport.Location = new System.Drawing.Point(4, 22);
             this.tpImport.Name = "tpImport";
             this.tpImport.Padding = new System.Windows.Forms.Padding(3);
-            this.tpImport.Size = new System.Drawing.Size(885, 225);
+            this.tpImport.Size = new System.Drawing.Size(885, 218);
             this.tpImport.TabIndex = 0;
             this.tpImport.Text = "导入清单";
             // 
@@ -283,7 +296,7 @@
             this.grbTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbTable.Location = new System.Drawing.Point(3, 3);
             this.grbTable.Name = "grbTable";
-            this.grbTable.Size = new System.Drawing.Size(879, 219);
+            this.grbTable.Size = new System.Drawing.Size(879, 212);
             this.grbTable.TabIndex = 1;
             this.grbTable.TabStop = false;
             this.grbTable.Text = "表的列信息";
@@ -297,7 +310,7 @@
             this.dgvTableList.Location = new System.Drawing.Point(3, 17);
             this.dgvTableList.Name = "dgvTableList";
             this.dgvTableList.RowTemplate.Height = 23;
-            this.dgvTableList.Size = new System.Drawing.Size(873, 199);
+            this.dgvTableList.Size = new System.Drawing.Size(873, 192);
             this.dgvTableList.TabIndex = 0;
             // 
             // cmsGird
@@ -402,13 +415,13 @@
             this.uC_DbConnection1.Location = new System.Drawing.Point(0, 27);
             this.uC_DbConnection1.Margin = new System.Windows.Forms.Padding(4);
             this.uC_DbConnection1.Name = "uC_DbConnection1";
-            this.uC_DbConnection1.Size = new System.Drawing.Size(893, 77);
+            this.uC_DbConnection1.Size = new System.Drawing.Size(893, 87);
             this.uC_DbConnection1.TabIndex = 36;
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 199);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 209);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -419,22 +432,9 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(893, 343);
-            this.splitContainer1.SplitterDistance = 88;
+            this.splitContainer1.Size = new System.Drawing.Size(893, 333);
+            this.splitContainer1.SplitterDistance = 85;
             this.splitContainer1.TabIndex = 40;
-            // 
-            // ckbResultNewLine
-            // 
-            this.ckbResultNewLine.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ckbResultNewLine.AutoSize = true;
-            this.ckbResultNewLine.Checked = true;
-            this.ckbResultNewLine.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbResultNewLine.Location = new System.Drawing.Point(422, 5);
-            this.ckbResultNewLine.Name = "ckbResultNewLine";
-            this.ckbResultNewLine.Size = new System.Drawing.Size(72, 16);
-            this.ckbResultNewLine.TabIndex = 6;
-            this.ckbResultNewLine.Text = "结果换行";
-            this.ckbResultNewLine.UseVisualStyleBackColor = true;
             // 
             // FrmDBTReadDataBaseString
             // 
