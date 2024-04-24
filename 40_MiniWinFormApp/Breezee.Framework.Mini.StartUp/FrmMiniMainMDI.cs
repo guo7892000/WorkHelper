@@ -1156,10 +1156,13 @@ namespace Breezee.Framework.Mini.StartUp
                     _WinFormConfig.Set(GlobalKey.Upgrade_LatestVersionRootDir, sNewRoot, "新版本的根目录");
                     sUpgradeNewAppFullPath = Path.Combine(sNewRoot, MiniGlobalValue.AppStartUpExeName);
                     _WinFormConfig.Save();//保存配置
-                    //覆盖桌面快捷方式
-                    StartUpHelper.ReplaceDesktopQuickLink(sNewRoot);
-                    _WinFormConfig.Save();//保存配置
 
+                    if(_WinFormConfig.Get(GlobalKey.Upgrade_IsAutoCorrectDesktopQuickLink, "1").Equals("1"))
+                    {
+                        //覆盖桌面快捷方式：杀毒软件也有可能会误报为病毒（本人电脑装了360，亲测会误报病毒）
+                        StartUpHelper.ReplaceDesktopQuickLink(sNewRoot);
+                    }
+                    
                     IsUpgradeColseOldApp = true;
                     _sDestopLastMsg = "WorkHelper" + sServerVersion + "版本已成功下载并解压！";
                     ShowGlobalMsg_Click(this, new ShowGlobalMsgEventArgs(_sDestopLastMsg));

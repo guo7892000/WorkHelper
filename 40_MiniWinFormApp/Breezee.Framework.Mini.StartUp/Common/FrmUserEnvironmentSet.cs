@@ -105,6 +105,7 @@ namespace Breezee.Framework.Mini.StartUp
             ckbUpgradeDelNewZipFile.Checked = _WinFormConfig.Get(GlobalKey.Upgrade_IsDeleteNewVerZipFile, "1").Equals("1") ? true : false; //默认升级新版本成功后删除新版本的压缩包
             toolTip1.SetToolTip(ckbUpgradeSuccessDelOldVerion, "如选中本项，升级完成后会自动删除旧版本，一些杀毒软件会误报为病毒，所以我们可以不选中本项，升级完成后自行删除旧版本！");
             txbUpgradeTempDir.Text = _WinFormConfig.Get(GlobalKey.Upgrade_TempPath, GlobalContext.PathTemp());
+            ckbUpgradeAutoAjustDesktopQuickLink.Checked = _WinFormConfig.Get(GlobalKey.Upgrade_IsAutoCorrectDesktopQuickLink, "1").Equals("1") ? true : false;
             //日志配置
             ckbEnableLog.Checked = _WinFormConfig.Get(GlobalKey.GlobalLog_IsEnableLog, "0").Equals("1") ? true : false;
             txbLogPath.Text = _WinFormConfig.Get(GlobalKey.GlobalLog_LogPath, @"\Log");
@@ -259,7 +260,8 @@ namespace Breezee.Framework.Mini.StartUp
             _WinFormConfig.Set(GlobalKey.Upgrade_IsAutoCheckVersion, ckbAutoCheckVersion.Checked ? "1" : "0", "是否自动检测新版本");
             _WinFormConfig.Set(GlobalKey.Upgrade_IsDeleteOldVersion, ckbUpgradeSuccessDelOldVerion.Checked ? "1" : "0", "是否在新版本升级成功后删除旧版本");
             _WinFormConfig.Set(GlobalKey.Upgrade_IsDeleteOldVersionNeedConfirm, ckbDelOldNeedConfirm.Checked ? "1" : "0", "是否在新版本升级成功后需要确认才删除旧版本");
-            _WinFormConfig.Set(GlobalKey.Upgrade_IsDeleteNewVerZipFile, ckbUpgradeDelNewZipFile.Checked ? "1" : "0", "是否升级新版本成功后删除新版本的压缩包"); 
+            _WinFormConfig.Set(GlobalKey.Upgrade_IsDeleteNewVerZipFile, ckbUpgradeDelNewZipFile.Checked ? "1" : "0", "是否升级新版本成功后删除新版本的压缩包");
+            _WinFormConfig.Set(GlobalKey.Upgrade_IsAutoCorrectDesktopQuickLink, ckbUpgradeAutoAjustDesktopQuickLink.Checked ? "1" : "0", "是否升级新版本成功后自动修正桌面快捷方式");
             _WinFormConfig.Set(GlobalKey.Upgrade_TempPath, txbUpgradeTempDir.Text.Trim(),"临时升级文件保存路径");
             _WinFormConfig.Set(GlobalKey.MaxOpenFormNum, nudMaxOpenForm.Value.ToString(), "打开窗体的最大数");
             WinFormContext.Instance.MaxOpenFormNum = int.Parse(nudMaxOpenForm.Value.ToString());//重新给全局变量赋值

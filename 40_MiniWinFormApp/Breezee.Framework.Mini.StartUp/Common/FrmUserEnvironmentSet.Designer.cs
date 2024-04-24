@@ -121,6 +121,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.fbdSelectPath = new System.Windows.Forms.FolderBrowserDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.ckbUpgradeAutoAjustDesktopQuickLink = new System.Windows.Forms.CheckBox();
+            this.groupBox11 = new System.Windows.Forms.GroupBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -149,6 +151,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudKeepDays)).BeginInit();
             this.tpOther.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            this.groupBox11.SuspendLayout();
             this.SuspendLayout();
             // 
             // label2
@@ -196,7 +199,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(768, 82);
+            this.groupBox1.Size = new System.Drawing.Size(770, 82);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "主窗体样式设置";
@@ -209,7 +212,7 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 341F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 349F));
             this.tableLayoutPanel3.Controls.Add(this.btnSelectPicMain, 3, 1);
             this.tableLayoutPanel3.Controls.Add(this.txbSkinValueMain, 1, 1);
             this.tableLayoutPanel3.Controls.Add(this.cbbColorMain, 2, 0);
@@ -221,7 +224,7 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(762, 62);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(764, 62);
             this.tableLayoutPanel3.TabIndex = 9;
             // 
             // btnSelectPicMain
@@ -280,7 +283,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox2.Location = new System.Drawing.Point(3, 85);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(768, 90);
+            this.groupBox2.Size = new System.Drawing.Size(770, 90);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "子窗体样式设置";
@@ -293,7 +296,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 341F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 349F));
             this.tableLayoutPanel2.Controls.Add(this.btnSelectPicCommon, 3, 1);
             this.tableLayoutPanel2.Controls.Add(this.txbSkinValueCommon, 1, 1);
             this.tableLayoutPanel2.Controls.Add(this.cbbColorCommon, 2, 0);
@@ -305,7 +308,7 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(762, 70);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(764, 70);
             this.tableLayoutPanel2.TabIndex = 9;
             // 
             // btnSelectPicCommon
@@ -363,22 +366,20 @@
             // 
             // tpBase
             // 
+            this.tpBase.Controls.Add(this.groupBox11);
             this.tpBase.Controls.Add(this.groupBox6);
             this.tpBase.Controls.Add(this.groupBox4);
             this.tpBase.Controls.Add(this.groupBox3);
             this.tpBase.Location = new System.Drawing.Point(4, 22);
             this.tpBase.Name = "tpBase";
             this.tpBase.Padding = new System.Windows.Forms.Padding(3);
-            this.tpBase.Size = new System.Drawing.Size(774, 408);
+            this.tpBase.Size = new System.Drawing.Size(776, 408);
             this.tpBase.TabIndex = 1;
             this.tpBase.Text = "基本配置";
             this.tpBase.UseVisualStyleBackColor = true;
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.ckbUpgradeDelNewZipFile);
-            this.groupBox6.Controls.Add(this.ckbDelOldNeedConfirm);
-            this.groupBox6.Controls.Add(this.ckbUpgradeSuccessDelOldVerion);
             this.groupBox6.Controls.Add(this.btnSelectUpgradeTmpPath);
             this.groupBox6.Controls.Add(this.txbUpgradeTempDir);
             this.groupBox6.Controls.Add(this.label6);
@@ -386,7 +387,7 @@
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox6.Location = new System.Drawing.Point(3, 104);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(768, 67);
+            this.groupBox6.Size = new System.Drawing.Size(770, 67);
             this.groupBox6.TabIndex = 2;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "升级配置";
@@ -394,17 +395,17 @@
             // ckbUpgradeDelNewZipFile
             // 
             this.ckbUpgradeDelNewZipFile.AutoSize = true;
-            this.ckbUpgradeDelNewZipFile.Location = new System.Drawing.Point(411, 44);
+            this.ckbUpgradeDelNewZipFile.Location = new System.Drawing.Point(239, 20);
             this.ckbUpgradeDelNewZipFile.Name = "ckbUpgradeDelNewZipFile";
-            this.ckbUpgradeDelNewZipFile.Size = new System.Drawing.Size(144, 16);
+            this.ckbUpgradeDelNewZipFile.Size = new System.Drawing.Size(96, 16);
             this.ckbUpgradeDelNewZipFile.TabIndex = 6;
-            this.ckbUpgradeDelNewZipFile.Text = "升级成功删除新压缩包";
+            this.ckbUpgradeDelNewZipFile.Text = "删除新压缩包";
             this.ckbUpgradeDelNewZipFile.UseVisualStyleBackColor = true;
             // 
             // ckbDelOldNeedConfirm
             // 
             this.ckbDelOldNeedConfirm.AutoSize = true;
-            this.ckbDelOldNeedConfirm.Location = new System.Drawing.Point(273, 44);
+            this.ckbDelOldNeedConfirm.Location = new System.Drawing.Point(101, 20);
             this.ckbDelOldNeedConfirm.Name = "ckbDelOldNeedConfirm";
             this.ckbDelOldNeedConfirm.Size = new System.Drawing.Size(132, 16);
             this.ckbDelOldNeedConfirm.TabIndex = 5;
@@ -414,11 +415,11 @@
             // ckbUpgradeSuccessDelOldVerion
             // 
             this.ckbUpgradeSuccessDelOldVerion.AutoSize = true;
-            this.ckbUpgradeSuccessDelOldVerion.Location = new System.Drawing.Point(128, 44);
+            this.ckbUpgradeSuccessDelOldVerion.Location = new System.Drawing.Point(11, 20);
             this.ckbUpgradeSuccessDelOldVerion.Name = "ckbUpgradeSuccessDelOldVerion";
-            this.ckbUpgradeSuccessDelOldVerion.Size = new System.Drawing.Size(132, 16);
+            this.ckbUpgradeSuccessDelOldVerion.Size = new System.Drawing.Size(84, 16);
             this.ckbUpgradeSuccessDelOldVerion.TabIndex = 4;
-            this.ckbUpgradeSuccessDelOldVerion.Text = "升级成功删除旧版本";
+            this.ckbUpgradeSuccessDelOldVerion.Text = "删除旧版本";
             this.ckbUpgradeSuccessDelOldVerion.UseVisualStyleBackColor = true;
             // 
             // btnSelectUpgradeTmpPath
@@ -466,7 +467,7 @@
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox4.Location = new System.Drawing.Point(3, 55);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(768, 49);
+            this.groupBox4.Size = new System.Drawing.Size(770, 49);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "个性化配置路径";
@@ -495,7 +496,7 @@
             this.txbMyLoveSettingPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txbMyLoveSettingPath.Location = new System.Drawing.Point(101, 18);
             this.txbMyLoveSettingPath.Name = "txbMyLoveSettingPath";
-            this.txbMyLoveSettingPath.Size = new System.Drawing.Size(651, 21);
+            this.txbMyLoveSettingPath.Size = new System.Drawing.Size(653, 21);
             this.txbMyLoveSettingPath.TabIndex = 1;
             // 
             // groupBox3
@@ -504,7 +505,7 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox3.Location = new System.Drawing.Point(3, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(768, 52);
+            this.groupBox3.Size = new System.Drawing.Size(770, 52);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "保存提示设置";
@@ -531,7 +532,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(762, 32);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(764, 32);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // label3
@@ -592,7 +593,7 @@
             this.tpUserSkin.Location = new System.Drawing.Point(4, 22);
             this.tpUserSkin.Name = "tpUserSkin";
             this.tpUserSkin.Padding = new System.Windows.Forms.Padding(3);
-            this.tpUserSkin.Size = new System.Drawing.Size(774, 408);
+            this.tpUserSkin.Size = new System.Drawing.Size(776, 408);
             this.tpUserSkin.TabIndex = 0;
             this.tpUserSkin.Text = "窗体皮肤设置";
             this.tpUserSkin.UseVisualStyleBackColor = true;
@@ -603,7 +604,7 @@
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox7.Location = new System.Drawing.Point(3, 175);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(768, 76);
+            this.groupBox7.Size = new System.Drawing.Size(770, 76);
             this.groupBox7.TabIndex = 9;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "网格样式";
@@ -616,7 +617,7 @@
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 165F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 173F));
             this.tableLayoutPanel4.Controls.Add(this.label8, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.ckbIsDefineGridHeader, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.cbbOddNumberRowColor, 1, 1);
@@ -631,7 +632,7 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(762, 57);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(764, 57);
             this.tableLayoutPanel4.TabIndex = 0;
             // 
             // label8
@@ -1110,7 +1111,7 @@
             this.tpOther.Location = new System.Drawing.Point(4, 22);
             this.tpOther.Name = "tpOther";
             this.tpOther.Padding = new System.Windows.Forms.Padding(3);
-            this.tpOther.Size = new System.Drawing.Size(774, 408);
+            this.tpOther.Size = new System.Drawing.Size(776, 408);
             this.tpOther.TabIndex = 2;
             this.tpOther.Text = "其他";
             this.tpOther.UseVisualStyleBackColor = true;
@@ -1124,7 +1125,7 @@
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox5.Location = new System.Drawing.Point(3, 3);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(768, 46);
+            this.groupBox5.Size = new System.Drawing.Size(770, 46);
             this.groupBox5.TabIndex = 0;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "临时文件";
@@ -1164,6 +1165,30 @@
             this.label5.Size = new System.Drawing.Size(113, 12);
             this.label5.TabIndex = 0;
             this.label5.Text = "网格样式临时文件：";
+            // 
+            // ckbUpgradeAutoAjustDesktopQuickLink
+            // 
+            this.ckbUpgradeAutoAjustDesktopQuickLink.AutoSize = true;
+            this.ckbUpgradeAutoAjustDesktopQuickLink.Location = new System.Drawing.Point(341, 20);
+            this.ckbUpgradeAutoAjustDesktopQuickLink.Name = "ckbUpgradeAutoAjustDesktopQuickLink";
+            this.ckbUpgradeAutoAjustDesktopQuickLink.Size = new System.Drawing.Size(144, 16);
+            this.ckbUpgradeAutoAjustDesktopQuickLink.TabIndex = 7;
+            this.ckbUpgradeAutoAjustDesktopQuickLink.Text = "自动修正桌面快捷方式";
+            this.ckbUpgradeAutoAjustDesktopQuickLink.UseVisualStyleBackColor = true;
+            // 
+            // groupBox11
+            // 
+            this.groupBox11.Controls.Add(this.ckbUpgradeAutoAjustDesktopQuickLink);
+            this.groupBox11.Controls.Add(this.ckbUpgradeSuccessDelOldVerion);
+            this.groupBox11.Controls.Add(this.ckbUpgradeDelNewZipFile);
+            this.groupBox11.Controls.Add(this.ckbDelOldNeedConfirm);
+            this.groupBox11.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox11.Location = new System.Drawing.Point(3, 171);
+            this.groupBox11.Name = "groupBox11";
+            this.groupBox11.Size = new System.Drawing.Size(770, 46);
+            this.groupBox11.TabIndex = 3;
+            this.groupBox11.TabStop = false;
+            this.groupBox11.Text = "升级成功后操作";
             // 
             // FrmUserEnvironmentSet
             // 
@@ -1215,6 +1240,8 @@
             this.tpOther.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            this.groupBox11.ResumeLayout(false);
+            this.groupBox11.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1313,5 +1340,7 @@
         private System.Windows.Forms.Button btnErrLogReset;
         private System.Windows.Forms.Button btnOkLogReset;
         private System.Windows.Forms.Button btnLogReset;
+        private System.Windows.Forms.CheckBox ckbUpgradeAutoAjustDesktopQuickLink;
+        private System.Windows.Forms.GroupBox groupBox11;
     }
 }
