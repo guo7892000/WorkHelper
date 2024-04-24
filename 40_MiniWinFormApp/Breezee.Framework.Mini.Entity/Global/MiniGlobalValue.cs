@@ -14,6 +14,14 @@ namespace Breezee.Framework.Mini.Entity
     /// </summary>
     public class MiniGlobalValue
     {
+        /// <summary>
+        /// 启用应用的执行文件名称
+        /// </summary>
+        public static readonly string AppStartUpExeName = "Breezee.Framework.Mini.StartUp.exe";
+        /// <summary>
+        /// 启用应用的执行文件图标
+        /// </summary>
+        public static readonly string AppStartUpIconName = "WorkTool.ico";
         public static string AppPath => System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\";
 
         public static readonly string DataAccessConfigKey = "IDataAccessMini";

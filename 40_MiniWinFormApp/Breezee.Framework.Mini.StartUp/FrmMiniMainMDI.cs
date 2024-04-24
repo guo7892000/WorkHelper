@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using Breezee.Core.IOC;
 using Breezee.Core.Adapter.IBLL;
 using System.Net;
+using static System.Windows.Forms.LinkLabel;
 
 namespace Breezee.Framework.Mini.StartUp
 {
@@ -1151,8 +1152,16 @@ namespace Breezee.Framework.Mini.StartUp
                     //    return; 
                     //}
                     //设置新应用路径
-                    sUpgradeNewAppFullPath = Path.Combine(sLocalDir, "WorkHelper" + sServerVersion, "Breezee.Framework.Mini.StartUp.exe");
+                    string sNewRoot = Path.Combine(sLocalDir, "WorkHelper" + sServerVersion);
+                    _WinFormConfig.Set(GlobalKey.Upgrade_LatestVersionRootDir, sNewRoot, "新版本的根目录");
+                    _WinFormConfig.Set(GlobalKey.Upgrade_IsUpdateQuickLink, "0", "是否已更新快接方式"); //未更新快捷方式
+                    sUpgradeNewAppFullPath = Path.Combine(sNewRoot, MiniGlobalValue.AppStartUpExeName);
                     _WinFormConfig.Save();//保存配置
+                    //覆盖桌面快捷方式
+                    StartUpHelper.ReplaceDesktopQuickLink(sNewRoot);
+                    _WinFormConfig.Set(GlobalKey.Upgrade_IsUpdateQuickLink, "1", "是否已更新快接方式"); //已更新快捷方式
+                    _WinFormConfig.Save();//保存配置
+
                     IsUpgradeColseOldApp = true;
                     _sDestopLastMsg = "WorkHelper" + sServerVersion + "版本已成功下载并解压！";
                     ShowGlobalMsg_Click(this, new ShowGlobalMsgEventArgs(_sDestopLastMsg));
@@ -1183,6 +1192,7 @@ namespace Breezee.Framework.Mini.StartUp
             }
 
         }
+
 
         /// <summary>
         /// 下载最后稳定版本

@@ -72,9 +72,9 @@ namespace Breezee.Framework.Mini.StartUp
             try
             {
                 string sPrePath = winConfig.Get(GlobalKey.Upgrade_PreVersionPath, "");
-                if (!string.IsNullOrEmpty(sPrePath) && "1".Equals(winConfig.Get(GlobalKey.Upgrade_IsDeleteOldVersion, "0")))
+                string sExePath = Path.GetFullPath(GlobalContext.AppEntryAssemblyPath);
+                if (!string.IsNullOrEmpty(sPrePath) && "1".Equals(winConfig.Get(GlobalKey.Upgrade_IsDeleteOldVersion, "1")))
                 {
-                    string sExePath = Path.GetFullPath(GlobalContext.AppEntryAssemblyPath);
                     string sPreVersionPath = Path.GetFullPath(sPrePath);
                     bool isSaveDir = sExePath.Equals(sPreVersionPath, StringComparison.OrdinalIgnoreCase);
 
@@ -104,6 +104,12 @@ namespace Breezee.Framework.Mini.StartUp
                             winConfig.Save();
                         }
                     }
+                }
+                //更新桌面的快捷方式
+                string sNewPath = winConfig.Get(GlobalKey.Upgrade_LatestVersionRootDir, sExePath);
+                if ("0".Equals(winConfig.Get(GlobalKey.Upgrade_IsUpdateQuickLink, "0")))
+                {
+                    StartUpHelper.ReplaceDesktopQuickLink(sPrePath);
                 }
             }
             catch (Exception ex)
