@@ -1154,12 +1154,10 @@ namespace Breezee.Framework.Mini.StartUp
                     //设置新应用路径
                     string sNewRoot = Path.Combine(sLocalDir, "WorkHelper" + sServerVersion);
                     _WinFormConfig.Set(GlobalKey.Upgrade_LatestVersionRootDir, sNewRoot, "新版本的根目录");
-                    _WinFormConfig.Set(GlobalKey.Upgrade_IsUpdateQuickLink, "0", "是否已更新快接方式"); //未更新快捷方式
                     sUpgradeNewAppFullPath = Path.Combine(sNewRoot, MiniGlobalValue.AppStartUpExeName);
                     _WinFormConfig.Save();//保存配置
                     //覆盖桌面快捷方式
                     StartUpHelper.ReplaceDesktopQuickLink(sNewRoot);
-                    _WinFormConfig.Set(GlobalKey.Upgrade_IsUpdateQuickLink, "1", "是否已更新快接方式"); //已更新快捷方式
                     _WinFormConfig.Save();//保存配置
 
                     IsUpgradeColseOldApp = true;

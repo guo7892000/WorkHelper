@@ -35,7 +35,6 @@ namespace Breezee.Core.Interface
         public static string Upgrade_TempPath = "Upgrade_TempPath"; //升级临时文件路径
         public static string Upgrade_PreVersionPath = "Upgrade_PreVersionPath"; //上个版本的路径
         public static string Upgrade_LatestVersionRootDir = "Upgrade_LatestVersionRootDir"; //最新版的根目录
-        public static string Upgrade_IsUpdateQuickLink = "Upgrade_IsUpdateQuickLink"; //是否已更新快捷方式
         //行号
         public static string RowNum = "ROWNO";
         public static string MaxOpenFormNum = "MaxOpenFormNum";

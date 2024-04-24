@@ -105,12 +105,6 @@ namespace Breezee.Framework.Mini.StartUp
                         }
                     }
                 }
-                //更新桌面的快捷方式
-                string sNewPath = winConfig.Get(GlobalKey.Upgrade_LatestVersionRootDir, sExePath);
-                if ("0".Equals(winConfig.Get(GlobalKey.Upgrade_IsUpdateQuickLink, "0")))
-                {
-                    StartUpHelper.ReplaceDesktopQuickLink(sPrePath);
-                }
             }
             catch (Exception ex)
             {
