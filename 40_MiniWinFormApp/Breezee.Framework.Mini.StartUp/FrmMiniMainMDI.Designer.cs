@@ -52,13 +52,14 @@
             this.tsbCheckUpdate = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDowloadLatestStableVersion = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStrip = new System.Windows.Forms.ToolStrip();
+            this.tspMain = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.tstbMenuSearch = new System.Windows.Forms.ToolStripTextBox();
             this.tsbAutoGuid = new System.Windows.Forms.ToolStripButton();
             this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.printToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.tsbEnvironmentSet = new System.Windows.Forms.ToolStripButton();
             this.printPreviewToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbHelp = new System.Windows.Forms.ToolStripButton();
@@ -88,7 +89,7 @@
             this.tpgDesktop = new System.Windows.Forms.TabPage();
             this.pnlDestop = new System.Windows.Forms.Panel();
             this.menuStrip.SuspendLayout();
-            this.toolStrip.SuspendLayout();
+            this.tspMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.cmsOpenTreeMenu.SuspendLayout();
             this.pnlLeftMenu.SuspendLayout();
@@ -164,6 +165,7 @@
             // 
             // tsbExitMenu
             // 
+            this.tsbExitMenu.Image = ((System.Drawing.Image)(resources.GetObject("tsbExitMenu.Image")));
             this.tsbExitMenu.Name = "tsbExitMenu";
             this.tsbExitMenu.Size = new System.Drawing.Size(140, 22);
             this.tsbExitMenu.Text = "退出(&X)";
@@ -258,6 +260,7 @@
             // 
             // tsmiUserManual
             // 
+            this.tsmiUserManual.Image = ((System.Drawing.Image)(resources.GetObject("tsmiUserManual.Image")));
             this.tsmiUserManual.Name = "tsmiUserManual";
             this.tsmiUserManual.Size = new System.Drawing.Size(160, 22);
             this.tsmiUserManual.Text = "用户手册";
@@ -265,6 +268,7 @@
             // 
             // tsbCheckUpdate
             // 
+            this.tsbCheckUpdate.Image = ((System.Drawing.Image)(resources.GetObject("tsbCheckUpdate.Image")));
             this.tsbCheckUpdate.Name = "tsbCheckUpdate";
             this.tsbCheckUpdate.Size = new System.Drawing.Size(160, 22);
             this.tsbCheckUpdate.Text = "检查更新";
@@ -273,6 +277,7 @@
             // 
             // tsmiDowloadLatestStableVersion
             // 
+            this.tsmiDowloadLatestStableVersion.Image = ((System.Drawing.Image)(resources.GetObject("tsmiDowloadLatestStableVersion.Image")));
             this.tsmiDowloadLatestStableVersion.Name = "tsmiDowloadLatestStableVersion";
             this.tsmiDowloadLatestStableVersion.Size = new System.Drawing.Size(160, 22);
             this.tsmiDowloadLatestStableVersion.Text = "下载最新稳定版";
@@ -280,29 +285,31 @@
             // 
             // aboutToolStripMenuItem
             // 
+            this.aboutToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aboutToolStripMenuItem.Image")));
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.aboutToolStripMenuItem.Text = "关于我们";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // toolStrip
+            // tspMain
             // 
-            this.toolStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tspMain.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.tspMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel1,
             this.tstbMenuSearch,
             this.tsbAutoGuid,
             this.saveToolStripButton,
             this.toolStripSeparator1,
             this.printToolStripButton,
+            this.tsbEnvironmentSet,
             this.printPreviewToolStripButton,
             this.toolStripSeparator2,
             this.tsbHelp});
-            this.toolStrip.Location = new System.Drawing.Point(0, 24);
-            this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(1263, 27);
-            this.toolStrip.TabIndex = 1;
-            this.toolStrip.Text = "ToolStrip";
+            this.tspMain.Location = new System.Drawing.Point(0, 24);
+            this.tspMain.Name = "tspMain";
+            this.tspMain.Size = new System.Drawing.Size(1263, 27);
+            this.tspMain.TabIndex = 1;
+            this.tspMain.Text = "ToolStrip";
             // 
             // toolStripLabel1
             // 
@@ -325,7 +332,6 @@
             this.tsbAutoGuid.Name = "tsbAutoGuid";
             this.tsbAutoGuid.Size = new System.Drawing.Size(24, 24);
             this.tsbAutoGuid.Text = "生成GUID";
-            this.tsbAutoGuid.Visible = false;
             this.tsbAutoGuid.Click += new System.EventHandler(this.tsbAutoGuid_Click);
             // 
             // saveToolStripButton
@@ -352,6 +358,16 @@
             this.printToolStripButton.Size = new System.Drawing.Size(24, 24);
             this.printToolStripButton.Text = "打印";
             this.printToolStripButton.Visible = false;
+            // 
+            // tsbEnvironmentSet
+            // 
+            this.tsbEnvironmentSet.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbEnvironmentSet.Image = ((System.Drawing.Image)(resources.GetObject("tsbEnvironmentSet.Image")));
+            this.tsbEnvironmentSet.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbEnvironmentSet.Name = "tsbEnvironmentSet";
+            this.tsbEnvironmentSet.Size = new System.Drawing.Size(24, 24);
+            this.tsbEnvironmentSet.Text = "环境设置";
+            this.tsbEnvironmentSet.Click += new System.EventHandler(this.tsbEnvironmentSet_Click);
             // 
             // printPreviewToolStripButton
             // 
@@ -539,54 +555,54 @@
             this.tsmiMoveRightOne,
             this.tsmiMoveLeftOne});
             this.cmsMenuSheet.Name = "cmsMenuSheet";
-            this.cmsMenuSheet.Size = new System.Drawing.Size(181, 202);
+            this.cmsMenuSheet.Size = new System.Drawing.Size(137, 180);
             // 
             // tsmiMenuSheetTop
             // 
             this.tsmiMenuSheetTop.Name = "tsmiMenuSheetTop";
-            this.tsmiMenuSheetTop.Size = new System.Drawing.Size(180, 22);
+            this.tsmiMenuSheetTop.Size = new System.Drawing.Size(136, 22);
             this.tsmiMenuSheetTop.Text = "置顶部";
             this.tsmiMenuSheetTop.Click += new System.EventHandler(this.TsmiMenuSheetTop_Click);
             // 
             // tsmiMenuSheetBottom
             // 
             this.tsmiMenuSheetBottom.Name = "tsmiMenuSheetBottom";
-            this.tsmiMenuSheetBottom.Size = new System.Drawing.Size(180, 22);
+            this.tsmiMenuSheetBottom.Size = new System.Drawing.Size(136, 22);
             this.tsmiMenuSheetBottom.Text = "置底部";
             this.tsmiMenuSheetBottom.Click += new System.EventHandler(this.TsmiMenuSheetBottom_Click);
             // 
             // tsmiCloseMenu
             // 
             this.tsmiCloseMenu.Name = "tsmiCloseMenu";
-            this.tsmiCloseMenu.Size = new System.Drawing.Size(180, 22);
+            this.tsmiCloseMenu.Size = new System.Drawing.Size(136, 22);
             this.tsmiCloseMenu.Text = "关闭";
             this.tsmiCloseMenu.Click += new System.EventHandler(this.TsmiCloseMenu_Click);
             // 
             // tsbCloseAll
             // 
             this.tsbCloseAll.Name = "tsbCloseAll";
-            this.tsbCloseAll.Size = new System.Drawing.Size(180, 22);
+            this.tsbCloseAll.Size = new System.Drawing.Size(136, 22);
             this.tsbCloseAll.Text = "关闭所有";
             this.tsbCloseAll.Click += new System.EventHandler(this.tsbCloseAll_Click);
             // 
             // tsmiPutLast
             // 
             this.tsmiPutLast.Name = "tsmiPutLast";
-            this.tsmiPutLast.Size = new System.Drawing.Size(180, 22);
+            this.tsmiPutLast.Size = new System.Drawing.Size(136, 22);
             this.tsmiPutLast.Text = "移到最右边";
             this.tsmiPutLast.Click += new System.EventHandler(this.tsmiPutLast_Click);
             // 
             // tsmiPutFirst
             // 
             this.tsmiPutFirst.Name = "tsmiPutFirst";
-            this.tsmiPutFirst.Size = new System.Drawing.Size(180, 22);
+            this.tsmiPutFirst.Size = new System.Drawing.Size(136, 22);
             this.tsmiPutFirst.Text = "移到最左边";
             this.tsmiPutFirst.Click += new System.EventHandler(this.tsmiPutFirst_Click);
             // 
             // tsmiMoveRightOne
             // 
             this.tsmiMoveRightOne.Name = "tsmiMoveRightOne";
-            this.tsmiMoveRightOne.Size = new System.Drawing.Size(180, 22);
+            this.tsmiMoveRightOne.Size = new System.Drawing.Size(136, 22);
             this.tsmiMoveRightOne.Text = "右移一位";
             this.tsmiMoveRightOne.ToolTipText = "往右边移动一位";
             this.tsmiMoveRightOne.Click += new System.EventHandler(this.tsmiMoveRightOne_Click);
@@ -594,7 +610,7 @@
             // tsmiMoveLeftOne
             // 
             this.tsmiMoveLeftOne.Name = "tsmiMoveLeftOne";
-            this.tsmiMoveLeftOne.Size = new System.Drawing.Size(180, 22);
+            this.tsmiMoveLeftOne.Size = new System.Drawing.Size(136, 22);
             this.tsmiMoveLeftOne.Text = "左移一位";
             this.tsmiMoveLeftOne.ToolTipText = "往左边移动一位";
             this.tsmiMoveLeftOne.Click += new System.EventHandler(this.tsmiMoveLeftOne_Click);
@@ -630,7 +646,7 @@
             this.Controls.Add(this.pnlLeftMenu);
             this.Controls.Add(this.tvLeftMenu);
             this.Controls.Add(this.statusStrip);
-            this.Controls.Add(this.toolStrip);
+            this.Controls.Add(this.tspMain);
             this.Controls.Add(this.menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
@@ -642,8 +658,8 @@
             this.Load += new System.EventHandler(this.FrmMainMDI_Load);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
-            this.toolStrip.ResumeLayout(false);
-            this.toolStrip.PerformLayout();
+            this.tspMain.ResumeLayout(false);
+            this.tspMain.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.cmsOpenTreeMenu.ResumeLayout(false);
@@ -661,7 +677,7 @@
 
 
         private System.Windows.Forms.MenuStrip menuStrip;
-        private System.Windows.Forms.ToolStrip toolStrip;
+        private System.Windows.Forms.ToolStrip tspMain;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
@@ -717,6 +733,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiPutFirst;
         private System.Windows.Forms.ToolStripMenuItem tsmiMoveRightOne;
         private System.Windows.Forms.ToolStripMenuItem tsmiMoveLeftOne;
+        private System.Windows.Forms.ToolStripButton tsbEnvironmentSet;
     }
 }
 

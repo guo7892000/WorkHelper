@@ -50,6 +50,7 @@ namespace Breezee.Core
         public static readonly string DLLName = "DLLName";
         public static readonly string FormName = "FormName";
         public static readonly string HelpPath = "HelpPath";
+        public static readonly string ShowInToolStrip = "ShowInToolStrip"; //是否显示在工具栏
     }
     public class DShortCutMenu
     {

@@ -141,6 +141,7 @@ namespace Breezee.Framework.Mini.StartUp
             _saveMenu.FormName = txbClassFullPath.Text.Trim();
             _saveMenu.ShortCutKey = txbShortCutKey.Text.Trim();
             _saveMenu.HelpPath = txbHelpPath.Text.Trim();
+            _saveMenu.IsShowInToolStrip = ckbShowInToolstrip.Checked;
             if (string.IsNullOrEmpty(_saveMenu.Name))
             {
                 ShowErr("【菜单名称】不能为空！");
@@ -241,6 +242,7 @@ namespace Breezee.Framework.Mini.StartUp
             xnNew.SetAttribute(MemuAttrString.FormName, _saveMenu.FormName);
             xnNew.SetAttribute(MemuAttrString.ShortCutKey, _saveMenu.ShortCutKey);
             xnNew.SetAttribute(MemuAttrString.HelpPath, _saveMenu.HelpPath);
+            xnNew.SetAttribute(MemuAttrString.ShowInToolStrip, _saveMenu.IsShowInToolStrip ? "1" : "0");
             //保存
             MenuEntity.Save(_xmlMenu.XmlPath);
             ShowInfo("保存成功！");
@@ -354,6 +356,7 @@ namespace Breezee.Framework.Mini.StartUp
             txbClassFullPath.Text = _saveMenu.FormName;
             txbShortCutKey.Text = _saveMenu.ShortCutKey;
             txbHelpPath.Text = _saveMenu.HelpPath;
+            ckbShowInToolstrip.Checked = _saveMenu.IsShowInToolStrip;
         }
         #endregion
 
@@ -371,15 +374,18 @@ namespace Breezee.Framework.Mini.StartUp
                         case MenuType.Modul:
                             cbbDLL.Enabled = false;
                             txbClassFullPath.ReadOnly = true;
+                            ckbShowInToolstrip.Visible = false;
                             break;
                         case MenuType.Class:
                             cbbDLL.Enabled = false;
                             txbClassFullPath.ReadOnly = true;
+                            ckbShowInToolstrip.Visible = false;
                             break;
                         case MenuType.Menu:
                         default:
                             cbbDLL.Enabled = true;
                             txbClassFullPath.ReadOnly = false;
+                            ckbShowInToolstrip.Visible = true;
                             break;
                     }
                 }

@@ -62,9 +62,13 @@ namespace Breezee.Framework.Mini.StartUp.Properties {
         
         /// <summary>
         ///   查找类似 欢迎使用工作助手，希望能给你的工作带来便利！如有问题，请反馈给我们，谢谢！
+        ///作者：微风
+        ///联系电话：15800021305
         ///Email：guo7892000@126.com 
         ///微信号：BreezeeHui
-        ///QQ：6455879 的本地化字符串。
+        ///QQ：6455879
+        ///最新版下载地址：
+        ///https://gitee.com/breezee2000/WorkHelper/releases 的本地化字符串。
         /// </summary>
         internal static string About_Remark {
             get {
@@ -75,19 +79,10 @@ namespace Breezee.Framework.Mini.StartUp.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap MyWeixinGatherMin {
+        internal static System.Drawing.Bitmap loveStar {
             get {
-                object obj = ResourceManager.GetObject("MyWeixinGatherMin", resourceCulture);
+                object obj = ResourceManager.GetObject("loveStar", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 本软件靠个人兴趣维持，但也花了很多时间和精力。如果您觉得本软件对您很有帮助，可考虑在您经济能力范围内给作者一点打赏支持，谢谢！！ 的本地化字符串。
-        /// </summary>
-        internal static string Support_Remark {
-            get {
-                return ResourceManager.GetString("Support_Remark", resourceCulture);
             }
         }
         

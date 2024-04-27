@@ -38,6 +38,9 @@ namespace Breezee.Core.Interface
         /// </summary>
         public bool IsOpenSameMenuNewForm = false;
 
+        /// <summary>
+        /// 菜单类型
+        /// </summary>
         public MenuType MenuType;
         public string Name;
         public string Code;
@@ -46,6 +49,7 @@ namespace Breezee.Core.Interface
         public string FormName;
         public string FullPath;//菜单全路径
         public string HelpPath;//HTML格式帮助文件路径
+        public bool IsShowInToolStrip = false;//是否显示在工具栏中
 
         public string ParentGuid;//上级菜单Guid
 
@@ -66,6 +70,7 @@ namespace Breezee.Core.Interface
             clone.FullPath = FullPath;
             clone.HelpPath = HelpPath;
             clone.ParentGuid = ParentGuid;
+            clone.IsShowInToolStrip = false;
             return clone;
         }
     }

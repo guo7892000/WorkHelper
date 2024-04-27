@@ -22,6 +22,7 @@ using Breezee.Core.IOC;
 using Breezee.Core.Adapter.IBLL;
 using System.Net;
 using static System.Windows.Forms.LinkLabel;
+using Breezee.Framework.Mini.StartUp.Properties;
 
 namespace Breezee.Framework.Mini.StartUp
 {
@@ -121,7 +122,8 @@ namespace Breezee.Framework.Mini.StartUp
             //加载菜单
             tvLeftMenu.Nodes.Clear();
             //XML中的菜单处理
-            _MenuDic = _MenuDic = _xmlMenu.GetAllMenu(); ;
+            _MenuDic = _xmlMenu.GetAllMenu();
+            
             foreach (MenuEntity dMenu in _MenuDic.Values)
             {
                 if (dMenu.MenuType != MenuType.Modul)
@@ -134,7 +136,6 @@ namespace Breezee.Framework.Mini.StartUp
                 tmiNew.Text = string.IsNullOrEmpty(dMenu.ShortCutKey)? dMenu.Name: string.Format("{0}(&{1})", dMenu.Name, dMenu.ShortCutKey);
                 tmiNew.Tag = dMenu;
                 dMenu.FullPath = dMenu.Name;
-
                 menuStrip.Items.Insert(iStartMenu + 1, tmiNew);
 
                 //左边树
@@ -160,7 +161,41 @@ namespace Breezee.Framework.Mini.StartUp
 
                 iStartMenu++;
             }
-        } 
+        }
+
+        /// <summary>
+        /// 动态工具栏点击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DynamicToolStripButton_Click(object sender, EventArgs e)
+        {
+            ToolStripButton button = sender as ToolStripButton;
+            ToolStripMenuItem toolStripMenuItem = button.Tag as ToolStripMenuItem;
+            toolStripMenuItem.PerformClick();
+        }
+
+        /// <summary>
+        /// 增加工具栏按钮
+        /// </summary>
+        /// <param name="menuItem"></param>
+        /// <param name="childMenu"></param>
+        private void AddMainToolStrip(ToolStripMenuItem menuItem,MenuEntity childMenu)
+        {
+            //工具栏
+            if (childMenu.IsShowInToolStrip)
+            {
+                int iToolIndex = tspMain.Items.IndexOf(saveToolStripButton);
+                ToolStripButton button = new ToolStripButton();
+                button.Tag = menuItem;
+                button.DisplayStyle = ToolStripItemDisplayStyle.Image;
+                button.Text = childMenu.Name;
+                button.Image = Resources.loveStar;
+                button.ToolTipText = childMenu.Name;
+                tspMain.Items.Insert(iToolIndex, button);
+                button.Click += DynamicToolStripButton_Click;//点击时调用原菜单项点击事件打开功能
+            }
+        }
         #endregion
 
         #region 增加菜单分类
@@ -175,11 +210,14 @@ namespace Breezee.Framework.Mini.StartUp
                 }
                 else
                 {
-                    AddMenuItem(tmiNew, new ToolStripMenuItem(), childMenu);
+                    var childMenuItem = new ToolStripMenuItem();
+                    AddMenuItem(tmiNew, childMenuItem, childMenu);
                     if (!string.IsNullOrEmpty(childMenu.HelpPath))
                     {
                         WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp(childMenu.HelpPath, childMenu.FullPath, childMenu.Name));
                     }
+                    //增加工具栏按钮
+                    AddMainToolStrip(childMenuItem, childMenu);
                 }
             }
         }
@@ -303,7 +341,7 @@ namespace Breezee.Framework.Mini.StartUp
         #region 工具栏可见菜单事件
         private void ToolBarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            toolStrip.Visible = toolBarToolStripMenuItem.Checked;
+            tspMain.Visible = toolBarToolStripMenuItem.Checked;
         } 
         #endregion
 
@@ -661,13 +699,18 @@ namespace Breezee.Framework.Mini.StartUp
                     return;
                 }
                 //打开树节点方法
-                OpenTreeNodeMenu(strSearchMenu);
+                OpenTreeNodeMenu(strSearchMenu,true);
             }
         }
         #endregion
 
         #region 打开树节点方法
-        private void OpenTreeNodeMenu(string strSearchMenu)
+        /// <summary>
+        /// 打开树节点方法
+        /// </summary>
+        /// <param name="strSearchMenu">查找的菜单名</param>
+        /// <param name="isOpenMenu">是否打开菜单：默认否</param>
+        private void OpenTreeNodeMenu(string strSearchMenu,bool isOpenMenu=false)
         {
             TreeNode tnFind = null;
             foreach (TreeNode xn in tvLeftMenu.Nodes)
@@ -677,7 +720,10 @@ namespace Breezee.Framework.Mini.StartUp
                 {
                     ExpandParentNode(tnFind);
                     MenuEntity findMenu = tnFind.Tag as MenuEntity;
-                    //OpenMenu(findMenu, false);//打开菜单，注：这里就不用再调用打开菜单了，只展开树即可，不然会多调用一次打开菜单方法。
+                    if (isOpenMenu)
+                    {
+                        OpenMenu(findMenu, false);//打开菜单
+                    }
                     break;
                 }
             }
@@ -1187,7 +1233,7 @@ namespace Breezee.Framework.Mini.StartUp
                 }
                 else
                 {
-                    Console.WriteLine(ex.Message);
+                    WinFormContext.Instance.LogErr(ex.Message, "升级出错", false);
                 }
                 WinFormContext.Instance.IsUpgradeRunning = false;
             }
@@ -1243,21 +1289,14 @@ namespace Breezee.Framework.Mini.StartUp
                     {
                         if (isHaveZipNewVersion)
                         {
-                            try
-                            {
-                                //通用最新版本存在版本压缩包时，异步获取压缩包文件
-                                await Task.Run(() => AppUpgradeTool.DownloadWebZipAndUnZipAsync(sServerZipUrl, sLocalDir, isDeleteNewVerZipFile));
-                                break;
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine(ex.Message);
-                            }
+                            //通用最新版本存在版本压缩包时，异步获取压缩包文件
+                            await Task.Run(() => AppUpgradeTool.DownloadWebZipAndUnZipAsync(sServerZipUrl, sLocalDir, isDeleteNewVerZipFile));
+                            break;
                         }
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex.Message);
+                        WinFormContext.Instance.LogErr(ex.Message, "第"+ iDownCount + "下载出错", false);
                     }
                     finally
                     {
@@ -1282,12 +1321,15 @@ namespace Breezee.Framework.Mini.StartUp
                 }
                 else
                 {
-                    Console.WriteLine(ex.Message);
+                    WinFormContext.Instance.LogErr(ex.Message, "升级出错", false);
                 }
                 WinFormContext.Instance.IsUpgradeRunning = false;
             }
         }
 
-        
+        private void tsbEnvironmentSet_Click(object sender, EventArgs e)
+        {
+            tsmiUserEnvrSet.PerformClick();
+        }
     }
 }

@@ -56,6 +56,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.txbHelpPath = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.ckbShowInToolstrip = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.cmsTreeMenu.SuspendLayout();
             this.grpEdit.SuspendLayout();
@@ -178,6 +179,7 @@
             this.tableLayoutPanel1.Controls.Add(this.txbShortCutKey, 3, 1);
             this.tableLayoutPanel1.Controls.Add(this.label7, 0, 5);
             this.tableLayoutPanel1.Controls.Add(this.txbHelpPath, 1, 5);
+            this.tableLayoutPanel1.Controls.Add(this.ckbShowInToolstrip, 3, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -348,6 +350,17 @@
             this.splitContainer1.SplitterDistance = 322;
             this.splitContainer1.TabIndex = 29;
             // 
+            // ckbShowInToolstrip
+            // 
+            this.ckbShowInToolstrip.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbShowInToolstrip.AutoSize = true;
+            this.ckbShowInToolstrip.Location = new System.Drawing.Point(463, 5);
+            this.ckbShowInToolstrip.Name = "ckbShowInToolstrip";
+            this.ckbShowInToolstrip.Size = new System.Drawing.Size(84, 16);
+            this.ckbShowInToolstrip.TabIndex = 8;
+            this.ckbShowInToolstrip.Text = "工具栏显示";
+            this.ckbShowInToolstrip.UseVisualStyleBackColor = true;
+            // 
             // FrmMenuManage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -356,7 +369,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmMenuManage";
             this.Text = "菜单维护";
             this.Load += new System.EventHandler(this.FrmMenuManage_Load);
@@ -403,5 +416,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txbHelpPath;
         private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.CheckBox ckbShowInToolstrip;
     }
 }

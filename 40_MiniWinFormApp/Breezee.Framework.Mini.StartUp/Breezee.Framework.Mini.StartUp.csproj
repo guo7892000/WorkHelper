@@ -124,7 +124,11 @@
     <Compile Include="Common\MiniStartUpAssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs" />
+    <Compile Include="Properties\Resources1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="ShortCutMenu\ShortCutItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -220,6 +224,8 @@
     <Content Include="Help\Html\Mini\WorkHelper.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Image\mandriva.png" />
+    <None Include="Image\loveStar.png" />
     <Content Include="Image\ShortCut_In.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

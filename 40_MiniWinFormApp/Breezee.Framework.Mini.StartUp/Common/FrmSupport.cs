@@ -19,8 +19,8 @@ namespace Breezee.Framework.Mini.StartUp
 
         private void Support_Load(object sender, EventArgs e)
         {
-            lblInfo.Text = Properties.Resources.Support_Remark;
-            pbWeixin.Image = Properties.Resources.MyWeixinGatherMin;
+            //lblInfo.Text = Properties.Resources.Support_Remark;
+            //pbWeixin.Image = Properties.Resources.MyWeixinGatherMin;
             pbWeixin.SizeMode = PictureBoxSizeMode.StretchImage;
             MaximizeBox = false;
             MinimizeBox = false;

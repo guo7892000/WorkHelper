@@ -371,6 +371,11 @@ namespace Breezee.Core.WinFormUI
         } 
         #endregion
 
+        /// <summary>
+        /// 显示帮助页面
+        /// </summary>
+        /// <param name="sMenuName"></param>
+        /// <param name="sHelpPath"></param>
         public static void ShowHtmlHelpPage(string sMenuName,string sHelpPath)
         {
             if (string.IsNullOrEmpty(sHelpPath)) return;
@@ -379,8 +384,34 @@ namespace Breezee.Core.WinFormUI
             frm.MenuName = sMenuName;
             frm.ShowDialog();
         }
+
+        #region 写日志
+        public void LogInfo(string Msg, string title="")
+        {
+            WinFormContext.Instance.LogInfo(Msg, title);//写日志
+        }
+        public void LogWarn(string Msg, string title = "")
+        {
+            WinFormContext.Instance.LogWarn(Msg, title);//写日志
+        }
+        public void LogErr(string Msg, string title = "")
+        {
+            if (string.IsNullOrEmpty(title))
+            {
+                WinFormContext.Instance.LogErr(Msg);//写日志
+                return;
+            }
+            WinFormContext.Instance.LogErr(title + "：" + Msg);//写日志
+        }
+        public void LogErr(Exception ex,bool printStack=false)
+        {
+            if (printStack)
+            {
+                WinFormContext.Instance.LogErr("系统异常：" + ex.StackTrace);//写日志
+                return;
+            }
+            WinFormContext.Instance.LogErr("系统异常：" + ex.Message);//写日志
+        }
+        #endregion
     }
-
-
-
 }
