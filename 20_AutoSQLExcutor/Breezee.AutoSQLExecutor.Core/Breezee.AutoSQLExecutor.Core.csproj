@@ -43,14 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\SqlLogConfig.cs" />
-    <Compile Include="Entity\BaseEntityField.cs" />
-    <Compile Include="Entity\IBaseEntity.cs" />
     <Compile Include="Entity\PageParam.cs" />
     <Compile Include="Entity\ProcedurePara.cs" />
     <Compile Include="Enum\DBColumnKeyType.cs" />
     <Compile Include="Enum\EntityEditType.cs" />
     <Compile Include="Enum\EntityFieldType.cs" />
-    <Compile Include="Enum\EntityType.cs" />
     <Compile Include="Enum\PercentSignStyle.cs" />
     <Compile Include="Enum\SqlLogType.cs" />
     <Compile Include="Enum\SqlStringType.cs" />
@@ -74,7 +71,7 @@
     <Compile Include="SqlBuilder\SqlPara\SqlSegment.cs" />
     <Compile Include="SqlBuilder\StoreProcedureSqlBuilder.cs" />
     <Compile Include="StaticString\DBSchemaString.cs" />
-    <Compile Include="StaticString\StaticConstant.cs" />
+    <Compile Include="StaticString\AutoSQLCoreStaticConstant.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

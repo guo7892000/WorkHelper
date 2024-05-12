@@ -94,7 +94,7 @@ namespace Breezee.Framework.Mini.StartUp
             //加载用户偏好设定
             LoadUserLoveSettings();
             //默认桌面布满
-            pnlDestop.Dock = DockStyle.Fill;
+            pnlDesktop.Dock = DockStyle.Fill;
             txbMenuPath.BackColor = txbMenuPath.Parent.BackColor;
             txbGlobalMsg.BackColor = txbMenuPath.Parent.BackColor;
             //设置菜单查找数据源
@@ -279,7 +279,7 @@ namespace Breezee.Framework.Mini.StartUp
                 _ShortCutMenuList = new ShortCutList();
                 _ShortCutMenuList.AddShortCutItem += AddShortCutMenuItem;//新增快捷菜单事件
                 _ShortCutMenuList.Dock = DockStyle.Fill;
-                pnlDestop.Controls.Add(_ShortCutMenuList);
+                pnlDesktop.Controls.Add(_ShortCutMenuList);
             }
             else
             {
@@ -306,7 +306,7 @@ namespace Breezee.Framework.Mini.StartUp
                 }
                 //
                 _ShortCutMenuList.Dock = DockStyle.Fill;
-                pnlDestop.Controls.Add(_ShortCutMenuList);
+                pnlDesktop.Controls.Add(_ShortCutMenuList);
 
             }
         }
@@ -504,7 +504,7 @@ namespace Breezee.Framework.Mini.StartUp
                         tcMenu.SelectedTab = tcMenu.TabPages[dMenuFrm.SameMenuNewFormGuid];
                     }
                     txbMenuPath.Text = dOpenMenu.FullPath;
-                    pnlDestop.Hide();
+                    pnlDesktop.Hide();
                     frm.Activate();
                     WinFormContext.Instance.CurrentForm = frm;
                     //全局提示信息显示为当前菜单的提示信息
@@ -652,15 +652,15 @@ namespace Breezee.Framework.Mini.StartUp
             if (tpSelect == null || tcMenu.SelectedTab == tpgDesktop)
             {
                 if (tpSelect == null) tcMenu.SelectedTab = tpgDesktop;
-                pnlDestop.Show();
-                pnlDestop.Dock = DockStyle.Fill;
+                pnlDesktop.Show();
+                pnlDesktop.Dock = DockStyle.Fill;
                 txbMenuPath.Text = "桌面";
                 //显示桌面最后的信息，如升级成功信息！
                 ShowGlobalMsg_Click(this, new ShowGlobalMsgEventArgs(_sDestopLastMsg));
             }
             else
             {
-                pnlDestop.Hide();
+                pnlDesktop.Hide();
                 MenuEntity menu = tpSelect.Tag as MenuEntity;
                 OpenMenu(menu, false);
             }
@@ -942,6 +942,10 @@ namespace Breezee.Framework.Mini.StartUp
         {
             int iCur = tcMenu.SelectedIndex;
             TabPage curPage = tcMenu.SelectedTab;
+            if (curPage == tpgDesktop)
+            {
+                return;
+            }
             TabPage nextPage = null;
             bool isFound = false;
             foreach (TabPage page in tcMenu.TabPages)

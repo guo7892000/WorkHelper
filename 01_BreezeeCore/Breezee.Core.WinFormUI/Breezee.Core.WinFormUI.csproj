@@ -167,6 +167,7 @@
     <Compile Include="FormCross\IFormCross.cs" />
     <Compile Include="FormCross\ModuleCross\IDbToolFormCross.cs" />
     <Compile Include="FormCross\ModuleCross\IMainCommonFormCross.cs" />
+    <Compile Include="FormCross\ModuleCross\ISYSCommonFormCross.cs" />
     <Compile Include="FormCross\PublicFormList.cs" />
     <Compile Include="FTP\AttachmentItem.cs">
       <SubType>UserControl</SubType>

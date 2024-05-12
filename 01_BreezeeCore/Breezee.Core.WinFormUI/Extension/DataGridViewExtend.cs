@@ -179,10 +179,8 @@ namespace Breezee.Core.WinFormUI
         /// </summary>
         /// <param name="dgv"></param>
         /// <param name="list"></param>
-        public static void BindDataGridView(this DataGridView dgv, IEnumerable<DbEntity> list)
+        public static void BindEntity(this DataGridView dgv, IEnumerable<IEntity> list, FlexGridColumnDefinition colDef)
         {
-            bool isFirstColumnVisable = false;
-            BindDataGridViewBeforeSetSource(dgv, out isFirstColumnVisable);
             BindingSource bs = new BindingSource();
             bs.DataSource = list;
             dgv.DataSource = bs;
@@ -193,10 +191,31 @@ namespace Breezee.Core.WinFormUI
                     dgv.Rows.Clear();
                 }
             }
-            if (!isFirstColumnVisable)
+            //重新设置网格样式
+            if (colDef != null)
             {
-                dgv.Columns[0].Visible = false;
+                int iSort = 1;
+                foreach (DataGridViewColumn dgvCol in dgv.Columns)
+                {
+                    var listCol = colDef.Columns.AsEnumerable().Where(t => t.ColumnName.Equals(dgvCol.Name));
+                    if(listCol.Count() == 0)
+                    {
+                        dgvCol.Visible = false;
+                        continue;
+                    }
+                    //设置在Tag配置中的列样式
+                    var curTagCol = listCol.FirstOrDefault();
+                    dgvCol.HeaderText = curTagCol.ColumnCaption;
+                    dgvCol.Width = curTagCol.ColumnWidth;
+                    dgvCol.ReadOnly = curTagCol.AllowEditing;
+                    dgvCol.DefaultCellStyle = new DataGridViewCellStyle();
+                    dgvCol.DefaultCellStyle.Alignment = curTagCol.Alignment;
+                    dgvCol.DisplayIndex = iSort;
+                    iSort++;
+                }
             }
+            //设置行的交互颜色
+            SetRowColor(dgv);
         }
         #endregion
 
@@ -431,42 +450,7 @@ namespace Breezee.Core.WinFormUI
 
                     #region 设置列内容对齐方式
                     DataGridViewCellStyle dgvcs = new DataGridViewCellStyle();
-                    switch (strStyle)
-                    {
-                        case "TL":
-                            dgvcs.Alignment = DataGridViewContentAlignment.TopLeft;
-                            break;
-                        case "TC":
-                            dgvcs.Alignment = DataGridViewContentAlignment.TopCenter;
-                            break;
-                        case "TR":
-                            dgvcs.Alignment = DataGridViewContentAlignment.TopRight;
-                            break;
-                        case "ML":
-                            dgvcs.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                            break;
-                        case "MC":
-                            dgvcs.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                            break;
-                        case "MR":
-                            dgvcs.Alignment = DataGridViewContentAlignment.MiddleRight;
-                            break;
-                        case "BL":
-                            dgvcs.Alignment = DataGridViewContentAlignment.BottomLeft;
-                            break;
-                        case "BC":
-                            dgvcs.Alignment = DataGridViewContentAlignment.BottomCenter;
-                            break;
-                        case "BR":
-                            dgvcs.Alignment = DataGridViewContentAlignment.BottomRight;
-                            break;
-                        case "NS":
-                            dgvcs.Alignment = DataGridViewContentAlignment.NotSet;
-                            break;
-                        default:
-                            dgvcs.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                            break;
-                    }
+                    GetCellStype(strStyle, dgvcs);
                     #endregion
 
                     #region 设置网格样式
@@ -483,7 +467,7 @@ namespace Breezee.Core.WinFormUI
                             dgvc.Width = Convert.ToInt32(strWidth);
                             dgvc.DefaultCellStyle = dgvcs;
                             dgvc.ReadOnly = !isCanEdit;
-                            
+
                             if (strOnePropety.Length >= 9 && isCanEdit)
                             {
                                 ((DataGridViewTextBoxColumn)dgvc).MaxInputLength = int.Parse(strOnePropety[8]); //对可编辑列设置最大输入长度
@@ -615,6 +599,46 @@ namespace Breezee.Core.WinFormUI
                 throw ex;
             }
 
+        }
+
+        private static void GetCellStype(string strStyle, DataGridViewCellStyle dgvcs)
+        {
+            switch (strStyle)
+            {
+                case "TL":
+                    dgvcs.Alignment = DataGridViewContentAlignment.TopLeft;
+                    break;
+                case "TC":
+                    dgvcs.Alignment = DataGridViewContentAlignment.TopCenter;
+                    break;
+                case "TR":
+                    dgvcs.Alignment = DataGridViewContentAlignment.TopRight;
+                    break;
+                case "ML":
+                    dgvcs.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                    break;
+                case "MC":
+                    dgvcs.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    break;
+                case "MR":
+                    dgvcs.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    break;
+                case "BL":
+                    dgvcs.Alignment = DataGridViewContentAlignment.BottomLeft;
+                    break;
+                case "BC":
+                    dgvcs.Alignment = DataGridViewContentAlignment.BottomCenter;
+                    break;
+                case "BR":
+                    dgvcs.Alignment = DataGridViewContentAlignment.BottomRight;
+                    break;
+                case "NS":
+                    dgvcs.Alignment = DataGridViewContentAlignment.NotSet;
+                    break;
+                default:
+                    dgvcs.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    break;
+            }
         }
         #endregion
 

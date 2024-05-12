@@ -1077,9 +1077,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //保存用户偏好值
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_TemplateType, cbbModuleString.SelectedValue.ToString(), "【数据字典】模板类型");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_QueryResultType, cbbQueryResultType.SelectedValue.ToString(), "【数据字典】查询结果类型");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_IsPage, ckbIsPage.Checked ? "1" : "0", "【生成表SQL】是否分页");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_IsAutoParam, ckbAutoParamQuery.Checked ? "1" : "0", "【生成表SQL】是否自动参数化查询");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_IsColumnMust, ckbColumnMust.Checked ? "1" : "0", "【生成表SQL】参数是否必填");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_IsPage, ckbIsPage.Checked ? "1" : "0", "【数据字典】是否分页");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_IsAutoParam, ckbAutoParamQuery.Checked ? "1" : "0", "【数据字典】是否自动参数化查询");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_IsColumnMust, ckbColumnMust.Checked ? "1" : "0", "【数据字典】参数是否必填");
                 WinFormContext.UserLoveSettings.Save();
 
                 tabControl1.SelectedTab = tpAutoSQL;

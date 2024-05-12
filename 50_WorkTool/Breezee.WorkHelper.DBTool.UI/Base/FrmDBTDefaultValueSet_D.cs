@@ -100,7 +100,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 bool isAdd = txbID.Text.Length == 0;
 
                 List<string> coloumns = isAdd ? null : _listControlColumn.GetSaveColumnNameList();
-                dtSave = DBToolHelper.Instance.DataAccess.GetTableConstruct(DT_DBT_BD_COLUMN_DEFAULT.TName, coloumns);
+                dtSave = DBToolHelper.Instance.DataAccess.GetTableConstruct(DT_DBT_BD_COLUMN_DEFAULT.NewEntity(), coloumns);
                 dtSave.DefaultValue(_loginUser);
                 _listControlColumn.GetControlValue(dtSave, isAdd);
                 if (isAdd)

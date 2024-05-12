@@ -7,52 +7,52 @@ using System.Text;
 namespace Breezee.WorkHelper.DBTool.Entity
 {
     [Serializable]
-    public partial class DT_DBT_BD_COLUMN_DEFAULT : IBaseEntity
+    public partial class DT_DBT_BD_COLUMN_DEFAULT : DbEntity
     {
         public static string TName = "DBT_BD_COLUMN_DEFAULT"; //自动生成表名
 		public override string DBTableNameCN { get{ return ""; } }
 		public override string DBTableComment { get{ return ""; } }
 
-        public static IBaseEntity NewEntity()
+        public static DbEntity NewEntity()
         {
             return new DT_DBT_BD_COLUMN_DEFAULT();//本身实例
         }
-        public override EntityType EntType { get { return EntityType.Table; } }
+        public override DbObjectType EntType { get { return DbObjectType.Table; } }
         public override string DBTableName { get { return "DBT_BD_COLUMN_DEFAULT"; } }
         //自动生成列属性字段
-        public BaseEntityField EF_COL_DEFAULT_ID = BaseEntityField.New().DBColName("COL_DEFAULT_ID").DBColType("varchar").DBTypeSize("varchar(36)").PK().DBLen(36);
-        public BaseEntityField EF_COLUMN_NAME = BaseEntityField.New().DBColName("COLUMN_NAME").DBColType("varchar").DBTypeSize("varchar(50)").DBLen(50);
-        public BaseEntityField EF_DEFAULT_MYSQL = BaseEntityField.New().DBColName("DEFAULT_MYSQL").DBColType("varchar").DBTypeSize("varchar(100)").DBLen(100);
-        public BaseEntityField EF_DEFAULT_POSTGRESQL = BaseEntityField.New().DBColName("DEFAULT_POSTGRESQL").DBColType("varchar").DBTypeSize("varchar(100)").DBLen(100);
-        public BaseEntityField EF_DEFAULT_ORACLE = BaseEntityField.New().DBColName("DEFAULT_ORACLE").DBColType("varchar").DBTypeSize("varchar(100)").DBLen(100);
-        public BaseEntityField EF_DEFAULT_SQLSERVER = BaseEntityField.New().DBColName("DEFAULT_SQLSERVER").DBColType("varchar").DBTypeSize("varchar(100)").DBLen(100);
-        public BaseEntityField EF_DEFAULT_SQLITE = BaseEntityField.New().DBColName("DEFAULT_SQLITE").DBColType("varchar").DBTypeSize("varchar(100)").DBLen(100);
-        public BaseEntityField EF_IS_USED_ADD = BaseEntityField.New().DBColName("IS_USED_ADD").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
-        public BaseEntityField EF_IS_USED_UPDATE = BaseEntityField.New().DBColName("IS_USED_UPDATE").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
-        public BaseEntityField EF_IS_CONDITION_QUERY = BaseEntityField.New().DBColName("IS_CONDITION_QUERY").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
-        public BaseEntityField EF_IS_CONDITION_UPDATE = BaseEntityField.New().DBColName("IS_CONDITION_UPDATE").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
-        public BaseEntityField EF_IS_CONDITION_DELETE = BaseEntityField.New().DBColName("IS_CONDITION_DELETE").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
-        public BaseEntityField EF_SORT_ID = BaseEntityField.New().DBColName("SORT_ID").DBColType("int").DBTypeSize("int");
-        public BaseEntityField EF_REMARK = BaseEntityField.New().DBColName("REMARK").DBColType("varchar").DBTypeSize("varchar(200)").DBLen(200);
-        public BaseEntityField EF_CREATE_TIME = BaseEntityField.New().DBColName("CREATE_TIME").DBColType("datetime").DBTypeSize("datetime");
-        public BaseEntityField EF_CREATOR_ID = BaseEntityField.New().DBColName("CREATOR_ID").DBColType("varchar").DBTypeSize("varchar(36)").DBLen(36);
-        public BaseEntityField EF_CREATOR = BaseEntityField.New().DBColName("CREATOR").DBColType("varchar").DBTypeSize("varchar(50)").DBLen(50);
-        public BaseEntityField EF_MODIFIER_ID = BaseEntityField.New().DBColName("MODIFIER_ID").DBColType("varchar").DBTypeSize("varchar(36)").DBLen(36);
-        public BaseEntityField EF_MODIFIER = BaseEntityField.New().DBColName("MODIFIER").DBColType("varchar").DBTypeSize("varchar(50)").DBLen(50);
-        public BaseEntityField EF_LAST_UPDATED_TIME = BaseEntityField.New().DBColName("LAST_UPDATED_TIME").DBColType("datetime").DBTypeSize("datetime");
-        public BaseEntityField EF_IS_ENABLED = BaseEntityField.New().DBColName("IS_ENABLED").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
-        public BaseEntityField EF_IS_SYSTEM = BaseEntityField.New().DBColName("IS_SYSTEM").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
-        public BaseEntityField EF_ORG_ID = BaseEntityField.New().DBColName("ORG_ID").DBColType("varchar").DBTypeSize("varchar(36)").DBLen(36);
-        public BaseEntityField EF_UPDATE_CONTROL_ID = BaseEntityField.New().DBColName("UPDATE_CONTROL_ID").DBColType("varchar").DBTypeSize("varchar(36)").DBLen(36);
-        public BaseEntityField EF_TFLAG = BaseEntityField.New().DBColName("TFLAG").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
+        public DbField EF_COL_DEFAULT_ID = DbField.New().DBColName("COL_DEFAULT_ID").DBColType("varchar").DBTypeSize("varchar(36)").PK().DBLen(36);
+        public DbField EF_COLUMN_NAME = DbField.New().DBColName("COLUMN_NAME").DBColType("varchar").DBTypeSize("varchar(50)").DBLen(50);
+        public DbField EF_DEFAULT_MYSQL = DbField.New().DBColName("DEFAULT_MYSQL").DBColType("varchar").DBTypeSize("varchar(100)").DBLen(100);
+        public DbField EF_DEFAULT_POSTGRESQL = DbField.New().DBColName("DEFAULT_POSTGRESQL").DBColType("varchar").DBTypeSize("varchar(100)").DBLen(100);
+        public DbField EF_DEFAULT_ORACLE = DbField.New().DBColName("DEFAULT_ORACLE").DBColType("varchar").DBTypeSize("varchar(100)").DBLen(100);
+        public DbField EF_DEFAULT_SQLSERVER = DbField.New().DBColName("DEFAULT_SQLSERVER").DBColType("varchar").DBTypeSize("varchar(100)").DBLen(100);
+        public DbField EF_DEFAULT_SQLITE = DbField.New().DBColName("DEFAULT_SQLITE").DBColType("varchar").DBTypeSize("varchar(100)").DBLen(100);
+        public DbField EF_IS_USED_ADD = DbField.New().DBColName("IS_USED_ADD").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
+        public DbField EF_IS_USED_UPDATE = DbField.New().DBColName("IS_USED_UPDATE").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
+        public DbField EF_IS_CONDITION_QUERY = DbField.New().DBColName("IS_CONDITION_QUERY").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
+        public DbField EF_IS_CONDITION_UPDATE = DbField.New().DBColName("IS_CONDITION_UPDATE").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
+        public DbField EF_IS_CONDITION_DELETE = DbField.New().DBColName("IS_CONDITION_DELETE").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
+        public DbField EF_SORT_ID = DbField.New().DBColName("SORT_ID").DBColType("int").DBTypeSize("int");
+        public DbField EF_REMARK = DbField.New().DBColName("REMARK").DBColType("varchar").DBTypeSize("varchar(200)").DBLen(200);
+        public DbField EF_CREATE_TIME = DbField.New().DBColName("CREATE_TIME").DBColType("datetime").DBTypeSize("datetime");
+        public DbField EF_CREATOR_ID = DbField.New().DBColName("CREATOR_ID").DBColType("varchar").DBTypeSize("varchar(36)").DBLen(36);
+        public DbField EF_CREATOR = DbField.New().DBColName("CREATOR").DBColType("varchar").DBTypeSize("varchar(50)").DBLen(50);
+        public DbField EF_MODIFIER_ID = DbField.New().DBColName("MODIFIER_ID").DBColType("varchar").DBTypeSize("varchar(36)").DBLen(36);
+        public DbField EF_MODIFIER = DbField.New().DBColName("MODIFIER").DBColType("varchar").DBTypeSize("varchar(50)").DBLen(50);
+        public DbField EF_LAST_UPDATED_TIME = DbField.New().DBColName("LAST_UPDATED_TIME").DBColType("datetime").DBTypeSize("datetime");
+        public DbField EF_IS_ENABLED = DbField.New().DBColName("IS_ENABLED").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
+        public DbField EF_IS_SYSTEM = DbField.New().DBColName("IS_SYSTEM").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
+        public DbField EF_ORG_ID = DbField.New().DBColName("ORG_ID").DBColType("varchar").DBTypeSize("varchar(36)").DBLen(36);
+        public DbField EF_UPDATE_CONTROL_ID = DbField.New().DBColName("UPDATE_CONTROL_ID").DBColType("varchar").DBTypeSize("varchar(36)").DBLen(36);
+        public DbField EF_TFLAG = DbField.New().DBColName("TFLAG").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
  
 
-        public override List<BaseEntityField> DbColumnList
+        public override List<DbField> DbColumnList
         {
             get
             {
-                var DbColumn = new List<BaseEntityField>();
-                DbColumn.AddRange(new BaseEntityField[] { EF_COL_DEFAULT_ID,EF_COLUMN_NAME,EF_DEFAULT_MYSQL,EF_DEFAULT_POSTGRESQL,EF_DEFAULT_ORACLE,EF_DEFAULT_SQLSERVER,EF_DEFAULT_SQLITE,EF_IS_USED_ADD,EF_IS_USED_UPDATE,EF_IS_CONDITION_QUERY,EF_IS_CONDITION_UPDATE,EF_IS_CONDITION_DELETE,EF_SORT_ID,EF_REMARK,EF_CREATE_TIME,EF_CREATOR_ID,EF_CREATOR,EF_MODIFIER_ID,EF_MODIFIER,EF_LAST_UPDATED_TIME,EF_IS_ENABLED,EF_IS_SYSTEM,EF_ORG_ID,EF_UPDATE_CONTROL_ID,EF_TFLAG });
+                var DbColumn = new List<DbField>();
+                DbColumn.AddRange(new DbField[] { EF_COL_DEFAULT_ID,EF_COLUMN_NAME,EF_DEFAULT_MYSQL,EF_DEFAULT_POSTGRESQL,EF_DEFAULT_ORACLE,EF_DEFAULT_SQLSERVER,EF_DEFAULT_SQLITE,EF_IS_USED_ADD,EF_IS_USED_UPDATE,EF_IS_CONDITION_QUERY,EF_IS_CONDITION_UPDATE,EF_IS_CONDITION_DELETE,EF_SORT_ID,EF_REMARK,EF_CREATE_TIME,EF_CREATOR_ID,EF_CREATOR,EF_MODIFIER_ID,EF_MODIFIER,EF_LAST_UPDATED_TIME,EF_IS_ENABLED,EF_IS_SYSTEM,EF_ORG_ID,EF_UPDATE_CONTROL_ID,EF_TFLAG });
                 return DbColumn;
             }
         }

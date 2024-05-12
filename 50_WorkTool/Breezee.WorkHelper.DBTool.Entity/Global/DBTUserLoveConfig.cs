@@ -132,5 +132,14 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string GenerateTableSQL_IsDefaultPK = "GenerateTableSQL_IsDefaultPK";//是否默认主键：当没有主键时，默认以第一行的列为主键列。
         public static readonly string GenerateTableSQL_IsDefaultColNameCN = "GenerateTableSQL_IsDefaultColNameCN";//是否使用默认列中文名
         public static readonly string GenerateTableSQL_DefaultColNameCN = "GenerateTableSQL_DefaultColNameCN";//列中文名为空时使用的列名
+        //DB间SQL转换
+        public static readonly string DbSqlConvert_IsAutoExcludeTableSource = "DbSqlConvert_IsAutoExcludeTableSource";
+        public static readonly string DbSqlConvert_ExcludeTableListSource = "DbSqlConvert_ExcludeTableListSource";
+        public static readonly string DbSqlConvert_IsAutoExcludeTableTarget = "DbSqlConvert_IsAutoExcludeTableTarget";
+        public static readonly string DbSqlConvert_ExcludeTableListTarget = "DbSqlConvert_ExcludeTableListTarget";
+        public static readonly string DbSqlConvert_ConvertType = "DbSqlConvert_ConvertType";//转换类型
+        public static readonly string DbSqlConvert_SourceDbType = "DbSqlConvert_SourceDbType";//源数据库类型
+        public static readonly string DbSqlConvert_TargetDbType = "DbSqlConvert_TargetDbType";//目标数据库类型
+        public static readonly string DbSqlConvert_LatestSql = "DbSqlConvert_LatestSql";
     }
 }

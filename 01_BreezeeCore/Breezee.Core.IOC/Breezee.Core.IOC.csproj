@@ -81,6 +81,8 @@
     <Compile Include="Castle\CastleContainer.cs" />
     <Compile Include="Castle\ICastleContainer.cs" />
     <Compile Include="ContainerContext.cs" />
+    <Compile Include="ImplementDllInfo.cs" />
+    <Compile Include="IoCDllRegister.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XMLManager.cs" />
   </ItemGroup>

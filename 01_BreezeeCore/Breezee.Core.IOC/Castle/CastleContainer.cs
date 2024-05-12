@@ -54,22 +54,19 @@ namespace Breezee.Core.IOC
                     {
                         if (container == null)
                         {
-                            //创建容器：castle的主配置文件在App.config中
+                            //创建容器
+                            //方式一：使用注册DLL方式。对应DLL中有IOC注册所有接口和实现清单类。优点：能直接配置接口（或父类）与实现类
+                            container = new WindsorContainer();
+                            foreach (ImplementDllInfo assembly in IoCDllRegister.ImplementDlls)
+                            {
+                                container.Install(FromAssembly.Named(assembly.AssemblyName));
+                            }
+
+                            //方式二：使用XML文件方式，castle的主配置文件在App.config中，不推荐使用。
+                            //缺点：接口（或父类）与实现类的配置在XML文件中，当有错时不好发现
                             //container = (IWindsorContainer)new WindsorContainer(new XmlInterpreter(UriConfig));
                             //container = new WindsorContainer(new XmlInterpreter(UriConfig));
-                            container = new WindsorContainer();
-
-                            container.Install(
-                                //Configuration.FromXmlFile(UriConfig),
-                                FromAssembly.Named("Breezee.Core.Adapter.BLL"),
-                                FromAssembly.Named("Breezee.AutoSQLExecutor.Common"),
-                                FromAssembly.Named("Breezee.Framework.Mini.BLL"),
-                                FromAssembly.Named("Breezee.Framework.Mini.DAL"),
-                                FromAssembly.Named("Breezee.Framework.Mini.DAL.SQLite"),
-                                FromAssembly.Named("Breezee.WorkHelper.DBTool.BLL"),
-                                FromAssembly.Named("Breezee.WorkHelper.DBTool.DAL"),
-                                FromAssembly.Named("Breezee.WorkHelper.DBTool.DAL.SQLite")
-                                );
+                            //container.Install(Configuration.FromXmlFile(UriConfig));
                             //Configuration.FromXml()
                         }
                     }

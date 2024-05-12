@@ -1,13 +1,21 @@
 ﻿using Breezee.Core.Interface;
 using Breezee.WorkHelper.DBTool.Entity;
 using Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL;
+using org.breezee.MyPeachNet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
+    /// <summary>
+    /// Oracle的SQL构造器
+    /// 包括两部分功能：
+    /// 1、表结构生成SQL
+    /// 2、将SQL转换为其他DB的SQL
+    /// </summary>
     public class OracleBuilder : SQLBuilder
     {
         string strUqueList = "";//唯一性
@@ -431,6 +439,295 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
         }
 
+        /// <summary>
+        /// Oracle的SQL转换其他DB类型
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="targetDbType"></param>
+        public override void ConvertToDbSql(ref string sSql, DataBaseType targetDbType)
+        {
+            string sMatchSysdate = @"\s*,*\s*SYSDATE\s*,*\s*";
+            string sMatchIfNull = @"\s*,*\s*NVL\s*\(\s*";
+            string sMatchsSysGuid = @"\s*,*\s*SYS_GUID\s*\(\s*\)\s*,?";
 
+            switch (targetDbType)
+            {
+                case DataBaseType.SqlServer:
+                    MatchReplace(ref sSql, sMatchSysdate, SqlFuncString.NowDate, SQLServerBuilder.SqlFuncString.NowDate, BracketDealType.Add);
+                    MatchReplace(ref sSql, sMatchIfNull, SqlFuncString.IfNull, SQLServerBuilder.SqlFuncString.IfNull);
+                    MatchReplace(ref sSql, sMatchsSysGuid, SqlFuncString.Guid, SQLServerBuilder.SqlFuncString.Guid);
+                    break;
+                case DataBaseType.Oracle:
+                    break;
+                case DataBaseType.MySql:
+                    MatchReplace(ref sSql, sMatchSysdate, SqlFuncString.NowDate, MySQLBuilder.SqlFuncString.NowDate, BracketDealType.Add);
+                    MatchReplace(ref sSql, sMatchIfNull, SqlFuncString.IfNull, MySQLBuilder.SqlFuncString.IfNull);
+                    MatchReplace(ref sSql, sMatchsSysGuid, SqlFuncString.Guid, MySQLBuilder.SqlFuncString.Guid);
+                    break;
+                case DataBaseType.SQLite:
+                    MatchReplace(ref sSql, sMatchSysdate, SqlFuncString.NowDate, SQLiteBuilder.SqlFuncString.NowDate, BracketDealType.Add);
+                    MatchReplace(ref sSql, sMatchIfNull, SqlFuncString.IfNull, SQLiteBuilder.SqlFuncString.IfNull);
+                    //MatchReplace(ref sSql, sMatchsSysGuid, SqlFuncString.Guid, SQLiteBuilder.SqlFuncString.Guid); //不支持
+                    break;
+                case DataBaseType.PostgreSql:
+                    MatchReplace(ref sSql, sMatchSysdate, SqlFuncString.NowDate, PostgreSQLBuilder.SqlFuncString.NowDate, BracketDealType.Add);
+                    MatchReplace(ref sSql, sMatchIfNull, SqlFuncString.IfNull, PostgreSQLBuilder.SqlFuncString.IfNull);
+                    MatchReplace(ref sSql, sMatchsSysGuid, SqlFuncString.Guid, PostgreSQLBuilder.SqlFuncString.Guid);
+                    break;
+            }
+
+            //替换Date的TO_CHAR
+            MatchDateToCharReplace(ref sSql, targetDbType);
+            //替换Decode：要放最后
+            MatchDecodeReplace(ref sSql);
+            
+        }
+
+        private void MatchDecodeReplace(ref string sSql)
+        {
+            /****SQL示例： ****************************
+select sysdate AS CUR_DATE,
+SYS_guid() AS NEW_ID,
+decode( A.OUT_TYPE ,'0','未出库','1','已出库' , '其他' ) AS OUT_TYPE_NAME,
+Nvl(A.OUT_STATUS,'0')   AS dd
+FROm T_PA_OUT_M
+LEFT JOIn T_PA_OUT_D B
+ ON A.OUT_ID=B.OUT_ID
+WHERE 1=1
+             *****************************/
+            //注：匹配中文[\u4e00-\u9fa5]
+            string sIfnullPatter = @"\s*I(S|F)NULL\s*\(\s*(\w+.)*\w+\s*,\s*\'?([\u4e00-\u9fa5]|\w)+\'?\s*\)";
+            //DECODE正常正则式：遇到IFNULL，匹配的结果会包括IFNULL部分字符，但DECODE不全。
+            //string sDecodePatterNormal = @",?\s*DECODE\s*\(\s*(\w+.)*\w+(\s*,\s*\'?([\u4e00-\u9fa5]|\w)+\'?\s*)+\)";
+            string sDecodePatterNormal = @",?\s*DECODE\s*\(\s*(\w+.)*\w+(\s*,\s*((\'?([\u4e00-\u9fa5]|\w)+\'?)|((\w+.)*\w+))\s*)+\)";
+            //DECODE包括IFNULL部分的正则式(OK)：将判断列的那部分：(\w+.)*\w+   替换为IFNULL部分的正则
+            string sDecodePatterIncludeIfnull = @",?\s*DECODE\s*\(\s*"+ sIfnullPatter + @"(\s*,\s*\'?([\u4e00-\u9fa5]|\w)+\'?\s*)+\)";
+            
+            //先处理包括Ifnull的DECODE语句
+            Regex regex = new Regex(sDecodePatterIncludeIfnull, RegexOptions.IgnoreCase);
+            MatchCollection mcColl = regex.Matches(sSql);
+            bool isNowWhen = false;
+            foreach (Match mt in mcColl)
+            {
+                OneDecodeDeal(ref sSql, sIfnullPatter, ref isNowWhen, mt,false); //不排除ifnull的字符处理
+            }
+
+            //再处理不包括Ifnull的DECODE语句
+            regex = new Regex(sDecodePatterNormal, RegexOptions.IgnoreCase);
+            mcColl = regex.Matches(sSql);
+            isNowWhen = false;
+            foreach (Match mt in mcColl)
+            {
+                OneDecodeDeal(ref sSql, sIfnullPatter, ref isNowWhen, mt, true); //排除ifnull的字符处理
+            }
+        }
+
+        /// <summary>
+        /// 单个DECODE语句处理
+        /// </summary>
+        /// <param name="sSql"></param>
+        /// <param name="sIfnullPatter"></param>
+        /// <param name="isNowWhen"></param>
+        /// <param name="mt"></param>
+        /// <param name="isExcludeIfnull">是否排除ifnull的字符处理</param>
+        private static void OneDecodeDeal(ref string sSql, string sIfnullPatter, ref bool isNowWhen, Match mt,bool isExcludeIfnull)
+        {
+            string sMustColumnName = string.Empty;
+            string sFind = string.Empty;
+            bool isStartWithComma = false;
+
+            sMustColumnName = mt.Value;
+            sMustColumnName = sMustColumnName.Trim();
+
+            if (isExcludeIfnull)
+            {
+                if(sMustColumnName.IndexOf("IFNULL", StringComparison.OrdinalIgnoreCase)>-1
+                   || sMustColumnName.IndexOf("ISNULL", StringComparison.OrdinalIgnoreCase) > -1)
+                {
+                    return;
+                }
+            }
+
+
+            //要处理掉ifnull先
+            Regex regexTime = new Regex(sIfnullPatter, RegexOptions.IgnoreCase);
+            MatchCollection mcCollTime = regexTime.Matches(sMustColumnName);
+            string sDecodeColun = string.Empty;
+            foreach (Match mtTime in mcCollTime)
+            {
+                sDecodeColun = mtTime.Value;
+                sMustColumnName = sMustColumnName.Replace(sDecodeColun, "#DECODE_COLUMN_PLACE#");
+                break;
+            }
+
+            sFind = ",";
+            if (sMustColumnName.StartsWith(sFind))
+            {
+                sMustColumnName = sMustColumnName.Substring(sFind.Length).Trim();
+                isStartWithComma = true;
+            }
+            sFind = "decode";
+            if (sMustColumnName.StartsWith(sFind, StringComparison.OrdinalIgnoreCase))
+            {
+                sMustColumnName = sMustColumnName.Substring(sFind.Length).Trim();
+            }
+            sFind = "(";
+            if (sMustColumnName.StartsWith(sFind, StringComparison.OrdinalIgnoreCase))
+            {
+                sMustColumnName = sMustColumnName.Substring(sFind.Length).Trim();
+            }
+            sFind = ")";
+            if (sMustColumnName.EndsWith(sFind, StringComparison.OrdinalIgnoreCase))
+            {
+                sMustColumnName = sMustColumnName.Substring(0, sMustColumnName.Length - 1).Trim();
+            }
+
+            //这里开始构造CASE WHEN
+            string[] arrList = sMustColumnName.Split(new char[] { ',' });
+            StringBuilder sb = new StringBuilder();
+            if (isStartWithComma)
+            {
+                sb.AppendLine(",");
+            }
+            else
+            {
+                sb.AppendLine("");
+            }
+            sb.Append("CASE ");
+
+            for (int i = 0; i < arrList.Length; i++)
+            {
+                if (i == 0)
+                {
+                    sb.Append(arrList[0]);
+                    isNowWhen = true;
+                }
+                else
+                {
+                    if (isNowWhen)
+                    {
+                        if (i == arrList.Length - 1)
+                        {
+                            sb.Append(string.Format("ELSE {0} ", arrList[i]));
+                        }
+                        else
+                        {
+                            sb.Append(string.Format("WHEN {0} ", arrList[i]));
+                        }
+                    }
+                    else
+                    {
+                        sb.Append(string.Format("THEN {0} ", arrList[i]));
+                    }
+                    isNowWhen = !isNowWhen;
+                }
+            }
+            sb.Append("END ");
+            if (!string.IsNullOrEmpty(sDecodeColun))
+            {
+                sb = sb.Replace("#DECODE_COLUMN_PLACE#", sDecodeColun + " ");
+            }
+            //替换字符
+            sSql = sSql.Replace(mt.Value, sb.ToString());
+        }
+
+        private void MatchDateToCharReplace(ref string sSql, DataBaseType targetDbType)
+        {
+            /****SQL示例： ****************************
+SELECT  TO_CHAR(A.OUT_STORE_DATE, 'YYYYMMDD') OUT_STORE_DATE,
+                           TO_CHAR(A.OUT_STORE_DATE, 'YYYY-MM-DD') OUT_STORE_DATE,
+                           DECODE(NVL(A.FI_AUDIT_FLAG,'0'), '1', '已审核', '未审核') AUDIT_FLAG,
+                           TO_CHAR( A.FI_AUDIT_DATE ,     'YYYY-MM-DD hh24:mi:ss:ff3') FI_AUDIT_DATE
+                      FROM T_PA_BU_OEM_OUT_STORE A
+                     INNER JOIN T_MDM_ORG_DLR B
+                        ON A.DLR_ID = B.DLR_ID
+ *****************************/
+            string sDecodePatter = @"\s*,*\s*TO_CHAR\s*\(\s*(\w+.)*\w+\s*,\s*\'YYYY-?MM-?DD(\s+\w+(:\w+)*)*\'\)\s*,?";
+            Regex regex = new Regex(sDecodePatter, RegexOptions.IgnoreCase);
+            MatchCollection mcColl = regex.Matches(sSql.ToString());
+
+            foreach (Match mt in mcColl)
+            {
+                string sMustColumnName = string.Empty;
+                string sFind = string.Empty;
+                bool isStartWithComma = false;
+                bool isHourMinuteSecond = false; //是否具体到时分秒
+
+                sMustColumnName = mt.Value;
+                sMustColumnName = sMustColumnName.Trim();
+                
+                sFind = ",";
+                if (sMustColumnName.StartsWith(sFind))
+                {
+                    sMustColumnName = sMustColumnName.Substring(sFind.Length).Trim();
+                    isStartWithComma = true;
+                }
+                sFind = "TO_CHAR";
+                if (sMustColumnName.StartsWith(sFind, StringComparison.OrdinalIgnoreCase))
+                {
+                    sMustColumnName = sMustColumnName.Substring(sFind.Length).Trim();
+                }
+                sFind = "(";
+                if (sMustColumnName.StartsWith(sFind, StringComparison.OrdinalIgnoreCase))
+                {
+                    sMustColumnName = sMustColumnName.Substring(sFind.Length).Trim();
+                }
+
+                //确定是否具体至时分秒
+                string sTimePatter = @"\s+((HH:)|(HH24:))+";
+                Regex regexTime = new Regex(sTimePatter, RegexOptions.IgnoreCase);
+                MatchCollection mcCollTime = regexTime.Matches(sMustColumnName);
+                foreach (Match mtTime in mcCollTime)
+                {
+                    isHourMinuteSecond = true;
+                    break;
+                }
+
+                sFind = ",";
+                int iComma = sMustColumnName.LastIndexOf(sFind);
+                if (iComma>-1)
+                {
+                    sMustColumnName = sMustColumnName.Substring(0, iComma - 1).Trim();
+                }
+
+                StringBuilder sb = new StringBuilder();
+                if (isStartWithComma)
+                {
+                    sb.AppendLine(",");
+                }
+                //构造新字符
+                if (targetDbType== DataBaseType.SqlServer)
+                {
+                    if (isHourMinuteSecond)
+                    {
+                        sb.Append(string.Format("format({0},'yyyy-MM-dd HH:mm:ss') ", sMustColumnName));
+                    }
+                    else
+                    {
+                        sb.Append(string.Format("format({0},'yyyy-MM-dd') ", sMustColumnName));
+                    }
+                }
+                else
+                {
+                    if (isHourMinuteSecond)
+                    {
+                        sb.Append(string.Format("DATE_FORMAT({0},'%Y-%m-%d %H:%i:%s') ", sMustColumnName));
+                    }
+                    else
+                    {
+                        sb.Append(string.Format("DATE_FORMAT({0},'%Y-%m-%d') ", sMustColumnName));
+                    }
+                }
+
+                //替换字符
+                sSql = sSql.Replace(mt.Value, sb.ToString());
+            }
+        }
+        public class SqlFuncString
+        {
+            public static string NowDate = "SYSDATE";
+            public static string IfNull = "NVL";
+            public static string Guid = "SYS_GUID";
+        }
     }
 }

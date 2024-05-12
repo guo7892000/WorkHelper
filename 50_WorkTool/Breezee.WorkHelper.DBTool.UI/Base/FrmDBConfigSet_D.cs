@@ -127,7 +127,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 bool isAdd = txbID.Text.Length == 0;
 
                 List<string> coloumns = isAdd ? null : _listSupply.GetSaveColumnNameList();
-                dtSave = DBToolHelper.Instance.DataAccess.GetTableConstruct(DT_DBT_BD_DB_CONFIG.TName, coloumns);
+                dtSave = DBToolHelper.Instance.DataAccess.GetTableConstruct(DT_DBT_BD_DB_CONFIG.NewEntity(), coloumns);
                 dtSave.DefaultValue(_loginUser);//设置登录用户的默认值
                 _listSupply.GetControlValue(dtSave, isAdd);
                 //加密密码

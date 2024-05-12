@@ -8,6 +8,12 @@ using Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
+    /// <summary>
+    /// SQLServer的SQL构造器
+    /// 包括两部分功能：
+    /// 1、表结构生成SQL
+    /// 2、将SQL转换为其他DB的SQL
+    /// </summary>
     public class SQLServerBuilder : SQLBuilder
     {
         //private string _tableColumnAroundChar_Left = "[";//围绕表或列名的左字符，例如SqlServer的[
@@ -454,6 +460,51 @@ namespace Breezee.WorkHelper.DBTool.UI
                 default:
                     throw new Exception("暂不支持该数据库类型！");
             }
+        }
+
+        /// <summary>
+        /// SqlServer的SQL转换其他DB类型
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="targetDbType"></param>
+        public override void ConvertToDbSql(ref string sSql, DataBaseType targetDbType)
+        {
+            string sMatchSysdate = @"\s*,*\s*NOW\s*\(\s*\)\s*,?";
+            string sMatchIfNull = @"\s*,*\s*IFNULL\s*\(\s*";
+            string sMatchsSysGuid = @"\s*,*\s*UUID\s*\(\s*\)\s*,?";
+
+            switch (targetDbType)
+            {
+                case DataBaseType.SqlServer:
+                    break;
+                case DataBaseType.Oracle:
+                    MatchReplace(ref sSql, sMatchSysdate, SqlFuncString.NowDate, OracleBuilder.SqlFuncString.NowDate, BracketDealType.Remove);
+                    MatchReplace(ref sSql, sMatchIfNull, SqlFuncString.IfNull, OracleBuilder.SqlFuncString.IfNull);
+                    MatchReplace(ref sSql, sMatchsSysGuid, SqlFuncString.Guid, OracleBuilder.SqlFuncString.Guid);
+                    break;
+                case DataBaseType.MySql:
+                    MatchReplace(ref sSql, sMatchSysdate, SqlFuncString.NowDate, MySQLBuilder.SqlFuncString.NowDate);
+                    MatchReplace(ref sSql, sMatchIfNull, SqlFuncString.IfNull, MySQLBuilder.SqlFuncString.IfNull);
+                    MatchReplace(ref sSql, sMatchsSysGuid, SqlFuncString.Guid, MySQLBuilder.SqlFuncString.Guid);
+                    break;
+                case DataBaseType.SQLite:
+                    MatchReplace(ref sSql, sMatchSysdate, SqlFuncString.NowDate, SQLiteBuilder.SqlFuncString.NowDate);
+                    MatchReplace(ref sSql, sMatchIfNull, SqlFuncString.IfNull, SQLiteBuilder.SqlFuncString.IfNull);
+                    //MatchReplace(ref sSql, sMatchsSysGuid, SqlFuncString.Guid, SQLiteBuilder.SqlFuncString.Guid); //不支持
+                    break;
+                case DataBaseType.PostgreSql:
+                    MatchReplace(ref sSql, sMatchSysdate, SqlFuncString.NowDate, PostgreSQLBuilder.SqlFuncString.NowDate);
+                    MatchReplace(ref sSql, sMatchIfNull, SqlFuncString.IfNull, PostgreSQLBuilder.SqlFuncString.IfNull);
+                    MatchReplace(ref sSql, sMatchsSysGuid, SqlFuncString.Guid, PostgreSQLBuilder.SqlFuncString.Guid);
+                    break;
+            }
+        }
+
+        public class SqlFuncString
+        {
+            public static string NowDate = "GETDATE";
+            public static string IfNull = "ISNULL";
+            public static string Guid = "NEWID";
         }
     }
 }

@@ -97,6 +97,10 @@ namespace Breezee.Core.WinFormUI
         /// </summary>
         public bool IsRowNumColumn { get; private set; } = false;
 
+        /// <summary>
+        /// 显示索引值
+        /// </summary>
+        public int ShowIndex { get; set; } = 1;
         #endregion
 
         #region 转换为字符方法
@@ -139,7 +143,8 @@ namespace Breezee.Core.WinFormUI
             int.TryParse(segments[8], out maxLength);
             FlexGridColumn column = new FlexGridColumn.Builder().DBName(segments[0]).Name(segments[1]).Caption(segments[2]).Type(FlexGridColumnDefinition.ConvertToDataGridColumnTypeEnumFromString(segments[3]))
                 .Visible(segments[4].ToUpper() == "TRUE").Width(width).Align(FlexGridColumnDefinition.ConvertToDataGridViewTextAlignFromString(segments[6]))
-                .Edit(segments[7].ToUpper() == "TRUE").MaxLen(maxLength).Build();
+                .Edit(segments[7].ToUpper() == "TRUE").MaxLen(maxLength)
+                .Build();
             return column;
         }
         #endregion
@@ -189,6 +194,7 @@ namespace Breezee.Core.WinFormUI
             private bool IsButtonColumn = false;
             private Type ValueType = typeof(string);
             private bool IsRowNumColumn = false;
+            private int ShowIndex=1;
             public Builder DBName(string sValue)
             {
                 this.DBColumnName = sValue;
@@ -264,10 +270,16 @@ namespace Breezee.Core.WinFormUI
                 return this;
             }
 
+            public Builder Index(int iNum)
+            {
+                this.ShowIndex = iNum;
+                return this;
+            }
+
             public FlexGridColumn Build()
             {
                 FlexGridColumn column = new FlexGridColumn();
-                column.DBColumnName = this.DBColumnName;
+                column.DBColumnName = DBColumnName;
                 column.ColumnName = this.ColumnName;
                 column.ColumnCaption = string.IsNullOrEmpty(ColumnCaption) ? ColumnName : ColumnCaption;
                 column.AllowEditing = this.AllowEditing;
@@ -279,6 +291,7 @@ namespace Breezee.Core.WinFormUI
                 column.IsButtonColumn = this.IsButtonColumn;
                 column.ValueType = this.ValueType;
                 column.IsRowNumColumn = this.IsRowNumColumn;
+                column.ShowIndex = this.ShowIndex;
                 return column;
             }
 

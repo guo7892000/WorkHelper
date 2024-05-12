@@ -524,5 +524,31 @@ namespace Breezee.Core.Interface
             return "SELECT " + sbAllSql.ToString();
         }
 
+        /// <summary>
+        /// 增加行
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="isNoRowsAdd">是否没有行时才增加</param>
+        /// <returns>没增加成功时返回null</returns>
+        public static DataTable AddOne(this DataTable dt, bool isNoRowsAdd = true)
+        {
+            DataRow drNew = dt.NewRow();
+            if (isNoRowsAdd)
+            {
+                if (dt.Rows.Count == 0)
+                {
+                    dt.Rows.Add(drNew);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                dt.Rows.Add(drNew);
+            }
+            return dt;
+        }
     }
 }

@@ -297,6 +297,13 @@
     <Compile Include="TableSql\FrmDBTTableExtendProperty.Designer.cs">
       <DependentUpon>FrmDBTTableExtendProperty.cs</DependentUpon>
     </Compile>
+    <Compile Include="TableSql\FrmSqlStringConvert.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TableSql\FrmSqlStringConvert.Designer.cs">
+      <DependentUpon>FrmSqlStringConvert.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TableSql\SqlReplaceColumnEntity.cs" />
     <Compile Include="TableSql\StandardColumnClassXmlConfig.cs" />
     <Compile Include="TableSql\SQLBuilder\MySQLBuilder.cs" />
     <Compile Include="TableSql\SQLBuilder\OracleBuilder.cs" />
@@ -465,6 +472,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TableSql\FrmDBTTableExtendProperty.resx">
       <DependentUpon>FrmDBTTableExtendProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TableSql\FrmSqlStringConvert.resx">
+      <DependentUpon>FrmSqlStringConvert.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -930,6 +940,12 @@
     <Content Include="Help\Html\DBTool\DB\Images\getUpdateFile01.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Help\Html\DBTool\DB\Images\SqlDbConvert.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\DB\Images\SqlDbConvert.002.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\Html\DBTool\DB\Images\SqlDBQuery.001.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -994,6 +1010,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\DB\SqlQueryExecute.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\DB\SqlDbConvert.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\DB\SqlTableColumnRemark.html">

@@ -30,9 +30,11 @@ namespace Breezee.Core.WinFormUI
         /// <summary>
         /// 设置表通用列默认值
         /// </summary>
-        /// <param name="dt">单表</param>
+        /// <param name="dt"></param>
+        /// <param name="loginUser"></param>
+        /// <param name="isAddNewRow">是否增加新行</param>
         /// <returns></returns>
-        public static DataTable DefaultValue(this DataTable dt, LoginUserInfo loginUser = null)
+        public static DataTable DefaultValue(this DataTable dt, LoginUserInfo loginUser = null,bool isAddNewRow=true)
         {
             if (dt.Columns.Contains(DT_SYS_USER.CREATE_TIME))
             {
@@ -80,6 +82,11 @@ namespace Breezee.Core.WinFormUI
                 {
                     dt.Columns[DT_SYS_USER.MODIFIER].DefaultValue = loginUser.USER_NAME;
                 }
+            }
+            //增加新行
+            if (isAddNewRow)
+            {
+                dt.Rows.Add(dt.NewRow());
             }
             return dt;
         }

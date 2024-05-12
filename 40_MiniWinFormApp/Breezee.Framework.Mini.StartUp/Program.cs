@@ -1,6 +1,7 @@
 using Breezee.AutoSQLExecutor.Core;
 using Breezee.Core;
 using Breezee.Core.Interface;
+using Breezee.Core.IOC;
 using Breezee.Core.WinFormUI;
 using Breezee.Framework.Mini.Entity;
 using System;
@@ -23,6 +24,18 @@ namespace Breezee.Framework.Mini.StartUp
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            //IoC容器的DLL注册类
+            IoCDllRegister.Reg(new string[]
+            {
+                "Breezee.Core.Adapter.BLL",
+                "Breezee.AutoSQLExecutor.Common",
+                "Breezee.Framework.Mini.BLL",
+                "Breezee.Framework.Mini.DAL",
+                "Breezee.Framework.Mini.DAL.SQLite",
+                "Breezee.WorkHelper.DBTool.BLL",
+                "Breezee.WorkHelper.DBTool.DAL",
+                "Breezee.WorkHelper.DBTool.DAL.SQLite"
+            });
             //加载应用配置
             WinFormContext.Instance.LoadAppConfig();
             //打开登录界面

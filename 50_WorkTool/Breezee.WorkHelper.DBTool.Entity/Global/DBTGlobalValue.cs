@@ -82,6 +82,14 @@ namespace Breezee.WorkHelper.DBTool.Entity
             public static string Xml_StringTemplateFileName = "ColumnDictionary_StringTemplateConfig.xml"; //字符模板配置文件
         }
 
+        /// <summary>
+        /// 数据库间SQL转换
+        /// </summary>
+        public static class DbConvertSql
+        {
+            public static string Xml_NewOldTableFileName = "DbConvertSqlNewOldTableConfig.xml"; //新旧表配置
+        }
+
         public static string AppPath
         {
             get { return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\"; }

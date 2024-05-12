@@ -87,7 +87,7 @@
             this.tsmiMoveRightOne = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMoveLeftOne = new System.Windows.Forms.ToolStripMenuItem();
             this.tpgDesktop = new System.Windows.Forms.TabPage();
-            this.pnlDestop = new System.Windows.Forms.Panel();
+            this.pnlDesktop = new System.Windows.Forms.Panel();
             this.menuStrip.SuspendLayout();
             this.tspMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -625,22 +625,22 @@
             this.tpgDesktop.Text = "桌面";
             this.tpgDesktop.UseVisualStyleBackColor = true;
             // 
-            // pnlDestop
+            // pnlDesktop
             // 
-            this.pnlDestop.AccessibleDescription = "";
-            this.pnlDestop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlDestop.Location = new System.Drawing.Point(188, 74);
-            this.pnlDestop.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.pnlDestop.Name = "pnlDestop";
-            this.pnlDestop.Size = new System.Drawing.Size(1075, 47);
-            this.pnlDestop.TabIndex = 8;
+            this.pnlDesktop.AccessibleDescription = "";
+            this.pnlDesktop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlDesktop.Location = new System.Drawing.Point(188, 74);
+            this.pnlDesktop.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.pnlDesktop.Name = "pnlDesktop";
+            this.pnlDesktop.Size = new System.Drawing.Size(1075, 47);
+            this.pnlDesktop.TabIndex = 8;
             // 
             // FrmMiniMainMDI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1263, 623);
-            this.Controls.Add(this.pnlDestop);
+            this.Controls.Add(this.pnlDesktop);
             this.Controls.Add(this.tcMenu);
             this.Controls.Add(this.pnlMenuNavigate);
             this.Controls.Add(this.pnlLeftMenu);
@@ -705,7 +705,7 @@
         private System.Windows.Forms.Panel pnlLeftMenu;
         private System.Windows.Forms.Panel pnlMenuNavigate;
         private System.Windows.Forms.TabControl tcMenu;
-        private System.Windows.Forms.Panel pnlDestop;
+        private System.Windows.Forms.Panel pnlDesktop;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripTextBox tstbMenuSearch;
         private System.Windows.Forms.ToolStripButton tsbAutoGuid;

@@ -314,21 +314,21 @@ namespace Breezee.Core.WinFormUI
                 return false;
             }
 
-            if (string.IsNullOrEmpty(menu.DLL_NAME))
+            if (string.IsNullOrEmpty(menu.DllName))
             {
-                throw new FileLoadException("单击“" + menu.MENU_NAME + "”菜单项（ID=" + menu.MENU_ID.ToString() + "）时，" + this.GetType().Name + "对应的窗体文件（FileID=" + menu.DLL_ID.ToString() + "）的名称不能为空!");
+                throw new FileLoadException("单击“" + menu.MenuName + "”菜单项（ID=" + menu.MenuId.ToString() + "）时，" + this.GetType().Name + "对应的窗体文件（FileID=" + menu.DllId.ToString() + "）的名称不能为空!");
             }
             //判断窗体文件是否存在
-            string fullname = mPath + menu.DLL_NAME;
+            string fullname = mPath + menu.DllName;
             if (!File.Exists(fullname))
             {
-                throw new FileLoadException("单击“" + menu.MENU_NAME + "”菜单项（ID=" + menu.MENU_ID.ToString() + "）时，" + this.GetType().Name + "窗体文件（FileID=" + menu.DLL_ID.ToString() + "）" + fullname + "不存在!", fullname);
+                throw new FileLoadException("单击“" + menu.MenuName + "”菜单项（ID=" + menu.MenuId.ToString() + "）时，" + this.GetType().Name + "窗体文件（FileID=" + menu.DllId.ToString() + "）" + fullname + "不存在!", fullname);
             }
 
             // 设置窗体键值,用于缓存窗体
             string formKey = GetCachedFormKey(menu);
 
-            FileInfo fi = new FileInfo(mPath + menu.DLL_NAME);
+            FileInfo fi = new FileInfo(mPath + menu.DllName);
             if (!fi.Exists)
             {
                 MessageBox.Show("找不到文件" + fi.FullName + "！无法加载程序集！", "找不到文件",MessageBoxButtons.OK,MessageBoxIcon.Information);
@@ -349,20 +349,20 @@ namespace Breezee.Core.WinFormUI
 
             Type myType = null;
             //动态载入DLL
-            myType = asm.GetType(menu.FORM_FULL_PATH);
+            myType = asm.GetType(menu.FormFullPath);
 
             string strCodeBase = asm.CodeBase;
             string strEscapedCodeBase = asm.EscapedCodeBase;
             if (myType == null)
             {
-                string prompt = "从dll中的程序集用反射获取类型时返回null：\n【Assembly】.GetType(“" + menu.FORM_FULL_PATH + "”)！\n"
-                    + (menu.FORM_FULL_PATH.Contains(".") ? "" : "\n类型名称应当包括命名空间，但类型名称中并未包含“.”分隔符，请检查是否遗漏了命名空间？？")
+                string prompt = "从dll中的程序集用反射获取类型时返回null：\n【Assembly】.GetType(“" + menu.FormFullPath + "”)！\n"
+                    + (menu.FormFullPath.Contains(".") ? "" : "\n类型名称应当包括命名空间，但类型名称中并未包含“.”分隔符，请检查是否遗漏了命名空间？？")
                     + "\ndll文件名：（" + (fi.Exists ? "存在" : "不存在") + "）\n    " + fi.FullName
                     + "\n程序集名称：\n    " + asm.FullName
-                    + "\n要获取的类型：\n    " + menu.FORM_FULL_PATH
-                    + "\n菜单：ID=" + menu.MENU_ID.ToString() + ", Name=" + menu.MENU_NAME
-                    + "\n文件：ID=" + menu.DLL_ID.ToString() + ", Name=" + menu.DLL_NAME
-                    + "\n窗体：Name=" + menu.FORM_FULL_PATH;
+                    + "\n要获取的类型：\n    " + menu.FormFullPath
+                    + "\n菜单：ID=" + menu.MenuId.ToString() + ", Name=" + menu.MenuName
+                    + "\n文件：ID=" + menu.DllId.ToString() + ", Name=" + menu.DllName
+                    + "\n窗体：Name=" + menu.FormFullPath;
 
                 throw new Exception(prompt);
             }
@@ -370,7 +370,7 @@ namespace Breezee.Core.WinFormUI
             object obj;
             //创建对象
             //如果传入参数为空
-            if (string.IsNullOrEmpty(menu.MENU_PARM))
+            if (string.IsNullOrEmpty(menu.MenuParm))
             {
                 try
                 {
@@ -378,7 +378,7 @@ namespace Breezee.Core.WinFormUI
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("菜单无参数时，从" + fi.FullName + "中的程序集“" + asm.FullName + "\n中创建类型“" + menu.FORM_FULL_PATH + "”的实例出错！\n" + ex.Message, "创建类型实例出错", 
+                    MessageBox.Show("菜单无参数时，从" + fi.FullName + "中的程序集“" + asm.FullName + "\n中创建类型“" + menu.FormFullPath + "”的实例出错！\n" + ex.Message, "创建类型实例出错", 
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return true;
                 }
@@ -388,18 +388,18 @@ namespace Breezee.Core.WinFormUI
                 try
                 {
                     //此处添加窗体最大化处理
-                    if (menu.MENU_PARM.Trim().ToUpper() == "MAX")
+                    if (menu.MenuParm.Trim().ToUpper() == "MAX")
                     {
                         obj = Activator.CreateInstance(myType);
                     }
                     else
                     {
-                        obj = Activator.CreateInstance(myType, new object[] { menu.MENU_PARM });
+                        obj = Activator.CreateInstance(myType, new object[] { menu.MenuParm });
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("菜单有参数时，从" + fi.FullName + "中的程序集\n" + asm.FullName + "\n中创建类型“" + menu.FORM_FULL_PATH + "”的实例出错！\n" + ex.Message + "\n菜单的参数是：" + menu.MENU_PARM, "创建类型实例出错",
+                    MessageBox.Show("菜单有参数时，从" + fi.FullName + "中的程序集\n" + asm.FullName + "\n中创建类型“" + menu.FormFullPath + "”的实例出错！\n" + ex.Message + "\n菜单的参数是：" + menu.MenuParm, "创建类型实例出错",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return true;
                 }
@@ -410,7 +410,7 @@ namespace Breezee.Core.WinFormUI
             //如果窗体为空
             if (obj == null)
             {
-                throw new FileLoadException("窗体加载失败：从" + fi.FullName + "中的程序集\n" + asm.FullName + "\n中创建类型“" + menu.FORM_FULL_PATH + "”的实例失败！返回对象为null！", fi.FullName);
+                throw new FileLoadException("窗体加载失败：从" + fi.FullName + "中的程序集\n" + asm.FullName + "\n中创建类型“" + menu.FormFullPath + "”的实例失败！返回对象为null！", fi.FullName);
             }
             else if (obj is Form)
             {
@@ -419,13 +419,13 @@ namespace Breezee.Core.WinFormUI
             }
             else
             {
-                string prompt = "窗体加载失败：从" + fi.FullName + "中的程序集\n" + asm.FullName + "\n中创建类型“" + menu.FORM_FULL_PATH + "”的实例失败！\n创建的obj实际是" + obj.GetType().FullName + "类型！";
+                string prompt = "窗体加载失败：从" + fi.FullName + "中的程序集\n" + asm.FullName + "\n中创建类型“" + menu.FormFullPath + "”的实例失败！\n创建的obj实际是" + obj.GetType().FullName + "类型！";
                 Exception ex = new Exception(prompt);
                 throw ex;
             }
 
             //如果主窗体不为空
-            if (mMainForm != null && menu.MENU_PARM.Trim().ToUpper() != "MAX")
+            if (mMainForm != null && menu.MenuParm.Trim().ToUpper() != "MAX")
             {
                 //把返回窗体加入主窗体
                 mMainForm.AddMdiChilden(form);
@@ -453,10 +453,10 @@ namespace Breezee.Core.WinFormUI
             //form.PrivID = menu.MenuID;
             form.Tag = menu;
             //设置窗体标题
-            form.Text = menu.MENU_NAME;
+            form.Text = menu.MenuName;
 
             #region 窗体按钮的权限处理
-            if (_LoginUser.USER_TYPE != "1" && menu.RIGHT_TYPE != "1" && menu.RIGHT_TYPE != "4") //非管理员，且不是授权到菜单，通用功能，才控制按钮权限
+            if (_LoginUser.USER_TYPE != "1" && menu.RightType != "1" && menu.RightType != "4") //非管理员，且不是授权到菜单，通用功能，才控制按钮权限
             {
                 foreach (Control ctrl in form.Controls)
                 {
@@ -494,7 +494,7 @@ namespace Breezee.Core.WinFormUI
             try
             {
                 form.WindowState = FormWindowState.Maximized;
-                if (menu.MENU_PARM.Trim().ToUpper() == "MAX")
+                if (menu.MenuParm.Trim().ToUpper() == "MAX")
                 {
                     form.ShowDialog();
                 }
@@ -505,7 +505,7 @@ namespace Breezee.Core.WinFormUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show("从" + fi.FullName + "中的程序集\n" + asm.FullName + "\n中创建窗体类型“" + menu.FORM_FULL_PATH + "”的实例完毕之后，在显示窗体时出错！\n" + ex.Message + "\n菜单的参数是：" + menu.MENU_PARM, "显示窗体出错",
+                MessageBox.Show("从" + fi.FullName + "中的程序集\n" + asm.FullName + "\n中创建窗体类型“" + menu.FormFullPath + "”的实例完毕之后，在显示窗体时出错！\n" + ex.Message + "\n菜单的参数是：" + menu.MenuParm, "显示窗体出错",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return true;
             }
@@ -528,14 +528,14 @@ namespace Breezee.Core.WinFormUI
                 ctrl.Visible = true;
                 return;
             }
-            DataRow[] drBT = _dtAllMenuButtonList.Select(DT_SYS_MENU.MENU_ID + "='" + menu.MENU_ID + "' AND " + DT_SYS_BUTTON.BUTTON_CODE + "='" + ctrl.Name + "' AND " + DT_SYS_MENU_BUTTON.IS_ENABLED + "='1'");
+            DataRow[] drBT = _dtAllMenuButtonList.Select(DT_SYS_MENU.MENU_ID + "='" + menu.MenuId + "' AND " + DT_SYS_BUTTON.BUTTON_CODE + "='" + ctrl.Name + "' AND " + DT_SYS_MENU_BUTTON.IS_ENABLED + "='1'");
             if (drBT.Length > 0) //按钮可用
             {
                 if (drBT[0][DT_SYS_MENU_BUTTON.IS_GIVE_RIGHT].ToString() == "1") //要授权
                 {
-                    if (_dtUserButtonPriv.Select(DT_SYS_MENU.MENU_ID + "='" + menu.MENU_ID + "' AND " + DT_SYS_BUTTON.BUTTON_CODE + "='" + ctrl.Name + "' ").Length == 0) //无权限
+                    if (_dtUserButtonPriv.Select(DT_SYS_MENU.MENU_ID + "='" + menu.MenuId + "' AND " + DT_SYS_BUTTON.BUTTON_CODE + "='" + ctrl.Name + "' ").Length == 0) //无权限
                     {
-                        if (menu.NOT_RIGHT_BUTTON_DISPLAY_TYPE == "1")
+                        if (menu.notRightButtonDisplayType == "1")
                         {
                             ctrl.Enabled = false; //无权限不可用
                         }
@@ -579,14 +579,14 @@ namespace Breezee.Core.WinFormUI
                         ctrl.Visible = true;
                         break;
                     }
-                    DataRow[] drBT = _dtAllMenuButtonList.Select(DT_SYS_MENU.MENU_ID + "='" + menu.MENU_ID + "' AND " + DT_SYS_BUTTON.BUTTON_CODE + "='" + ctrl.Name + "' AND " + DT_SYS_MENU_BUTTON.IS_ENABLED + "='1'");
+                    DataRow[] drBT = _dtAllMenuButtonList.Select(DT_SYS_MENU.MENU_ID + "='" + menu.MenuId + "' AND " + DT_SYS_BUTTON.BUTTON_CODE + "='" + ctrl.Name + "' AND " + DT_SYS_MENU_BUTTON.IS_ENABLED + "='1'");
                     if (drBT.Length > 0) //按钮可用
                     {
                         if (drBT[0][DT_SYS_MENU_BUTTON.IS_GIVE_RIGHT].ToString() == "1") //要授权
                         {
-                            if (_dtUserButtonPriv.Select(DT_SYS_MENU.MENU_ID + "='" + menu.MENU_ID + "' AND " + DT_SYS_BUTTON.BUTTON_CODE + "='" + ctrl.Name + "' ").Length == 0) //无权限
+                            if (_dtUserButtonPriv.Select(DT_SYS_MENU.MENU_ID + "='" + menu.MenuId + "' AND " + DT_SYS_BUTTON.BUTTON_CODE + "='" + ctrl.Name + "' ").Length == 0) //无权限
                             {
-                                if (menu.NOT_RIGHT_BUTTON_DISPLAY_TYPE == "1")
+                                if (menu.notRightButtonDisplayType == "1")
                                 {
                                     ctrl.Enabled = false; //无权限不可用
                                 }
@@ -671,11 +671,11 @@ namespace Breezee.Core.WinFormUI
         /// <returns></returns>
         private string GetCachedFormKey(SYS_MENU menu)
         {
-            string formKey = menu.FORM_FULL_PATH;
+            string formKey = menu.FormFullPath;
             //判断参数是否为空
-            if (!string.IsNullOrEmpty(menu.MENU_PARM))
+            if (!string.IsNullOrEmpty(menu.MenuParm))
             {
-                formKey += "<>" + menu.MENU_PARM.GetHashCode().ToString();
+                formKey += "<>" + menu.MenuParm.GetHashCode().ToString();
             }
             return formKey;
         }

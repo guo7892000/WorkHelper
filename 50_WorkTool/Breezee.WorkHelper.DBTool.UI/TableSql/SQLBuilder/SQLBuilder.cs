@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -122,8 +123,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             return sbSql.ToString();
         }
 
-        public abstract void GenerateTableSQL(EntTable entTable, GenerateParamEntity paramEntity);
-        public abstract void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue,DataBaseType impDbType);
         private static readonly string _strBlank = " "; //空格
 
         #region 辅助方法
@@ -233,5 +232,61 @@ namespace Breezee.WorkHelper.DBTool.UI
             return sDataType_Full.TableColTypeNotNeedLenDeal(); 
         }
         #endregion
+
+        /// <summary>
+        /// 正则匹配替换
+        /// </summary>
+        /// <param name="sSql"></param>
+        /// <param name="sMatchFormat"></param>
+        /// <param name="sOld"></param>
+        /// <param name="sNew"></param>
+        /// <param name="bracketDealType">增加括号类型</param>
+        public void MatchReplace(ref string sSql, string sMatchFormat, string sOld, string sNew, BracketDealType bracketDealType = BracketDealType.None)
+        {
+            Regex regex = new Regex(sMatchFormat, RegexOptions.IgnoreCase);
+            MatchCollection mcColl = regex.Matches(sSql.ToString());
+            if (bracketDealType == BracketDealType.Add)
+            {
+                sNew = sNew + "()";
+            }
+            string sMustColumnName = string.Empty;
+            foreach (Match mt in mcColl)
+            {
+                //使用String.Replace方法默认是区分大小写的；所以这里使用Regex.Replace
+                sMustColumnName = Regex.Replace(mt.Value, sOld, sNew, RegexOptions.IgnoreCase);
+                if (bracketDealType== BracketDealType.Remove)
+                {
+                    sMustColumnName = sMustColumnName.Replace("(","").Replace(")", "").Trim();
+                }
+                sSql = sSql.Replace(mt.Value, sMustColumnName);
+            }
+        }
+
+        /// <summary>
+        /// 生成表SQL
+        /// </summary>
+        /// <param name="entTable"></param>
+        /// <param name="paramEntity"></param>
+        public abstract void GenerateTableSQL(EntTable entTable, GenerateParamEntity paramEntity);
+        /// <summary>
+        /// 转换数据类型和默认值
+        /// </summary>
+        /// <param name="sDbType"></param>
+        /// <param name="sDefaultValue"></param>
+        /// <param name="impDbType"></param>
+        public abstract void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue, DataBaseType impDbType);
+        /// <summary>
+        /// 转换为对应数据库类型的SQL
+        /// </summary>
+        /// <param name="sSql">SQL语句</param>
+        /// <param name="targetDbType">目标数据库类型</param>
+        public abstract void ConvertToDbSql(ref string sSql, DataBaseType targetDbType);
+    }
+
+    public enum BracketDealType
+    {
+        None = 0,
+        Add=1,
+        Remove=2
     }
 }

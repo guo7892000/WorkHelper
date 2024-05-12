@@ -102,6 +102,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             DataTable dtConn = _IDBConfigSet.QueryDbConfig(_dicQuery).SafeGetDictionaryTable();
             uC_DbConnection1.SetDbConnComboBoxSource(dtConn);
             uC_DbConnection1.IsDbNameNotNull = true;
+            uC_DbConnection1.IsAsyncLoadOracleDefaultValue = true; //要异步加载默认值
             uC_DbConnection1.DBType_SelectedIndexChanged += cbbDatabaseType_SelectedIndexChanged;//数据库类型下拉框变化事件
             uC_DbConnection1.DBConnName_SelectedIndexChanged += cbbDBConnName_SelectedIndexChanged;
             uC_DbConnection1.ColumnDefaultValue_LoadCompleted += columnDefaultValue_LoadCompleted;

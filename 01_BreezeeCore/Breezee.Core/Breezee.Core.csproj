@@ -78,6 +78,10 @@
       <Project>{A975AFED-639E-40AA-9698-9A6F0FCD7421}</Project>
       <Name>Breezee.AutoSQLExecutor.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Breezee.Core.Entity\Breezee.Core.Entity.csproj">
+      <Project>{E76F9589-408B-4963-92F2-CFB0A8985051}</Project>
+      <Name>Breezee.Core.Entity</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Breezee.Core.Interface\Breezee.Core.Interface.csproj">
       <Project>{1CADC5E8-A5A0-4EB2-BD6B-5C5F67CA0456}</Project>
       <Name>Breezee.Core.Interface</Name>

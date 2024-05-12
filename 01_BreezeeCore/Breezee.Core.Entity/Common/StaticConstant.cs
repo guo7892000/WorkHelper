@@ -137,6 +137,9 @@ namespace Breezee.Core.Entity
 
         public static readonly string FRA_GRID_ROWNO_STR = "ROWNO";
         public static readonly string FRA_GRID_IS_SELECTED_STR = "IS_SELECTED";
-
+        //Peach应用程序数据目录及文件名
+        public static readonly string FRA_PEACH_DATA_CONFIG_PATH = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + @"\Peach\Config";
+        public static readonly string FRA_PEACH_DATA_CONFIG_NAME = "all.xml";
+        public static readonly string FRA_PEACH_SHORT_CUT_MENU_CONFIG_PATH = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + @"\Peach\Config\ShortCutMenu";
     }
 }

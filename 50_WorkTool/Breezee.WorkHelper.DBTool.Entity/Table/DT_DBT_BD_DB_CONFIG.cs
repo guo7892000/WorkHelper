@@ -7,52 +7,52 @@ using System.Text;
 namespace Breezee.WorkHelper.DBTool.Entity
 {
     [Serializable]
-    public partial class DT_DBT_BD_DB_CONFIG : IBaseEntity
+    public partial class DT_DBT_BD_DB_CONFIG : DbEntity
     {
         public static string TName = "DBT_BD_DB_CONFIG"; //自动生成表名
 		public override string DBTableNameCN { get{ return ""; } }
 		public override string DBTableComment { get{ return ""; } }
 
-        public static IBaseEntity NewEntity()
+        public static DbEntity NewEntity()
         {
             return new DT_DBT_BD_DB_CONFIG();//本身实例
         }
-        public override EntityType EntType { get { return EntityType.Table; } }
+        public override DbObjectType EntType { get { return DbObjectType.Table; } }
         public override string DBTableName { get { return "DBT_BD_DB_CONFIG"; } }
         //自动生成列属性字段
-        public BaseEntityField EF_DB_CONFIG_ID = BaseEntityField.New().DBColName("DB_CONFIG_ID").DBColType("varchar").DBTypeSize("varchar(36)").PK().DBLen(36);
-        public BaseEntityField EF_DB_CONFIG_CODE = BaseEntityField.New().DBColName("DB_CONFIG_CODE").DBColType("varchar").DBTypeSize("varchar(50)").DBLen(50);
-        public BaseEntityField EF_DB_CONFIG_NAME = BaseEntityField.New().DBColName("DB_CONFIG_NAME").DBColType("varchar").DBTypeSize("varchar(100)").DBLen(100);
-        public BaseEntityField EF_DB_TYPE = BaseEntityField.New().DBColName("DB_TYPE").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
-        public BaseEntityField EF_SERVER_IP = BaseEntityField.New().DBColName("SERVER_IP").DBColType("varchar").DBTypeSize("varchar(400)").DBLen(400);
-        public BaseEntityField EF_PORT_NO = BaseEntityField.New().DBColName("PORT_NO").DBColType("varchar").DBTypeSize("varchar(20)").DBLen(20);
-        public BaseEntityField EF_SCHEMA_NAME = BaseEntityField.New().DBColName("SCHEMA_NAME").DBColType("varchar").DBTypeSize("varchar(30)").DBLen(30);
-        public BaseEntityField EF_DB_NAME = BaseEntityField.New().DBColName("DB_NAME").DBColType("varchar").DBTypeSize("varchar(30)").DBLen(30);
-        public BaseEntityField EF_USER_NAME = BaseEntityField.New().DBColName("USER_NAME").DBColType("varchar").DBTypeSize("varchar(50)").DBLen(50);
-        public BaseEntityField EF_USER_PASSWORD = BaseEntityField.New().DBColName("USER_PASSWORD").DBColType("varchar").DBTypeSize("varchar(50)").DBLen(50);
-        public BaseEntityField EF_LOGIN_TYPE = BaseEntityField.New().DBColName("LOGIN_TYPE").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
-        public BaseEntityField EF_TYPE_DESC = BaseEntityField.New().DBColName("TYPE_DESC").DBColType("varchar").DBTypeSize("varchar(200)").DBLen(200);
-        public BaseEntityField EF_SORT_ID = BaseEntityField.New().DBColName("SORT_ID").DBColType("int").DBTypeSize("int");
-        public BaseEntityField EF_REMARK = BaseEntityField.New().DBColName("REMARK").DBColType("varchar").DBTypeSize("varchar(200)").DBLen(200);
-        public BaseEntityField EF_CREATE_TIME = BaseEntityField.New().DBColName("CREATE_TIME").DBColType("datetime").DBTypeSize("datetime");
-        public BaseEntityField EF_CREATOR_ID = BaseEntityField.New().DBColName("CREATOR_ID").DBColType("varchar").DBTypeSize("varchar(36)").DBLen(36);
-        public BaseEntityField EF_CREATOR = BaseEntityField.New().DBColName("CREATOR").DBColType("varchar").DBTypeSize("varchar(50)").DBLen(50);
-        public BaseEntityField EF_MODIFIER_ID = BaseEntityField.New().DBColName("MODIFIER_ID").DBColType("varchar").DBTypeSize("varchar(36)").DBLen(36);
-        public BaseEntityField EF_MODIFIER = BaseEntityField.New().DBColName("MODIFIER").DBColType("varchar").DBTypeSize("varchar(50)").DBLen(50);
-        public BaseEntityField EF_LAST_UPDATED_TIME = BaseEntityField.New().DBColName("LAST_UPDATED_TIME").DBColType("datetime").DBTypeSize("datetime");
-        public BaseEntityField EF_IS_ENABLED = BaseEntityField.New().DBColName("IS_ENABLED").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
-        public BaseEntityField EF_IS_SYSTEM = BaseEntityField.New().DBColName("IS_SYSTEM").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
-        public BaseEntityField EF_ORG_ID = BaseEntityField.New().DBColName("ORG_ID").DBColType("varchar").DBTypeSize("varchar(36)").DBLen(36);
-        public BaseEntityField EF_UPDATE_CONTROL_ID = BaseEntityField.New().DBColName("UPDATE_CONTROL_ID").DBColType("varchar").DBTypeSize("varchar(36)").DBLen(36);
-        public BaseEntityField EF_TFLAG = BaseEntityField.New().DBColName("TFLAG").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
+        public DbField EF_DB_CONFIG_ID = DbField.New().DBColName("DB_CONFIG_ID").DBColType("varchar").DBTypeSize("varchar(36)").PK().DBLen(36);
+        public DbField EF_DB_CONFIG_CODE = DbField.New().DBColName("DB_CONFIG_CODE").DBColType("varchar").DBTypeSize("varchar(50)").DBLen(50);
+        public DbField EF_DB_CONFIG_NAME = DbField.New().DBColName("DB_CONFIG_NAME").DBColType("varchar").DBTypeSize("varchar(100)").DBLen(100);
+        public DbField EF_DB_TYPE = DbField.New().DBColName("DB_TYPE").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
+        public DbField EF_SERVER_IP = DbField.New().DBColName("SERVER_IP").DBColType("varchar").DBTypeSize("varchar(400)").DBLen(400);
+        public DbField EF_PORT_NO = DbField.New().DBColName("PORT_NO").DBColType("varchar").DBTypeSize("varchar(20)").DBLen(20);
+        public DbField EF_SCHEMA_NAME = DbField.New().DBColName("SCHEMA_NAME").DBColType("varchar").DBTypeSize("varchar(30)").DBLen(30);
+        public DbField EF_DB_NAME = DbField.New().DBColName("DB_NAME").DBColType("varchar").DBTypeSize("varchar(30)").DBLen(30);
+        public DbField EF_USER_NAME = DbField.New().DBColName("USER_NAME").DBColType("varchar").DBTypeSize("varchar(50)").DBLen(50);
+        public DbField EF_USER_PASSWORD = DbField.New().DBColName("USER_PASSWORD").DBColType("varchar").DBTypeSize("varchar(50)").DBLen(50);
+        public DbField EF_LOGIN_TYPE = DbField.New().DBColName("LOGIN_TYPE").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
+        public DbField EF_TYPE_DESC = DbField.New().DBColName("TYPE_DESC").DBColType("varchar").DBTypeSize("varchar(200)").DBLen(200);
+        public DbField EF_SORT_ID = DbField.New().DBColName("SORT_ID").DBColType("int").DBTypeSize("int");
+        public DbField EF_REMARK = DbField.New().DBColName("REMARK").DBColType("varchar").DBTypeSize("varchar(200)").DBLen(200);
+        public DbField EF_CREATE_TIME = DbField.New().DBColName("CREATE_TIME").DBColType("datetime").DBTypeSize("datetime");
+        public DbField EF_CREATOR_ID = DbField.New().DBColName("CREATOR_ID").DBColType("varchar").DBTypeSize("varchar(36)").DBLen(36);
+        public DbField EF_CREATOR = DbField.New().DBColName("CREATOR").DBColType("varchar").DBTypeSize("varchar(50)").DBLen(50);
+        public DbField EF_MODIFIER_ID = DbField.New().DBColName("MODIFIER_ID").DBColType("varchar").DBTypeSize("varchar(36)").DBLen(36);
+        public DbField EF_MODIFIER = DbField.New().DBColName("MODIFIER").DBColType("varchar").DBTypeSize("varchar(50)").DBLen(50);
+        public DbField EF_LAST_UPDATED_TIME = DbField.New().DBColName("LAST_UPDATED_TIME").DBColType("datetime").DBTypeSize("datetime");
+        public DbField EF_IS_ENABLED = DbField.New().DBColName("IS_ENABLED").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
+        public DbField EF_IS_SYSTEM = DbField.New().DBColName("IS_SYSTEM").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
+        public DbField EF_ORG_ID = DbField.New().DBColName("ORG_ID").DBColType("varchar").DBTypeSize("varchar(36)").DBLen(36);
+        public DbField EF_UPDATE_CONTROL_ID = DbField.New().DBColName("UPDATE_CONTROL_ID").DBColType("varchar").DBTypeSize("varchar(36)").DBLen(36);
+        public DbField EF_TFLAG = DbField.New().DBColName("TFLAG").DBColType("varchar").DBTypeSize("varchar(2)").DBLen(2);
  
 
-        public override List<BaseEntityField> DbColumnList
+        public override List<DbField> DbColumnList
         {
             get
             {
-                var DbColumn = new List<BaseEntityField>();
-                DbColumn.AddRange(new BaseEntityField[] { EF_DB_CONFIG_ID,EF_DB_CONFIG_CODE,EF_DB_CONFIG_NAME,EF_DB_TYPE,EF_SERVER_IP,EF_PORT_NO,EF_SCHEMA_NAME,EF_DB_NAME,EF_USER_NAME,EF_USER_PASSWORD,EF_LOGIN_TYPE,EF_TYPE_DESC,EF_SORT_ID,EF_REMARK,EF_CREATE_TIME,EF_CREATOR_ID,EF_CREATOR,EF_MODIFIER_ID,EF_MODIFIER,EF_LAST_UPDATED_TIME,EF_IS_ENABLED,EF_IS_SYSTEM,EF_ORG_ID,EF_UPDATE_CONTROL_ID,EF_TFLAG });
+                var DbColumn = new List<DbField>();
+                DbColumn.AddRange(new DbField[] { EF_DB_CONFIG_ID,EF_DB_CONFIG_CODE,EF_DB_CONFIG_NAME,EF_DB_TYPE,EF_SERVER_IP,EF_PORT_NO,EF_SCHEMA_NAME,EF_DB_NAME,EF_USER_NAME,EF_USER_PASSWORD,EF_LOGIN_TYPE,EF_TYPE_DESC,EF_SORT_ID,EF_REMARK,EF_CREATE_TIME,EF_CREATOR_ID,EF_CREATOR,EF_MODIFIER_ID,EF_MODIFIER,EF_LAST_UPDATED_TIME,EF_IS_ENABLED,EF_IS_SYSTEM,EF_ORG_ID,EF_UPDATE_CONTROL_ID,EF_TFLAG });
                 return DbColumn;
             }
         }

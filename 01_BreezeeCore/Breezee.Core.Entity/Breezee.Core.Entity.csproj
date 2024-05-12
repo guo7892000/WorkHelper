@@ -59,6 +59,7 @@
     <Compile Include="Exception\DataAccessException.cs" />
     <Compile Include="Exception\ExceptionHelper.cs" />
     <Compile Include="Extend\DataColumnExtension.cs" />
+    <Compile Include="Extend\DictionaryHelper.cs" />
     <Compile Include="FtpServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicDictionaryKey.cs" />

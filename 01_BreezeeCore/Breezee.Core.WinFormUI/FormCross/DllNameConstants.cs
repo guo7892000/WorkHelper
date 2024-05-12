@@ -31,5 +31,10 @@ namespace Breezee.Core.WinFormUI
         /// 数据库工具模块DLL
         /// </summary>
         public const string DLL_DB_TOOL = "Breezee.WorkHelper.DBTool.UI.dll";
+
+        /// <summary>
+        /// 系统管理模块DLL
+        /// </summary>
+        public const string DLL_SYSTEM_MANAGE = "Breezee.Global.SystemManager.UI.dll";
     }
 }

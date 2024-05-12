@@ -94,5 +94,14 @@ namespace Breezee.Core.Interface
             throw new NotImplementedException();
         }
         #endregion
+
+        public List<DbField> GetDbColumnList()
+        {
+            if (EntType == DbObjectType.Table && EditType == DbEditType.Update)
+            {
+                return DbColumnList.Where(r => r.IsUpdate = true).ToList();
+            }
+            return new List<DbField>();
+        }
     }
 }

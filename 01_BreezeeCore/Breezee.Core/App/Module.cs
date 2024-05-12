@@ -1,5 +1,7 @@
 ﻿using Breezee.AutoSQLExecutor.Core;
+using Breezee.Core.Entity;
 using Breezee.Core.Interface;
+using System;
 using System.Collections.Generic;
 
 /*********************************************************************		
@@ -29,5 +31,41 @@ namespace Breezee.Core
         public abstract IConfig Config { get; set; }
         public abstract DbServerInfo MainDbServer { get; }
         public abstract IDictionary<string, IModule> OutModules { get; }
+
+        #region 字典操作
+        public IDictionary<string, object> Success()
+        {
+            return DictionaryHelper.Success();
+        }
+
+        public IDictionary<string, object> Success(string msg)
+        {
+            return DictionaryHelper.Success(msg);
+        }
+
+        public IDictionary<string, object> QuerySuccess()
+        {
+            return DictionaryHelper.Success(MessageType.QuerySuccess);
+        }
+
+        public IDictionary<string, object> DeleteSuccess()
+        {
+            return DictionaryHelper.Success(MessageType.DeleteSuccess);
+        }
+
+        public IDictionary<string, object> Fail(string msg)
+        {
+            return DictionaryHelper.Fail(msg);
+        }
+
+        public IDictionary<string, object> FailDefault()
+        {
+            return DictionaryHelper.FailDefault();
+        }
+        public IDictionary<string, object> FailException(Exception ex)
+        {
+            return DictionaryHelper.FailException(ex);
+        } 
+        #endregion
     }
 }

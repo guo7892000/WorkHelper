@@ -41,69 +41,69 @@ namespace Breezee.Core.Entity
         #endregion
 
         #region 公共属性
-        public string MENU_ID { get; set; }
+        public string MenuId { get; set; }
 
-        public string SYS_ID { get; set; }
+        public string SysId { get; set; }
 
-        public string FORM_ID { get; set; }
+        public string FormId { get; set; }
 
-        public string BUTTON_ID { get; set; }
+        public string ButtonId { get; set; }
 
-        public string MENU_TYPE { get; set; }
+        public string MenuTypeString { get; set; }
 
-        public string MENU_CODE { get; set; }
+        public string MenuCode { get; set; }
 
-        public string MENU_NAME { get; set; }
+        public string MenuName { get; set; }
 
-        public string PARENT_MENU_ID { get; set; }
+        public string ParentMenuId { get; set; }
 
-        public string MENU_DESC { get; set; }
+        public string MenuDesc { get; set; }
 
-        public string MENU_ACTION { get; set; }
+        public string MenuAction { get; set; }
 
-        public string MENU_PARM { get; set; }
+        public string MenuParm { get; set; }
 
-        public string MENU_ICON { get; set; }
+        public string MenuIcon { get; set; }
 
-        public string MENU_FULL_PATH { get; set; }
+        public string MenuFullPath { get; set; }
 
-        public string DLL_ID { get; set; }
+        public string DllId { get; set; }
 
-        public string DLL_NAME { get; set; }
+        public string DllName { get; set; }
 
-        public string FORM_FULL_PATH { get; set; }
+        public string FormFullPath { get; set; }
 
-        public string FORM_TYPE { get; set; }
+        public string FormType { get; set; }
 
-        public string RIGHT_TYPE { get; set; }
+        public string RightType { get; set; }
 
-        public string NOT_RIGHT_BUTTON_DISPLAY_TYPE { get; set; }
+        public string notRightButtonDisplayType { get; set; }
 
-        public int? SORT_ID { get; set; }
+        public int? SortId { get; set; }
 
-        public string REMARK { get; set; }
+        public string Remark { get; set; }
 
-        public DateTime CREATE_TIME { get; set; }
+        public DateTime CreateTime { get; set; }
 
-        public string CREATOR_ID { get; set; }
+        public string CreatorId { get; set; }
 
-        public string CREATOR { get; set; }
+        public string Creator { get; set; }
 
-        public string MODIFIER_ID { get; set; }
+        public string ModifierId { get; set; }
 
-        public string MODIFIER { get; set; }
+        public string Modifier { get; set; }
 
-        public DateTime LAST_UPDATED_TIME { get; set; }
+        public DateTime LastUpdatedTime { get; set; }
 
-        public string IS_ENABLED { get; set; }
+        public string IsEnabled { get; set; }
 
-        public string IS_SYSTEM { get; set; }
+        public string IsSystem { get; set; }
 
-        public string ORG_ID { get; set; }
+        public string OrgId { get; set; }
 
-        public string UPDATE_CONTROL_ID { get; set; }
+        public string UpdateControlId { get; set; }
 
-        public string TFLAG { get; set; } 
+        public string Tflag { get; set; } 
         #endregion
 
         #region 将数据行转换为菜单实体
@@ -115,28 +115,57 @@ namespace Breezee.Core.Entity
         public static SYS_MENU FromDataRow(DataRow dr)
         {
             SYS_MENU menu = new SYS_MENU();
-            //menu.MENU_ID = dr[DT_SYS_MENU.MENU_ID].ToString();
-            //menu.MENU_NAME = dr[DT_SYS_MENU.MENU_NAME].ToString();
-            //if (dr[DT_SYS_MENU.PARENT_MENU_ID].GetType().Name != "DBNull")
-            //{
-            //    menu.PARENT_MENU_ID = dr[DT_SYS_MENU.PARENT_MENU_ID].ToString();
-            //}
-            //menu.MENU_TYPE = dr[DT_SYS_MENU.MENU_TYPE].ToString();
-            //menu.MENU_PARM = dr[DT_SYS_MENU.MENU_PARM].ToString();
-            //menu.SORT_ID = Convert.ToInt32(dr[DT_SYS_MENU.SORT_ID]);
-            //if (dr[DT_SYS_MENU.DLL_ID].GetType().Name != "DBNull")
-            //{
-            //    menu.DLL_ID = dr[DT_SYS_MENU.DLL_ID].ToString();
-            //}
-            //menu.SYS_ID = dr[DT_SYS_MENU.SYS_ID].ToString();
-            //menu.DLL_NAME = dr[DT_SYS_MENU.DLL_NAME].ToString();
-            //menu.MENU_ICON = dr[DT_SYS_MENU.MENU_ICON].ToString();
-            //menu.MENU_DESC = dr[DT_SYS_MENU.MENU_DESC].ToString();
-            //menu.FORM_FULL_PATH = dr[DT_SYS_MENU.FORM_FULL_PATH].ToString();
-            //menu.MENU_CODE = dr[DT_SYS_MENU.MENU_CODE].ToString();
-            //menu.MENU_FULL_PATH = dr[DT_V_SYS_MENU_FULL_PATH.MENU_FULL_PATH].ToString();
-            //menu.RIGHT_TYPE = dr[DT_SYS_MENU.RIGHT_TYPE].ToString();
-            //menu.NOT_RIGHT_BUTTON_DISPLAY_TYPE = dr[DT_SYS_MENU.NOT_RIGHT_BUTTON_DISPLAY_TYPE].ToString();
+            menu.MenuId = dr[DT_SYS_MENU.MENU_ID].ToString();
+            menu.MenuName = dr[DT_SYS_MENU.MENU_NAME].ToString();
+            if (dr[DT_SYS_MENU.PARENT_MENU_ID].GetType().Name != "DBNull")
+            {
+                menu.ParentMenuId = dr[DT_SYS_MENU.PARENT_MENU_ID].ToString();
+            }
+            menu.MenuTypeString = dr[DT_SYS_MENU.MENU_TYPE].ToString();
+            menu.MenuParm = dr[DT_SYS_MENU.MENU_PARM].ToString();
+            menu.SortId = Convert.ToInt32(dr[DT_SYS_MENU.SORT_ID]);
+            if (dr[DT_SYS_MENU.DLL_ID].GetType().Name != "DBNull")
+            {
+                menu.DllId = dr[DT_SYS_MENU.DLL_ID].ToString();
+            }
+            menu.SysId = dr[DT_SYS_MENU.SYS_ID].ToString();
+            menu.DllName = dr[DT_SYS_MENU.DLL_NAME].ToString();
+            menu.MenuIcon = dr[DT_SYS_MENU.MENU_ICON].ToString();
+            menu.MenuDesc = dr[DT_SYS_MENU.MENU_DESC].ToString();
+            menu.FormFullPath = dr[DT_SYS_MENU.FORM_FULL_PATH].ToString();
+            menu.MenuCode = dr[DT_SYS_MENU.MENU_CODE].ToString();
+            menu.MenuFullPath = dr[DT_V_SYS_MENU_FULL_PATH.MENU_FULL_PATH].ToString();
+            menu.RightType = dr[DT_SYS_MENU.RIGHT_TYPE].ToString();
+            menu.notRightButtonDisplayType = dr[DT_SYS_MENU.NOT_RIGHT_BUTTON_DISPLAY_TYPE].ToString();
+
+            //父级对象的赋值
+            menu.Guid = menu.MenuId;
+            //menu.SameMenuNewFormGuid = SameMenuNewFormGuid;
+            // menu.IsOpenSameMenuNewForm = IsOpenSameMenuNewForm;
+            switch (menu.MenuTypeString)
+            {
+                case "F":
+                    menu.MenuType = MenuType.Menu;
+                    break;
+                case "M":
+                    menu.MenuType = MenuType.Class;
+                    break;
+                case "P":
+                    menu.MenuType = MenuType.Page;
+                    break;
+                default:
+                    break;
+            }
+            
+            menu.Name = menu.MenuName;
+            menu.Code = menu.MenuCode;
+            //menu.ShortCutKey = ShortCutKey;
+            menu.DLLName = menu.DllName;
+            menu.FormName = menu.MenuFullPath;
+            menu.FullPath = menu.FormFullPath;
+            //menu.HelpPath = HelpPath;
+            menu.ParentGuid = menu.ParentMenuId;
+            menu.IsShowInToolStrip = false;
             return menu;
         } 
         #endregion

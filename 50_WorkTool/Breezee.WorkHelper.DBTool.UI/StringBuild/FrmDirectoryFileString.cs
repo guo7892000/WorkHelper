@@ -193,7 +193,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             string sOld = txbOld.Text.Trim();
             string sNew = txbNew.Text.Trim();
 
-            if(!string.IsNullOrEmpty(sOld) && !string.IsNullOrEmpty(sNew))
+            if(!string.IsNullOrEmpty(sOld))
             {
                 sb.Append(str.Replace(sOld, sNew));
             }

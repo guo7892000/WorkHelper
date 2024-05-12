@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Core;
+using Castle.Windsor.Installer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,6 @@ namespace Breezee.Core.IOC
         private static readonly object lockob = new object();
         private static IContainer container;
         private static ContainerBuilder builder;
-
         private static IContainer InnerContainer
         {
             get
@@ -36,17 +36,13 @@ namespace Breezee.Core.IOC
                     {
                         if (container == null)
                         {
+                            //创建构造者
                             builder = new ContainerBuilder();
-                            builder.RegisterAssemblyModules(
-                                Assembly.Load("Breezee.Core.Adapter.BLL"),
-                                Assembly.Load("Breezee.AutoSQLExecutor.Common"),
-                                Assembly.Load("Breezee.Framework.Mini.BLL"),
-                                Assembly.Load("Breezee.Framework.Mini.DAL"),
-                                Assembly.Load("Breezee.Framework.Mini.DAL.SQLite"),
-                                Assembly.Load("Breezee.WorkHelper.DBTool.BLL"),
-                                Assembly.Load("Breezee.WorkHelper.DBTool.DAL"),
-                                Assembly.Load("Breezee.WorkHelper.DBTool.DAL.SQLite")
-                                );
+                            foreach (ImplementDllInfo assembly in IoCDllRegister.ImplementDlls)
+                            {
+                                builder.RegisterAssemblyModules(Assembly.Load(assembly.AssemblyName));
+                            }
+                            //根据构造者构建容器
                             container = builder.Build();
                         }
                     }

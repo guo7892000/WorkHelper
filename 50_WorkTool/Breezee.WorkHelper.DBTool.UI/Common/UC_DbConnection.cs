@@ -38,6 +38,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         public static IDictionary<string, DataTable> defaultValueDic = new Dictionary<string, DataTable>(); 
         public IDataAccess _dataAccess;
         public DbServerInfo LatestDbServerInfo;//最后一次连接的服务器信息
+        public bool IsAsyncLoadOracleDefaultValue = false; //是否需要加载Oracle默认值：因为该默认加载很慢，只能异步获取
 
         public bool IsConnChange { get; private set; }
         public string DbConnName
@@ -389,7 +390,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <returns></returns>
         public async Task QueryColumnsDefaultValue(DbServerInfo DbServer)
         {
-            if (string.IsNullOrEmpty(DbServer.DbConnConfigName))
+            if (string.IsNullOrEmpty(DbServer.DbConnConfigName) || !IsAsyncLoadOracleDefaultValue)
             {
                 return;
             }
@@ -448,6 +449,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void ckbUseConString_CheckedChanged(object sender, EventArgs e)
         {
             txbDBConString.ReadOnly = ckbUseConString.Checked == false ? true : false;
+        }
+
+        public void SetGroupTitle(string sGroupTitle)
+        {
+            groupBox1.Text = sGroupTitle;
         }
     }
 
