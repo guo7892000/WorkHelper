@@ -62,6 +62,7 @@ namespace Breezee.Framework.Mini.StartUp
         private string _FrameworkHelpName = "工作助手";
         private WinFormConfig _WinFormConfig;
         private IADPJson _IADPJson;//JSON转换
+        ShowInToolStripXmlConfig _showInToolConfig; //工具栏显示
         #endregion
 
         #region 构造函数
@@ -83,6 +84,8 @@ namespace Breezee.Framework.Mini.StartUp
             tsbAutoGuid.Visible = true;
             tcMenu.Dock = DockStyle.Top;
             _xmlMenu = new XmlMenu(MenuXmlFilePath);
+
+            _showInToolConfig = new ShowInToolStripXmlConfig(MiniGlobalValue.ShowInToolStripXmlConfigFileName);
 
             this.SetFormBackGroupStyle(_WinFormConfig.Get(GlobalKey.MainSkinType, BaseForm.ChildFormStyleType), _WinFormConfig.Get(GlobalKey.MainSkinValue, BaseForm.ChildFormStyleValue));//设置主窗体样式
             WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp(_FrameworkHelpPath, _FrameworkHelpName + " > 概述", _FrameworkHelpName));
@@ -216,8 +219,14 @@ namespace Breezee.Framework.Mini.StartUp
                     {
                         WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp(childMenu.HelpPath, childMenu.FullPath, childMenu.Name));
                     }
-                    //增加工具栏按钮
-                    AddMainToolStrip(childMenuItem, childMenu);
+
+                    //判断菜单ID的工具栏显示配置是否为1是
+                    var menShowInTool = _showInToolConfig.MoreXmlConfig.ListEntity.Where(x => x.Key.Equals(childMenu.Guid, StringComparison.OrdinalIgnoreCase) && "1".Equals(x.Value));
+                    if (menShowInTool.Count() > 0)
+                    {
+                        childMenu.IsShowInToolStrip = true;
+                        AddMainToolStrip(childMenuItem, childMenu);//增加工具栏按钮
+                    }
                 }
             }
         }
@@ -1064,7 +1073,8 @@ namespace Breezee.Framework.Mini.StartUp
                 string sServerVersionJson = AppUpgradeTool.ReadWebText("https://gitee.com/breezee2000/WorkHelper/raw/master/LatestVersion.json").Trim();
                 LatestVerion ver = _IADPJson.Deserialize<LatestVerion>(sServerVersionJson);
                 string sServerVersion = ver.version;
-                string sNowVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(); //本地版本
+                //本地版本：注这里必须以启动项目的版本号来判断才合理，因为可能本地可能会保留多个版本的目录
+                string sNowVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(); 
 
                 bool hasNewVerion = false;
                 string[] sNowArr = sNowVersion.Split(new char[] { '.' });
@@ -1204,6 +1214,7 @@ namespace Breezee.Framework.Mini.StartUp
                     //设置新应用路径
                     string sNewRoot = Path.Combine(sLocalDir, "WorkHelper" + sServerVersion);
                     _WinFormConfig.Set(GlobalKey.Upgrade_LatestVersionRootDir, sNewRoot, "新版本的根目录");
+                    _WinFormConfig.Set(GlobalKey.Upgrade_CurrentVersionNo, sServerVersion, "当前版本号");
                     sUpgradeNewAppFullPath = Path.Combine(sNewRoot, MiniGlobalValue.AppStartUpExeName);
                     _WinFormConfig.Save();//保存配置
 

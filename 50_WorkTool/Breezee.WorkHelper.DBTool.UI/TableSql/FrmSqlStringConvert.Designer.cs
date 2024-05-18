@@ -33,7 +33,6 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbAutoSQL = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
-            this.uC_DbConnectionSource = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpSourceDb = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -102,18 +101,23 @@
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
+            this.tabControl2 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.dgvBeReplaceCol = new System.Windows.Forms.DataGridView();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.rtbConvertRemark = new System.Windows.Forms.RichTextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lblFuncInfo = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.btnConnectLoadAll = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.cbbConvertType = new System.Windows.Forms.ComboBox();
-            this.uC_DbConnectionTarget = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.label1 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.uC_DbConnectionTarget = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
+            this.uC_DbConnectionSource = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpSourceDb.SuspendLayout();
@@ -159,8 +163,11 @@
             this.splitContainer5.Panel2.SuspendLayout();
             this.splitContainer5.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.tabControl2.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.groupBox9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBeReplaceCol)).BeginInit();
+            this.tabPage2.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -194,14 +201,6 @@
             this.tsbExit.Size = new System.Drawing.Size(72, 24);
             this.tsbExit.Text = "退出(&X)";
             this.tsbExit.Click += new System.EventHandler(this.tsbExit_Click);
-            // 
-            // uC_DbConnectionSource
-            // 
-            this.uC_DbConnectionSource.Dock = System.Windows.Forms.DockStyle.Top;
-            this.uC_DbConnectionSource.Location = new System.Drawing.Point(0, 77);
-            this.uC_DbConnectionSource.Name = "uC_DbConnectionSource";
-            this.uC_DbConnectionSource.Size = new System.Drawing.Size(1016, 81);
-            this.uC_DbConnectionSource.TabIndex = 36;
             // 
             // tabControl1
             // 
@@ -1005,7 +1004,7 @@
             // 
             // splitContainer5.Panel2
             // 
-            this.splitContainer5.Panel2.Controls.Add(this.groupBox9);
+            this.splitContainer5.Panel2.Controls.Add(this.tabControl2);
             this.splitContainer5.Size = new System.Drawing.Size(461, 417);
             this.splitContainer5.SplitterDistance = 207;
             this.splitContainer5.TabIndex = 6;
@@ -1030,18 +1029,50 @@
             this.rtbResult.TabIndex = 4;
             this.rtbResult.Text = "";
             // 
+            // tabControl2
+            // 
+            this.tabControl2.Controls.Add(this.tabPage1);
+            this.tabControl2.Controls.Add(this.tabPage2);
+            this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl2.Location = new System.Drawing.Point(0, 0);
+            this.tabControl2.Name = "tabControl2";
+            this.tabControl2.SelectedIndex = 0;
+            this.tabControl2.Size = new System.Drawing.Size(461, 206);
+            this.tabControl2.TabIndex = 11;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.groupBox9);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(453, 180);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "替换列清单";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
             // groupBox9
             // 
             this.groupBox9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
             this.groupBox9.Controls.Add(this.label3);
             this.groupBox9.Controls.Add(this.dgvBeReplaceCol);
             this.groupBox9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox9.Location = new System.Drawing.Point(0, 0);
+            this.groupBox9.Location = new System.Drawing.Point(3, 3);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(461, 206);
+            this.groupBox9.Size = new System.Drawing.Size(447, 174);
             this.groupBox9.TabIndex = 10;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "被替换列清单";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.Color.Red;
+            this.label3.Location = new System.Drawing.Point(99, 2);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(323, 12);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "替换旧列编码范围：表别名.列编码    匹配条件：列中文名";
             // 
             // dgvBeReplaceCol
             // 
@@ -1050,8 +1081,28 @@
             this.dgvBeReplaceCol.Location = new System.Drawing.Point(3, 17);
             this.dgvBeReplaceCol.Name = "dgvBeReplaceCol";
             this.dgvBeReplaceCol.RowTemplate.Height = 23;
-            this.dgvBeReplaceCol.Size = new System.Drawing.Size(455, 186);
+            this.dgvBeReplaceCol.Size = new System.Drawing.Size(441, 154);
             this.dgvBeReplaceCol.TabIndex = 0;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.rtbConvertRemark);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(453, 180);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "转换说明";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // rtbConvertRemark
+            // 
+            this.rtbConvertRemark.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbConvertRemark.Location = new System.Drawing.Point(3, 3);
+            this.rtbConvertRemark.Name = "rtbConvertRemark";
+            this.rtbConvertRemark.Size = new System.Drawing.Size(447, 174);
+            this.rtbConvertRemark.TabIndex = 0;
+            this.rtbConvertRemark.Text = "";
             // 
             // groupBox2
             // 
@@ -1129,14 +1180,6 @@
             this.cbbConvertType.TabIndex = 13;
             this.cbbConvertType.SelectedIndexChanged += new System.EventHandler(this.cbbConvertType_SelectedIndexChanged);
             // 
-            // uC_DbConnectionTarget
-            // 
-            this.uC_DbConnectionTarget.Dock = System.Windows.Forms.DockStyle.Top;
-            this.uC_DbConnectionTarget.Location = new System.Drawing.Point(0, 158);
-            this.uC_DbConnectionTarget.Name = "uC_DbConnectionTarget";
-            this.uC_DbConnectionTarget.Size = new System.Drawing.Size(1016, 81);
-            this.uC_DbConnectionTarget.TabIndex = 37;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -1147,15 +1190,21 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "局限性：当旧表出现多次，且有不同别名时，只会取第一次出现的别名来匹配对应表";
             // 
-            // label3
+            // uC_DbConnectionTarget
             // 
-            this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.Color.Red;
-            this.label3.Location = new System.Drawing.Point(99, 2);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(323, 12);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "替换旧列编码范围：表别名.列编码    匹配条件：列中文名";
+            this.uC_DbConnectionTarget.Dock = System.Windows.Forms.DockStyle.Top;
+            this.uC_DbConnectionTarget.Location = new System.Drawing.Point(0, 158);
+            this.uC_DbConnectionTarget.Name = "uC_DbConnectionTarget";
+            this.uC_DbConnectionTarget.Size = new System.Drawing.Size(1016, 81);
+            this.uC_DbConnectionTarget.TabIndex = 37;
+            // 
+            // uC_DbConnectionSource
+            // 
+            this.uC_DbConnectionSource.Dock = System.Windows.Forms.DockStyle.Top;
+            this.uC_DbConnectionSource.Location = new System.Drawing.Point(0, 77);
+            this.uC_DbConnectionSource.Name = "uC_DbConnectionSource";
+            this.uC_DbConnectionSource.Size = new System.Drawing.Size(1016, 81);
+            this.uC_DbConnectionSource.TabIndex = 36;
             // 
             // FrmSqlStringConvert
             // 
@@ -1225,9 +1274,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
             this.splitContainer5.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
+            this.tabControl2.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.groupBox9.ResumeLayout(false);
             this.groupBox9.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBeReplaceCol)).EndInit();
+            this.tabPage2.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -1323,5 +1375,9 @@
         private System.Windows.Forms.Button btnLoadAllGenerate;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TabControl tabControl2;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.RichTextBox rtbConvertRemark;
     }
 }

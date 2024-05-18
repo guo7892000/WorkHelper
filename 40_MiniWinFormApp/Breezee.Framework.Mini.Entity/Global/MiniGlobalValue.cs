@@ -28,6 +28,8 @@ namespace Breezee.Framework.Mini.Entity
 
         public static readonly string DBInitializerConfigKey = "IDBInitializerMini";
 
+        public static readonly string ShowInToolStripXmlConfigFileName = "ShowInToolStripConfig.xml";
+
         /// <summary>
         /// 加密使用的键：必须24个字符
         /// </summary>

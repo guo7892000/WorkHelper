@@ -19,6 +19,10 @@ namespace Breezee.WorkHelper.DBTool.UI
     public class OracleBuilder : SQLBuilder
     {
         string strUqueList = "";//唯一性
+        //Oracle转换日期和时间的正则式
+        //static string _ToDateCharPatter = @"\s*,*\s*TO_((DATE)|(CHAR))\s*\(\s*(((\w+\.)*@?\w+)|(\'?#?\w+#?\'?)|(\'[^']+\'))+\s*,\s*\'YYYY[-/]?MM[-/]?DD(\s+\w+(:\w+)*)*\'\)\s*";
+        //static string _ToDateCharPatter = @"\s*,*\s*TO_((DATE)|(CHAR))\s*\(\s*(((\w+\.)*@?\w+)|(\'?#?\w+#?\'?))+\s*,\s*\'YYYY[-/]?MM[-/]?DD(\s+\w+(:\w+)*)*\'\)\s*";
+        //static string _ToDateCharAddPatter = _ToDateCharPatter + @"[+-]?\s*[\d./]+";
         public override void GenerateTableSQL(EntTable entTable, GenerateParamEntity paramEntity)
         {
             string strTableCode = entTable.Code;
@@ -447,40 +451,52 @@ namespace Breezee.WorkHelper.DBTool.UI
         public override void ConvertToDbSql(ref string sSql, DataBaseType targetDbType)
         {
             string sMatchSysdate = @"\s*,*\s*SYSDATE\s*,*\s*";
+            string sMatchSysdate2 = @"\s*(,|=)*\s*SYSTIMESTAMP\s*,*\s*"; 
             string sMatchIfNull = @"\s*,*\s*NVL\s*\(\s*";
             string sMatchsSysGuid = @"\s*,*\s*SYS_GUID\s*\(\s*\)\s*,?";
+            string sMatchNumber = @"\s+NUMBER\s*\(";
 
             switch (targetDbType)
             {
                 case DataBaseType.SqlServer:
+                    MatchReplace(ref sSql, sMatchSysdate2, SqlFuncString.SysTimStamp, SQLServerBuilder.SqlFuncString.NowDate, BracketDealType.Add);
                     MatchReplace(ref sSql, sMatchSysdate, SqlFuncString.NowDate, SQLServerBuilder.SqlFuncString.NowDate, BracketDealType.Add);
                     MatchReplace(ref sSql, sMatchIfNull, SqlFuncString.IfNull, SQLServerBuilder.SqlFuncString.IfNull);
                     MatchReplace(ref sSql, sMatchsSysGuid, SqlFuncString.Guid, SQLServerBuilder.SqlFuncString.Guid);
+                    MatchReplace(ref sSql, sMatchNumber, SqlFuncString.Decimal, SQLServerBuilder.SqlFuncString.Decimal);
                     break;
                 case DataBaseType.Oracle:
                     break;
                 case DataBaseType.MySql:
+                    MatchReplace(ref sSql, sMatchSysdate2, SqlFuncString.SysTimStamp, MySQLBuilder.SqlFuncString.NowDate, BracketDealType.Add);
                     MatchReplace(ref sSql, sMatchSysdate, SqlFuncString.NowDate, MySQLBuilder.SqlFuncString.NowDate, BracketDealType.Add);
                     MatchReplace(ref sSql, sMatchIfNull, SqlFuncString.IfNull, MySQLBuilder.SqlFuncString.IfNull);
                     MatchReplace(ref sSql, sMatchsSysGuid, SqlFuncString.Guid, MySQLBuilder.SqlFuncString.Guid);
+                    MatchReplace(ref sSql, sMatchNumber, SqlFuncString.Decimal, MySQLBuilder.SqlFuncString.Decimal);
                     break;
                 case DataBaseType.SQLite:
+                    MatchReplace(ref sSql, sMatchSysdate2, SqlFuncString.SysTimStamp, SQLiteBuilder.SqlFuncString.NowDate, BracketDealType.Add);
                     MatchReplace(ref sSql, sMatchSysdate, SqlFuncString.NowDate, SQLiteBuilder.SqlFuncString.NowDate, BracketDealType.Add);
                     MatchReplace(ref sSql, sMatchIfNull, SqlFuncString.IfNull, SQLiteBuilder.SqlFuncString.IfNull);
                     //MatchReplace(ref sSql, sMatchsSysGuid, SqlFuncString.Guid, SQLiteBuilder.SqlFuncString.Guid); //不支持
+                    MatchReplace(ref sSql, sMatchNumber, SqlFuncString.Decimal, SQLiteBuilder.SqlFuncString.Decimal);
                     break;
                 case DataBaseType.PostgreSql:
+                    MatchReplace(ref sSql, sMatchSysdate2, SqlFuncString.SysTimStamp, PostgreSQLBuilder.SqlFuncString.NowDate, BracketDealType.Add);
                     MatchReplace(ref sSql, sMatchSysdate, SqlFuncString.NowDate, PostgreSQLBuilder.SqlFuncString.NowDate, BracketDealType.Add);
                     MatchReplace(ref sSql, sMatchIfNull, SqlFuncString.IfNull, PostgreSQLBuilder.SqlFuncString.IfNull);
                     MatchReplace(ref sSql, sMatchsSysGuid, SqlFuncString.Guid, PostgreSQLBuilder.SqlFuncString.Guid);
+                    MatchReplace(ref sSql, sMatchNumber, SqlFuncString.Decimal, PostgreSQLBuilder.SqlFuncString.Decimal);
                     break;
             }
-
+            //先替换TO_DATE多加一天的
+            MatchDateAddOneReplace(ref sSql, targetDbType);
             //替换Date的TO_CHAR
             MatchDateToCharReplace(ref sSql, targetDbType);
             //替换Decode：要放最后
             MatchDecodeReplace(ref sSql);
-            
+            //替换字符拼接
+            MatchContact(ref sSql);
         }
 
         private void MatchDecodeReplace(ref string sSql)
@@ -599,7 +615,7 @@ WHERE 1=1
             {
                 if (i == 0)
                 {
-                    sb.Append(arrList[0]);
+                    sb.Append(arrList[0] + " "); //这里要加上空格
                     isNowWhen = true;
                 }
                 else
@@ -634,16 +650,19 @@ WHERE 1=1
         private void MatchDateToCharReplace(ref string sSql, DataBaseType targetDbType)
         {
             /****SQL示例： ****************************
-SELECT  TO_CHAR(A.OUT_STORE_DATE, 'YYYYMMDD') OUT_STORE_DATE,
-                           TO_CHAR(A.OUT_STORE_DATE, 'YYYY-MM-DD') OUT_STORE_DATE,
+SELECT  TO_CHAR(A.OUT_STORE_DATE, 'YYYY/MM/DD') OUT_STORE_DATE,
+                           TO_DATE(A.OUT_STORE_DATE, 'YYYY-MM-DD') OUT_STORE_DATE,
                            DECODE(NVL(A.FI_AUDIT_FLAG,'0'), '1', '已审核', '未审核') AUDIT_FLAG,
                            TO_CHAR( A.FI_AUDIT_DATE ,     'YYYY-MM-DD hh24:mi:ss:ff3') FI_AUDIT_DATE
                       FROM T_PA_BU_OEM_OUT_STORE A
                      INNER JOIN T_MDM_ORG_DLR B
                         ON A.DLR_ID = B.DLR_ID
  *****************************/
-            string sDecodePatter = @"\s*,*\s*TO_CHAR\s*\(\s*(\w+.)*\w+\s*,\s*\'YYYY-?MM-?DD(\s+\w+(:\w+)*)*\'\)\s*,?";
-            Regex regex = new Regex(sDecodePatter, RegexOptions.IgnoreCase);
+            /*支持TO_DATE、TO_CHAR，且日期且使用-或/分隔*/
+            //全部匹配的
+            //string sToDateCharPatter = @"\s*,*\s*TO_((DATE)|(CHAR))\s*\(\s*(((\w+\.)*\w+)|(@\w+)|(\'?#?\w+#?\'?)|(\'[^']+\'))+\s*,\s*\'YYYY[-/]?MM[-/]?DD(\s+\w+(:\w+)*)*\'\)\s*,?";
+            string sToDateCharPatter = @"\s*,*\s*TO_((DATE)|(CHAR))\s*\(\s*(((\w+\.)*\w+)|(@\w+)|(\'?#?\w+#?\'?)|(\'[^']+\'))+\s*,\s*\'YYYY[-/]?MM[-/]?DD(\s+\w+(:\w+)*)*\'\)\s*,?";
+            Regex regex = new Regex(sToDateCharPatter, RegexOptions.IgnoreCase);
             MatchCollection mcColl = regex.Matches(sSql.ToString());
 
             foreach (Match mt in mcColl)
@@ -663,6 +682,11 @@ SELECT  TO_CHAR(A.OUT_STORE_DATE, 'YYYYMMDD') OUT_STORE_DATE,
                     isStartWithComma = true;
                 }
                 sFind = "TO_CHAR";
+                if (sMustColumnName.StartsWith(sFind, StringComparison.OrdinalIgnoreCase))
+                {
+                    sMustColumnName = sMustColumnName.Substring(sFind.Length).Trim();
+                }
+                sFind = "TO_DATE";
                 if (sMustColumnName.StartsWith(sFind, StringComparison.OrdinalIgnoreCase))
                 {
                     sMustColumnName = sMustColumnName.Substring(sFind.Length).Trim();
@@ -687,7 +711,7 @@ SELECT  TO_CHAR(A.OUT_STORE_DATE, 'YYYYMMDD') OUT_STORE_DATE,
                 int iComma = sMustColumnName.LastIndexOf(sFind);
                 if (iComma>-1)
                 {
-                    sMustColumnName = sMustColumnName.Substring(0, iComma - 1).Trim();
+                    sMustColumnName = sMustColumnName.Substring(0, iComma).Trim();
                 }
 
                 StringBuilder sb = new StringBuilder();
@@ -723,11 +747,197 @@ SELECT  TO_CHAR(A.OUT_STORE_DATE, 'YYYYMMDD') OUT_STORE_DATE,
                 sSql = sSql.Replace(mt.Value, sb.ToString());
             }
         }
+
+        /// <summary>
+        /// 针对支持TO_DATE且加一天
+        /// </summary>
+        /// <param name="sSql"></param>
+        /// <param name="targetDbType"></param>
+        private void MatchDateAddOneReplace(ref string sSql, DataBaseType targetDbType)
+        {
+            /****SQL示例： ****************************
+SELECT  TO_CHAR(A.OUT_STORE_DATE, 'YYYY/MM/DD') OUT_STORE_DATE,
+                           TO_DATE(A.OUT_STORE_DATE, 'YYYY-MM-DD') OUT_STORE_DATE,
+                           DECODE(NVL(A.FI_AUDIT_FLAG,'0'), '1', '已审核', '未审核') AUDIT_FLAG,
+                           TO_CHAR( A.FI_AUDIT_DATE ,     'YYYY-MM-DD hh24:mi:ss:ff3') FI_AUDIT_DATE
+                      FROM T_PA_BU_OEM_OUT_STORE A
+                     INNER JOIN T_MDM_ORG_DLR B
+                        ON A.DLR_ID = B.DLR_ID
+            where A.OUT_STORE_DATE < TO_DATE(@OUT_STORE_DATE, 'YYYY-MM-DD') + 1
+ *****************************/
+            /*支持TO_DATE且加指定天；列名支持A.COL_NAME，@COL_NAME，#COL_NAME#，'#COL_NAME#','{0}'*/
+            //全部匹配：但很慢，要24秒。最后经过分析发现，不加最后的[\d./]+，就是0.03秒出来，加上后就为24秒以上了。
+            //string sDateAddPatter = @"\s*,*\s*TO_DATE\s*\(\s*(((\w+\.)*\w+)|(@\w+)|(\'?#?\w+#?\'?)|(\'[^']+\'))+\s*,\s*\'YYYY[-/]?MM[-/]?DD(\s+\w+(:\w+)*)*\'\)\s*[+-]?\s*[\d./]+";
+            //优化后：进一步将\d改为\w，速度立刻为0.03秒。由些可见，谨慎使用\d。
+            //另外，还有[+-]?，如果去掉?号，也会很慢，或者直接将其改为+，也是很慢，有点奇怪。最终只能保留这个正则式，因为速度比较快，在匹配项中要包括+或-才处理
+            string sDateAddPatter = @"\s*,*\s*TO_DATE\s*\(\s*(((\w+\.)*\w+)|(@\w+)|(\'?#?\w+#?\'?)|(\'[^']+\'))+\s*,\s*\'YYYY[-/]?MM[-/]?DD(\s+\w+(:\w+)*)*\'\)\s*[+-]?\s*[\w./]+";
+
+            Regex regex = new Regex(sDateAddPatter, RegexOptions.IgnoreCase);
+            MatchCollection mcColl = regex.Matches(sSql.ToString());
+
+            foreach (Match mt in mcColl)
+            {
+                string sMustColumnName = string.Empty;
+                string sFind = string.Empty;
+                bool isStartWithComma = false;
+                bool isHourMinuteSecond = false; //是否具体到时分秒
+
+                sMustColumnName = mt.Value;
+                sMustColumnName = sMustColumnName.Trim();
+
+                sFind = ",";
+                if (sMustColumnName.StartsWith(sFind))
+                {
+                    sMustColumnName = sMustColumnName.Substring(sFind.Length).Trim();
+                    isStartWithComma = true;
+                }
+                sFind = "TO_DATE";
+                if (sMustColumnName.StartsWith(sFind, StringComparison.OrdinalIgnoreCase))
+                {
+                    sMustColumnName = sMustColumnName.Substring(sFind.Length).Trim();
+                }
+                sFind = "(";
+                if (sMustColumnName.StartsWith(sFind, StringComparison.OrdinalIgnoreCase))
+                {
+                    sMustColumnName = sMustColumnName.Substring(sFind.Length).Trim();
+                }
+
+                //查找天数
+                int iDays = sMustColumnName.LastIndexOf("+");
+                string sAddDays = "1";
+                if (iDays > -1)
+                {
+                    //有+加
+                    sAddDays = sMustColumnName.Substring(iDays).Trim();
+                }
+                else
+                {
+                    //判断有没-号：先替换掉年月日中的-
+                    string sDatePatter1 = @"'YYYY[-/]?MM[-/]?DD(\s+\w+(:\w+)*)*\'";
+                    Regex regex1 = new Regex(sDatePatter1, RegexOptions.IgnoreCase);
+                    MatchCollection mcColl1 = regex1.Matches(sMustColumnName);
+                    foreach (Match mt1 in mcColl1)
+                    {
+                        sMustColumnName = sMustColumnName.Replace(mt1.Value, "");
+                    }
+
+                    //再判断有没-号
+                    iDays = sMustColumnName.LastIndexOf("-");
+                    if (iDays > -1)
+                    {
+                        sAddDays = sMustColumnName.Substring(iDays).Trim();
+                    }
+                    else
+                    {
+                        continue;//没有加号或减号，说明不是日期增加的SQL，则跳过该正则式
+                    }
+                }
+
+                //确定是否具体至时分秒
+                string sTimePatter = @"\s+((HH:)|(HH24:))+";
+                Regex regexTime = new Regex(sTimePatter, RegexOptions.IgnoreCase);
+                MatchCollection mcCollTime = regexTime.Matches(sMustColumnName);
+                foreach (Match mtTime in mcCollTime)
+                {
+                    isHourMinuteSecond = true;
+                    break;
+                }
+
+                sFind = ",";
+                int iComma = sMustColumnName.LastIndexOf(sFind);
+                if (iComma > -1)
+                {
+                    sMustColumnName = sMustColumnName.Substring(0, iComma).Trim();
+                }
+
+                StringBuilder sb = new StringBuilder();
+                if (isStartWithComma)
+                {
+                    sb.AppendLine(",");
+                }
+                //构造新字符
+                if (targetDbType == DataBaseType.SqlServer)
+                {
+                    if (isHourMinuteSecond)
+                    {
+                        sb.Append(string.Format("DATEADD(day, {0},format({1},'yyyy-MM-dd HH:mm:ss')) ", sAddDays,sMustColumnName));
+                    }
+                    else
+                    {
+                        sb.Append(string.Format("DATEADD(day, {0},format({1},'yyyy-MM-dd')) ", sAddDays,sMustColumnName));
+                    }
+                }
+                else
+                {
+                    if (isHourMinuteSecond)
+                    {
+                        sb.Append(string.Format("DATE_ADD(DATE_FORMAT({0},'%Y-%m-%d %H:%i:%s'), INTERVAL {1} DAY) ", sMustColumnName, sAddDays));
+                    }
+                    else
+                    {
+                        sb.Append(string.Format("DATE_ADD(DATE_FORMAT({0},'%Y-%m-%d'), INTERVAL {1} DAY) ", sMustColumnName, sAddDays));
+                    }
+                }
+
+                //替换字符
+                sSql = sSql.Replace(mt.Value, sb.ToString());
+            }
+        }
+
+        /// <summary>
+        /// 匹配连接符||
+        /// </summary>
+        /// <param name="sSql"></param>
+        private void MatchContact(ref string sSql)
+        {
+            //注：匹配双单引号包裹的内部不含单引号的正则为：\'[^']+\'
+            string sConcatPatter = @",?\s*(((\'[^']+\')|(\w+\.)*\w+))\s*(\s*\|\|\s*((\'[^']+\')|((\w+\.)*\w+)))+";
+            Regex regex = new Regex(sConcatPatter, RegexOptions.IgnoreCase);
+            MatchCollection mcColl = regex.Matches(sSql);
+
+            foreach (Match mt in mcColl)
+            {
+                string sFind = ",";
+                string sCurMatch = mt.Value;
+                bool isStartWithComma = false;
+                if (sCurMatch.StartsWith(sFind))
+                {
+                    sCurMatch = sCurMatch.Substring(sFind.Length).Trim();
+                    isStartWithComma = true;
+                }
+
+                string[] arrList = sCurMatch.Split(new string[] { "||" },StringSplitOptions.None);
+                StringBuilder sb = new StringBuilder();
+                if (isStartWithComma)
+                {
+                    sb.AppendLine(",");
+                }
+                sb.Append("CONCAT(");
+                for (int i = 0; i < arrList.Length; i++)
+                {
+                    if(i==0)
+                    {
+                        sb.Append(arrList[i]);
+                    }
+                    else
+                    {
+                        sb.Append(","+ arrList[i]);
+                    }
+                }
+                sb.Append(")");
+                //替换字符
+                sSql = sSql.Replace(mt.Value, sb.ToString());
+            }
+
+        }
+
         public class SqlFuncString
         {
             public static string NowDate = "SYSDATE";
+            public static string SysTimStamp = "SYSTIMESTAMP";
             public static string IfNull = "NVL";
             public static string Guid = "SYS_GUID";
+            public static string Decimal = "NUMBER";
         }
     }
 }

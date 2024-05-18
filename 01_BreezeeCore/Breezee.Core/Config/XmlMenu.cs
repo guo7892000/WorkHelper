@@ -107,7 +107,9 @@ namespace Breezee.Core
             dMenu.DLLName = xnModel.GetAttributeValue(MemuAttrString.DLLName);
             dMenu.FormName = xnModel.GetAttributeValue(MemuAttrString.FormName);
             dMenu.HelpPath = xnModel.GetAttributeValue(MemuAttrString.HelpPath);
-            dMenu.IsShowInToolStrip = "1".Equals(xnModel.GetAttributeValue(MemuAttrString.ShowInToolStrip)) ? true : false;
+            //已修改为根据外部配置文件来判断，不在菜单内配置，但该属性保留
+            //dMenu.IsShowInToolStrip = "1".Equals(xnModel.GetAttributeValue(MemuAttrString.ShowInToolStrip)) ? true : false;
+            dMenu.IsShowInToolStrip = false;
             if (!string.IsNullOrEmpty(parentMenuPath))
             {
                 dMenu.FullPath = parentMenuPath + FRA_FULL_MENU_PATH_SPLIT_CHAR + dMenu.Name;

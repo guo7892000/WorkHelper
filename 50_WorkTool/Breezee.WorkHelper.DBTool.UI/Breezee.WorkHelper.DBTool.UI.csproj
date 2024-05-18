@@ -499,6 +499,9 @@
     <Content Include="DataTemplate\DBTool\ConnectString\StringTemplate\YapiColumnDesc.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="DataTemplate\DBTool\QuerySQL\SqlConvertRemark.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="DataTemplate\DBTool\StringBuild\模板_合并脚本配置.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -140,6 +140,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             toolTip1.SetToolTip(cbbCreateType, "生成的SQL类型，如新增表、修改表、删除表等！"); 
             //加载通用列数据
             LoadCommonColumnData();
+            //增加折叠功能
+            gbTable.AddFoldRightMenu();
+            groupBox5.AddFoldRightMenu();
+            groupBox1.AddFoldRightMenu();
+
         }
 
         /// <summary>
@@ -1757,7 +1762,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     int iRow = 0;
                     int iColumn = 0;
                     Object[,] data = StringHelper.GetStringArray(ref pasteText, ref iRow, ref iColumn);
-                    if (iRow == 0 || iColumn < 4)
+                    if (iRow == 0 || iColumn < 3)
                     {
                         return;
                     }
@@ -1770,19 +1775,23 @@ namespace Breezee.WorkHelper.DBTool.UI
                         string strData = data[j, 0].ToString().Trim();
                         string strData2 = data[j, 1].ToString().Trim();
                         string strData3 = data[j, 2].ToString().Trim();
-                        string strData4 = data[j, 3].ToString().Trim();
+                        string strData4 = string.Empty;
+                        if (iColumn >= 4)
+                        {
+                            strData4 = data[j, 3].ToString().Trim();
+                        }
                         if (string.IsNullOrEmpty(strData) || string.IsNullOrEmpty(strData2))
                         {
                             continue;
                         }
 
-                        if (dtMain.Select(EntTable.ExcelTable.Code+"_OLD" + "='" + data[j, 0] + "'").Length == 0)
+                        if (dtMain.Select(ExcelTable.Code+"_OLD" + "='" + data[j, 0] + "'").Length == 0)
                         {
                             DataRow drNew = dtMain.NewRow();
-                            drNew[EntTable.ExcelTable.Code + "_OLD"] = strData;
-                            drNew[EntTable.ExcelTable.Code ] = strData2;
-                            drNew[EntTable.ExcelTable.Name] = strData3;
-                            drNew[EntTable.ExcelTable.Remark] = strData4;
+                            drNew[ExcelTable.Code + "_OLD"] = strData;
+                            drNew[ExcelTable.Code ] = strData2;
+                            drNew[ExcelTable.Name] = strData3;
+                            drNew[ExcelTable.Remark] = strData4;
                             dtMain.Rows.Add(drNew);
                         }
                     }

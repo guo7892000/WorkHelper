@@ -116,6 +116,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             cbbWordConvert.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbGetSql_FirstWordType, "1").Value;
             //设置上部分分隔的高度
             splitContainer1.SplitterDistance = 40;
+            grbOrcNet.AddFoldRightMenu();
         }
 
         private void DBConnName_SelectedIndexChanged(object sender, EventArgs e)

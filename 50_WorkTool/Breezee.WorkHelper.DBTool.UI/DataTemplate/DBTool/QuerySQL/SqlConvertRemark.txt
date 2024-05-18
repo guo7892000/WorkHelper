@@ -1,0 +1,15 @@
+﻿一、主要针对Oracle转MySql，包括：
+NVL -> IFNULL
+SYSDATE -> NOW()
+SYSTIMESTAMP  -> NOW()
+SYS_GUID -> UUID()
+NUMBER -> DECIMAL
+TO_CHAR -> DATE_FORMAT：日期分隔符为-或/，时间分隔为:
+TO_DATE -> DATE_FORMAT：日期分隔符为-或/，时间分隔为:
+TO_DATE + 1 -> DATE_ADD
+DECODE -> CASE WHEN
+|| -> CONCAT
+
+二、无法解决的：
+ROWNUM = 1：LIMIT 1：这种在子查询里会报错
+自定义函数

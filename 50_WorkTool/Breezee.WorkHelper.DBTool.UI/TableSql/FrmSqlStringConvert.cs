@@ -13,7 +13,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -33,6 +35,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private bool _allSelectTableSource = false;//默认全选，这里取反
         private bool _allSelectTableTarget = false;//默认全选，这里取反
         private bool _isChangeTabPage = true;
+        private bool _isLoadDataFirst = true;
         DataGridViewFindText dgvFindTextSource;
         DataGridViewFindText dgvFindTextTarget;
         ReplaceStringXmlConfig replaceStringData;//替换字符模板XML配置
@@ -95,6 +98,14 @@ namespace Breezee.WorkHelper.DBTool.UI
             //
             lblFuncInfo.Text = "转换只是对部分字符进行替换，减少部分手工替换工作，生成结果仅供参考，需要复制出来，确认并修正！";
             toolTip1.SetToolTip(cbbConvertType, "当选择【表、列、函数】时，必须选择源和目标数据，并加载所有列数据；\r\n并且要选择或录入新旧表。");
+            toolTip1.SetToolTip(btnLoadAllGenerate, "");
+
+            //加载说明
+            string sRootDir = Path.Combine(GlobalContext.AppBaseDirectory, "DataTemplate", "DBTool", "QuerySQL", "SqlConvertRemark.txt");
+            rtbConvertRemark.AppendText(File.ReadAllText(sRootDir));
+            rtbConvertRemark.ReadOnly = true;
+            //GroupBox增加右键折叠菜单
+            groupBox2.AddFoldRightMenu();
         }
 
         private void cbbDatabaseTypeTarget_SelectedIndexChanged(object sender, DBTypeSelectedChangeEventArgs e)
@@ -134,7 +145,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             //取得数据源
             StringBuilder sbAllSql = new StringBuilder(); //模板字符接接
             StringBuilder sbAllMust = new StringBuilder(); //必填列字符接接
-
+            Stopwatch stopwatch = null;
             string sTemplateString = rtbInputSql.Text;
             if (string.IsNullOrEmpty(sTemplateString.Trim()))
             {
@@ -205,6 +216,8 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             try
             {
+                //开始计时
+                stopwatch = Stopwatch.StartNew();
                 //转换SQl
                 iDbType = int.Parse(cbbTargetDbType.SelectedValue.ToString());
                 DataBaseType targetDBType = (DataBaseType)iDbType;
@@ -249,7 +262,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         }
                     }
                     //获取要替换的列名：只针对有别名的
-                    string sPatter = @"\s*\w+\.\w+\s*";
+                    string sPatter = @"\s*\w+\.+\w+\s*";
                     Regex regexTime = new Regex(sPatter, RegexOptions.IgnoreCase);
                     MatchCollection mcCollTime = regexTime.Matches(sTemplateString);
                     
@@ -349,13 +362,19 @@ namespace Breezee.WorkHelper.DBTool.UI
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbSqlConvert_LatestSql, rtbInputSql.Text.Trim(), "【数据库间SQL转换】最后输入的SQL");
                 WinFormContext.UserLoveSettings.Save();
 
+                stopwatch.Stop(); //结束计时
+                string sNeedSecond = (stopwatch.ElapsedMilliseconds/1000.00).ToString();
                 //生成SQL成功后提示
-                ShowInfo(_strAutoSqlSuccess);
+                ShowInfo(_strAutoSqlSuccess + "共耗时："+ sNeedSecond +" 秒");
                 rtbResult.Select(0, 0); //返回到第一行
             }
             catch (Exception ex)
             {
                 ShowErr(ex.Message);
+                if (stopwatch != null)
+                {
+                    stopwatch.Stop(); //结束计时
+                }
             }
         }
 
@@ -1087,11 +1106,20 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private async void btnConnectLoadAll_Click(object sender, EventArgs e)
         {
-            await LoadAllData();
+            await LoadAllData(true);
         }
 
-        private async Task<bool> LoadAllData()
+        private async Task<bool> LoadAllData(bool isOnlyLoadData)
         {
+            if (!_isLoadDataFirst)
+            {
+                string sTipLoadGenerate = "在不改变源和目标数据库的情况下，修改SQL后，直接点击【生成】即可。\r\n不需要重新加载数据源的，是否重新加载数据源并生成？";
+                string sTip = isOnlyLoadData ? "在不改变源和目标数据库的情况下,不需要重新加载数据源的，是否重新加载数据源？" : sTipLoadGenerate;
+                if (ShowOkCancel(sTip) == DialogResult.Cancel)
+                {
+                    return false;
+                }
+            }
             _dbServerSource = await uC_DbConnectionSource.GetDbServerInfo();
             if (_dbServerSource == null)
             {
@@ -1112,16 +1140,28 @@ namespace Breezee.WorkHelper.DBTool.UI
             btnLoadDataTarget_Click(null, null);
             ShowInfo("源、目标数据库的数据全部加载完成！");
             _isChangeTabPage = true;
-
+            _isLoadDataFirst = false; //非第一次加载数据
             return true;
         }
 
         private async void btnLoadAllGenerate_Click(object sender, EventArgs e)
         {
-            if(await LoadAllData())
+            if(await LoadAllData(false))
             {
                 btnGenerate_Click(null, null);
             }
         }
+
+        //bool isShow = false;
+        //private void tsmiFoldExpand_Click(object sender, EventArgs e)
+        //{
+        //    if (groupBox2.Tag == null)
+        //    {
+        //        groupBox2.Tag = groupBox2.Height;
+        //    }
+        //    groupBox2.Height = isShow ? (int)groupBox2.Tag : 15;
+        //    isShow = !isShow;
+
+        //}
     }
 }

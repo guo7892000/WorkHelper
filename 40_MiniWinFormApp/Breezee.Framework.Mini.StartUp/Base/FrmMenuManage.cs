@@ -30,6 +30,7 @@ namespace Breezee.Framework.Mini.StartUp
         private XmlDll _XmlDll;
         public static string MenuXmlFilePath;
         public static string MenuXmlFilePath_WPF;
+        ShowInToolStripXmlConfig _stripXmlConfig;
         #endregion
 
         #region 构造函数
@@ -47,6 +48,7 @@ namespace Breezee.Framework.Mini.StartUp
             MenuXmlFilePath_WPF = Path.Combine(GlobalContext.AppEntryAssemblyPath, "Config", MiniStaticString.MenuFileName_WPF);
             _saveMenu = new MenuEntity();
             _xmlMenu =  new XmlMenu(MenuXmlFilePath);
+            _stripXmlConfig = new ShowInToolStripXmlConfig(MiniGlobalValue.ShowInToolStripXmlConfigFileName);
 
             _dicQuery.Clear();
             _dicQuery.Add(((int)MenuType.Modul).ToString(), "模块");
@@ -126,6 +128,10 @@ namespace Breezee.Framework.Mini.StartUp
         #region 增加菜单
         private void AddMenuNode(TreeNode tnParent, TreeNode tnNew, MenuEntity dMenu)
         {
+            if(dMenu.MenuType == MenuType.Menu)
+            {
+                dMenu.IsShowInToolStrip = "1".Equals(_stripXmlConfig.MoreXmlConfig.Get(dMenu.Guid, "0")) ? true : false;
+            }
             tnNew.Text = dMenu.Name;
             tnNew.Tag = dMenu;
             tnParent.Nodes.Add(tnNew);
@@ -148,10 +154,16 @@ namespace Breezee.Framework.Mini.StartUp
                 return;
             }
             bool isAdd = false;
+            string sMenuId = string.Empty;
             XmlDocument MenuEntity = _xmlMenu.XmlMenus;
             if (string.IsNullOrEmpty(_saveMenu.Guid))
             {
                 isAdd = true;
+                sMenuId = Guid.NewGuid().ToString();
+            }
+            else
+            {
+                sMenuId = _saveMenu.Guid;
             }
 
             #region 新增
@@ -162,7 +174,7 @@ namespace Breezee.Framework.Mini.StartUp
                     xnNew = MenuEntity.CreateElement("Model");
                     if (isAdd)
                     {
-                        xnNew.SetAttribute(MemuAttrString.Guid, Guid.NewGuid().ToString());
+                        xnNew.SetAttribute(MemuAttrString.Guid, sMenuId);
                         MenuEntity.DocumentElement.AppendChild(xnNew);
                     }
                     else
@@ -174,7 +186,7 @@ namespace Breezee.Framework.Mini.StartUp
                     xnNew = MenuEntity.CreateElement("Class");
                     if (isAdd)
                     {
-                        xnNew.SetAttribute(MemuAttrString.Guid, Guid.NewGuid().ToString());
+                        xnNew.SetAttribute(MemuAttrString.Guid, sMenuId);
                         //先找模块
                         XmlNode xnParent = MenuEntity.SelectSingleNode("xml/Model[@Guid='" + _saveMenu.ParentGuid + "']");
                         if (xnParent != null)
@@ -216,7 +228,7 @@ namespace Breezee.Framework.Mini.StartUp
                     xnNew = MenuEntity.CreateElement("Menu");
                     if (isAdd)
                     {
-                        xnNew.SetAttribute(MemuAttrString.Guid, Guid.NewGuid().ToString());
+                        xnNew.SetAttribute(MemuAttrString.Guid, sMenuId);
                     }
                     //第一个分类
                     GetMenuNode(isAdd, MenuEntity, "xml/Model/Class","xml /Model/Class/Menu", ref xnNew);
@@ -243,6 +255,11 @@ namespace Breezee.Framework.Mini.StartUp
             xnNew.SetAttribute(MemuAttrString.ShortCutKey, _saveMenu.ShortCutKey);
             xnNew.SetAttribute(MemuAttrString.HelpPath, _saveMenu.HelpPath);
             xnNew.SetAttribute(MemuAttrString.ShowInToolStrip, _saveMenu.IsShowInToolStrip ? "1" : "0");
+            if (_saveMenu.MenuType== MenuType.Menu)
+            {
+                _stripXmlConfig.MoreXmlConfig.Set(sMenuId, _saveMenu.IsShowInToolStrip ? "1" : "0","工具栏是否显示");
+                _stripXmlConfig.MoreXmlConfig.Save();
+            }
             //保存
             MenuEntity.Save(_xmlMenu.XmlPath);
             ShowInfo("保存成功！");

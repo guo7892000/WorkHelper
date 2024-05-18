@@ -505,6 +505,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             public static string NowDate = "GETDATE";
             public static string IfNull = "ISNULL";
             public static string Guid = "NEWID";
+            public static string Decimal = "DECIMAL";
         }
     }
 }

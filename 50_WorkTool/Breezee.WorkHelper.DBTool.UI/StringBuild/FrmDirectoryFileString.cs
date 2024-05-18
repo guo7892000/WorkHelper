@@ -52,6 +52,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
 
             nudDept.Minimum = 1;
+            groupBox1.AddFoldRightMenu();
         } 
         #endregion
 

@@ -141,6 +141,7 @@
     <Compile Include="ShortCutMenu\ShortCutList.Designer.cs">
       <DependentUpon>ShortCutList.cs</DependentUpon>
     </Compile>
+    <Compile Include="ShowInToolStripXmlConfig.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Help\Html\Mini\ChangeHistory.html">

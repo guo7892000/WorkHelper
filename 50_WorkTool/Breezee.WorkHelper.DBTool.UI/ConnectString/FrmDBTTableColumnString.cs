@@ -80,6 +80,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             //
             SetTableTag();
             SetColTag();
+            grbOrcNet.AddFoldRightMenu();
         }
 
         private void cbbDBConnName_SelectedIndexChanged(object sender, EventArgs e)

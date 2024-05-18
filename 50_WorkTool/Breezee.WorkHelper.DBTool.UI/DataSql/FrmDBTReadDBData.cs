@@ -88,6 +88,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             //设置下拉框查找数据源
             cbbTableName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cbbTableName.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            grbSqlNet.AddFoldRightMenu();
         }
         #endregion
 

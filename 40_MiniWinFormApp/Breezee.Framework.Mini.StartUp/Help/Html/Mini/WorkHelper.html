@@ -82,20 +82,29 @@
                 <b>1、SQLite数据库文件：</b><br>
                 框架数据库：SQLite_Mini.db<br>
                 数据库工具：SQLite_DBTool.db<br>
-                默认我们使用程序所在目录的数据库文件（在升级新版本后，请自动使用旧版本中的数据库文件，替换到新版本目录中）。<br>
+                默认我们使用程序所在目录的数据库文件（在升级新版本后，会自动使用旧版本中的数据库文件，替换到新版本目录中）。<br>
                 但我们也可以自定义其路径：先复制上述两个文件到系统分区外的目录，然后再通过【全局系统配置】下的【主框架DB配置】改变框架使用的数据库；<br>
                 通过【DB工具系统配置】下的【数据库工具DB配置】改变数据库工具所使用的数据库。注： 我们只设置一次即可！<br>
                 <b>2、配置文件（Config目录）：</b>这里只列比较重要的<br>
-                菜单配置：\Config\Mini\Data\MenuList.xml<br>
-                值列表配置：\Config\Mini\Data\KeyValue.xml<br>
-                DLL配置：\Config\Mini\Data\DLLList.xml<br>
-                SQL主配置：\Config\SQL.Main.config<br>
-                IoC使用Castle.Windsor或Autofac，在每个子模块中继承它们的安装类，再加载其所在的DLL，实现接口与实现的注入。<br>
+                <b>菜单配置：\Config\Mini\Data\MenuList.xml</b><br>
+                其在Breezee.Framework.Mini.Entitye项目下，记录本工具所有菜单（不包括【开始、视图、窗口、帮助】下所有菜单）。
+                <b>值列表配置：\Config\Mini\Data\KeyValue.xml</b><br>
+                其在Breezee.Framework.Mini.Entitye项目下，记录本工具用到的值列表。
+                <b>DLL配置：\Config\Mini\Data\DLLList.xml</b><br>
+                <b>SQL主配置：\Config\SQL.Main.config</b><br>
+                其在Breezee.AutoSQLExecutor.Core项目下，增加项目时需要修改该文件，增加新项目的SQL配置。<br>
+                <b>IoC使用Castle.Windsor或Autofac</b><br>
+                在每个子模块中继承它们的安装类，再加载其所在的DLL，实现接口与实现的注入。但需要引入Castle.Windsor或Autofac相关DLL。<br>
                 摒弃了以前使用XML的方式，那样不容易在编译阶段发现错误！<br>
                 主框架的数据库连接配置：Breezee.Framework.Mini.DAL.SQLite工程下的MiniDalSQLiteIocInstallerCastle或MiniDalSQLiteIocModuleAutofac。<br>
-                上述文件如有自定义的功能，请自行备份，在更换新版本后，自行追加。<br>
+                上述文件如有自已开发的新功能（这个情况应该很少，所以可以忽略），请自行备份，在更换新版本后，自行追加。<br>
                 <b>3、模板目录（DataTemplate）：</b>功能中所有下载的模板都来自于该目录。<br>
                 <b>4、帮助目录（Help）：</b>所有功能的帮助文件html都在该目录下。<br>
+                <b>5、SQL的配置与执行：</b>本工具使用本人另外的两个项目：MyPeach.Net和AutoSQLExecutor，以支持多种数据库、SQL的快速转换与执行。SQL语句可写在代码中或配置文件中。<br>
+                SQL语句不需要拼接，MyPeach.Net会根据输入参数和原始SQL自动转换为参数化的SQL语句；AutoSQLExecutor支持MySql、Oracle、PostgreSQL、SqlServer、SQLite五种数据库类型的SQL执行，<br>
+                需要我们按约定的规则来配置，包括：xx.DAL项目是所有数据库的基类，其下配置通用的SQL（即不包括特定数据库类型语句的语法），例如Mini.SQL.Common.config文件。<br>
+                当SQL不能通用时，我们需要在具体的数据库类型访问层项目实现该方法，如xx.DAL.MySql项目，就是针对使用MySql数据库时，需要重写的方法（其中调用适用MySQL的SQL语句）。<br>
+                然后IoC配置中，我们都是配置数据库访问实现类是使用对应数据库类型的实现类。这样当实现类不重写方法时，调用实现类的方法就是使用基类的方法。<br>
             </div>
         </div>
     </div>

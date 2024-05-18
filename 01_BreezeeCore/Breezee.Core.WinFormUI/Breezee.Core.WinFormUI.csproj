@@ -158,6 +158,7 @@
     <Compile Include="Extension\DataTableExtension.cs" />
     <Compile Include="Extension\DateExtension.cs" />
     <Compile Include="Extension\FormExtension.cs" />
+    <Compile Include="Extension\GroupBoxExtend.cs" />
     <Compile Include="Extension\IDictionaryExtension.cs" />
     <Compile Include="Extension\IListExtension.cs" />
     <Compile Include="Extension\TreeViewExtension.cs" />

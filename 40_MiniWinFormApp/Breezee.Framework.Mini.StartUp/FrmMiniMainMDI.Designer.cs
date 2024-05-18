@@ -262,7 +262,7 @@
             // 
             this.tsmiUserManual.Image = ((System.Drawing.Image)(resources.GetObject("tsmiUserManual.Image")));
             this.tsmiUserManual.Name = "tsmiUserManual";
-            this.tsmiUserManual.Size = new System.Drawing.Size(160, 22);
+            this.tsmiUserManual.Size = new System.Drawing.Size(184, 26);
             this.tsmiUserManual.Text = "用户手册";
             this.tsmiUserManual.Click += new System.EventHandler(this.tsmiUserManual_Click);
             // 
@@ -270,24 +270,25 @@
             // 
             this.tsbCheckUpdate.Image = ((System.Drawing.Image)(resources.GetObject("tsbCheckUpdate.Image")));
             this.tsbCheckUpdate.Name = "tsbCheckUpdate";
-            this.tsbCheckUpdate.Size = new System.Drawing.Size(160, 22);
+            this.tsbCheckUpdate.Size = new System.Drawing.Size(184, 26);
             this.tsbCheckUpdate.Text = "检查更新";
-            this.tsbCheckUpdate.ToolTipText = "检测是否有新版本";
+            this.tsbCheckUpdate.ToolTipText = "检测是否有最新版本";
             this.tsbCheckUpdate.Click += new System.EventHandler(this.tsbCheckUpdate_Click);
             // 
             // tsmiDowloadLatestStableVersion
             // 
             this.tsmiDowloadLatestStableVersion.Image = ((System.Drawing.Image)(resources.GetObject("tsmiDowloadLatestStableVersion.Image")));
             this.tsmiDowloadLatestStableVersion.Name = "tsmiDowloadLatestStableVersion";
-            this.tsmiDowloadLatestStableVersion.Size = new System.Drawing.Size(160, 22);
-            this.tsmiDowloadLatestStableVersion.Text = "下载最新稳定版";
+            this.tsmiDowloadLatestStableVersion.Size = new System.Drawing.Size(184, 26);
+            this.tsmiDowloadLatestStableVersion.Text = "下载历史稳定版";
+            this.tsmiDowloadLatestStableVersion.ToolTipText = "不是最新版，是之前的某个版本，更新频率相对低一些";
             this.tsmiDowloadLatestStableVersion.Click += new System.EventHandler(this.tsmiDowloadLatestStableVersion_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aboutToolStripMenuItem.Image")));
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.aboutToolStripMenuItem.Text = "关于我们";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 

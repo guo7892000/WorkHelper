@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Breezee.Core.WinFormUI.Common;
 using Breezee.Core;
 using System.Linq;
+using static Breezee.Core.WinFormUI.GroupBoxExtend;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -70,6 +71,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.cbbDbConnName.SelectedIndexChanged += new System.EventHandler(this.cbbDbConnName_SelectedIndexChanged);
 
             cbbDatabaseType.SelectedIndex = 0;
+            //增加右键折叠功能，同时父容器也要折叠
+            groupBox1.AddFoldRightMenu(true); 
 
         }
         #endregion

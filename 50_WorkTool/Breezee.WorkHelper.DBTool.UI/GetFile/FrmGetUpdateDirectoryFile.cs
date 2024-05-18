@@ -86,6 +86,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             ckbIncludeCommit.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileIsIncludeCommit, "1").Value) ? true : false;
             txbEmail.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileEmail, "").Value;
             txbUserName.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileUserName, "").Value;
+
+            groupBox2.AddFoldRightMenu();
+            grbExclude.AddFoldRightMenu();
         } 
         #endregion
 

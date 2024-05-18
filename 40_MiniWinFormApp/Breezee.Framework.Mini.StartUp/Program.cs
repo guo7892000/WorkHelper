@@ -82,9 +82,10 @@ namespace Breezee.Framework.Mini.StartUp
         {
             //删除旧版本逻辑：有上次更新路径，且是要删除旧版本
             WinFormConfig winConfig = WinFormContext.Instance.WinFormConfig;
+            string sPrePath = string.Empty;
             try
             {
-                string sPrePath = winConfig.Get(GlobalKey.Upgrade_PreVersionPath, "");
+                sPrePath = winConfig.Get(GlobalKey.Upgrade_PreVersionPath, "");
                 string sExePath = Path.GetFullPath(GlobalContext.AppEntryAssemblyPath);
                 if (!string.IsNullOrEmpty(sPrePath) && "1".Equals(winConfig.Get(GlobalKey.Upgrade_IsDeleteOldVersion, "1")))
                 {
@@ -98,12 +99,13 @@ namespace Breezee.Framework.Mini.StartUp
                             if (MsgHelper.ShowOkCancel("旧版本路径：" + sPrePath + "，确认删除？") == DialogResult.OK)
                             {
                                 Directory.Delete(sPrePath, true);
-                                winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "清空上个版本文件夹");
+                                winConfig.Set(GlobalKey.Upgrade_PreVersionPathBak, sPrePath, "备份上个版本文件夹用于下次登录再次删除：上次正常删除");
+                                winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "清空上个版本文件夹：正常删除");
                                 winConfig.Save();
                             }
                             else
                             {
-                                winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "清空上个版本文件夹");
+                                winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "清空上个版本文件夹：用户确认不删除");
                                 winConfig.Save();
                             }
                         }
@@ -113,16 +115,38 @@ namespace Breezee.Framework.Mini.StartUp
                         if (Directory.Exists(sPrePath) && !isSaveDir)
                         {
                             Directory.Delete(sPrePath, true);
-                            winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "清空上个版本文件夹");
+                            winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "清空上个版本文件夹：不用确认直接删除");
                             winConfig.Save();
                         }
+                    }
+                }
+                //再次删除上版本目录：因为第一次删除不能删除根目录，可能是重新登录还是占用了原目录
+                string sPrePathBak = winConfig.Get(GlobalKey.Upgrade_PreVersionPathBak, "");
+                if (!string.IsNullOrEmpty(sPrePathBak))
+                {
+                    if (!Directory.Exists(sPrePathBak))
+                    {
+                        winConfig.Set(GlobalKey.Upgrade_PreVersionPathBak, "", "清空再次删除上个版本文件夹的配置：目录已不存在");
+                        winConfig.Save();
+                        return;
+                    }
+                    try
+                    {
+                        Directory.Delete(sPrePathBak, true);
+                        winConfig.Set(GlobalKey.Upgrade_PreVersionPathBak, "", "清空再次删除上个版本文件夹的配置：已再次删除");
+                        winConfig.Save();
+                    }
+                    catch (Exception e)
+                    {
+                        System.Console.WriteLine(e.Message);
                     }
                 }
             }
             catch (Exception ex)
             {
                 System.Console.WriteLine(ex.Message);
-                winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "清空上个版本文件夹");
+                winConfig.Set(GlobalKey.Upgrade_PreVersionPathBak, sPrePath, "备份上个版本文件夹用于下次登录再次删除：上次删除出错");
+                winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "清空上个版本文件夹：出错了");
                 winConfig.Save();
             }
         } 

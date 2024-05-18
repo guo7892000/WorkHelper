@@ -34,8 +34,10 @@ namespace Breezee.Core.Interface
         public static string Upgrade_IsDeleteNewVerZipFile = "Upgrade_IsDeleteNewVerZipFile"; //是否升级新版本成功后删除新版本的压缩包
         public static string Upgrade_TempPath = "Upgrade_TempPath"; //升级临时文件路径
         public static string Upgrade_PreVersionPath = "Upgrade_PreVersionPath"; //上个版本的路径
+        public static string Upgrade_PreVersionPathBak = "Upgrade_PreVersionPathBak"; //上个版本的备份路径：在删除了上个版本的路径后写入，用于再次删除上个版本目录，因为第一次删除不掉。
         public static string Upgrade_LatestVersionRootDir = "Upgrade_LatestVersionRootDir"; //最新版的根目录
         public static string Upgrade_IsAutoCorrectDesktopQuickLink = "Upgrade_IsAutoCorrectDesktopQuickLink"; //是否自动修正桌面快捷方式路径
+        public static string Upgrade_CurrentVersionNo = "Upgrade_CurrentVersionNo"; //当前版本号
         //行号
         public static string RowNum = "ROWNO";
         public static string MaxOpenFormNum = "MaxOpenFormNum";

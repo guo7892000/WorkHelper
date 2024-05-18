@@ -116,6 +116,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.groupBox1.Size = new System.Drawing.Size(926, 52);
             this.groupBox1.TabIndex = 25;
             this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "选项";
             // 
             // tableLayoutPanel1
             // 

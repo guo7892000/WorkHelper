@@ -388,6 +388,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             public static string NowDate = "NOW";
             public static string IfNull = "IFNULL";
             public static string Guid = "UUID";
+            public static string Decimal = "NUMERIC";
         }
     }
 }
