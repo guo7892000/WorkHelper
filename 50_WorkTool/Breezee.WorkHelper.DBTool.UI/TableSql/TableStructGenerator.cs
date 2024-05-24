@@ -150,7 +150,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     string sColName = row[ColCommon.ExcelCol.Name].ToString();
                     string sSourceRemark = row[ColCommon.ExcelCol.Remark].ToString();
                     string sColRemark;
-                    string sColNameAndRemark = sColName + "：" + sSourceRemark;
+                    string sColNameAndRemark = sColName + (string.IsNullOrEmpty(sSourceRemark) ? "" : "：" + sSourceRemark);
                     if (docEntity.useNameSameWithRemark)
                     {
                         //如列名称同备注，那么列名和备注都将使用【列名称：列说明】
@@ -180,7 +180,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                         .Replace("${Rule}", row[ColCommon.ExcelCol.NotNull].ToString())
                         .Replace("${Remark}", sColRemark)
                         .Replace("$(No)", index.ToString())
-                        .Replace("${ChangeType}", strColumnChangeType);
+                        .Replace("${ChangeType}", strColumnChangeType)
+                        .Replace("${OldTableCode}", row[ColCommon.ExcelCol.OldTableCode].ToString());
                     columnBuilder.Append(columnString);
                     index++;
                 }
@@ -191,22 +192,28 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     sTableChangeType = sTableChangeType.Replace("新增","创建") +"表";
                 }
-                string sTableName = rowTable[EntTable.ExcelTable.Name].ToString();
+                string sTableName = rowTable[EntTable.ExcelTable.Name].ToString().Trim();
                 if(string.IsNullOrEmpty(sTableName))
                 {
                     sTableName = docEntity.defaultColumnOrTableName + "表";
                 }
-                string sTableSoureRemark = rowTable[EntTable.ExcelTable.Remark].ToString();
-                string sTableRemark;
-                if (docEntity.useRemarkContainsName)
+                string sTableSoureRemark = rowTable[EntTable.ExcelTable.Remark].ToString().Trim();
+                string sTableRemark = string.Empty;
+                if(string.IsNullOrEmpty(sTableSoureRemark) || sTableName.Equals(sTableSoureRemark))
                 {
-                    sTableRemark = string.IsNullOrEmpty(sTableSoureRemark) ? sTableName : sTableName + "：" + sTableSoureRemark;
+                    sTableRemark = string.Empty;
                 }
                 else
                 {
-                    sTableRemark = sTableSoureRemark;
+                    if (docEntity.useRemarkContainsName)
+                    {
+                        sTableRemark = sTableName + "：" + sTableSoureRemark;
+                    }
+                    else
+                    {
+                        sTableRemark = sTableSoureRemark;
+                    }
                 }
-
                 string tableString = tableTemplate.Replace("$$(ColumnsHolder)", columnBuilder.ToString())
                     .Replace("${tableName}", sTableName)
                     .Replace("${tableCode}", rowTable[EntTable.ExcelTable.Code].ToString())

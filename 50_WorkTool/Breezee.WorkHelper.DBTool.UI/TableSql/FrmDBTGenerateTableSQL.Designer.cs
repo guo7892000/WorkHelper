@@ -111,9 +111,11 @@
             this.ckbUpdateDefault = new System.Windows.Forms.CheckBox();
             this.ckbExcludeColumn = new System.Windows.Forms.CheckBox();
             this.txbExcludeColumn = new System.Windows.Forms.TextBox();
+            this.btnConnect = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.ckbIsPkRemoveDefault = new System.Windows.Forms.CheckBox();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
             this.tabControl1.SuspendLayout();
             this.tpImport.SuspendLayout();
@@ -719,7 +721,7 @@
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label3.AutoSize = true;
             this.label3.ForeColor = System.Drawing.Color.Red;
-            this.label3.Location = new System.Drawing.Point(3, 6);
+            this.label3.Location = new System.Drawing.Point(3, 7);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(68, 17);
             this.label3.TabIndex = 1;
@@ -729,7 +731,7 @@
             // 
             this.cbbInputType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbInputType.FormattingEnabled = true;
-            this.cbbInputType.Location = new System.Drawing.Point(77, 4);
+            this.cbbInputType.Location = new System.Drawing.Point(77, 3);
             this.cbbInputType.Name = "cbbInputType";
             this.cbbInputType.Size = new System.Drawing.Size(96, 25);
             this.cbbInputType.TabIndex = 18;
@@ -740,7 +742,7 @@
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(179, 6);
+            this.label2.Location = new System.Drawing.Point(179, 7);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(68, 17);
             this.label2.TabIndex = 1;
@@ -750,7 +752,7 @@
             // 
             this.cbbImportDBType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbImportDBType.FormattingEnabled = true;
-            this.cbbImportDBType.Location = new System.Drawing.Point(253, 4);
+            this.cbbImportDBType.Location = new System.Drawing.Point(253, 3);
             this.cbbImportDBType.Name = "cbbImportDBType";
             this.cbbImportDBType.Size = new System.Drawing.Size(121, 25);
             this.cbbImportDBType.TabIndex = 4;
@@ -760,7 +762,7 @@
             // 
             this.cbbTargetDbType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbTargetDbType.FormattingEnabled = true;
-            this.cbbTargetDbType.Location = new System.Drawing.Point(454, 4);
+            this.cbbTargetDbType.Location = new System.Drawing.Point(454, 3);
             this.cbbTargetDbType.Name = "cbbTargetDbType";
             this.cbbTargetDbType.Size = new System.Drawing.Size(121, 25);
             this.cbbTargetDbType.TabIndex = 3;
@@ -770,7 +772,7 @@
             this.lblThree.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblThree.AutoSize = true;
             this.lblThree.ForeColor = System.Drawing.Color.Red;
-            this.lblThree.Location = new System.Drawing.Point(581, 6);
+            this.lblThree.Location = new System.Drawing.Point(581, 7);
             this.lblThree.Name = "lblThree";
             this.lblThree.Size = new System.Drawing.Size(68, 17);
             this.lblThree.TabIndex = 1;
@@ -780,7 +782,7 @@
             // 
             this.cbbCreateType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbCreateType.FormattingEnabled = true;
-            this.cbbCreateType.Location = new System.Drawing.Point(655, 4);
+            this.cbbCreateType.Location = new System.Drawing.Point(655, 3);
             this.cbbCreateType.Name = "cbbCreateType";
             this.cbbCreateType.Size = new System.Drawing.Size(102, 25);
             this.cbbCreateType.TabIndex = 5;
@@ -789,7 +791,7 @@
             // 
             this.ckbAllConvert.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbAllConvert.AutoSize = true;
-            this.ckbAllConvert.Location = new System.Drawing.Point(763, 4);
+            this.ckbAllConvert.Location = new System.Drawing.Point(763, 5);
             this.ckbAllConvert.Name = "ckbAllConvert";
             this.ckbAllConvert.Size = new System.Drawing.Size(75, 21);
             this.ckbAllConvert.TabIndex = 7;
@@ -802,7 +804,7 @@
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.Red;
-            this.label1.Location = new System.Drawing.Point(380, 6);
+            this.label1.Location = new System.Drawing.Point(380, 7);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(68, 17);
             this.label1.TabIndex = 1;
@@ -812,7 +814,7 @@
             // 
             this.ckbDefaulePK.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbDefaulePK.AutoSize = true;
-            this.ckbDefaulePK.Location = new System.Drawing.Point(844, 4);
+            this.ckbDefaulePK.Location = new System.Drawing.Point(844, 5);
             this.ckbDefaulePK.Name = "ckbDefaulePK";
             this.ckbDefaulePK.Size = new System.Drawing.Size(75, 21);
             this.ckbDefaulePK.TabIndex = 25;
@@ -823,7 +825,7 @@
             // 
             this.ckbDefaultColNameCn.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbDefaultColNameCn.AutoSize = true;
-            this.ckbDefaultColNameCn.Location = new System.Drawing.Point(925, 4);
+            this.ckbDefaultColNameCn.Location = new System.Drawing.Point(925, 5);
             this.ckbDefaultColNameCn.Name = "ckbDefaultColNameCn";
             this.ckbDefaultColNameCn.Size = new System.Drawing.Size(111, 21);
             this.ckbDefaultColNameCn.TabIndex = 26;
@@ -833,7 +835,7 @@
             // txbDefaultColNameCN
             // 
             this.txbDefaultColNameCN.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbDefaultColNameCN.Location = new System.Drawing.Point(1042, 3);
+            this.txbDefaultColNameCN.Location = new System.Drawing.Point(1042, 4);
             this.txbDefaultColNameCN.Name = "txbDefaultColNameCN";
             this.txbDefaultColNameCN.Size = new System.Drawing.Size(142, 23);
             this.txbDefaultColNameCN.TabIndex = 27;
@@ -842,7 +844,7 @@
             // btnSaveOther
             // 
             this.btnSaveOther.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveOther.Location = new System.Drawing.Point(432, 2);
+            this.btnSaveOther.Location = new System.Drawing.Point(549, 2);
             this.btnSaveOther.Margin = new System.Windows.Forms.Padding(2);
             this.btnSaveOther.Name = "btnSaveOther";
             this.btnSaveOther.Size = new System.Drawing.Size(89, 25);
@@ -934,7 +936,7 @@
             // 
             this.cbbTableName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbTableName.FormattingEnabled = true;
-            this.cbbTableName.Location = new System.Drawing.Point(53, 6);
+            this.cbbTableName.Location = new System.Drawing.Point(53, 4);
             this.cbbTableName.Name = "cbbTableName";
             this.cbbTableName.Size = new System.Drawing.Size(291, 25);
             this.cbbTableName.TabIndex = 19;
@@ -1014,7 +1016,8 @@
             // 
             // tableLayoutPanel2
             // 
-            this.tableLayoutPanel2.ColumnCount = 11;
+            this.tableLayoutPanel2.ColumnCount = 12;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -1029,11 +1032,12 @@
             this.tableLayoutPanel2.Controls.Add(this.lblTableName, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.cbbTableName, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.ckbGetTableList, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this.ckbQueryColumnRealTime, 4, 0);
-            this.tableLayoutPanel2.Controls.Add(this.btnGenerateSql, 3, 0);
-            this.tableLayoutPanel2.Controls.Add(this.ckbUpdateDefault, 5, 0);
-            this.tableLayoutPanel2.Controls.Add(this.ckbExcludeColumn, 6, 0);
-            this.tableLayoutPanel2.Controls.Add(this.txbExcludeColumn, 7, 0);
+            this.tableLayoutPanel2.Controls.Add(this.ckbQueryColumnRealTime, 5, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnGenerateSql, 4, 0);
+            this.tableLayoutPanel2.Controls.Add(this.ckbUpdateDefault, 6, 0);
+            this.tableLayoutPanel2.Controls.Add(this.ckbExcludeColumn, 7, 0);
+            this.tableLayoutPanel2.Controls.Add(this.txbExcludeColumn, 8, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnConnect, 3, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 19);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -1048,7 +1052,7 @@
             // 
             this.ckbQueryColumnRealTime.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbQueryColumnRealTime.AutoSize = true;
-            this.ckbQueryColumnRealTime.Location = new System.Drawing.Point(504, 6);
+            this.ckbQueryColumnRealTime.Location = new System.Drawing.Point(561, 6);
             this.ckbQueryColumnRealTime.Name = "ckbQueryColumnRealTime";
             this.ckbQueryColumnRealTime.Size = new System.Drawing.Size(87, 21);
             this.ckbQueryColumnRealTime.TabIndex = 23;
@@ -1058,7 +1062,7 @@
             // btnGenerateSql
             // 
             this.btnGenerateSql.ForeColor = System.Drawing.Color.Red;
-            this.btnGenerateSql.Location = new System.Drawing.Point(443, 3);
+            this.btnGenerateSql.Location = new System.Drawing.Point(500, 3);
             this.btnGenerateSql.Name = "btnGenerateSql";
             this.btnGenerateSql.Size = new System.Drawing.Size(55, 27);
             this.btnGenerateSql.TabIndex = 24;
@@ -1070,7 +1074,7 @@
             // 
             this.ckbUpdateDefault.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbUpdateDefault.AutoSize = true;
-            this.ckbUpdateDefault.Location = new System.Drawing.Point(597, 6);
+            this.ckbUpdateDefault.Location = new System.Drawing.Point(654, 6);
             this.ckbUpdateDefault.Name = "ckbUpdateDefault";
             this.ckbUpdateDefault.Size = new System.Drawing.Size(111, 21);
             this.ckbUpdateDefault.TabIndex = 23;
@@ -1083,7 +1087,7 @@
             this.ckbExcludeColumn.AutoSize = true;
             this.ckbExcludeColumn.Checked = true;
             this.ckbExcludeColumn.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbExcludeColumn.Location = new System.Drawing.Point(714, 6);
+            this.ckbExcludeColumn.Location = new System.Drawing.Point(771, 6);
             this.ckbExcludeColumn.Name = "ckbExcludeColumn";
             this.ckbExcludeColumn.Size = new System.Drawing.Size(63, 21);
             this.ckbExcludeColumn.TabIndex = 21;
@@ -1094,10 +1098,22 @@
             // txbExcludeColumn
             // 
             this.txbExcludeColumn.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.txbExcludeColumn.Location = new System.Drawing.Point(783, 5);
+            this.txbExcludeColumn.Location = new System.Drawing.Point(840, 5);
             this.txbExcludeColumn.Name = "txbExcludeColumn";
             this.txbExcludeColumn.Size = new System.Drawing.Size(272, 23);
             this.txbExcludeColumn.TabIndex = 22;
+            // 
+            // btnConnect
+            // 
+            this.btnConnect.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnConnect.ForeColor = System.Drawing.Color.Red;
+            this.btnConnect.Location = new System.Drawing.Point(443, 3);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(51, 28);
+            this.btnConnect.TabIndex = 25;
+            this.btnConnect.Text = "连接";
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
             // groupBox5
             // 
@@ -1121,15 +1137,16 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 627F));
             this.tableLayoutPanel3.Controls.Add(this.ckbFullTypeDoc, 1, 0);
-            this.tableLayoutPanel3.Controls.Add(this.btnSaveOther, 5, 0);
             this.tableLayoutPanel3.Controls.Add(this.ckbLYTemplate, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.ckbOnlyRemark, 2, 0);
             this.tableLayoutPanel3.Controls.Add(this.ckbColNameSameRemark, 3, 0);
             this.tableLayoutPanel3.Controls.Add(this.ckbDoubleColName, 4, 0);
+            this.tableLayoutPanel3.Controls.Add(this.btnSaveOther, 6, 0);
+            this.tableLayoutPanel3.Controls.Add(this.ckbIsPkRemoveDefault, 5, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 19);
@@ -1140,6 +1157,17 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(1190, 28);
             this.tableLayoutPanel3.TabIndex = 0;
+            // 
+            // ckbIsPkRemoveDefault
+            // 
+            this.ckbIsPkRemoveDefault.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbIsPkRemoveDefault.AutoSize = true;
+            this.ckbIsPkRemoveDefault.Location = new System.Drawing.Point(433, 4);
+            this.ckbIsPkRemoveDefault.Name = "ckbIsPkRemoveDefault";
+            this.ckbIsPkRemoveDefault.Size = new System.Drawing.Size(111, 21);
+            this.ckbIsPkRemoveDefault.TabIndex = 22;
+            this.ckbIsPkRemoveDefault.Text = "主键剔除默认值";
+            this.ckbIsPkRemoveDefault.UseVisualStyleBackColor = true;
             // 
             // uC_DbConnection1
             // 
@@ -1308,5 +1336,7 @@
         private System.Windows.Forms.Button btnGenerateSql;
         private System.Windows.Forms.ToolStripButton tsbDownloadLYTemplate;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox ckbIsPkRemoveDefault;
+        private System.Windows.Forms.Button btnConnect;
     }
 }

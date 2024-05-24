@@ -719,6 +719,10 @@ SELECT  TO_CHAR(A.OUT_STORE_DATE, 'YYYY/MM/DD') OUT_STORE_DATE,
                 {
                     sb.AppendLine(",");
                 }
+                else
+                {
+                    sb.Append(" ");
+                }
                 //构造新字符
                 if (targetDbType== DataBaseType.SqlServer)
                 {
@@ -855,6 +859,10 @@ SELECT  TO_CHAR(A.OUT_STORE_DATE, 'YYYY/MM/DD') OUT_STORE_DATE,
                 {
                     sb.AppendLine(",");
                 }
+                else
+                {
+                    sb.Append(" ");
+                }
                 //构造新字符
                 if (targetDbType == DataBaseType.SqlServer)
                 {
@@ -911,6 +919,10 @@ SELECT  TO_CHAR(A.OUT_STORE_DATE, 'YYYY/MM/DD') OUT_STORE_DATE,
                 if (isStartWithComma)
                 {
                     sb.AppendLine(",");
+                }
+                else
+                {
+                    sb.Append(" ");
                 }
                 sb.Append("CONCAT(");
                 for (int i = 0; i < arrList.Length; i++)

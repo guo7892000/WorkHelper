@@ -119,6 +119,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             ckbOnlyRemark.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsOnlyRemark, "0").Value) ? true : false;
             ckbDefaulePK.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsDefaultPK, "0").Value) ? true : false;
             ckbDefaultColNameCn.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsDefaultColNameCN, "0").Value) ? true : false;
+            ckbIsPkRemoveDefault.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsPkRemoveDefault, "1").Value) ? true : false;
             txbDefaultColNameCN.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_DefaultColNameCN, "未知").Value;
             //设置下拉框查找数据源
             cbbTableName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
@@ -726,6 +727,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsDefaultPK, ckbDefaulePK.Checked ? "1" : "0", "【生成表SQL】是否使用默认主键");
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsDefaultColNameCN, ckbDefaultColNameCn.Checked ? "1" : "0", "【生成表SQL】是否使用默认列中文名");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsPkRemoveDefault, ckbIsPkRemoveDefault.Checked ? "1" : "0", "【生成表SQL】是否主键剔除默认值");
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_DefaultColNameCN, txbDefaultColNameCN.Text.Trim(), "【生成表SQL】列中文名为空时使用的列名");
             WinFormContext.UserLoveSettings.Save();
         }
@@ -787,25 +789,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                 return;
             }
 
-            //只针对录入的新表修改为选中状态
-            DataTable dtNewTable = dgvNewTableInfo.GetBindingTable();
-            if (dtNewTable.Rows.Count > 0)
-            {
-                DataRow[] newTableArr = dtTable.Select(_sGridColumnSelect + "='True'");
-                foreach (var item in newTableArr)
-                {
-                    item[_sGridColumnSelect] = "False"; //设置为不选中
-                }
-
-                var query = from f in dtTable.AsEnumerable()
-                            where GetLinqDynamicWhere(dtNewTable.Rows, f)
-                            select f;
-                foreach (var item in query.ToList())
-                {
-                    item[_sGridColumnSelect] = "True"; //设置为不选中
-                }
-            }
-
             //移除空行
             sFilter = EntTable.ExcelTable.Code + " is null or " + EntTable.ExcelTable.Num + " is null";
             foreach (DataRow dr in dtTable.Select(sFilter))
@@ -821,11 +804,46 @@ namespace Breezee.WorkHelper.DBTool.UI
             dtAllCol.AcceptChanges();
 
             //筛选选中的表
-            sFilter = _sGridTableSelect + " = 'True' ";
             DataTable dtTalbeSelect = dtTable.Clone();
-            foreach (DataRow dr in dtTable.Select(sFilter))
+            DataTable dtNewTable = dgvNewTableInfo.GetBindingTable();//录入的新表
+            if (ckbIsOnlyReplaceTable.Checked)
             {
-                dtTalbeSelect.ImportRow(dr);
+                //循环新表
+                foreach (DataRow dr in dtNewTable.FilterSelected(_sGridColumnSelect))
+                {
+                    //查找表是否存在，存在则导入
+                    sFilter = ExcelTable.Code + "='" + dr[ExcelTable.Code + "_OLD"].ToString() + "'";
+                    DataRow[] drArr = dtTable.Select(sFilter);
+                    if (drArr.Length > 0)
+                    {
+                        dtTalbeSelect.ImportRow(drArr[0]);
+                    }
+                }
+                if (dtNewTable.Rows.Count== 0)
+                {
+                    ShowErr("请先录入要替换的新旧表信息！");
+                    return;
+                }
+            }
+            else
+            {
+                //导入选中的
+                foreach (DataRow dr in dtTable.FilterSelected(_sGridTableSelect))
+                {
+                    dtTalbeSelect.ImportRow(dr);
+                }
+                //还要导入新表
+                //循环新表
+                foreach (DataRow dr in dtNewTable.FilterSelected(_sGridColumnSelect))
+                {
+                    //查找表是否存在，存在则导入
+                    //sFilter = ExcelTable.Code + "='" + dr[ExcelTable.Code + "_OLD"].ToString() + "'";
+                    DataRow[] drArr = dtTable.FilterValue(ExcelTable.Code, dr[ExcelTable.Code + "_OLD"].ToString());
+                    if (drArr.Length > 0)
+                    {
+                        dtTalbeSelect.ImportRow(drArr[0]);
+                    }
+                }
             }
 
             //筛选选中表的所有列
@@ -914,6 +932,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 dtColumnSelect.Columns.Add(ColCommon.ExcelCol.DataTypeFullNew);
             }
+            if (!dtColumnSelect.Columns.Contains(ColCommon.ExcelCol.OldTableCode))
+            {
+                dtColumnSelect.Columns.Add(ColCommon.ExcelCol.OldTableCode);
+            }
 
             foreach (DataRow dr in dtColumnSelect.Rows)
             {
@@ -924,11 +946,16 @@ namespace Breezee.WorkHelper.DBTool.UI
                 builder.ConvertDBTypeDefaultValueString(ref sDataType, ref sDefault, importDBType);
                 dr[ColCommon.ExcelCol.DataTypeNew] = sDataType; //得到新类型
                 dr[ColCommon.ExcelCol.Default] = sDefault; //得到新默认值
+                if (ckbIsPkRemoveDefault.Checked && "PK".Equals(dr[ColCommon.ExcelCol.KeyType].ToString()))
+                {
+                    dr[ColCommon.ExcelCol.Default] = string.Empty; //针对主键列去掉默认值
+                }
                 dr[ColCommon.ExcelCol.DataTypeFullNew] = ColCommon.GetFullDataType(sDataType, sDataLength, sDataDotLength);
                 if (string.IsNullOrEmpty(dr[ColCommon.ExcelCol.Name].ToString()))
                 {
                     dr[ColCommon.ExcelCol.Name] = txbDefaultColNameCN.Text.Trim() + "列";
                 }
+                dr[ColCommon.ExcelCol.OldTableCode] = dr[ColCommon.ExcelCol.TableCode].ToString(); //数据迁移旧表名也赋值
             }
 
             #region 通用列模板的处理
@@ -1020,6 +1047,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 foreach (DataRow drCol in drArrCols)
                 {
                     drCol[ColCommon.ExcelCol.TableCode] = sNewTableCode;
+                    drCol[ColCommon.ExcelCol.OldTableCode] = sOldTableCode; //记录旧表编码
                 }
             }
             #endregion
@@ -1795,10 +1823,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                             dtMain.Rows.Add(drNew);
                         }
                     }
-                    if(dtMain.Rows.Count > 0)
-                    {
-                        ckbIsOnlyReplaceTable.Checked = true;
-                    }
                 }
             }
             catch (Exception ex)
@@ -1819,6 +1843,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             tsbAutoSQL.PerformClick();
         }
 
-        
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            tsbImport.PerformClick();
+        }
     }
 }

@@ -277,6 +277,8 @@ namespace Breezee.WorkHelper.DBTool.Entity
             public static string DataTypeFull = "类型长度";
             public static string DataTypeNew = "新类型";
             public static string DataTypeFullNew = "新类型长度";
+            //不在Excel模板内，用于读取数据库生成表脚本时的旧表数据迁移用
+            public static string OldTableCode = "旧表编码";
         }
     }
 }

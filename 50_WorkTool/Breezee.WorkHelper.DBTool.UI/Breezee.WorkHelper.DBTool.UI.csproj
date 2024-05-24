@@ -303,7 +303,9 @@
     <Compile Include="TableSql\FrmSqlStringConvert.Designer.cs">
       <DependentUpon>FrmSqlStringConvert.cs</DependentUpon>
     </Compile>
+    <Compile Include="TableSql\NewOldColumnXmlConfig.cs" />
     <Compile Include="TableSql\SqlReplaceColumnEntity.cs" />
+    <Compile Include="TableSql\SqlTableEntity.cs" />
     <Compile Include="TableSql\StandardColumnClassXmlConfig.cs" />
     <Compile Include="TableSql\SQLBuilder\MySQLBuilder.cs" />
     <Compile Include="TableSql\SQLBuilder\OracleBuilder.cs" />

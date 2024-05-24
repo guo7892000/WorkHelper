@@ -88,6 +88,7 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static class DbConvertSql
         {
             public static string Xml_NewOldTableFileName = "DbConvertSqlNewOldTableConfig.xml"; //新旧表配置
+            public static string Xml_NewOldColumnFileName = "DbConvertSqlNewOldColumnConfig.xml"; //新旧列关系配置
         }
 
         public static string AppPath

@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
 
 /*********************************************************************		
  * 对象名称：		
@@ -110,7 +112,7 @@ namespace Breezee.Core.Interface
                 listDic.Add(dicNew);
             }
             return listDic;
-        } 
+        }
         #endregion
 
         #region 将表和字典中值转换为字典列表
@@ -154,7 +156,7 @@ namespace Breezee.Core.Interface
                 listDic.Add(dicNew);
             }
             return listDic;
-        } 
+        }
         #endregion
 
         #region 将DataTable转换为IDictionary<string, string>型的字典
@@ -199,9 +201,9 @@ namespace Breezee.Core.Interface
             DataView dv = dt.DefaultView;
             dv.Sort = sortFiles;
             return dv.ToTable();
-        } 
+        }
         #endregion
-        
+
         #region DataRow扩展
 
         #region 将DataRow[]转换为IDictionary<string, string>型的字典
@@ -464,9 +466,9 @@ namespace Breezee.Core.Interface
         /// <param name="sColumnNamePre">列名前缀</param>
         /// <param name="sColumnNameEnd">列名后缀</param>
         /// <returns></returns>
-        public static string getUnionDataSql(this DataTable dtMain, bool isFromDual, bool isUnionAll=true,bool isTrimData = true, string sColumnNamePre="\"",string sColumnNameEnd = "\"")
+        public static string getUnionDataSql(this DataTable dtMain, bool isFromDual, bool isUnionAll = true, bool isTrimData = true, string sColumnNamePre = "\"", string sColumnNameEnd = "\"")
         {
-            if (dtMain==null || dtMain.Rows.Count == 0)
+            if (dtMain == null || dtMain.Rows.Count == 0)
             {
                 return string.Empty;
             }
@@ -500,7 +502,7 @@ namespace Breezee.Core.Interface
                         }
                         else
                         {
-                            sOneData += (" '" +  sData + "',");//其他列不定义列名
+                            sOneData += (" '" + sData + "',");//其他列不定义列名
                         }
                         #endregion
                     }
@@ -549,6 +551,43 @@ namespace Breezee.Core.Interface
                 dt.Rows.Add(drNew);
             }
             return dt;
+        }
+
+        /// <summary>
+        /// 过滤选中项
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="sCheckBoxColumnName">可选中的列名</param>
+        /// <param name="sOrder">排序字符</param>
+        /// <returns></returns>
+        public static DataRow[] FilterSelected(this DataTable dt, string sCheckBoxColumnName)
+        {
+            var list = dt.AsEnumerable().Where(t => "True".Equals(t[sCheckBoxColumnName].ToString(), StringComparison.OrdinalIgnoreCase)
+            || "1".Equals(t[sCheckBoxColumnName].ToString(), StringComparison.OrdinalIgnoreCase));
+            DataRow[] drArr = list.ToArray();
+            if(drArr == null)
+            {
+                drArr = new DataRow[0];
+            }
+            return drArr;
+        }
+
+        /// <summary>
+        /// 过滤值
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="sColumnName"></param>
+        /// <param name="sValue"></param>
+        /// <returns></returns>
+        public static DataRow[] FilterValue(this DataTable dt, string sColumnName, string sValue)
+        {
+            var list = dt.AsEnumerable().Where(t => sValue.Equals(t[sColumnName].ToString(), StringComparison.OrdinalIgnoreCase));
+            DataRow[] drArr = list.ToArray();
+            if (drArr == null)
+            {
+                drArr = new DataRow[0];
+            }
+            return drArr;
         }
     }
 }

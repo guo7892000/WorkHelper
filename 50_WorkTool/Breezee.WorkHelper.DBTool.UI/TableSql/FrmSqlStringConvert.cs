@@ -7,20 +7,18 @@ using Breezee.Core.WinFormUI;
 using Breezee.WorkHelper.DBTool.Entity;
 using Breezee.WorkHelper.DBTool.IBLL;
 using Breezee.WorkHelper.DBTool.UI.TableSql;
-using FluentFTP;
 using org.breezee.MyPeachNet;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -32,6 +30,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private readonly string _sGridColumnSelect = "IsSelect";
         private string _strAutoSqlSuccess = "生成成功，并已复制到了粘贴板。";
         private bool _allSelectOldNewChar = false;//默认全选，这里取反
+        private bool _allSelectOldNewColumnChar = false;//默认全选，这里取反
         private bool _allSelectTableSource = false;//默认全选，这里取反
         private bool _allSelectTableTarget = false;//默认全选，这里取反
         private bool _isChangeTabPage = true;
@@ -39,6 +38,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         DataGridViewFindText dgvFindTextSource;
         DataGridViewFindText dgvFindTextTarget;
         ReplaceStringXmlConfig replaceStringData;//替换字符模板XML配置
+        NewOldColumnXmlConfig replaceColumnStringData;//列的替换字符模板XML配置
         //数据集
         private IDBConfigSet _IDBConfigSet;
         private DbServerInfo _dbServerSource;
@@ -72,18 +72,22 @@ namespace Breezee.WorkHelper.DBTool.UI
             uC_DbConnectionTarget.ShowGlobalMsg += ShowGlobalMsg_Click;
             #endregion
             //模板
-            _dicString.Add("1", "表、函数");
-            _dicString.Add("2", "表、列、函数");
+            _dicString.Add("1", "自定义");
+            _dicString.Add("2", "读取数据库");
             DataTable dtStringTemplate = _dicString.GetTextValueTable(false);
-            cbbConvertType.BindTypeValueDropDownList(dtStringTemplate,false,true);
+            cbbNewOldColumnSourceType.BindTypeValueDropDownList(dtStringTemplate,false,true);
             //数据库类型
             DataTable dtDbType = DBToolUIHelper.GetBaseDataTypeTable();
             cbbSourceDbType.BindTypeValueDropDownList(dtDbType, true, true);
             cbbTargetDbType.BindTypeValueDropDownList(dtDbType.Copy(), true, true);
-            //
+            //绑定新旧表关系模板下拉框
             replaceStringData = new ReplaceStringXmlConfig(DBTGlobalValue.DbConvertSql.Xml_NewOldTableFileName);
             string sColName = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
             cbbTemplateType.BindDropDownList(replaceStringData.MoreXmlConfig.KeyData, sColName, ReplaceStringXmlConfig.KeyString.Name, true, true);
+            //绑定新旧列关系模板下拉框
+            replaceColumnStringData = new NewOldColumnXmlConfig(DBTGlobalValue.DbConvertSql.Xml_NewOldColumnFileName);
+            sColName = replaceColumnStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            cbbColumnTemplateType.BindDropDownList(replaceColumnStringData.MoreXmlConfig.KeyData, sColName, NewOldColumnXmlConfig.KeyString.Name, true, true);
             //设置Tag
             SetColTag();
             //加载用户喜好值
@@ -92,12 +96,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             ckbIsAutoExcludeTarget.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbSqlConvert_IsAutoExcludeTableTarget, "1").Value) ? true : false;//自动参数化查询
             txbExcludeTableTarget.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbSqlConvert_ExcludeTableListTarget, "_bak,_temp,_tmp").Value; //排除表列表
             rtbInputSql.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbSqlConvert_LatestSql, "").Value; //最后输入的SQL
-            cbbConvertType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbSqlConvert_ConvertType, "1").Value;
+            cbbNewOldColumnSourceType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbSqlConvert_NewOldColumnSourceType, "1").Value;
             cbbSourceDbType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbSqlConvert_SourceDbType, ((int)DataBaseType.Oracle).ToString()).Value;
             cbbTargetDbType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbSqlConvert_TargetDbType, ((int)DataBaseType.MySql).ToString()).Value;
             //
             lblFuncInfo.Text = "转换只是对部分字符进行替换，减少部分手工替换工作，生成结果仅供参考，需要复制出来，确认并修正！";
-            toolTip1.SetToolTip(cbbConvertType, "当选择【表、列、函数】时，必须选择源和目标数据，并加载所有列数据；\r\n并且要选择或录入新旧表。");
+            toolTip1.SetToolTip(cbbNewOldColumnSourceType, "当选择【表、列、函数】时，必须选择源和目标数据，并加载所有列数据；\r\n并且要选择或录入新旧表。");
             toolTip1.SetToolTip(btnLoadAllGenerate, "");
 
             //加载说明
@@ -166,17 +170,28 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             #endregion
 
-            string sConvertType = cbbConvertType.SelectedValue.ToString();
-            DataTable dtOldNew = dgvOldNewChar.GetBindingTable();
+            string sConvertType = cbbNewOldColumnSourceType.SelectedValue.ToString();
             DataTable dtOldCol = dgvColListSource.GetBindingTable();
             DataTable dtNewCol = dgvColListTarget.GetBindingTable();
+            DataTable dtOldNew = dgvOldNewChar.GetBindingTable();
+            DataTable dtOldNewColumn = dgvOldNewColumnChar.GetBindingTable();
+            //得到新旧表或列的对照关系
+            bool isHasOldNewTableRelation = false;
+            bool isHasOldNewColumnRelation = false;
+            bool isNeedConvertColumn = false;
+            if (dtOldNew != null && dtOldNew.Rows.Count > 0)
+            {
+                isHasOldNewTableRelation = true;
+            }
+            if (dtOldNewColumn != null && dtOldNewColumn.Rows.Count > 0)
+            {
+                isHasOldNewColumnRelation = true;
+                isNeedConvertColumn = true; //有新旧列关系时，也要转换列
+            }
+
             if ("2".Equals(sConvertType))
             {
-                if(dtOldNew==null || dtOldNew.Rows.Count<=0)
-                {
-                    ShowInfo("请选择或输入新旧表关系！");
-                    return;
-                }
+                //连接数据库
                 if (dtOldCol == null || dtOldCol.Rows.Count <= 0)
                 {
                     ShowInfo("请加载源数据库的所有列数据！");
@@ -187,6 +202,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                     ShowInfo("请加载目标数据库的所有列数据！");
                     return;
                 }
+                if (!isHasOldNewTableRelation && !isHasOldNewColumnRelation)
+                {
+                    ShowInfo("请选择或输入【新旧表关系】或【新旧列关系】！");
+                    return;
+                }
+                isNeedConvertColumn = true; //读取数据时，也是必须转换列
             }
 
             int iDbType = int.Parse(cbbSourceDbType.SelectedValue.ToString());
@@ -222,50 +243,89 @@ namespace Breezee.WorkHelper.DBTool.UI
                 iDbType = int.Parse(cbbTargetDbType.SelectedValue.ToString());
                 DataBaseType targetDBType = (DataBaseType)iDbType;
                 builder.ConvertToDbSql(ref sTemplateString, targetDBType);
-                //
-                if ("2".Equals(sConvertType))
+
+                List<SqlTableEntity> tablesOkEntity = new List<SqlTableEntity>();
+                //从SQL中获取表清单,并获取其别名
+                List<string> tables = SqlAnalyzer.GetTableList(sTemplateString);
+                string sFiter = string.Empty;
+                //1.针对SQL中的表，查换存在于新旧关系中的表，加入到tablesOk中
+                foreach (string sTableName in tables)
                 {
-                    //替换列清单
-                    List<SqlReplaceColumnEntity> lstReplaceCols = new List<SqlReplaceColumnEntity>();
-                    IDictionary<string,string> dicTableAlias = new Dictionary<string, string>();
-                    //从SQL中获取表清单,并获取其别名
-                    List<string> tables = SqlAnalyzer.GetTableList(sTemplateString);
-                    List<string> tablesOk = new List<string>();
-                    
-                    foreach (string sTableName in tables)
+                    //新旧表关系
+                    if (isHasOldNewTableRelation)
                     {
-                        string sFiter = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.TableName, sTableName);
-                        if (dtOldCol.Select(sFiter).Length == 0)
+                        sFiter = string.Format("{0}='{1}'", "OLD", sTableName);
+                        if (dtOldNew.Select(sFiter).Length > 0)
                         {
+                            if (tablesOkEntity.Where(t => t.Name == sTableName).Count() == 0)
+                            {
+                                tablesOkEntity.Add(new SqlTableEntity() { Name = sTableName });
+                            }
                             continue;
                         }
-                        if (!tablesOk.Contains(sTableName))
-                        {
-                            tablesOk.Add(sTableName);
-                        }
                     }
-
-                    foreach (string sTableName in tablesOk)
+                    //新旧列关系
+                    if (isHasOldNewColumnRelation)
                     {
-                        string sPatterT = @"\s*"+ sTableName + @"\s+\w+\s*";
-                        Regex regexTimeT = new Regex(sPatterT, RegexOptions.IgnoreCase);
-                        MatchCollection mcCollTimeT = regexTimeT.Matches(sTemplateString);
-                        foreach (Match m in mcCollTimeT)
+                        sFiter = string.Format("{0}='{1}'", NewOldColumnXmlConfig.ValueString.OldTable, sTableName);
+                        if (dtOldNewColumn.Select(sFiter).Length > 0)
                         {
-                            string sValue = m.Value.Trim();
-                            int iLast = sValue.LastIndexOf(sTableName);
-                            if (iLast>-1)
+                            //能找到旧表
+                            if (tablesOkEntity.Where(t => t.Name == sTableName).Count() == 0)
                             {
-                                //键为旧表名，值为旧表别名
-                                dicTableAlias[sTableName] = sValue.Substring(iLast + sTableName.Length).Trim(); 
+                                tablesOkEntity.Add(new SqlTableEntity() { Name = sTableName });
                             }
+                            continue;
                         }
                     }
-                    //获取要替换的列名：只针对有别名的
+                }
+
+                //2.针对有新旧关系的表清单，找出其别名，然后加到【旧表别名字典】中：dicTableAlias
+                foreach (SqlTableEntity tableEnt in tablesOkEntity)
+                {
+                    //注：SQL中的别名前有可能加上AS；表名前面还有可能有SCHEMA
+                    string sPatterT = @"\s*(\w+.)?" + tableEnt.Name + @"\s+(AS\s+)?\w+\s*";
+                    Regex regexTimeT = new Regex(sPatterT, RegexOptions.IgnoreCase);
+                    MatchCollection mcCollTimeT = regexTimeT.Matches(sTemplateString);
+                    foreach (Match m in mcCollTimeT)
+                    {
+                        //2.1 分析得到别名
+                        string sValue = m.Value.Trim();
+                        int iLast = sValue.LastIndexOf(tableEnt.Name);
+                        if (iLast > -1)
+                        {
+                            //键为旧表名，值为旧表别名
+                            sValue = sValue.Substring(iLast + tableEnt.Name.Length).Trim();
+                            if (sValue.StartsWith("AS", StringComparison.OrdinalIgnoreCase))
+                            {
+                                sValue = sValue.Substring("AS".Length).Trim();
+                            }
+                            tableEnt.Alias = sValue;
+                        }
+                        //2.2 分析得到SCHEMA
+                        sValue = m.Value.Trim();
+                        iLast = sValue.LastIndexOf(".");
+                        if (iLast > -1)
+                        {
+                            //键为旧表名，值为旧表别名
+                            sValue = sValue.Substring(0, iLast).Trim();
+                            tableEnt.Schema = sValue;
+                        }
+                    }
+                }
+
+                //判断是否要转换列
+                if (isNeedConvertColumn)
+                {
+                    #region 替换列名的处理
+                    //替换列清单 
+                    List<SqlReplaceColumnEntity> lstReplaceCols = new List<SqlReplaceColumnEntity>();
+
+                    //3.获取要替换的列名：只针对有别名的
                     string sPatter = @"\s*\w+\.+\w+\s*";
                     Regex regexTime = new Regex(sPatter, RegexOptions.IgnoreCase);
                     MatchCollection mcCollTime = regexTime.Matches(sTemplateString);
-                    
+
                     foreach (Match m in mcCollTime)
                     {
                         string sValue = m.Value.Trim();
@@ -279,15 +339,31 @@ namespace Breezee.WorkHelper.DBTool.UI
                         SqlReplaceColumnEntity colEntity = new SqlReplaceColumnEntity();
                         colEntity.OldTableAlias = arr[0]; //旧表别名
                         colEntity.OldCol = arr[1]; //旧表列编码
-                        //得到列编码和表别名
-                        var listTable  = dicTableAlias.Where(t => t.Value.Equals(colEntity.OldTableAlias, StringComparison.OrdinalIgnoreCase)); //根据表别名获取旧表编码
+                        //得到列编码和表别名：根据表别名获取旧表编码
+                        var listTable = tablesOkEntity.Where(t => t.Alias.Equals(colEntity.OldTableAlias, StringComparison.OrdinalIgnoreCase)); 
                         if (listTable.Count() == 0)
                         {
                             continue; //找不到别名对应的旧表，直接跳下一个
                         }
-                        colEntity.OldTable = listTable.First().Key; //旧表别名
+                        colEntity.OldTable = listTable.First().Name; //旧表别名：注这里只读第一个。目前无法解决表出现多次有多个别名的问题
+
+                        //优先使用选择的新旧列关系：如能找到，则直接下一个
+                        if (isHasOldNewColumnRelation)
+                        {
+                            sFiter = string.Format("{0}='{1}' and {2}='{3}'", NewOldColumnXmlConfig.ValueString.OldTable, colEntity.OldTable, NewOldColumnXmlConfig.ValueString.OldColumn, colEntity.OldCol);
+                            DataRow[] drSelectNewOldColumn = dtOldNewColumn.Select(sFiter);
+                            if (drSelectNewOldColumn.Length > 0)
+                            {
+                                //能找到新旧列关系，那么得到新表名和新列名
+                                colEntity.NewTable = drSelectNewOldColumn[0][NewOldColumnXmlConfig.ValueString.NewTable].ToString();
+                                colEntity.NewCol = drSelectNewOldColumn[0][NewOldColumnXmlConfig.ValueString.NewColumn].ToString();
+                                lstReplaceCols.Add(colEntity);
+                                continue;
+                            }
+                        }
+
                         //根据旧表名和列名取出列中文名
-                        string sFiter = string.Format("{0}='{1}' and {2}='{3}'", DBColumnSimpleEntity.SqlString.TableName, colEntity.OldTable, DBColumnSimpleEntity.SqlString.Name, colEntity.OldCol);
+                        sFiter = string.Format("{0}='{1}' and {2}='{3}'", DBColumnSimpleEntity.SqlString.TableName, colEntity.OldTable, DBColumnSimpleEntity.SqlString.Name, colEntity.OldCol);
                         DataRow[] drOld = dtOldCol.Select(sFiter);
                         if (drOld.Length == 0)
                         {
@@ -315,13 +391,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                         //加载替换清单
                         lstReplaceCols.Add(colEntity);
                     }
-                    //处理新旧字段替换：旧字段长度长的优先处理
+
+                    //4.处理新旧字段替换：旧字段长度长的优先处理
                     var ordTable = lstReplaceCols.AsEnumerable().OrderByDescending(t => t.OldCol.Length);
                     foreach (var ent in ordTable)
                     {
-                        sTemplateString = sTemplateString.Replace(ent.OldCol, ent.NewCol);
+                        //要加上别名一起替换
+                        sTemplateString = sTemplateString.Replace(ent.OldTableAlias +"." +  ent.OldCol, ent.OldTableAlias + "." + ent.NewCol);
                     }
-                    //实体绑定替换字段列表
+                    //5.实体绑定替换字段列表
                     var fdc = new FlexGridColumnDefinition();
                     fdc.AddColumn(
                         FlexGridColumn.NewRowNoCol(),
@@ -333,32 +411,64 @@ namespace Breezee.WorkHelper.DBTool.UI
                         );
                     dgvBeReplaceCol.Tag = fdc.GetGridTagString();
                     dgvBeReplaceCol.BindEntity(lstReplaceCols, fdc);
-                    dgvBeReplaceCol.ShowRowNum();
+                    dgvBeReplaceCol.ShowRowNum(); 
+                    #endregion
                 }
 
                 //加到字符构造对象中
                 sbAllSql.Append(sTemplateString);
                 rtbResult.Clear();
 
-                //表名替换
+                //6.表名替换：要放最后
+                //6.1 新旧表关系替换
                 DataTable dtReplace = dgvOldNewChar.GetBindingTable();
                 DataRow[] drReplace = dtReplace.Select(_sGridColumnSelect + "= '1'");
+                List<string> lstHasReplace = new List<string>(); //已替换的列表
                 if (drReplace.Length > 0)
                 {
                     var ordTable = drReplace.AsEnumerable().OrderByDescending(t => t["NEW"].ToString().Length);
                     foreach (DataRow dr in ordTable)
                     {
-                        sbAllSql.Replace(dr["OLD"].ToString().Trim(), dr["NEW"].ToString().Trim());
+                        string sOldTableName = dr["OLD"].ToString().Trim();
+                        string sNewTableName = dr["NEW"].ToString().Trim();
+                        //替换SQL表
+                        ReplaceSqlTable(sbAllSql, tablesOkEntity, lstHasReplace, sOldTableName, sNewTableName);
+                    }
+                }
+                //6.2 新旧列关系中的新旧替换
+                dtReplace = dgvOldNewColumnChar.GetBindingTable();
+                drReplace = dtReplace.Select(_sGridColumnSelect + "= '1'");
+                if (drReplace.Length > 0)
+                {
+                    var ordTable = drReplace.AsEnumerable().OrderByDescending(t => t[NewOldColumnXmlConfig.ValueString.NewTable].ToString().Length);
+                    foreach (DataRow dr in ordTable)
+                    {
+                        string sOldTableName = dr[NewOldColumnXmlConfig.ValueString.OldTable].ToString().Trim();
+                        string sNewTableName = dr[NewOldColumnXmlConfig.ValueString.NewTable].ToString().Trim();
+                        //替换SQL表
+                        ReplaceSqlTable(sbAllSql, tablesOkEntity, lstHasReplace, sOldTableName, sNewTableName);
                     }
                 }
 
+                //7、针对@参数，替换为'#参数#'格式
+                string sParamPatter = @"@\w+";
+                Regex regexParam = new Regex(sParamPatter, RegexOptions.IgnoreCase);
+                MatchCollection mcCollParam = regexParam.Matches(sbAllSql.ToString());
+                foreach (Match m in mcCollParam)
+                {
+                    string sValue = m.Value;
+                    sValue = @"'#" + sValue.Replace("@", "") + "#'";
+                    sbAllSql.Replace(m.Value, sValue); //替换掉参数
+                }
+
+                 //得到最终字符
                 rtbResult.AppendText(sbAllSql.ToString() + "\n");
                 Clipboard.SetData(DataFormats.UnicodeText, sbAllSql.ToString());
 
                 //保存用户偏好值
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbSqlConvert_SourceDbType, cbbSourceDbType.SelectedValue.ToString(), "【数据库间SQL转换】源数据库类型");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbSqlConvert_TargetDbType, cbbTargetDbType.SelectedValue.ToString(), "【数据库间SQL转换】目标数据库类型");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbSqlConvert_ConvertType, cbbConvertType.SelectedValue.ToString(), "【数据库间SQL转换】转换类型");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbSqlConvert_NewOldColumnSourceType, cbbNewOldColumnSourceType.SelectedValue.ToString(), "【数据库间SQL转换】转换类型");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbSqlConvert_LatestSql, rtbInputSql.Text.Trim(), "【数据库间SQL转换】最后输入的SQL");
                 WinFormContext.UserLoveSettings.Save();
 
@@ -375,6 +485,34 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     stopwatch.Stop(); //结束计时
                 }
+            }
+        }
+
+        /// <summary>
+        /// 替换SQL表
+        /// </summary>
+        /// <param name="sbAllSql"></param>
+        /// <param name="tablesOkEntity"></param>
+        /// <param name="lstHasReplace"></param>
+        /// <param name="sOldTableName"></param>
+        /// <param name="sNewTableName"></param>
+        private static void ReplaceSqlTable(StringBuilder sbAllSql, List<SqlTableEntity> tablesOkEntity, List<string> lstHasReplace,string sOldTableName,string sNewTableName)
+        {
+            if (!lstHasReplace.Contains(sOldTableName))
+            {
+                //替换包含Schema的旧表名为新表名
+                var listTable = tablesOkEntity.Where(t => t.Name.Equals(sOldTableName, StringComparison.OrdinalIgnoreCase));
+                if (listTable.Count() > 0)
+                {
+                    string sSchema = listTable.First().Schema;
+                    if (!string.IsNullOrEmpty(sSchema))
+                    {
+                        sbAllSql.Replace(sSchema + "." + sOldTableName, sNewTableName);
+                    }
+                }
+                //替换旧表名为新表名
+                sbAllSql.Replace(sOldTableName, sNewTableName);
+                lstHasReplace.Add(sOldTableName);
             }
         }
 
@@ -750,6 +888,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             //重新绑定下拉框
             cbbTemplateType.BindDropDownList(replaceStringData.MoreXmlConfig.KeyData, sKeyId, ReplaceStringXmlConfig.KeyString.Name, true, true);
             ShowInfo("模板保存成功！");
+            if (isAdd)
+            {
+                txbReplaceTemplateName.Text = string.Empty;
+            }
         }
 
         private void btnRemoveTemplate_Click(object sender, EventArgs e)
@@ -952,27 +1094,40 @@ namespace Breezee.WorkHelper.DBTool.UI
             dgvColListTarget.Tag = fdc.GetGridTagString();
             dgvColListTarget.BindDataGridView(dtColsAll.Copy(), true);
 
-            //新旧字符网格
+            //新旧表字符网格
             fdc = new FlexGridColumnDefinition();
             fdc.AddColumn(
                 FlexGridColumn.NewRowNoCol(),
                 new FlexGridColumn.Builder().Name(_sGridColumnSelect).Caption("选择").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(50).Edit(true).Visible().Build(),
-                new FlexGridColumn.Builder().Name("OLD").Caption("旧表名").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(true).Visible().Build(),
-                new FlexGridColumn.Builder().Name("NEW").Caption("新表名").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(true).Visible().Build()
+                new FlexGridColumn.Builder().Name("OLD").Caption("旧表名").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(200).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name("NEW").Caption("新表名").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(200).Edit(true).Visible().Build()
                 );
             dgvOldNewChar.Tag = fdc.GetGridTagString();
             dgvOldNewChar.BindDataGridView(null, false);
             dgvOldNewChar.AllowUserToAddRows = true;
+            //新旧列字符网格
+            fdc = new FlexGridColumnDefinition();
+            fdc.AddColumn(
+                FlexGridColumn.NewRowNoCol(),
+                new FlexGridColumn.Builder().Name(_sGridColumnSelect).Caption("选择").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(50).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name(NewOldColumnXmlConfig.ValueString.OldTable).Caption("旧表名").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(200).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name(NewOldColumnXmlConfig.ValueString.OldColumn).Caption("旧列名").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(150).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name(NewOldColumnXmlConfig.ValueString.NewTable).Caption("新表名").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(200).Edit(true).Visible().Build(),
+                new FlexGridColumn.Builder().Name(NewOldColumnXmlConfig.ValueString.NewColumn).Caption("新列名").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(150).Edit(true).Visible().Build()
+                );
+            dgvOldNewColumnChar.Tag = fdc.GetGridTagString();
+            dgvOldNewColumnChar.BindDataGridView(null, false);
+            dgvOldNewColumnChar.AllowUserToAddRows = true;
         }
         #endregion
 
-        private void cbbConvertType_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbbNewOldColumnSourceType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(cbbConvertType.SelectedValue==null) return;
+            if(cbbNewOldColumnSourceType.SelectedValue==null) return;
 
-            if ("1".Equals(cbbConvertType.SelectedValue.ToString()))
+            if ("1".Equals(cbbNewOldColumnSourceType.SelectedValue.ToString()))
             {
-                //表函数
+                //自行录入
                 uC_DbConnectionTarget.Visible = false;
                 uC_DbConnectionSource.Visible= false;
                 tabControl1.TabPages.Remove(tpSourceDb);
@@ -984,7 +1139,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             else
             {
-                //表列函数
+                //读取数据库
                 uC_DbConnectionTarget.Visible = true;
                 uC_DbConnectionSource.Visible = true;
                 tabControl1.TabPages.Insert(0, tpTargetDb);
@@ -1152,16 +1307,236 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
         }
 
-        //bool isShow = false;
-        //private void tsmiFoldExpand_Click(object sender, EventArgs e)
-        //{
-        //    if (groupBox2.Tag == null)
-        //    {
-        //        groupBox2.Tag = groupBox2.Height;
-        //    }
-        //    groupBox2.Height = isShow ? (int)groupBox2.Tag : 15;
-        //    isShow = !isShow;
+        #region 新旧列模板相关
+        private void btnSaveColumnReplaceTemplate_Click(object sender, EventArgs e)
+        {
+            string sTempName = txbReplaceColumnTemplateName.Text.Trim();
 
-        //}
+            if (string.IsNullOrEmpty(sTempName))
+            {
+                ShowInfo("模板名称不能为空！");
+                return;
+            }
+            DataTable dtReplace = dgvOldNewColumnChar.GetBindingTable();
+            dtReplace.DeleteNullRow();
+            if (dtReplace.Rows.Count == 0)
+            {
+                ShowInfo("请录入新旧表编码！");
+                return;
+            }
+
+            if (ShowOkCancel("确定要保存模板？") == DialogResult.Cancel) return;
+
+            string sKeyId = replaceColumnStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            string sValId = replaceColumnStringData.MoreXmlConfig.MoreKeyValue.ValIdPropName;
+            DataTable dtKeyConfig = replaceColumnStringData.MoreXmlConfig.KeyData;
+            DataTable dtValConfig = replaceColumnStringData.MoreXmlConfig.ValData;
+
+            string sKeyIdNew = string.Empty;
+            bool isAdd = string.IsNullOrEmpty(cbbColumnTemplateType.Text.Trim()) ? true : false;
+            if (isAdd)
+            {
+                //新增
+                sKeyIdNew = Guid.NewGuid().ToString();
+                DataRow dr = dtKeyConfig.NewRow();
+                dr[sKeyId] = sKeyIdNew;
+                dr[NewOldColumnXmlConfig.KeyString.Name] = sTempName;
+                dtKeyConfig.Rows.Add(dr);
+            }
+            else
+            {
+                //修改
+                string sKeyIDValue = cbbColumnTemplateType.SelectedValue.ToString();
+                sKeyIdNew = sKeyIDValue;
+                DataRow[] drArrKey = dtKeyConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+                DataRow[] drArrVal = dtValConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+                if (drArrKey.Length == 0)
+                {
+                    DataRow dr = dtKeyConfig.NewRow();
+                    dr[sKeyId] = sKeyIdNew;
+                    dr[NewOldColumnXmlConfig.KeyString.Name] = sTempName;
+                    dtKeyConfig.Rows.Add(dr);
+                }
+                else
+                {
+                    drArrKey[0][NewOldColumnXmlConfig.KeyString.Name] = sTempName;//修改名称
+                }
+                if (drArrVal.Length > 0)
+                {
+                    foreach (DataRow dr in drArrVal)
+                    {
+                        dtValConfig.Rows.Remove(dr);
+                    }
+                    dtValConfig.AcceptChanges();
+                }
+            }
+
+            foreach (DataRow dr in dtReplace.Rows)
+            {
+                DataRow drNew = dtValConfig.NewRow();
+                drNew[sValId] = Guid.NewGuid().ToString();
+                drNew[sKeyId] = sKeyIdNew;
+                drNew[NewOldColumnXmlConfig.ValueString.IsSelected] = dr[NewOldColumnXmlConfig.ValueString.IsSelected].ToString();
+                drNew[NewOldColumnXmlConfig.ValueString.OldTable] = dr[NewOldColumnXmlConfig.ValueString.OldTable].ToString();
+                drNew[NewOldColumnXmlConfig.ValueString.OldColumn] = dr[NewOldColumnXmlConfig.ValueString.OldColumn].ToString();
+                drNew[NewOldColumnXmlConfig.ValueString.NewTable] = dr[NewOldColumnXmlConfig.ValueString.NewTable].ToString();
+                drNew[NewOldColumnXmlConfig.ValueString.NewColumn] = dr[NewOldColumnXmlConfig.ValueString.NewColumn].ToString();
+                dtValConfig.Rows.Add(drNew);
+            }
+            replaceColumnStringData.MoreXmlConfig.Save();
+            //重新绑定下拉框
+            cbbColumnTemplateType.BindDropDownList(replaceColumnStringData.MoreXmlConfig.KeyData, sKeyId, NewOldColumnXmlConfig.KeyString.Name, true, true);
+            ShowInfo("模板保存成功！");
+            if (isAdd)
+            {
+                txbReplaceColumnTemplateName.Text = string.Empty;
+            }
+        }
+
+        private void btnRemoveColumnTemplate_Click(object sender, EventArgs e)
+        {
+            if (cbbColumnTemplateType.SelectedValue == null)
+            {
+                ShowInfo("请选择一个模板！");
+                return;
+            }
+            string sKeyIDValue = cbbColumnTemplateType.SelectedValue.ToString();
+            if (string.IsNullOrEmpty(sKeyIDValue))
+            {
+                ShowInfo("请选择一个模板！");
+                return;
+            }
+
+            if (ShowOkCancel("确定要删除该模板？") == DialogResult.Cancel) return;
+
+            string sKeyId = replaceColumnStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            string sValId = replaceColumnStringData.MoreXmlConfig.MoreKeyValue.ValIdPropName;
+            DataTable dtKeyConfig = replaceColumnStringData.MoreXmlConfig.KeyData;
+            DataTable dtValConfig = replaceColumnStringData.MoreXmlConfig.ValData;
+            DataRow[] drArrKey = dtKeyConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+            DataRow[] drArrVal = dtValConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+
+            if (drArrVal.Length > 0)
+            {
+                foreach (DataRow dr in drArrVal)
+                {
+                    dtValConfig.Rows.Remove(dr);
+                }
+                dtValConfig.AcceptChanges();
+            }
+
+            if (drArrKey.Length > 0)
+            {
+                foreach (DataRow dr in drArrKey)
+                {
+                    dtKeyConfig.Rows.Remove(dr);
+                }
+                dtKeyConfig.AcceptChanges();
+            }
+            replaceColumnStringData.MoreXmlConfig.Save();
+            //重新绑定下拉框
+            cbbColumnTemplateType.BindDropDownList(replaceColumnStringData.MoreXmlConfig.KeyData, sKeyId, NewOldColumnXmlConfig.KeyString.Name, true, true);
+            ShowInfo("模板删除成功！");
+        }
+
+        private void cbbColumnTemplateType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbbColumnTemplateType.SelectedValue == null) return;
+            string sTempType = cbbColumnTemplateType.SelectedValue.ToString();
+            if (string.IsNullOrEmpty(sTempType))
+            {
+                //txbReplaceColumnTemplateName.ReadOnly = false;
+                txbReplaceColumnTemplateName.Text = string.Empty;
+                return;
+            }
+
+            txbReplaceColumnTemplateName.Text = cbbColumnTemplateType.Text;
+            //txbReplaceColumnTemplateName.ReadOnly = true;
+            string sKeyId = replaceColumnStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            DataRow[] drArr = replaceColumnStringData.MoreXmlConfig.ValData.Select(sKeyId + "='" + sTempType + "'");
+
+            DataTable dtReplace = dgvOldNewColumnChar.GetBindingTable();
+            if (drArr.Length > 0)
+            {
+                dtReplace.Rows.Clear();
+                foreach (DataRow dr in drArr)
+                {
+                    dtReplace.Rows.Add(dtReplace.Rows.Count + 1,
+                        dr[NewOldColumnXmlConfig.ValueString.IsSelected].ToString(),
+                        dr[NewOldColumnXmlConfig.ValueString.OldTable].ToString(),
+                        dr[NewOldColumnXmlConfig.ValueString.OldColumn].ToString(),
+                        dr[NewOldColumnXmlConfig.ValueString.NewTable].ToString(),
+                        dr[NewOldColumnXmlConfig.ValueString.NewColumn].ToString()
+                        );
+                }
+            }
+            else if (dtReplace != null)
+            {
+                dtReplace.Clear();
+            }
+        }
+
+        private void dgvOldNewColumnChar_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            if (this.dgvOldNewColumnChar.Columns[e.ColumnIndex].Name == _sGridColumnSelect)
+            {
+                return;
+            }
+        }
+
+        private void dgvOldNewColumnChar_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            SelectAllOrCancel(dgvOldNewColumnChar, ref _allSelectOldNewColumnChar, e);
+        }
+
+        private void dgvOldNewColumnChar_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Modifiers == Keys.Control && e.KeyCode == Keys.V)
+                {
+                    string pasteText = Clipboard.GetText().Trim();
+                    if (string.IsNullOrEmpty(pasteText))//包括IN的为生成的SQL，不用粘贴
+                    {
+                        return;
+                    }
+
+                    int iRow = 0;
+                    int iColumn = 0;
+                    Object[,] data = StringHelper.GetStringArray(ref pasteText, ref iRow, ref iColumn);
+                    if (iRow == 0 || iColumn < 4)
+                    {
+                        return;
+                    }
+
+                    DataTable dtMain = dgvOldNewColumnChar.GetBindingTable();
+                    dtMain.Rows.Clear();
+                    //获取获取当前选中单元格所在的行序号
+                    for (int j = 0; j < iRow; j++)
+                    {
+                        string strData = data[j, 0].ToString().Trim();
+                        string strData2 = data[j, 1].ToString().Trim();
+                        string strData3 = data[j, 2].ToString().Trim();
+                        string strData4 = data[j, 3].ToString().Trim();
+                        //只要有其中一个为空，就跳过
+                        if (string.IsNullOrEmpty(strData) || string.IsNullOrEmpty(strData2) || string.IsNullOrEmpty(strData3) || string.IsNullOrEmpty(strData4))
+                        {
+                            continue;
+                        }
+
+                        string sFilter = string.Format("{0}='{1}' AND {2}='{3}'", NewOldColumnXmlConfig.ValueString.OldTable, strData, NewOldColumnXmlConfig.ValueString.OldColumn, strData2);
+                        if (dtMain.Select(sFilter).Length == 0)
+                        {
+                            dtMain.Rows.Add(dtMain.Rows.Count + 1, "1", strData, strData2, strData3, strData4);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErr(ex.Message);
+            }
+        } 
+        #endregion
     }
 }

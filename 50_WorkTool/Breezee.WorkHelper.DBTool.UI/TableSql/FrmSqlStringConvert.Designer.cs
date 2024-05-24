@@ -87,6 +87,8 @@
             this.cbbTargetDbType = new System.Windows.Forms.ComboBox();
             this.lblSourceDbType = new System.Windows.Forms.Label();
             this.cbbSourceDbType = new System.Windows.Forms.ComboBox();
+            this.tabControl3 = new System.Windows.Forms.TabControl();
+            this.tpNewOldTable = new System.Windows.Forms.TabPage();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.lblReplaceInfo = new System.Windows.Forms.Label();
             this.dgvOldNewChar = new System.Windows.Forms.DataGridView();
@@ -98,6 +100,18 @@
             this.txbReplaceTemplateName = new System.Windows.Forms.TextBox();
             this.btnSaveReplaceTemplate = new System.Windows.Forms.Button();
             this.btnRemoveTemplate = new System.Windows.Forms.Button();
+            this.tpNewOldColum = new System.Windows.Forms.TabPage();
+            this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.dgvOldNewColumnChar = new System.Windows.Forms.DataGridView();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cbbColumnTemplateType = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txbReplaceColumnTemplateName = new System.Windows.Forms.TextBox();
+            this.btnSaveColumnReplaceTemplate = new System.Windows.Forms.Button();
+            this.btnRemoveColumnTemplate = new System.Windows.Forms.Button();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
@@ -113,11 +127,13 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.btnConnectLoadAll = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.cbbConvertType = new System.Windows.Forms.ComboBox();
+            this.cbbNewOldColumnSourceType = new System.Windows.Forms.ComboBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.uC_DbConnectionTarget = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
             this.uC_DbConnectionSource = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpSourceDb.SuspendLayout();
@@ -154,10 +170,17 @@
             this.grbInputSql.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
+            this.tabControl3.SuspendLayout();
+            this.tpNewOldTable.SuspendLayout();
             this.groupBox12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOldNewChar)).BeginInit();
             this.groupBox13.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
+            this.tpNewOldColum.SuspendLayout();
+            this.groupBox11.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvOldNewColumnChar)).BeginInit();
+            this.groupBox10.SuspendLayout();
+            this.tableLayoutPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
             this.splitContainer5.Panel1.SuspendLayout();
             this.splitContainer5.Panel2.SuspendLayout();
@@ -741,8 +764,7 @@
             // 
             // splitContainer3.Panel2
             // 
-            this.splitContainer3.Panel2.Controls.Add(this.groupBox12);
-            this.splitContainer3.Panel2.Controls.Add(this.groupBox13);
+            this.splitContainer3.Panel2.Controls.Add(this.tabControl3);
             this.splitContainer3.Size = new System.Drawing.Size(537, 417);
             this.splitContainer3.SplitterDistance = 220;
             this.splitContainer3.TabIndex = 0;
@@ -862,14 +884,37 @@
             this.cbbSourceDbType.Size = new System.Drawing.Size(103, 20);
             this.cbbSourceDbType.TabIndex = 15;
             // 
+            // tabControl3
+            // 
+            this.tabControl3.Controls.Add(this.tpNewOldTable);
+            this.tabControl3.Controls.Add(this.tpNewOldColum);
+            this.tabControl3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl3.Location = new System.Drawing.Point(0, 0);
+            this.tabControl3.Name = "tabControl3";
+            this.tabControl3.SelectedIndex = 0;
+            this.tabControl3.Size = new System.Drawing.Size(537, 193);
+            this.tabControl3.TabIndex = 6;
+            // 
+            // tpNewOldTable
+            // 
+            this.tpNewOldTable.Controls.Add(this.groupBox12);
+            this.tpNewOldTable.Controls.Add(this.groupBox13);
+            this.tpNewOldTable.Location = new System.Drawing.Point(4, 22);
+            this.tpNewOldTable.Name = "tpNewOldTable";
+            this.tpNewOldTable.Padding = new System.Windows.Forms.Padding(3);
+            this.tpNewOldTable.Size = new System.Drawing.Size(529, 167);
+            this.tpNewOldTable.TabIndex = 0;
+            this.tpNewOldTable.Text = "新旧表";
+            this.tpNewOldTable.UseVisualStyleBackColor = true;
+            // 
             // groupBox12
             // 
             this.groupBox12.Controls.Add(this.lblReplaceInfo);
             this.groupBox12.Controls.Add(this.dgvOldNewChar);
             this.groupBox12.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox12.Location = new System.Drawing.Point(0, 83);
+            this.groupBox12.Location = new System.Drawing.Point(3, 86);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(537, 110);
+            this.groupBox12.Size = new System.Drawing.Size(523, 78);
             this.groupBox12.TabIndex = 5;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "新旧表关系";
@@ -891,7 +936,7 @@
             this.dgvOldNewChar.Location = new System.Drawing.Point(3, 17);
             this.dgvOldNewChar.Name = "dgvOldNewChar";
             this.dgvOldNewChar.RowTemplate.Height = 23;
-            this.dgvOldNewChar.Size = new System.Drawing.Size(531, 90);
+            this.dgvOldNewChar.Size = new System.Drawing.Size(517, 58);
             this.dgvOldNewChar.TabIndex = 0;
             this.dgvOldNewChar.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvOldNewChar_ColumnHeaderMouseDoubleClick);
             this.dgvOldNewChar.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvOldNewChar_DataError);
@@ -899,11 +944,12 @@
             // 
             // groupBox13
             // 
+            this.groupBox13.Controls.Add(this.label7);
             this.groupBox13.Controls.Add(this.tableLayoutPanel7);
             this.groupBox13.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox13.Location = new System.Drawing.Point(0, 0);
+            this.groupBox13.Location = new System.Drawing.Point(3, 3);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(537, 83);
+            this.groupBox13.Size = new System.Drawing.Size(523, 83);
             this.groupBox13.TabIndex = 4;
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "新旧表清单";
@@ -930,7 +976,7 @@
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(531, 59);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(517, 59);
             this.tableLayoutPanel7.TabIndex = 6;
             // 
             // label14
@@ -973,7 +1019,8 @@
             // 
             // btnSaveReplaceTemplate
             // 
-            this.btnSaveReplaceTemplate.Location = new System.Drawing.Point(228, 29);
+            this.btnSaveReplaceTemplate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnSaveReplaceTemplate.Location = new System.Drawing.Point(228, 32);
             this.btnSaveReplaceTemplate.Name = "btnSaveReplaceTemplate";
             this.btnSaveReplaceTemplate.Size = new System.Drawing.Size(62, 20);
             this.btnSaveReplaceTemplate.TabIndex = 7;
@@ -983,13 +1030,158 @@
             // 
             // btnRemoveTemplate
             // 
-            this.btnRemoveTemplate.Location = new System.Drawing.Point(296, 29);
+            this.btnRemoveTemplate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnRemoveTemplate.Location = new System.Drawing.Point(296, 32);
             this.btnRemoveTemplate.Name = "btnRemoveTemplate";
             this.btnRemoveTemplate.Size = new System.Drawing.Size(66, 20);
             this.btnRemoveTemplate.TabIndex = 8;
             this.btnRemoveTemplate.Text = "删除模板";
             this.btnRemoveTemplate.UseVisualStyleBackColor = true;
             this.btnRemoveTemplate.Click += new System.EventHandler(this.btnRemoveTemplate_Click);
+            // 
+            // tpNewOldColum
+            // 
+            this.tpNewOldColum.Controls.Add(this.groupBox11);
+            this.tpNewOldColum.Controls.Add(this.groupBox10);
+            this.tpNewOldColum.Location = new System.Drawing.Point(4, 22);
+            this.tpNewOldColum.Name = "tpNewOldColum";
+            this.tpNewOldColum.Padding = new System.Windows.Forms.Padding(3);
+            this.tpNewOldColum.Size = new System.Drawing.Size(529, 167);
+            this.tpNewOldColum.TabIndex = 1;
+            this.tpNewOldColum.Text = "新旧列";
+            this.tpNewOldColum.UseVisualStyleBackColor = true;
+            // 
+            // groupBox11
+            // 
+            this.groupBox11.Controls.Add(this.label6);
+            this.groupBox11.Controls.Add(this.dgvOldNewColumnChar);
+            this.groupBox11.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox11.Location = new System.Drawing.Point(3, 86);
+            this.groupBox11.Name = "groupBox11";
+            this.groupBox11.Size = new System.Drawing.Size(523, 78);
+            this.groupBox11.TabIndex = 6;
+            this.groupBox11.TabStop = false;
+            this.groupBox11.Text = "新旧列关系";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.ForeColor = System.Drawing.Color.Red;
+            this.label6.Location = new System.Drawing.Point(107, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(233, 12);
+            this.label6.TabIndex = 3;
+            this.label6.Text = "支持粘贴旧表名、旧列名、新表名、新列名";
+            // 
+            // dgvOldNewColumnChar
+            // 
+            this.dgvOldNewColumnChar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvOldNewColumnChar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvOldNewColumnChar.Location = new System.Drawing.Point(3, 17);
+            this.dgvOldNewColumnChar.Name = "dgvOldNewColumnChar";
+            this.dgvOldNewColumnChar.RowTemplate.Height = 23;
+            this.dgvOldNewColumnChar.Size = new System.Drawing.Size(517, 58);
+            this.dgvOldNewColumnChar.TabIndex = 0;
+            this.dgvOldNewColumnChar.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvOldNewColumnChar_ColumnHeaderMouseDoubleClick);
+            this.dgvOldNewColumnChar.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvOldNewColumnChar_DataError);
+            this.dgvOldNewColumnChar.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvOldNewColumnChar_KeyDown);
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.Controls.Add(this.label8);
+            this.groupBox10.Controls.Add(this.tableLayoutPanel5);
+            this.groupBox10.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox10.Location = new System.Drawing.Point(3, 3);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(523, 83);
+            this.groupBox10.TabIndex = 5;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "新旧列清单";
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 5;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 238F));
+            this.tableLayoutPanel5.Controls.Add(this.label4, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.cbbColumnTemplateType, 1, 0);
+            this.tableLayoutPanel5.Controls.Add(this.label5, 0, 3);
+            this.tableLayoutPanel5.Controls.Add(this.txbReplaceColumnTemplateName, 1, 3);
+            this.tableLayoutPanel5.Controls.Add(this.btnSaveColumnReplaceTemplate, 3, 3);
+            this.tableLayoutPanel5.Controls.Add(this.btnRemoveColumnTemplate, 4, 3);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 17);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 4;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(517, 59);
+            this.tableLayoutPanel5.TabIndex = 6;
+            // 
+            // label4
+            // 
+            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 7);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(65, 12);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "模板选择：";
+            // 
+            // cbbColumnTemplateType
+            // 
+            this.cbbColumnTemplateType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbbColumnTemplateType.FormattingEnabled = true;
+            this.cbbColumnTemplateType.Location = new System.Drawing.Point(74, 3);
+            this.cbbColumnTemplateType.Name = "cbbColumnTemplateType";
+            this.cbbColumnTemplateType.Size = new System.Drawing.Size(148, 20);
+            this.cbbColumnTemplateType.TabIndex = 0;
+            this.cbbColumnTemplateType.SelectedIndexChanged += new System.EventHandler(this.cbbColumnTemplateType_SelectedIndexChanged);
+            // 
+            // label5
+            // 
+            this.label5.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 36);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(65, 12);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "模板名称：";
+            // 
+            // txbReplaceColumnTemplateName
+            // 
+            this.txbReplaceColumnTemplateName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbReplaceColumnTemplateName.Location = new System.Drawing.Point(74, 32);
+            this.txbReplaceColumnTemplateName.Name = "txbReplaceColumnTemplateName";
+            this.txbReplaceColumnTemplateName.Size = new System.Drawing.Size(148, 21);
+            this.txbReplaceColumnTemplateName.TabIndex = 6;
+            // 
+            // btnSaveColumnReplaceTemplate
+            // 
+            this.btnSaveColumnReplaceTemplate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnSaveColumnReplaceTemplate.Location = new System.Drawing.Point(228, 32);
+            this.btnSaveColumnReplaceTemplate.Name = "btnSaveColumnReplaceTemplate";
+            this.btnSaveColumnReplaceTemplate.Size = new System.Drawing.Size(62, 20);
+            this.btnSaveColumnReplaceTemplate.TabIndex = 7;
+            this.btnSaveColumnReplaceTemplate.Text = "保存模板";
+            this.btnSaveColumnReplaceTemplate.UseVisualStyleBackColor = true;
+            this.btnSaveColumnReplaceTemplate.Click += new System.EventHandler(this.btnSaveColumnReplaceTemplate_Click);
+            // 
+            // btnRemoveColumnTemplate
+            // 
+            this.btnRemoveColumnTemplate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnRemoveColumnTemplate.Location = new System.Drawing.Point(296, 32);
+            this.btnRemoveColumnTemplate.Name = "btnRemoveColumnTemplate";
+            this.btnRemoveColumnTemplate.Size = new System.Drawing.Size(66, 20);
+            this.btnRemoveColumnTemplate.TabIndex = 8;
+            this.btnRemoveColumnTemplate.Text = "删除模板";
+            this.btnRemoveColumnTemplate.UseVisualStyleBackColor = true;
+            this.btnRemoveColumnTemplate.Click += new System.EventHandler(this.btnRemoveColumnTemplate_Click);
             // 
             // splitContainer5
             // 
@@ -1070,9 +1262,9 @@
             this.label3.ForeColor = System.Drawing.Color.Red;
             this.label3.Location = new System.Drawing.Point(99, 2);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(323, 12);
+            this.label3.Size = new System.Drawing.Size(191, 12);
             this.label3.TabIndex = 5;
-            this.label3.Text = "替换旧列编码范围：表别名.列编码    匹配条件：列中文名";
+            this.label3.Text = "替换旧列编码范围：表别名.列编码";
             // 
             // dgvBeReplaceCol
             // 
@@ -1139,7 +1331,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 627F));
             this.tableLayoutPanel1.Controls.Add(this.btnConnectLoadAll, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.cbbConvertType, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.cbbNewOldColumnSourceType, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -1152,7 +1344,7 @@
             // btnConnectLoadAll
             // 
             this.btnConnectLoadAll.ForeColor = System.Drawing.Color.Red;
-            this.btnConnectLoadAll.Location = new System.Drawing.Point(201, 3);
+            this.btnConnectLoadAll.Location = new System.Drawing.Point(261, 3);
             this.btnConnectLoadAll.Name = "btnConnectLoadAll";
             this.btnConnectLoadAll.Size = new System.Drawing.Size(99, 23);
             this.btnConnectLoadAll.TabIndex = 26;
@@ -1167,18 +1359,18 @@
             this.label2.ForeColor = System.Drawing.Color.Red;
             this.label2.Location = new System.Drawing.Point(3, 8);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 12);
+            this.label2.Size = new System.Drawing.Size(125, 12);
             this.label2.TabIndex = 12;
-            this.label2.Text = "转换范围：";
+            this.label2.Text = "新旧列关系获取方式：";
             // 
-            // cbbConvertType
+            // cbbNewOldColumnSourceType
             // 
-            this.cbbConvertType.FormattingEnabled = true;
-            this.cbbConvertType.Location = new System.Drawing.Point(74, 3);
-            this.cbbConvertType.Name = "cbbConvertType";
-            this.cbbConvertType.Size = new System.Drawing.Size(121, 20);
-            this.cbbConvertType.TabIndex = 13;
-            this.cbbConvertType.SelectedIndexChanged += new System.EventHandler(this.cbbConvertType_SelectedIndexChanged);
+            this.cbbNewOldColumnSourceType.FormattingEnabled = true;
+            this.cbbNewOldColumnSourceType.Location = new System.Drawing.Point(134, 3);
+            this.cbbNewOldColumnSourceType.Name = "cbbNewOldColumnSourceType";
+            this.cbbNewOldColumnSourceType.Size = new System.Drawing.Size(121, 20);
+            this.cbbNewOldColumnSourceType.TabIndex = 13;
+            this.cbbNewOldColumnSourceType.SelectedIndexChanged += new System.EventHandler(this.cbbNewOldColumnSourceType_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -1205,6 +1397,26 @@
             this.uC_DbConnectionSource.Name = "uC_DbConnectionSource";
             this.uC_DbConnectionSource.Size = new System.Drawing.Size(1016, 81);
             this.uC_DbConnectionSource.TabIndex = 36;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.ForeColor = System.Drawing.Color.Red;
+            this.label7.Location = new System.Drawing.Point(78, 2);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(437, 12);
+            this.label7.TabIndex = 7;
+            this.label7.Text = "匹配条件：通过新旧表中列的中文备注来匹配（匹配率低）。可用于只替换表名！";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.ForeColor = System.Drawing.Color.Red;
+            this.label8.Location = new System.Drawing.Point(90, 2);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(341, 12);
+            this.label8.TabIndex = 8;
+            this.label8.Text = "匹配条件：通过新旧表的新旧列关系来匹配（准确度高，推荐）";
             // 
             // FrmSqlStringConvert
             // 
@@ -1263,12 +1475,23 @@
             this.groupBox8.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
+            this.tabControl3.ResumeLayout(false);
+            this.tpNewOldTable.ResumeLayout(false);
             this.groupBox12.ResumeLayout(false);
             this.groupBox12.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOldNewChar)).EndInit();
             this.groupBox13.ResumeLayout(false);
+            this.groupBox13.PerformLayout();
             this.tableLayoutPanel7.ResumeLayout(false);
             this.tableLayoutPanel7.PerformLayout();
+            this.tpNewOldColum.ResumeLayout(false);
+            this.groupBox11.ResumeLayout(false);
+            this.groupBox11.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvOldNewColumnChar)).EndInit();
+            this.groupBox10.ResumeLayout(false);
+            this.groupBox10.PerformLayout();
+            this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel5.PerformLayout();
             this.splitContainer5.Panel1.ResumeLayout(false);
             this.splitContainer5.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
@@ -1337,7 +1560,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label lblFindSource;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cbbConvertType;
+        private System.Windows.Forms.ComboBox cbbNewOldColumnSourceType;
         private System.Windows.Forms.TabPage tpTargetDb;
         private System.Windows.Forms.SplitContainer splitContainer4;
         private System.Windows.Forms.GroupBox groupBox4;
@@ -1379,5 +1602,21 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.RichTextBox rtbConvertRemark;
+        private System.Windows.Forms.TabControl tabControl3;
+        private System.Windows.Forms.TabPage tpNewOldTable;
+        private System.Windows.Forms.TabPage tpNewOldColum;
+        private System.Windows.Forms.GroupBox groupBox11;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.DataGridView dgvOldNewColumnChar;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox cbbColumnTemplateType;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txbReplaceColumnTemplateName;
+        private System.Windows.Forms.Button btnSaveColumnReplaceTemplate;
+        private System.Windows.Forms.Button btnRemoveColumnTemplate;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
     }
 }
