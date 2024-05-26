@@ -3,8 +3,10 @@ using Breezee.WorkHelper.DBTool.Entity;
 using Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL;
 using org.breezee.MyPeachNet;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -494,30 +496,149 @@ namespace Breezee.WorkHelper.DBTool.UI
             //替换Date的TO_CHAR
             MatchDateToCharReplace(ref sSql, targetDbType);
             //替换Decode：要放最后
-            MatchDecodeReplace(ref sSql);
+            //MatchDecodeReplaceOld(ref sSql); //旧方法：存在BUG
+            MatchDecodeReplaceNew(ref sSql);
             //替换字符拼接
             MatchContact(ref sSql);
         }
 
-        private void MatchDecodeReplace(ref string sSql)
+        /// <summary>
+        /// 新的替换DECODE方法
+        /// 原理：先正则匹配DECODE，再根据左右括号确定DECODE所有内容。
+        /// 测试通过
+        /// </summary>
+        /// <param name="sSql"></param>
+        private void MatchDecodeReplaceNew(ref string sSql)
         {
-            /****SQL示例： ****************************
-select sysdate AS CUR_DATE,
-SYS_guid() AS NEW_ID,
-decode( A.OUT_TYPE ,'0','未出库','1','已出库' , '其他' ) AS OUT_TYPE_NAME,
-Nvl(A.OUT_STATUS,'0')   AS dd
-FROm T_PA_OUT_M
-LEFT JOIn T_PA_OUT_D B
- ON A.OUT_ID=B.OUT_ID
-WHERE 1=1
+            string sDecodePatterNormal = @",?\s*DECODE\s*\(";
+            Regex regexDecode = new Regex(sDecodePatterNormal, RegexOptions.IgnoreCase);
+            MatchCollection mcDecode = regexDecode.Matches(sSql);
+            StringBuilder sbAll = new StringBuilder();
+            int iLastIndex = 0;
+            string sLeft = string.Empty;
+            //循环DECODE(的所有匹配项
+            while (mcDecode.find())
+            {
+                sbAll.append(sSql.substring(iLastIndex,mcDecode.start())); //拼接前部分
+                string sMatch = mcDecode.group().replace("(", "");
+                sMatch = Regex.Replace(sMatch, "DECODE", "",RegexOptions.IgnoreCase);
+                sbAll.Append(sMatch); //去掉DECODE和左括号
+
+                StringBuilder sbOneDecode = new StringBuilder();
+                sbOneDecode.Append("CASE ");
+                sLeft = sSql.substring(mcDecode.end()); //剩余部分
+                MatchCollection mc = ToolHelper.getMatcher(sLeft, StaticConstants.parenthesesPattern); //针对剩余部分查找括号
+
+                int iLeft = 1;//左括号数，DECODE已包括1个，所以这里起始为1  
+                while (mc.find())
+                {
+                    if ("(".equals(mc.group()))
+                    {
+                        iLeft++;
+                    }
+                    else
+                    {
+                        iLeft--;
+                    }
+                    //判断是否已到DECODE的最后的括号
+                    if (iLeft == 0)
+                    {
+                        //得到DECOE剩余部分字符：注这里要去掉最后的右括号
+                        string sSourceArr = sLeft.substring(0, mc.end()-1).Trim();
+                        //得到结束位置的索引
+                        iLastIndex = mcDecode.end() + mc.end() + mc.group().Length;
+                        
+                        string sIfnullPatter = @"\s*I(S|F)NULL\s*\(\s*(\w+.)*\w+\s*,\s*\'?([\u4e00-\u9fa5]|\w)+\'?\s*\)";
+                        //要处理掉ifnull先
+                        Regex regexTime = new Regex(sIfnullPatter, RegexOptions.IgnoreCase);
+                        MatchCollection mcCollTime = regexTime.Matches(sSourceArr);
+                        string sDecodeColun = string.Empty;
+                        IDictionary<string,string> map = new Dictionary<string,string>();
+                        int iIndex = 1;
+                        foreach (Match mtTime in mcCollTime)
+                        {
+                            sDecodeColun = mtTime.Value;
+                            string sKey = string.Format("##{0}##", iIndex.ToString());
+                            map[sKey] = sDecodeColun;
+                            sSourceArr = sSourceArr.Replace(sDecodeColun,sKey);//替换掉字符
+                            iIndex++;
+                        }
+
+                        bool isNowWhen = false;
+                        var arrList = sSourceArr.Split(new char[] { ',' });
+                        for (int i = 0; i < arrList.Length; i++)
+                        {
+                            if (i == 0)
+                            {
+                                sbOneDecode.Append(arrList[0] + " "); //这里要加上空格
+                                isNowWhen = true;
+                            }
+                            else
+                            {
+                                if (isNowWhen)
+                                {
+                                    if (i == arrList.Length - 1)
+                                    {
+                                        sbOneDecode.Append(string.Format("ELSE {0} ", arrList[i]));
+                                    }
+                                    else
+                                    {
+                                        sbOneDecode.Append(string.Format("WHEN {0} ", arrList[i]));
+                                    }
+                                }
+                                else
+                                {
+                                    sbOneDecode.Append(string.Format("THEN {0} ", arrList[i]));
+                                }
+                                isNowWhen = !isNowWhen;
+                            }
+                        }
+                        sbOneDecode.Append("END ");
+                        //将原来替换掉的IFNULL还原回来
+                        foreach (var key in map.Keys)
+                        {
+                            sbOneDecode.Replace(key, map[key]);
+                        }
+
+                        //替换字符
+                        sbAll.Append(sbOneDecode.ToString());   
+                        break;
+                    }
+                }
+            }
+            //得到最终SQL
+            if(iLastIndex>0 && iLastIndex < sSql.Length)
+            {
+                sbAll.Append(sSql.Substring(iLastIndex));
+            }
+            sSql = sbAll.ToString();
+        }
+
+        /// <summary>
+        /// 旧的替换DECODE方法
+        /// 使用正则匹配DECODE：不严谨，有BUG，目前无法解决
+        /// </summary>
+        /// <param name="sSql"></param>
+        private void MatchDecodeReplaceOld(ref string sSql)
+        {
+            /****SQL示例：匹配中文[\u4e00-\u9fa5] ****************************
+select sysdate AS CUR_DATE2,
+ TO_DATE(A.OUT_STORE_DATE, 'YYYY/MM-DD') as OUT_STORE_DATE,
+DECODE(A.FLIT_TYPE,'1',A.CUST_SHORT_NAME,'3',B.CUST_SHORT_NAME,DLR.DLR_SHORT_NAME) AS CUST_SHORT_NAME,
+            DECODE(NVL(A.FI_AUDIT_FLAG, '0'), '1', '已审核', '未审核') AUDIT_FLAG,
+ TO_CHAR(A.FI_AUDIT_DATE, 'YYYY-MM-DD hh24:mi:ss:ff3') FI_AUDIT_DATE
+FROm AB.BAS_CITY A
              *****************************/
-            //注：匹配中文[\u4e00-\u9fa5]
+            /*上述示例会出来匹配以下内容，目前无法在正则上找到解决办法，所以本方法作废！！
+            ,
+            DECODE(A.FLIT_TYPE, '1', A.CUST_SHORT_NAME, '3', B.CUST_SHORT_NAME, DLR.DLR_SHORT_NAME) AS CUST_SHORT_NAME,
+            CASE IFNULL(A.FI_AUDIT_FLAG, '0')
+            */
             string sIfnullPatter = @"\s*I(S|F)NULL\s*\(\s*(\w+.)*\w+\s*,\s*\'?([\u4e00-\u9fa5]|\w)+\'?\s*\)";
             //DECODE正常正则式：遇到IFNULL，匹配的结果会包括IFNULL部分字符，但DECODE不全。
-            //string sDecodePatterNormal = @",?\s*DECODE\s*\(\s*(\w+.)*\w+(\s*,\s*\'?([\u4e00-\u9fa5]|\w)+\'?\s*)+\)";
-            string sDecodePatterNormal = @",?\s*DECODE\s*\(\s*(\w+.)*\w+(\s*,\s*((\'?([\u4e00-\u9fa5]|\w)+\'?)|((\w+.)*\w+))\s*)+\)";
+            string sDecodePatterNormal = @",?\s*DECODE\s*\(\s*(\w+.)*\w+(\s*,\s*((\'?[^']+\'?)|((\w+.)*\w+))\s*)+\)";
             //DECODE包括IFNULL部分的正则式(OK)：将判断列的那部分：(\w+.)*\w+   替换为IFNULL部分的正则
-            string sDecodePatterIncludeIfnull = @",?\s*DECODE\s*\(\s*"+ sIfnullPatter + @"(\s*,\s*\'?([\u4e00-\u9fa5]|\w)+\'?\s*)+\)";
+            string sDecodePatterIncludeIfnull = @",?\s*DECODE\s*\(\s*"+ sIfnullPatter + @"(\s*,\s*\'?[^']+\'?\s*)+\)";
             
             //先处理包括Ifnull的DECODE语句
             Regex regex = new Regex(sDecodePatterIncludeIfnull, RegexOptions.IgnoreCase);

@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using static Breezee.WorkHelper.DBTool.Entity.DBTGlobalValue;
 using System.ComponentModel;
 using static Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL.EntTable;
+using Breezee.Core;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -46,6 +47,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         //private StringBuilder sbRemark = new StringBuilder();
         private DataTable dtTable;
         private DataTable dtAllCol;
+        DataTable dtCodeNameCol;
 
         private string createType;
         private string _ImportInput = "1";
@@ -61,8 +63,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         private DbServerInfo _dbServer;
         private IDataAccess _dataAccess;
 
-        MiniXmlConfig commonColumn;
-        StandardColumnClassXmlConfig replaceStringData;//标准列分类配置
+        MiniXmlConfig commonColumn; //数据字典通用列配置
+        MiniXmlConfig codeNameColumn; //编码名称配置
+        StandardColumnClassXmlConfig standardColumnData;//标准列分类配置
+
+
         #endregion
 
         #region 构造函数
@@ -120,6 +125,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             ckbDefaulePK.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsDefaultPK, "0").Value) ? true : false;
             ckbDefaultColNameCn.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsDefaultColNameCN, "0").Value) ? true : false;
             ckbIsPkRemoveDefault.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsPkRemoveDefault, "1").Value) ? true : false;
+            ckbIsColumnHeadMerge.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsColumnHeadMerge, "0").Value) ? true : false;
+            ckbIsAutoFillColNameCn.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_IsAutoFillColNameCn, "1").Value) ? true : false;
             txbDefaultColNameCN.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GenerateTableSQL_DefaultColNameCN, "未知").Value;
             //设置下拉框查找数据源
             cbbTableName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
@@ -269,9 +276,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             dgvDataDictionary.BindDataGridView(dtCommonCol, true);
 
             //分类网格
-            replaceStringData = new StandardColumnClassXmlConfig(DBTGlobalValue.TableSQL.Xml_StandardClassFileName);
-            string sColName = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
-            cbbTemplateType.BindDropDownList(replaceStringData.MoreXmlConfig.KeyData, sColName, StandardColumnClassXmlConfig.KeyString.Name, true, true);
+            standardColumnData = new StandardColumnClassXmlConfig(DBTGlobalValue.TableSQL.Xml_StandardClassFileName);
+            string sColName = standardColumnData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            cbbTemplateType.BindDropDownList(standardColumnData.MoreXmlConfig.KeyData, sColName, StandardColumnClassXmlConfig.KeyString.Name, true, true);
             dgvOldNewChar.Tag = fdc.GetGridTagString();
             dgvOldNewChar.BindDataGridView(dtCommonCol.Clone(), true);
             //新表名相关
@@ -294,6 +301,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             //
             dgvNewTableInfo.Tag = fdc.GetGridTagString();
             dgvNewTableInfo.BindDataGridView(dtTableCopy, true);
+
+            //编码名称配置
+            codeNameColumn = new MiniXmlConfig(GlobalContext.PathData(), "CodeNameColumnConfig.xml", list, DBColumnSimpleEntity.SqlString.Name);
+            dtCodeNameCol = codeNameColumn.Load();
         }
         private void cbbDBConnName_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -728,6 +739,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsDefaultPK, ckbDefaulePK.Checked ? "1" : "0", "【生成表SQL】是否使用默认主键");
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsDefaultColNameCN, ckbDefaultColNameCn.Checked ? "1" : "0", "【生成表SQL】是否使用默认列中文名");
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsPkRemoveDefault, ckbIsPkRemoveDefault.Checked ? "1" : "0", "【生成表SQL】是否主键剔除默认值");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsColumnHeadMerge, ckbIsColumnHeadMerge.Checked ? "1" : "0", "【生成表SQL】是否表头合并");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_IsAutoFillColNameCn, ckbIsAutoFillColNameCn.Checked ? "1" : "0", "【生成表SQL】是否自动获取列名称");
+
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GenerateTableSQL_DefaultColNameCN, txbDefaultColNameCN.Text.Trim(), "【生成表SQL】列中文名为空时使用的列名");
             WinFormContext.UserLoveSettings.Save();
         }
@@ -1082,6 +1096,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             docEntity.useRemarkContainsName = ckbOnlyRemark.Checked;
             docEntity.useNameSameWithRemark = ckbColNameSameRemark.Checked;
             docEntity.useOldColumnCode = ckbDoubleColName.Checked; //重复列编码：数据迁移使用
+            docEntity.isColumnHeadMerge = ckbIsColumnHeadMerge.Checked;
             docEntity.defaultColumnOrTableName = txbDefaultColNameCN.Text.Trim();
             docEntity.isQueryDataBase = "2".Equals(cbbInputType.SelectedValue)?true:false;
             TableStructGenerator.Generate(tabControl1, dtTalbeSelect, dtColumnSelect, docEntity);
@@ -1349,6 +1364,59 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
             }
 
+            #region 针对列中文名为空的，看能否找到并赋值
+            if (ckbIsAutoFillColNameCn.Checked)
+            {
+                //针对查询结果中的项来查找
+                DataRow[] drArrNullName = dtCols.Select(string.Format("{0} is null", DBColumnEntity.SqlString.NameCN));
+                var drArrNotNullAllCol = dtCols.Select(string.Format("{0} is not null", DBColumnEntity.SqlString.NameCN));
+                var query = from f in drArrNullName.AsEnumerable()
+                        join s in drArrNotNullAllCol.AsEnumerable()
+                        on new { c1 = f.Field<string>(DBColumnEntity.SqlString.Name) }
+                        equals new { c1 = s.Field<string>(DBColumnEntity.SqlString.Name) }
+                        select new { F1 = f, S1 = s };
+                foreach (var obj in query.ToList())
+                {
+                    string sValue = obj.S1.Field<string>(DBColumnEntity.SqlString.NameCN);
+                    obj.F1.SetField<string>(DBColumnEntity.SqlString.NameCN, sValue);
+                }
+
+                //针对列名称为空的，看从数据字典或编码名称配置获取
+                drArrNullName = dtCols.Select(string.Format("{0} is null", DBColumnEntity.SqlString.NameCN));
+                if(drArrNullName.Length > 0 )
+                {
+                    DataTable dtCommonCol = dgvDataDictionary.GetBindingTable();
+                    //针对通用列有名称的替换
+                    query = from f in drArrNullName.AsEnumerable()
+                            join s in dtCommonCol.AsEnumerable()
+                            on new { c1 = f.Field<string>(DBColumnEntity.SqlString.Name) }
+                            equals new { c1 = s.Field<string>(DBColumnSimpleEntity.SqlString.Name) }
+                            select new { F1 = f, S1 = s };
+                    foreach (var obj in query.ToList())
+                    {
+                        string sValue = obj.S1.Field<string>(DBColumnSimpleEntity.SqlString.NameCN);
+                        obj.F1.SetField<string>(DBColumnEntity.SqlString.NameCN, sValue);
+                    }
+                }
+
+                //针对编码名称的替换
+                drArrNullName = dtCols.Select(string.Format("{0} is null", DBColumnEntity.SqlString.NameCN));
+                if (drArrNullName.Length > 0)
+                {
+                    query = from f in drArrNullName.AsEnumerable()
+                            join s in dtCodeNameCol.AsEnumerable()
+                            on new { c1 = f.Field<string>(DBColumnEntity.SqlString.Name) }
+                            equals new { c1 = s.Field<string>(DBColumnSimpleEntity.SqlString.Name) }
+                            select new { F1 = f, S1 = s };
+                    foreach (var obj in query.ToList())
+                    {
+                        string sValue = obj.S1.Field<string>(DBColumnSimpleEntity.SqlString.NameCN);
+                        obj.F1.SetField<string>(DBColumnEntity.SqlString.NameCN, sValue);
+                    }
+                }
+            }
+            #endregion
+
             //如果选中更新默认值，那么直接调用
             if (ckbUpdateDefault.Checked)
             {
@@ -1434,9 +1502,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
 
             dtColsNew.TableName = _strColName;
-
-            //bsCos.DataSource = dtColsNew;
-            //dgvColList.DataSource= dtColsNew;
             dgvColList.BindAutoColumn(dtColsNew, false);
             dgvColList.ShowRowNum();
         }
@@ -1567,10 +1632,10 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             if (ShowOkCancel("确定要保存分类？") == DialogResult.Cancel) return;
 
-            string sKeyId = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
-            string sValId = replaceStringData.MoreXmlConfig.MoreKeyValue.ValIdPropName;
-            DataTable dtKeyConfig = replaceStringData.MoreXmlConfig.KeyData;
-            DataTable dtValConfig = replaceStringData.MoreXmlConfig.ValData;
+            string sKeyId = standardColumnData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            string sValId = standardColumnData.MoreXmlConfig.MoreKeyValue.ValIdPropName;
+            DataTable dtKeyConfig = standardColumnData.MoreXmlConfig.KeyData;
+            DataTable dtValConfig = standardColumnData.MoreXmlConfig.ValData;
 
             string sKeyIdNew = string.Empty;
             bool isAdd = string.IsNullOrEmpty(cbbTemplateType.Text.Trim()) ? true : false;
@@ -1633,9 +1698,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                 drNew[StandardColumnClassXmlConfig.ValueString.Extra] = dr[StandardColumnClassXmlConfig.ValueString.Extra].ToString();
                 dtValConfig.Rows.Add(drNew);
             }
-            replaceStringData.MoreXmlConfig.Save();
+            standardColumnData.MoreXmlConfig.Save();
             //重新绑定下拉框
-            cbbTemplateType.BindDropDownList(replaceStringData.MoreXmlConfig.KeyData, sKeyId, StandardColumnClassXmlConfig.KeyString.Name, true, true);
+            cbbTemplateType.BindDropDownList(standardColumnData.MoreXmlConfig.KeyData, sKeyId, StandardColumnClassXmlConfig.KeyString.Name, true, true);
             ShowInfo("分类保存成功！");
         }
 
@@ -1655,10 +1720,10 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             if (ShowOkCancel("确定要删除该分类？") == DialogResult.Cancel) return;
 
-            string sKeyId = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
-            string sValId = replaceStringData.MoreXmlConfig.MoreKeyValue.ValIdPropName;
-            DataTable dtKeyConfig = replaceStringData.MoreXmlConfig.KeyData;
-            DataTable dtValConfig = replaceStringData.MoreXmlConfig.ValData;
+            string sKeyId = standardColumnData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            string sValId = standardColumnData.MoreXmlConfig.MoreKeyValue.ValIdPropName;
+            DataTable dtKeyConfig = standardColumnData.MoreXmlConfig.KeyData;
+            DataTable dtValConfig = standardColumnData.MoreXmlConfig.ValData;
             DataRow[] drArrKey = dtKeyConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
             DataRow[] drArrVal = dtValConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
 
@@ -1679,9 +1744,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 dtKeyConfig.AcceptChanges();
             }
-            replaceStringData.MoreXmlConfig.Save();
+            standardColumnData.MoreXmlConfig.Save();
             //重新绑定下拉框
-            cbbTemplateType.BindDropDownList(replaceStringData.MoreXmlConfig.KeyData, sKeyId, StandardColumnClassXmlConfig.KeyString.Name, true, true);
+            cbbTemplateType.BindDropDownList(standardColumnData.MoreXmlConfig.KeyData, sKeyId, StandardColumnClassXmlConfig.KeyString.Name, true, true);
             ShowInfo("分类删除成功！");
         }
 
@@ -1722,8 +1787,8 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             txbReplaceTemplateName.Text = cbbTemplateType.Text;
             //txbReplaceTemplateName.ReadOnly = true;
-            string sKeyId = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
-            DataRow[] drArr = replaceStringData.MoreXmlConfig.ValData.Select(sKeyId + "='" + sTempType + "'");
+            string sKeyId = standardColumnData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            DataRow[] drArr = standardColumnData.MoreXmlConfig.ValData.Select(sKeyId + "='" + sTempType + "'");
 
             DataTable dtReplace = dgvOldNewChar.GetBindingTable();
             if (drArr.Length > 0)

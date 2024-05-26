@@ -97,19 +97,19 @@ namespace Breezee.WorkHelper.DBTool.UI
             string columnsTemplate;
             if (docEntity.useOldColumnCode)
             {
-                tableTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Table_LY);
+                tableTemplate = docEntity.isColumnHeadMerge ? LoadTemplate(DBTGlobalValue.TableSQL.Html_TableMerge_LY) : LoadTemplate(DBTGlobalValue.TableSQL.Html_Table_LY);
                 columnsTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Column_Move);
             }
             else
             {
                 if (docEntity.useLYTemplate)
                 {
-                    tableTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Table_LY);
+                    tableTemplate = docEntity.isColumnHeadMerge? LoadTemplate(DBTGlobalValue.TableSQL.Html_TableMerge_LY) : LoadTemplate(DBTGlobalValue.TableSQL.Html_Table_LY);
                     columnsTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Column_LY);
                 }
                 else
                 {
-                    tableTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Table);
+                    tableTemplate =  LoadTemplate(DBTGlobalValue.TableSQL.Html_Table);
                     columnsTemplate = LoadTemplate(DBTGlobalValue.TableSQL.Html_Column);
                 }
             }            

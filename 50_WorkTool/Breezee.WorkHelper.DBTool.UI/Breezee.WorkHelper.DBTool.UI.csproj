@@ -519,6 +519,7 @@
     <EmbeddedResource Include="DataTemplate\DBTool\TableSQL\LY\Table.txt" />
     <EmbeddedResource Include="DataTemplate\DBTool\TableSQL\LY\Columns.txt" />
     <EmbeddedResource Include="DataTemplate\DBTool\TableSQL\LY\ColumnsMove.txt" />
+    <EmbeddedResource Include="DataTemplate\DBTool\TableSQL\LY\TableMerge.txt" />
     <Content Include="Doc\Study\MySql\0032_函数\函数.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

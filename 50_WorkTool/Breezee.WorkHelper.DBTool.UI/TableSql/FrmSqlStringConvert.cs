@@ -354,6 +354,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                             DataRow[] drSelectNewOldColumn = dtOldNewColumn.Select(sFiter);
                             if (drSelectNewOldColumn.Length > 0)
                             {
+                                if(lstReplaceCols.Where(t=>t.OldTable== colEntity.OldTable && t.OldCol == colEntity.OldCol).Count() > 0)
+                                {
+                                    continue;
+                                }
                                 //能找到新旧列关系，那么得到新表名和新列名
                                 colEntity.NewTable = drSelectNewOldColumn[0][NewOldColumnXmlConfig.ValueString.NewTable].ToString();
                                 colEntity.NewCol = drSelectNewOldColumn[0][NewOldColumnXmlConfig.ValueString.NewColumn].ToString();
@@ -394,10 +398,16 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                     //4.处理新旧字段替换：旧字段长度长的优先处理
                     var ordTable = lstReplaceCols.AsEnumerable().OrderByDescending(t => t.OldCol.Length);
+                    List<string> lstHasReplaceCol = new List<string>(); //已替换的列表
                     foreach (var ent in ordTable)
                     {
-                        //要加上别名一起替换
-                        sTemplateString = sTemplateString.Replace(ent.OldTableAlias +"." +  ent.OldCol, ent.OldTableAlias + "." + ent.NewCol);
+                        string sSourceCol = ent.OldTableAlias + "." + ent.OldCol;
+                        if (!lstHasReplaceCol.Contains(sSourceCol))
+                        {
+                            //要加上别名一起替换
+                            sTemplateString = sTemplateString.Replace(sSourceCol, ent.OldTableAlias + "." + ent.NewCol);
+                            lstHasReplaceCol.Add(sSourceCol);
+                        }                        
                     }
                     //5.实体绑定替换字段列表
                     var fdc = new FlexGridColumnDefinition();

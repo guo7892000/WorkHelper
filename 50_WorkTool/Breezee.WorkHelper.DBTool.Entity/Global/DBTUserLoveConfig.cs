@@ -132,6 +132,8 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string GenerateTableSQL_IsDefaultPK = "GenerateTableSQL_IsDefaultPK";//是否默认主键：当没有主键时，默认以第一行的列为主键列。
         public static readonly string GenerateTableSQL_IsDefaultColNameCN = "GenerateTableSQL_IsDefaultColNameCN";//是否使用默认列中文名
         public static readonly string GenerateTableSQL_IsPkRemoveDefault = "GenerateTableSQL_IsPkRemoveDefault";//是否主键剔除默认值
+        public static readonly string GenerateTableSQL_IsColumnHeadMerge = "GenerateTableSQL_IsColumnHeadMerge"; //是否列头合并
+        public static readonly string GenerateTableSQL_IsAutoFillColNameCn = "GenerateTableSQL_IsAutoFillColNameCn"; //是否自动修改列名称
         public static readonly string GenerateTableSQL_DefaultColNameCN = "GenerateTableSQL_DefaultColNameCN";//列中文名为空时使用的列名
         //DB间SQL转换
         public static readonly string DbSqlConvert_IsAutoExcludeTableSource = "DbSqlConvert_IsAutoExcludeTableSource";

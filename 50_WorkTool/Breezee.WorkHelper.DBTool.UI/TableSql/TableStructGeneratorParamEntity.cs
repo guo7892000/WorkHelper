@@ -22,6 +22,10 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// </summary>
         public bool useLYTemplate { get; set; }
         /// <summary>
+        /// 是否表头合并
+        /// </summary>
+        public bool isColumnHeadMerge { get; set; }
+        /// <summary>
         /// 是否备注包含列名称
         /// </summary>
         public bool useRemarkContainsName { get; set; }

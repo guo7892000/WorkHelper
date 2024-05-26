@@ -41,6 +41,7 @@ namespace Breezee.WorkHelper.DBTool.Entity
             public static string Html_Column = DataSQL_SourcePre + "Columns.txt";
             //LY模板的资源路径
             public static string Html_Table_LY = DataSQL_SourcePre + "LY.Table.txt";
+            public static string Html_TableMerge_LY = DataSQL_SourcePre + "LY.TableMerge.txt";
             public static string Html_Column_LY = DataSQL_SourcePre + "LY.Columns.txt";
             public static string Html_Column_Move = DataSQL_SourcePre + "LY.ColumnsMove.txt";
             //数据标准分类配置文件
