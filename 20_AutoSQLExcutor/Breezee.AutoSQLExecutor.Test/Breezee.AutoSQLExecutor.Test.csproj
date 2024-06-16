@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A49B0283-6650-4C57-B5E4-97C3616F5AAD}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Breezee.AutoSQLExecutor.Test</RootNamespace>
     <AssemblyName>Breezee.AutoSQLExecutor.Test</AssemblyName>
@@ -30,7 +30,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Breezee.Core.Interface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Breezee.Core.Interface.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,7 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Breezee.AutoSQLExecutor.Common\Breezee.AutoSQLExecutor.Common.csproj">
+      <Project>{7728bc8b-39df-4ecb-89f9-7ac34c2ea416}</Project>
+      <Name>Breezee.AutoSQLExecutor.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Breezee.AutoSQLExecutor.Core\Breezee.AutoSQLExecutor.Core.csproj">
+      <Project>{a975afed-639e-40aa-9698-9a6f0fcd7421}</Project>
+      <Name>Breezee.AutoSQLExecutor.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
