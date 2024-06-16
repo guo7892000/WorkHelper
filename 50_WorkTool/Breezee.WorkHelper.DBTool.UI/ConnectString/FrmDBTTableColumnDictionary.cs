@@ -62,7 +62,8 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private readonly string _sInputColCode = "列编码";
         private readonly string _sInputColName = "列名称";
-        MiniXmlConfig commonColumn;
+        //MiniXmlConfig commonColumn;
+        DataStandardConfig dataCfg;
         MiniXmlConfig codeNameColumn;
         MiniXmlConfig stringTemplate;
         DataGridViewFindText dgvFindText;
@@ -232,8 +233,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //DBColumnSimpleEntity.SqlString.TableNameCN,
                 //DBColumnSimpleEntity.SqlString.TableNameUpper
             });
-            commonColumn = new MiniXmlConfig(GlobalContext.PathData(), "CommonColumnConfig.xml", list, DBColumnSimpleEntity.SqlString.Name);
-            DataTable dtCommonCol = commonColumn.Load();
+
+            //commonColumn = new MiniXmlConfig(GlobalContext.PathData(), "CommonColumnConfig.xml", list, DBColumnSimpleEntity.SqlString.Name);
+            //DataTable dtCommonCol = commonColumn.Load();
+            dataCfg = new DataStandardConfig();
+            DataTable dtCommonCol = dataCfg.XmlConfig.Load();
             //增加选择列
             DataColumn dcSelected = new DataColumn(_sGridColumnSelect);
             dcSelected.DefaultValue = "1";
@@ -253,14 +257,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.DataScale).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(40).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.DataTypeFull).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 //new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.SortNum).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NotNull).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(40).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.Default).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                //new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NotNull).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(40).Edit(false).Visible().Build(),
+                //new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.Default).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 //new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.KeyType).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.Comments).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(300).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.Extra).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
-            //new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.TableName).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-            //new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.TableNameCN).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-            //new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.TableNameUpper).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
+                new FlexGridColumn.Builder().Name(DataStandardStr.Id).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(0).Edit(false).Visible(false).Build()
             );
             //
             dgvCommonCol.Tag = fdc.GetGridTagString();
@@ -606,12 +607,19 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if ("1".Equals(sInputType) || "2".Equals(sInputType))
                 {
                     //1查询条件处理
+                    HashSet<string> listRemark = new HashSet<string>();
                     string remarkPatter = "--.*|(/\\*.*/*/)";
                     Regex regex = new Regex(remarkPatter, RegexOptions.IgnoreCase);
                     MatchCollection mcColl = regex.Matches(sSql);
                     foreach (Match mt in mcColl)
                     {
-                        sSql = sSql.Replace(mt.Value, ""); //清除注释
+                        listRemark.Add(mt.Value);
+                    }
+                    //注：替换时先要从长字符开始替换，再到短字符
+                    var listRemarkSort = listRemark.OrderByDescending(t=>t.Length);
+                    foreach (var item in listRemarkSort)
+                    {
+                        sSql = sSql.Replace(item, ""); //清除注释
                     }
                     //参数格式
                     string sPattern = @"([@:]\w+)|(#\w+#)|(#{\w+})|(#{param.\w+})|(#{para.\w+})";
@@ -1329,7 +1337,15 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 if (MsgHelper.ShowYesNo("确定要保存？") == DialogResult.Yes)
                 {
-                    commonColumn.Save(dtSave);
+                    //commonColumn.Save(dtSave);
+                    foreach (DataRow item in dtSave.Rows)
+                    {
+                        if (string.IsNullOrEmpty(item[DataStandardStr.Id].ToString()))
+                        {
+                            item[DataStandardStr.Id] = Guid.NewGuid().ToString();
+                        }
+                    }
+                    dataCfg.XmlConfig.Save(dtSave);
                     ShowInfo("保存成功！");
                 }
             }

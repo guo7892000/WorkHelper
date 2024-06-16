@@ -962,7 +962,7 @@ namespace Breezee.Core.WinFormUI
                             {
                                 if (cell.ColumnIndex > dgvText.ColumnIndex)
                                 {
-                                    if (cell.Value != null && cell.Value.ToString().Contains(sText))
+                                    if (cell.Value != null && cell.Value.ToString().IndexOf(sText,StringComparison.OrdinalIgnoreCase)>-1)
                                     {
                                         isFind = SetFindEntityInfo(dgv, dgvText, cell, isForwardFind);
                                         return;
@@ -971,7 +971,7 @@ namespace Breezee.Core.WinFormUI
                             }
                             else
                             {
-                                if (cell.Value != null && cell.Value.ToString().Contains(sText))
+                                if (cell.Value != null && cell.Value.ToString().IndexOf(sText, StringComparison.OrdinalIgnoreCase) > -1)
                                 {
                                     isFind = SetFindEntityInfo(dgv, dgvText, cell, isForwardFind);
                                     return;

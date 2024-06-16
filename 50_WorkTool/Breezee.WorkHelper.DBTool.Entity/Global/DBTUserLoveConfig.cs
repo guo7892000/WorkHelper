@@ -144,5 +144,6 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string DbSqlConvert_SourceDbType = "DbSqlConvert_SourceDbType";//源数据库类型
         public static readonly string DbSqlConvert_TargetDbType = "DbSqlConvert_TargetDbType";//目标数据库类型
         public static readonly string DbSqlConvert_LatestSql = "DbSqlConvert_LatestSql";
+        public static readonly string DbSqlConvert_IsParaToHash = "DbSqlConvert_IsParaToHash"; //是否@参数转换为#参数#
     }
 }

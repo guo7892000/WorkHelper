@@ -5,14 +5,18 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using static Breezee.Core.Interface.UserLoveSettings;
 
 /*********************************************************************		
- * 对象名称：键值对配置	
- * 对象类别：接口		
+ * 对象名称：键值对配置(只有Key、Value、Remark三种属性)	
+ * 对象类别：类		
  * 创建作者：黄国辉		
  * 创建日期：2022/11/5 22:29:28		
- * 对象说明：使用属性方式		
+ * 对象说明：使用属性方式，针对某一种功能的单个文件配置，例如：是否显示在桌面上的菜单配置。
+ * 示例：key为菜单ID，value为是否显示：0-否，1-是
+ * <config>
+ * <data key="A464F839-715A-4AD1-9DD0-F40BC001F911" value="0" remark="" />
+ * <data key="59D1EA9B-E422-4F22-88D8-A0509B14EC0F" value="0" remark="" />
+ * </config>
  * 电邮地址：guo7892000@126.com		
  * 微 信 号：BreezeeHui		
  * 修改历史：		

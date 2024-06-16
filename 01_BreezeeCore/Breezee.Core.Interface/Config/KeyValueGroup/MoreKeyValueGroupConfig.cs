@@ -7,11 +7,22 @@ using System.Text;
 using System.Xml.Linq;
 
 /*********************************************************************		
- * 对象名称：分组键值XML配置
- * 对象类别：接口		
+ * 对象名称：更多分组键值XML配置(可自定义分组与明细的属性)
+ * 对象类别：类		
  * 创建作者：黄国辉		
  * 创建日期：2023/11/24 22:29:28		
- * 对象说明：值列表分组配置，类似值列表数据，即一种类型下有多个值的配置。		
+ * 对象说明：最灵活的分组明细配置，即针对同一种类型数据，可以自定义分组，且明细属性也是可以自定义的。例如新旧表的列关系配置。
+ * 示例：
+ * <xml>
+ *  <items name="测试新旧列01" kid="845d81">
+ *    <item IsSelect="1" OldTable="BAS_TYPE" OldColumn="CUST_SHORT_NAME" NewTable="BAS_TYPE_NEW" NewColumn="CUST_NAME_NEW" kid="845d81" vid="1cf92cee" />
+ *    <item IsSelect="1" OldTable="BAS_TYPE" OldColumn="TFLAG" NewTable="BAS_TYPE_NEW" NewColumn="TFLAG_NEW2" kid="845d81" vid="cf2bb899" />
+ *  </items>
+ *  <items name="测试新旧列02" kid="745d8d82">
+ *    <item IsSelect="1" OldTable="BAS_TYPE" OldColumn="CUST_SHORT_NAME" NewTable="BAS_TYPE_NEW" NewColumn="CUST_NAME_NEW" kid="745d8d82" vid="a5ef1f34f6ee" />
+ *    <item IsSelect="1" OldTable="BAS_TYPE" OldColumn="TFLAG" NewTable="BAS_TYPE_NEW" NewColumn="TFLAG_NEW2" kid="745d8d82" vid="96c5" />
+ *  </items>
+ * </xml>
  * 电邮地址：guo7892000@126.com		
  * 微 信 号：BreezeeHui		
  * 修改历史：		

@@ -51,7 +51,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoEntity\EntityInfo.cs" />
+    <Compile Include="DataStandard\DataStandardTypeConfigDecimal.cs" />
+    <Compile Include="DataStandard\DataStandardTypeConfigInt.cs" />
+    <Compile Include="DataStandard\DataStandardTypeConfigDate.cs" />
+    <Compile Include="DataStandard\DataStandardTypeConfigText.cs" />
+    <Compile Include="Global\DBToolKeyValueString.cs" />
+    <Compile Include="DBToolContext.cs" />
     <Compile Include="DBToolHelper.cs" />
+    <Compile Include="DataStandard\DataStandardConfig.cs" />
     <Compile Include="ExcelTableSQL\EntlColLY.cs" />
     <Compile Include="Enum\SqlType.cs" />
     <Compile Include="ExcelTableSQL\Column\ColAllInOne.cs" />
@@ -96,6 +103,23 @@
       <Project>{A975AFED-639E-40AA-9698-9A6F0FCD7421}</Project>
       <Name>Breezee.AutoSQLExecutor.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\DBTool\Data\DBTDataTypeConfigDecimal.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\DBTool\Data\DBTDataTypeConfigDate.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\DBTool\Data\DBTDataTypeConfigInt.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\DBTool\Data\DBTDataTypeConfigText.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\DBTool\Data\DBTKeyValue.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

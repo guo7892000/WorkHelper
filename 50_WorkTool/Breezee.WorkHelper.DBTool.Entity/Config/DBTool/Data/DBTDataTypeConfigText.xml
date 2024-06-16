@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<xml>
+  <key kid="DataStandardTypeText" name ="文本类" oracle="varchar2" mysql="varchar" sqlserver="varchar" postgresql="character varying" sqlite="varchar">
+	<value vid="bool" name="是否(2)" length="2" />
+    <value vid="flag" name="标志类(10)" length="10" />
+    <value vid="id" name="主键类(36)" length="36" />
+    <value vid="shorCode" name="短编码(10)" length="10" />
+	<value vid="middleCode" name="中编码(20)" length="20" />
+	<value vid="longCode" name="长编码(50)" length="50" />
+	<value vid="longerCode" name="更长编码(100)" length="100" />
+	<value vid="shorName" name="短名称(50)" length="50" />
+	<value vid="middleName" name="中名称(100)" length="100" />
+	<value vid="longName" name="长名称(200)" length="200" />
+    <value vid="longerName" name="更长名称(400)" length="400" />
+	<value vid="shortRemak" name="短备注(500)" length="500" />
+	<value vid="middleRemak" name="中备注(800)" length="800" />
+	<value vid="longRemak" name="长备注(1000)" length="1000" />
+	<value vid="longerRemak" name="更长备注(2000)" length="2000" />
+	<value vid="url" name="链接地址(2048)" length="2048" />
+	<value vid="year" name="年(4)" length="4" />
+	<value vid="yearMonth" name="年月(6)" length="6" />
+	<value vid="date" name="日期字符(10)" length="10" />
+	<value vid="time" name="时间字符(10)" length="10" />
+	<value vid="myText" name="自定义(?)" length="?" />
+  </key>
+</xml>  

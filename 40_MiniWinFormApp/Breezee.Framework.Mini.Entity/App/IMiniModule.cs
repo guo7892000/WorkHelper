@@ -35,6 +35,7 @@ namespace Breezee.Framework.Mini.Entity
         public override IDictionary<string, IModule> OutModules => _OutModules;
 
         public override IMenu Menu => throw new NotImplementedException();
-        
+
+        public override ModuleContext Context => throw new NotImplementedException();
     }
 }

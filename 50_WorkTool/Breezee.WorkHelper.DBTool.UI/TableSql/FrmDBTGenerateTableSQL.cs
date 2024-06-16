@@ -58,6 +58,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private bool _allTableSelect = false;//默认全选，这里取反
         private bool _allColumnSelect = false;//默认全选，这里取反
         DataGridViewFindText dgvFindText;
+        DataGridViewFindText dgvFindTextTable;
 
         private IDBConfigSet _IDBConfigSet;
         private DbServerInfo _dbServer;
@@ -1532,6 +1533,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
         }
 
+        #region 查找列
         private void btnFindNext_Click(object sender, EventArgs e)
         {
             FindGridText(true);
@@ -1548,7 +1550,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (string.IsNullOrEmpty(sSearch)) return;
             dgvColList.SeachText(sSearch, ref dgvFindText, null, isNext);
             lblFind.Text = dgvFindText.CurrentMsg;
-        }
+        } 
+        #endregion
 
         /// <summary>
         /// 显示方向右键按钮事件
@@ -1912,5 +1915,25 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             tsbImport.PerformClick();
         }
+
+        #region 查找表
+        private void btnFindNextTable_Click(object sender, EventArgs e)
+        {
+            FindGridTextTable(true);
+        }
+
+        private void btnFindFrontTable_Click(object sender, EventArgs e)
+        {
+            FindGridTextTable(false);
+        }
+
+        private void FindGridTextTable(bool isNext)
+        {
+            string sSearch = txbSearchTable.Text.Trim();
+            if (string.IsNullOrEmpty(sSearch)) return;
+            dgvTableList.SeachText(sSearch, ref dgvFindTextTable, null, isNext);
+            lblFindTable.Text = dgvFindTextTable.CurrentMsg;
+        } 
+        #endregion
     }
 }

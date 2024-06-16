@@ -11,7 +11,19 @@ using System.Xml.Linq;
  * 对象类别：接口		
  * 创建作者：黄国辉		
  * 创建日期：2022/11/5 22:29:28		
- * 对象说明：值列表分组配置，类似值列表数据，即一种类型下有多个值的配置。		
+ * 对象说明：值列表分组配置，类似值列表数据，即一种类型下有多个值的配置。
+ * 示例：
+ * <xml>
+ *  <!--键值表-->
+ *  <key kid="RBG_VALUE" name ="RBG颜色(数值)">
+ *    <value vid="207,226,243" name="浅蓝"/>
+ *    <value vid="230,230,230" name="浅灰"/>
+ *  </key>
+ *  <key kid="RBG_NAME" name ="RBG颜色(名称)">
+ *    <value vid="Red" name="红色"/>
+ *    <value vid="Yellow" name="黄色"/>
+ *  </key>
+ * </xml>
  * 电邮地址：guo7892000@126.com		
  * 微 信 号：BreezeeHui		
  * 修改历史：		

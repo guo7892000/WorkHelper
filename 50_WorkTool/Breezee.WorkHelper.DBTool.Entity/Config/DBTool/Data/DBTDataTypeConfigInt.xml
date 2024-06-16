@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<xml>
+  <key kid="DataStandardTypeInt" name ="整数类">
+	<value vid="int" name="整型(4)" oracle="integer" mysql="int" sqlserver="int" postgresql="integer" sqlite="integer"/>
+	<value vid="tinyInt" name="微整型(1)" oracle="integer" mysql="tinyint" sqlserver="tinyint" postgresql="smalltint" sqlite="tinyint"/>
+	<value vid="smallInt" name="小整型(2)" oracle="integer" mysql="smallint" sqlserver="smallint" postgresql="smalltint" sqlite="smallint"/>
+	<value vid="bigInt" name="大整型(8)" oracle="integer" mysql="bigint" sqlserver="bigint" postgresql="bigint" sqlite="bigint"/>
+ </key>
+</xml>  

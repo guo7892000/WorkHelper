@@ -82,6 +82,12 @@
     <Compile Include="Base\FrmDBConfigSet_D.Designer.cs">
       <DependentUpon>FrmDBConfigSet_D.cs</DependentUpon>
     </Compile>
+    <Compile Include="Base\FrmDBTDataStandardSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Base\FrmDBTDataStandardSet.Designer.cs">
+      <DependentUpon>FrmDBTDataStandardSet.cs</DependentUpon>
+    </Compile>
     <Compile Include="Base\FrmDBTDefaultValueSet.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -374,6 +380,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Base\FrmDBConfigSet_D.resx">
       <DependentUpon>FrmDBConfigSet_D.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Base\FrmDBTDataStandardSet.resx">
+      <DependentUpon>FrmDBTDataStandardSet.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Base\FrmDBTDefaultValueSet.resx">
       <DependentUpon>FrmDBTDefaultValueSet.cs</DependentUpon>
@@ -805,6 +814,9 @@
     <Content Include="Help\Html\DBTool\DB\DBConnectSet.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Help\Html\DBTool\DB\DataStandardSet.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\Html\DBTool\DB\DefaultValueSet.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -952,6 +964,12 @@
     <Content Include="Help\Html\DBTool\DB\Images\SqlDbConvert.002.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Help\Html\DBTool\DB\Images\SqlDbConvert.003.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\DB\Images\SqlDbConvert.004.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\Html\DBTool\DB\Images\SqlDBQuery.001.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1001,6 +1019,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\DB\Images\TableSqlReadDb.004.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\DB\Images\TableSqlReadDb.005.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\DB\Images\TableSqlRemark.001.jpg">

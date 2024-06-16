@@ -67,11 +67,11 @@
     <Compile Include="Layer\Interface\IDac.cs" />
     <Compile Include="Layer\Interface\IService.cs" />
     <Compile Include="Layer\Service.cs" />
+    <Compile Include="Global\ModuleContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entity\" />
-    <Folder Include="Global\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\20_AutoSQLExcutor\Breezee.AutoSQLExecutor.Core\Breezee.AutoSQLExecutor.Core.csproj">

@@ -18,8 +18,18 @@ namespace Breezee.WorkHelper.DBTool.Entity
         private static string AutoFile_Pre = @"DataTemplate\DBTool\AutoFile\";
         private static string AutoEntity_Pre = @"DataTemplate\DBTool\AutoEntity\";
         private static string StringBuild_Pre = @"DataTemplate\DBTool\StringBuild\";
+        public static string ConfigFile_Pre = @"Config\DBTool\Data\";
 
         private static string DataSQL_SourcePre = "Breezee.WorkHelper.DBTool.UI.DataTemplate.DBTool.TableSQL.";
+
+        public static class Cfg
+        {
+            public static string KeyValueXmlPath = ConfigFile_Pre + "DBTKeyValue.xml";
+            public static string DBTDataTypeConfigDate = ConfigFile_Pre + "DBTDataTypeConfigDate.xml";
+            public static string DBTDataTypeConfigDecimal = ConfigFile_Pre + "DBTDataTypeConfigDecimal.xml";
+            public static string DBTDataTypeConfigInt = ConfigFile_Pre + "DBTDataTypeConfigInt.xml";
+            public static string DBTDataTypeConfigText = ConfigFile_Pre + "DBTDataTypeConfigText.xml";
+        }
 
         public static class Base
         {

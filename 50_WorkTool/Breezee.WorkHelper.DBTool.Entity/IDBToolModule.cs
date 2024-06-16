@@ -19,6 +19,7 @@ namespace Breezee.WorkHelper.DBTool.Entity
         private IApp _curApp;
         private IDictionary<string, IModule> _OutModules = new Dictionary<string, IModule>();
         private IDictionary<string, DbServerInfo> _DbServers = new Dictionary<string, DbServerInfo>();
+        private DBToolContext _dbToolContext = new DBToolContext();
         public virtual string Id => "280495DE-63AE-4C30-A243-B02C04883EE7";
         public virtual string Name => "数据库工具";
 
@@ -39,6 +40,6 @@ namespace Breezee.WorkHelper.DBTool.Entity
 
         public override IMenu Menu => throw new NotImplementedException();
 
-       
+        public override ModuleContext Context { get => _dbToolContext; }
     }
 }

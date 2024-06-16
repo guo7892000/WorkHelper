@@ -516,9 +516,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             StringBuilder sbAll = new StringBuilder();
             int iLastIndex = 0;
             string sLeft = string.Empty;
+            bool isFoundDecode = false;
             //循环DECODE(的所有匹配项
             while (mcDecode.find())
             {
+                isFoundDecode = true;
                 sbAll.append(sSql.substring(iLastIndex,mcDecode.start())); //拼接前部分
                 string sMatch = mcDecode.group().replace("(", "");
                 sMatch = Regex.Replace(sMatch, "DECODE", "",RegexOptions.IgnoreCase);
@@ -611,7 +613,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 sbAll.Append(sSql.Substring(iLastIndex));
             }
-            sSql = sbAll.ToString();
+
+            //有Decode转换时，才取拼接的字符
+            if (isFoundDecode)
+            {
+                sSql = sbAll.ToString();
+            }
         }
 
         /// <summary>

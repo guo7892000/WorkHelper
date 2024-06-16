@@ -81,18 +81,20 @@
             this.rtbInputSql = new System.Windows.Forms.RichTextBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnLoadAllGenerate = new System.Windows.Forms.Button();
             this.lblTargetDbType = new System.Windows.Forms.Label();
-            this.btnGenerate = new System.Windows.Forms.Button();
             this.cbbTargetDbType = new System.Windows.Forms.ComboBox();
             this.lblSourceDbType = new System.Windows.Forms.Label();
             this.cbbSourceDbType = new System.Windows.Forms.ComboBox();
+            this.btnGenerate = new System.Windows.Forms.Button();
+            this.btnLoadAllGenerate = new System.Windows.Forms.Button();
+            this.ckbParamToHash = new System.Windows.Forms.CheckBox();
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tpNewOldTable = new System.Windows.Forms.TabPage();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.lblReplaceInfo = new System.Windows.Forms.Label();
             this.dgvOldNewChar = new System.Windows.Forms.DataGridView();
             this.groupBox13 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.label14 = new System.Windows.Forms.Label();
             this.cbbTemplateType = new System.Windows.Forms.ComboBox();
@@ -105,6 +107,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.dgvOldNewColumnChar = new System.Windows.Forms.DataGridView();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
             this.cbbColumnTemplateType = new System.Windows.Forms.ComboBox();
@@ -132,8 +135,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.uC_DbConnectionTarget = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
             this.uC_DbConnectionSource = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpSourceDb.SuspendLayout();
@@ -747,7 +748,7 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer5);
             this.splitContainer2.Size = new System.Drawing.Size(1002, 417);
-            this.splitContainer2.SplitterDistance = 537;
+            this.splitContainer2.SplitterDistance = 617;
             this.splitContainer2.TabIndex = 0;
             // 
             // splitContainer3
@@ -765,7 +766,7 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.tabControl3);
-            this.splitContainer3.Size = new System.Drawing.Size(537, 417);
+            this.splitContainer3.Size = new System.Drawing.Size(617, 417);
             this.splitContainer3.SplitterDistance = 220;
             this.splitContainer3.TabIndex = 0;
             // 
@@ -773,9 +774,9 @@
             // 
             this.grbInputSql.Controls.Add(this.rtbInputSql);
             this.grbInputSql.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grbInputSql.Location = new System.Drawing.Point(0, 50);
+            this.grbInputSql.Location = new System.Drawing.Point(0, 51);
             this.grbInputSql.Name = "grbInputSql";
-            this.grbInputSql.Size = new System.Drawing.Size(537, 170);
+            this.grbInputSql.Size = new System.Drawing.Size(617, 169);
             this.grbInputSql.TabIndex = 18;
             this.grbInputSql.TabStop = false;
             this.grbInputSql.Text = "要转换的SQL";
@@ -785,7 +786,7 @@
             this.rtbInputSql.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbInputSql.Location = new System.Drawing.Point(3, 17);
             this.rtbInputSql.Name = "rtbInputSql";
-            this.rtbInputSql.Size = new System.Drawing.Size(531, 150);
+            this.rtbInputSql.Size = new System.Drawing.Size(611, 149);
             this.rtbInputSql.TabIndex = 16;
             this.rtbInputSql.Text = "";
             // 
@@ -795,46 +796,38 @@
             this.groupBox8.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox8.Location = new System.Drawing.Point(0, 0);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(537, 50);
+            this.groupBox8.Size = new System.Drawing.Size(617, 51);
             this.groupBox8.TabIndex = 19;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "转换选项";
             // 
             // tableLayoutPanel4
             // 
-            this.tableLayoutPanel4.ColumnCount = 7;
+            this.tableLayoutPanel4.ColumnCount = 8;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.Controls.Add(this.btnLoadAllGenerate, 5, 0);
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tableLayoutPanel4.Controls.Add(this.lblTargetDbType, 2, 0);
-            this.tableLayoutPanel4.Controls.Add(this.btnGenerate, 4, 0);
             this.tableLayoutPanel4.Controls.Add(this.cbbTargetDbType, 3, 0);
             this.tableLayoutPanel4.Controls.Add(this.lblSourceDbType, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.cbbSourceDbType, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.btnGenerate, 4, 0);
+            this.tableLayoutPanel4.Controls.Add(this.btnLoadAllGenerate, 5, 0);
+            this.tableLayoutPanel4.Controls.Add(this.ckbParamToHash, 6, 0);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 2;
+            this.tableLayoutPanel4.RowCount = 3;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(521, 27);
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(611, 33);
             this.tableLayoutPanel4.TabIndex = 10;
-            // 
-            // btnLoadAllGenerate
-            // 
-            this.btnLoadAllGenerate.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnLoadAllGenerate.ForeColor = System.Drawing.Color.Red;
-            this.btnLoadAllGenerate.Location = new System.Drawing.Point(434, 3);
-            this.btnLoadAllGenerate.Name = "btnLoadAllGenerate";
-            this.btnLoadAllGenerate.Size = new System.Drawing.Size(79, 23);
-            this.btnLoadAllGenerate.TabIndex = 16;
-            this.btnLoadAllGenerate.Text = "加载并生成";
-            this.btnLoadAllGenerate.UseVisualStyleBackColor = true;
-            this.btnLoadAllGenerate.Click += new System.EventHandler(this.btnLoadAllGenerate_Click);
             // 
             // lblTargetDbType
             // 
@@ -845,18 +838,6 @@
             this.lblTargetDbType.Size = new System.Drawing.Size(77, 12);
             this.lblTargetDbType.TabIndex = 10;
             this.lblTargetDbType.Text = "目标DB类型：";
-            // 
-            // btnGenerate
-            // 
-            this.btnGenerate.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnGenerate.ForeColor = System.Drawing.Color.Red;
-            this.btnGenerate.Location = new System.Drawing.Point(375, 3);
-            this.btnGenerate.Name = "btnGenerate";
-            this.btnGenerate.Size = new System.Drawing.Size(53, 23);
-            this.btnGenerate.TabIndex = 9;
-            this.btnGenerate.Text = "生成";
-            this.btnGenerate.UseVisualStyleBackColor = true;
-            this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
             // 
             // cbbTargetDbType
             // 
@@ -884,6 +865,41 @@
             this.cbbSourceDbType.Size = new System.Drawing.Size(103, 20);
             this.cbbSourceDbType.TabIndex = 15;
             // 
+            // btnGenerate
+            // 
+            this.btnGenerate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnGenerate.ForeColor = System.Drawing.Color.Red;
+            this.btnGenerate.Location = new System.Drawing.Point(375, 3);
+            this.btnGenerate.Name = "btnGenerate";
+            this.btnGenerate.Size = new System.Drawing.Size(53, 23);
+            this.btnGenerate.TabIndex = 9;
+            this.btnGenerate.Text = "生成";
+            this.btnGenerate.UseVisualStyleBackColor = true;
+            this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
+            // 
+            // btnLoadAllGenerate
+            // 
+            this.btnLoadAllGenerate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnLoadAllGenerate.ForeColor = System.Drawing.Color.Red;
+            this.btnLoadAllGenerate.Location = new System.Drawing.Point(434, 3);
+            this.btnLoadAllGenerate.Name = "btnLoadAllGenerate";
+            this.btnLoadAllGenerate.Size = new System.Drawing.Size(79, 23);
+            this.btnLoadAllGenerate.TabIndex = 16;
+            this.btnLoadAllGenerate.Text = "加载并生成";
+            this.btnLoadAllGenerate.UseVisualStyleBackColor = true;
+            this.btnLoadAllGenerate.Click += new System.EventHandler(this.btnLoadAllGenerate_Click);
+            // 
+            // ckbParamToHash
+            // 
+            this.ckbParamToHash.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbParamToHash.AutoSize = true;
+            this.ckbParamToHash.Location = new System.Drawing.Point(519, 6);
+            this.ckbParamToHash.Name = "ckbParamToHash";
+            this.ckbParamToHash.Size = new System.Drawing.Size(72, 16);
+            this.ckbParamToHash.TabIndex = 17;
+            this.ckbParamToHash.Text = "@参数变#";
+            this.ckbParamToHash.UseVisualStyleBackColor = true;
+            // 
             // tabControl3
             // 
             this.tabControl3.Controls.Add(this.tpNewOldTable);
@@ -892,7 +908,7 @@
             this.tabControl3.Location = new System.Drawing.Point(0, 0);
             this.tabControl3.Name = "tabControl3";
             this.tabControl3.SelectedIndex = 0;
-            this.tabControl3.Size = new System.Drawing.Size(537, 193);
+            this.tabControl3.Size = new System.Drawing.Size(617, 193);
             this.tabControl3.TabIndex = 6;
             // 
             // tpNewOldTable
@@ -902,7 +918,7 @@
             this.tpNewOldTable.Location = new System.Drawing.Point(4, 22);
             this.tpNewOldTable.Name = "tpNewOldTable";
             this.tpNewOldTable.Padding = new System.Windows.Forms.Padding(3);
-            this.tpNewOldTable.Size = new System.Drawing.Size(529, 167);
+            this.tpNewOldTable.Size = new System.Drawing.Size(609, 167);
             this.tpNewOldTable.TabIndex = 0;
             this.tpNewOldTable.Text = "新旧表";
             this.tpNewOldTable.UseVisualStyleBackColor = true;
@@ -914,7 +930,7 @@
             this.groupBox12.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox12.Location = new System.Drawing.Point(3, 86);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(523, 78);
+            this.groupBox12.Size = new System.Drawing.Size(603, 78);
             this.groupBox12.TabIndex = 5;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "新旧表关系";
@@ -936,7 +952,7 @@
             this.dgvOldNewChar.Location = new System.Drawing.Point(3, 17);
             this.dgvOldNewChar.Name = "dgvOldNewChar";
             this.dgvOldNewChar.RowTemplate.Height = 23;
-            this.dgvOldNewChar.Size = new System.Drawing.Size(517, 58);
+            this.dgvOldNewChar.Size = new System.Drawing.Size(597, 58);
             this.dgvOldNewChar.TabIndex = 0;
             this.dgvOldNewChar.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvOldNewChar_ColumnHeaderMouseDoubleClick);
             this.dgvOldNewChar.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvOldNewChar_DataError);
@@ -949,10 +965,20 @@
             this.groupBox13.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox13.Location = new System.Drawing.Point(3, 3);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(523, 83);
+            this.groupBox13.Size = new System.Drawing.Size(603, 83);
             this.groupBox13.TabIndex = 4;
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "新旧表清单";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.ForeColor = System.Drawing.Color.Red;
+            this.label7.Location = new System.Drawing.Point(78, 2);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(437, 12);
+            this.label7.TabIndex = 7;
+            this.label7.Text = "匹配条件：通过新旧表中列的中文备注来匹配（匹配率低）。可用于只替换表名！";
             // 
             // tableLayoutPanel7
             // 
@@ -961,7 +987,7 @@
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 238F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 318F));
             this.tableLayoutPanel7.Controls.Add(this.label14, 0, 0);
             this.tableLayoutPanel7.Controls.Add(this.cbbTemplateType, 1, 0);
             this.tableLayoutPanel7.Controls.Add(this.label21, 0, 3);
@@ -976,7 +1002,7 @@
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(517, 59);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(597, 59);
             this.tableLayoutPanel7.TabIndex = 6;
             // 
             // label14
@@ -1046,7 +1072,7 @@
             this.tpNewOldColum.Location = new System.Drawing.Point(4, 22);
             this.tpNewOldColum.Name = "tpNewOldColum";
             this.tpNewOldColum.Padding = new System.Windows.Forms.Padding(3);
-            this.tpNewOldColum.Size = new System.Drawing.Size(529, 167);
+            this.tpNewOldColum.Size = new System.Drawing.Size(623, 167);
             this.tpNewOldColum.TabIndex = 1;
             this.tpNewOldColum.Text = "新旧列";
             this.tpNewOldColum.UseVisualStyleBackColor = true;
@@ -1058,7 +1084,7 @@
             this.groupBox11.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox11.Location = new System.Drawing.Point(3, 86);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(523, 78);
+            this.groupBox11.Size = new System.Drawing.Size(617, 78);
             this.groupBox11.TabIndex = 6;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "新旧列关系";
@@ -1080,7 +1106,7 @@
             this.dgvOldNewColumnChar.Location = new System.Drawing.Point(3, 17);
             this.dgvOldNewColumnChar.Name = "dgvOldNewColumnChar";
             this.dgvOldNewColumnChar.RowTemplate.Height = 23;
-            this.dgvOldNewColumnChar.Size = new System.Drawing.Size(517, 58);
+            this.dgvOldNewColumnChar.Size = new System.Drawing.Size(611, 58);
             this.dgvOldNewColumnChar.TabIndex = 0;
             this.dgvOldNewColumnChar.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvOldNewColumnChar_ColumnHeaderMouseDoubleClick);
             this.dgvOldNewColumnChar.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvOldNewColumnChar_DataError);
@@ -1093,10 +1119,20 @@
             this.groupBox10.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox10.Location = new System.Drawing.Point(3, 3);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(523, 83);
+            this.groupBox10.Size = new System.Drawing.Size(617, 83);
             this.groupBox10.TabIndex = 5;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "新旧列清单";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.ForeColor = System.Drawing.Color.Red;
+            this.label8.Location = new System.Drawing.Point(90, 2);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(341, 12);
+            this.label8.TabIndex = 8;
+            this.label8.Text = "匹配条件：通过新旧表的新旧列关系来匹配（准确度高，推荐）";
             // 
             // tableLayoutPanel5
             // 
@@ -1105,7 +1141,7 @@
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 238F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 318F));
             this.tableLayoutPanel5.Controls.Add(this.label4, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.cbbColumnTemplateType, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.label5, 0, 3);
@@ -1120,7 +1156,7 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(517, 59);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(611, 59);
             this.tableLayoutPanel5.TabIndex = 6;
             // 
             // label4
@@ -1197,7 +1233,7 @@
             // splitContainer5.Panel2
             // 
             this.splitContainer5.Panel2.Controls.Add(this.tabControl2);
-            this.splitContainer5.Size = new System.Drawing.Size(461, 417);
+            this.splitContainer5.Size = new System.Drawing.Size(381, 417);
             this.splitContainer5.SplitterDistance = 207;
             this.splitContainer5.TabIndex = 6;
             // 
@@ -1207,7 +1243,7 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(0, 0);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(461, 207);
+            this.groupBox3.Size = new System.Drawing.Size(381, 207);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "生成结果";
@@ -1217,7 +1253,7 @@
             this.rtbResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbResult.Location = new System.Drawing.Point(3, 17);
             this.rtbResult.Name = "rtbResult";
-            this.rtbResult.Size = new System.Drawing.Size(455, 187);
+            this.rtbResult.Size = new System.Drawing.Size(375, 187);
             this.rtbResult.TabIndex = 4;
             this.rtbResult.Text = "";
             // 
@@ -1229,7 +1265,7 @@
             this.tabControl2.Location = new System.Drawing.Point(0, 0);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(461, 206);
+            this.tabControl2.Size = new System.Drawing.Size(381, 206);
             this.tabControl2.TabIndex = 11;
             // 
             // tabPage1
@@ -1238,7 +1274,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(453, 180);
+            this.tabPage1.Size = new System.Drawing.Size(373, 180);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "替换列清单";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -1251,7 +1287,7 @@
             this.groupBox9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox9.Location = new System.Drawing.Point(3, 3);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(447, 174);
+            this.groupBox9.Size = new System.Drawing.Size(367, 174);
             this.groupBox9.TabIndex = 10;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "被替换列清单";
@@ -1273,7 +1309,7 @@
             this.dgvBeReplaceCol.Location = new System.Drawing.Point(3, 17);
             this.dgvBeReplaceCol.Name = "dgvBeReplaceCol";
             this.dgvBeReplaceCol.RowTemplate.Height = 23;
-            this.dgvBeReplaceCol.Size = new System.Drawing.Size(441, 154);
+            this.dgvBeReplaceCol.Size = new System.Drawing.Size(361, 154);
             this.dgvBeReplaceCol.TabIndex = 0;
             // 
             // tabPage2
@@ -1282,7 +1318,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(453, 180);
+            this.tabPage2.Size = new System.Drawing.Size(359, 180);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "转换说明";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -1292,7 +1328,7 @@
             this.rtbConvertRemark.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbConvertRemark.Location = new System.Drawing.Point(3, 3);
             this.rtbConvertRemark.Name = "rtbConvertRemark";
-            this.rtbConvertRemark.Size = new System.Drawing.Size(447, 174);
+            this.rtbConvertRemark.Size = new System.Drawing.Size(353, 174);
             this.rtbConvertRemark.TabIndex = 0;
             this.rtbConvertRemark.Text = "";
             // 
@@ -1397,26 +1433,6 @@
             this.uC_DbConnectionSource.Name = "uC_DbConnectionSource";
             this.uC_DbConnectionSource.Size = new System.Drawing.Size(1016, 81);
             this.uC_DbConnectionSource.TabIndex = 36;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.ForeColor = System.Drawing.Color.Red;
-            this.label7.Location = new System.Drawing.Point(78, 2);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(437, 12);
-            this.label7.TabIndex = 7;
-            this.label7.Text = "匹配条件：通过新旧表中列的中文备注来匹配（匹配率低）。可用于只替换表名！";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.ForeColor = System.Drawing.Color.Red;
-            this.label8.Location = new System.Drawing.Point(90, 2);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(341, 12);
-            this.label8.TabIndex = 8;
-            this.label8.Text = "匹配条件：通过新旧表的新旧列关系来匹配（准确度高，推荐）";
             // 
             // FrmSqlStringConvert
             // 
@@ -1618,5 +1634,6 @@
         private System.Windows.Forms.Button btnRemoveColumnTemplate;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.CheckBox ckbParamToHash;
     }
 }

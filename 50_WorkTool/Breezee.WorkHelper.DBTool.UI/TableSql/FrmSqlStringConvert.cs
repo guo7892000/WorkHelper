@@ -99,6 +99,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             cbbNewOldColumnSourceType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbSqlConvert_NewOldColumnSourceType, "1").Value;
             cbbSourceDbType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbSqlConvert_SourceDbType, ((int)DataBaseType.Oracle).ToString()).Value;
             cbbTargetDbType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbSqlConvert_TargetDbType, ((int)DataBaseType.MySql).ToString()).Value;
+            ckbParamToHash.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbSqlConvert_IsParaToHash, "1").Value) ? true : false;//@参数转#参数#
             //
             lblFuncInfo.Text = "转换只是对部分字符进行替换，减少部分手工替换工作，生成结果仅供参考，需要复制出来，确认并修正！";
             toolTip1.SetToolTip(cbbNewOldColumnSourceType, "当选择【表、列、函数】时，必须选择源和目标数据，并加载所有列数据；\r\n并且要选择或录入新旧表。");
@@ -461,14 +462,22 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
 
                 //7、针对@参数，替换为'#参数#'格式
-                string sParamPatter = @"@\w+";
-                Regex regexParam = new Regex(sParamPatter, RegexOptions.IgnoreCase);
-                MatchCollection mcCollParam = regexParam.Matches(sbAllSql.ToString());
-                foreach (Match m in mcCollParam)
+                if (ckbParamToHash.Checked)
                 {
-                    string sValue = m.Value;
-                    sValue = @"'#" + sValue.Replace("@", "") + "#'";
-                    sbAllSql.Replace(m.Value, sValue); //替换掉参数
+                    string sParamPatter = @"@\w+";
+                    Regex regexParam = new Regex(sParamPatter, RegexOptions.IgnoreCase);
+                    MatchCollection mcCollParam = regexParam.Matches(sbAllSql.ToString());
+                    var listParam = new SortedSet<string>();
+                    foreach (Match m in mcCollParam)
+                    {
+                        listParam.Add(m.Value);
+                    }
+                    //按长度从长到短来替换
+                    foreach (var sValue in listParam.OrderByDescending(t => t.Length))
+                    {
+                        string sNewValue = @"'#" + sValue.Replace("@", "") + "#'";
+                        sbAllSql.Replace(sValue, sNewValue); //替换掉参数
+                    }
                 }
 
                  //得到最终字符
@@ -480,6 +489,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbSqlConvert_TargetDbType, cbbTargetDbType.SelectedValue.ToString(), "【数据库间SQL转换】目标数据库类型");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbSqlConvert_NewOldColumnSourceType, cbbNewOldColumnSourceType.SelectedValue.ToString(), "【数据库间SQL转换】转换类型");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbSqlConvert_LatestSql, rtbInputSql.Text.Trim(), "【数据库间SQL转换】最后输入的SQL");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbSqlConvert_IsParaToHash, ckbParamToHash.Checked?"1":"0", "【数据库间SQL转换】@参数转#参数#");
                 WinFormContext.UserLoveSettings.Save();
 
                 stopwatch.Stop(); //结束计时
@@ -518,11 +528,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                     if (!string.IsNullOrEmpty(sSchema))
                     {
                         sbAllSql.Replace(sSchema + "." + sOldTableName, sNewTableName);
+                        lstHasReplace.Add(sOldTableName);
                     }
                 }
-                //替换旧表名为新表名
-                sbAllSql.Replace(sOldTableName, sNewTableName);
-                lstHasReplace.Add(sOldTableName);
+                else
+                {
+                    //替换旧表名为新表名
+                    sbAllSql.Replace(sOldTableName, sNewTableName);
+                    lstHasReplace.Add(sOldTableName);
+                }
             }
         }
 

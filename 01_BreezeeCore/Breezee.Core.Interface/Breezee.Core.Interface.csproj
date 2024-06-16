@@ -99,6 +99,7 @@
     <Compile Include="Global\GlobalKey.cs" />
     <Compile Include="Enum\IDValueType.cs" />
     <Compile Include="Interface\IConfig.cs" />
+    <Compile Include="Interface\IContext.cs" />
     <Compile Include="Interface\IDbEntity.cs" />
     <Compile Include="Interface\IDll.cs" />
     <Compile Include="Interface\IEntity.cs" />

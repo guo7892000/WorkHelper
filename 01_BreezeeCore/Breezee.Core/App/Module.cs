@@ -31,6 +31,7 @@ namespace Breezee.Core
         public abstract IConfig Config { get; set; }
         public abstract DbServerInfo MainDbServer { get; }
         public abstract IDictionary<string, IModule> OutModules { get; }
+        public abstract ModuleContext Context { get;}
 
         #region 字典操作
         public IDictionary<string, object> Success()

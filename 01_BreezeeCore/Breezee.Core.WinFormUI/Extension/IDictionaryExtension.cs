@@ -454,6 +454,10 @@ namespace Breezee.Core.WinFormUI
                     {
                         ((RichTextBox)ctrl).Text = sValue;
                     }
+                    else if (ctrl is NumericUpDown) //多文本框
+                    {
+                        ((NumericUpDown)ctrl).Value = string.IsNullOrEmpty(sValue) ? 0 : decimal.Parse(sValue);
+                    }
                     else
                     {
                         throw new Exception("错误，暂未增加该类型[" + ctrl.GetType() + "]控件的赋值处理。请联系系统管理员！");
@@ -593,7 +597,8 @@ namespace Breezee.Core.WinFormUI
         #region 将控件值赋给行数据
         /// <summary>
         /// 将控件值赋给行数据
-        /// 说明：目前只支持文本框、下拉框、时间、复选框、RichTextBox
+        /// 说明：目前只支持文本框、下拉框、时间、复选框、RichTextBox、NumericUpDown
+        /// 注：针对新增，会自动将drEdit加入表中
         /// </summary>
         /// <param name="listDBColumnControlRelation">列名与控件关系集合</param>
         /// <param name="dtOneRow">写入值的表</param>
@@ -681,15 +686,26 @@ namespace Breezee.Core.WinFormUI
                             drEdit[strSaveColumnName] = strValue;
                         }
                     }
+                    else if (ctrl is NumericUpDown)
+                    {
+                        drEdit[strSaveColumnName] = ((NumericUpDown)ctrl).Value.ToString();
+                    }
+                    else
+                    {
+                        throw new Exception("错误，暂未增加该类型[" + ctrl.GetType() + "]控件的取值处理。请联系系统管理员！");
+                    }
                 }
-                drEdit.AcceptChanges();
+
                 if (isAdd)
                 {
+                    drEdit.Table.Rows.Add(drEdit);
+                    drEdit.AcceptChanges();
                     //设置行状态为新增
                     drEdit.SetAdded();
                 }
                 else
                 {
+                    drEdit.AcceptChanges();
                     //设置行状态为修改
                     drEdit.SetModified();
                 }
@@ -862,9 +878,23 @@ namespace Breezee.Core.WinFormUI
             {
 
             }
+            else if (ctrl is NumericUpDown)
+            {
+                if(string.IsNullOrEmpty(((NumericUpDown)ctrl).Value.ToString().Trim()))
+                {
+                    sbAll.Append(i + "、【" + sKey + "】不能为空！");
+                    sbOne.Append("【" + sKey + "】不能为空！");
+                    iHaveEnptyItem = true;
+                    i++;
+                    if (!isClewAll)
+                    {
+                        return true;
+                    }
+                }
+            }
             else
             {
-                throw new Exception("未定义的判断非空类型：" + ctrl.GetType());
+                throw new Exception("未定义的判断非空类型：" + ctrl.GetType()+ "，请联系系统管理员！");
             }
             return false;
         }
