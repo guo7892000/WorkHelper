@@ -686,6 +686,16 @@ namespace Breezee.WorkHelper.DBTool.UI
                     //将表中的列添加到表中
                     foreach (DataColumn dc in dtSql.Columns)
                     {
+                        //判断列是否只包含字母数据下划线：
+                        string sPattern = @"^[a-zA-Z0-9_]+$";
+                        Regex regex = new Regex(sPattern, RegexOptions.IgnoreCase);
+                        var mcColl = regex.Matches(dc.ColumnName);
+                        if (mcColl.Count == 0)
+                        {
+                            ShowErr("SQL中必须所有列都要有别名！存在没有别名的列：" + dc.ColumnName);
+                            return false;
+                        }
+
                         if (dtInput.Select(_sInputColCode + "='" + dc.ColumnName + "'").Length == 0)
                         {
                             dtInput.Rows.Add(dc.ColumnName);
@@ -967,7 +977,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             #endregion
 
-            //取出第一个符合#列名#的
+            //取出第一个符合#列名#的：这个列作为必填的字段名
             //1查询条件处理
             string firstParamPatter = @"#\w+#";
             Regex regex = new Regex(firstParamPatter, RegexOptions.IgnoreCase);
@@ -1027,14 +1037,17 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     //列信息去掉最后一个字符
                     string sLast = sbAllSql.ToString().Trim();
-                    sLast = sLast.Substring(0, sLast.Length - 1);
+                    if (!string.IsNullOrEmpty(sLast))
+                    {
+                        sLast = sLast.Length > 1 ? sLast.Substring(0, sLast.Length - 1) : string.Empty;
+                    }
                     sbAllSql.Clear();
                     sbAllSql.Append(sLast);
                     //必填项去掉最后一个字符
                     sLast = sbAllMust.ToString().Trim();
                     if (!string.IsNullOrEmpty(sLast))
                     {
-                        sLast = sLast.Substring(0, sLast.Length - 1);
+                        sLast = sLast.Length > 1 ? sLast.Substring(0, sLast.Length - 1) : string.Empty;
                     }
                     sbAllMust.Clear();
                     sbAllMust.Append(sLast);
@@ -1097,7 +1110,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             catch (Exception ex)
             {
-                ShowErr(ex.Message);
+                ShowErr(ex);
             }
         }
 
@@ -1296,7 +1309,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             string sSearch = txbSearchTableName.Text.Trim();
             if (string.IsNullOrEmpty(sSearch)) return;
-            dgvTableList.SeachText(sSearch, ref dgvFindText, null, isNext);
+            dgvTableList.SeachText(sSearch, ref dgvFindText, null, isNext,ckbTableFixed.Checked);
             lblFind.Text = dgvFindText.CurrentMsg;
         }
 

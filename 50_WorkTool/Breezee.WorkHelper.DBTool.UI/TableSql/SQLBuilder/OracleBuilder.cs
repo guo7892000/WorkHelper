@@ -87,7 +87,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 foreach (EntCol drCol in tableCols)
                 {
-                    GenerateOracleColumn(TableChangeType.Create, strTableCode, drCol, ref strPK, ref j, ref strSequence);
+                    GenerateOracleColumn(paramEntity, TableChangeType.Create, strTableCode, drCol, ref strPK, ref j, ref strSequence);
                 }
                 //表创建完毕
                 sbSql.Append(");\n");
@@ -109,7 +109,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 int j = 1;
                 foreach (EntCol drCol in tableCols)
                 {
-                    GenerateOracleColumn(TableChangeType.Alter, strTableCode, drCol, ref strPK, ref j, ref strSequence);
+                    GenerateOracleColumn(paramEntity, TableChangeType.Alter, strTableCode, drCol, ref strPK, ref j, ref strSequence);
                 }
                 //sbSql.Append("/\n");
                 #endregion
@@ -117,7 +117,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             iCalNum++;
         }
 
-        private void GenerateOracleColumn(TableChangeType tableDealType, string strTableCode, EntCol drCol, ref string strPK, ref int j, ref string strSequence)
+        private void GenerateOracleColumn(GenerateParamEntity paramEntity, TableChangeType tableDealType, string strTableCode, EntCol drCol, ref string strPK, ref int j, ref string strSequence)
         {
             //表编码,列名称,列编码,类型,长度,键,必填,约束,备注,自增长设置
             //列处理类型，当为空时表示新增
@@ -162,7 +162,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             string strDefault_Full = "";//默认值
 
             #region 转换字段类型与默认值
-            if (importDBType != targetDBType)
+            if (importDBType != targetDBType && paramEntity.isNeedColumnTypeConvert)
             {
                 ConvertDBTypeDefaultValueString(ref strColDataType, ref strColDefault, importDBType);
             }

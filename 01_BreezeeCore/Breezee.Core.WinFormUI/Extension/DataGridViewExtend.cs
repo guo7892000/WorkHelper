@@ -935,7 +935,8 @@ namespace Breezee.Core.WinFormUI
         /// <param name="sText"></param>
         /// <param name="listColumn"></param>
         /// <param name="isForwardFind">是否身前查找：true是，false否</param>
-        public static void SeachText(this DataGridView dgv, string sText, ref DataGridViewFindText dgvText, List<string> listColumn = null, bool isForwardFind = true)
+        ///  <param name="isExactQuery">是否精确查询：true是，false否</param>
+        public static void SeachText(this DataGridView dgv, string sText, ref DataGridViewFindText dgvText, List<string> listColumn = null, bool isForwardFind = true,bool isExactQuery=false)
         {
             bool isFind = false;
             if (dgvText == null)
@@ -951,6 +952,7 @@ namespace Breezee.Core.WinFormUI
                     {
                         foreach (DataGridViewCell cell in row.Cells)
                         {
+                            //不是指定列时，直接跳过
                             if (listColumn != null && listColumn.Count > 0 && !listColumn.Contains(dgv.Columns[cell.ColumnIndex].Name))
                             {
                                 continue;
@@ -962,19 +964,45 @@ namespace Breezee.Core.WinFormUI
                             {
                                 if (cell.ColumnIndex > dgvText.ColumnIndex)
                                 {
-                                    if (cell.Value != null && cell.Value.ToString().IndexOf(sText,StringComparison.OrdinalIgnoreCase)>-1)
+                                    if (!isExactQuery)
                                     {
-                                        isFind = SetFindEntityInfo(dgv, dgvText, cell, isForwardFind);
-                                        return;
+                                        //非精确查询处理
+                                        if (cell.Value != null && cell.Value.ToString().IndexOf(sText, StringComparison.OrdinalIgnoreCase) > -1)
+                                        {
+                                            isFind = SetFindEntityInfo(dgv, dgvText, cell, isForwardFind);
+                                            return;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //精确查询处理
+                                        if (cell.Value != null && cell.Value.ToString().Equals(sText, StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            isFind = SetFindEntityInfo(dgv, dgvText, cell, isForwardFind);
+                                            return;
+                                        }
                                     }
                                 }
                             }
                             else
                             {
-                                if (cell.Value != null && cell.Value.ToString().IndexOf(sText, StringComparison.OrdinalIgnoreCase) > -1)
+                                if (!isExactQuery)
                                 {
-                                    isFind = SetFindEntityInfo(dgv, dgvText, cell, isForwardFind);
-                                    return;
+                                    //非精确查询处理
+                                    if (cell.Value != null && cell.Value.ToString().IndexOf(sText, StringComparison.OrdinalIgnoreCase) > -1)
+                                    {
+                                        isFind = SetFindEntityInfo(dgv, dgvText, cell, isForwardFind);
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    //精确查询处理
+                                    if (cell.Value != null && cell.Value.ToString().Equals(sText, StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        isFind = SetFindEntityInfo(dgv, dgvText, cell, isForwardFind);
+                                        return;
+                                    }
                                 }
                             }
                         }
@@ -1000,6 +1028,7 @@ namespace Breezee.Core.WinFormUI
                         {
                             DataGridViewCell cell = row.Cells[j];
 
+                            //不是指定列时，直接跳过
                             if (listColumn != null && listColumn.Count > 0 && !listColumn.Contains(dgv.Columns[cell.ColumnIndex].Name))
                             {
                                 continue;
@@ -1012,19 +1041,45 @@ namespace Breezee.Core.WinFormUI
                             {
                                 if (cell.ColumnIndex < dgvText.ColumnIndex)
                                 {
-                                    if (cell.Value != null && cell.Value.ToString().Contains(sText))
+                                    if (!isExactQuery)
                                     {
-                                        isFind = SetFindEntityInfo(dgv, dgvText, cell, isForwardFind);
-                                        return;
+                                        //非精确查询处理
+                                        if (cell.Value != null && cell.Value.ToString().IndexOf(sText, StringComparison.OrdinalIgnoreCase) > -1)
+                                        {
+                                            isFind = SetFindEntityInfo(dgv, dgvText, cell, isForwardFind);
+                                            return;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //精确查询处理
+                                        if (cell.Value != null && cell.Value.ToString().Equals(sText, StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            isFind = SetFindEntityInfo(dgv, dgvText, cell, isForwardFind);
+                                            return;
+                                        }
                                     }
                                 }
                             }
                             else
                             {
-                                if (cell.Value != null && cell.Value.ToString().Contains(sText))
+                                if (!isExactQuery)
                                 {
-                                    isFind = SetFindEntityInfo(dgv, dgvText, cell, isForwardFind);
-                                    return;
+                                    //非精确查询处理
+                                    if (cell.Value != null && cell.Value.ToString().IndexOf(sText, StringComparison.OrdinalIgnoreCase) > -1)
+                                    {
+                                        isFind = SetFindEntityInfo(dgv, dgvText, cell, isForwardFind);
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    //精确查询处理
+                                    if (cell.Value != null && cell.Value.ToString().Equals(sText, StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        isFind = SetFindEntityInfo(dgv, dgvText, cell, isForwardFind);
+                                        return;
+                                    }
                                 }
                             }
 

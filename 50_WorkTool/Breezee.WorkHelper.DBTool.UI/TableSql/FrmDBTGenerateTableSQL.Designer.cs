@@ -34,6 +34,7 @@
             this.tpImport = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.grbTable = new System.Windows.Forms.GroupBox();
+            this.ckbTableFixed = new System.Windows.Forms.CheckBox();
             this.lblFindTable = new System.Windows.Forms.Label();
             this.btnFindFrontTable = new System.Windows.Forms.Button();
             this.btnFindNextTable = new System.Windows.Forms.Button();
@@ -45,6 +46,7 @@
             this.tsmiSortBySelectItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lblTableData = new System.Windows.Forms.Label();
             this.grbColumn = new System.Windows.Forms.GroupBox();
+            this.ckbColumnFixed = new System.Windows.Forms.CheckBox();
             this.btnFindFront = new System.Windows.Forms.Button();
             this.lblFind = new System.Windows.Forms.Label();
             this.btnFindNext = new System.Windows.Forms.Button();
@@ -59,6 +61,7 @@
             this.dgvOldNewChar = new System.Windows.Forms.DataGridView();
             this.cmsClass = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiRemove = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiRemoveAll = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.dgvDataDictionary = new System.Windows.Forms.DataGridView();
             this.cmsDataDictionary = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -209,6 +212,7 @@
             // grbTable
             // 
             this.grbTable.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
+            this.grbTable.Controls.Add(this.ckbTableFixed);
             this.grbTable.Controls.Add(this.lblFindTable);
             this.grbTable.Controls.Add(this.btnFindFrontTable);
             this.grbTable.Controls.Add(this.btnFindNextTable);
@@ -223,6 +227,16 @@
             this.grbTable.TabStop = false;
             this.grbTable.Text = "表清单";
             // 
+            // ckbTableFixed
+            // 
+            this.ckbTableFixed.AutoSize = true;
+            this.ckbTableFixed.Location = new System.Drawing.Point(281, -1);
+            this.ckbTableFixed.Name = "ckbTableFixed";
+            this.ckbTableFixed.Size = new System.Drawing.Size(51, 21);
+            this.ckbTableFixed.TabIndex = 25;
+            this.ckbTableFixed.Text = "精确";
+            this.ckbTableFixed.UseVisualStyleBackColor = true;
+            // 
             // lblFindTable
             // 
             this.lblFindTable.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -230,7 +244,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblFindTable.AutoSize = true;
             this.lblFindTable.ForeColor = System.Drawing.Color.Red;
-            this.lblFindTable.Location = new System.Drawing.Point(403, -1);
+            this.lblFindTable.Location = new System.Drawing.Point(459, -1);
             this.lblFindTable.Name = "lblFindTable";
             this.lblFindTable.Size = new System.Drawing.Size(56, 17);
             this.lblFindTable.TabIndex = 24;
@@ -238,7 +252,7 @@
             // 
             // btnFindFrontTable
             // 
-            this.btnFindFrontTable.Location = new System.Drawing.Point(342, -4);
+            this.btnFindFrontTable.Location = new System.Drawing.Point(398, -4);
             this.btnFindFrontTable.Name = "btnFindFrontTable";
             this.btnFindFrontTable.Size = new System.Drawing.Size(55, 23);
             this.btnFindFrontTable.TabIndex = 23;
@@ -248,7 +262,7 @@
             // 
             // btnFindNextTable
             // 
-            this.btnFindNextTable.Location = new System.Drawing.Point(280, -2);
+            this.btnFindNextTable.Location = new System.Drawing.Point(336, -2);
             this.btnFindNextTable.Name = "btnFindNextTable";
             this.btnFindNextTable.Size = new System.Drawing.Size(56, 21);
             this.btnFindNextTable.TabIndex = 21;
@@ -313,7 +327,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTableData.AutoSize = true;
             this.lblTableData.ForeColor = System.Drawing.Color.Red;
-            this.lblTableData.Location = new System.Drawing.Point(659, -1);
+            this.lblTableData.Location = new System.Drawing.Point(778, 0);
             this.lblTableData.Name = "lblTableData";
             this.lblTableData.Size = new System.Drawing.Size(56, 17);
             this.lblTableData.TabIndex = 12;
@@ -322,6 +336,7 @@
             // grbColumn
             // 
             this.grbColumn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
+            this.grbColumn.Controls.Add(this.ckbColumnFixed);
             this.grbColumn.Controls.Add(this.btnFindFront);
             this.grbColumn.Controls.Add(this.lblFind);
             this.grbColumn.Controls.Add(this.btnFindNext);
@@ -336,9 +351,19 @@
             this.grbColumn.TabStop = false;
             this.grbColumn.Text = "列清单";
             // 
+            // ckbColumnFixed
+            // 
+            this.ckbColumnFixed.AutoSize = true;
+            this.ckbColumnFixed.Location = new System.Drawing.Point(281, -3);
+            this.ckbColumnFixed.Name = "ckbColumnFixed";
+            this.ckbColumnFixed.Size = new System.Drawing.Size(51, 21);
+            this.ckbColumnFixed.TabIndex = 26;
+            this.ckbColumnFixed.Text = "精确";
+            this.ckbColumnFixed.UseVisualStyleBackColor = true;
+            // 
             // btnFindFront
             // 
-            this.btnFindFront.Location = new System.Drawing.Point(342, -7);
+            this.btnFindFront.Location = new System.Drawing.Point(403, -7);
             this.btnFindFront.Name = "btnFindFront";
             this.btnFindFront.Size = new System.Drawing.Size(55, 25);
             this.btnFindFront.TabIndex = 22;
@@ -353,7 +378,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblFind.AutoSize = true;
             this.lblFind.ForeColor = System.Drawing.Color.Red;
-            this.lblFind.Location = new System.Drawing.Point(403, 0);
+            this.lblFind.Location = new System.Drawing.Point(464, 0);
             this.lblFind.Name = "lblFind";
             this.lblFind.Size = new System.Drawing.Size(56, 17);
             this.lblFind.TabIndex = 21;
@@ -361,7 +386,7 @@
             // 
             // btnFindNext
             // 
-            this.btnFindNext.Location = new System.Drawing.Point(280, -5);
+            this.btnFindNext.Location = new System.Drawing.Point(341, -5);
             this.btnFindNext.Name = "btnFindNext";
             this.btnFindNext.Size = new System.Drawing.Size(56, 21);
             this.btnFindNext.TabIndex = 20;
@@ -383,7 +408,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblColumnInfo.AutoSize = true;
             this.lblColumnInfo.ForeColor = System.Drawing.Color.Red;
-            this.lblColumnInfo.Location = new System.Drawing.Point(659, 0);
+            this.lblColumnInfo.Location = new System.Drawing.Point(778, -2);
             this.lblColumnInfo.Name = "lblColumnInfo";
             this.lblColumnInfo.Size = new System.Drawing.Size(56, 17);
             this.lblColumnInfo.TabIndex = 13;
@@ -484,16 +509,24 @@
             // cmsClass
             // 
             this.cmsClass.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiRemove});
+            this.tsmiRemove,
+            this.tsmiRemoveAll});
             this.cmsClass.Name = "contextMenuStrip3";
-            this.cmsClass.Size = new System.Drawing.Size(101, 26);
+            this.cmsClass.Size = new System.Drawing.Size(125, 48);
             // 
             // tsmiRemove
             // 
             this.tsmiRemove.Name = "tsmiRemove";
-            this.tsmiRemove.Size = new System.Drawing.Size(100, 22);
+            this.tsmiRemove.Size = new System.Drawing.Size(124, 22);
             this.tsmiRemove.Text = "移除";
             this.tsmiRemove.Click += new System.EventHandler(this.tsmiRemove_Click);
+            // 
+            // tsmiRemoveAll
+            // 
+            this.tsmiRemoveAll.Name = "tsmiRemoveAll";
+            this.tsmiRemoveAll.Size = new System.Drawing.Size(124, 22);
+            this.tsmiRemoveAll.Text = "移除全部";
+            this.tsmiRemoveAll.Click += new System.EventHandler(this.tsmiRemoveAll_Click);
             // 
             // groupBox3
             // 
@@ -771,7 +804,7 @@
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label3.AutoSize = true;
             this.label3.ForeColor = System.Drawing.Color.Red;
-            this.label3.Location = new System.Drawing.Point(3, 7);
+            this.label3.Location = new System.Drawing.Point(3, 6);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(68, 17);
             this.label3.TabIndex = 1;
@@ -781,7 +814,7 @@
             // 
             this.cbbInputType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbInputType.FormattingEnabled = true;
-            this.cbbInputType.Location = new System.Drawing.Point(77, 3);
+            this.cbbInputType.Location = new System.Drawing.Point(77, 4);
             this.cbbInputType.Name = "cbbInputType";
             this.cbbInputType.Size = new System.Drawing.Size(96, 25);
             this.cbbInputType.TabIndex = 18;
@@ -792,7 +825,7 @@
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(179, 7);
+            this.label2.Location = new System.Drawing.Point(179, 6);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(68, 17);
             this.label2.TabIndex = 1;
@@ -802,7 +835,7 @@
             // 
             this.cbbImportDBType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbImportDBType.FormattingEnabled = true;
-            this.cbbImportDBType.Location = new System.Drawing.Point(253, 3);
+            this.cbbImportDBType.Location = new System.Drawing.Point(253, 4);
             this.cbbImportDBType.Name = "cbbImportDBType";
             this.cbbImportDBType.Size = new System.Drawing.Size(121, 25);
             this.cbbImportDBType.TabIndex = 4;
@@ -812,7 +845,7 @@
             // 
             this.cbbTargetDbType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbTargetDbType.FormattingEnabled = true;
-            this.cbbTargetDbType.Location = new System.Drawing.Point(454, 3);
+            this.cbbTargetDbType.Location = new System.Drawing.Point(454, 4);
             this.cbbTargetDbType.Name = "cbbTargetDbType";
             this.cbbTargetDbType.Size = new System.Drawing.Size(121, 25);
             this.cbbTargetDbType.TabIndex = 3;
@@ -822,7 +855,7 @@
             this.lblThree.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblThree.AutoSize = true;
             this.lblThree.ForeColor = System.Drawing.Color.Red;
-            this.lblThree.Location = new System.Drawing.Point(581, 7);
+            this.lblThree.Location = new System.Drawing.Point(581, 6);
             this.lblThree.Name = "lblThree";
             this.lblThree.Size = new System.Drawing.Size(68, 17);
             this.lblThree.TabIndex = 1;
@@ -832,7 +865,7 @@
             // 
             this.cbbCreateType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbCreateType.FormattingEnabled = true;
-            this.cbbCreateType.Location = new System.Drawing.Point(655, 3);
+            this.cbbCreateType.Location = new System.Drawing.Point(655, 4);
             this.cbbCreateType.Name = "cbbCreateType";
             this.cbbCreateType.Size = new System.Drawing.Size(102, 25);
             this.cbbCreateType.TabIndex = 5;
@@ -841,7 +874,7 @@
             // 
             this.ckbAllConvert.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbAllConvert.AutoSize = true;
-            this.ckbAllConvert.Location = new System.Drawing.Point(763, 5);
+            this.ckbAllConvert.Location = new System.Drawing.Point(763, 4);
             this.ckbAllConvert.Name = "ckbAllConvert";
             this.ckbAllConvert.Size = new System.Drawing.Size(75, 21);
             this.ckbAllConvert.TabIndex = 7;
@@ -854,7 +887,7 @@
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.Red;
-            this.label1.Location = new System.Drawing.Point(380, 7);
+            this.label1.Location = new System.Drawing.Point(380, 6);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(68, 17);
             this.label1.TabIndex = 1;
@@ -864,7 +897,7 @@
             // 
             this.ckbDefaulePK.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbDefaulePK.AutoSize = true;
-            this.ckbDefaulePK.Location = new System.Drawing.Point(844, 5);
+            this.ckbDefaulePK.Location = new System.Drawing.Point(844, 4);
             this.ckbDefaulePK.Name = "ckbDefaulePK";
             this.ckbDefaulePK.Size = new System.Drawing.Size(75, 21);
             this.ckbDefaulePK.TabIndex = 25;
@@ -875,7 +908,7 @@
             // 
             this.ckbDefaultColNameCn.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbDefaultColNameCn.AutoSize = true;
-            this.ckbDefaultColNameCn.Location = new System.Drawing.Point(925, 5);
+            this.ckbDefaultColNameCn.Location = new System.Drawing.Point(925, 4);
             this.ckbDefaultColNameCn.Name = "ckbDefaultColNameCn";
             this.ckbDefaultColNameCn.Size = new System.Drawing.Size(111, 21);
             this.ckbDefaultColNameCn.TabIndex = 26;
@@ -885,7 +918,7 @@
             // txbDefaultColNameCN
             // 
             this.txbDefaultColNameCN.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbDefaultColNameCN.Location = new System.Drawing.Point(1042, 4);
+            this.txbDefaultColNameCN.Location = new System.Drawing.Point(1042, 3);
             this.txbDefaultColNameCN.Name = "txbDefaultColNameCN";
             this.txbDefaultColNameCN.Size = new System.Drawing.Size(142, 23);
             this.txbDefaultColNameCN.TabIndex = 27;
@@ -986,7 +1019,7 @@
             // 
             this.cbbTableName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbTableName.FormattingEnabled = true;
-            this.cbbTableName.Location = new System.Drawing.Point(53, 4);
+            this.cbbTableName.Location = new System.Drawing.Point(53, 7);
             this.cbbTableName.Name = "cbbTableName";
             this.cbbTableName.Size = new System.Drawing.Size(291, 25);
             this.cbbTableName.TabIndex = 19;
@@ -1421,5 +1454,8 @@
         private System.Windows.Forms.Button btnFindNextTable;
         private System.Windows.Forms.TextBox txbSearchTable;
         private System.Windows.Forms.Label lblFindTable;
+        private System.Windows.Forms.ToolStripMenuItem tsmiRemoveAll;
+        private System.Windows.Forms.CheckBox ckbTableFixed;
+        private System.Windows.Forms.CheckBox ckbColumnFixed;
     }
 }

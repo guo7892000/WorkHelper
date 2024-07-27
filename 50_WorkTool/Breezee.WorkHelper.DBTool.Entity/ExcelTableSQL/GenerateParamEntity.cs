@@ -41,5 +41,9 @@ namespace Breezee.WorkHelper.DBTool.Entity
         /// 默认字段中文名
         /// </summary>
         public string defaultColNameCN { get; set; }
+        /// <summary>
+        /// 是否需要列类型转换
+        /// </summary>
+        public bool isNeedColumnTypeConvert { get; set; }
     }
 }

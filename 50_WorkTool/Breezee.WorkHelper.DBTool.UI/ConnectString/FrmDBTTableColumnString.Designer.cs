@@ -57,6 +57,7 @@
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
+            this.ckbColumnFixed = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.grbOrcNet.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -270,6 +271,7 @@
             // grbColumn
             // 
             this.grbColumn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
+            this.grbColumn.Controls.Add(this.ckbColumnFixed);
             this.grbColumn.Controls.Add(this.btnFindFront);
             this.grbColumn.Controls.Add(this.lblFind);
             this.grbColumn.Controls.Add(this.btnFindNext);
@@ -285,7 +287,7 @@
             // 
             // btnFindFront
             // 
-            this.btnFindFront.Location = new System.Drawing.Point(353, -2);
+            this.btnFindFront.Location = new System.Drawing.Point(410, -2);
             this.btnFindFront.Name = "btnFindFront";
             this.btnFindFront.Size = new System.Drawing.Size(55, 21);
             this.btnFindFront.TabIndex = 18;
@@ -300,7 +302,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblFind.AutoSize = true;
             this.lblFind.ForeColor = System.Drawing.Color.Red;
-            this.lblFind.Location = new System.Drawing.Point(423, 1);
+            this.lblFind.Location = new System.Drawing.Point(480, 1);
             this.lblFind.Name = "lblFind";
             this.lblFind.Size = new System.Drawing.Size(53, 12);
             this.lblFind.TabIndex = 16;
@@ -308,7 +310,7 @@
             // 
             // btnFindNext
             // 
-            this.btnFindNext.Location = new System.Drawing.Point(294, -2);
+            this.btnFindNext.Location = new System.Drawing.Point(351, -2);
             this.btnFindNext.Name = "btnFindNext";
             this.btnFindNext.Size = new System.Drawing.Size(56, 21);
             this.btnFindNext.TabIndex = 15;
@@ -385,6 +387,16 @@
             this.uC_DbConnection1.Size = new System.Drawing.Size(1054, 78);
             this.uC_DbConnection1.TabIndex = 35;
             // 
+            // ckbColumnFixed
+            // 
+            this.ckbColumnFixed.AutoSize = true;
+            this.ckbColumnFixed.Location = new System.Drawing.Point(297, 0);
+            this.ckbColumnFixed.Name = "ckbColumnFixed";
+            this.ckbColumnFixed.Size = new System.Drawing.Size(48, 16);
+            this.ckbColumnFixed.TabIndex = 27;
+            this.ckbColumnFixed.Text = "精确";
+            this.ckbColumnFixed.UseVisualStyleBackColor = true;
+            // 
             // FrmDBTTableColumnString
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -450,5 +462,6 @@
         private System.Windows.Forms.TextBox txbSearchColumn;
         private System.Windows.Forms.Label lblFind;
         private System.Windows.Forms.Button btnFindFront;
+        private System.Windows.Forms.CheckBox ckbColumnFixed;
     }
 }

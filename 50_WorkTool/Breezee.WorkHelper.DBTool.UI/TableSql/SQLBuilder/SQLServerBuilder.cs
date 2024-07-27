@@ -66,7 +66,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 foreach (EntCol drCol in tableCols)
                 {
                     //生成SqlServer的列
-                    GenerateSqlServerColumn(TableChangeType.Create, strTableCode, drCol, ref strPK, ref j, strTableName);
+                    GenerateSqlServerColumn(paramEntity, TableChangeType.Create, strTableCode, drCol, ref strPK, ref j, strTableName);
                 }
                 //最后加括号并换行
                 sbSql.Append(")\n");
@@ -94,14 +94,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                 foreach (EntCol drCol in tableCols)
                 {
                     //生成SqlServer的列
-                    GenerateSqlServerColumn(TableChangeType.Alter, strTableCode, drCol, ref strPK, ref j, strTableName);
+                    GenerateSqlServerColumn(paramEntity, TableChangeType.Alter, strTableCode, drCol, ref strPK, ref j, strTableName);
                 }
                 #endregion
             }
             iCalNum++;
         }
 
-        private void GenerateSqlServerColumn(TableChangeType tableDealType, string strTableCode, EntCol drCol, ref string strPK, ref int j, string strTableName)
+        private void GenerateSqlServerColumn(GenerateParamEntity paramEntity, TableChangeType tableDealType, string strTableCode, EntCol drCol, ref string strPK, ref int j, string strTableName)
         {
             //公共字段
             ColumnChangeType strColumnDealType = drCol.commonCol.ChangeTypeEnum;//列处理类型，当为空时表示新增
@@ -138,7 +138,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             string strUqueList = "";//唯一性
                                     //
             #region 转换字段类型与默认值
-            if (importDBType != targetDBType)
+            if (importDBType != targetDBType && paramEntity.isNeedColumnTypeConvert)
             {
                 ConvertDBTypeDefaultValueString(ref strColDataType, ref strColDefault, importDBType);
             }

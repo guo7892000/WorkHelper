@@ -84,6 +84,9 @@
             this.btnGenerateDbDoc = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.txbTableRemark = new System.Windows.Forms.TextBox();
+            this.ckbTableFixedSource = new System.Windows.Forms.CheckBox();
+            this.ckbTableFixedTarget = new System.Windows.Forms.CheckBox();
+            this.ckbTableFixedResult = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.grbOrcNet.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -242,6 +245,7 @@
             // grbColumn
             // 
             this.grbColumn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
+            this.grbColumn.Controls.Add(this.ckbTableFixedSource);
             this.grbColumn.Controls.Add(this.btnFindFrontSource);
             this.grbColumn.Controls.Add(this.lblFindSource);
             this.grbColumn.Controls.Add(this.btnFindNextSource);
@@ -290,7 +294,7 @@
             // 
             // txbSearchColumnSource
             // 
-            this.txbSearchColumnSource.Location = new System.Drawing.Point(104, -3);
+            this.txbSearchColumnSource.Location = new System.Drawing.Point(53, -4);
             this.txbSearchColumnSource.Name = "txbSearchColumnSource";
             this.txbSearchColumnSource.Size = new System.Drawing.Size(187, 21);
             this.txbSearchColumnSource.TabIndex = 14;
@@ -338,6 +342,7 @@
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
+            this.groupBox2.Controls.Add(this.ckbTableFixedTarget);
             this.groupBox2.Controls.Add(this.btnFindFrontTarget);
             this.groupBox2.Controls.Add(this.lblFindTarget);
             this.groupBox2.Controls.Add(this.btnFindNextTarget);
@@ -386,7 +391,7 @@
             // 
             // txbSearchColumnTarget
             // 
-            this.txbSearchColumnTarget.Location = new System.Drawing.Point(104, -3);
+            this.txbSearchColumnTarget.Location = new System.Drawing.Point(53, -4);
             this.txbSearchColumnTarget.Name = "txbSearchColumnTarget";
             this.txbSearchColumnTarget.Size = new System.Drawing.Size(187, 21);
             this.txbSearchColumnTarget.TabIndex = 14;
@@ -557,6 +562,7 @@
             // groupBox3
             // 
             this.groupBox3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
+            this.groupBox3.Controls.Add(this.ckbTableFixedResult);
             this.groupBox3.Controls.Add(this.btnFindFrontResult);
             this.groupBox3.Controls.Add(this.lblFindResult);
             this.groupBox3.Controls.Add(this.btnFindNextResult);
@@ -572,7 +578,7 @@
             // 
             // btnFindFrontResult
             // 
-            this.btnFindFrontResult.Location = new System.Drawing.Point(353, -2);
+            this.btnFindFrontResult.Location = new System.Drawing.Point(410, -2);
             this.btnFindFrontResult.Name = "btnFindFrontResult";
             this.btnFindFrontResult.Size = new System.Drawing.Size(55, 21);
             this.btnFindFrontResult.TabIndex = 18;
@@ -587,7 +593,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblFindResult.AutoSize = true;
             this.lblFindResult.ForeColor = System.Drawing.Color.Red;
-            this.lblFindResult.Location = new System.Drawing.Point(423, 1);
+            this.lblFindResult.Location = new System.Drawing.Point(480, 1);
             this.lblFindResult.Name = "lblFindResult";
             this.lblFindResult.Size = new System.Drawing.Size(53, 12);
             this.lblFindResult.TabIndex = 16;
@@ -595,7 +601,7 @@
             // 
             // btnFindNextResult
             // 
-            this.btnFindNextResult.Location = new System.Drawing.Point(294, -2);
+            this.btnFindNextResult.Location = new System.Drawing.Point(351, -2);
             this.btnFindNextResult.Name = "btnFindNextResult";
             this.btnFindNextResult.Size = new System.Drawing.Size(56, 21);
             this.btnFindNextResult.TabIndex = 15;
@@ -745,6 +751,36 @@
             this.txbTableRemark.Size = new System.Drawing.Size(229, 21);
             this.txbTableRemark.TabIndex = 12;
             // 
+            // ckbTableFixedSource
+            // 
+            this.ckbTableFixedSource.AutoSize = true;
+            this.ckbTableFixedSource.Location = new System.Drawing.Point(242, -1);
+            this.ckbTableFixedSource.Name = "ckbTableFixedSource";
+            this.ckbTableFixedSource.Size = new System.Drawing.Size(48, 16);
+            this.ckbTableFixedSource.TabIndex = 27;
+            this.ckbTableFixedSource.Text = "精确";
+            this.ckbTableFixedSource.UseVisualStyleBackColor = true;
+            // 
+            // ckbTableFixedTarget
+            // 
+            this.ckbTableFixedTarget.AutoSize = true;
+            this.ckbTableFixedTarget.Location = new System.Drawing.Point(246, -1);
+            this.ckbTableFixedTarget.Name = "ckbTableFixedTarget";
+            this.ckbTableFixedTarget.Size = new System.Drawing.Size(48, 16);
+            this.ckbTableFixedTarget.TabIndex = 28;
+            this.ckbTableFixedTarget.Text = "精确";
+            this.ckbTableFixedTarget.UseVisualStyleBackColor = true;
+            // 
+            // ckbTableFixedResult
+            // 
+            this.ckbTableFixedResult.AutoSize = true;
+            this.ckbTableFixedResult.Location = new System.Drawing.Point(297, 1);
+            this.ckbTableFixedResult.Name = "ckbTableFixedResult";
+            this.ckbTableFixedResult.Size = new System.Drawing.Size(48, 16);
+            this.ckbTableFixedResult.TabIndex = 28;
+            this.ckbTableFixedResult.Text = "精确";
+            this.ckbTableFixedResult.UseVisualStyleBackColor = true;
+            // 
             // FrmDBTTableColumnDiff
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -848,5 +884,8 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txbTableCN;
+        private System.Windows.Forms.CheckBox ckbTableFixedSource;
+        private System.Windows.Forms.CheckBox ckbTableFixedTarget;
+        private System.Windows.Forms.CheckBox ckbTableFixedResult;
     }
 }

@@ -65,7 +65,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 foreach (EntCol drCol in tableCols)
                 {
                     //增加MySql列
-                    GeneratePostgreSqlColumn(TableChangeType.Create, strTableCode, drCol, ref strPK, ref j, ref strUqueList);
+                    GeneratePostgreSqlColumn(paramEntity, TableChangeType.Create, strTableCode, drCol, ref strPK, ref j, ref strUqueList);
                 }
                 if (strPK != "")
                 {
@@ -94,14 +94,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                 foreach (EntCol drCol in tableCols)
                 {
                     //增加MySql列
-                    GeneratePostgreSqlColumn(TableChangeType.Alter, strTableCode, drCol, ref strPK, ref j, ref strUqueList);
+                    GeneratePostgreSqlColumn(paramEntity, TableChangeType.Alter, strTableCode, drCol, ref strPK, ref j, ref strUqueList);
                 }
                 #endregion
             }
             iCalNum++;
         }
 
-        private void GeneratePostgreSqlColumn(TableChangeType tableDealType, string strTableCode, EntCol drCol, ref string strPK, ref int j, ref string strUqueList)
+        private void GeneratePostgreSqlColumn(GenerateParamEntity paramEntity, TableChangeType tableDealType, string strTableCode, EntCol drCol, ref string strPK, ref int j, ref string strUqueList)
         {
             //表编码,列名称,列编码,类型,长度,键,必填,约束,备注,自增长设置
             ColumnChangeType strColumnDealType = drCol.commonCol.ChangeTypeEnum;
@@ -141,7 +141,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             string sOneSql = "";
 
             #region 转换字段类型与默认值
-            if (importDBType != targetDBType)
+            if (importDBType != targetDBType && paramEntity.isNeedColumnTypeConvert)
             {
                 ConvertDBTypeDefaultValueString(ref strColDataType, ref strColDefault, importDBType);
             }

@@ -243,7 +243,10 @@ namespace Breezee.WorkHelper.DBTool.Entity
                     if (paramEntity.isDefaultPK)
                     {
                         drErrorArray = dtAllCol.Select(ExcelTable.Code + "='" + strTableCode + "'", ExcelCol.OrderNo);
-                        drErrorArray[0][ExcelCol.KeyType] = "PK";
+                        if(drErrorArray.Length > 0)
+                        {
+                            drErrorArray[0][ExcelCol.KeyType] = "PK";
+                        }
                     }
                     else
                     {

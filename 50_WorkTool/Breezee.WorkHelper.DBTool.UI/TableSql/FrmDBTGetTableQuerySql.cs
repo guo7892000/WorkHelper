@@ -1319,7 +1319,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             string sSearch = txbSearchColumn.Text.Trim();
             if (string.IsNullOrEmpty(sSearch)) return;
-            dgvColList.SeachText(sSearch, ref dgvFindText, null, isNext);
+            dgvColList.SeachText(sSearch, ref dgvFindText, null, isNext,ckbColumnFixed.Checked);
             lblColumnInfo.Text = dgvFindText.CurrentMsg;
         }
 

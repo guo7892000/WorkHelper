@@ -279,16 +279,23 @@ namespace Breezee.Core.WinFormUI
         #region 显示错误
         public void ShowErr(Exception ex)
         {
+            //写系统日志
+            WinFormContext.Instance.LogErr(ex.StackTrace, "系统错误", false);
             MsgHelper.ShowErr(ex);
         }
 
         public void ShowErr(string message, Exception ex)
         {
+            //写系统日志
+            WinFormContext.Instance.LogErr(ex.StackTrace, "系统错误", false);
             MsgHelper.ShowErr(message, ex);
         }
 
         public void ShowErr(string Msg)
         {
+            //写系统日志
+            WinFormContext.Instance.LogErr(Msg, "系统错误", false);
+            //
             if (!IsGlobalShowMsg(Msg))
             {
                 MsgHelper.ShowErr(Msg);
@@ -297,6 +304,8 @@ namespace Breezee.Core.WinFormUI
 
         public void ShowErr(string Msg, string title)
         {
+            //写系统日志
+            WinFormContext.Instance.LogErr(Msg, "系统错误", false);
             if (!IsGlobalShowMsg(Msg))
             {
                 MsgHelper.ShowErr(Msg, title);

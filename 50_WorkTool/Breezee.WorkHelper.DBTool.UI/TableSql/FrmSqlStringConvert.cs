@@ -799,7 +799,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             string sSearch = txbSearchTableNameSource.Text.Trim();
             if (string.IsNullOrEmpty(sSearch)) return;
-            dgvTableListSource.SeachText(sSearch, ref dgvFindTextSource, null, isNext);
+            dgvTableListSource.SeachText(sSearch, ref dgvFindTextSource, null, isNext, ckbTableFixedSource.Checked);
             lblFindSource.Text = dgvFindTextSource.CurrentMsg;
         }
 
@@ -817,7 +817,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             string sSearch = txbSearchTableNameTarget.Text.Trim();
             if (string.IsNullOrEmpty(sSearch)) return;
-            dgvTableListTarget.SeachText(sSearch, ref dgvFindTextTarget, null, isNext);
+            dgvTableListTarget.SeachText(sSearch, ref dgvFindTextTarget, null, isNext, ckbTableFixedTarget.Checked);
             lblFindTarget.Text = dgvFindTextTarget.CurrentMsg;
         } 
         #endregion
@@ -1560,7 +1560,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 ShowErr(ex.Message);
             }
-        } 
+        }
         #endregion
     }
 }

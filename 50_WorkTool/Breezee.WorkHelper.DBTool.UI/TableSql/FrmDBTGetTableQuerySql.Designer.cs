@@ -77,6 +77,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
+            this.ckbColumnFixed = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.grbOrcNet.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -491,6 +492,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             // grbColumn
             // 
             this.grbColumn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
+            this.grbColumn.Controls.Add(this.ckbColumnFixed);
             this.grbColumn.Controls.Add(this.btnFindFront);
             this.grbColumn.Controls.Add(this.btnFindNext);
             this.grbColumn.Controls.Add(this.txbSearchColumn);
@@ -506,7 +508,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 
             // btnFindFront
             // 
-            this.btnFindFront.Location = new System.Drawing.Point(330, -3);
+            this.btnFindFront.Location = new System.Drawing.Point(381, -4);
             this.btnFindFront.Name = "btnFindFront";
             this.btnFindFront.Size = new System.Drawing.Size(55, 21);
             this.btnFindFront.TabIndex = 17;
@@ -516,7 +518,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 
             // btnFindNext
             // 
-            this.btnFindNext.Location = new System.Drawing.Point(271, -3);
+            this.btnFindNext.Location = new System.Drawing.Point(322, -4);
             this.btnFindNext.Name = "btnFindNext";
             this.btnFindNext.Size = new System.Drawing.Size(54, 21);
             this.btnFindNext.TabIndex = 17;
@@ -526,7 +528,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 
             // txbSearchColumn
             // 
-            this.txbSearchColumn.Location = new System.Drawing.Point(79, -3);
+            this.txbSearchColumn.Location = new System.Drawing.Point(79, -6);
             this.txbSearchColumn.Name = "txbSearchColumn";
             this.txbSearchColumn.Size = new System.Drawing.Size(187, 21);
             this.txbSearchColumn.TabIndex = 16;
@@ -538,7 +540,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblColumnInfo.AutoSize = true;
             this.lblColumnInfo.ForeColor = System.Drawing.Color.Red;
-            this.lblColumnInfo.Location = new System.Drawing.Point(395, 0);
+            this.lblColumnInfo.Location = new System.Drawing.Point(446, 0);
             this.lblColumnInfo.Name = "lblColumnInfo";
             this.lblColumnInfo.Size = new System.Drawing.Size(53, 12);
             this.lblColumnInfo.TabIndex = 13;
@@ -606,6 +608,16 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.uC_DbConnection1.Name = "uC_DbConnection1";
             this.uC_DbConnection1.Size = new System.Drawing.Size(1087, 78);
             this.uC_DbConnection1.TabIndex = 35;
+            // 
+            // ckbColumnFixed
+            // 
+            this.ckbColumnFixed.AutoSize = true;
+            this.ckbColumnFixed.Location = new System.Drawing.Point(271, -1);
+            this.ckbColumnFixed.Name = "ckbColumnFixed";
+            this.ckbColumnFixed.Size = new System.Drawing.Size(48, 16);
+            this.ckbColumnFixed.TabIndex = 27;
+            this.ckbColumnFixed.Text = "精确";
+            this.ckbColumnFixed.UseVisualStyleBackColor = true;
             // 
             // FrmDBTGetTableQuerySql
             // 
@@ -692,5 +704,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem tsmiChooseOrNot;
         private ToolStripMenuItem tsmiCleanDefault;
+        private CheckBox ckbColumnFixed;
     }
 }

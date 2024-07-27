@@ -856,7 +856,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                     DataRow[] drArr = dtTable.FilterValue(ExcelTable.Code, dr[ExcelTable.Code + "_OLD"].ToString());
                     if (drArr.Length > 0)
                     {
-                        dtTalbeSelect.ImportRow(drArr[0]);
+                        DataRow[] drArrSelect = dtTalbeSelect.FilterValue(ExcelTable.Code, dr[ExcelTable.Code + "_OLD"].ToString());
+                        if (drArrSelect.Length == 0)
+                        {
+                            dtTalbeSelect.ImportRow(drArr[0]);
+                        }
                     }
                 }
             }
@@ -913,6 +917,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 return;
             }
 
+            bool isNeedColumnTypeConvert = true;
             //创建方式
             createType = cbbCreateType.SelectedValue.ToString();
 
@@ -958,7 +963,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 string sDefault = dr[ColCommon.ExcelCol.Default].ToString();
                 string sDataLength = dr[ColCommon.ExcelCol.DataLength].ToString();
                 string sDataDotLength = dr[ColCommon.ExcelCol.DataDotLength].ToString();
-                builder.ConvertDBTypeDefaultValueString(ref sDataType, ref sDefault, importDBType);
+                builder.ConvertDBTypeDefaultValueString(ref sDataType, ref sDefault, importDBType);//转换了列类型和默认值
+                isNeedColumnTypeConvert = false;//这里就设置为不需要转换了
                 dr[ColCommon.ExcelCol.DataTypeNew] = sDataType; //得到新类型
                 dr[ColCommon.ExcelCol.Default] = sDefault; //得到新默认值
                 if (ckbIsPkRemoveDefault.Checked && "PK".Equals(dr[ColCommon.ExcelCol.KeyType].ToString()))
@@ -1076,6 +1082,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             paramEntity.isDefaultPK = ckbDefaulePK.Checked;
             paramEntity.isDefaultColNameCN = ckbDefaultColNameCn.Checked;
             paramEntity.defaultColNameCN = txbDefaultColNameCN.Text.Trim();
+            paramEntity.isNeedColumnTypeConvert = isNeedColumnTypeConvert;//是否需要列类型转换
 
             if (!ValidateData(dtTalbeSelect, dtColumnSelect, paramEntity))//校验数据
             {
@@ -1548,7 +1555,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             string sSearch = txbSearchColumn.Text.Trim();
             if (string.IsNullOrEmpty(sSearch)) return;
-            dgvColList.SeachText(sSearch, ref dgvFindText, null, isNext);
+            dgvColList.SeachText(sSearch, ref dgvFindText, null, isNext, ckbColumnFixed.Checked);
             lblFind.Text = dgvFindText.CurrentMsg;
         } 
         #endregion
@@ -1826,6 +1833,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         }
         #endregion
 
+        #region 删除行
         private void tsmiRemove_Click(object sender, EventArgs e)
         {
             DataGridView dgvOldNewChar = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as DataGridView;
@@ -1834,6 +1842,17 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (dataRow == null || dataRow.RowState == DataRowState.Detached) return;
             dt.Rows.Remove(dataRow);
         }
+
+        private void tsmiRemoveAll_Click(object sender, EventArgs e)
+        {
+            DataGridView dgvOldNewChar = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as DataGridView;
+            DataTable dt = dgvOldNewChar.GetBindingTable();
+            if (dt.Rows.Count > 0)
+            {
+                dt.Rows.Clear();
+            }
+        } 
+        #endregion
 
         private void tsmiAdd_Click(object sender, EventArgs e)
         {
@@ -1931,9 +1950,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             string sSearch = txbSearchTable.Text.Trim();
             if (string.IsNullOrEmpty(sSearch)) return;
-            dgvTableList.SeachText(sSearch, ref dgvFindTextTable, null, isNext);
+            dgvTableList.SeachText(sSearch, ref dgvFindTextTable, null, isNext,ckbTableFixed.Checked);
             lblFindTable.Text = dgvFindTextTable.CurrentMsg;
-        } 
+        }
         #endregion
+
+        
     }
 }

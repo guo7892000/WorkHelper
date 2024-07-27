@@ -46,14 +46,17 @@ namespace Breezee.WorkHelper.DBTool.UI
                 #region 新增处理
                 sbSql.Append("/*" + iCalNum.ToString() + "、新增表：" + strTableName + AddLeftRightKuoHao(strTableCode) + "*/\n");
                 sbSql.Append(AddRightBand("CREATE TABLE IF NOT EXISTS") + AddRightBand(strTableCode) + "(\n");
+                string sTableRemark;
                 //表说明SQL
                 if (string.IsNullOrEmpty(strTableRemark))
                 {
-                    sbRemark.Append(string.Format("ALTER TABLE {0} COMMENT '{1}';\n", strTableCode, strTableName));
+                    //sbRemark.Append(string.Format("ALTER TABLE {0} COMMENT '{1}';\n", strTableCode, strTableName));
+                    sTableRemark = string.Format(") COMMENT '{0}';", strTableName);
                 }
                 else
                 {
-                    sbRemark.Append(string.Format("ALTER TABLE {0} COMMENT '{1}';\n", strTableCode, strTableName + "：" + strTableRemark));
+                    //sbRemark.Append(string.Format("ALTER TABLE {0} COMMENT '{1}';\n", strTableCode, strTableName + "：" + strTableRemark));
+                    sTableRemark = string.Format(") COMMENT '{0}';", strTableName + "：" + strTableRemark);
                 }
 
                 int j = tableCols.Count();
@@ -63,17 +66,17 @@ namespace Breezee.WorkHelper.DBTool.UI
                 foreach (EntCol drCol in tableCols)
                 {
                     //增加MySql列
-                    GenerateMySqlColumn(TableChangeType.Create, strTableCode, drCol, ref strPK, ref j);
+                    GenerateMySqlColumn(paramEntity,TableChangeType.Create, strTableCode, drCol, ref strPK, ref j);
                 }
                 if (strPK != "")
                 {
                     sbSql.Append(strPK);//主键的处理,MySql是一句独立的
                 }
-                //表创建完毕
-                sbSql.Append(");\n");
-
+                //表创建完毕：直接在后面加上备注
+                sbSql.Append(sTableRemark); 
+                //sbSql.Append(");\n");
                 //sbSql.Append(strUqueList);//唯一和外键
-                sbSql.Append(sbRemark.ToString());//添加列说明
+                //sbSql.Append(sbRemark.ToString());//添加列说明
                 sbRemark = new StringBuilder();
                 #endregion
             }
@@ -86,14 +89,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                 foreach (EntCol drCol in tableCols)
                 {
                     //增加MySql列
-                    GenerateMySqlColumn(TableChangeType.Alter, strTableCode, drCol, ref strPK, ref j);
+                    GenerateMySqlColumn(paramEntity, TableChangeType.Alter, strTableCode, drCol, ref strPK, ref j);
                 }
                 #endregion
             }
             iCalNum++;
         }
 
-        private void GenerateMySqlColumn(TableChangeType tableDealType, string strTableCode, EntCol drCol, ref string strPK, ref int j)
+        private void GenerateMySqlColumn(GenerateParamEntity paramEntity, TableChangeType tableDealType, string strTableCode, EntCol drCol, ref string strPK, ref int j)
         {
             //表编码,列名称,列编码,类型,长度,键,必填,约束,备注,自增长设置
             ColumnChangeType strColumnDealType = drCol.commonCol.ChangeTypeEnum;
@@ -129,7 +132,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             string strTable_Col = strTableCode + "_" + strColCode;//表编码+"_"+列编码
 
             #region 转换字段类型与默认值
-            if (importDBType != targetDBType)
+            if (importDBType != targetDBType && paramEntity.isNeedColumnTypeConvert)
             {
                 ConvertDBTypeDefaultValueString(ref strColDataType, ref strColDefault, importDBType);
             }

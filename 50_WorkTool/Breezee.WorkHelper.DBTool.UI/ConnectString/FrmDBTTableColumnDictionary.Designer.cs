@@ -152,6 +152,7 @@
             this.cbbModuleString = new System.Windows.Forms.ComboBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
+            this.ckbTableFixed = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpAllTableCol.SuspendLayout();
@@ -903,6 +904,7 @@
             // 
             // groupBox7
             // 
+            this.groupBox7.Controls.Add(this.ckbTableFixed);
             this.groupBox7.Controls.Add(this.txbSearchTableName);
             this.groupBox7.Controls.Add(this.btnFindFront);
             this.groupBox7.Controls.Add(this.btnFindNext);
@@ -920,12 +922,12 @@
             // 
             this.txbSearchTableName.Location = new System.Drawing.Point(47, -3);
             this.txbSearchTableName.Name = "txbSearchTableName";
-            this.txbSearchTableName.Size = new System.Drawing.Size(128, 21);
+            this.txbSearchTableName.Size = new System.Drawing.Size(141, 21);
             this.txbSearchTableName.TabIndex = 21;
             // 
             // btnFindFront
             // 
-            this.btnFindFront.Location = new System.Drawing.Point(238, -3);
+            this.btnFindFront.Location = new System.Drawing.Point(307, -3);
             this.btnFindFront.Name = "btnFindFront";
             this.btnFindFront.Size = new System.Drawing.Size(55, 21);
             this.btnFindFront.TabIndex = 20;
@@ -935,7 +937,7 @@
             // 
             // btnFindNext
             // 
-            this.btnFindNext.Location = new System.Drawing.Point(181, -3);
+            this.btnFindNext.Location = new System.Drawing.Point(245, -3);
             this.btnFindNext.Name = "btnFindNext";
             this.btnFindNext.Size = new System.Drawing.Size(56, 21);
             this.btnFindNext.TabIndex = 19;
@@ -1594,6 +1596,16 @@
             this.uC_DbConnection1.Size = new System.Drawing.Size(1230, 78);
             this.uC_DbConnection1.TabIndex = 35;
             // 
+            // ckbTableFixed
+            // 
+            this.ckbTableFixed.AutoSize = true;
+            this.ckbTableFixed.Location = new System.Drawing.Point(194, 0);
+            this.ckbTableFixed.Name = "ckbTableFixed";
+            this.ckbTableFixed.Size = new System.Drawing.Size(48, 16);
+            this.ckbTableFixed.TabIndex = 26;
+            this.ckbTableFixed.Text = "精确";
+            this.ckbTableFixed.UseVisualStyleBackColor = true;
+            // 
             // FrmDBTTableColumnDictionary
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1808,5 +1820,6 @@
         private System.Windows.Forms.RichTextBox rtbIn;
         private System.Windows.Forms.RichTextBox rtbDate;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox ckbTableFixed;
     }
 }

@@ -56,7 +56,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 foreach (EntCol drCol in tableCols)
                 {
                     //增加MySql列
-                    GenerateSQLiteColumn(TableChangeType.Create, strTableCode, drCol, ref strPK, ref j, ref strUqueList);
+                    GenerateSQLiteColumn(paramEntity, TableChangeType.Create, strTableCode, drCol, ref strPK, ref j, ref strUqueList);
                 }
                 //唯一和外键
                 if (!string.IsNullOrEmpty(strUqueList))
@@ -80,14 +80,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                 foreach (EntCol drCol in tableCols)
                 {
                     //增加MySql列
-                    GenerateSQLiteColumn(TableChangeType.Alter, strTableCode, drCol, ref strPK, ref j, ref strUqueList);
+                    GenerateSQLiteColumn(paramEntity, TableChangeType.Alter, strTableCode, drCol, ref strPK, ref j, ref strUqueList);
                 }
                 #endregion
             }
             iCalNum++;
         }
 
-        private void GenerateSQLiteColumn(TableChangeType tableDealType, string strTableCode, EntCol drCol, ref string strPK, ref int j, ref string strUqueList)
+        private void GenerateSQLiteColumn(GenerateParamEntity paramEntity, TableChangeType tableDealType, string strTableCode, EntCol drCol, ref string strPK, ref int j, ref string strUqueList)
         {
             //表编码,列名称,列编码,类型,长度,键,必填,约束,备注,自增长设置
             ColumnChangeType strColumnDealType = drCol.commonCol.ChangeTypeEnum;
@@ -131,7 +131,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             StringBuilder sbColSql = new StringBuilder();//列的SQL
 
             #region 转换字段类型与默认值
-            if (importDBType != targetDBType)
+            if (importDBType != targetDBType && paramEntity.isNeedColumnTypeConvert)
             {
                 ConvertDBTypeDefaultValueString(ref strColDataType, ref strColDefault, importDBType);
             }

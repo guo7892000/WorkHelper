@@ -653,7 +653,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             string sSearch = txbSearchColumnSource.Text.Trim();
             if (string.IsNullOrEmpty(sSearch)) return;
-            dgvColListSource.SeachText(sSearch, ref dgvFindTextSource, null, isNext);
+            dgvColListSource.SeachText(sSearch, ref dgvFindTextSource, null, isNext, ckbTableFixedSource.Checked);
             lblFindSource.Text = dgvFindTextSource.CurrentMsg;
         }
 
@@ -661,7 +661,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             string sSearch = txbSearchColumnTarget.Text.Trim();
             if (string.IsNullOrEmpty(sSearch)) return;
-            dgvColListTarget.SeachText(sSearch, ref dgvFindTextTarget, null, isNext);
+            dgvColListTarget.SeachText(sSearch, ref dgvFindTextTarget, null, isNext, ckbTableFixedTarget.Checked);
             lblFindTarget.Text = dgvFindTextTarget.CurrentMsg;
         }
 
@@ -679,7 +679,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             string sSearch = txbSearchColumnResult.Text.Trim();
             if (string.IsNullOrEmpty(sSearch)) return;
-            dgvResult.SeachText(sSearch, ref dgvFindTextResult, null, isNext);
+            dgvResult.SeachText(sSearch, ref dgvFindTextResult, null, isNext, ckbTableFixedResult.Checked);
             lblFindResult.Text = dgvFindTextResult.CurrentMsg;
         }
         private void btnFindNextResult_Click(object sender, EventArgs e)

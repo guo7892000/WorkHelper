@@ -601,7 +601,7 @@ private String #{1}#;
         {
             string sSearch = txbSearchColumn.Text.Trim();
             if (string.IsNullOrEmpty(sSearch)) return;
-            dgvColList.SeachText(sSearch, ref dgvFindText, null, isNext);
+            dgvColList.SeachText(sSearch, ref dgvFindText, null, isNext, ckbColumnFixed.Checked);
             lblFind.Text = dgvFindText.CurrentMsg;
         }
     }
