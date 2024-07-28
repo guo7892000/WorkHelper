@@ -373,21 +373,22 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             #region 变量
             string sWordConvert = cbbWordConvert.SelectedValue.ToString();
-            string sBegin = "_BEGIN";
+            string sBegin = "_BEG";
             string sEnd = "_END";
             sqlEntity = new DBSqlEntity();
             sqlEntity.NewLine = ckbNewLine.Checked ? DataBaseCommon.NewLine : "";
-            sqlEntity.Tab = ckbNewLine.Checked ? DataBaseCommon.Tab : "";
+            //sqlEntity.Tab = ckbNewLine.Checked ? DataBaseCommon.Tab : "";
+            sqlEntity.Tab = ckbNewLine.Checked ? DataBaseCommon.Blank : ""; //使用空格代替Tab键
             sqlEntity.IsHasRemark = ckbUseRemark.Checked;
             sqlEntity.IsUseGlobal = ckbUseDefaultConfig.Checked;
 
             StringBuilder sbAllSql = new StringBuilder();
             StringBuilder sbWhereSql = new StringBuilder();
-            string strWhereFirst = ckbNewLine.Checked ? "WHERE 1=1 " + sqlEntity.NewLine : " WHERE 1=1 " + sqlEntity.NewLine;
-            string strWhereNoFirst = ckbNewLine.Checked ? "WHERE " : " WHERE ";
+            string strWhereFirst = ckbNewLine.Checked ? "WHERE 1=1" + sqlEntity.NewLine : " WHERE 1=1" + sqlEntity.NewLine;
+            string strWhereNoFirst = ckbNewLine.Checked ? "WHERE" : " WHERE";
 
 
-            string strAnd = " AND ";
+            string strAnd = " AND";
 
             switch (cbbParaType.SelectedValue.ToString())
             {
@@ -785,7 +786,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         {
                             if (j == iSelectLastNumber)//只有一列
                             {
-                                sbInsertColums.Append("INSERT INTO " + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment)
+                                sbInsertColums.Append("INSERT INTO" + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment)
                                         + "(" + sqlEntity.NewLine + sqlEntity.Tab + sColInsert + ")" + sqlEntity.NewLine);
                                 sbInsertVale.Append(sValues + sqlEntity.NewLine + "(" + sqlEntity.NewLine + sColValueComment + sqlEntity.NewLine + ")" + sqlEntity.NewLine);
                             }
@@ -796,7 +797,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                                     sColInsert = sColInsertDynamic;
                                     sColValueComment = sColValueDynamic;
                                 }
-                                sbInsertColums.Append("INSERT INTO " + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment)
+                                sbInsertColums.Append("INSERT INTO" + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment)
                                         + "(" + sqlEntity.NewLine + "" + sqlEntity.Tab + sColInsert);
                                 sbInsertVale.Append(sValues + sqlEntity.NewLine + "(" + sqlEntity.NewLine + "" + sColValueComment + sqlEntity.NewLine);
                             }
@@ -834,17 +835,17 @@ namespace Breezee.WorkHelper.DBTool.UI
                         strTableAlias = sqlEntity.TableAlias;
                         string sColValueComment = MakeColumnValueComment(sqlEntity.SqlType, strNowComma, strColCode, strColValue, strColComments, strColType, sqlEntity.ParamType, strColCodeParm) + sqlEntity.NewLine;
                         string sColValueDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} != null and {0} !=''\">{1}=#{2}{0}{3},</if>", sDefineFormat + strColCodeParm, strTableAliasAndDot + strColCodeParm, "{", "}") + sqlEntity.NewLine;
-                        string sSet = ckbNewLine.Checked ? "SET " : " SET ";
+                        string sSet = ckbNewLine.Checked ? "SET" : "SET";
 
                         if (j == 0) //首行
                         {
                             if (bDynamicCol)
                             {
-                                sbUpdate.Append("UPDATE " + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment) + sSet + sColValueDynamic);
+                                sbUpdate.Append("UPDATE" + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment) + sSet + sColValueDynamic);
                             }
                             else
                             {
-                                sbUpdate.Append("UPDATE " + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment) + sSet + sColValueComment);
+                                sbUpdate.Append("UPDATE" + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment) + sSet + sColValueComment);
                             } 
                         }
                         else if (j != iSelectLastNumber) //中间行
@@ -868,7 +869,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     else if (sqlEntity.SqlType == SqlType.Query)
                     {
                         #region 查询（直接拼接，条件为独立拼接）
-                        string sFrom = ckbNewLine.Checked ? "FROM " : " FROM ";
+                        string sFrom = ckbNewLine.Checked ? "FROM" : " FROM";
                         if ((j == 0 && j == iSelectLastNumber) || j == iSelectLastNumber)//只有一列
                         {
                             strNowComma = "";
@@ -879,11 +880,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                         {
                             if (j == iSelectLastNumber)//只有一列
                             {
-                                sbSelect.Append("SELECT " + sColValueComment + sFrom + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment));
+                                sbSelect.Append("SELECT" + sColValueComment + sFrom + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment));
                             }
                             else
                             {
-                                sbSelect.Append("SELECT " + sColValueComment);
+                                sbSelect.Append("SELECT" + sColValueComment);
                             }
                         }
                         else if (j != iSelectLastNumber) //中间行
@@ -925,7 +926,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 i++;//下一个表
             }
             rtbResult.Clear();
-            rtbResult.AppendText(sbAllSql.ToString() + sqlEntity.NewLine);
+            rtbResult.AppendText(sbAllSql.ToString());
             Clipboard.SetData(DataFormats.UnicodeText, sbAllSql.ToString());
             tabControl1.SelectedTab = tpAutoSQL;
             //保存用户偏好值
@@ -1182,9 +1183,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             if (!string.IsNullOrEmpty(strColComments))
             {
-                return sqlEntity.Tab + strColCode + strComma + sqlEntity.Tab + "/*" + strColComments + "*/";
+                //return sqlEntity.Tab + strColCode + strComma + sqlEntity.Tab + "/*" + strColComments + "*/";
+                return strColCode + strComma + sqlEntity.Tab + "/*" + strColComments + "*/";
             }
-            return sqlEntity.Tab + strColCode + strComma;
+            //return sqlEntity.Tab + strColCode + strComma;
+            return strColCode + strComma;
         }
 
         /// <summary>
@@ -1241,11 +1244,13 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             if (sqlTypeNow == SqlType.Insert)
             {
-                return sqlEntity.Tab + strColRelValue + strComma + sqlEntity.Tab + strColRemark;
+                //return sqlEntity.Tab + strColRelValue + strComma + sqlEntity.Tab + strColRemark;
+                return strColRelValue + strComma + sqlEntity.Tab + strColRemark;
             }
-            else //sqlTypeNow == SqlType.Update
+            else
             {
-                return sqlEntity.Tab + strTableAliasAndDot + strColCode + "=" + strColRelValue + strComma + sqlEntity.Tab + strColRemark;
+                //return sqlEntity.Tab + strTableAliasAndDot + strColCode + "=" + strColRelValue + strComma + sqlEntity.Tab + strColRemark;
+                return strTableAliasAndDot + strColCode + "=" + strColRelValue + strComma + sqlEntity.Tab + strColRemark;
             }
         }
 

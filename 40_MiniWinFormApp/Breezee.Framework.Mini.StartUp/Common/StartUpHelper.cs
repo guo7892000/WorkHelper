@@ -37,7 +37,7 @@ namespace Breezee.Framework.Mini.StartUp
                         shortcut.IconLocation = Path.Combine(sNewRoot, MiniGlobalValue.AppStartUpIconName);
                         isFound = true;
                         shortcut.Save();
-                        break;
+                        //break; //注释后，表示所有快捷方式都替换
                     }
                 }
             }

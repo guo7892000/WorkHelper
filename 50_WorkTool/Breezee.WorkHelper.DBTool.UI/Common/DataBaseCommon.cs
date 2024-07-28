@@ -160,6 +160,10 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 增加右边空格方法
         public static string AddRightBand(string strColCode)
         {
+            if(string.IsNullOrEmpty(strColCode))
+            {
+                return "";
+            }
             return strColCode + Blank;
         }
         #endregion
