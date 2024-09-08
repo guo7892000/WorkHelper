@@ -90,6 +90,8 @@ namespace Breezee.Framework.Mini.StartUp
             this.SetFormBackGroupStyle(_WinFormConfig.Get(GlobalKey.MainSkinType, BaseForm.ChildFormStyleType), _WinFormConfig.Get(GlobalKey.MainSkinValue, BaseForm.ChildFormStyleValue));//设置主窗体样式
             WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp(_FrameworkHelpPath, _FrameworkHelpName + " > 概述", _FrameworkHelpName));
             WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp("/Help/Html/Mini/ChangeHistory.html", _FrameworkHelpName + " > 变更历史", _FrameworkHelpName));
+            WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp("/Help/Html/Mini/PracticalFunction.html", _FrameworkHelpName + " > 推荐功能", _FrameworkHelpName));
+            WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp("/Help/Html/Mini/DevelopHelper.html", _FrameworkHelpName + " > 开发说明", _FrameworkHelpName));
             //加载菜单
             LoadMenu();
             //增加快捷菜单

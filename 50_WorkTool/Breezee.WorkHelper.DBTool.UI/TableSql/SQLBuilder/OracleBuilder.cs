@@ -789,7 +789,7 @@ SELECT  TO_CHAR(A.OUT_STORE_DATE, 'YYYY/MM/DD') OUT_STORE_DATE,
             /*支持TO_DATE、TO_CHAR，且日期且使用-或/分隔*/
             //全部匹配的
             //string sToDateCharPatter = @"\s*,*\s*TO_((DATE)|(CHAR))\s*\(\s*(((\w+\.)*\w+)|(@\w+)|(\'?#?\w+#?\'?)|(\'[^']+\'))+\s*,\s*\'YYYY[-/]?MM[-/]?DD(\s+\w+(:\w+)*)*\'\)\s*,?";
-            string sToDateCharPatter = @"\s*,*\s*TO_((DATE)|(CHAR))\s*\(\s*(((\w+\.)*\w+)|(@\w+)|(\'?#?\w+#?\'?)|(\'[^']+\'))+\s*,\s*\'YYYY[-/]?MM[-/]?DD(\s+\w+(:\w+)*)*\'\)\s*,?";
+            string sToDateCharPatter = @"\s*,*\s*TO_((DATE)|(CHAR))\s*\(\s*(((\w+\.)*\w+)|(@\w+)|(\'?#?\w+#?\'?)|(\'[^']+\'))+\s*,\s*\'(YYYY)?([-/]?MM)?([-/]?DD)?(\s+\w+(:\w+)*)*\'\)\s*,?";
             Regex regex = new Regex(sToDateCharPatter, RegexOptions.IgnoreCase);
             MatchCollection mcColl = regex.Matches(sSql.ToString());
 
