@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<xml>
+  <key kid="DataStandardTypeDate" name ="日期类">
+    <value vid="dateTime" name="日期时间" oracle="date" mysql="datetime" sqlserver="datetime" postgresql="date" sqlite="datetime"/>
+    <value vid="dateOnly" name="仅日期" oracle="date" mysql="datetime" sqlserver="datetime" postgresql="date" sqlite="datetime"/>
+	<value vid="timeOnly" name="仅时间" oracle="date" mysql="datetime" sqlserver="datetime" postgresql="date" sqlite="datetime"/>
+    <value vid="timeStamp" name="时间戳" oracle="timestamp" mysql="timestamp" sqlserver="timestamp" postgresql="date" sqlite="datetime"/>   
+  </key>
+</xml>  

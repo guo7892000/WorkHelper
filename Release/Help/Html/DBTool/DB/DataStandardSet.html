@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>数据标准维护</title>
+</head>
+<body>
+    <div>
+        <h1>数据标准维护</h1>
+        <div>
+            <h2>一、功能概述</h2>
+            本功能维护的数据标准是提供给【表结构SQL生成】功能使用的，用于检查列编码、列长度是否符合本标准。
+        </div>
+        <div>
+            <h2>二、界面截图</h2>
+            主界面：<br>
+            <img src="Images\DefaultValue.001.jpg" alt=""><br>
+        </div>
+
+        <div>
+            <h2>三、操作步骤</h2>
+            <b>主页面：</b>
+            <b>【查询】：</b>可以查询当前已维护好的所有默认值设置信息。<br>
+            <b>【新增】：</b>弹出【默认值设置明细】窗体。<br>
+            <b>【编辑】：</b>需要选择一行数据，然后双击或点【编辑】按钮，则会弹出【默认值设置明细】窗体。<br>
+
+            <b>编辑页面：</b>
+            <b>1、填写默认值设置相关信息：</b><br>
+            字段名：必填<br>
+            SqlServer默认值：针对SqlServer数据库类型的默认值。<br>
+            Oracle默认值：针对Oracle数据库类型的默认值。<br>
+            MySql默认值：针对MySql数据库类型的默认值。<br>
+            PostgreSql默认值：针对PostgreSql数据库类型的默认值。<br>
+            SQLite默认值：针对QLite数据库类型的默认值。<br>
+            默认值适用语句：包括【新增语句】、【修改语句】<br>
+            字段条件类型：包括【修改条件】、【查询条件】、【删除条件】。<br>
+            状态：包括【启用】复选框，选中即为启用，否则为禁用。<br>
+            <b>2、点击【保存】：</b><br>
+            保存成功后，会提示相关信息。<br>
+        </div>        
+        <div>
+            <h2>四、逻辑与业务规则</h2>
+            <div>
+                <b>【默认值】：</b>针对五种常见数据库类型的独立设置。<br>
+                <b>【默认值适用语句】：</b>只有勾选了【新增语句】、【修改语句】，才会在这两种语句类型和数据库类型上使用相应的默认值。<br>
+                <b>【字段条件类型】：</b>只有勾选了这三种条件，才会在这三种语句类型上加上该字段作为条件。<br>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

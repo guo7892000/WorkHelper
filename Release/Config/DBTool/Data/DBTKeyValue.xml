@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<xml>
+  <!--键值表-->
+  <key kid="DataStandardType" name ="数据标准类型">
+	<value vid="text" name="文本"/>
+	<value vid="date" name="日期"/>
+	<value vid="decimal" name="小数"/>
+	<value vid="int" name="整数"/>
+  </key>
+</xml>  

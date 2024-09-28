@@ -787,9 +787,9 @@ SELECT  TO_CHAR(A.OUT_STORE_DATE, 'YYYY/MM/DD') OUT_STORE_DATE,
                         ON A.DLR_ID = B.DLR_ID
  *****************************/
             /*支持TO_DATE、TO_CHAR，且日期且使用-或/分隔*/
-            //全部匹配的
-            //string sToDateCharPatter = @"\s*,*\s*TO_((DATE)|(CHAR))\s*\(\s*(((\w+\.)*\w+)|(@\w+)|(\'?#?\w+#?\'?)|(\'[^']+\'))+\s*,\s*\'YYYY[-/]?MM[-/]?DD(\s+\w+(:\w+)*)*\'\)\s*,?";
-            string sToDateCharPatter = @"\s*,*\s*TO_((DATE)|(CHAR))\s*\(\s*(((\w+\.)*\w+)|(@\w+)|(\'?#?\w+#?\'?)|(\'[^']+\'))+\s*,\s*\'(YYYY)?([-/]?MM)?([-/]?DD)?(\s+\w+(:\w+)*)*\'\)\s*,?";
+            // 只要符合TO_DATE、TO_CHAR格式的，都截取出来。这里没有都转换为MySQL支持年月日或年月日+时分秒两种情况
+            string sToDateCharPatter = @"\s*,*\s*TO_((DATE)|(CHAR))\s*\(\s*([\'\w\.#@])+\s*,\s*\'[\w-/:\s]*\'\)\s*,?";
+            
             Regex regex = new Regex(sToDateCharPatter, RegexOptions.IgnoreCase);
             MatchCollection mcColl = regex.Matches(sSql.ToString());
 
@@ -898,12 +898,8 @@ SELECT  TO_CHAR(A.OUT_STORE_DATE, 'YYYY/MM/DD') OUT_STORE_DATE,
             where A.OUT_STORE_DATE < TO_DATE(@OUT_STORE_DATE, 'YYYY-MM-DD') + 1
  *****************************/
             /*支持TO_DATE且加指定天；列名支持A.COL_NAME，@COL_NAME，#COL_NAME#，'#COL_NAME#','{0}'*/
-            //全部匹配：但很慢，要24秒。最后经过分析发现，不加最后的[\d./]+，就是0.03秒出来，加上后就为24秒以上了。
-            //string sDateAddPatter = @"\s*,*\s*TO_DATE\s*\(\s*(((\w+\.)*\w+)|(@\w+)|(\'?#?\w+#?\'?)|(\'[^']+\'))+\s*,\s*\'YYYY[-/]?MM[-/]?DD(\s+\w+(:\w+)*)*\'\)\s*[+-]?\s*[\d./]+";
-            //优化后：进一步将\d改为\w，速度立刻为0.03秒。由些可见，谨慎使用\d。
-            //另外，还有[+-]?，如果去掉?号，也会很慢，或者直接将其改为+，也是很慢，有点奇怪。最终只能保留这个正则式，因为速度比较快，在匹配项中要包括+或-才处理
-            string sDateAddPatter = @"\s*,*\s*TO_DATE\s*\(\s*(((\w+\.)*\w+)|(@\w+)|(\'?#?\w+#?\'?)|(\'[^']+\'))+\s*,\s*\'YYYY[-/]?MM[-/]?DD(\s+\w+(:\w+)*)*\'\)\s*[+-]?\s*[\w./]+";
-
+            string sDateAddPatter = @"\s*,*\s*TO_DATE\s*\(\s*([\'\w\.#@])+\s*,\s*\'[\w-/:\s]*\'\)\s*[+-]?\s*[\w./]+";
+            
             Regex regex = new Regex(sDateAddPatter, RegexOptions.IgnoreCase);
             MatchCollection mcColl = regex.Matches(sSql.ToString());
 
