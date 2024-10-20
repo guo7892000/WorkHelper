@@ -27,6 +27,10 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string ColumnDic_IsOnlyMatchSqlTable = "ColumnDic_IsOnlyMatchSqlTable";
         public static readonly string ColumnDic_QueryResultType = "ColumnDic_QueryResultType";
         public static readonly string ColumnDic_IsColumnMust = "ColumnDic_IsColumnMust";
+        public static readonly string ColumnDic_QueryConditionParamNameModule = "ColumnDic_QueryConditionParamNameModule";//模板参数名
+        public static readonly string ColumnDic_QueryConditionParamColumnModule = "ColumnDic_QueryConditionParamColumnModule";//模板参数列名
+        public static readonly string ColumnDic_QueryConditionParamNameLatest = "ColumnDic_QueryConditionParamNameLatest";//最后设置的参数名
+        public static readonly string ColumnDic_QueryConditionParamColumnLatest = "ColumnDic_QueryConditionParamColumnLatest";//最后设置的参数列
         //点击复制
         public static readonly string ClickCopyPath = "ClickCopyPath";
         public static readonly string DirStringLastSelectedPath = "DirStringLastSelectedPath";

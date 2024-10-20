@@ -62,6 +62,9 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private readonly string _sInputColCode = "列编码";
         private readonly string _sInputColName = "列名称";
+        private string _moduleColumnName; //模板参数列名
+        private string _moduleParamName; //模板参数名
+  
         //MiniXmlConfig commonColumn;
         DataStandardConfig dataCfg;
         MiniXmlConfig codeNameColumn;
@@ -73,6 +76,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         ReplaceStringXmlConfig replaceStringData;//替换字符模板XML配置
         IDictionary<string, string> _dicSystemStringTemplate = new Dictionary<string, string>();
         IDictionary<string,string> _dicYapiTemplate = new Dictionary<string,string>();
+        
         #endregion
 
         #region 构造函数
@@ -158,7 +162,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             dgvInput.BindAutoColumn(dtIn);
             //加载通用列等内容
             LoadCommonColumnData();
-            //加载用户偏好值
+            //加载用户偏好值：注对于模板字符要设置在放在模板下拉框绑定之前
+            _moduleColumnName = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_QueryConditionParamColumnModule, "#C3#").Value; //模板参数列名
+            txbParamColumn.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_QueryConditionParamColumnLatest, _moduleColumnName).Value; //最后设置的参数列
+            _moduleParamName = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_QueryConditionParamNameModule, "param").Value; //模板参数名
+            txbParamName.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_QueryConditionParamNameLatest, _moduleParamName).Value; //最后设置的参数名
+
             cbbInputType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_ConfirmColumnType, "2").Value;
             cbbModuleString.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_TemplateType, "2").Value;
             cbbQueryResultType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ColumnDic_QueryResultType, "array").Value; //查询结果类型
@@ -1101,6 +1110,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_IsPage, ckbIsPage.Checked ? "1" : "0", "【数据字典】是否分页");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_IsAutoParam, ckbAutoParamQuery.Checked ? "1" : "0", "【数据字典】是否自动参数化查询");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_IsColumnMust, ckbColumnMust.Checked ? "1" : "0", "【数据字典】参数是否必填");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_QueryConditionParamNameLatest, txbParamName.Text.Trim(), "【数据字典】查询参数名");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ColumnDic_QueryConditionParamColumnLatest, txbParamColumn.Text.Trim(), "【数据字典】最后设置的参数列");
                 WinFormContext.UserLoveSettings.Save();
 
                 tabControl1.SelectedTab = tpAutoSQL;
@@ -1584,6 +1595,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         
         #endregion
 
+        /// <summary>
+        /// 模板类型选择变化
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cbbModuleString_SelectedIndexChanged(object sender, EventArgs e)
         {
             string sLower = DBColumnSimpleEntity.SqlString.NameLower;
@@ -1601,6 +1617,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                     tpIn.Parent = null;
                     tpDate.Parent = null;
                     tpTemplate.Text = "字符模板";
+                    lblParamName.Visible = false;
+                    lblParamColumn.Visible = false;
+                    txbParamName.Visible = false;
+                    txbParamColumn.Visible = false;
                 }
 
                 if ("11".Equals(sModule))
@@ -1609,6 +1629,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     sTemplate = _dicYapiTemplate[StringTemplate.MyBatisTableEntity];
                     rtbConString.AppendText(sTemplate);
                     toolTip1.SetToolTip(cbbModuleString, "生成表实体属性(不含GET和SET，如需要请自行在IDE中生成)。");
+                    ckbRemoveLastChar.Checked = false;
                 }
                 else if ("12".Equals(sModule))
                 {
@@ -1616,20 +1637,21 @@ namespace Breezee.WorkHelper.DBTool.UI
                     sTemplate = _dicYapiTemplate[StringTemplate.CommonEntity];
                     rtbConString.AppendText(sTemplate);
                     toolTip1.SetToolTip(cbbModuleString, "生成通用实体属性(不含GET和SET，如需要请自行在IDE中生成)。");
+                    ckbRemoveLastChar.Checked = false;
                 }
                 else if ("13".Equals(sModule))
                 {
                     //13：Mybatis查询条件
-                    rtbIn.Clear();
-                    rtbDate.Clear();
-                    rtbConString.AppendText(_dicYapiTemplate[MyBatisDynamicCond.If]);
-                    rtbIn.AppendText(_dicYapiTemplate[MyBatisDynamicCond.In]);
-                    rtbDate.AppendText(_dicYapiTemplate[MyBatisDynamicCond.Date]);
-
+                    ResetQueryParam();//重新设置文本
                     tpIn.Parent = tabStringTemplate;
                     tpDate.Parent = tabStringTemplate;
                     tpTemplate.Text = "If";
                     toolTip1.SetToolTip(cbbModuleString, "当列为DateTime或Date类型时，会使用Date模板拼接；\n当列名以_LIST结尾时，会使用In模板拼接；\n其他以If模板接接。");
+                    ckbRemoveLastChar.Checked = false;
+                    lblParamName.Visible = true;
+                    lblParamColumn.Visible = true;
+                    txbParamName.Visible = true;
+                    txbParamColumn.Visible = true;
                 }
                 else if ("1".Equals(sModule) || "2".Equals(sModule) || "9".Equals(sModule))
                 {
@@ -1639,6 +1661,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                     if (!"9".Equals(sModule))
                     {
                         ckbRemoveLastChar.Checked = true;
+                    }
+                    else
+                    {
+                        ckbRemoveLastChar.Checked = false;
                     }
                     toolTip1.SetToolTip(cbbModuleString, "生成JSON格式的YAPI入参、出参、中间参数部分信息。");
                 }
@@ -1657,6 +1683,43 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 txbStringTemplateName.ReadOnly = false;
             }
+        }
+
+        /// <summary>
+        /// 重新设置文本
+        /// </summary>
+        private void ResetQueryParam()
+        {
+            rtbConString.Clear();
+            rtbIn.Clear();
+            rtbDate.Clear();
+            string sNewParmName = txbParamName.Text.Trim() + ".";
+            string sNewParmColumn = txbParamColumn.Text.Trim();
+            string sCon = _dicYapiTemplate[MyBatisDynamicCond.If].Replace(_moduleParamName + ".", sNewParmName);
+            string sIn = _dicYapiTemplate[MyBatisDynamicCond.In].Replace(_moduleParamName + ".", sNewParmName);
+            string sDate = _dicYapiTemplate[MyBatisDynamicCond.Date].Replace(_moduleParamName + ".", sNewParmName);
+            if (!string.IsNullOrEmpty(sNewParmColumn))
+            {
+                //先替换包括时间的字段
+                if ("#C#".equals(sNewParmColumn))
+                {
+                    sDate = sDate.Replace(_moduleColumnName + "Begin", sNewParmColumn + "_BEGIN");
+                }
+                else if ("#C2#".equals(sNewParmColumn)|| "#C3#".equals(sNewParmColumn))
+                {
+                    sDate = sDate.Replace(_moduleColumnName + "Begin", sNewParmColumn + "Begin");
+                }
+                else
+                {
+
+                }
+                sCon = sCon.Replace(_moduleColumnName, sNewParmColumn);
+                sIn = sIn.Replace(_moduleColumnName, sNewParmColumn);
+                sDate = sDate.Replace(_moduleColumnName, sNewParmColumn);
+            }
+            rtbConString.AppendText(sCon);
+            rtbIn.AppendText(sIn);
+            rtbDate.AppendText(sDate);
         }
 
         private void cbbInputType_SelectedIndexChanged(object sender, EventArgs e)
@@ -2241,6 +2304,16 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 ShowErr(ex.Message);
             }
+        }
+
+        private void txbParamName_Leave(object sender, EventArgs e)
+        {
+            ResetQueryParam();
+        }
+
+        private void txbParamColumn_Leave(object sender, EventArgs e)
+        {
+            ResetQueryParam();
         }
     }
 
