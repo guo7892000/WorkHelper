@@ -36,6 +36,12 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             lblInfo.Text = "实现对分隔后的字符重新接拼！";
             txbSplitList.Text = ",";
             txbSplitListSplitChar.Text = "-";
+            // 绑定分隔符列表网格
+            DataTable dtData = new DataTable();
+            dtData.Columns.Add("A");
+            dgvSplitChar.BindAutoColumn(dtData);
+            dgvSplitChar.AllowUserToAddRows = true;
+            dgvSplitChar.AllowUserToOrderColumns = false;
             // 分隔类型
             _dicString.Add("1", "分隔符分隔");
             _dicString.Add("2", "固定长度分隔");
@@ -53,13 +59,6 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             _dicString.Add("4", "单行3次分隔示例");
             _dicString.Add("10", "固定长度分隔示例");
             cbbExample.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), true, true);
-
-            // 绑定分隔符列表网格
-            DataTable dtData = new DataTable();
-            dtData.Columns.Add("A");
-            dgvSplitChar.BindAutoColumn(dtData);
-            dgvSplitChar.AllowUserToAddRows = true;
-            dgvSplitChar.AllowUserToOrderColumns = false;
 
             toolTip1.SetToolTip(ckbIgnoreEmptyData, "选中时，分隔的空字符将被去掉，即列值会前移");
             toolTip1.SetToolTip(txbSplitListSplitChar, "分隔符清单中的分隔符，如分隔符清单为【,-;-|】，横杆为其分隔符，\r\n那么分隔符清单就为：逗号、分号、竖线。");
@@ -130,6 +129,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                     return;
                 }
 
+                FlexGridColumnDefinition fdc = new FlexGridColumnDefinition();
                 var splitListFix = from f in dSplitChars.AsEnumerable()
                                    select f.Field<string>("A");
                 sSplitCharArr = splitListFix.ToArray();
@@ -141,9 +141,14 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                     if (!dtData.Columns.Contains(sColName))
                     {
                         dtData.Columns.Add(sColName);
+                        fdc.AddColumn(new FlexGridColumn.Builder().Name(sColName).Caption(sColName).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(100).Visible().Build());
                     }
                 }
-                dtData.Columns.Add(_FixRemarkColumnName); // 增加一个记录各行数据的长度是否满足
+                if (!dtData.Columns.Contains(_FixRemarkColumnName))
+                {
+                    dtData.Columns.Add(_FixRemarkColumnName); // 增加一个记录各行数据的长度是否满足
+                    fdc.AddColumn(new FlexGridColumn.Builder().Name(_FixRemarkColumnName).Caption(_FixRemarkColumnName).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(100).Visible().Build());
+                }
 
                 int[] iSplitArr = new int[sSplitCharArr.Length];
                 int iCurrent;
@@ -190,7 +195,8 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                     }
                     dtData.Rows.Add(dr);
                 }
-                dgvData.BindAutoColumn(dtData);
+                dgvData.Tag = fdc.GetGridTagString();
+                dgvData.BindDataGridView(dtData,false);
                 ShowInfo("转换成功！");
                 return;
             }
@@ -343,54 +349,6 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                 ShowInfo("转换成功！");
                 return;
             }
-
-            //分割的行数数组
-            string[] dataRows = sWillSplitList.Trim().Split(new string[] { System.Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries);
-            //分割转换
-            SplitConvert(dataRows, sSplitCharArr, ref sWillSplitList);
-        }
-
-        private void SplitConvert(string[] dataArr, string[] sSplitCharArr, ref string sWillSplitList)
-        {
-            StringSplitOptions splitOptions = ckbIgnoreEmptyData.Checked ? StringSplitOptions.RemoveEmptyEntries : StringSplitOptions.None;
-            DataTable dtData = dgvData.GetBindingTable();
-            dtData = new DataTable();
-            // 循环处理每行数据
-            foreach (var sOne in dataArr)
-            {
-                // 分隔当前行数据
-                string[] splitList = sOne.Split(sSplitCharArr, splitOptions);
-                // 只有一行数据，且所有分隔得到的字符合为一列数据中
-                if (dataArr.Length == 1 && ckbOneRowToOneColumn.Checked)
-                {
-                    dtData.Columns.Add("A");
-                    foreach (var item in splitList)
-                    {
-                        dtData.Rows.Add(ckbEveryDataTrim.Checked?item.Trim(): item);//去掉前后空白字符
-                    }
-                    dgvData.BindAutoColumn(dtData);
-                    return;
-                }
-
-                // 多行或单行但所有分隔得到的字符不合为一列数据中
-                // 先处理表的列
-                for (int i = 0; i < splitList.Length; i++)
-                {
-                    string sColName = i.ToUpperWord();
-                    if (!dtData.Columns.Contains(sColName))
-                    {
-                        dtData.Columns.Add(sColName);
-                    }
-                }
-                DataRow dr = dtData.NewRow();
-                // 再处理数据
-                for (int i = 0; i < splitList.Length; i++)
-                {
-                    dr[i] = ckbEveryDataTrim.Checked ? splitList[i].Trim() : splitList[i];
-                }
-                dtData.Rows.Add(dr);
-            }
-            dgvData.BindAutoColumn(dtData);
         }
 
         /// <summary>
@@ -599,6 +557,81 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
         private void tsmiClean_Click(object sender, EventArgs e)
         {
             dgvSplitChar.GetBindingTable().Clear();
+        }
+
+        private void dgvSplitChar_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (cbbSplitType.SelectedValue == null) return;
+                var splitType = cbbSplitType.SelectedValue.ToString();
+
+                if (e.Modifiers == Keys.Control && e.KeyCode == Keys.V)
+                {
+                    string pasteText = Clipboard.GetText().Trim();
+                    if (string.IsNullOrEmpty(pasteText))//包括IN的为生成的SQL，不用粘贴
+                    {
+                        return;
+                    }
+                    DataTable dtMain = dgvSplitChar.GetBindingTable();
+
+                    int iRow = 0;
+                    int iColumn = 0;
+                    Object[,] data = StringHelper.GetStringArray(ref pasteText, ref iRow, ref iColumn);
+                    #region 生成IN清单
+                    if (pasteText.IndexOf("in (", StringComparison.CurrentCultureIgnoreCase) > 0)//包括IN的为生成的SQL，不用粘贴
+                    {
+                        return;
+                    }
+                    if (!ckbIsPasteAppend.Checked && dtMain.Rows.Count > 0)
+                    {
+                        dtMain.Clear();
+                    }
+                    foreach (DataRow dr in dtMain.Select("A is null or A=''"))
+                    {
+                        dtMain.Rows.Remove(dr);
+                    }
+                    dtMain.AcceptChanges();
+                    int rowindex = dtMain.Rows.Count;
+                    int iGoodDataNum = 0;//有效数据号
+                    //获取获取当前选中单元格所在的行序号
+                    for (int j = 0; j < iRow; j++)
+                    {
+                        string strData = data[j, 0].ToString().Trim();
+                        if (string.IsNullOrEmpty(strData))
+                        {
+                            continue;
+                        }
+
+                        if ("1".Equals(splitType))
+                        {
+                            // 分隔符分隔
+                            if (dtMain.Select("A='" + data[j, 0] + "'").Length == 0)
+                            {
+                                dtMain.Rows.Add(dtMain.NewRow());
+                                dtMain.Rows[rowindex + iGoodDataNum][0] = strData;
+                                iGoodDataNum++;
+                            }
+                        }
+                        else
+                        {
+                            // 固定长度分隔
+                            dtMain.Rows.Add(dtMain.NewRow());
+                            dtMain.Rows[rowindex + iGoodDataNum][0] = strData;
+                            iGoodDataNum++;
+                        }
+                        
+                    }
+                    dgvSplitChar.ShowRowNum(true); //显示行号
+                    tsbAutoSQL.Enabled = true;
+
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErr(ex.Message);
+            }
         }
     }
 }
