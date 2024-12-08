@@ -149,5 +149,15 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string DbSqlConvert_TargetDbType = "DbSqlConvert_TargetDbType";//目标数据库类型
         public static readonly string DbSqlConvert_LatestSql = "DbSqlConvert_LatestSql";
         public static readonly string DbSqlConvert_IsParaToHash = "DbSqlConvert_IsParaToHash"; //是否@参数转换为#参数#
+        // 分隔拼接字符
+        public static readonly string SplitConnString_SplitType = "SplitConnString_SplitType"; //分隔类型
+        public static readonly string SplitConnString_SplitModel = "SplitConnString_SplitModel"; //分隔模式
+        public static readonly string SplitConnString_IsIgnoreEmptyData = "SplitConnString_IsIgnoreEmptyData"; //是否忽略分隔后的空数据
+        public static readonly string SplitConnString_IsTrimData = "SplitConnString_IsTrimData"; //是否每项剔除前后空白字符
+        public static readonly string SplitConnString_IsFixNewLine = "SplitConnString_IsFixNewLine"; //是否指定换行符
+        public static readonly string SplitConnString_NewLineString = "SplitConnString_NewLineString"; //换行符
+        public static readonly string SplitConnString_SplitList = "SplitConnString_SplitList"; //分隔符列表
+        public static readonly string SplitConnString_SplitListSplitByChar = "SplitConnString_SplitListSplitByChar"; //分隔符列表的分隔符
+        public static readonly string SplitConnString_LastInputSplitString= "SplitConnString_LastInputSplitString"; //最后输入的要分隔的字符串
     }
 }

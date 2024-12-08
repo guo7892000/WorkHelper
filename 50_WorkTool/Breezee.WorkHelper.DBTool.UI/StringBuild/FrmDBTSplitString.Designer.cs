@@ -36,9 +36,11 @@
             this.grbSplitCharCfg = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.ckbFirstSplitBySpace = new System.Windows.Forms.CheckBox();
-            this.btnReset = new System.Windows.Forms.Button();
             this.ckbEveryDataTrim = new System.Windows.Forms.CheckBox();
             this.ckbIgnoreEmptyData = new System.Windows.Forms.CheckBox();
+            this.ckbEveryLineEndChar = new System.Windows.Forms.CheckBox();
+            this.txbEveryLineEndChar = new System.Windows.Forms.TextBox();
+            this.btnReset = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.cbbExample = new System.Windows.Forms.ComboBox();
             this.ckbNewLine = new System.Windows.Forms.CheckBox();
@@ -72,6 +74,7 @@
             this.cbbSplitType = new System.Windows.Forms.ComboBox();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.grbSplitList = new System.Windows.Forms.GroupBox();
+            this.ckbIsPasteAppend = new System.Windows.Forms.CheckBox();
             this.dgvSplitChar = new System.Windows.Forms.DataGridView();
             this.cmsSplitChar = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiClean = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,7 +83,6 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label5 = new System.Windows.Forms.Label();
             this.btnGetSplitChar = new System.Windows.Forms.Button();
-            this.ckbIsPasteAppend = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.grbSplitCharCfg.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -173,9 +175,11 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.Controls.Add(this.ckbFirstSplitBySpace, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnReset, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.ckbEveryDataTrim, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.ckbIgnoreEmptyData, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.ckbEveryLineEndChar, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.txbEveryLineEndChar, 4, 0);
+            this.tableLayoutPanel1.Controls.Add(this.btnReset, 5, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(2, 16);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -196,16 +200,6 @@
             this.ckbFirstSplitBySpace.TabIndex = 10;
             this.ckbFirstSplitBySpace.Text = "首次按空白分隔";
             this.ckbFirstSplitBySpace.UseVisualStyleBackColor = true;
-            // 
-            // btnReset
-            // 
-            this.btnReset.Location = new System.Drawing.Point(405, 3);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(53, 23);
-            this.btnReset.TabIndex = 6;
-            this.btnReset.Text = "重置";
-            this.btnReset.UseVisualStyleBackColor = true;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
             // ckbEveryDataTrim
             // 
@@ -230,6 +224,35 @@
             this.ckbIgnoreEmptyData.TabIndex = 8;
             this.ckbIgnoreEmptyData.Text = "忽略分隔后的空数据";
             this.ckbIgnoreEmptyData.UseVisualStyleBackColor = true;
+            // 
+            // ckbEveryLineEndChar
+            // 
+            this.ckbEveryLineEndChar.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbEveryLineEndChar.AutoSize = true;
+            this.ckbEveryLineEndChar.Location = new System.Drawing.Point(405, 6);
+            this.ckbEveryLineEndChar.Name = "ckbEveryLineEndChar";
+            this.ckbEveryLineEndChar.Size = new System.Drawing.Size(84, 16);
+            this.ckbEveryLineEndChar.TabIndex = 11;
+            this.ckbEveryLineEndChar.Text = "指定换行符";
+            this.ckbEveryLineEndChar.UseVisualStyleBackColor = true;
+            // 
+            // txbEveryLineEndChar
+            // 
+            this.txbEveryLineEndChar.Location = new System.Drawing.Point(495, 3);
+            this.txbEveryLineEndChar.Name = "txbEveryLineEndChar";
+            this.txbEveryLineEndChar.Size = new System.Drawing.Size(100, 21);
+            this.txbEveryLineEndChar.TabIndex = 12;
+            this.txbEveryLineEndChar.Text = "\\n";
+            // 
+            // btnReset
+            // 
+            this.btnReset.Location = new System.Drawing.Point(601, 3);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(53, 23);
+            this.btnReset.TabIndex = 6;
+            this.btnReset.Text = "重置";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
             // label2
             // 
@@ -631,6 +654,18 @@
             this.grbSplitList.TabStop = false;
             this.grbSplitList.Text = "分隔符列表";
             // 
+            // ckbIsPasteAppend
+            // 
+            this.ckbIsPasteAppend.AutoSize = true;
+            this.ckbIsPasteAppend.Checked = true;
+            this.ckbIsPasteAppend.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbIsPasteAppend.Location = new System.Drawing.Point(93, 0);
+            this.ckbIsPasteAppend.Name = "ckbIsPasteAppend";
+            this.ckbIsPasteAppend.Size = new System.Drawing.Size(72, 16);
+            this.ckbIsPasteAppend.TabIndex = 6;
+            this.ckbIsPasteAppend.Text = "粘贴累加";
+            this.ckbIsPasteAppend.UseVisualStyleBackColor = true;
+            // 
             // dgvSplitChar
             // 
             this.dgvSplitChar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -724,18 +759,6 @@
             this.btnGetSplitChar.UseVisualStyleBackColor = false;
             this.btnGetSplitChar.Click += new System.EventHandler(this.btnGetSplitChar_Click);
             // 
-            // ckbIsPasteAppend
-            // 
-            this.ckbIsPasteAppend.AutoSize = true;
-            this.ckbIsPasteAppend.Checked = true;
-            this.ckbIsPasteAppend.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbIsPasteAppend.Location = new System.Drawing.Point(93, 0);
-            this.ckbIsPasteAppend.Name = "ckbIsPasteAppend";
-            this.ckbIsPasteAppend.Size = new System.Drawing.Size(72, 16);
-            this.ckbIsPasteAppend.TabIndex = 6;
-            this.ckbIsPasteAppend.Text = "粘贴累加";
-            this.ckbIsPasteAppend.UseVisualStyleBackColor = true;
-            // 
             // FrmDBTSplitString
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -818,7 +841,6 @@
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.DataGridView dgvData;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Button btnConvert;
         private System.Windows.Forms.Button btnSplit;
@@ -849,5 +871,8 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiClean;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox ckbIsPasteAppend;
+        private System.Windows.Forms.CheckBox ckbEveryLineEndChar;
+        private System.Windows.Forms.TextBox txbEveryLineEndChar;
+        private System.Windows.Forms.DataGridView dgvData;
     }
 }

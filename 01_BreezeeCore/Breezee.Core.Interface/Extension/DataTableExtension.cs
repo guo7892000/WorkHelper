@@ -589,5 +589,51 @@ namespace Breezee.Core.Interface
             }
             return drArr;
         }
+
+        public static void RemoveEmptyRows(this DataTable table)
+        {
+            // 从后往前遍历，避免索引问题
+            for (int i = table.Rows.Count - 1; i >= 0; i--)
+            {
+                DataRow row = table.Rows[i];
+                bool isEmpty = true;
+                // 假设DataTable的列都是string类型，或可以转换为string进行空值检查
+                foreach (DataColumn column in table.Columns)
+                {
+                    // 检查是否为空或null
+                    if (!Convert.IsDBNull(row[column]) && !string.IsNullOrEmpty(row[column].ToString()))
+                    {
+                        isEmpty = false;
+                        break;
+                    }
+                }
+                // 如果整行都是空的，则删除
+                if (isEmpty)
+                {
+                    table.Rows.RemoveAt(i);
+                }
+            }
+        }
+
+        public static void RemoveEmptyColumns(this DataTable dataTable)
+        {
+            // 从后往前遍历，避免索引问题
+            for (int i = dataTable.Columns.Count - 1; i >= 0; i--)
+            {
+                bool isAllDataEmpty = true;
+                foreach (DataRow dr in dataTable.Rows)
+                {
+                    if (!dr.IsNull(dataTable.Columns[i]))
+                    {
+                        isAllDataEmpty = false;
+                        break;
+                    }
+                }
+                if (isAllDataEmpty)
+                {
+                    dataTable.Columns.RemoveAt(i);
+                }
+            }
+        }
     }
 }

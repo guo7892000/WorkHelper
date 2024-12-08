@@ -13,6 +13,7 @@ using Breezee.Core.Tool;
 using Breezee.Core.Entity;
 using Breezee.Core.IOC;
 using Breezee.WorkHelper.DBTool.IBLL;
+using Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -56,8 +57,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             uC_DbConnection1.IsDbNameNotNull = false;
             uC_DbConnection1.ShowGlobalMsg += ShowGlobalMsg_Click;
             uC_DbConnection1.DBConnName_SelectedIndexChanged += cbbDBConnName_SelectedIndexChanged;
+            // 数据类型
+            _dicString.Add("1", "单表数据");
+            _dicString.Add("2", "多表数据");
+            cbbDataType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
             //
-            lblTableWhereInfo.Text = "表名不为空时，Where条件作为表的过滤条件；表为空时，Where条件为自定义SQL。";
+            toolTip1.SetToolTip(cbbDataType, "单表数据：通过选择表名及条件查询单表数据；\r\n多表数据：通过自定义SQL实现多表数据查询。");
             //设置下拉框查找数据源
             cbbTableName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cbbTableName.AutoCompleteSource = AutoCompleteSource.CustomSource;
@@ -81,27 +86,48 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 连接按钮事件
         private async void tsbConnect_Click(object sender, EventArgs e)
         {
+            if (cbbDataType.SelectedValue == null) return;
+            var splitType = cbbDataType.SelectedValue.ToString();
             try
             {
-                //非空判断
-                string strTableName = cbbTableName.Text.Trim();
-                string strWhere = "";
-                if (!string.IsNullOrEmpty(rtbWhere.Text.Trim()))
+                string strWhere = rtbWhere.Text.Trim();
+                if ("1".Equals(splitType))
                 {
-                    if (rtbWhere.Text.Trim().ToLower().StartsWith("where"))
+                    //非空判断
+                    string strTableName = cbbTableName.Text.Trim();
+                    if (string.IsNullOrEmpty(strTableName))
                     {
-                        strWhere = " " + rtbWhere.Text.Trim();
+                        ShowErr("表名不能为空！");
+                        return;
+                    }
+
+                    if (!string.IsNullOrEmpty(strWhere))
+                    {
+                        if (strWhere.ToLower().StartsWith("where"))
+                        {
+                            strWhere = " " + rtbWhere.Text.Trim();
+                        }
+                        else
+                        {
+                            strWhere = " WHERE " + rtbWhere.Text.Trim();
+                        }
+                        _strMainSql = "SELECT *  FROM " + strTableName + strWhere;
                     }
                     else
                     {
-                        strWhere = " WHERE " + rtbWhere.Text.Trim();
+                        _strMainSql = "SELECT *  FROM " + strTableName;
                     }
                 }
-                if (string.IsNullOrEmpty(strTableName) && string.IsNullOrEmpty(strWhere))
+                else
                 {
-                    ShowErr("表名和Where条件不能同时为空！");
-                    return;
+                    if (string.IsNullOrEmpty(strWhere))
+                    {
+                        ShowErr("自定义SQL不能为空！");
+                        return;
+                    }
+                    _strMainSql = strWhere;
                 }
+                    
                 //得到服务器对象
                 _dbServer = await uC_DbConnection1.GetDbServerInfo();
                 if (_dbServer == null)
@@ -110,21 +136,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 //得到数据库访问对象
                 IDataAccess dataAccess = AutoSQLExecutor.Common.AutoSQLExecutors.Connect(_dbServer);
-
-                
-                //构造查询SQL
-                if (string.IsNullOrEmpty(strWhere)) //Where条件为空
-                {
-                    _strMainSql = "SELECT *  FROM " + strTableName;
-                }
-                else if (string.IsNullOrEmpty(strTableName))//表名为空，那么Where中为自定义SQL
-                {
-                    _strMainSql = strWhere;
-                }
-                else //表名和Where条件都不为空，那么拼接语句
-                {
-                    _strMainSql = "SELECT *  FROM " + strTableName + strWhere;
-                }
                 //查询数据
                 DataTable dtMain = dataAccess.QueryHadParamSqlData(_strMainSql,_dicQuery);
                 dtMain.TableName = _strTableName;
@@ -279,5 +290,35 @@ namespace Breezee.WorkHelper.DBTool.UI
             AppendCondition(" OR ", " in ", "('','','')");
         }
         #endregion
+
+        private void cbbDataType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbbDataType.SelectedValue == null) return;
+            var splitType = cbbDataType.SelectedValue.ToString();
+            if ("1".Equals(splitType))
+            {
+                lblTable.Visible = true;
+                cbbTableName.Visible = true;
+                ckbGetTableList.Visible = true;
+                lblSqlWHere.Text = "where条件";
+            }
+            else
+            {
+                lblTable.Visible = false;
+                cbbTableName.Visible = false;
+                ckbGetTableList.Visible = false;
+                lblSqlWHere.Text = "自定义SQL";
+            }
+        }
+
+        private void btnGetDate_Click(object sender, EventArgs e)
+        {
+            tsbConnect.PerformClick();
+        }
+
+        private void btnGenerate_Click(object sender, EventArgs e)
+        {
+            tsbAutoSQL.PerformClick();
+        }
     }
 }
