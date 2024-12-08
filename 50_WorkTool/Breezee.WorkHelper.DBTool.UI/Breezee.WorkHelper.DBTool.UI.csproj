@@ -328,6 +328,9 @@
     <None Include="DataTemplate\DBTool\AutoEntity\模板_生成实体.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="DataTemplate\DBTool\AutoFile\模板_生成代码文件-CSharp.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="DataTemplate\DBTool\AutoFile\模板_生成代码文件.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

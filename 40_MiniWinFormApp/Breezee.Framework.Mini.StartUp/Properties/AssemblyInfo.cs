@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("工作助手")]
-[assembly: AssemblyDescription("2024-11-3")]
+[assembly: AssemblyDescription("2024-12-08")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("微风")]
 [assembly: AssemblyProduct("Work Helper")]

@@ -70,6 +70,7 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static class AutoFile
         {
             public static string Excel_Code = AutoFile_Pre + "模板_生成代码文件.xlsx";
+            public static string Excel_Code_CSharp = AutoFile_Pre + "模板_生成代码文件-CSharp.xlsx";
         }
         public static class AutoEntity
         {

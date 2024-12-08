@@ -93,6 +93,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             new FlexGridColumn.Builder().DBName(DBColumnEntity.SqlString.Extra).Name(DBColumnEntity.SqlString.Extra).Caption("备注").Type().Align().Width(200).Visible().Build()
             );
             dgvTableInfo.Tag = fdc.GetGridTagString();
+
+            lblTableData.Text = "导入模板的【系统变量】：系统内置的参数，可直接在模板内容中引用；也可以在【自定义变量】中引用。更多说明见模板中列头的批注！";
+            lblColumnInfo.Text = "导入模板的【自定义变量】：可自定义或组合系统变量，然后在模板内容中引用。【类型转换】：数据库类型转换为代码中的类型。";
+            lblTemplateInfo.Text = "关键：理解并修改符合实际项目的模板，并提供给项目成员使用！";
         }
 
         #region 显示全局提示信息事件

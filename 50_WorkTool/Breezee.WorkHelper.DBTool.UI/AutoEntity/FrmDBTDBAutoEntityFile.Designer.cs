@@ -34,8 +34,10 @@
             this.tsmiFtable = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiStable = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblColumnInfo = new System.Windows.Forms.Label();
             this.dgvTableInfo = new System.Windows.Forms.DataGridView();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.lblTemplateInfo = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.btnImport = new System.Windows.Forms.Button();
             this.cbbModuleList = new System.Windows.Forms.ComboBox();
@@ -63,6 +65,7 @@
             this.btnExit = new System.Windows.Forms.ToolStripButton();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.lblTableData = new System.Windows.Forms.Label();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
             this.ctxmBuilt.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -118,6 +121,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.lblColumnInfo);
             this.groupBox2.Controls.Add(this.dgvTableInfo);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
@@ -126,6 +130,19 @@
             this.groupBox2.TabIndex = 22;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "表的列信息";
+            // 
+            // lblColumnInfo
+            // 
+            this.lblColumnInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblColumnInfo.AutoSize = true;
+            this.lblColumnInfo.ForeColor = System.Drawing.Color.Red;
+            this.lblColumnInfo.Location = new System.Drawing.Point(88, 2);
+            this.lblColumnInfo.Name = "lblColumnInfo";
+            this.lblColumnInfo.Size = new System.Drawing.Size(53, 12);
+            this.lblColumnInfo.TabIndex = 14;
+            this.lblColumnInfo.Text = "提示信息";
             // 
             // dgvTableInfo
             // 
@@ -147,6 +164,19 @@
             this.groupBox4.TabIndex = 21;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "生成的类信息";
+            // 
+            // lblTemplateInfo
+            // 
+            this.lblTemplateInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTemplateInfo.AutoSize = true;
+            this.lblTemplateInfo.ForeColor = System.Drawing.Color.Red;
+            this.lblTemplateInfo.Location = new System.Drawing.Point(344, 9);
+            this.lblTemplateInfo.Name = "lblTemplateInfo";
+            this.lblTemplateInfo.Size = new System.Drawing.Size(53, 12);
+            this.lblTemplateInfo.TabIndex = 14;
+            this.lblTemplateInfo.Text = "提示信息";
             // 
             // tableLayoutPanel1
             // 
@@ -360,7 +390,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(432, 330);
+            this.tabPage2.Size = new System.Drawing.Size(432, 327);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "系统变量";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -372,7 +402,7 @@
             this.dgvSysParam.Location = new System.Drawing.Point(3, 3);
             this.dgvSysParam.Name = "dgvSysParam";
             this.dgvSysParam.RowTemplate.Height = 23;
-            this.dgvSysParam.Size = new System.Drawing.Size(426, 324);
+            this.dgvSysParam.Size = new System.Drawing.Size(426, 321);
             this.dgvSysParam.TabIndex = 2;
             // 
             // tabPage3
@@ -380,7 +410,7 @@
             this.tabPage3.Controls.Add(this.dgvTypeConvert);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(432, 330);
+            this.tabPage3.Size = new System.Drawing.Size(432, 327);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "类型转换";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -392,7 +422,7 @@
             this.dgvTypeConvert.Location = new System.Drawing.Point(0, 0);
             this.dgvTypeConvert.Name = "dgvTypeConvert";
             this.dgvTypeConvert.RowTemplate.Height = 23;
-            this.dgvTypeConvert.Size = new System.Drawing.Size(432, 330);
+            this.dgvTypeConvert.Size = new System.Drawing.Size(432, 327);
             this.dgvTypeConvert.TabIndex = 2;
             // 
             // toolStrip1
@@ -471,6 +501,19 @@
             this.splitContainer3.SplitterDistance = 196;
             this.splitContainer3.TabIndex = 23;
             // 
+            // lblTableData
+            // 
+            this.lblTableData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTableData.AutoSize = true;
+            this.lblTableData.ForeColor = System.Drawing.Color.Red;
+            this.lblTableData.Location = new System.Drawing.Point(468, 27);
+            this.lblTableData.Name = "lblTableData";
+            this.lblTableData.Size = new System.Drawing.Size(53, 12);
+            this.lblTableData.TabIndex = 13;
+            this.lblTableData.Text = "提示信息";
+            // 
             // uC_DbConnection1
             // 
             this.uC_DbConnection1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -485,6 +528,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1343, 657);
+            this.Controls.Add(this.lblTemplateInfo);
+            this.Controls.Add(this.lblTableData);
             this.Controls.Add(this.splitContainer2);
             this.Controls.Add(this.uC_DbConnection1);
             this.Controls.Add(this.toolStrip1);
@@ -495,6 +540,7 @@
             this.Load += new System.EventHandler(this.FrmAutoEntity_Load);
             this.ctxmBuilt.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableInfo)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -563,5 +609,8 @@
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.TextBox txbModuleFileSuffix;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblTableData;
+        private System.Windows.Forms.Label lblColumnInfo;
+        private System.Windows.Forms.Label lblTemplateInfo;
     }
 }

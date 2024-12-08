@@ -96,9 +96,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             cbbTableName.AutoCompleteSource = AutoCompleteSource.CustomSource;
             tsbAutoSQL.Enabled = false;
 
-            //以下为测试使用
-            //txbEntityName.Text= "BaseConfig";
-            //txbEntityNameCN.Text = "基础配置";
+            lblTableData.Text = "导入模板的【系统变量】：系统内置的参数，可直接在模板内容中引用；也可以在【自定义变量】中引用。更多说明见模板中列头的批注！";
+            lblColumnInfo.Text = "导入模板的【自定义变量】：可自定义或组合系统变量，然后在模板内容中引用。【类型转换】：数据库类型转换为代码中的类型。";
+            lblTemplateInfo.Text = "关键：理解并修改符合实际项目的模板，并提供给项目成员使用！";
         }
 
         #region 显示全局提示信息事件
@@ -697,6 +697,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameMyParam.ParamValueInfo).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
                 );
                 dgvMyDefine.Tag = fdc.GetGridTagString();
+                _dsExcel.Tables[AutoImportModuleString.SheetName.MyParam].RemoveEmptyRows();
                 dgvMyDefine.BindDataGridView(_dsExcel.Tables[AutoImportModuleString.SheetName.MyParam], true);
                 //绑定系统变量网格
                 fdc = new FlexGridColumnDefinition();
@@ -708,6 +709,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameSysParam.Example).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
                 );
                 dgvSysParam.Tag = fdc.GetGridTagString();
+                _dsExcel.Tables[AutoImportModuleString.SheetName.SysParam].RemoveEmptyRows();
                 dgvSysParam.BindDataGridView(_dsExcel.Tables[AutoImportModuleString.SheetName.SysParam], true);
                 //绑定类型转换网格
                 fdc = new FlexGridColumnDefinition();
@@ -717,6 +719,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     new FlexGridColumn.Builder().Name(AutoImportModuleString.ColumnNameTypeConvert.DevLangType).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
                 );
                 dgvTypeConvert.Tag = fdc.GetGridTagString();
+                _dsExcel.Tables[AutoImportModuleString.SheetName.DbTypeConvert].RemoveEmptyRows();
                 dgvTypeConvert.BindDataGridView(_dsExcel.Tables[AutoImportModuleString.SheetName.DbTypeConvert], true);
 
                 ShowInfo("导入成功！");
@@ -789,6 +792,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void btnGenerate_Click(object sender, EventArgs e)
         {
             tsbAutoSQL.PerformClick();
+        }
+
+        private void tsbDownloadModelCSharp_Click(object sender, EventArgs e)
+        {
+            DBToolUIHelper.DownloadFile(DBTGlobalValue.AutoFile.Excel_Code_CSharp, "模板_生成C#代码文件", true);
         }
     }
 

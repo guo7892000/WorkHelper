@@ -79,6 +79,8 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.dgvTypeConvert = new System.Windows.Forms.DataGridView();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
+            this.tsbDownloadModelCSharp = new System.Windows.Forms.ToolStripButton();
+            this.lblTemplateInfo = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpImport.SuspendLayout();
@@ -122,6 +124,7 @@
             this.tsbImport,
             this.tsbAutoSQL,
             this.tsbDownloadModel,
+            this.tsbDownloadModelCSharp,
             this.tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
@@ -208,7 +211,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblColumnInfo.AutoSize = true;
             this.lblColumnInfo.ForeColor = System.Drawing.Color.Red;
-            this.lblColumnInfo.Location = new System.Drawing.Point(310, 2);
+            this.lblColumnInfo.Location = new System.Drawing.Point(97, 0);
             this.lblColumnInfo.Name = "lblColumnInfo";
             this.lblColumnInfo.Size = new System.Drawing.Size(53, 12);
             this.lblColumnInfo.TabIndex = 13;
@@ -325,7 +328,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTableData.AutoSize = true;
             this.lblTableData.ForeColor = System.Drawing.Color.Red;
-            this.lblTableData.Location = new System.Drawing.Point(305, 0);
+            this.lblTableData.Location = new System.Drawing.Point(97, 2);
             this.lblTableData.Name = "lblTableData";
             this.lblTableData.Size = new System.Drawing.Size(53, 12);
             this.lblTableData.TabIndex = 12;
@@ -338,7 +341,7 @@
             this.tpAutoSQL.Location = new System.Drawing.Point(4, 22);
             this.tpAutoSQL.Name = "tpAutoSQL";
             this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3);
-            this.tpAutoSQL.Size = new System.Drawing.Size(1062, 253);
+            this.tpAutoSQL.Size = new System.Drawing.Size(1062, 245);
             this.tpAutoSQL.TabIndex = 1;
             this.tpAutoSQL.Text = "生成结果";
             // 
@@ -347,7 +350,7 @@
             this.rtbResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbResult.Location = new System.Drawing.Point(3, 3);
             this.rtbResult.Name = "rtbResult";
-            this.rtbResult.Size = new System.Drawing.Size(1056, 247);
+            this.rtbResult.Size = new System.Drawing.Size(1056, 239);
             this.rtbResult.TabIndex = 3;
             this.rtbResult.Text = "";
             // 
@@ -669,7 +672,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(281, 252);
+            this.tabPage2.Size = new System.Drawing.Size(281, 244);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "系统变量";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -681,7 +684,7 @@
             this.dgvSysParam.Location = new System.Drawing.Point(3, 3);
             this.dgvSysParam.Name = "dgvSysParam";
             this.dgvSysParam.RowTemplate.Height = 23;
-            this.dgvSysParam.Size = new System.Drawing.Size(275, 246);
+            this.dgvSysParam.Size = new System.Drawing.Size(275, 238);
             this.dgvSysParam.TabIndex = 2;
             // 
             // tabPage3
@@ -689,7 +692,7 @@
             this.tabPage3.Controls.Add(this.dgvTypeConvert);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(281, 252);
+            this.tabPage3.Size = new System.Drawing.Size(281, 244);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "类型转换";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -701,7 +704,7 @@
             this.dgvTypeConvert.Location = new System.Drawing.Point(0, 0);
             this.dgvTypeConvert.Name = "dgvTypeConvert";
             this.dgvTypeConvert.RowTemplate.Height = 23;
-            this.dgvTypeConvert.Size = new System.Drawing.Size(281, 252);
+            this.dgvTypeConvert.Size = new System.Drawing.Size(281, 244);
             this.dgvTypeConvert.TabIndex = 2;
             // 
             // uC_DbConnection1
@@ -712,11 +715,34 @@
             this.uC_DbConnection1.Size = new System.Drawing.Size(1070, 88);
             this.uC_DbConnection1.TabIndex = 35;
             // 
+            // tsbDownloadModelCSharp
+            // 
+            this.tsbDownloadModelCSharp.Image = ((System.Drawing.Image)(resources.GetObject("tsbDownloadModelCSharp.Image")));
+            this.tsbDownloadModelCSharp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbDownloadModelCSharp.Name = "tsbDownloadModelCSharp";
+            this.tsbDownloadModelCSharp.Size = new System.Drawing.Size(96, 24);
+            this.tsbDownloadModelCSharp.Text = "C#模板下载";
+            this.tsbDownloadModelCSharp.Click += new System.EventHandler(this.tsbDownloadModelCSharp_Click);
+            // 
+            // lblTemplateInfo
+            // 
+            this.lblTemplateInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTemplateInfo.AutoSize = true;
+            this.lblTemplateInfo.ForeColor = System.Drawing.Color.Red;
+            this.lblTemplateInfo.Location = new System.Drawing.Point(478, 9);
+            this.lblTemplateInfo.Name = "lblTemplateInfo";
+            this.lblTemplateInfo.Size = new System.Drawing.Size(53, 12);
+            this.lblTemplateInfo.TabIndex = 16;
+            this.lblTemplateInfo.Text = "提示信息";
+            // 
             // FrmDBTDBAutoCodeFile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1070, 660);
+            this.Controls.Add(this.lblTemplateInfo);
             this.Controls.Add(this.splitContainer2);
             this.Controls.Add(this.uC_DbConnection1);
             this.Controls.Add(this.toolStrip1);
@@ -822,5 +848,7 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.Button btnGenerate;
+        private System.Windows.Forms.ToolStripButton tsbDownloadModelCSharp;
+        private System.Windows.Forms.Label lblTemplateInfo;
     }
 }
