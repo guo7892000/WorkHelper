@@ -159,5 +159,8 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string SplitConnString_SplitList = "SplitConnString_SplitList"; //分隔符列表
         public static readonly string SplitConnString_SplitListSplitByChar = "SplitConnString_SplitListSplitByChar"; //分隔符列表的分隔符
         public static readonly string SplitConnString_LastInputSplitString= "SplitConnString_LastInputSplitString"; //最后输入的要分隔的字符串
+        // MyBatis参数化（占位符）的SQL转换实际可执行的SQL
+        public static readonly string MyBatisSqlConvert_SqlAndParam = "MyBatisSqlConvert_SqlAndParam"; // SQL和参数
+        public static readonly string MyBatisSqlConvert_Param = "MyBatisSqlConvert_Param"; // 参数
     }
 }

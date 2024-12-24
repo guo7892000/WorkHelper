@@ -49,6 +49,7 @@
 	  <Menu Guid="12D95961-3BA0-4092-A56A-376805363CB7" Name="文件字符替换UC" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmReplaceTextFileStringUC"  HelpPath="/Help/Html/DBTool/String/TextFileStringReplaceUC.html"/>
 	</Class>
     <Class Guid="07A30998-9277-4AC7-96AA-108AA04F1AF2" Name="综合" Code="M_DB_TOOL_ALL" ShortCutKey="">
+	  <Menu Guid="45129772-C838-4333-820F-E1F577207F72" Name="MyBatis的SQL转换" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmMyBatisSqlParamReplace"  HelpPath="/Help/Html/DBTool/DB/SqlQueryExecute.html"/>
 	  <Menu Guid="29B97B32-6AC1-465A-B794-47CEA6A8CEC6" Name="SQL查询执行" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTSqlExecutor"  HelpPath="/Help/Html/DBTool/DB/SqlQueryExecute.html"/>
 	  <Menu Guid="C2BD872D-4019-4585-9230-552DED9F08DD" Name="自动参数化SQL验证" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTAutoSqlVerify"  HelpPath="/Help/Html/DBTool/DB/AutoParamVerify.html"/>
       <Menu Guid="FAC4990F-07F5-41C7-AE6A-86915CEFD282" Name="合并脚本" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTScriptMerge"  HelpPath="/Help/Html/DBTool/DB/MergeScript.html"/>

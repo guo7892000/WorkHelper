@@ -62,6 +62,12 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             _dicString.Add("10", "固定长度分隔示例");
             cbbExample.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), true, true);
 
+            _dicString.Clear();
+            _dicString.Add("1", "默认换行符");
+            _dicString.Add("2", "指定换行符");
+            _dicString.Add("3", "指定和默认换行符");
+            cbbNewLineType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
+            
             //读取喜好配置
             cbbSplitType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.SplitConnString_SplitType, "1").Value;
             cbbSplitModule.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.SplitConnString_SplitModel, "1").Value;
@@ -78,7 +84,9 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             toolTip1.SetToolTip(txbSplitList, "分隔符清单，即有哪些分隔符，使用固定字符分隔表示。注：支持空格作为分隔符！");
             toolTip1.SetToolTip(ckbOneRowToOneColumn, "选中时，如数据只有一行时，分隔后所有值都在A列中");
             toolTip1.SetToolTip(cbbSplitModule, "同时分隔：一次性将多个分隔符同时分隔；\r\n递归分隔：先按第一个分隔符分隔，得到的结果再按第二个字符分组，依次类推。最多只能3次，并且只取分隔后的前两组数据。");
-            toolTip1.SetToolTip(ckbEveryLineEndChar, "当没选中时，默认\r\n + \n 作为换行符");
+            toolTip1.SetToolTip(cbbNewLineType, "其中【指定和默认换行符】包括默认的换行符和指定的换行符");
+
+            cbbNewLineType.SelectedValue = "1";
         }
 
         /// <summary>
@@ -93,7 +101,8 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             if (cbbSplitType.SelectedValue == null) return;
             var splitType = cbbSplitType.SelectedValue.ToString();
             var splitModuleType = cbbSplitModule.SelectedValue == null ? "" : cbbSplitModule.SelectedValue.ToString();
-
+            var newLineType = cbbNewLineType.SelectedValue == null ? "" : cbbNewLineType.SelectedValue.ToString();
+            IList<string> listNewLine = new List<string>();
             // 分隔字符列表
             DataTable dtSplitChar = dgvSplitChar.GetBindingTable();
             foreach (DataRow dr in dtSplitChar.Select("A is null "))
@@ -115,13 +124,18 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                 return;
             }
 
-            string sNewLineSplitChar = ckbEveryLineEndChar.Checked ? txbEveryLineEndChar.Text : "\n";
-            if (string.IsNullOrEmpty(txbEveryLineEndChar.Text.Trim()) || "2".Equals(splitType))
+            if ("1".Equals(newLineType) || "3".Equals(newLineType))
             {
-                sNewLineSplitChar = "\n";
+                listNewLine.Add(Environment.NewLine);
+                listNewLine.Add("\n");
             }
+            if ("2".Equals(newLineType) || "3".Equals(newLineType))
+            {
+                listNewLine.Add(txbEveryLineEndChar.Text.Trim());
+            }
+
             // 分隔的行数数组
-            string[] dataArr = sWillSplitList.Trim().Split(new string[] { System.Environment.NewLine, sNewLineSplitChar }, StringSplitOptions.None);
+            string[] dataArr = sWillSplitList.Trim().Split(listNewLine.ToArray(), StringSplitOptions.None);
             string[] sSplitCharArr;
             if (dataArr.Length == 0)
             {
@@ -439,7 +453,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             {
                 return;
             }
-            ckbEveryLineEndChar.Checked = false; //默认都是使用默认的分隔符
+            cbbNewLineType.SelectedValue = "1";  //默认都是使用默认的分隔符
             ckbOneRowToOneColumn.Checked = false;
             if ("1".Equals(sExampleType))
             {
@@ -711,5 +725,18 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             }            
         }
 
+        private void cbbNewLineType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbbNewLineType.SelectedValue == null) return;
+            var splitType = cbbNewLineType.SelectedValue.ToString();
+            if ("1".Equals(splitType))
+            {
+                txbEveryLineEndChar.Visible = false;
+            }
+            else
+            {
+                txbEveryLineEndChar.Visible = true;
+            }
+        }
     }
 }

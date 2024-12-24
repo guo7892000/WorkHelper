@@ -282,6 +282,12 @@
     <Compile Include="StringBuild\FrmDirectoryFileString.Designer.cs">
       <DependentUpon>FrmDirectoryFileString.cs</DependentUpon>
     </Compile>
+    <Compile Include="StringBuild\FrmMyBatisSqlParamReplace.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StringBuild\FrmMyBatisSqlParamReplace.Designer.cs">
+      <DependentUpon>FrmMyBatisSqlParamReplace.cs</DependentUpon>
+    </Compile>
     <Compile Include="StringBuild\ScriptMerge\ScriptMergeEntity.cs" />
     <Compile Include="StringBuild\ScriptMerge\ScriptMergeString.cs" />
     <Compile Include="TableSql\DBSqlEntity.cs" />
@@ -477,6 +483,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="StringBuild\FrmDirectoryFileString.resx">
       <DependentUpon>FrmDirectoryFileString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StringBuild\FrmMyBatisSqlParamReplace.resx">
+      <DependentUpon>FrmMyBatisSqlParamReplace.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TableSql\FrmDBTGenerateTableSQL.resx">
       <DependentUpon>FrmDBTGenerateTableSQL.cs</DependentUpon>
