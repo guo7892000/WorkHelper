@@ -88,6 +88,16 @@ namespace Breezee.WorkHelper.DBTool.Entity
             public static string Xml_FileName = "ReplaceStringConfig.xml";
         }
 
+        public static class SplitTextTemplateFileString
+        {
+            public static string Xml_FileName = "SplitStringTemplateConfig.xml";
+        }
+
+        public static class CopyDataTemplateFileString
+        {
+            public static string Xml_FileName = "CopyDataTemplateConfig.xml";
+        }
+
         public static class TableColumnDictionary
         {
             public static string Xml_FileName = "ColumnDictionaryReplaceStringConfig.xml";

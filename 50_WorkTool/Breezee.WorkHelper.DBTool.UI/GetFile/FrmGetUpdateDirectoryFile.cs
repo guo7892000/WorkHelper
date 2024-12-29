@@ -60,32 +60,32 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             //加载用户偏好值
             //读取目录
-            strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileReadPath, "").Value;
+            strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_ReadPath, "").Value;
 
             if(!string.IsNullOrEmpty(strLastSelectedPath))
             {
                 txbReadPath.Text = strLastSelectedPath;
             }
             //生成目录
-            strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileTargetPath, "").Value;
+            strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_TargetPath, "").Value;
             if (!string.IsNullOrEmpty(strLastSelectedPath))
             {
                 txbTargetPath.Text = strLastSelectedPath;
             }
-            ckbDateDir.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileIsGenerateDateTimeDir, "0").Value) ? true : false;
-            cbbDirType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileDirType, "1").Value;
+            ckbDateDir.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_IsGenerateDateTimeDir, "0").Value) ? true : false;
+            cbbDirType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_DirType, "1").Value;
             //排除项
-            txbExcludeEndprx.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileExcludeEndprx, "").Value;
-            txbExcludeDirName.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileExcludeDirName, "").Value;
-            txbExcludeFullDir.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileExcludeFullDir, "").Value;
-            txbExcludeFile.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileExcludeFileName, "").Value;
-            txbExcludeFullFile.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileExcludeFullFileName, "").Value;
+            txbExcludeEndprx.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_ExcludeEndprx, "").Value;
+            txbExcludeDirName.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_ExcludeDirName, "").Value;
+            txbExcludeFullDir.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_ExcludeFullDir, "").Value;
+            txbExcludeFile.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_ExcludeFileName, "").Value;
+            txbExcludeFullFile.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_ExcludeFullFileName, "").Value;
             //包含已提交
-            ckbNowModify.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileIsIncludeModify, "1").Value) ? true : false;
-            ckbNowAdd.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileIsIncludeAdd, "1").Value) ? true : false;
-            ckbIncludeCommit.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileIsIncludeCommit, "1").Value) ? true : false;
-            txbEmail.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileEmail, "").Value;
-            txbUserName.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileUserName, "").Value;
+            ckbNowModify.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_IsIncludeModify, "1").Value) ? true : false;
+            ckbNowAdd.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_IsIncludeAdd, "1").Value) ? true : false;
+            ckbIncludeCommit.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_IsIncludeCommit, "1").Value) ? true : false;
+            txbEmail.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_Email, "").Value;
+            txbUserName.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_UserName, "").Value;
 
             groupBox2.AddFoldRightMenu();
             grbExclude.AddFoldRightMenu();
@@ -96,7 +96,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void btnReadPath_Click(object sender, EventArgs e)
         {
             var dialog = new FolderBrowserDialog();
-            var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileReadPath, "").Value;
+            var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_ReadPath, "").Value;
 
             if (!string.IsNullOrEmpty(strLastSelectedPath))
             {
@@ -107,7 +107,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 txbReadPath.Text = dialog.SelectedPath;
                 //保存用户偏好值
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileReadPath, dialog.SelectedPath, "【获取修改过的文件】最后选择的读取目录");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_ReadPath, dialog.SelectedPath, "【获取修改过的文件】最后选择的读取目录");
                 WinFormContext.UserLoveSettings.Save();
             }
         }
@@ -117,7 +117,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void btnTargetPath_Click(object sender, EventArgs e)
         {
             var dialog = new FolderBrowserDialog();
-            var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileTargetPath, "").Value;
+            var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_TargetPath, "").Value;
 
             if (!string.IsNullOrEmpty(strLastSelectedPath))
             {
@@ -128,7 +128,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 txbTargetPath.Text = dialog.SelectedPath;
                 //保存用户偏好值
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileTargetPath, dialog.SelectedPath, "【获取修改过的文件】最后选择的生成目录");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_TargetPath, dialog.SelectedPath, "【获取修改过的文件】最后选择的生成目录");
                 WinFormContext.UserLoveSettings.Save();
             }
         }
@@ -193,27 +193,27 @@ namespace Breezee.WorkHelper.DBTool.UI
                 rtbString.AppendText(sb.ToString());
 
                 //保存用户偏好值
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileReadPath, sPath, "【获取修改过的文件】最后选择的读取目录");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileTargetPath, sTargePath, "【获取修改过的文件】最后选择的生成目录");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileExcludeEndprx, txbExcludeEndprx.Text.Trim(), "【获取修改过的文件】的排除扩展名列表");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_ReadPath, sPath, "【获取修改过的文件】最后选择的读取目录");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_TargetPath, sTargePath, "【获取修改过的文件】最后选择的生成目录");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_ExcludeEndprx, txbExcludeEndprx.Text.Trim(), "【获取修改过的文件】的排除扩展名列表");
 
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileExcludeDirName, txbExcludeDirName.Text.Trim(), "【获取修改过的文件】的排除目录名列表");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileExcludeFullDir, txbExcludeFullDir.Text.Trim(), "【获取修改过的文件】的排除全路径目录列表");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileExcludeFileName, txbExcludeFile.Text.Trim(), "【获取修改过的文件】的排除文件名列表");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileExcludeFullFileName, txbExcludeFullFile.Text.Trim(), "【获取修改过的文件】的排除全路径文件名列表");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileIsGenerateDateTimeDir, ckbDateDir.Checked ? "1" : "0", "【获取修改过的文件】的是否生成日期目录");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_ExcludeDirName, txbExcludeDirName.Text.Trim(), "【获取修改过的文件】的排除目录名列表");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_ExcludeFullDir, txbExcludeFullDir.Text.Trim(), "【获取修改过的文件】的排除全路径目录列表");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_ExcludeFileName, txbExcludeFile.Text.Trim(), "【获取修改过的文件】的排除文件名列表");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_ExcludeFullFileName, txbExcludeFullFile.Text.Trim(), "【获取修改过的文件】的排除全路径文件名列表");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_IsGenerateDateTimeDir, ckbDateDir.Checked ? "1" : "0", "【获取修改过的文件】的是否生成日期目录");
 
                 if (ckbSaveEndTime.Checked)
                 {
-                    WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileLastSaveEndDateTime, dtpEnd.Value.ToString("yyyy-MM-dd HH:mm:ss"), "【获取修改过的文件】的最后修改时间");
+                    WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_LastSaveEndDateTime, dtpEnd.Value.ToString("yyyy-MM-dd HH:mm:ss"), "【获取修改过的文件】的最后修改时间");
                 }
 
                 //包含已提交
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileIsIncludeAdd, ckbNowAdd.Checked ? "1" : "0", "【获取修改过的文件】的是否包含将增加");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileIsIncludeModify, ckbNowModify.Checked ? "1" : "0", "【获取修改过的文件】的是否包含正在修改");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileIsIncludeCommit, ckbIncludeCommit.Checked ? "1" : "0", "【获取修改过的文件】的是否包含之前提交");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileEmail, txbEmail.Text.Trim(), "【获取修改过的文件】的Email");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFileUserName, txbUserName.Text.Trim(), "【获取修改过的文件】的用户名");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_IsIncludeAdd, ckbNowAdd.Checked ? "1" : "0", "【获取修改过的文件】的是否包含将增加");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_IsIncludeModify, ckbNowModify.Checked ? "1" : "0", "【获取修改过的文件】的是否包含正在修改");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_IsIncludeCommit, ckbIncludeCommit.Checked ? "1" : "0", "【获取修改过的文件】的是否包含之前提交");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_Email, txbEmail.Text.Trim(), "【获取修改过的文件】的Email");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_UserName, txbUserName.Text.Trim(), "【获取修改过的文件】的用户名");
 
                 WinFormContext.UserLoveSettings.Save();
                 if (iFileNum <= 0)
@@ -453,7 +453,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private void ckbSetBeginAsLastSaveEnd_CheckedChanged(object sender, EventArgs e)
         {
-            string lastEndDateTim = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFileLastSaveEndDateTime, "").Value;
+            string lastEndDateTim = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_LastSaveEndDateTime, "").Value;
             dtpBegin.Enabled = true;
             if (ckbSetBeginAsLastSaveEnd.Checked)
             {

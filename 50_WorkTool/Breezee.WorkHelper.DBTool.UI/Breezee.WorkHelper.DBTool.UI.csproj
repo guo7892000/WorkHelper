@@ -136,6 +136,7 @@
     <Compile Include="Common\UC_FtpDownUpload.Designer.cs">
       <DependentUpon>UC_FtpDownUpload.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConnectString\CopyDataStringTemplate.cs" />
     <Compile Include="ConnectString\FrmDBTCopyData.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -290,6 +291,7 @@
     </Compile>
     <Compile Include="StringBuild\ScriptMerge\ScriptMergeEntity.cs" />
     <Compile Include="StringBuild\ScriptMerge\ScriptMergeString.cs" />
+    <Compile Include="StringBuild\SplitStringTemplate.cs" />
     <Compile Include="TableSql\DBSqlEntity.cs" />
     <Compile Include="TableSql\FrmDBTGenerateTableSQL.cs">
       <SubType>Form</SubType>

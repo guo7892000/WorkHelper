@@ -51,6 +51,7 @@
             this.grbTable = new System.Windows.Forms.GroupBox();
             this.dgvExcel1 = new System.Windows.Forms.DataGridView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiJoin = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiClear = new System.Windows.Forms.ToolStripMenuItem();
             this.lblTableData = new System.Windows.Forms.Label();
@@ -294,7 +295,7 @@
             this.tpImport.Location = new System.Drawing.Point(4, 22);
             this.tpImport.Name = "tpImport";
             this.tpImport.Padding = new System.Windows.Forms.Padding(3);
-            this.tpImport.Size = new System.Drawing.Size(994, 501);
+            this.tpImport.Size = new System.Drawing.Size(994, 492);
             this.tpImport.TabIndex = 0;
             this.tpImport.Text = "Excel列表";
             // 
@@ -311,7 +312,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.groupBox2);
-            this.splitContainer2.Size = new System.Drawing.Size(988, 495);
+            this.splitContainer2.Size = new System.Drawing.Size(988, 486);
             this.splitContainer2.SplitterDistance = 479;
             this.splitContainer2.TabIndex = 3;
             // 
@@ -323,10 +324,10 @@
             this.grbTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbTable.Location = new System.Drawing.Point(0, 0);
             this.grbTable.Name = "grbTable";
-            this.grbTable.Size = new System.Drawing.Size(479, 495);
+            this.grbTable.Size = new System.Drawing.Size(479, 486);
             this.grbTable.TabIndex = 1;
             this.grbTable.TabStop = false;
-            this.grbTable.Text = "粘贴的Excel1";
+            this.grbTable.Text = "粘贴的Excel-1";
             // 
             // dgvExcel1
             // 
@@ -337,17 +338,25 @@
             this.dgvExcel1.Location = new System.Drawing.Point(3, 17);
             this.dgvExcel1.Name = "dgvExcel1";
             this.dgvExcel1.RowTemplate.Height = 23;
-            this.dgvExcel1.Size = new System.Drawing.Size(473, 475);
+            this.dgvExcel1.Size = new System.Drawing.Size(473, 466);
             this.dgvExcel1.TabIndex = 0;
             this.dgvExcel1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvExcel1_KeyDown);
             // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiJoin,
             this.tsmiDelete,
             this.tsmiClear});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(101, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(101, 70);
+            // 
+            // tsmiJoin
+            // 
+            this.tsmiJoin.Name = "tsmiJoin";
+            this.tsmiJoin.Size = new System.Drawing.Size(100, 22);
+            this.tsmiJoin.Text = "加入";
+            this.tsmiJoin.Click += new System.EventHandler(this.tsmiJoin_Click);
             // 
             // tsmiDelete
             // 
@@ -384,10 +393,10 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(505, 495);
+            this.groupBox2.Size = new System.Drawing.Size(505, 486);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "粘贴的Excel2";
+            this.groupBox2.Text = "粘贴的Excel-2";
             // 
             // dgvExcel2
             // 
@@ -398,7 +407,7 @@
             this.dgvExcel2.Location = new System.Drawing.Point(3, 17);
             this.dgvExcel2.Name = "dgvExcel2";
             this.dgvExcel2.RowTemplate.Height = 23;
-            this.dgvExcel2.Size = new System.Drawing.Size(499, 475);
+            this.dgvExcel2.Size = new System.Drawing.Size(499, 466);
             this.dgvExcel2.TabIndex = 0;
             this.dgvExcel2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvExcel2_KeyDown);
             // 
@@ -595,5 +604,6 @@
         private System.Windows.Forms.Label lblFind;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.CheckBox ckbNullNotEquals;
+        private System.Windows.Forms.ToolStripMenuItem tsmiJoin;
     }
 }

@@ -60,6 +60,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btnRemoveTemplate = new System.Windows.Forms.Button();
+            this.btnSaveReplaceTemplate = new System.Windows.Forms.Button();
+            this.txbReplaceTemplateName = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cbbTemplateType = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -74,6 +81,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.tableLayoutPanel7.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -159,7 +167,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 12);
             this.label1.TabIndex = 3;
-            this.label1.Text = "语句类型：";
+            this.label1.Text = "拼接类型：";
             // 
             // cbbDbType
             // 
@@ -254,12 +262,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             // grbConSting
             // 
             this.grbConSting.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
-            this.grbConSting.Controls.Add(this.label21);
             this.grbConSting.Controls.Add(this.rtbConString);
+            this.grbConSting.Controls.Add(this.tableLayoutPanel7);
+            this.grbConSting.Controls.Add(this.label21);
             this.grbConSting.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbConSting.Location = new System.Drawing.Point(0, 0);
             this.grbConSting.Name = "grbConSting";
-            this.grbConSting.Size = new System.Drawing.Size(926, 93);
+            this.grbConSting.Size = new System.Drawing.Size(926, 133);
             this.grbConSting.TabIndex = 26;
             this.grbConSting.TabStop = false;
             this.grbConSting.Text = "拼接字符";
@@ -280,9 +289,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             // rtbConString
             // 
             this.rtbConString.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbConString.Location = new System.Drawing.Point(3, 17);
+            this.rtbConString.Location = new System.Drawing.Point(3, 49);
             this.rtbConString.Name = "rtbConString";
-            this.rtbConString.Size = new System.Drawing.Size(920, 73);
+            this.rtbConString.Size = new System.Drawing.Size(920, 81);
             this.rtbConString.TabIndex = 5;
             this.rtbConString.Text = "";
             // 
@@ -294,7 +303,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(926, 347);
+            this.tabControl1.Size = new System.Drawing.Size(926, 307);
             this.tabControl1.TabIndex = 27;
             // 
             // tpImport
@@ -304,7 +313,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tpImport.Location = new System.Drawing.Point(4, 22);
             this.tpImport.Name = "tpImport";
             this.tpImport.Padding = new System.Windows.Forms.Padding(3);
-            this.tpImport.Size = new System.Drawing.Size(918, 321);
+            this.tpImport.Size = new System.Drawing.Size(918, 281);
             this.tpImport.TabIndex = 0;
             this.tpImport.Text = "导入清单";
             // 
@@ -316,7 +325,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.grbTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbTable.Location = new System.Drawing.Point(3, 3);
             this.grbTable.Name = "grbTable";
-            this.grbTable.Size = new System.Drawing.Size(912, 315);
+            this.grbTable.Size = new System.Drawing.Size(912, 275);
             this.grbTable.TabIndex = 1;
             this.grbTable.TabStop = false;
             this.grbTable.Text = "粘贴的数据列表";
@@ -330,7 +339,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.dgvTableList.Location = new System.Drawing.Point(3, 17);
             this.dgvTableList.Name = "dgvTableList";
             this.dgvTableList.RowTemplate.Height = 23;
-            this.dgvTableList.Size = new System.Drawing.Size(906, 295);
+            this.dgvTableList.Size = new System.Drawing.Size(906, 255);
             this.dgvTableList.TabIndex = 0;
             this.dgvTableList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvTableList_KeyDown);
             // 
@@ -405,8 +414,93 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
             this.splitContainer1.Size = new System.Drawing.Size(926, 444);
-            this.splitContainer1.SplitterDistance = 93;
+            this.splitContainer1.SplitterDistance = 133;
             this.splitContainer1.TabIndex = 28;
+            // 
+            // btnRemoveTemplate
+            // 
+            this.btnRemoveTemplate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnRemoveTemplate.Location = new System.Drawing.Point(505, 3);
+            this.btnRemoveTemplate.Name = "btnRemoveTemplate";
+            this.btnRemoveTemplate.Size = new System.Drawing.Size(46, 20);
+            this.btnRemoveTemplate.TabIndex = 8;
+            this.btnRemoveTemplate.Text = "删除";
+            this.btnRemoveTemplate.UseVisualStyleBackColor = true;
+            this.btnRemoveTemplate.Click += new System.EventHandler(this.btnRemoveTemplate_Click);
+            // 
+            // btnSaveReplaceTemplate
+            // 
+            this.btnSaveReplaceTemplate.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnSaveReplaceTemplate.Location = new System.Drawing.Point(453, 3);
+            this.btnSaveReplaceTemplate.Name = "btnSaveReplaceTemplate";
+            this.btnSaveReplaceTemplate.Size = new System.Drawing.Size(46, 20);
+            this.btnSaveReplaceTemplate.TabIndex = 7;
+            this.btnSaveReplaceTemplate.Text = "保存";
+            this.btnSaveReplaceTemplate.UseVisualStyleBackColor = true;
+            this.btnSaveReplaceTemplate.Click += new System.EventHandler(this.btnSaveReplaceTemplate_Click);
+            // 
+            // txbReplaceTemplateName
+            // 
+            this.txbReplaceTemplateName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbReplaceTemplateName.Location = new System.Drawing.Point(299, 3);
+            this.txbReplaceTemplateName.Name = "txbReplaceTemplateName";
+            this.txbReplaceTemplateName.Size = new System.Drawing.Size(148, 21);
+            this.txbReplaceTemplateName.TabIndex = 6;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(228, 7);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(65, 12);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "模板名称：";
+            // 
+            // cbbTemplateType
+            // 
+            this.cbbTemplateType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbbTemplateType.FormattingEnabled = true;
+            this.cbbTemplateType.Location = new System.Drawing.Point(74, 3);
+            this.cbbTemplateType.Name = "cbbTemplateType";
+            this.cbbTemplateType.Size = new System.Drawing.Size(148, 20);
+            this.cbbTemplateType.TabIndex = 0;
+            this.cbbTemplateType.SelectedIndexChanged += new System.EventHandler(this.cbbTemplateType_SelectedIndexChanged);
+            // 
+            // label14
+            // 
+            this.label14.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(3, 7);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(65, 12);
+            this.label14.TabIndex = 5;
+            this.label14.Text = "模板选择：";
+            // 
+            // tableLayoutPanel7
+            // 
+            this.tableLayoutPanel7.ColumnCount = 7;
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel7.Controls.Add(this.label14, 0, 0);
+            this.tableLayoutPanel7.Controls.Add(this.cbbTemplateType, 1, 0);
+            this.tableLayoutPanel7.Controls.Add(this.label2, 2, 0);
+            this.tableLayoutPanel7.Controls.Add(this.txbReplaceTemplateName, 3, 0);
+            this.tableLayoutPanel7.Controls.Add(this.btnSaveReplaceTemplate, 4, 0);
+            this.tableLayoutPanel7.Controls.Add(this.btnRemoveTemplate, 5, 0);
+            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 17);
+            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
+            this.tableLayoutPanel7.RowCount = 2;
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(920, 32);
+            this.tableLayoutPanel7.TabIndex = 7;
             // 
             // FrmDBTCopyData
             // 
@@ -439,6 +533,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.tableLayoutPanel7.ResumeLayout(false);
+            this.tableLayoutPanel7.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -474,5 +570,12 @@ namespace Breezee.WorkHelper.DBTool.UI
         private ToolStripMenuItem tsmiClear;
         private SplitContainer splitContainer1;
         private CheckBox ckbResultNewLine;
+        private TableLayoutPanel tableLayoutPanel7;
+        private Label label14;
+        private ComboBox cbbTemplateType;
+        private Label label2;
+        private TextBox txbReplaceTemplateName;
+        private Button btnSaveReplaceTemplate;
+        private Button btnRemoveTemplate;
     }
 }

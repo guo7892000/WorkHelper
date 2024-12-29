@@ -84,6 +84,13 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label5 = new System.Windows.Forms.Label();
             this.btnGetSplitChar = new System.Windows.Forms.Button();
+            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.label14 = new System.Windows.Forms.Label();
+            this.cbbTemplateType = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txbReplaceTemplateName = new System.Windows.Forms.TextBox();
+            this.btnSaveReplaceTemplate = new System.Windows.Forms.Button();
+            this.btnRemoveTemplate = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.grbSplitCharCfg.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -117,6 +124,7 @@
             this.cmsSplitChar.SuspendLayout();
             this.grbGetSplitChar.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
+            this.tableLayoutPanel7.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -127,7 +135,7 @@
             this.tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1247, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(1146, 27);
             this.toolStrip1.TabIndex = 23;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -157,7 +165,7 @@
             this.grbSplitCharCfg.Margin = new System.Windows.Forms.Padding(2);
             this.grbSplitCharCfg.Name = "grbSplitCharCfg";
             this.grbSplitCharCfg.Padding = new System.Windows.Forms.Padding(2);
-            this.grbSplitCharCfg.Size = new System.Drawing.Size(1247, 56);
+            this.grbSplitCharCfg.Size = new System.Drawing.Size(1146, 56);
             this.grbSplitCharCfg.TabIndex = 24;
             this.grbSplitCharCfg.TabStop = false;
             this.grbSplitCharCfg.Text = "分隔配置";
@@ -190,7 +198,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1243, 35);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1142, 35);
             this.tableLayoutPanel1.TabIndex = 5;
             // 
             // ckbFirstSplitBySpace
@@ -361,7 +369,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox2.Size = new System.Drawing.Size(369, 232);
+            this.groupBox2.Size = new System.Drawing.Size(350, 231);
             this.groupBox2.TabIndex = 25;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "要分隔的字符（集合）";
@@ -372,7 +380,7 @@
             this.rtbSplitList.Location = new System.Drawing.Point(2, 16);
             this.rtbSplitList.Margin = new System.Windows.Forms.Padding(2);
             this.rtbSplitList.Name = "rtbSplitList";
-            this.rtbSplitList.Size = new System.Drawing.Size(365, 214);
+            this.rtbSplitList.Size = new System.Drawing.Size(346, 213);
             this.rtbSplitList.TabIndex = 3;
             this.rtbSplitList.Text = "";
             // 
@@ -380,11 +388,11 @@
             // 
             this.groupBox3.Controls.Add(this.rtbFormat);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(0, 48);
+            this.groupBox3.Location = new System.Drawing.Point(0, 80);
             this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox3.Size = new System.Drawing.Size(581, 93);
+            this.groupBox3.Size = new System.Drawing.Size(487, 130);
             this.groupBox3.TabIndex = 26;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "要拼接的字符格式（输入）";
@@ -395,7 +403,7 @@
             this.rtbFormat.Location = new System.Drawing.Point(2, 16);
             this.rtbFormat.Margin = new System.Windows.Forms.Padding(2);
             this.rtbFormat.Name = "rtbFormat";
-            this.rtbFormat.Size = new System.Drawing.Size(577, 75);
+            this.rtbFormat.Size = new System.Drawing.Size(483, 112);
             this.rtbFormat.TabIndex = 5;
             this.rtbFormat.Text = "";
             // 
@@ -407,7 +415,7 @@
             this.groupBox4.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox4.Size = new System.Drawing.Size(581, 278);
+            this.groupBox4.Size = new System.Drawing.Size(487, 209);
             this.groupBox4.TabIndex = 27;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "转换后的字符（输出）";
@@ -418,7 +426,7 @@
             this.rtbOutput.Location = new System.Drawing.Point(2, 16);
             this.rtbOutput.Margin = new System.Windows.Forms.Padding(2);
             this.rtbOutput.Name = "rtbOutput";
-            this.rtbOutput.Size = new System.Drawing.Size(577, 260);
+            this.rtbOutput.Size = new System.Drawing.Size(483, 191);
             this.rtbOutput.TabIndex = 6;
             this.rtbOutput.Text = "";
             // 
@@ -435,8 +443,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(954, 471);
-            this.splitContainer1.SplitterDistance = 369;
+            this.splitContainer1.Size = new System.Drawing.Size(841, 471);
+            this.splitContainer1.SplitterDistance = 350;
             this.splitContainer1.TabIndex = 28;
             // 
             // splitContainer3
@@ -453,8 +461,8 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.groupBox5);
-            this.splitContainer3.Size = new System.Drawing.Size(369, 471);
-            this.splitContainer3.SplitterDistance = 232;
+            this.splitContainer3.Size = new System.Drawing.Size(350, 471);
+            this.splitContainer3.SplitterDistance = 231;
             this.splitContainer3.TabIndex = 26;
             // 
             // groupBox5
@@ -463,7 +471,7 @@
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox5.Location = new System.Drawing.Point(0, 0);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(369, 235);
+            this.groupBox5.Size = new System.Drawing.Size(350, 236);
             this.groupBox5.TabIndex = 0;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "分拆后结果";
@@ -475,7 +483,7 @@
             this.dgvData.Location = new System.Drawing.Point(3, 17);
             this.dgvData.Name = "dgvData";
             this.dgvData.RowTemplate.Height = 23;
-            this.dgvData.Size = new System.Drawing.Size(363, 215);
+            this.dgvData.Size = new System.Drawing.Size(344, 216);
             this.dgvData.TabIndex = 0;
             // 
             // splitContainer2
@@ -494,26 +502,26 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.groupBox4);
             this.splitContainer2.Panel2.Controls.Add(this.groupBox1);
-            this.splitContainer2.Size = new System.Drawing.Size(581, 471);
-            this.splitContainer2.SplitterDistance = 141;
+            this.splitContainer2.Size = new System.Drawing.Size(487, 471);
+            this.splitContainer2.SplitterDistance = 210;
             this.splitContainer2.TabIndex = 0;
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.ckbOneRowToOneColumn);
-            this.groupBox6.Controls.Add(this.btnSplit);
+            this.groupBox6.Controls.Add(this.tableLayoutPanel7);
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox6.Location = new System.Drawing.Point(0, 0);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(581, 48);
+            this.groupBox6.Size = new System.Drawing.Size(487, 80);
             this.groupBox6.TabIndex = 27;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "分拆操作";
             // 
             // ckbOneRowToOneColumn
             // 
+            this.ckbOneRowToOneColumn.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbOneRowToOneColumn.AutoSize = true;
-            this.ckbOneRowToOneColumn.Location = new System.Drawing.Point(115, 19);
+            this.ckbOneRowToOneColumn.Location = new System.Drawing.Point(3, 38);
             this.ckbOneRowToOneColumn.Name = "ckbOneRowToOneColumn";
             this.ckbOneRowToOneColumn.Size = new System.Drawing.Size(108, 16);
             this.ckbOneRowToOneColumn.TabIndex = 1;
@@ -523,7 +531,7 @@
             // btnSplit
             // 
             this.btnSplit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.btnSplit.Location = new System.Drawing.Point(22, 14);
+            this.btnSplit.Location = new System.Drawing.Point(3, 3);
             this.btnSplit.Name = "btnSplit";
             this.btnSplit.Size = new System.Drawing.Size(76, 27);
             this.btnSplit.TabIndex = 0;
@@ -538,7 +546,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(581, 48);
+            this.groupBox1.Size = new System.Drawing.Size(487, 48);
             this.groupBox1.TabIndex = 28;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "生成操作";
@@ -561,7 +569,7 @@
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox7.Location = new System.Drawing.Point(0, 27);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(1247, 55);
+            this.groupBox7.Size = new System.Drawing.Size(1146, 55);
             this.groupBox7.TabIndex = 29;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "选项";
@@ -590,7 +598,7 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1241, 38);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1140, 38);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // cbbSplitModule
@@ -650,8 +658,8 @@
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.splitContainer1);
-            this.splitContainer4.Size = new System.Drawing.Size(1247, 471);
-            this.splitContainer4.SplitterDistance = 289;
+            this.splitContainer4.Size = new System.Drawing.Size(1146, 471);
+            this.splitContainer4.SplitterDistance = 301;
             this.splitContainer4.TabIndex = 30;
             // 
             // grbSplitList
@@ -662,7 +670,7 @@
             this.grbSplitList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbSplitList.Location = new System.Drawing.Point(0, 80);
             this.grbSplitList.Name = "grbSplitList";
-            this.grbSplitList.Size = new System.Drawing.Size(289, 391);
+            this.grbSplitList.Size = new System.Drawing.Size(301, 391);
             this.grbSplitList.TabIndex = 1;
             this.grbSplitList.TabStop = false;
             this.grbSplitList.Text = "分隔符列表";
@@ -687,7 +695,7 @@
             this.dgvSplitChar.Location = new System.Drawing.Point(3, 17);
             this.dgvSplitChar.Name = "dgvSplitChar";
             this.dgvSplitChar.RowTemplate.Height = 23;
-            this.dgvSplitChar.Size = new System.Drawing.Size(283, 371);
+            this.dgvSplitChar.Size = new System.Drawing.Size(295, 371);
             this.dgvSplitChar.TabIndex = 1;
             this.dgvSplitChar.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvSplitChar_KeyDown);
             // 
@@ -722,7 +730,7 @@
             this.grbGetSplitChar.Dock = System.Windows.Forms.DockStyle.Top;
             this.grbGetSplitChar.Location = new System.Drawing.Point(0, 0);
             this.grbGetSplitChar.Name = "grbGetSplitChar";
-            this.grbGetSplitChar.Size = new System.Drawing.Size(289, 80);
+            this.grbGetSplitChar.Size = new System.Drawing.Size(301, 80);
             this.grbGetSplitChar.TabIndex = 0;
             this.grbGetSplitChar.TabStop = false;
             this.grbGetSplitChar.Text = "分隔符生成";
@@ -748,7 +756,7 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(283, 58);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(295, 58);
             this.tableLayoutPanel3.TabIndex = 1;
             // 
             // label5
@@ -772,11 +780,99 @@
             this.btnGetSplitChar.UseVisualStyleBackColor = false;
             this.btnGetSplitChar.Click += new System.EventHandler(this.btnGetSplitChar_Click);
             // 
+            // tableLayoutPanel7
+            // 
+            this.tableLayoutPanel7.ColumnCount = 6;
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel7.Controls.Add(this.btnSplit, 0, 0);
+            this.tableLayoutPanel7.Controls.Add(this.label7, 1, 1);
+            this.tableLayoutPanel7.Controls.Add(this.ckbOneRowToOneColumn, 0, 1);
+            this.tableLayoutPanel7.Controls.Add(this.txbReplaceTemplateName, 2, 1);
+            this.tableLayoutPanel7.Controls.Add(this.label14, 1, 0);
+            this.tableLayoutPanel7.Controls.Add(this.btnRemoveTemplate, 3, 1);
+            this.tableLayoutPanel7.Controls.Add(this.cbbTemplateType, 2, 0);
+            this.tableLayoutPanel7.Controls.Add(this.btnSaveReplaceTemplate, 3, 0);
+            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 17);
+            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
+            this.tableLayoutPanel7.RowCount = 3;
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(481, 63);
+            this.tableLayoutPanel7.TabIndex = 8;
+            // 
+            // label14
+            // 
+            this.label14.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(117, 10);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(65, 12);
+            this.label14.TabIndex = 5;
+            this.label14.Text = "模板选择：";
+            // 
+            // cbbTemplateType
+            // 
+            this.cbbTemplateType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbbTemplateType.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbbTemplateType.FormattingEnabled = true;
+            this.cbbTemplateType.Location = new System.Drawing.Point(188, 4);
+            this.cbbTemplateType.Name = "cbbTemplateType";
+            this.cbbTemplateType.Size = new System.Drawing.Size(148, 25);
+            this.cbbTemplateType.TabIndex = 0;
+            this.cbbTemplateType.SelectedIndexChanged += new System.EventHandler(this.cbbTemplateType_SelectedIndexChanged);
+            // 
+            // label7
+            // 
+            this.label7.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(117, 40);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(65, 12);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "模板名称：";
+            // 
+            // txbReplaceTemplateName
+            // 
+            this.txbReplaceTemplateName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbReplaceTemplateName.Location = new System.Drawing.Point(188, 36);
+            this.txbReplaceTemplateName.Name = "txbReplaceTemplateName";
+            this.txbReplaceTemplateName.Size = new System.Drawing.Size(148, 21);
+            this.txbReplaceTemplateName.TabIndex = 6;
+            // 
+            // btnSaveReplaceTemplate
+            // 
+            this.btnSaveReplaceTemplate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnSaveReplaceTemplate.Location = new System.Drawing.Point(342, 6);
+            this.btnSaveReplaceTemplate.Name = "btnSaveReplaceTemplate";
+            this.btnSaveReplaceTemplate.Size = new System.Drawing.Size(46, 20);
+            this.btnSaveReplaceTemplate.TabIndex = 7;
+            this.btnSaveReplaceTemplate.Text = "保存";
+            this.btnSaveReplaceTemplate.UseVisualStyleBackColor = true;
+            this.btnSaveReplaceTemplate.Click += new System.EventHandler(this.btnSaveReplaceTemplate_Click);
+            // 
+            // btnRemoveTemplate
+            // 
+            this.btnRemoveTemplate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnRemoveTemplate.Location = new System.Drawing.Point(342, 36);
+            this.btnRemoveTemplate.Name = "btnRemoveTemplate";
+            this.btnRemoveTemplate.Size = new System.Drawing.Size(46, 20);
+            this.btnRemoveTemplate.TabIndex = 8;
+            this.btnRemoveTemplate.Text = "删除";
+            this.btnRemoveTemplate.UseVisualStyleBackColor = true;
+            this.btnRemoveTemplate.Click += new System.EventHandler(this.btnRemoveTemplate_Click);
+            // 
             // FrmDBTSplitString
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1247, 609);
+            this.ClientSize = new System.Drawing.Size(1146, 609);
             this.Controls.Add(this.splitContainer4);
             this.Controls.Add(this.grbSplitCharCfg);
             this.Controls.Add(this.groupBox7);
@@ -809,7 +905,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox7.ResumeLayout(false);
@@ -827,6 +922,8 @@
             this.grbGetSplitChar.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
+            this.tableLayoutPanel7.ResumeLayout(false);
+            this.tableLayoutPanel7.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -888,5 +985,12 @@
         private System.Windows.Forms.DataGridView dgvData;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cbbNewLineType;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.ComboBox cbbTemplateType;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox txbReplaceTemplateName;
+        private System.Windows.Forms.Button btnSaveReplaceTemplate;
+        private System.Windows.Forms.Button btnRemoveTemplate;
     }
 }

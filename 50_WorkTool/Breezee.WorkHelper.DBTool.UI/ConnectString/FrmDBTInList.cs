@@ -40,10 +40,12 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void FrmInList_Load(object sender, EventArgs e)
         {
             //初始化下拉框
-            IDictionary<string, string> dic_List = new Dictionary<string, string>();
-            dic_List.Add("1", "IN清单");
-            dic_List.Add("2", "自定义前后缀");
-            dic_List.Add("3", "驼峰式");
+            IDictionary<string, string> dic_List = new Dictionary<string, string>
+            {
+                { "1", "IN清单" },
+                { "2", "自定义前后缀" },
+                { "3", "驼峰式" }
+            };
             cbbSqlType.BindTypeValueDropDownList(dic_List.GetTextValueTable(false), false, true);
             //初始化网格
             DataTable dtIn = new DataTable();

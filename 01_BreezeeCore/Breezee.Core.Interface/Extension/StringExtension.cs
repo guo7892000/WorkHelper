@@ -260,6 +260,7 @@ namespace Breezee.Core.Interface
                 addNumRow = true;
             }
 
+            HashSet<string> doubleCol = new HashSet<string>();
             string[] rows = pasteText.Trim().Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);//分割的行数数组
             string[] colNames = rows[0].Split(new string[] { "\t" }, StringSplitOptions.RemoveEmptyEntries);//列头数组
             for (int i = 0; i < rows.Length; i++)//行
@@ -285,6 +286,14 @@ namespace Breezee.Core.Interface
                             {
                                 dt.Columns.Add(s.Trim(), typeof(string));
                             }
+                            else
+                            {
+                                doubleCol.Add(s);
+                            }
+                        }
+                        if(doubleCol.Count > 0)
+                        {
+                            throw new Exception("粘贴的Excel存在重复的列名，请修改后重新粘贴！包括：" + string.Join(",", doubleCol));
                         }
                     }
                 }

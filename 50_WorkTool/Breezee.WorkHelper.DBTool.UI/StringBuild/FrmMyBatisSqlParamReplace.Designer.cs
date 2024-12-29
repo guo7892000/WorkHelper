@@ -38,13 +38,14 @@
             this.cbbSqlTextType = new System.Windows.Forms.ComboBox();
             this.btnConvert = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.rtbFrom = new System.Windows.Forms.RichTextBox();
-            this.rtbTo = new System.Windows.Forms.RichTextBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.rtbFrom = new System.Windows.Forms.RichTextBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.rtbParam = new System.Windows.Forms.RichTextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.rtbTo = new System.Windows.Forms.RichTextBox();
+            this.ckbValueRemoveEmpty = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -56,9 +57,9 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -104,14 +105,16 @@
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 4;
+            this.tableLayoutPanel1.ColumnCount = 5;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 373F));
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbbSqlTextType, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnConvert, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.ckbValueRemoveEmpty, 3, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -125,7 +128,7 @@
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 8);
+            this.label1.Location = new System.Drawing.Point(3, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(83, 12);
             this.label1.TabIndex = 0;
@@ -136,7 +139,7 @@
             this.cbbSqlTextType.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cbbSqlTextType.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbbSqlTextType.FormattingEnabled = true;
-            this.cbbSqlTextType.Location = new System.Drawing.Point(92, 4);
+            this.cbbSqlTextType.Location = new System.Drawing.Point(92, 3);
             this.cbbSqlTextType.Name = "cbbSqlTextType";
             this.cbbSqlTextType.Size = new System.Drawing.Size(214, 25);
             this.cbbSqlTextType.TabIndex = 1;
@@ -145,7 +148,7 @@
             // btnConvert
             // 
             this.btnConvert.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnConvert.Location = new System.Drawing.Point(312, 3);
+            this.btnConvert.Location = new System.Drawing.Point(312, 4);
             this.btnConvert.Name = "btnConvert";
             this.btnConvert.Size = new System.Drawing.Size(75, 23);
             this.btnConvert.TabIndex = 2;
@@ -170,24 +173,6 @@
             this.splitContainer1.SplitterDistance = 421;
             this.splitContainer1.TabIndex = 26;
             // 
-            // rtbFrom
-            // 
-            this.rtbFrom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbFrom.Location = new System.Drawing.Point(3, 17);
-            this.rtbFrom.Name = "rtbFrom";
-            this.rtbFrom.Size = new System.Drawing.Size(415, 261);
-            this.rtbFrom.TabIndex = 0;
-            this.rtbFrom.Text = "";
-            // 
-            // rtbTo
-            // 
-            this.rtbTo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbTo.Location = new System.Drawing.Point(3, 17);
-            this.rtbTo.Name = "rtbTo";
-            this.rtbTo.Size = new System.Drawing.Size(338, 444);
-            this.rtbTo.TabIndex = 0;
-            this.rtbTo.Text = "";
-            // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -205,6 +190,37 @@
             this.splitContainer2.Size = new System.Drawing.Size(421, 464);
             this.splitContainer2.SplitterDistance = 281;
             this.splitContainer2.TabIndex = 1;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.rtbFrom);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox3.Location = new System.Drawing.Point(0, 0);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(421, 281);
+            this.groupBox3.TabIndex = 1;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "参数化SQL（？占位符）";
+            // 
+            // rtbFrom
+            // 
+            this.rtbFrom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbFrom.Location = new System.Drawing.Point(3, 17);
+            this.rtbFrom.Name = "rtbFrom";
+            this.rtbFrom.Size = new System.Drawing.Size(415, 261);
+            this.rtbFrom.TabIndex = 0;
+            this.rtbFrom.Text = "";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.rtbParam);
+            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox4.Location = new System.Drawing.Point(0, 0);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(421, 179);
+            this.groupBox4.TabIndex = 1;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "参数字符（逗号分隔）";
             // 
             // rtbParam
             // 
@@ -226,27 +242,25 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "生成结果（替换？为具体值）";
             // 
-            // groupBox3
+            // rtbTo
             // 
-            this.groupBox3.Controls.Add(this.rtbFrom);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(0, 0);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(421, 281);
-            this.groupBox3.TabIndex = 1;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "参数化SQL（？占位符）";
+            this.rtbTo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbTo.Location = new System.Drawing.Point(3, 17);
+            this.rtbTo.Name = "rtbTo";
+            this.rtbTo.Size = new System.Drawing.Size(338, 444);
+            this.rtbTo.TabIndex = 0;
+            this.rtbTo.Text = "";
             // 
-            // groupBox4
+            // ckbValueRemoveEmpty
             // 
-            this.groupBox4.Controls.Add(this.rtbParam);
-            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox4.Location = new System.Drawing.Point(0, 0);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(421, 179);
-            this.groupBox4.TabIndex = 1;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "参数字符（逗号分隔）";
+            this.ckbValueRemoveEmpty.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbValueRemoveEmpty.AutoSize = true;
+            this.ckbValueRemoveEmpty.Location = new System.Drawing.Point(393, 7);
+            this.ckbValueRemoveEmpty.Name = "ckbValueRemoveEmpty";
+            this.ckbValueRemoveEmpty.Size = new System.Drawing.Size(108, 16);
+            this.ckbValueRemoveEmpty.TabIndex = 3;
+            this.ckbValueRemoveEmpty.Text = "值去掉前后空白";
+            this.ckbValueRemoveEmpty.UseVisualStyleBackColor = true;
             // 
             // FrmMyBatisSqlParamReplace
             // 
@@ -273,9 +287,9 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -299,5 +313,6 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.RichTextBox rtbParam;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.CheckBox ckbValueRemoveEmpty;
     }
 }

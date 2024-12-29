@@ -13,10 +13,15 @@ namespace Breezee.WorkHelper.DBTool.Entity
     public class DBTUserLoveConfig
     {
         //Excel复制拼接
-        public static readonly string ExcelCopyDataConnect = "ExcelCopyDataConnect";
+        public static readonly string ExcelCopy_DataConnect = "ExcelCopy_DataConnect";
+        public static readonly string ExcelCopy_SqlType = "ExcelCopy_SqlType";
+        public static readonly string ExcelCopy_DbType = "ExcelCopy_DbType";
+        public static readonly string ExcelCopy_WordConvert = "ExcelCopy_WordConvert";
+        public static readonly string ExcelCopy_IsAutoWord = "ExcelCopy_IsAutoWord";
         //列转行
         public static readonly string ExcelCol2Row_FixRowCount = "ExcelCol2Row_FixRowCount";
         public static readonly string ExcelCol2Row_EachDataRowCount = "ExcelCol2Row_EachDataRowCount";
+        #region 数据字典
         //数据字典
         public static readonly string ColumnDic_ConfirmColumnType = "ColumnDic_ConfirmColumnType";
         public static readonly string ColumnDic_TemplateType = "ColumnDic_TemplateType";
@@ -30,31 +35,37 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string ColumnDic_QueryConditionParamNameModule = "ColumnDic_QueryConditionParamNameModule";//模板参数名
         public static readonly string ColumnDic_QueryConditionParamColumnModule = "ColumnDic_QueryConditionParamColumnModule";//模板参数列名
         public static readonly string ColumnDic_QueryConditionParamNameLatest = "ColumnDic_QueryConditionParamNameLatest";//最后设置的参数名
-        public static readonly string ColumnDic_QueryConditionParamColumnLatest = "ColumnDic_QueryConditionParamColumnLatest";//最后设置的参数列
+        public static readonly string ColumnDic_QueryConditionParamColumnLatest = "ColumnDic_QueryConditionParamColumnLatest";//最后设置的参数列 
+        #endregion
         //点击复制
-        public static readonly string ClickCopyPath = "ClickCopyPath";
-        public static readonly string DirStringLastSelectedPath = "DirStringLastSelectedPath";
+        public static readonly string ClickCopy_Path = "ClickCopy_Path";
+        public static readonly string DirString_LastSelectedPath = "DirString_LastSelectedPath";
+        //  获取SQL
         public static readonly string DbGetSql_ParamType = "DbGetSql_ParamType";
         public static readonly string DbGetSql_FirstWordType = "DbGetSql_FirstWordType";
+        // 自动实体
         public static readonly string AutoEntity_Path = "AutoEntity_Path";
         public static readonly string AutoCode_Path = "AutoCode_Path";
-        public static readonly string MergeScriptPath = "MergeScriptPath";
+        // 脚本合并
+        public static readonly string MergeScript_Path = "MergeScript_Path";
+        #region 获取修改文件
         //获取修改文件
-        public static readonly string GetFileReadPath = "GetFile_ReadPath";
-        public static readonly string GetFileTargetPath = "GetFile_TargetPath";
-        public static readonly string GetFileExcludeEndprx = "GetFile_ExcludeEndprx";
-        public static readonly string GetFileExcludeDirName = "GetFile_ExcludeDirName";
-        public static readonly string GetFileExcludeFullDir = "GetFile_ExcludeFullDir";
-        public static readonly string GetFileExcludeFileName = "GetFile_ExcludeFileName";
-        public static readonly string GetFileExcludeFullFileName = "GetFile_ExcludeFullFileName";
-        public static readonly string GetFileIsGenerateDateTimeDir = "GetFile_IsGenerateDateTimeDir";
-        public static readonly string GetFileLastSaveEndDateTime = "GetFile_SaveEndDateTime";
-        public static readonly string GetFileDirType = "GetFile_DirType";
-        public static readonly string GetFileIsIncludeModify = "GetFile_IsIncludeModify";
-        public static readonly string GetFileIsIncludeAdd = "GetFile_IsIncludeAdd";
-        public static readonly string GetFileIsIncludeCommit = "GetFile_IsIncludeCommit";
-        public static readonly string GetFileEmail = "GetFile_Email";
-        public static readonly string GetFileUserName = "GetFile_UserName";
+        public static readonly string GetFile_ReadPath = "GetFile_ReadPath";
+        public static readonly string GetFile_TargetPath = "GetFile_TargetPath";
+        public static readonly string GetFile_ExcludeEndprx = "GetFile_ExcludeEndprx";
+        public static readonly string GetFile_ExcludeDirName = "GetFile_ExcludeDirName";
+        public static readonly string GetFile_ExcludeFullDir = "GetFile_ExcludeFullDir";
+        public static readonly string GetFile_ExcludeFileName = "GetFile_ExcludeFileName";
+        public static readonly string GetFile_ExcludeFullFileName = "GetFile_ExcludeFullFileName";
+        public static readonly string GetFile_IsGenerateDateTimeDir = "GetFile_IsGenerateDateTimeDir";
+        public static readonly string GetFile_LastSaveEndDateTime = "GetFile_SaveEndDateTime";
+        public static readonly string GetFile_DirType = "GetFile_DirType";
+        public static readonly string GetFile_IsIncludeModify = "GetFile_IsIncludeModify";
+        public static readonly string GetFile_IsIncludeAdd = "GetFile_IsIncludeAdd";
+        public static readonly string GetFile_IsIncludeCommit = "GetFile_IsIncludeCommit";
+        public static readonly string GetFile_Email = "GetFile_Email";
+        public static readonly string GetFile_UserName = "GetFile_UserName"; 
+        #endregion
         //Excel公式
         public static readonly string ExcelFomulate_Type = "ExcelFomulate_Type";
         public static readonly string ExcelFomulate_TableName = "ExcelFomulate_TableName";
@@ -124,6 +135,7 @@ namespace Breezee.WorkHelper.DBTool.Entity
 
         //SQL总结
         public static readonly string SQLStudy_FileCharsetEncoding = "SQLStudy_FileCharsetEncoding";
+        #region 生成表SQL
         //生成表SQL
         public static readonly string GenerateTableSQL_InputType = "GenerateTableSQL_InputType";//录入类型
         public static readonly string GenerateTableSQL_TargetDbType = "GenerateTableSQL_TargetDbType";//目标数据库类型
@@ -138,7 +150,8 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string GenerateTableSQL_IsPkRemoveDefault = "GenerateTableSQL_IsPkRemoveDefault";//是否主键剔除默认值
         public static readonly string GenerateTableSQL_IsColumnHeadMerge = "GenerateTableSQL_IsColumnHeadMerge"; //是否列头合并
         public static readonly string GenerateTableSQL_IsAutoFillColNameCn = "GenerateTableSQL_IsAutoFillColNameCn"; //是否自动修改列名称
-        public static readonly string GenerateTableSQL_DefaultColNameCN = "GenerateTableSQL_DefaultColNameCN";//列中文名为空时使用的列名
+        public static readonly string GenerateTableSQL_DefaultColNameCN = "GenerateTableSQL_DefaultColNameCN";//列中文名为空时使用的列名 
+        #endregion
         //DB间SQL转换
         public static readonly string DbSqlConvert_IsAutoExcludeTableSource = "DbSqlConvert_IsAutoExcludeTableSource";
         public static readonly string DbSqlConvert_ExcludeTableListSource = "DbSqlConvert_ExcludeTableListSource";

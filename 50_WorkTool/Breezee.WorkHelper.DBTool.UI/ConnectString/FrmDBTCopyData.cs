@@ -25,6 +25,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private readonly string _strTableName = "变更表清单";
         private BindingSource bsTable = new BindingSource();
         private string _strAutoSqlSuccess = "生成成功，并已复制到了粘贴板。详细见“生成的SQL”页签！";
+        CopyDataStringTemplate replaceStringData;//替换字符模板XML配置
         #endregion
 
         #region 构造函数
@@ -37,16 +38,20 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 加载事件
         private void FrmCopyData_Load(object sender, EventArgs e)
         {
-            IDictionary<string, string> dic_List = new Dictionary<string, string>();
-            dic_List.Add("1", "自定义拼接字符串");
-            dic_List.Add("2", "UNION清单");
-            dic_List.Add("3", "UNION ALL清单");
+            IDictionary<string, string> dic_List = new Dictionary<string, string>
+            {
+                { "1", "自定义拼接字符串" },
+                { "2", "UNION清单" },
+                { "3", "UNION ALL清单" }
+            };
             cbbSqlType.BindTypeValueDropDownList(dic_List.GetTextValueTable(false), false, true);
 
-            dic_List = new Dictionary<string, string>();
-            dic_List.Add("0", "无");
-            dic_List.Add("1", "小驼峰式");
-            dic_List.Add("2", "大驼峰式");
+            dic_List = new Dictionary<string, string>
+            {
+                { "0", "无" },
+                { "1", "小驼峰式" },
+                { "2", "大驼峰式" }
+            };
             cbbWordConvert.BindTypeValueDropDownList(dic_List.GetTextValueTable(false), false, true);
 
             //数据库类型
@@ -61,10 +66,19 @@ namespace Breezee.WorkHelper.DBTool.UI
             //
             lblTableData.Text = "可在Excel中复制数据后，点击网格后按ctrl + v粘贴即可。注：第一行为列名！";
             ckbAutoColumnName.Checked = true;
-
+            
             //加载用户偏好值
-            rtbConString.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ExcelCopyDataConnect, "").Value;
-            //rtbConString.Text = Setting.Default.ExcelCopyDataConnect;
+            rtbConString.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ExcelCopy_DataConnect, "").Value;
+            cbbSqlType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ExcelCopy_SqlType, "1").Value;
+            cbbWordConvert.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ExcelCopy_WordConvert, "0").Value;
+            cbbDbType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ExcelCopy_DbType, "2").Value;
+            ckbAutoColumnName.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ExcelCopy_IsAutoWord, "1").Value) ? true : false;
+
+            //加载模板数据
+            replaceStringData = new CopyDataStringTemplate(DBTGlobalValue.CopyDataTemplateFileString.Xml_FileName);
+            string sColName = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            cbbTemplateType.BindDropDownList(replaceStringData.MoreXmlConfig.KeyData, sColName, CopyDataStringTemplate.KeyString.Name, true, true);
+
         }
         #endregion
 
@@ -86,6 +100,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     dtMain.Columns.Clear();
                     pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain);
                     dgvTableList.ShowRowNum(); //显示行号
+                    ShowInfo("粘贴成功，请选择拼接类型！");
                 }
             }
             catch (Exception ex)
@@ -100,7 +115,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             try
             {
-                string sbAllSql = "";
+                StringBuilder sbAll = new StringBuilder();
                 string strSqlType = cbbSqlType.SelectedValue.ToString();
                 if (strSqlType == "1")
                 {
@@ -141,7 +156,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                             strOneData = strOneData.Replace("#" + dtMain.Columns[j].ColumnName + "#", strData);
                         }
                         //所有SQL文本累加
-                        sbAllSql += strOneData + (ckbResultNewLine.Checked ? "\n" : "");
+                        sbAll.Append(strOneData + (ckbResultNewLine.Checked ? "\n" : ""));
                     }
                     #endregion
                 }
@@ -162,7 +177,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                     }
                     for (int i = 0; i < dtMain.Rows.Count; i++)
                     {
-                        string strOneData = "";
+                        //string strOneData = "";
+                        StringBuilder sbOneData = new StringBuilder();
                         for (int j = 0; j < dtMain.Columns.Count; j++)
                         {
                             string strData = ckbTrim.Checked ? dtMain.Rows[i][j].ToString().Trim() : dtMain.Rows[i][j].ToString();
@@ -174,11 +190,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                                     //SQL Server以中括号([])作为列别名
                                     if (string.IsNullOrEmpty(strData))
                                     {
-                                        strOneData += "NULL AS [" + dtMain.Columns[j].ColumnName + "],";
+                                        sbOneData.Append("NULL AS [" + dtMain.Columns[j].ColumnName + "],");
                                     }
                                     else
                                     {
-                                        strOneData += StringHelper.ChangeIntoSqlString(strData) + " AS [" + dtMain.Columns[j].ColumnName + "],";
+                                        sbOneData.Append(StringHelper.ChangeIntoSqlString(strData) + " AS [" + dtMain.Columns[j].ColumnName + "],");
                                     }
                                 }
                                 else
@@ -186,11 +202,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                                     //其他类型以双括号("")作为列别名
                                     if (string.IsNullOrEmpty(strData))
                                     {
-                                        strOneData += "NULL AS \"" + dtMain.Columns[j].ColumnName + "\",";
+                                        sbOneData.Append("NULL AS \"" + dtMain.Columns[j].ColumnName + "\",");
                                     }
                                     else
                                     {
-                                        strOneData += StringHelper.ChangeIntoSqlString(strData) + " AS \"" + dtMain.Columns[j].ColumnName + "\",";
+                                        sbOneData.Append(StringHelper.ChangeIntoSqlString(strData) + " AS \"" + dtMain.Columns[j].ColumnName + "\",");
                                     }
                                 }
                                 #endregion
@@ -200,60 +216,62 @@ namespace Breezee.WorkHelper.DBTool.UI
                                 #region 非第一行不用定义列名
                                 if (string.IsNullOrEmpty(strData))
                                 {
-                                    strOneData += "NULL,";//其他列不定义列名
+                                    sbOneData.Append("NULL,");//其他列不定义列名
                                 }
                                 else
                                 {
-                                    strOneData += StringHelper.ChangeIntoSqlString(strData) + ",";//其他列不定义列名
+                                    sbOneData.Append(StringHelper.ChangeIntoSqlString(strData) + ",");//其他列不定义列名
                                 }
                                 #endregion
                             }
                         }
 
                         #region 构造生成SQL
-                        strOneData = strOneData.Substring(0, strOneData.Length - 1);
+                        sbOneData.Remove(sbOneData.Length - 1, 1);
                         if (i == 0)
                         {
                             if (selectDBType == DataBaseType.Oracle)
                             {
-                                strOneData += strOrcEnd;//Oracle需要增加from dual
+                                sbOneData.Append(strOrcEnd);//Oracle需要增加from dual
                             }
                         }
                         else if (i != 0)
                         {
                             if (strSqlType == "2")
                             {
-                                strOneData = strUnion + strOneData;
+                                sbOneData.Insert(0, strUnion);
                             }
                             else
                             {
-                                strOneData = strUnionAll + strOneData;
+                                sbOneData.Insert(0, strUnionAll);
                             }
                             if (selectDBType == DataBaseType.Oracle)
                             {
-                                strOneData += strOrcEnd;
+                                sbOneData.Append(strOrcEnd);
                             }
                         }
-                        sbAllSql += strOneData + "\n";
+                        sbAll.Append(sbOneData.ToString() + "\n");
                         #endregion
                     }
-                    sbAllSql = "SELECT " + sbAllSql;
+                    sbAll.Insert(0, "SELECT ");
 
                     #endregion
                 }
                 rtbResult.Clear();
-                rtbResult.AppendText(sbAllSql.ToString() + "\n");
-                Clipboard.SetData(DataFormats.UnicodeText, sbAllSql.ToString());
+                rtbResult.AppendText(sbAll.ToString() + "\n");
+                Clipboard.SetData(DataFormats.UnicodeText, sbAll.ToString());
                 tabControl1.SelectedTab = tpAutoSQL;
                 //生成SQL成功后提示
                 ShowInfo(_strAutoSqlSuccess);
                 rtbResult.Select(0, 0); //返回到第一
 
                 //保存用户偏好值
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ExcelCopyDataConnect, rtbConString.Text, "【复制拼接字符】字符模板");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ExcelCopy_DataConnect, rtbConString.Text, "【复制拼接字符】字符模板");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ExcelCopy_SqlType, cbbSqlType.SelectedValue.ToString(), "【复制拼接字符】拼接类型");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ExcelCopy_DbType, cbbDbType.SelectedValue.ToString(), "【复制拼接字符】数据类型");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ExcelCopy_WordConvert, cbbWordConvert.SelectedValue.ToString(), "【复制拼接字符】字符转换");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ExcelCopy_IsAutoWord, ckbAutoColumnName.Checked?"1":"0", "【复制拼接字符】是否自动列名");
                 WinFormContext.UserLoveSettings.Save();
-                //Setting.Default.ExcelCopyDataConnect = rtbConString.Text;
-                //Setting.Default.Save();
             }
             catch (Exception ex)
             {
@@ -307,5 +325,156 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             dgvTableList.GetBindingTable().Clear();
         }
+
+        #region 模板相关
+        private void cbbTemplateType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbbTemplateType.SelectedValue == null) return;
+            string sTempType = cbbTemplateType.SelectedValue.ToString();
+            if (string.IsNullOrEmpty(sTempType))
+            {
+                //txbReplaceTemplateName.ReadOnly = false;
+                txbReplaceTemplateName.Text = string.Empty;
+                return;
+            }
+
+            txbReplaceTemplateName.Text = cbbTemplateType.Text;
+            string sKeyId = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            DataRow[] drArr = replaceStringData.MoreXmlConfig.ValData.Select(sKeyId + "='" + sTempType + "'");
+
+            if (drArr.Length > 0)
+            {
+                rtbConString.Clear();
+                rtbConString.AppendText(drArr[0][CopyDataStringTemplate.ValueString.TemplateString].ToString());
+            }
+        }
+        private void btnSaveReplaceTemplate_Click(object sender, EventArgs e)
+        {
+            string sTempName = txbReplaceTemplateName.Text.Trim();
+
+            if (string.IsNullOrEmpty(sTempName))
+            {
+                ShowInfo("模板名称不能为空！");
+                return;
+            }
+            
+            string sContent = rtbConString.Text.Trim();
+            if (string.IsNullOrEmpty(sContent))
+            {
+                ShowInfo("请录入模板内容！");
+                return;
+            }
+
+            if (ShowOkCancel("确定要保存模板？") == DialogResult.Cancel) return;
+
+            string sKeyId = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            string sValId = replaceStringData.MoreXmlConfig.MoreKeyValue.ValIdPropName;
+            DataTable dtKeyConfig = replaceStringData.MoreXmlConfig.KeyData;
+            DataTable dtValConfig = replaceStringData.MoreXmlConfig.ValData;
+
+            string sKeyIdNew = string.Empty;
+            bool isAdd = string.IsNullOrEmpty(cbbTemplateType.Text.Trim()) ? true : false;
+            if (isAdd)
+            {
+                //新增
+                // 键处理
+                sKeyIdNew = Guid.NewGuid().ToString();
+                DataRow dr = dtKeyConfig.NewRow();
+                dr[sKeyId] = sKeyIdNew;
+                dr[CopyDataStringTemplate.KeyString.Name] = sTempName;
+                dtKeyConfig.Rows.Add(dr);
+                // 值处理
+                DataRow drNew = dtValConfig.NewRow();
+                drNew[sValId] = Guid.NewGuid().ToString();
+                drNew[sKeyId] = sKeyIdNew;
+                drNew[CopyDataStringTemplate.ValueString.TemplateString] = sContent;
+                dtValConfig.Rows.Add(drNew);
+            }
+            else
+            {
+                //修改
+                // 键处理
+                string sKeyIDValue = cbbTemplateType.SelectedValue.ToString();
+                sKeyIdNew = sKeyIDValue;
+                DataRow[] drArrKey = dtKeyConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+                DataRow[] drArrVal = dtValConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+                if (drArrKey.Length == 0)
+                {
+                    DataRow dr = dtKeyConfig.NewRow();
+                    dr[sKeyId] = sKeyIdNew;
+                    dr[CopyDataStringTemplate.KeyString.Name] = sTempName;
+                    dtKeyConfig.Rows.Add(dr);
+                }
+                else
+                {
+                    drArrKey[0][CopyDataStringTemplate.KeyString.Name] = sTempName;//修改名称
+                }
+                // 值处理
+                if (drArrVal.Length > 0)
+                {
+                    drArrVal[0][CopyDataStringTemplate.ValueString.TemplateString] = sContent;
+                }
+                else
+                {
+                    DataRow drNew = dtValConfig.NewRow();
+                    drNew[sValId] = Guid.NewGuid().ToString();
+                    drNew[sKeyId] = sKeyIdNew;
+                    drNew[CopyDataStringTemplate.ValueString.TemplateString] = sContent;
+                    dtValConfig.Rows.Add(drNew);
+                }
+            }
+
+            replaceStringData.MoreXmlConfig.Save();
+            //重新绑定下拉框
+            cbbTemplateType.BindDropDownList(replaceStringData.MoreXmlConfig.KeyData, sKeyId, CopyDataStringTemplate.KeyString.Name, true, true);
+            ShowInfo("模板保存成功！");
+        }
+
+        private void btnRemoveTemplate_Click(object sender, EventArgs e)
+        {
+            if (cbbTemplateType.SelectedValue == null)
+            {
+                ShowInfo("请选择一个模板！");
+                return;
+            }
+            string sKeyIDValue = cbbTemplateType.SelectedValue.ToString();
+            if (string.IsNullOrEmpty(sKeyIDValue))
+            {
+                ShowInfo("请选择一个模板！");
+                return;
+            }
+
+            if (ShowOkCancel("确定要删除该模板？") == DialogResult.Cancel) return;
+
+            string sKeyId = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            string sValId = replaceStringData.MoreXmlConfig.MoreKeyValue.ValIdPropName;
+            DataTable dtKeyConfig = replaceStringData.MoreXmlConfig.KeyData;
+            DataTable dtValConfig = replaceStringData.MoreXmlConfig.ValData;
+            DataRow[] drArrKey = dtKeyConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+            DataRow[] drArrVal = dtValConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+
+            if (drArrVal.Length > 0)
+            {
+                foreach (DataRow dr in drArrVal)
+                {
+                    dtValConfig.Rows.Remove(dr);
+                }
+                dtValConfig.AcceptChanges();
+            }
+
+            if (drArrKey.Length > 0)
+            {
+                foreach (DataRow dr in drArrKey)
+                {
+                    dtKeyConfig.Rows.Remove(dr);
+                }
+                dtKeyConfig.AcceptChanges();
+            }
+            replaceStringData.MoreXmlConfig.Save();
+            //重新绑定下拉框
+            cbbTemplateType.BindDropDownList(replaceStringData.MoreXmlConfig.KeyData, sKeyId, CopyDataStringTemplate.KeyString.Name, true, true);
+            ShowInfo("模板删除成功！");
+        }
+        #endregion
     }
 }

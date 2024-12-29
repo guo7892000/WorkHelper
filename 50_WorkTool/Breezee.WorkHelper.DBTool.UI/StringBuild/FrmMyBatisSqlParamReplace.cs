@@ -92,6 +92,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                     {
                         string sValueAndType = strParam.Trim();
                         string sValue = sValueAndType.Substring(0,sValueAndType.IndexOf("("));
+                        if (ckbValueRemoveEmpty.Checked)
+                        {
+                            sValue = sValue.Trim();
+                        }
                         string sType = sValueAndType.Substring(sValueAndType.IndexOf("(") + 1).TrimEnd(')');
                         listParam.Add(new SortSqlParam(i, sValue, sType));
                         i++;
@@ -124,6 +128,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                     {
                         string sValueAndType = strParam.Trim();
                         string sValue = sValueAndType.Substring(0, sValueAndType.IndexOf("("));
+                        if (ckbValueRemoveEmpty.Checked)
+                        {
+                            sValue = sValue.Trim();
+                        }
                         string sType = sValueAndType.Substring(sValueAndType.IndexOf("(")+1).TrimEnd(')');
                         listParam.Add(new SortSqlParam(i, sValue, sType));
                         i++;
@@ -142,6 +150,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                         {
                             string sValueAndType = strParam.Trim();
                             string sValue = sValueAndType.Substring(0, sValueAndType.IndexOf("("));
+                            if (ckbValueRemoveEmpty.Checked)
+                            {
+                                sValue = sValue.Trim();
+                            }
                             string sType = sValueAndType.Substring(sValueAndType.IndexOf("(") + 1).TrimEnd(')');
                             listParam.Add(new SortSqlParam(i, sValue, sType));
                             i++;

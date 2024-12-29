@@ -28,6 +28,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
     public partial class FrmDBTSplitString : BaseForm
     {
         private string _FixRemarkColumnName = "InputText";
+        SplitStringTemplate replaceStringData;
         public FrmDBTSplitString()
         {
             InitializeComponent();
@@ -87,6 +88,11 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             toolTip1.SetToolTip(cbbNewLineType, "其中【指定和默认换行符】包括默认的换行符和指定的换行符");
 
             cbbNewLineType.SelectedValue = "1";
+
+            //加载模板数据
+            replaceStringData = new SplitStringTemplate(DBTGlobalValue.SplitTextTemplateFileString.Xml_FileName);
+            string sColName = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            cbbTemplateType.BindDropDownList(replaceStringData.MoreXmlConfig.KeyData, sColName, SplitStringTemplate.KeyString.Name, true, true);
         }
 
         /// <summary>
@@ -738,5 +744,156 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                 txbEveryLineEndChar.Visible = true;
             }
         }
+
+        #region 模板相关
+        private void cbbTemplateType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbbTemplateType.SelectedValue == null) return;
+            string sTempType = cbbTemplateType.SelectedValue.ToString();
+            if (string.IsNullOrEmpty(sTempType))
+            {
+                //txbReplaceTemplateName.ReadOnly = false;
+                txbReplaceTemplateName.Text = string.Empty;
+                return;
+            }
+
+            txbReplaceTemplateName.Text = cbbTemplateType.Text;
+            string sKeyId = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            DataRow[] drArr = replaceStringData.MoreXmlConfig.ValData.Select(sKeyId + "='" + sTempType + "'");
+
+            if (drArr.Length > 0)
+            {
+                rtbFormat.Clear();
+                rtbFormat.AppendText(drArr[0][SplitStringTemplate.ValueString.TemplateString].ToString());
+            }
+        }
+        private void btnSaveReplaceTemplate_Click(object sender, EventArgs e)
+        {
+            string sTempName = txbReplaceTemplateName.Text.Trim();
+
+            if (string.IsNullOrEmpty(sTempName))
+            {
+                ShowInfo("模板名称不能为空！");
+                return;
+            }
+
+            string sContent = rtbFormat.Text.Trim();
+            if (string.IsNullOrEmpty(sContent))
+            {
+                ShowInfo("请录入模板内容！");
+                return;
+            }
+
+            if (ShowOkCancel("确定要保存模板？") == DialogResult.Cancel) return;
+
+            string sKeyId = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            string sValId = replaceStringData.MoreXmlConfig.MoreKeyValue.ValIdPropName;
+            DataTable dtKeyConfig = replaceStringData.MoreXmlConfig.KeyData;
+            DataTable dtValConfig = replaceStringData.MoreXmlConfig.ValData;
+
+            string sKeyIdNew = string.Empty;
+            bool isAdd = string.IsNullOrEmpty(cbbTemplateType.Text.Trim()) ? true : false;
+            if (isAdd)
+            {
+                //新增
+                // 键处理
+                sKeyIdNew = Guid.NewGuid().ToString();
+                DataRow dr = dtKeyConfig.NewRow();
+                dr[sKeyId] = sKeyIdNew;
+                dr[SplitStringTemplate.KeyString.Name] = sTempName;
+                dtKeyConfig.Rows.Add(dr);
+                // 值处理
+                DataRow drNew = dtValConfig.NewRow();
+                drNew[sValId] = Guid.NewGuid().ToString();
+                drNew[sKeyId] = sKeyIdNew;
+                drNew[SplitStringTemplate.ValueString.TemplateString] = sContent;
+                dtValConfig.Rows.Add(drNew);
+            }
+            else
+            {
+                //修改
+                // 键处理
+                string sKeyIDValue = cbbTemplateType.SelectedValue.ToString();
+                sKeyIdNew = sKeyIDValue;
+                DataRow[] drArrKey = dtKeyConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+                DataRow[] drArrVal = dtValConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+                if (drArrKey.Length == 0)
+                {
+                    DataRow dr = dtKeyConfig.NewRow();
+                    dr[sKeyId] = sKeyIdNew;
+                    dr[SplitStringTemplate.KeyString.Name] = sTempName;
+                    dtKeyConfig.Rows.Add(dr);
+                }
+                else
+                {
+                    drArrKey[0][SplitStringTemplate.KeyString.Name] = sTempName;//修改名称
+                }
+                // 值处理
+                if (drArrVal.Length > 0)
+                {
+                    drArrVal[0][SplitStringTemplate.ValueString.TemplateString] = sContent;
+                }
+                else
+                {
+                    DataRow drNew = dtValConfig.NewRow();
+                    drNew[sValId] = Guid.NewGuid().ToString();
+                    drNew[sKeyId] = sKeyIdNew;
+                    drNew[SplitStringTemplate.ValueString.TemplateString] = sContent;
+                    dtValConfig.Rows.Add(drNew);
+                }
+            }
+
+            replaceStringData.MoreXmlConfig.Save();
+            //重新绑定下拉框
+            cbbTemplateType.BindDropDownList(replaceStringData.MoreXmlConfig.KeyData, sKeyId, SplitStringTemplate.KeyString.Name, true, true);
+            ShowInfo("模板保存成功！");
+        }
+
+        private void btnRemoveTemplate_Click(object sender, EventArgs e)
+        {
+            if (cbbTemplateType.SelectedValue == null)
+            {
+                ShowInfo("请选择一个模板！");
+                return;
+            }
+            string sKeyIDValue = cbbTemplateType.SelectedValue.ToString();
+            if (string.IsNullOrEmpty(sKeyIDValue))
+            {
+                ShowInfo("请选择一个模板！");
+                return;
+            }
+
+            if (ShowOkCancel("确定要删除该模板？") == DialogResult.Cancel) return;
+
+            string sKeyId = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
+            string sValId = replaceStringData.MoreXmlConfig.MoreKeyValue.ValIdPropName;
+            DataTable dtKeyConfig = replaceStringData.MoreXmlConfig.KeyData;
+            DataTable dtValConfig = replaceStringData.MoreXmlConfig.ValData;
+            DataRow[] drArrKey = dtKeyConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+            DataRow[] drArrVal = dtValConfig.Select(sKeyId + "='" + sKeyIDValue + "'");
+
+            if (drArrVal.Length > 0)
+            {
+                foreach (DataRow dr in drArrVal)
+                {
+                    dtValConfig.Rows.Remove(dr);
+                }
+                dtValConfig.AcceptChanges();
+            }
+
+            if (drArrKey.Length > 0)
+            {
+                foreach (DataRow dr in drArrKey)
+                {
+                    dtKeyConfig.Rows.Remove(dr);
+                }
+                dtKeyConfig.AcceptChanges();
+            }
+            replaceStringData.MoreXmlConfig.Save();
+            //重新绑定下拉框
+            cbbTemplateType.BindDropDownList(replaceStringData.MoreXmlConfig.KeyData, sKeyId, SplitStringTemplate.KeyString.Name, true, true);
+            ShowInfo("模板删除成功！");
+        }
+        #endregion
     }
 }

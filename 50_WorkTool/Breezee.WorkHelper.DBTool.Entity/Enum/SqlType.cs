@@ -30,6 +30,11 @@ namespace Breezee.WorkHelper.DBTool.Entity
         /// <summary>
         /// 参数
         /// </summary>
-        Parameter
+        Parameter=5,
+
+        /// <summary>
+        /// 查询新增
+        /// </summary>
+        InsertSelect = 6,
     }
 }

@@ -42,7 +42,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             cbbCharSetEncode.BindTypeValueDropDownList(dtEncode, false, true);
             toolTip1.SetToolTip(cbbCharSetEncode, "如文件出现乱码，需要修改文件字符集！可在class节点的charset属性上设置（优先使用），\r\n当没在该属性上设置时，全部使用本下拉框所选择的字符集值！");
             //加载用户偏好值
-            txbSelectPath.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.MergeScriptPath, Path.Combine(DBTGlobalValue.AppPath, DBTGlobalValue.StringBuild.Xml_MergeScript)).Value;
+            txbSelectPath.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.MergeScript_Path, Path.Combine(DBTGlobalValue.AppPath, DBTGlobalValue.StringBuild.Xml_MergeScript)).Value;
         }
         private void BtnSelectFile_Click(object sender, EventArgs e)
         {
@@ -217,7 +217,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 rtbString.AppendText(sFinalPath + "\n");
             }
             //保存用户偏好值
-            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.MergeScriptPath, txbSelectPath.Text, "【合并脚本】选择路径");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.MergeScript_Path, txbSelectPath.Text, "【合并脚本】选择路径");
             WinFormContext.UserLoveSettings.Save();
             if (ckbAutoOpen.Checked)
             {

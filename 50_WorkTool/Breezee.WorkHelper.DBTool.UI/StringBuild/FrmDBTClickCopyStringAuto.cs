@@ -29,7 +29,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
         private void FrmDBTClickCopyStringAuto_Load(object sender, EventArgs e)
         {
             //加载用户偏好值
-            txbXmlPath.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ClickCopyPath, Path.Combine(DBTGlobalValue.AppPath, DBTGlobalValue.StringBuild.Xml_CopyString)).Value;
+            txbXmlPath.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ClickCopy_Path, Path.Combine(DBTGlobalValue.AppPath, DBTGlobalValue.StringBuild.Xml_CopyString)).Value;
             ckbFlowDesign.Checked = true;
             toolTip1.SetToolTip(ckbFlowDesign, "选中时是自动生成组件布局；不选中时是根据配置中指定的每行几项来布局！");
             GeneratePanelControls();
@@ -476,7 +476,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                 txbXmlPath.Text = dia.FileName;
                 ReloadFile(); //重新加载文件
                 //保存用户偏好值
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ClickCopyPath, txbXmlPath.Text, "【点击复制】选择路径");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ClickCopy_Path, txbXmlPath.Text, "【点击复制】选择路径");
                 WinFormContext.UserLoveSettings.Save();
             }
         }
@@ -490,7 +490,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
         {
             ReloadFile(); //重新加载文件
             //保存用户偏好值
-            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ClickCopyPath, txbXmlPath.Text, "【点击复制】选择路径");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ClickCopy_Path, txbXmlPath.Text, "【点击复制】选择路径");
             WinFormContext.UserLoveSettings.Save();
         }
 

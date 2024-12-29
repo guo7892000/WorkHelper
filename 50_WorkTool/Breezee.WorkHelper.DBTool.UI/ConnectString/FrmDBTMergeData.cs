@@ -19,6 +19,7 @@ using Breezee.AutoSQLExecutor.Core;
 using Breezee.Core.IOC;
 using Breezee.AutoSQLExecutor.Common;
 using Breezee.WorkHelper.DBTool.IBLL;
+using static Breezee.Core.Interface.KeyValuePairString;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -170,6 +171,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 #endregion
 
                 #region 表结构处理
+                HashSet<string> doubleCol = new HashSet<string>();
                 DataTable dtResult = dgvResult.GetBindingTable();
                 dtResult.Columns.Clear();
                 foreach (DataColumn item in dtMain.Columns)
@@ -179,12 +181,22 @@ namespace Breezee.WorkHelper.DBTool.UI
                         dtResult.Columns.Add(item.ColumnName,item.DataType); //这里要跟原表类型一致
                     }
                 }
+
                 foreach (DataColumn item in dtSec.Columns)
                 {
                     if (!dtResult.Columns.Contains(item.ColumnName))
                     {
                         dtResult.Columns.Add(item.ColumnName,item.DataType); //这里要跟原表类型一致
                     }
+                    else
+                    {
+                        dtResult.Columns.Add(item.ColumnName + "_1");
+                        doubleCol.Add(item.ColumnName);
+                    }
+                }
+                if (doubleCol.Count > 0)
+                {
+                    ShowInfo("Excel-2存在跟Excel-1重复的列名(包括：" + string.Join(",", doubleCol) + "),合并后其会自动增加数字后缀！");
                 }
                 #endregion
 
@@ -948,6 +960,28 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (string.IsNullOrEmpty(sSearch)) return;
             dgvResult.SeachText(sSearch, ref dgvFindText, null, isNext);
             lblFind.Text = dgvFindText.CurrentMsg;
+        }
+
+        private void tsmiJoin_Click(object sender, EventArgs e)
+        {
+            DataGridView dgvSelect = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as DataGridView;
+            if (dgvSelect.CurrentCell == null) return;
+            int iCurCol = dgvSelect.CurrentCell.ColumnIndex;
+            if(dgvExcel1.Name.Equals(dgvSelect.Name))
+            {
+                if (rtbConString.Text.Trim().Length == 0)
+                {
+                    rtbConString.AppendText(dgvSelect.Columns[iCurCol].Name);
+                }
+                else
+                {
+                    rtbConString.AppendText(","+dgvSelect.Columns[iCurCol].Name);
+                }
+            }
+            else
+            {
+                rtbConString.AppendText("="+dgvSelect.Columns[iCurCol].Name);
+            }
         }
     }
 

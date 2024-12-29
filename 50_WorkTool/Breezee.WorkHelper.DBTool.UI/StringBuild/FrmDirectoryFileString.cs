@@ -33,7 +33,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void FrmDirectoryFileString_Load(object sender, EventArgs e)
         {
             //加载用户偏好值
-            strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DirStringLastSelectedPath, "").Value;
+            strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DirString_LastSelectedPath, "").Value;
 
             _dicString.Add("1", "仅文件");
             _dicString.Add("2", "仅目录");
@@ -71,7 +71,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 txbSelectPath.Text = dialog.SelectedPath;
                 //保存用户偏好值
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DirStringLastSelectedPath, dialog.SelectedPath, "【目录字符生成】最后选择的目录");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DirString_LastSelectedPath, dialog.SelectedPath, "【目录字符生成】最后选择的目录");
                 WinFormContext.UserLoveSettings.Save();
             }
         } 
