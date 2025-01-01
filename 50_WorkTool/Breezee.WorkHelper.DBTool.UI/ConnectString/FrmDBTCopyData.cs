@@ -12,6 +12,7 @@ using System.Text;
 using System.Windows.Forms;
 using Setting = Breezee.WorkHelper.DBTool.UI.Properties.Settings;
 using Breezee.WorkHelper.DBTool.Entity;
+using System.IO;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -476,5 +477,16 @@ namespace Breezee.WorkHelper.DBTool.UI
             ShowInfo("模板删除成功！");
         }
         #endregion
+
+        private void btnSaveOther_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog diag = new SaveFileDialog();
+            diag.FileName = ".data.sql";
+            diag.Filter = "Sql文件|*.sql";
+            if (diag.ShowDialog() == DialogResult.OK)
+            {
+                File.WriteAllText(diag.FileName, rtbResult.Text);
+            }
+        }
     }
 }

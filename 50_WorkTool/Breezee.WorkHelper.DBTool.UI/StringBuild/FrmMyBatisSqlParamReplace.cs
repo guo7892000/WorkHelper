@@ -91,12 +91,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                     foreach(string strParam in arrParam)
                     {
                         string sValueAndType = strParam.Trim();
-                        string sValue = sValueAndType.Substring(0,sValueAndType.IndexOf("("));
+                        string sValue = sValueAndType.Substring(0,sValueAndType.LastIndexOf("("));
                         if (ckbValueRemoveEmpty.Checked)
                         {
                             sValue = sValue.Trim();
                         }
-                        string sType = sValueAndType.Substring(sValueAndType.IndexOf("(") + 1).TrimEnd(')');
+                        string sType = sValueAndType.Substring(sValueAndType.LastIndexOf("(") + 1).TrimEnd(')');
                         listParam.Add(new SortSqlParam(i, sValue, sType));
                         i++;
                     }
@@ -127,12 +127,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                     foreach (string strParam in arrParam)
                     {
                         string sValueAndType = strParam.Trim();
-                        string sValue = sValueAndType.Substring(0, sValueAndType.IndexOf("("));
+                        string sValue = sValueAndType.Substring(0, sValueAndType.LastIndexOf("("));
                         if (ckbValueRemoveEmpty.Checked)
                         {
                             sValue = sValue.Trim();
                         }
-                        string sType = sValueAndType.Substring(sValueAndType.IndexOf("(")+1).TrimEnd(')');
+                        string sType = sValueAndType.Substring(sValueAndType.LastIndexOf("(")+1).TrimEnd(')');
                         listParam.Add(new SortSqlParam(i, sValue, sType));
                         i++;
                     }
@@ -149,12 +149,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                         foreach (string strParam in arrParam)
                         {
                             string sValueAndType = strParam.Trim();
-                            string sValue = sValueAndType.Substring(0, sValueAndType.IndexOf("("));
+                            string sValue = sValueAndType.Substring(0, sValueAndType.LastIndexOf("("));
                             if (ckbValueRemoveEmpty.Checked)
                             {
                                 sValue = sValue.Trim();
                             }
-                            string sType = sValueAndType.Substring(sValueAndType.IndexOf("(") + 1).TrimEnd(')');
+                            string sType = sValueAndType.Substring(sValueAndType.LastIndexOf("(") + 1).TrimEnd(')');
                             listParam.Add(new SortSqlParam(i, sValue, sType));
                             i++;
                         }
