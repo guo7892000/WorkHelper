@@ -632,72 +632,79 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
 
         private void dgvSplitChar_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Modifiers == Keys.Control && e.KeyCode == Keys.V)
+            {
+                PasteTextFromClipse();
+            }
+        }
+
+        private void PasteTextFromClipse()
+        {
             try
             {
                 if (cbbSplitType.SelectedValue == null) return;
                 var splitType = cbbSplitType.SelectedValue.ToString();
 
-                if (e.Modifiers == Keys.Control && e.KeyCode == Keys.V)
+
+                string pasteText = Clipboard.GetText().Trim();
+                if (string.IsNullOrEmpty(pasteText))//包括IN的为生成的SQL，不用粘贴
                 {
-                    string pasteText = Clipboard.GetText().Trim();
-                    if (string.IsNullOrEmpty(pasteText))//包括IN的为生成的SQL，不用粘贴
-                    {
-                        return;
-                    }
-                    DataTable dtMain = dgvSplitChar.GetBindingTable();
+                    return;
+                }
+                DataTable dtMain = dgvSplitChar.GetBindingTable();
 
-                    int iRow = 0;
-                    int iColumn = 0;
-                    Object[,] data = StringHelper.GetStringArray(ref pasteText, ref iRow, ref iColumn);
-                    #region 生成IN清单
-                    if (pasteText.IndexOf("in (", StringComparison.CurrentCultureIgnoreCase) > 0)//包括IN的为生成的SQL，不用粘贴
+                int iRow = 0;
+                int iColumn = 0;
+                Object[,] data = StringHelper.GetStringArray(ref pasteText, ref iRow, ref iColumn);
+                #region 生成IN清单
+                if (pasteText.IndexOf("in (", StringComparison.CurrentCultureIgnoreCase) > 0)//包括IN的为生成的SQL，不用粘贴
+                {
+                    return;
+                }
+                if (!ckbIsPasteAppend.Checked && dtMain.Rows.Count > 0)
+                {
+                    dtMain.Clear();
+                }
+                foreach (DataRow dr in dtMain.Select("A is null or A=''"))
+                {
+                    dtMain.Rows.Remove(dr);
+                }
+                dtMain.AcceptChanges();
+                int rowindex = dtMain.Rows.Count;
+                int iGoodDataNum = 0;//有效数据号
+                                     //获取获取当前选中单元格所在的行序号
+                for (int j = 0; j < iRow; j++)
+                {
+                    string strData = data[j, 0].ToString().Trim();
+                    if (string.IsNullOrEmpty(strData))
                     {
-                        return;
+                        continue;
                     }
-                    if (!ckbIsPasteAppend.Checked && dtMain.Rows.Count > 0)
-                    {
-                        dtMain.Clear();
-                    }
-                    foreach (DataRow dr in dtMain.Select("A is null or A=''"))
-                    {
-                        dtMain.Rows.Remove(dr);
-                    }
-                    dtMain.AcceptChanges();
-                    int rowindex = dtMain.Rows.Count;
-                    int iGoodDataNum = 0;//有效数据号
-                    //获取获取当前选中单元格所在的行序号
-                    for (int j = 0; j < iRow; j++)
-                    {
-                        string strData = data[j, 0].ToString().Trim();
-                        if (string.IsNullOrEmpty(strData))
-                        {
-                            continue;
-                        }
 
-                        if ("1".Equals(splitType))
+                    if ("1".Equals(splitType))
+                    {
+                        // 分隔符分隔
+                        if (dtMain.Select("A='" + data[j, 0] + "'").Length == 0)
                         {
-                            // 分隔符分隔
-                            if (dtMain.Select("A='" + data[j, 0] + "'").Length == 0)
-                            {
-                                dtMain.Rows.Add(dtMain.NewRow());
-                                dtMain.Rows[rowindex + iGoodDataNum][0] = strData;
-                                iGoodDataNum++;
-                            }
-                        }
-                        else
-                        {
-                            // 固定长度分隔
                             dtMain.Rows.Add(dtMain.NewRow());
                             dtMain.Rows[rowindex + iGoodDataNum][0] = strData;
                             iGoodDataNum++;
                         }
-                        
                     }
-                    dgvSplitChar.ShowRowNum(true); //显示行号
-                    tsbAutoSQL.Enabled = true;
+                    else
+                    {
+                        // 固定长度分隔
+                        dtMain.Rows.Add(dtMain.NewRow());
+                        dtMain.Rows[rowindex + iGoodDataNum][0] = strData;
+                        iGoodDataNum++;
+                    }
 
-                    #endregion
                 }
+                dgvSplitChar.ShowRowNum(true); //显示行号
+                tsbAutoSQL.Enabled = true;
+
+                #endregion
+
             }
             catch (Exception ex)
             {
@@ -895,5 +902,10 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             ShowInfo("模板删除成功！");
         }
         #endregion
+
+        private void tsmiPaste_Click(object sender, EventArgs e)
+        {
+            PasteTextFromClipse();
+        }
     }
 }

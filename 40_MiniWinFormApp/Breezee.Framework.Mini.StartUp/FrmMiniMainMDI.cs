@@ -312,6 +312,10 @@ namespace Breezee.Framework.Mini.StartUp
                         ShortCutItem scItem = new ShortCutItem(_MenuDic[strGuid]);
                         scItem.ShortCutItemClick += ShortCutMenuItem_Click;//点击快捷菜单事件
                         scItem.ShortCutItemCancel += CancelShortCutMenuItem_Click;//取消快捷菜单事件
+                        scItem.ShortCutItemoMoveFirst += MoveFirstShortCutMenuItem_Click;
+                        scItem.ShortCutItemoMoveLast += MoveLastShortCutMenuItem_Click;
+                        scItem.ShortCutItemoMoveBefore += MoveBeforShortCutMenuItem_Click;
+                        scItem.ShortCutItemoMoveBack += MoveNextShortCutMenuItem_Click;
                         _ShortCutMenuList.AddItem(scItem);
                     }
                 }
@@ -594,19 +598,58 @@ namespace Breezee.Framework.Mini.StartUp
         #region 取消快捷菜单项点击事件
         private void CancelShortCutMenuItem_Click(object sender, ShortCutItemClickEventArgs e)
         {
-            SaveShortCutMenuConfig(e.Menu,false);
+            SaveShortCutMenuConfig(e.Menu, ShortMenuEventEnum.Cancel);
         }
         #endregion
 
         #region 增加快捷菜单项点击事件
         private void AddShortCutMenuItem(object sender, ShortCutItemClickEventArgs e)
         {
-            SaveShortCutMenuConfig(e.Menu, true);
+            SaveShortCutMenuConfig(e.Menu, ShortMenuEventEnum.New);
+        }
+        #endregion
+
+        #region 移动快捷菜单项事件
+        /// <summary>
+        /// 移到首位
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MoveFirstShortCutMenuItem_Click(object sender, ShortCutItemClickEventArgs e)
+        {
+            SaveShortCutMenuConfig(e.Menu, ShortMenuEventEnum.MoveFirst);
+        }
+        /// <summary>
+        /// 移到最后
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MoveLastShortCutMenuItem_Click(object sender, ShortCutItemClickEventArgs e)
+        {
+            SaveShortCutMenuConfig(e.Menu, ShortMenuEventEnum.MoveLast);
+        }
+        /// <summary>
+        /// 前移一位
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MoveBeforShortCutMenuItem_Click(object sender, ShortCutItemClickEventArgs e)
+        {
+            SaveShortCutMenuConfig(e.Menu, ShortMenuEventEnum.MoveBefore);
+        }
+        /// <summary>
+        /// 后移一位
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MoveNextShortCutMenuItem_Click(object sender, ShortCutItemClickEventArgs e)
+        {
+            SaveShortCutMenuConfig(e.Menu, ShortMenuEventEnum.MoveNext);
         }
         #endregion
 
         #region 保存快捷菜单配置
-        private void SaveShortCutMenuConfig(MenuEntity dMenu,bool IsAdd)
+        private void SaveShortCutMenuConfig(MenuEntity dMenu, ShortMenuEventEnum menuEventEnum)
         {
             string strShortCutFilePath = Path.Combine(GlobalContext.PathConfig(), MiniStaticString.ShortCutMenuFileName);
             XmlDocument xmlMenu = new XmlDocument();
@@ -614,22 +657,22 @@ namespace Breezee.Framework.Mini.StartUp
             XmlNodeList xmlList = xmlMenu.SelectNodes("xml/Menu");
             XmlNode xnRemove = xmlMenu.SelectSingleNode("xml/Menu[@Guid='" + dMenu.Guid + "']");
             if (xnRemove != null)
-            {                
-                if (!IsAdd)
+            {
+                if (menuEventEnum == ShortMenuEventEnum.Cancel)
                 {
                     xnRemove.ParentNode.RemoveChild(xnRemove);
                     //从快捷菜单中移除
-                    if(_ShortCutMenuList.ItemList.ContainsKey(dMenu.Guid))
+                    if (_ShortCutMenuList.ItemList.ContainsKey(dMenu.Guid))
                     {
                         _ShortCutMenuList.MenuListPanl.Controls.Remove(_ShortCutMenuList.ItemList[dMenu.Guid]);
                         _ShortCutMenuList.ItemList.Remove(dMenu.Guid);
-                        
+
                     }
                 }
             }
             else
-            { 
-                if (IsAdd)
+            {
+                if (menuEventEnum== ShortMenuEventEnum.New)
                 {
                     XmlElement xnNew = xmlMenu.CreateElement("Menu");
                     xnNew.SetAttribute("Guid", dMenu.Guid);
@@ -641,10 +684,94 @@ namespace Breezee.Framework.Mini.StartUp
                         ShortCutItem scItem = new ShortCutItem(dMenu);
                         scItem.ShortCutItemClick += ShortCutMenuItem_Click;//点击快捷菜单事件
                         scItem.ShortCutItemCancel += CancelShortCutMenuItem_Click;//取消快捷菜单事件
+                        scItem.ShortCutItemoMoveFirst += MoveFirstShortCutMenuItem_Click;
+                        scItem.ShortCutItemoMoveLast += MoveLastShortCutMenuItem_Click;
+                        scItem.ShortCutItemoMoveBefore += MoveBeforShortCutMenuItem_Click;
+                        scItem.ShortCutItemoMoveBack += MoveNextShortCutMenuItem_Click;
                         _ShortCutMenuList.AddItem(scItem);
                     }
                 }
             }
+
+            #region 快捷方式的位置调整
+            if (!(menuEventEnum == ShortMenuEventEnum.New || menuEventEnum == ShortMenuEventEnum.Cancel))
+            {
+                int iIndex = 0;
+                Control control = null;
+                bool canSet = false;
+                if (menuEventEnum == ShortMenuEventEnum.MoveFirst)
+                {
+                    // 设置当前控件索引=0
+                    _ShortCutMenuList.MenuListPanl.Controls.SetChildIndex(_ShortCutMenuList.ItemList[dMenu.Guid], 0);                  
+
+                    foreach (Control item in _ShortCutMenuList.MenuListPanl.Controls)
+                    {
+                        ShortCutItem curShortCutItem = (ShortCutItem)item;
+                        if (curShortCutItem.Menu.Guid.Equals(dMenu.Guid))
+                        {
+                            // 调整XML配置文件中内容位置
+                            xmlMenu.DocumentElement.InsertBefore(xnRemove, xnRemove.ParentNode.FirstChild);
+                            continue;
+                        }
+                        // 所有控件索引+1
+                        _ShortCutMenuList.MenuListPanl.Controls.SetChildIndex(item, _ShortCutMenuList.MenuListPanl.Controls.GetChildIndex(item) + 1);
+                    }
+                }
+                else if (menuEventEnum == ShortMenuEventEnum.MoveLast)
+                {
+
+                    foreach (Control item in _ShortCutMenuList.MenuListPanl.Controls)
+                    {
+                        iIndex = _ShortCutMenuList.MenuListPanl.Controls.GetChildIndex(item);
+                    }
+                    // 设置当前控件索引=最后控件的索引+1
+                    _ShortCutMenuList.MenuListPanl.Controls.SetChildIndex(_ShortCutMenuList.ItemList[dMenu.Guid], iIndex + 1);
+                    xmlMenu.DocumentElement.InsertAfter(xnRemove, xnRemove.ParentNode.LastChild); // 调整XML配置文件中内容位置
+                }
+                else if (menuEventEnum == ShortMenuEventEnum.MoveBefore)
+                {
+                    foreach (Control item in _ShortCutMenuList.MenuListPanl.Controls)
+                    {
+                        ShortCutItem curShortCutItem = (ShortCutItem)item;
+                        if (curShortCutItem.Menu.Guid.Equals(dMenu.Guid))
+                        {
+                            // 交换索引值
+                            _ShortCutMenuList.MenuListPanl.Controls.SetChildIndex(control, _ShortCutMenuList.MenuListPanl.Controls.GetChildIndex(item));
+                            _ShortCutMenuList.MenuListPanl.Controls.SetChildIndex(item, iIndex);
+                            xmlMenu.DocumentElement.InsertBefore(xnRemove, xnRemove.PreviousSibling); // 调整XML配置文件中内容位置
+                            break;
+                        }
+                        // 得到上次循环控件索引值
+                        iIndex = _ShortCutMenuList.MenuListPanl.Controls.GetChildIndex(item);
+                        control = item;
+                    }
+                }
+                else if (menuEventEnum == ShortMenuEventEnum.MoveNext)
+                {
+                    foreach (Control item in _ShortCutMenuList.MenuListPanl.Controls)
+                    {
+                        if (canSet)
+                        {
+                            // 交换索引值
+                            int iIndexNew = _ShortCutMenuList.MenuListPanl.Controls.GetChildIndex(item);
+                            _ShortCutMenuList.MenuListPanl.Controls.SetChildIndex(item, iIndex);
+                            _ShortCutMenuList.MenuListPanl.Controls.SetChildIndex(control, iIndexNew);
+                            xmlMenu.DocumentElement.InsertAfter(xnRemove, xnRemove.NextSibling); // 调整XML配置文件中内容位置
+                            break;
+                        }
+
+                        ShortCutItem curShortCutItem = (ShortCutItem)item;
+                        if (curShortCutItem.Menu.Guid.Equals(dMenu.Guid))
+                        {
+                            canSet = true;
+                            // 得到上次循环控件索引值
+                            iIndex = _ShortCutMenuList.MenuListPanl.Controls.GetChildIndex(item);
+                            control = item;
+                        }
+                    }
+                }
+            } 
+            #endregion
             xmlMenu.Save(strShortCutFilePath);
         }
         #endregion

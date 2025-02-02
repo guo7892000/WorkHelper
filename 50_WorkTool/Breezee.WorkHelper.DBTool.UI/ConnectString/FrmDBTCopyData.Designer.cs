@@ -49,6 +49,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.grbConSting = new System.Windows.Forms.GroupBox();
             this.rtbConString = new System.Windows.Forms.RichTextBox();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnSaveOther = new System.Windows.Forms.Button();
             this.label14 = new System.Windows.Forms.Label();
             this.cbbTemplateType = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -67,7 +68,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.btnSaveOther = new System.Windows.Forms.Button();
+            this.tsmpPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -310,6 +311,17 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tableLayoutPanel7.Size = new System.Drawing.Size(920, 32);
             this.tableLayoutPanel7.TabIndex = 7;
             // 
+            // btnSaveOther
+            // 
+            this.btnSaveOther.Location = new System.Drawing.Point(556, 2);
+            this.btnSaveOther.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSaveOther.Name = "btnSaveOther";
+            this.btnSaveOther.Size = new System.Drawing.Size(55, 20);
+            this.btnSaveOther.TabIndex = 17;
+            this.btnSaveOther.Text = "另存为";
+            this.btnSaveOther.UseVisualStyleBackColor = true;
+            this.btnSaveOther.Click += new System.EventHandler(this.btnSaveOther_Click);
+            // 
             // label14
             // 
             this.label14.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -436,21 +448,22 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.cmsGird.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.cmsGird.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiInsert,
-            this.tsmiClear});
+            this.tsmiClear,
+            this.tsmpPaste});
             this.cmsGird.Name = "contextMenuStrip1";
-            this.cmsGird.Size = new System.Drawing.Size(101, 48);
+            this.cmsGird.Size = new System.Drawing.Size(181, 92);
             // 
             // tsmiInsert
             // 
             this.tsmiInsert.Name = "tsmiInsert";
-            this.tsmiInsert.Size = new System.Drawing.Size(100, 22);
+            this.tsmiInsert.Size = new System.Drawing.Size(180, 22);
             this.tsmiInsert.Text = "加入";
             this.tsmiInsert.Click += new System.EventHandler(this.TsmiInsert_Click);
             // 
             // tsmiClear
             // 
             this.tsmiClear.Name = "tsmiClear";
-            this.tsmiClear.Size = new System.Drawing.Size(100, 22);
+            this.tsmiClear.Size = new System.Drawing.Size(180, 22);
             this.tsmiClear.Text = "清空";
             this.tsmiClear.Click += new System.EventHandler(this.tsmiClear_Click_1);
             // 
@@ -505,16 +518,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.splitContainer1.SplitterDistance = 133;
             this.splitContainer1.TabIndex = 28;
             // 
-            // btnSaveOther
+            // tsmpPaste
             // 
-            this.btnSaveOther.Location = new System.Drawing.Point(556, 2);
-            this.btnSaveOther.Margin = new System.Windows.Forms.Padding(2);
-            this.btnSaveOther.Name = "btnSaveOther";
-            this.btnSaveOther.Size = new System.Drawing.Size(55, 20);
-            this.btnSaveOther.TabIndex = 17;
-            this.btnSaveOther.Text = "另存为";
-            this.btnSaveOther.UseVisualStyleBackColor = true;
-            this.btnSaveOther.Click += new System.EventHandler(this.btnSaveOther_Click);
+            this.tsmpPaste.Name = "tsmpPaste";
+            this.tsmpPaste.Size = new System.Drawing.Size(180, 22);
+            this.tsmpPaste.Text = "粘贴";
+            this.tsmpPaste.Click += new System.EventHandler(this.tsmpPaste_Click);
             // 
             // FrmDBTCopyData
             // 
@@ -592,5 +601,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         private Button btnSaveReplaceTemplate;
         private Button btnRemoveTemplate;
         private Button btnSaveOther;
+        private ToolStripMenuItem tsmpPaste;
     }
 }

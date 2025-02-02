@@ -155,6 +155,12 @@
     <Compile Include="ConnectString\FrmDBTExcelFormulateString.Designer.cs">
       <DependentUpon>FrmDBTExcelFormulateString.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConnectString\FrmDBTFiltSameRow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConnectString\FrmDBTFiltSameRow.Designer.cs">
+      <DependentUpon>FrmDBTFiltSameRow.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConnectString\FrmDBTInList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -424,6 +430,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConnectString\FrmDBTExcelFormulateString.resx">
       <DependentUpon>FrmDBTExcelFormulateString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConnectString\FrmDBTFiltSameRow.resx">
+      <DependentUpon>FrmDBTFiltSameRow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConnectString\FrmDBTInList.resx">
       <DependentUpon>FrmDBTInList.cs</DependentUpon>
@@ -972,6 +981,9 @@
     <Content Include="Help\Html\DBTool\DB\Images\getUpdateFile01.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Help\Html\DBTool\DB\Images\MyBatisSqlParamReplace.01.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\Html\DBTool\DB\Images\SqlDbConvert.001.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1050,6 +1062,9 @@
     <Content Include="Help\Html\DBTool\DB\SqlDBQuery.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Help\Html\DBTool\DB\MyBatisSqlParamReplace.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\Html\DBTool\DB\SqlQueryExecute.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1086,6 +1101,9 @@
     <Content Include="Help\Html\DBTool\String\Images\ExcelCopyConn.001.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Help\Html\DBTool\String\Images\FilterRepeatRowData.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\Html\DBTool\String\Images\StringDirectoryList.001.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1117,6 +1135,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\String\Images\TowExcelMerge_002.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\String\FilterRepeatRowData.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\String\StringConnChange.html">

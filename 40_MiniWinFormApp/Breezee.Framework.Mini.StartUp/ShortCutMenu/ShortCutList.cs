@@ -71,4 +71,14 @@ namespace Breezee.Framework.Mini.StartUp
         }
 
     }
+
+    public enum ShortMenuEventEnum
+    {
+        New,
+        Cancel,
+        MoveFirst,
+        MoveLast,
+        MoveBefore,
+        MoveNext,
+    }
 }

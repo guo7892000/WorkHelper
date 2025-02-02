@@ -71,48 +71,61 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 网格粘贴事件
         private void dgvExcel1_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Modifiers == Keys.Control && e.KeyCode == Keys.V)
+            {
+                PasteTextExcel1();
+            }
+        }
+
+        private void PasteTextExcel1()
+        {
             try
             {
-                if (e.Modifiers == Keys.Control && e.KeyCode == Keys.V)
+                string pasteText = Clipboard.GetText().Trim();
+                if (string.IsNullOrEmpty(pasteText))//包括IN的为生成的SQL，不用粘贴
                 {
-                    string pasteText = Clipboard.GetText().Trim();
-                    if (string.IsNullOrEmpty(pasteText))//包括IN的为生成的SQL，不用粘贴
-                    {
-                        return;
-                    }
+                    return;
+                }
 
-                    DataTable dtMain = new DataTable();
-                    pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain, "", false, true, sRowNo1);
-                    dgvExcel1.BindAutoColumn(dtMain, false, new List<FlexGridColumn> {
+                DataTable dtMain = new DataTable();
+                pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain, "", false, true, sRowNo1);
+                dgvExcel1.BindAutoColumn(dtMain, false, new List<FlexGridColumn> {
                         new FlexGridColumn.Builder().Name(sRowNo1).Caption("序号1").Width(60).Build()
                     });
-                    dgvExcel1.ShowRowNum(false, sRowNo1);
-                }
+                dgvExcel1.ShowRowNum(false, sRowNo1);
+
             }
             catch (Exception ex)
             {
                 ShowErr(ex.Message);
             }
         }
+
         private void dgvExcel2_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Modifiers == Keys.Control && e.KeyCode == Keys.V)
+            {
+                PasteTextExcel2();
+            }
+        }
+
+        private void PasteTextExcel2()
         {
             try
             {
-                if (e.Modifiers == Keys.Control && e.KeyCode == Keys.V)
+                string pasteText = Clipboard.GetText().Trim();
+                if (string.IsNullOrEmpty(pasteText))//包括IN的为生成的SQL，不用粘贴
                 {
-                    string pasteText = Clipboard.GetText().Trim();
-                    if (string.IsNullOrEmpty(pasteText))//包括IN的为生成的SQL，不用粘贴
-                    {
-                        return;
-                    }
+                    return;
+                }
 
-                    DataTable dtMain = new DataTable();
-                    pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain, "1", true, true, sRowNo2);
-                    dgvExcel2.BindAutoColumn(dtMain, false, new List<FlexGridColumn> {
+                DataTable dtMain = new DataTable();
+                pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain, "1", true, true, sRowNo2);
+                dgvExcel2.BindAutoColumn(dtMain, false, new List<FlexGridColumn> {
                         new FlexGridColumn.Builder().Name(sRowNo2).Caption("序号2").Width(60).Build()
                     });
-                    dgvExcel2.ShowRowNum(false, sRowNo2);
-                }
+                dgvExcel2.ShowRowNum(false, sRowNo2);
+
             }
             catch (Exception ex)
             {
@@ -945,6 +958,19 @@ namespace Breezee.WorkHelper.DBTool.UI
             dt.Rows.Remove(dataRow);
         }
 
+        private void tsmiPaste_Click(object sender, EventArgs e)
+        {
+            DataGridView dgvSelect = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as DataGridView;
+            if (dgvExcel1.Name.Equals(dgvSelect.Name))
+            {
+                PasteTextExcel1();
+            }
+            else if (dgvExcel2.Name.Equals(dgvSelect.Name))
+            {
+                PasteTextExcel2();
+            }
+        }
+
         private void btnFindNext_Click(object sender, EventArgs e)
         {
             FindGridText(true);
@@ -983,6 +1009,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 rtbConString.AppendText("="+dgvSelect.Columns[iCurCol].Name);
             }
         }
+
+        
     }
 
     /// <summary>

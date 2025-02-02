@@ -36,19 +36,22 @@
             this.flpMenuList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flpMenuList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flpMenuList.Location = new System.Drawing.Point(0, 0);
+            this.flpMenuList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.flpMenuList.Name = "flpMenuList";
-            this.flpMenuList.Size = new System.Drawing.Size(150, 134);
+            this.flpMenuList.Size = new System.Drawing.Size(175, 190);
             this.flpMenuList.TabIndex = 0;
             this.flpMenuList.DragDrop += new System.Windows.Forms.DragEventHandler(this.flpMenuList_DragDrop);
             this.flpMenuList.DragEnter += new System.Windows.Forms.DragEventHandler(this.flpMenuList_DragEnter);
             // 
             // ShortCutList
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.flpMenuList);
+            this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ShortCutList";
-            this.Size = new System.Drawing.Size(150, 134);
+            this.Size = new System.Drawing.Size(175, 190);
             this.Load += new System.EventHandler(this.ShortCutList_Load);
             this.ResumeLayout(false);
 

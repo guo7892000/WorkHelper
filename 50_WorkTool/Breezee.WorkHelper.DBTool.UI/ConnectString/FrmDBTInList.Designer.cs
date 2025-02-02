@@ -34,6 +34,7 @@
             this.tsbAutoSQL = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ckbIsPasteAppend = new System.Windows.Forms.CheckBox();
             this.lblRuleInfo = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.cbbSqlType = new System.Windows.Forms.ComboBox();
@@ -55,7 +56,7 @@
             this.lblTableData = new System.Windows.Forms.Label();
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
-            this.ckbIsPasteAppend = new System.Windows.Forms.CheckBox();
+            this.tsmiPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.grbInputString.SuspendLayout();
@@ -111,6 +112,18 @@
             this.groupBox1.Size = new System.Drawing.Size(592, 48);
             this.groupBox1.TabIndex = 29;
             this.groupBox1.TabStop = false;
+            // 
+            // ckbIsPasteAppend
+            // 
+            this.ckbIsPasteAppend.AutoSize = true;
+            this.ckbIsPasteAppend.Checked = true;
+            this.ckbIsPasteAppend.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbIsPasteAppend.Location = new System.Drawing.Point(227, 19);
+            this.ckbIsPasteAppend.Name = "ckbIsPasteAppend";
+            this.ckbIsPasteAppend.Size = new System.Drawing.Size(72, 16);
+            this.ckbIsPasteAppend.TabIndex = 5;
+            this.ckbIsPasteAppend.Text = "粘贴累加";
+            this.ckbIsPasteAppend.UseVisualStyleBackColor = true;
             // 
             // lblRuleInfo
             // 
@@ -295,14 +308,15 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiPaste,
             this.tsmiClear});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(101, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
             // 
             // tsmiClear
             // 
             this.tsmiClear.Name = "tsmiClear";
-            this.tsmiClear.Size = new System.Drawing.Size(100, 22);
+            this.tsmiClear.Size = new System.Drawing.Size(180, 22);
             this.tsmiClear.Text = "清空";
             this.tsmiClear.Click += new System.EventHandler(this.tsmiClear_Click);
             // 
@@ -339,17 +353,12 @@
             this.rtbResult.TabIndex = 3;
             this.rtbResult.Text = "";
             // 
-            // ckbIsPasteAppend
+            // tsmiPaste
             // 
-            this.ckbIsPasteAppend.AutoSize = true;
-            this.ckbIsPasteAppend.Checked = true;
-            this.ckbIsPasteAppend.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbIsPasteAppend.Location = new System.Drawing.Point(227, 19);
-            this.ckbIsPasteAppend.Name = "ckbIsPasteAppend";
-            this.ckbIsPasteAppend.Size = new System.Drawing.Size(72, 16);
-            this.ckbIsPasteAppend.TabIndex = 5;
-            this.ckbIsPasteAppend.Text = "粘贴累加";
-            this.ckbIsPasteAppend.UseVisualStyleBackColor = true;
+            this.tsmiPaste.Name = "tsmiPaste";
+            this.tsmiPaste.Size = new System.Drawing.Size(180, 22);
+            this.tsmiPaste.Text = "粘贴";
+            this.tsmiPaste.Click += new System.EventHandler(this.tsmiPaste_Click);
             // 
             // FrmDBTInList
             // 
@@ -412,5 +421,6 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiClear;
         private System.Windows.Forms.Label lblRuleInfo;
         private System.Windows.Forms.CheckBox ckbIsPasteAppend;
+        private System.Windows.Forms.ToolStripMenuItem tsmiPaste;
     }
 }

@@ -49,7 +49,7 @@
 	  <Menu Guid="12D95961-3BA0-4092-A56A-376805363CB7" Name="文件字符替换UC" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmReplaceTextFileStringUC"  HelpPath="/Help/Html/DBTool/String/TextFileStringReplaceUC.html"/>
 	</Class>
     <Class Guid="07A30998-9277-4AC7-96AA-108AA04F1AF2" Name="综合" Code="M_DB_TOOL_ALL" ShortCutKey="">
-	  <Menu Guid="45129772-C838-4333-820F-E1F577207F72" Name="MyBatis的SQL转换" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmMyBatisSqlParamReplace"  HelpPath="/Help/Html/DBTool/DB/SqlQueryExecute.html"/>
+	  <Menu Guid="45129772-C838-4333-820F-E1F577207F72" Name="MyBatis的SQL转换" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmMyBatisSqlParamReplace"  HelpPath="/Help/Html/DBTool/DB/MyBatisSqlParamReplace.html"/>
 	  <Menu Guid="29B97B32-6AC1-465A-B794-47CEA6A8CEC6" Name="SQL查询执行" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTSqlExecutor"  HelpPath="/Help/Html/DBTool/DB/SqlQueryExecute.html"/>
 	  <Menu Guid="C2BD872D-4019-4585-9230-552DED9F08DD" Name="自动参数化SQL验证" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTAutoSqlVerify"  HelpPath="/Help/Html/DBTool/DB/AutoParamVerify.html"/>
       <Menu Guid="FAC4990F-07F5-41C7-AE6A-86915CEFD282" Name="合并脚本" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTScriptMerge"  HelpPath="/Help/Html/DBTool/DB/MergeScript.html"/>
@@ -64,6 +64,7 @@
       <Menu Guid="3252D790-C9AD-47F2-8B56-F690D0F6BBE1" Name="复制数据拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTCopyData"  HelpPath="/Help/Html/DBTool/String/ExcelCopyConn.html"/>
       <Menu Guid="3F455E07-ABF6-4B4E-BA18-900C4CCF78DA" Name="Excel列转行" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTExcelCol2Row" ShortCutKey=""  HelpPath="/Help/Html/DBTool/String/ExcelColumn2Row.html"/>
 	  <Menu Guid="751BE4A5-A3B8-4521-8C80-B7A18AC4382C" Name="两个Excel合并" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTMergeData" ShortCutKey=""  HelpPath="/Help/Html/DBTool/String/TowExcelMerge.html"/>
+	  <Menu Guid="08613126-473B-49D6-90DC-B856DE546D7C" Name="筛选重复行" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTFiltSameRow"  HelpPath="/Help/Html/DBTool/String/FilterRepeatRowData.html"/>
 	</Class>
     <Class Guid="9D1E9003-C19A-4137-B191-28358AB9B459" Name="字符拼接" Code="" DLLName="" FormName="" ShortCutKey="">
       <Menu Guid="57C49904-07F5-41C7-AE6A-86915CEFD282" Name="IN清单拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTInList"  HelpPath="/Help/Html/DBTool/DB/DataStringIn.html"/>

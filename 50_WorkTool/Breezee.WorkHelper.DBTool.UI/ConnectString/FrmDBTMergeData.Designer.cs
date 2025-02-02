@@ -67,6 +67,7 @@
             this.dgvResult = new System.Windows.Forms.DataGridView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.tsmiPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -347,28 +348,29 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiJoin,
             this.tsmiDelete,
-            this.tsmiClear});
+            this.tsmiClear,
+            this.tsmiPaste});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(101, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 114);
             // 
             // tsmiJoin
             // 
             this.tsmiJoin.Name = "tsmiJoin";
-            this.tsmiJoin.Size = new System.Drawing.Size(100, 22);
+            this.tsmiJoin.Size = new System.Drawing.Size(180, 22);
             this.tsmiJoin.Text = "加入";
             this.tsmiJoin.Click += new System.EventHandler(this.tsmiJoin_Click);
             // 
             // tsmiDelete
             // 
             this.tsmiDelete.Name = "tsmiDelete";
-            this.tsmiDelete.Size = new System.Drawing.Size(100, 22);
+            this.tsmiDelete.Size = new System.Drawing.Size(180, 22);
             this.tsmiDelete.Text = "删除";
             this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
             // 
             // tsmiClear
             // 
             this.tsmiClear.Name = "tsmiClear";
-            this.tsmiClear.Size = new System.Drawing.Size(100, 22);
+            this.tsmiClear.Size = new System.Drawing.Size(180, 22);
             this.tsmiClear.Text = "清空";
             this.tsmiClear.Click += new System.EventHandler(this.tsmiClear_Click);
             // 
@@ -520,6 +522,13 @@
             this.splitContainer1.SplitterDistance = 81;
             this.splitContainer1.TabIndex = 28;
             // 
+            // tsmiPaste
+            // 
+            this.tsmiPaste.Name = "tsmiPaste";
+            this.tsmiPaste.Size = new System.Drawing.Size(180, 22);
+            this.tsmiPaste.Text = "粘贴";
+            this.tsmiPaste.Click += new System.EventHandler(this.tsmiPaste_Click);
+            // 
             // FrmDBTMergeData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -605,5 +614,6 @@
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.CheckBox ckbNullNotEquals;
         private System.Windows.Forms.ToolStripMenuItem tsmiJoin;
+        private System.Windows.Forms.ToolStripMenuItem tsmiPaste;
     }
 }

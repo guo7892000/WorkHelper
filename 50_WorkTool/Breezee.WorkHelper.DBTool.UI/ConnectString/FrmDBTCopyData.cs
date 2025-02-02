@@ -86,23 +86,30 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 网格粘贴事件
         private void dgvTableList_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Modifiers == Keys.Control && e.KeyCode == Keys.V)
+            {
+                PasteTextFromClipse();
+            }
+        }
+
+        private void PasteTextFromClipse()
+        {
             try
             {
-                if (e.Modifiers == Keys.Control && e.KeyCode == Keys.V)
-                {
-                    string pasteText = Clipboard.GetText().Trim();
-                    if (string.IsNullOrEmpty(pasteText))//包括IN的为生成的SQL，不用粘贴
-                    {
-                        return;
-                    }
 
-                    DataTable dtMain = (DataTable)WinFormGlobalValue.dicBindingSource[_strTableName].DataSource;
-                    dtMain.Clear();
-                    dtMain.Columns.Clear();
-                    pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain);
-                    dgvTableList.ShowRowNum(); //显示行号
-                    ShowInfo("粘贴成功，请选择拼接类型！");
+                string pasteText = Clipboard.GetText().Trim();
+                if (string.IsNullOrEmpty(pasteText))//包括IN的为生成的SQL，不用粘贴
+                {
+                    return;
                 }
+
+                DataTable dtMain = (DataTable)WinFormGlobalValue.dicBindingSource[_strTableName].DataSource;
+                dtMain.Clear();
+                dtMain.Columns.Clear();
+                pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain);
+                dgvTableList.ShowRowNum(); //显示行号
+                ShowInfo("粘贴成功，请选择拼接类型！");
+
             }
             catch (Exception ex)
             {
@@ -487,6 +494,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 File.WriteAllText(diag.FileName, rtbResult.Text);
             }
+        }
+
+        private void tsmpPaste_Click(object sender, EventArgs e)
+        {
+            PasteTextFromClipse();
         }
     }
 }
