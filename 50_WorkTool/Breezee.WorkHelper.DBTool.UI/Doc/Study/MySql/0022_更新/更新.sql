@@ -1,4 +1,19 @@
-/*MySql的更新语句不能使用别名，只能使用全表名来关联：*/
+/*MySql的多表更新：先正常写多表查询语句，再根据它来改造。推荐使用！！*/
+-- 多表关联查询SQL
+SELECT A.*
+FROM t_pa_bu_oem_out_store_d A
+JOIN t_pa_bu_oem_out_store B
+ ON A.OUT_STORE_ID = B.OUT_STORE_ID
+where B.OUT_STORE_CODE='#OUT_STORE_CODE#';
+-- 修改为更新SQL
+UPDATE t_pa_bu_oem_out_store_d A
+JOIN t_pa_bu_oem_out_store B
+ ON A.OUT_STORE_ID = B.OUT_STORE_ID
+SET A.OUT_AMOUNT = A.OUT_QTY*A.PRICE,
+    A.LAST_UPDATE_DATE = now()
+where B.OUT_STORE_CODE='#OUT_STORE_CODE#';
+
+/*MySql的更新语句不能使用别名关联，只能使用全表名来关联*/
 UPDATE t_gh_ven_bu_un_delivery_ivc
 SET IS_VIP = '1' 
 WHERE MV_DATE_STRING = DATE_FORMAT(DATE_ADD(NOW(),INTERVAL -1 DAY),'%Y%m%d')   
@@ -35,3 +50,6 @@ WHERE exists  (select 1
     and M.PART_NO = t_scm_pa_bu_oem_out_store_d.PART_NO
     and M.IN_STORE_NUM = t_scm_pa_bu_oem_out_store_d.OUT_STORE_NUM
 );
+
+
+

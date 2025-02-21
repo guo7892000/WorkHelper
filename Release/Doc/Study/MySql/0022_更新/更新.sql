@@ -1,4 +1,19 @@
-/*MySqlçš„æ›´æ–°è¯­å¥ä¸èƒ½ä½¿ç”¨åˆ«åï¼Œåªèƒ½ä½¿ç”¨å…¨è¡¨åæ¥å…³è”ï¼š*/
+/*MySqlµÄ¶à±í¸üÐÂ£ºÏÈÕý³£Ð´¶à±í²éÑ¯Óï¾ä£¬ÔÙ¸ù¾ÝËüÀ´¸ÄÔì¡£ÍÆ¼öÊ¹ÓÃ£¡£¡*/
+-- ¶à±í¹ØÁª²éÑ¯SQL
+SELECT A.*
+FROM t_pa_bu_oem_out_store_d A
+JOIN t_pa_bu_oem_out_store B
+ ON A.OUT_STORE_ID = B.OUT_STORE_ID
+where B.OUT_STORE_CODE='#OUT_STORE_CODE#';
+-- ÐÞ¸ÄÎª¸üÐÂSQL
+UPDATE t_pa_bu_oem_out_store_d A
+JOIN t_pa_bu_oem_out_store B
+ ON A.OUT_STORE_ID = B.OUT_STORE_ID
+SET A.OUT_AMOUNT = A.OUT_QTY*A.PRICE,
+    A.LAST_UPDATE_DATE = now()
+where B.OUT_STORE_CODE='#OUT_STORE_CODE#';
+
+/*MySqlµÄ¸üÐÂÓï¾ä²»ÄÜÊ¹ÓÃ±ðÃû¹ØÁª£¬Ö»ÄÜÊ¹ÓÃÈ«±íÃûÀ´¹ØÁª*/
 UPDATE t_gh_ven_bu_un_delivery_ivc
 SET IS_VIP = '1' 
 WHERE MV_DATE_STRING = DATE_FORMAT(DATE_ADD(NOW(),INTERVAL -1 DAY),'%Y%m%d')   
@@ -16,17 +31,17 @@ AND (EXISTS (SELECT 1
           t_gh_ven_bu_un_delivery_ivc.SALE_TYPE IN ('4', '5', '6'))
 ;
 
-/*Oralceçš„MERGE INTOæ›¿ä»£æ›´æ–°æ–¹å¼*/
+/*OralceµÄMERGE INTOÌæ´ú¸üÐÂ·½Ê½*/
 update t_scm_pa_bu_oem_out_store_d
 SET DELIVERED_STATUS='2',
     DELIVERED_TIME=ifnull(DELIVERED_TIME,now())
-WHERE exists Â (select 1
+WHERE exists ?(select 1
     FROM (SELECT SUM(ifnull(B.IN_STORE_NUM, 0)) AS IN_STORE_NUM,
-Â     A.RELATE_ORDER_CODE,
-Â     B.PART_NO
+?    A.RELATE_ORDER_CODE,
+?    B.PART_NO
     FROM t_scm_pa_bu_dlr_in_store A
     JOIN t_scm_pa_bu_dlr_in_store_d B
-Â     ON A.IN_STORE_ID = B.IN_STORE_ID
+?    ON A.IN_STORE_ID = B.IN_STORE_ID
     WHERE A.RELATE_ORDER_CODE = '#RELATE_ORDER_CODE#'
     GROUP BY A.RELATE_ORDER_CODE, B.PART_NO
     ) M

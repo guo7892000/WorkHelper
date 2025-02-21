@@ -8,6 +8,7 @@ using System.Reflection.Emit;
 using System.Reflection;
 using System.ComponentModel;
 using System.Linq.Expressions;
+using System.Text;
 
 /*********************************************************************		
  * 对象名称：		
@@ -315,7 +316,14 @@ namespace Breezee.Core.Interface
             #region 1-10
             if (iCondCount == 1)
             {
-                result = isKey ? new { c1 = dr.Field<string>(dic.ElementAt(0).Key) } : new { c1 = dr.Field<string>(dic.ElementAt(0).Value) };
+                result = isKey ? new 
+                { 
+                    c1 = dr.Field<string>(dic.ElementAt(0).Key) 
+                } : 
+                new 
+                { 
+                    c1 = dr.Field<string>(dic.ElementAt(0).Value) 
+                };
             }
             else if (iCondCount == 2)
             {
@@ -4540,7 +4548,7 @@ namespace Breezee.Core.Interface
             
             else
             {
-                throw new Exception(string.Format("程序出错了，最多只能输入{0}个条件！", iCondCount-1));
+                throw new Exception("程序出错了，最多只能输入60个条件！");
             }
             return result;
         }
@@ -4568,5 +4576,27 @@ namespace Breezee.Core.Interface
             return result;
         }
 
+        /// <summary>
+        /// 获取LINQ动态表列的拼接字符串：用于分组
+        /// </summary>
+        /// <param name="dic">字段字典</param>
+        /// <param name="dr">数据行</param>
+        /// <param name="isKey">是否使用字典的键</param>
+        /// <returns>拼接的字段值字符串</returns>
+        public static string GetLinqDynamicTableColumnString(this IDictionary<string, string> dic,DataRow dr, bool isKey,ref string separator)
+        {
+            if (string.IsNullOrEmpty(separator))
+            {
+                separator = @"###___@___####____@@____#####____@@@____"; // 选择一个不易出现的分隔符
+            }
+            var builder = new StringBuilder(); // 使用StringBuilder拼接字符串，提高效率
+            foreach (var kvp in dic)
+            {
+                string columnName = isKey ? kvp.Key : kvp.Value;
+                string value = dr[columnName].ToString();
+                builder.Append(value).Append(separator);
+            }
+            return builder.ToString().TrimEnd(separator.ToCharArray());
+        }
     }
 }

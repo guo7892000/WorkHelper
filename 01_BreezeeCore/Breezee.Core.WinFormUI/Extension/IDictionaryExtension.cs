@@ -698,7 +698,10 @@ namespace Breezee.Core.WinFormUI
 
                 if (isAdd)
                 {
-                    drEdit.Table.Rows.Add(drEdit);
+                    if (drEdit.Table.Rows.Count == 0)
+                    {
+                        drEdit.Table.Rows.Add(drEdit); // 只有源表为0时，才加入
+                    }
                     drEdit.AcceptChanges();
                     //设置行状态为新增
                     drEdit.SetAdded();

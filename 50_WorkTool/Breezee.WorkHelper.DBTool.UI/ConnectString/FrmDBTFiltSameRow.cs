@@ -1,6 +1,7 @@
 ﻿using Breezee.Core.Interface;
 using Breezee.Core.Tool;
 using Breezee.Core.WinFormUI;
+using org.breezee.MyPeachNet;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +10,7 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -28,12 +30,18 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Add("1", "筛选重复项");
             _dicString.Add("2", "筛选唯一项");
             cbbFiltType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
+            //分组类型
+            _dicString.Clear();
+            _dicString.Add("1", "列拼接分组(列数无限制)");
+            _dicString.Add("2", "列组合分组(最多60列)");
+            cbbGroupType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
 
             DataTable dtCopy = new DataTable();
             dtCopy.TableName = _strTableName;
             dgvTableList.BindAutoTable(dtCopy);
 
             lblTableData.Text = "可在Excel中复制数据后，点击网格后按ctrl + v粘贴即可。注：第一行为列名！";
+            toolTip1.SetToolTip(cbbGroupType, "列拼接分组：没有列数限制，实现代码最简单优雅，但当值跟分隔符重叠时结果会出错（当然我们会尽力避免）；\r\n列组合分组：最准。但支持最大列数为60，且后台实现代码大量冗余且不优雅。");
         }
 
         #region 网格粘贴事件
@@ -94,31 +102,63 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
 
             bool isRepeat = (cbbFiltType.SelectedValue == null || "1".Equals(cbbFiltType.SelectedValue.ToString())) ? true : false;
-            // 使用LINQ删除重复行
-            var query = from data in dtMain.AsEnumerable()
-                        group data by dic.GetLinqDynamicTableColumnObj(data, true) into gData  // OK，但使用匿名类，需要根据字典长度创建很多属性，有大量重复代码
-                        // group data by dic.GetLinqDynamicTableColumnObjEasy(data, true) into gData // 不行
-                        where isRepeat ? gData.Count() > 1 : gData.Count() == 1
-                        select new { g = gData, c = gData.Count() };
 
-
-
-            var rs = query.ToList();
-            foreach (var item in rs)
+            // 是否使用动态
+            bool isUseDynamic = cbbGroupType.SelectedValue==null || "1".Equals(cbbGroupType.SelectedValue.ToString());
+            if (isUseDynamic)
             {
-                Type type = item.g.Key.GetType();
-                PropertyInfo[] properties = type.GetProperties();
-                DataRow drNew = dtNew.NewRow();
-                int i = 0;
-                foreach (PropertyInfo property in properties)
+                // 使用动态：经过测试，可以使用
+                // 生成拼接字段字符串作为分组依据
+                var separator = string.Empty; // 选择一个不易出现的分隔符
+                var query = from data in dtMain.AsEnumerable()
+                            group data by dic.GetLinqDynamicTableColumnString(data, true,ref separator) into gData
+                            where isRepeat ? gData.Count() > 1 : gData.Count() == 1
+                            select new { g = gData, c = gData.Count() };
+                var rs = query.ToList();
+                foreach (var item in rs)
                 {
-                    object value = property.GetValue(item.g.Key);
-                    drNew[i] = value;
-                    i++;
+                    Regex regex = new Regex(separator, RegexOptions.IgnoreCase);
+                    MatchCollection mc = regex.Matches(item.g.Key);
+                    DataRow drNew = dtNew.NewRow();
+                    int i = 0;
+                    int iIdx = 0;
+                    foreach (Match mat in mc)
+                    {
+                        drNew[i] = item.g.Key.substring(iIdx, mat.Index);
+                        iIdx = mat.Index + mat.Value.Length;
+                        i++;
+                    }
+                    drNew[i] = item.g.Key.substring(iIdx); // 最后一个元素
+                    drNew[i+1] = item.c; // 重复数
+                    dtNew.Rows.Add(drNew);
                 }
+            }
+            else
+            {
+                // 不使用动态：使用冗余代码返回的匿名对象，也是测试OK，但不能超过60个。
+                // 使用LINQ筛选重复行
+                var query = from data in dtMain.AsEnumerable()
+                            group data by dic.GetLinqDynamicTableColumnObj(data, true) into gData  // OK，但使用匿名类，需要根据字典长度创建很多属性，有大量重复代码
+                                                                                                   // group data by dic.GetLinqDynamicTableColumnObjEasy(data, true) into gData // 不行
+                            where isRepeat ? gData.Count() > 1 : gData.Count() == 1
+                            select new { g = gData, c = gData.Count() };
+                var rs = query.ToList();
+                foreach (var item in rs)
+                {
+                    Type type = item.g.Key.GetType();
+                    PropertyInfo[] properties = type.GetProperties();
+                    DataRow drNew = dtNew.NewRow();
+                    int i = 0;
+                    foreach (PropertyInfo property in properties)
+                    {
+                        object value = property.GetValue(item.g.Key);
+                        drNew[i] = value;
+                        i++;
+                    }
 
-                drNew[i] = item.c;
-                dtNew.Rows.Add(drNew);
+                    drNew[i] = item.c;
+                    dtNew.Rows.Add(drNew);
+                }
             }
 
             dgvResult.BindAutoColumn(dtNew);

@@ -1,4 +1,5 @@
 ﻿using Breezee.AutoSQLExecutor.Core;
+using Breezee.Core.Entity;
 using Breezee.Core.Interface;
 using Breezee.Core.Tool;
 using Breezee.Core.WinFormUI;
@@ -39,6 +40,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         bool isAdd = true;
         DataTable dtDataType;
         DataTable dtDataTypeSmall;
+        DataTable dtIsEnabel;
         bool isModifyDate = false; //修改数据时，长度不要使用下拉框联动查出来的值（即不修改长度）
 
         public FrmDBTDataStandardSet()
@@ -64,8 +66,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             //
             _dicString["1"] = "启用";
             _dicString["0"] = "禁用";
-            cbbQueryStatus.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), true, true);
-            cbbStatus.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
+            dtIsEnabel = _dicString.GetTextValueTable(false);
+            cbbQueryStatus.BindTypeValueDropDownList(dtIsEnabel, true, true);
+            cbbStatus.BindTypeValueDropDownList(dtIsEnabel.Copy(), false, true);
             //
             dataCfg = new DataStandardConfig();
             SetTag();
@@ -149,6 +152,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 new FlexGridColumn.Builder().Name(DataStandardStr.PostgreSqlDataTypeFull).Caption("全类型(PostgreSql)").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DataStandardStr.SQLiteDataTypeFull).Caption("全类型(SQLite)").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DataStandardStr.DataTypeFull).Caption("参考类型(全)").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DataStandardStr.IsEnable).Caption("状态").Type(DataGridViewColumnTypeEnum.ComboBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(60).Edit(false).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DataStandardStr.Comments).Caption("备注").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(300).Edit(false).Visible().Build()
             );
             dgvQuery.Tag = fdc.GetGridTagString();
@@ -269,7 +273,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             cmbBig = (DataGridViewComboBoxColumn)dgvQuery.Columns[DataStandardStr.SmallType];
             cmbBig.ValueMember = "vid";
             cmbBig.DisplayMember = "name";
-            cmbBig.DataSource = dtDataTypeSmall; 
+            cmbBig.DataSource = dtDataTypeSmall;
+            //状态
+            cmbBig = (DataGridViewComboBoxColumn)dgvQuery.Columns[DataStandardStr.IsEnable];
+            cmbBig.ValueMember = DT_BAS_VALUE.VALUE_CODE;
+            cmbBig.DisplayMember = DT_BAS_VALUE.VALUE_NAME;
+            cmbBig.DataSource = dtIsEnabel;            
         }
 
         private void tsbEdit_Click(object sender, EventArgs e)

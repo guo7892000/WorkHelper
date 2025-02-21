@@ -34,7 +34,7 @@ namespace Breezee.Core.WinFormUI
         /// <param name="loginUser"></param>
         /// <param name="isAddNewRow">是否增加新行</param>
         /// <returns></returns>
-        public static DataTable DefaultValue(this DataTable dt, LoginUserInfo loginUser = null,bool isAddNewRow=true)
+        public static DataTable DefaultValue(this DataTable dt, LoginUserInfo loginUser = null,bool isAddNewRow=false)
         {
             if (dt.Columns.Contains(DT_SYS_USER.CREATE_TIME))
             {

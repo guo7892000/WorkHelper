@@ -39,6 +39,8 @@
             this.cbbFiltType = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnGen = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cbbGroupType = new System.Windows.Forms.ComboBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpSource = new System.Windows.Forms.TabPage();
             this.grbTable = new System.Windows.Forms.GroupBox();
@@ -49,6 +51,7 @@
             this.tpResult = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dgvResult = new System.Windows.Forms.DataGridView();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -115,14 +118,18 @@
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 4;
+            this.tableLayoutPanel1.ColumnCount = 6;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 522F));
             this.tableLayoutPanel1.Controls.Add(this.cbbFiltType, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnGen, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.btnGen, 4, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.cbbGroupType, 3, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -154,13 +161,32 @@
             // btnGen
             // 
             this.btnGen.BackColor = System.Drawing.Color.LightBlue;
-            this.btnGen.Location = new System.Drawing.Point(201, 3);
+            this.btnGen.Location = new System.Drawing.Point(456, 3);
             this.btnGen.Name = "btnGen";
             this.btnGen.Size = new System.Drawing.Size(68, 23);
             this.btnGen.TabIndex = 2;
             this.btnGen.Text = "生成";
             this.btnGen.UseVisualStyleBackColor = false;
             this.btnGen.Click += new System.EventHandler(this.btnGen_Click);
+            // 
+            // label2
+            // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(201, 9);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(65, 12);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "分组方式：";
+            // 
+            // cbbGroupType
+            // 
+            this.cbbGroupType.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbbGroupType.FormattingEnabled = true;
+            this.cbbGroupType.Location = new System.Drawing.Point(272, 3);
+            this.cbbGroupType.Name = "cbbGroupType";
+            this.cbbGroupType.Size = new System.Drawing.Size(178, 25);
+            this.cbbGroupType.TabIndex = 0;
             // 
             // tabControl1
             // 
@@ -323,5 +349,8 @@
         private System.Windows.Forms.Button btnGen;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem tsmiPaste;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox cbbGroupType;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
