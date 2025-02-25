@@ -13,4 +13,6 @@
 前N行	lag()	
 后N行	lead()	
 */
-
+select instr(A.NEW_CAR_TYPE_CODE,':') >0
+FROM t_car_type
+;

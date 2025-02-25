@@ -1,3 +1,13 @@
+/*分组排序后获取行号为1的数据*/
+with TMP_ALL as (
+select A.BUY_NAME, A.SORT_NO, A.SORT_DATE, A.VIN, 
+ row_number() over (partition by A.VIN order by A.SORT_NO asc,A.SORT_DATE desc) as LATEST_NO
+ from TMP_ALL_D A
+ )
+select A.BUY_NAME, A.SORT_NO, A.SORT_DATE, A.VIN
+ from TMP_ALL A
+ where LATEST_NO=1
+ ;
 /*查询前十行*/
 SELECT a 
 FROM t1 WHERE a=10 AND B=1 

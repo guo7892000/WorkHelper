@@ -4577,11 +4577,12 @@ namespace Breezee.Core.Interface
         }
 
         /// <summary>
-        /// 获取LINQ动态表列的拼接字符串：用于分组
+        /// 获取LINQ动态表列的拼接字符串：用于分组，测试通过
         /// </summary>
         /// <param name="dic">字段字典</param>
         /// <param name="dr">数据行</param>
         /// <param name="isKey">是否使用字典的键</param>
+        /// <param name="separator">分隔符：可传空，也可自定义</param>
         /// <returns>拼接的字段值字符串</returns>
         public static string GetLinqDynamicTableColumnString(this IDictionary<string, string> dic,DataRow dr, bool isKey,ref string separator)
         {

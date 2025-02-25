@@ -171,6 +171,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             #endregion
 
+            //保存用户偏好值：当后面转换失败时，最后输入的SQL也要能保存
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbSqlConvert_LatestSql, rtbInputSql.Text.Trim(), "【数据库间SQL转换】最后输入的SQL");
+            WinFormContext.UserLoveSettings.Save();
+
             string sConvertType = cbbNewOldColumnSourceType.SelectedValue.ToString();
             DataTable dtOldCol = dgvColListSource.GetBindingTable();
             DataTable dtNewCol = dgvColListTarget.GetBindingTable();
@@ -243,6 +247,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //转换SQl
                 iDbType = int.Parse(cbbTargetDbType.SelectedValue.ToString());
                 DataBaseType targetDBType = (DataBaseType)iDbType;
+                // 核心：将源SQL转换为目标SQL
                 builder.ConvertToDbSql(ref sTemplateString, targetDBType);
 
                 List<SqlTableEntity> tablesOkEntity = new List<SqlTableEntity>();
@@ -488,7 +493,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbSqlConvert_SourceDbType, cbbSourceDbType.SelectedValue.ToString(), "【数据库间SQL转换】源数据库类型");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbSqlConvert_TargetDbType, cbbTargetDbType.SelectedValue.ToString(), "【数据库间SQL转换】目标数据库类型");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbSqlConvert_NewOldColumnSourceType, cbbNewOldColumnSourceType.SelectedValue.ToString(), "【数据库间SQL转换】转换类型");
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbSqlConvert_LatestSql, rtbInputSql.Text.Trim(), "【数据库间SQL转换】最后输入的SQL");
+                // WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbSqlConvert_LatestSql, rtbInputSql.Text.Trim(), "【数据库间SQL转换】最后输入的SQL");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbSqlConvert_IsParaToHash, ckbParamToHash.Checked?"1":"0", "【数据库间SQL转换】@参数转#参数#");
                 WinFormContext.UserLoveSettings.Save();
 

@@ -505,119 +505,164 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <summary>
         /// 新的替换DECODE方法
         /// 原理：先正则匹配DECODE，再根据左右括号确定DECODE所有内容。
+        ///  支持DECODE里又包括DECODE的转换
         /// 测试通过
         /// </summary>
         /// <param name="sSql"></param>
         private void MatchDecodeReplaceNew(ref string sSql)
         {
             string sDecodePatterNormal = @",?\s*DECODE\s*\(";
-            Regex regexDecode = new Regex(sDecodePatterNormal, RegexOptions.IgnoreCase);
-            MatchCollection mcDecode = regexDecode.Matches(sSql);
-            StringBuilder sbAll = new StringBuilder();
-            int iLastIndex = 0;
-            string sLeft = string.Empty;
-            bool isFoundDecode = false;
-            //循环DECODE(的所有匹配项
-            while (mcDecode.find())
+            Regex regexOut = new Regex(sDecodePatterNormal, RegexOptions.IgnoreCase);
+            int iCount = 1; // 循环次数
+
+            // 有DECODE项或循环次数小于200（防止死循环）
+            while (regexOut.Matches(sSql).Count > 0 && iCount<200)
             {
-                isFoundDecode = true;
-                sbAll.append(sSql.substring(iLastIndex,mcDecode.start())); //拼接前部分
-                string sMatch = mcDecode.group().replace("(", "");
-                sMatch = Regex.Replace(sMatch, "DECODE", "",RegexOptions.IgnoreCase);
-                sbAll.Append(sMatch); //去掉DECODE和左括号
-
-                StringBuilder sbOneDecode = new StringBuilder();
-                sbOneDecode.Append("CASE ");
-                sLeft = sSql.substring(mcDecode.end()); //剩余部分
-                MatchCollection mc = ToolHelper.getMatcher(sLeft, StaticConstants.parenthesesPattern); //针对剩余部分查找括号
-
-                int iLeft = 1;//左括号数，DECODE已包括1个，所以这里起始为1  
-                while (mc.find())
+                StringBuilder sbAll = new StringBuilder();
+                Regex regexDecode = new Regex(sDecodePatterNormal, RegexOptions.IgnoreCase);
+                MatchCollection mcDecode = regexDecode.Matches(sSql);
+                
+                int iLastIndex = 0;
+                string sLeft = string.Empty;
+                
+                string sInnerDecodeReplaceKey = "#sInnerDecodeReplaceKey#"; //内部Decode键
+                StringBuilder sbInnerDecode = new StringBuilder();  //内部Decode值
+                
+                //注：这里只处理一个DECODE(项
+                if (mcDecode.find())
                 {
-                    if ("(".equals(mc.group()))
-                    {
-                        iLeft++;
-                    }
-                    else
-                    {
-                        iLeft--;
-                    }
-                    //判断是否已到DECODE的最后的括号
-                    if (iLeft == 0)
-                    {
-                        //得到DECOE剩余部分字符：注这里要去掉最后的右括号
-                        string sSourceArr = sLeft.substring(0, mc.end()-1).Trim();
-                        //得到结束位置的索引
-                        iLastIndex = mcDecode.end() + mc.end() + mc.group().Length;
-                        
-                        string sIfnullPatter = @"\s*I(S|F)NULL\s*\(\s*(\w+.)*\w+\s*,\s*\'?([\u4e00-\u9fa5]|\w)+\'?\s*\)";
-                        //要处理掉ifnull先
-                        Regex regexTime = new Regex(sIfnullPatter, RegexOptions.IgnoreCase);
-                        MatchCollection mcCollTime = regexTime.Matches(sSourceArr);
-                        string sDecodeColun = string.Empty;
-                        IDictionary<string,string> map = new Dictionary<string,string>();
-                        int iIndex = 1;
-                        foreach (Match mtTime in mcCollTime)
-                        {
-                            sDecodeColun = mtTime.Value;
-                            string sKey = string.Format("##{0}##", iIndex.ToString());
-                            map[sKey] = sDecodeColun;
-                            sSourceArr = sSourceArr.Replace(sDecodeColun,sKey);//替换掉字符
-                            iIndex++;
-                        }
+                    sbAll.append(sSql.substring(iLastIndex, mcDecode.start())); //拼接前部分
+                    string sMatch = mcDecode.group().replace("(", "");
+                    sMatch = Regex.Replace(sMatch, "DECODE", "", RegexOptions.IgnoreCase);
+                    sbAll.Append(sMatch); //去掉DECODE和左括号
 
-                        bool isNowWhen = false;
-                        var arrList = sSourceArr.Split(new char[] { ',' });
-                        for (int i = 0; i < arrList.Length; i++)
+                    StringBuilder sbOneDecode = new StringBuilder();
+                    sbOneDecode.Append("CASE ");
+                    sLeft = sSql.substring(mcDecode.end()); //剩余部分
+                    MatchCollection mc = ToolHelper.getMatcher(sLeft, StaticConstants.parenthesesPattern); //针对剩余部分查找括号
+
+                    int iLeft = 1;//左括号数，DECODE已包括1个，所以这里起始为1  
+                    while (mc.find())
+                    {
+                        if ("(".equals(mc.group()))
                         {
-                            if (i == 0)
+                            iLeft++;
+                        }
+                        else
+                        {
+                            iLeft--;
+                        }
+                        //判断是否已到DECODE的最后的括号
+                        if (iLeft == 0)
+                        {
+                            //得到DECOE剩余部分字符：注这里要去掉最后的右括号
+                            string sSourceArr = sLeft.substring(0, mc.end() - 1).Trim();
+                            //得到结束位置的索引
+                            iLastIndex = mcDecode.end() + mc.end() + mc.group().Length - 1; //要加上最后的逗号
+
+                            string sIfnullPatter = @"\s*I(S|F)NULL\s*\(\s*(\w+.)*\w+\s*,\s*\'?([\u4e00-\u9fa5]|\w)+\'?\s*\)";
+                            //要处理掉ifnull先
+                            Regex regexTime = new Regex(sIfnullPatter, RegexOptions.IgnoreCase);
+                            MatchCollection mcCollTime = regexTime.Matches(sSourceArr);
+                            string sDecodeColun = string.Empty;
+                            IDictionary<string, string> map = new Dictionary<string, string>();
+                            int iIndex = 1;
+                            foreach (Match mtTime in mcCollTime)
                             {
-                                sbOneDecode.Append(arrList[0] + " "); //这里要加上空格
-                                isNowWhen = true;
+                                sDecodeColun = mtTime.Value;
+                                string sKey = string.Format("##{0}##", iIndex.ToString());
+                                map[sKey] = sDecodeColun;
+                                sSourceArr = sSourceArr.Replace(sDecodeColun, sKey);//替换掉字符
+                                iIndex++;
                             }
-                            else
+
+                            // 存在DECODE嵌套：先将其替换为指定字符，等处理完再替换回来,未完成
+                            string sDecodePatterNormalInner = @"\s*DECODE\s*\("; //这里不要前面的逗号
+                            Regex regexDecodeInner = new Regex(sDecodePatterNormalInner, RegexOptions.IgnoreCase);
+                            MatchCollection mcDecodeInner = regexDecodeInner.Matches(sSourceArr);
+                            while (mcDecodeInner.find())
                             {
-                                if (isNowWhen)
+                                int iLeftInner = 1;//左括号数，DECODE已包括1个，所以这里起始为1
+                                int iLastIndexInner = mcDecodeInner.start();
+                                sbInnerDecode.append(mcDecodeInner.group());
+                                //得到后面的字符
+                                string sLeftInner = sSourceArr.substring(mcDecodeInner.end());
+                                MatchCollection mcInnner = ToolHelper.getMatcher(sLeftInner, StaticConstants.parenthesesPattern); //针对剩余部分查找括号
+                                while (mcInnner.find())
                                 {
-                                    if (i == arrList.Length - 1)
+                                    if ("(".equals(mcInnner.group()))
                                     {
-                                        sbOneDecode.Append(string.Format("ELSE {0} ", arrList[i]));
+                                        iLeftInner++;
                                     }
                                     else
                                     {
-                                        sbOneDecode.Append(string.Format("WHEN {0} ", arrList[i]));
+                                        iLeftInner--;
                                     }
+                                    //判断是否已到DECODE的最后的括号
+                                    if (iLeftInner == 0)
+                                    {
+                                        //得到DECOE剩余部分字符：注这里要包括最后的右括号
+                                        sbInnerDecode.append(sLeftInner.substring(0, mcInnner.end()));
+                                        sSourceArr = sSourceArr.Replace(sbInnerDecode.ToString(), sInnerDecodeReplaceKey);
+                                    }
+                                }
+                            }
+
+                            //分隔decode中的条件和值
+                            bool isNowWhen = false;
+                            var arrList = sSourceArr.Split(new char[] { ',' });
+                            for (int i = 0; i < arrList.Length; i++)
+                            {
+                                if (i == 0)
+                                {
+                                    sbOneDecode.Append(arrList[0] + " "); //这里要加上空格
+                                    isNowWhen = true;
                                 }
                                 else
                                 {
-                                    sbOneDecode.Append(string.Format("THEN {0} ", arrList[i]));
+                                    if (isNowWhen)
+                                    {
+                                        if (i == arrList.Length - 1)
+                                        {
+                                            sbOneDecode.Append(string.Format("ELSE {0} ", arrList[i]));
+                                        }
+                                        else
+                                        {
+                                            sbOneDecode.Append(string.Format("WHEN {0} ", arrList[i]));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        sbOneDecode.Append(string.Format("THEN {0} ", arrList[i]));
+                                    }
+                                    isNowWhen = !isNowWhen;
                                 }
-                                isNowWhen = !isNowWhen;
+                                // 再将Key修改回来值
+                                sbOneDecode.Replace(sInnerDecodeReplaceKey, sbInnerDecode.ToString());
                             }
-                        }
-                        sbOneDecode.Append("END ");
-                        //将原来替换掉的IFNULL还原回来
-                        foreach (var key in map.Keys)
-                        {
-                            sbOneDecode.Replace(key, map[key]);
-                        }
 
-                        //替换字符
-                        sbAll.Append(sbOneDecode.ToString());   
-                        break;
+                            sbOneDecode.Append("END ");
+                            //将原来替换掉的IFNULL还原回来
+                            foreach (var key in map.Keys)
+                            {
+                                sbOneDecode.Replace(key, map[key]);
+                            }
+
+                            //替换字符
+                            sbAll.Append(sbOneDecode.ToString());
+                            break;
+                        }
                     }
                 }
-            }
-            //得到最终SQL
-            if(iLastIndex>0 && iLastIndex < sSql.Length)
-            {
-                sbAll.Append(sSql.Substring(iLastIndex));
-            }
-
-            //有Decode转换时，才取拼接的字符
-            if (isFoundDecode)
-            {
+                //得到最终SQL
+                if (iLastIndex > 0 && iLastIndex < sSql.Length)
+                {
+                    sbAll.Append(sSql.Substring(iLastIndex));
+                }
+                //更新SQL
                 sSql = sbAll.ToString();
+                // 计数器+1
+                iCount++;
             }
         }
 
