@@ -37,6 +37,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private readonly string _sGridColumnCondition = "IsCondition";
         private readonly string _sGridColumnSelect = "IsSelect";
         private readonly string _sGridColumnDynamic = "IsDynamic";
+        private readonly string _sGridColumnData = "IsDataCol";
         //
         private readonly string _sGridColumnGlobalValue = "GlobalValue";
         private readonly string _sGridColumnGlobalValueInsert = "GlobalValueInsertUsed";
@@ -97,6 +98,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             //设置下拉框查找数据源
             cbbTableName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cbbTableName.AutoCompleteSource = AutoCompleteSource.CustomSource;
+
+            SetExcelColTag();
 
             //加载用户偏好值
             cmbType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ExcelFomulate_Type, "1").Value;
@@ -160,7 +163,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             //设置Tag
             SetTableTag(dtTable);
             SetColTag(dtTable);
-            
             //导入成功后处理
             tsbAutoSQL.Enabled = true;
             tabControl1.SelectedTab = tpImport;
@@ -184,6 +186,27 @@ namespace Breezee.WorkHelper.DBTool.UI
             );
             dgvTableList.Tag = fdc.GetGridTagString();
             dgvTableList.BindDataGridView(dt, true);
+        }
+
+        private void SetExcelColTag()
+        {
+            FlexGridColumnDefinition fdc = new FlexGridColumnDefinition();
+            fdc.AddColumn(
+                FlexGridColumn.NewRowNoCol(),
+                new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.Name).Caption("Excel列字母").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(_sGridColumnDynamic).Caption("加引号").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(100).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(_sGridColumnData).Caption("是否日期").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(100).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnEntity.SqlString.Default).Caption("固定值").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(200).Edit().Visible().Build()
+            );
+            dgvExcelCol.Tag = fdc.GetGridTagString();
+            DataTable dtCols = new DataTable();
+            dtCols.Columns.AddRange(new DataColumn[] { 
+                new DataColumn(DBColumnEntity.SqlString.Name),
+                new DataColumn(_sGridColumnDynamic),
+                new DataColumn(_sGridColumnData),
+                new DataColumn(DBColumnEntity.SqlString.Default),
+            });
+            dgvExcelCol.BindDataGridView(dtCols, true);
         }
 
         #region 设置Tag方法
@@ -312,10 +335,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             #region 判断并取得数据
             if (cmbType.SelectedValue == null) return;
             string sConnString = cbbConnString.SelectedValue.ToString();
-            string sLastAddKuoHao = ckbLastFengHao.Checked ? ");" : ")";
+            string sLastAddKuoHao = string.Empty;
+
+            DataTable dtExcelData = dgvExcelCol.GetBindingTable();
 
             if ("2".Equals(cmbType.SelectedValue.ToString()))
             {
+                txbTableName.Focus();
                 //2、直接输入表名称列数据来生成Excel公式
                 string sTableName = txbTableName.Text.Trim();
                 if (string.IsNullOrEmpty(sTableName))
@@ -331,12 +357,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if ("1".Equals(sConnString))
                 {
                     //&拼接
+                    sLastAddKuoHao = ckbLastFengHao.Checked ? "&\");\"" : "&\")\"";
                     sbHead.Append("=\"INSERT INTO " + sTableName + " (\"");
                     sbTail.Append("=$" + iColumnNum.ToExcelColumnWord() + "$1");
                 }
                 else
                 {
-                    //CONCATENATE函数拼接
+                    //CONCATENATE函数拼接：最后的括号是函数的
+                    sLastAddKuoHao = ckbLastFengHao.Checked ? ",\");\")" : "\")\")";
                     sbHead.Append("=CONCATENATE(\"INSERT INTO " + sTableName + " (\",");
                     sbTail.Append("=CONCATENATE($" + iColumnNum.ToExcelColumnWord() + "$1");
                 }
@@ -345,32 +373,77 @@ namespace Breezee.WorkHelper.DBTool.UI
                 for (int i = 0; i < iColumnNum; i++)
                 {
                     string sExcelCol = i.ToExcelColumnWord();
+                    DataRow[] dcArr = dtExcelData.Select(DBColumnEntity.SqlString.Name + "='" + sExcelCol + "'");
+                    bool isAddYinHao= dcArr[0][_sGridColumnDynamic].ToString().Equals("1");
+                    bool isDate = dcArr[0][_sGridColumnData].ToString().Equals("1");
+                    string sDefault = dcArr[0][DBColumnEntity.SqlString.Default].ToString();
+
                     bool isLast = i == iColumnNum - 1;
                     if ("1".Equals(sConnString))
                     {
-                        //&拼接
+                        #region &拼接
                         string sColChar = string.Format("&{0}1&\",\"", sExcelCol);//非最后的列字符
                         string sColCharLast = string.Format("&{0}1&\") VALUES (\"", sExcelCol);//最后的列字符
-                                                                                               // 数据拼接
-                        string sDataChar = string.Format("&\"'\"&{0}2&\"'\"", sExcelCol);
+                        // 数据拼接
+                        string sDataChar = string.Empty;
+                        if (string.IsNullOrEmpty(sDefault))
+                        {
+                            // 没有默认值
+                            if (isDate)
+                            {
+                                // 是日期，不管isAddYinHao
+                                sDataChar = string.Format("&\"'\"&TEXT({0}2,\"yyyy-mm-dd hh:mm:ss\")&\"'\"", sExcelCol);
+                            }
+                            else
+                            {
+                                sDataChar = isAddYinHao ? string.Format("&\"\'\"&{0}2&\"\'\"", sExcelCol) : string.Format("&\"\"&{0}2&\"\"", sExcelCol);
+                            }
+                        }
+                        else
+                        {
+                            // 有默认值：这里不管isDate
+                            sDataChar = isAddYinHao ? string.Format("&\"\'{0}\'\"", sDefault) : string.Format("&\"{0}\"", sDefault);
+                        }
                         string sDouhao = string.Format("&\"{0}\"", ",");
-                        string sLastKuohao = string.Format("&\"{0}\"", sLastAddKuoHao);
+                        //string sLastKuohao = string.Format("&\");\"", sLastAddKuoHao);
                         //拼接公式
                         sbHead.Append(isLast ? sColCharLast : sColChar);
-                        sbTail.Append(isLast ? sDataChar + sLastKuohao : sDataChar + sDouhao);//加引号
+                        sbTail.Append(isLast ? sDataChar + sLastAddKuoHao : sDataChar + sDouhao);//加引号 
+                        #endregion
                     }
                     else
                     {
+                        #region CONCATENATE函数拼接：注不要加&
                         //CONCATENATE函数拼接：列名拼接
                         string sColChar = string.Format("{0}1,\",\",", sExcelCol);//非最后的列字符
                         string sColCharLast = string.Format("{0}1,\") VALUES (\")", sExcelCol);//最后的列字符
-                                                                                               // 数据拼接
-                        string sDataChar = string.Format(",\"'\",{0}2,\"'\"", sExcelCol);
+                        // 数据拼接
+                        string sDataChar = string.Empty;
+                        if (string.IsNullOrEmpty(sDefault))
+                        {
+                            // 没有默认值
+                            if (isDate)
+                            {
+                                // 是日期：不管【isAddYinHao】变量；转换日期时，左右单引号要作为独立一项
+                                sDataChar = string.Format(",\"'\",TEXT({0}2,\"yyyy-mm-dd hh:mm:ss\"),\"'\"", sExcelCol);
+                            }
+                            else
+                            {
+                                // 非日期：有单引号时，左右单引号要作为独立一项；无单引号时，直接加上单元格数据即可
+                                sDataChar = isAddYinHao ? string.Format(",\"'\",{0}2,\"'\"", sExcelCol) : string.Format(",{0}2", sExcelCol);
+                            }
+                        }
+                        else
+                        {
+                            // 有默认值：这里不管【isDate】变量；默认值两边要加双引号；并且左右的单引号，要作为独立拼接的一项
+                            sDataChar = isAddYinHao ? string.Format(",\"'\",\"{0}\",\"'\"", sDefault) : string.Format(",\"{0}\"", sDefault);
+                        }
+
                         string sDouhao = string.Format(",\"{0}\"", ",");
-                        string sLastKuohao = string.Format(",\"{0}\"", sLastAddKuoHao);
                         //拼接公式
                         sbHead.Append(isLast ? sColCharLast : sColChar);
-                        sbTail.Append(isLast ? sDataChar + sLastKuohao : sDataChar + sDouhao);//加引号
+                        sbTail.Append(isLast ? sDataChar + sLastAddKuoHao : sDataChar + sDouhao);//加引号 
+                        #endregion
                     }
                 }
 
@@ -558,7 +631,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         }
         #endregion
     
-
+        /// <summary>
+        /// 类型选择变化事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CmbType_SelectedIndexChanged(object sender, EventArgs e)
         {
             if(cmbType.SelectedValue == null) return;
@@ -577,6 +654,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     tabControl1.TabPages.Insert(0,tpImport);
                 }
+                if (tabControl1.TabPages.Contains(tpExcelCol))
+                {
+                    tabControl1.TabPages.Remove(tpExcelCol);
+                }
             }
             else
             {
@@ -589,6 +670,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                 lblColumnNum.Visible = true;
                 txbTableName.Visible = true;
                 nudColumnNum.Visible = true;
+                if (!tabControl1.TabPages.Contains(tpExcelCol))
+                {
+                    tabControl1.TabPages.Insert(0, tpExcelCol);
+                }
                 if (tabControl1.TabPages.Contains(tpImport))
                 {
                     tabControl1.TabPages.Remove(tpImport);
@@ -629,6 +714,20 @@ namespace Breezee.WorkHelper.DBTool.UI
             DataRow drCur = dgvColList.GetCurrentRow();
             if (drCur == null) return;
             drCur[DBColumnEntity.SqlString.Default] = string.Empty;
+        }
+
+        private void nudColumnNum_ValueChanged(object sender, EventArgs e)
+        {
+            if (nudColumnNum.Value > 0)
+            {
+                DataTable dtExcelData = dgvExcelCol.GetBindingTable();
+                dtExcelData.Clear();
+                for (int i = 0; i < nudColumnNum.Value; i++)
+                {
+                    dtExcelData.Rows.Add(new string[] { i.ToExcelColumnWord(), "1","0","",(i+1).ToString() });
+                }
+                dgvExcelCol.BindDataGridView(dtExcelData);
+            }
         }
     }
 

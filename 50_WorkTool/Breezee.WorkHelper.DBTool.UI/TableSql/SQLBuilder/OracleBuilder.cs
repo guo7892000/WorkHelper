@@ -737,7 +737,6 @@ FROm AB.BAS_CITY A
                 }
             }
 
-
             //要处理掉ifnull先
             Regex regexTime = new Regex(sIfnullPatter, RegexOptions.IgnoreCase);
             MatchCollection mcCollTime = regexTime.Matches(sMustColumnName);
@@ -1067,6 +1066,11 @@ SELECT  TO_CHAR(A.OUT_STORE_DATE, 'YYYY/MM/DD') OUT_STORE_DATE,
         /// <param name="sSql"></param>
         private void MatchContact(ref string sSql)
         {
+            /** 以下问题无法解决
+             select CASE WHEN NVL(T1.NC_T33, 0) = 0 THEN '0%'
+             ELSE ROUND(NVL(T2.EX_T33, 0) / NVL(T1.NC_T33, 0), 2) * 100 || '%'   END AS EXR_T33
+            from dual
+             */
             //注：匹配双单引号包裹的内部不含单引号的正则为：\'[^']+\'
             string sConcatPatter = @",?\s*(((\'[^']+\')|(\w+\.)*\w+))\s*(\s*\|\|\s*((\'[^']+\')|((\w+\.)*\w+)))+";
             Regex regex = new Regex(sConcatPatter, RegexOptions.IgnoreCase);

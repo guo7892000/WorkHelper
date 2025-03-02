@@ -53,6 +53,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.grbColumn = new System.Windows.Forms.GroupBox();
             this.lblColumnInfo = new System.Windows.Forms.Label();
             this.dgvColList = new System.Windows.Forms.DataGridView();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiRemoveDefault = new System.Windows.Forms.ToolStripMenuItem();
+            this.tpExcelCol = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.dgvExcelCol = new System.Windows.Forms.DataGridView();
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -68,8 +74,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.cbbConnString = new System.Windows.Forms.ComboBox();
             this.lblColumnNum = new System.Windows.Forms.Label();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tsmiRemoveDefault = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.grbOrcNet.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -83,11 +87,14 @@ namespace Breezee.WorkHelper.DBTool.UI
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableList)).BeginInit();
             this.grbColumn.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvColList)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
+            this.tpExcelCol.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvExcelCol)).BeginInit();
             this.tpAutoSQL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudColumnNum)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -240,6 +247,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tpImport);
+            this.tabControl1.Controls.Add(this.tpExcelCol);
             this.tabControl1.Controls.Add(this.tpAutoSQL);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 200);
@@ -351,6 +359,68 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.dgvColList.TabIndex = 0;
             this.dgvColList.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvColList_ColumnHeaderMouseDoubleClick);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiRemoveDefault});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(137, 26);
+            // 
+            // tsmiRemoveDefault
+            // 
+            this.tsmiRemoveDefault.Name = "tsmiRemoveDefault";
+            this.tsmiRemoveDefault.Size = new System.Drawing.Size(136, 22);
+            this.tsmiRemoveDefault.Text = "清除默认值";
+            this.tsmiRemoveDefault.Click += new System.EventHandler(this.tsmiRemoveDefault_Click);
+            // 
+            // tpExcelCol
+            // 
+            this.tpExcelCol.Controls.Add(this.groupBox2);
+            this.tpExcelCol.Location = new System.Drawing.Point(4, 22);
+            this.tpExcelCol.Name = "tpExcelCol";
+            this.tpExcelCol.Padding = new System.Windows.Forms.Padding(3);
+            this.tpExcelCol.Size = new System.Drawing.Size(1079, 291);
+            this.tpExcelCol.TabIndex = 2;
+            this.tpExcelCol.Text = "Excel列清单";
+            this.tpExcelCol.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.dgvExcelCol);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox2.Location = new System.Drawing.Point(3, 3);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(1073, 285);
+            this.groupBox2.TabIndex = 9;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "列清单";
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.Color.Red;
+            this.label3.Location = new System.Drawing.Point(310, 2);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 12);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "提示信息";
+            // 
+            // dgvExcelCol
+            // 
+            this.dgvExcelCol.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvExcelCol.ContextMenuStrip = this.contextMenuStrip1;
+            this.dgvExcelCol.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvExcelCol.Location = new System.Drawing.Point(3, 17);
+            this.dgvExcelCol.Name = "dgvExcelCol";
+            this.dgvExcelCol.RowTemplate.Height = 23;
+            this.dgvExcelCol.Size = new System.Drawing.Size(1067, 265);
+            this.dgvExcelCol.TabIndex = 0;
+            // 
             // tpAutoSQL
             // 
             this.tpAutoSQL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
@@ -380,11 +450,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             0,
             0,
             0});
-            this.nudColumnNum.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.nudColumnNum.Name = "nudColumnNum";
             this.nudColumnNum.Size = new System.Drawing.Size(57, 21);
             this.nudColumnNum.TabIndex = 7;
@@ -394,6 +459,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             0,
             0,
             0});
+            this.nudColumnNum.ValueChanged += new System.EventHandler(this.nudColumnNum_ValueChanged);
             // 
             // cmbType
             // 
@@ -526,20 +592,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.uC_DbConnection1.Size = new System.Drawing.Size(1087, 78);
             this.uC_DbConnection1.TabIndex = 35;
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiRemoveDefault});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
-            // 
-            // tsmiRemoveDefault
-            // 
-            this.tsmiRemoveDefault.Name = "tsmiRemoveDefault";
-            this.tsmiRemoveDefault.Size = new System.Drawing.Size(180, 22);
-            this.tsmiRemoveDefault.Text = "清除默认值";
-            this.tsmiRemoveDefault.Click += new System.EventHandler(this.tsmiRemoveDefault_Click);
-            // 
             // FrmDBTExcelFormulateString
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -572,13 +624,17 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.grbColumn.ResumeLayout(false);
             this.grbColumn.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvColList)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
+            this.tpExcelCol.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvExcelCol)).EndInit();
             this.tpAutoSQL.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudColumnNum)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -624,5 +680,9 @@ namespace Breezee.WorkHelper.DBTool.UI
         private TableLayoutPanel tableLayoutPanel1;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem tsmiRemoveDefault;
+        private TabPage tpExcelCol;
+        private GroupBox groupBox2;
+        private Label label3;
+        private DataGridView dgvExcelCol;
     }
 }
