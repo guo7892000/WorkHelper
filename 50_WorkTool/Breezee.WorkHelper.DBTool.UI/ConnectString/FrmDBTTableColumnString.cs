@@ -549,6 +549,7 @@ namespace Breezee.WorkHelper.DBTool.UI
     private String #{2}#;
 ", DBColumnSimpleEntity.SqlString.NameCN, DBColumnSimpleEntity.SqlString.Name, DBColumnSimpleEntity.SqlString.NameLower));
 
+                    rtbOther.Clear();
                     rtbOther.AppendText("@TableName(\"#" + DBColumnSimpleEntity.SqlString.TableName + "#\")" + System.Environment.NewLine);
                     rtbOther.AppendText("@ApiModel(value = \"#" + DBColumnSimpleEntity.SqlString.TableNameCN + "#对象\"" + ", description = \"#" + DBColumnSimpleEntity.SqlString.TableNameCN + "#\")" + System.Environment.NewLine);
                     rtbOther.AppendText("public class #" + DBColumnSimpleEntity.SqlString.TableNameUpper + "# implements Serializable {" + System.Environment.NewLine);
