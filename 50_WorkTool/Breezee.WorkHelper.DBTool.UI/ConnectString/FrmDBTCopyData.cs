@@ -106,7 +106,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 DataTable dtMain = (DataTable)WinFormGlobalValue.dicBindingSource[_strTableName].DataSource;
                 dtMain.Clear();
                 dtMain.Columns.Clear();
-                pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain);
+                pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain,"",ckbTrim.Checked);
                 dgvTableList.ShowRowNum(); //显示行号
                 ShowInfo("粘贴成功，请选择拼接类型！");
 

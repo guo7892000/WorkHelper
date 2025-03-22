@@ -8,6 +8,7 @@ using System.IO;
 using Breezee.WorkHelper.DBTool.Entity;
 using Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL;
 using org.breezee.MyPeachNet;
+using Breezee.Core.Interface;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -170,6 +171,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     }
 
                     //ÁÐWeb×Ö·û
+                    string sOldTableCode = row.ContainsColumn(ColCommon.ExcelCol.OldTableCode) ? row[ColCommon.ExcelCol.OldTableCode].ToString() : "";
                     string columnString = columnsTemplate.Replace("${ColumnName}", sColName)
                         .Replace("${ColumnCode}", row[ColCommon.ExcelCol.Code].ToString())
                         .Replace("${ColumnType}", sDataType)
@@ -181,7 +183,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         .Replace("${Remark}", sColRemark)
                         .Replace("$(No)", index.ToString())
                         .Replace("${ChangeType}", strColumnChangeType)
-                        .Replace("${OldTableCode}", row[ColCommon.ExcelCol.OldTableCode].ToString());
+                        .Replace("${OldTableCode}", sOldTableCode);
                     columnBuilder.Append(columnString);
                     index++;
                 }

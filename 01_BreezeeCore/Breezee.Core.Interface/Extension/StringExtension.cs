@@ -254,10 +254,12 @@ namespace Breezee.Core.Interface
                 dt = new DataTable();
             }
             bool addNumRow = false;
+            int iRowNum = 0;
             if (!dt.Columns.Contains(sRowNumColumnName) && isAddRowNum)
             {
                 dt.Columns.Add(sRowNumColumnName,typeof(int)); ////设置序号为整型
                 addNumRow = true;
+                iRowNum = 1;
             }
 
             HashSet<string> doubleCol = new HashSet<string>();
@@ -299,27 +301,57 @@ namespace Breezee.Core.Interface
                 }
                 else
                 {
+                    // 数据处理
                     DataRow dr = dt.NewRow();
-                    string[] cols = rows[i].Split(new string[] { "\t" }, StringSplitOptions.None);//注：这里不要去掉空白
-                    //增加数据列数与表列数的大小比较，防止访问表列的数组越界而报错
-                    if(cols.Length > dt.Columns.Count)
+                    string[] cols = isTrimData ? rows[i].Trim().Split(new string[] { "\t" }, StringSplitOptions.None): rows[i].Split(new string[] { "\t" }, StringSplitOptions.None);//注：这里不要去掉空白
+                    //增加数据列数与表列数的大小比较，防止访问表列的数组越界而报错。注：这里要去掉序号列
+                    if(cols.Length > (dt.Columns.Count- iRowNum))
                     {
                         //数据列数大于表列数
                         if (addNumRow)
                         {
                             // 有序号列
                             dr[sRowNumColumnName] = i; //行号
-                            for (int j = 0; j < dt.Columns.Count-1; j++)
+                            int okIndex = 0;
+                            for (int j = 0; j < cols.Length; j++)
                             {
-                                dr[j + 1] = isTrimData ? cols[j].Trim() : cols[j]; //第一列为序号，需要跳过
+                                if ("\"".Equals(cols[j]))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    // 注：因为Excel中针对部分包含特殊字符的文本会在前后加上引号，所以后面会有去掉前后引号的处理。数据例如："	2023款 经典 2.0L CVT XV+领先版 国6"
+                                    dr[okIndex + 1] = isTrimData ? cols[j].Trim('"').Trim() : cols[j].Trim('"'); //第一列为序号，需要跳过
+                                    okIndex++;
+                                    if (okIndex >= dt.Columns.Count-1)
+                                    {
+                                        break;
+                                    }
+                                }
                             }
                         }
                         else
                         {
                             // 无序号列
-                            for (int j = 0; j < dt.Columns.Count; j++)
+                            int okIndex = 0;
+                            for (int j = 0; j < cols.Length; j++)
                             {
-                                dr[j] = isTrimData ? cols[j].Trim() : cols[j]; //第一列为实际数据
+                                if ("\"".Equals(cols[j]))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    // 注：因为Excel中针对部分包含特殊字符的文本会在前后加上引号，所以后面会有去掉前后引号的处理。数据例如："	2023款 经典 2.0L CVT XV+领先版 国6"
+                                    dr[okIndex] = isTrimData ? cols[j].Trim('"').Trim() : cols[j].Trim('"'); //第一列为实际数据
+                                    okIndex++;
+                                    if (okIndex >= dt.Columns.Count)
+                                    {
+                                        break;
+                                    }
+                                }
+                                    
                             }
                         }
                     }
@@ -330,17 +362,46 @@ namespace Breezee.Core.Interface
                         {
                             // 有序号列
                             dr[sRowNumColumnName] = i; //行号
+                            int okIndex = 0;
                             for (int j = 0; j < cols.Length; j++)
                             {
-                                dr[j + 1] = isTrimData ? cols[j].Trim() : cols[j]; //第一列为序号，需要跳过
+                                if ("\"".Equals(cols[j]))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    // 注：因为Excel中针对部分包含特殊字符的文本会在前后加上引号，所以后面会有去掉前后引号的处理。数据例如："	2023款 经典 2.0L CVT XV+领先版 国6"
+                                    dr[okIndex + 1] = isTrimData ? cols[j].Trim('"').Trim() : cols[j].Trim('"'); //第一列为序号，需要跳过
+                                    okIndex++;
+                                    if (okIndex >= dt.Columns.Count - 1)
+                                    {
+                                        break;
+                                    }
+                                }
                             }
                         }
                         else
                         {
                             // 无序号列
+                            int okIndex = 0;
                             for (int j = 0; j < cols.Length; j++)
                             {
-                                dr[j] = isTrimData ? cols[j].Trim() : cols[j]; //第一列为实际数据
+                                if ("\"".Equals(cols[j]))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    // 注：因为Excel中针对部分包含特殊字符的文本会在前后加上引号，所以后面会有去掉前后引号的处理。数据例如："	2023款 经典 2.0L CVT XV+领先版 国6"
+                                    dr[okIndex] = isTrimData ? cols[j].Trim('"').Trim() : cols[j].Trim('"'); //第一列为实际数据
+                                    okIndex++;
+                                    if (okIndex >= dt.Columns.Count)
+                                    {
+                                        break;
+                                    }
+                                }
+                                    
                             }
                         }
                     }

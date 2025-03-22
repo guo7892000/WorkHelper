@@ -1,0 +1,1812 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>dotnetCampus.FileDownloader</name>
+    </assembly>
+    <members>
+        <member name="T:dotnetCampus.FileDownloader.IAsyncDisposable">
+            <summary>
+            表示支持异步的释放，这是兼容的代码，用于支持非 .NET Core 的框架
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.IAsyncDisposable.DisposeAsync">
+            <summary>
+            异步释放对象
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.EventId">
+            <summary>
+            Identifies a logging event. The primary identifier is the "Id" property, with the "Name" property providing a short description of this type of event.
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.EventId.op_Implicit(System.Int32)~dotnetCampus.FileDownloader.EventId">
+            <summary>
+            Implicitly creates an EventId from the given <see cref="T:System.Int32" />.
+            </summary>
+            <param name="i">The <see cref="T:System.Int32" /> to convert to an EventId.</param>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.EventId.op_Equality(dotnetCampus.FileDownloader.EventId,dotnetCampus.FileDownloader.EventId)">
+            <summary>
+            Checks if two specified <see cref="T:Microsoft.Extensions.Logging.EventId" /> instances have the same value. They are equal if they have the same Id.
+            </summary>
+            <param name="left">The first <see cref="T:Microsoft.Extensions.Logging.EventId" />.</param>
+            <param name="right">The second <see cref="T:Microsoft.Extensions.Logging.EventId" />.</param>
+            <returns><code>true</code> if the objects are equal.</returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.EventId.op_Inequality(dotnetCampus.FileDownloader.EventId,dotnetCampus.FileDownloader.EventId)">
+            <summary>
+            Checks if two specified <see cref="T:Microsoft.Extensions.Logging.EventId" /> instances have different values.
+            </summary>
+            <param name="left">The first <see cref="T:Microsoft.Extensions.Logging.EventId" />.</param>
+            <param name="right">The second <see cref="T:Microsoft.Extensions.Logging.EventId" />.</param>
+            <returns><code>true</code> if the objects are not equal.</returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.EventId.#ctor(System.Int32,System.String)">
+            <summary>
+            Initializes an instance of the <see cref="T:Microsoft.Extensions.Logging.EventId" /> struct.
+            </summary>
+            <param name="id">The numeric identifier for this event.</param>
+            <param name="name">The name of this event.</param>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.EventId.Id">
+            <summary>Gets the numeric identifier for this event.</summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.EventId.Name">
+            <summary>Gets the name of this event.</summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.EventId.ToString">
+            <inheritdoc />
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.EventId.Equals(dotnetCampus.FileDownloader.EventId)">
+            <summary>
+            Indicates whether the current object is equal to another object of the same type. Two events are equal if they have the same id.
+            </summary>
+            <param name="other">An object to compare with this object.</param>
+            <returns><code>true</code> if the current object is equal to the other parameter; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.EventId.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.EventId.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.FormattedLogValues">
+            <summary>
+            LogValues to enable formatting options supported by <see cref="M:string.Format" />.
+            This also enables using {NamedformatItem} in the format string.
+            </summary>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.ILogger`1">
+            <summary>
+            用于记录日志，专门修改命名空间以解决命名空间冲突，此类型仅 .NET Framework 引用
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.ILogger">
+            <summary>Represents a type used to perform logging.</summary>
+            <remarks>Aggregates most logging patterns to a single method.</remarks>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.ILogger.Log``1(dotnetCampus.FileDownloader.LogLevel,dotnetCampus.FileDownloader.EventId,``0,System.Exception,System.Func{``0,System.Exception,System.String})">
+            <summary>Writes a log entry.</summary>
+            <param name="logLevel">Entry will be written on this level.</param>
+            <param name="eventId">Id of the event.</param>
+            <param name="state">The entry to be written. Can be also an object.</param>
+            <param name="exception">The exception related to this entry.</param>
+            <param name="formatter">Function to create a <see cref="T:System.String" /> message of the <paramref name="state" /> and <paramref name="exception" />.</param>
+            <typeparam name="TState">The type of the object to be written.</typeparam>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.ILogger.IsEnabled(dotnetCampus.FileDownloader.LogLevel)">
+            <summary>
+            Checks if the given <paramref name="logLevel" /> is enabled.
+            </summary>
+            <param name="logLevel">level to be checked.</param>
+            <returns><c>true</c> if enabled.</returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.ILogger.BeginScope``1(``0)">
+            <summary>Begins a logical operation scope.</summary>
+            <param name="state">The identifier for the scope.</param>
+            <typeparam name="TState">The type of the state to begin scope for.</typeparam>
+            <returns>An <see cref="T:System.IDisposable" /> that ends the logical operation scope on dispose.</returns>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.LoggerExtensions">
+            <summary>
+            日志的扩展方法
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogDebug(dotnetCampus.FileDownloader.ILogger,dotnetCampus.FileDownloader.EventId,System.Exception,System.String,System.Object[])">
+            <summary>Formats and writes a debug log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="eventId">The event id associated with the log.</param>
+            <param name="exception">The exception to log.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogDebug(0, exception, "Error while processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogDebug(dotnetCampus.FileDownloader.ILogger,dotnetCampus.FileDownloader.EventId,System.String,System.Object[])">
+            <summary>Formats and writes a debug log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="eventId">The event id associated with the log.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogDebug(0, "Processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogDebug(dotnetCampus.FileDownloader.ILogger,System.Exception,System.String,System.Object[])">
+            <summary>Formats and writes a debug log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="exception">The exception to log.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogDebug(exception, "Error while processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogDebug(dotnetCampus.FileDownloader.ILogger,System.String,System.Object[])">
+            <summary>Formats and writes a debug log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogDebug("Processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogTrace(dotnetCampus.FileDownloader.ILogger,dotnetCampus.FileDownloader.EventId,System.Exception,System.String,System.Object[])">
+            <summary>Formats and writes a trace log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="eventId">The event id associated with the log.</param>
+            <param name="exception">The exception to log.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogTrace(0, exception, "Error while processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogTrace(dotnetCampus.FileDownloader.ILogger,dotnetCampus.FileDownloader.EventId,System.String,System.Object[])">
+            <summary>Formats and writes a trace log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="eventId">The event id associated with the log.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogTrace(0, "Processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogTrace(dotnetCampus.FileDownloader.ILogger,System.Exception,System.String,System.Object[])">
+            <summary>Formats and writes a trace log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="exception">The exception to log.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogTrace(exception, "Error while processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogTrace(dotnetCampus.FileDownloader.ILogger,System.String,System.Object[])">
+            <summary>Formats and writes a trace log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogTrace("Processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogInformation(dotnetCampus.FileDownloader.ILogger,dotnetCampus.FileDownloader.EventId,System.Exception,System.String,System.Object[])">
+            <summary>Formats and writes an informational log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="eventId">The event id associated with the log.</param>
+            <param name="exception">The exception to log.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogInformation(0, exception, "Error while processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogInformation(dotnetCampus.FileDownloader.ILogger,dotnetCampus.FileDownloader.EventId,System.String,System.Object[])">
+            <summary>Formats and writes an informational log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="eventId">The event id associated with the log.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogInformation(0, "Processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogInformation(dotnetCampus.FileDownloader.ILogger,System.Exception,System.String,System.Object[])">
+            <summary>Formats and writes an informational log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="exception">The exception to log.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogInformation(exception, "Error while processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogInformation(dotnetCampus.FileDownloader.ILogger,System.String,System.Object[])">
+            <summary>Formats and writes an informational log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogInformation("Processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogWarning(dotnetCampus.FileDownloader.ILogger,dotnetCampus.FileDownloader.EventId,System.Exception,System.String,System.Object[])">
+            <summary>Formats and writes a warning log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="eventId">The event id associated with the log.</param>
+            <param name="exception">The exception to log.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogWarning(0, exception, "Error while processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogWarning(dotnetCampus.FileDownloader.ILogger,dotnetCampus.FileDownloader.EventId,System.String,System.Object[])">
+            <summary>Formats and writes a warning log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="eventId">The event id associated with the log.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogWarning(0, "Processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogWarning(dotnetCampus.FileDownloader.ILogger,System.Exception,System.String,System.Object[])">
+            <summary>Formats and writes a warning log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="exception">The exception to log.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogWarning(exception, "Error while processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogWarning(dotnetCampus.FileDownloader.ILogger,System.String,System.Object[])">
+            <summary>Formats and writes a warning log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogWarning("Processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogError(dotnetCampus.FileDownloader.ILogger,dotnetCampus.FileDownloader.EventId,System.Exception,System.String,System.Object[])">
+            <summary>Formats and writes an error log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="eventId">The event id associated with the log.</param>
+            <param name="exception">The exception to log.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogError(0, exception, "Error while processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogError(dotnetCampus.FileDownloader.ILogger,dotnetCampus.FileDownloader.EventId,System.String,System.Object[])">
+            <summary>Formats and writes an error log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="eventId">The event id associated with the log.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogError(0, "Processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogError(dotnetCampus.FileDownloader.ILogger,System.Exception,System.String,System.Object[])">
+            <summary>Formats and writes an error log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="exception">The exception to log.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogError(exception, "Error while processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogError(dotnetCampus.FileDownloader.ILogger,System.String,System.Object[])">
+            <summary>Formats and writes an error log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogError("Processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogCritical(dotnetCampus.FileDownloader.ILogger,dotnetCampus.FileDownloader.EventId,System.Exception,System.String,System.Object[])">
+            <summary>Formats and writes a critical log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="eventId">The event id associated with the log.</param>
+            <param name="exception">The exception to log.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogCritical(0, exception, "Error while processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogCritical(dotnetCampus.FileDownloader.ILogger,dotnetCampus.FileDownloader.EventId,System.String,System.Object[])">
+            <summary>Formats and writes a critical log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="eventId">The event id associated with the log.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogCritical(0, "Processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogCritical(dotnetCampus.FileDownloader.ILogger,System.Exception,System.String,System.Object[])">
+            <summary>Formats and writes a critical log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="exception">The exception to log.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogCritical(exception, "Error while processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.LogCritical(dotnetCampus.FileDownloader.ILogger,System.String,System.Object[])">
+            <summary>Formats and writes a critical log message.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="message">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <example>logger.LogCritical("Processing request from {Address}", address)</example>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.Log(dotnetCampus.FileDownloader.ILogger,dotnetCampus.FileDownloader.LogLevel,System.String,System.Object[])">
+            <summary>
+            Formats and writes a log message at the specified log level.
+            </summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="logLevel">Entry will be written on this level.</param>
+            <param name="message">Format string of the log message.</param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.Log(dotnetCampus.FileDownloader.ILogger,dotnetCampus.FileDownloader.LogLevel,dotnetCampus.FileDownloader.EventId,System.String,System.Object[])">
+            <summary>
+            Formats and writes a log message at the specified log level.
+            </summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="logLevel">Entry will be written on this level.</param>
+            <param name="eventId">The event id associated with the log.</param>
+            <param name="message">Format string of the log message.</param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.Log(dotnetCampus.FileDownloader.ILogger,dotnetCampus.FileDownloader.LogLevel,System.Exception,System.String,System.Object[])">
+            <summary>
+            Formats and writes a log message at the specified log level.
+            </summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="logLevel">Entry will be written on this level.</param>
+            <param name="exception">The exception to log.</param>
+            <param name="message">Format string of the log message.</param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.Log(dotnetCampus.FileDownloader.ILogger,dotnetCampus.FileDownloader.LogLevel,dotnetCampus.FileDownloader.EventId,System.Exception,System.String,System.Object[])">
+            <summary>
+            Formats and writes a log message at the specified log level.
+            </summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to write to.</param>
+            <param name="logLevel">Entry will be written on this level.</param>
+            <param name="eventId">The event id associated with the log.</param>
+            <param name="exception">The exception to log.</param>
+            <param name="message">Format string of the log message.</param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.LoggerExtensions.BeginScope(dotnetCampus.FileDownloader.ILogger,System.String,System.Object[])">
+            <summary>Formats the message and creates a scope.</summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" /> to create the scope in.</param>
+            <param name="messageFormat">Format string of the log message in message template format. Example: <code>"User {User} logged in from {Address}"</code></param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <returns>A disposable scope object. Can be null.</returns>
+            <example>
+            using(logger.BeginScope("Processing request from {Address}", address))
+            {
+            }
+            </example>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.LogLevel">
+            <summary>Defines logging severity levels.</summary>
+        </member>
+        <member name="F:dotnetCampus.FileDownloader.LogLevel.Trace">
+            <summary>
+            Logs that contain the most detailed messages. These messages may contain sensitive application data.
+            These messages are disabled by default and should never be enabled in a production environment.
+            </summary>
+        </member>
+        <member name="F:dotnetCampus.FileDownloader.LogLevel.Debug">
+            <summary>
+            Logs that are used for interactive investigation during development.  These logs should primarily contain
+            information useful for debugging and have no long-term value.
+            </summary>
+        </member>
+        <member name="F:dotnetCampus.FileDownloader.LogLevel.Information">
+            <summary>
+            Logs that track the general flow of the application. These logs should have long-term value.
+            </summary>
+        </member>
+        <member name="F:dotnetCampus.FileDownloader.LogLevel.Warning">
+            <summary>
+            Logs that highlight an abnormal or unexpected event in the application flow, but do not otherwise cause the
+            application execution to stop.
+            </summary>
+        </member>
+        <member name="F:dotnetCampus.FileDownloader.LogLevel.Error">
+            <summary>
+            Logs that highlight when the current flow of execution is stopped due to a failure. These should indicate a
+            failure in the current activity, not an application-wide failure.
+            </summary>
+        </member>
+        <member name="F:dotnetCampus.FileDownloader.LogLevel.Critical">
+            <summary>
+            Logs that describe an unrecoverable application or system crash, or a catastrophic failure that requires
+            immediate attention.
+            </summary>
+        </member>
+        <member name="F:dotnetCampus.FileDownloader.LogLevel.None">
+            <summary>
+            Not used for writing log messages. Specifies that a logging category should not write any messages.
+            </summary>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.LogValuesFormatter">
+            <summary>
+            Formatter to convert the named format items like {NamedformatItem} to <see cref="M:string.Format" /> format.
+            </summary>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.StepWriteFinishedArgs">
+            <summary>
+            每一步写入完成的事件参数
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.StepWriteFinishedArgs.#ctor(System.Int64,System.Int32,System.Byte[],System.Int32)">
+            <summary>
+            每一步写入完成的事件参数
+            </summary>
+            <param name="fileStartPoint"></param>
+            <param name="dataOffset"></param>
+            <param name="data"></param>
+            <param name="dataLength"></param>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.StepWriteFinishedArgs.FileStartPoint">
+            <summary>
+            文件开始写入的点
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.StepWriteFinishedArgs.DataOffset">
+            <summary>
+            表示从 <see cref="P:dotnetCampus.FileDownloader.StepWriteFinishedArgs.Data"/> 的读取点
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.StepWriteFinishedArgs.Data">
+            <summary>
+            写入文件的数据
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.StepWriteFinishedArgs.DataLength">
+            <summary>
+            表示从 <see cref="P:dotnetCampus.FileDownloader.StepWriteFinishedArgs.Data"/> 的读取长度
+            </summary>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.DownloadSegment">
+            <summary>
+            下载的段，这个段的内容和长度将会不断更改
+            </summary>
+        </member>
+        <member name="E:dotnetCampus.FileDownloader.DownloadSegment.SegmentChanged">
+            <summary>
+            下载管理在发现支持分段下载的时候给出事件
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.DownloadSegment.#ctor">
+            <summary>
+            创建下载的段
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.DownloadSegment.#ctor(System.Int64,System.Int64)">
+            <summary>
+            创建下载的段
+            </summary>
+            <param name="startPoint"></param>
+            <param name="requirementDownloadPoint"></param>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.DownloadSegment.StartPoint">
+            <summary>
+            下载起始点
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.DownloadSegment.Number">
+            <summary>
+            当前段的序号，仅用于调试
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.DownloadSegment.Message">
+            <summary>
+            当前的信息，仅用于调试
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.DownloadSegment.RequirementDownloadPoint">
+            <summary>
+            需要下载到的点
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.DownloadSegment.ToString">
+            <inheritdoc />
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.DownloadSegment.DownloadedLength">
+            <summary>
+            已经下载的长度
+            </summary>
+            下载的时候需要通告管理器
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.DownloadSegment.CurrentDownloadPoint">
+            <summary>
+            当前的下载点
+            </summary>
+            需要处理多线程访问
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.DownloadSegment.Finished">
+            <summary>
+            是否下载完成
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.DownloadSegment.SegmentManager">
+            <summary>
+            分段管理
+            </summary>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.DownloadingState">
+            <summary>
+            下载状态
+            </summary>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.FileDownloaderHelper">
+            <summary>
+            文件下载辅助方法
+            </summary>
+            这个类有点业务，但是我的几个项目都有差不多的逻辑，于是就放在这
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.FileDownloaderHelper.DownloadFileAsync(System.String,System.IO.FileInfo,dotnetCampus.FileDownloader.ILogger{dotnetCampus.FileDownloader.SegmentFileDownloader},System.IProgress{dotnetCampus.FileDownloader.DownloadProgress},dotnetCampus.FileDownloader.ISharedArrayPool,System.Int32,System.Nullable{System.TimeSpan})">
+            <summary>
+            异步下载文件
+            </summary>
+            <param name="url">下载链接，不对下载链接是否有效进行校对</param>
+            <param name="file">下载的文件路径</param>
+            <param name="logger">下载时的内部日志，默认将使用 Debug 输出</param>
+            <param name="progress">下载进度</param>
+            <param name="sharedArrayPool">共享缓存数组池，默认使用 ArrayPool 池</param>
+            <param name="bufferLength">缓存的数组长度，默认是 65535 的长度</param>
+            <param name="stepTimeOut">每一步 每一分段下载超时时间 默认 10 秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.FileDownloaderHelper.DownloadFileToFolderAsync(System.String,System.IO.DirectoryInfo,System.IO.DirectoryInfo,dotnetCampus.FileDownloader.ILogger{dotnetCampus.FileDownloader.SegmentFileDownloader},System.IProgress{dotnetCampus.FileDownloader.DownloadProgress},dotnetCampus.FileDownloader.ISharedArrayPool,System.Int32,System.Nullable{System.TimeSpan})">
+            <summary>
+            下载到某个文件夹，仅提供 Windows 下使用，也仅在 Windows 下经过测试
+            </summary>
+            <param name="url"></param>
+            <param name="downloadFolder"></param>
+            <param name="tempFolder">如不传，将使用 <paramref name="downloadFolder"/>作为下载存放的临时文件夹</param>
+            <param name="logger">下载时的内部日志，默认将使用 Debug 输出</param>
+            <param name="progress">下载进度</param>
+            <param name="sharedArrayPool">共享缓存数组池，默认使用 ArrayPool 池</param>
+            <param name="bufferLength">缓存的数组长度，默认是 65535 的长度</param>
+            <param name="stepTimeOut">每一步 每一分段下载超时时间 默认 10 秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.FileDownloaderHelper.InnerSegmentFileDownloader.#ctor(System.String,System.IO.FileInfo,dotnetCampus.FileDownloader.ILogger{dotnetCampus.FileDownloader.SegmentFileDownloader},System.IProgress{dotnetCampus.FileDownloader.DownloadProgress},dotnetCampus.FileDownloader.ISharedArrayPool,System.Int32,System.Nullable{System.TimeSpan})">
+            <param name="url">下载链接，不对下载链接是否有效进行校对</param>
+            <param name="file">下载的文件路径</param>
+            <param name="logger">下载时的内部日志，默认将使用 Debug 输出</param>
+            <param name="progress">下载进度</param>
+            <param name="sharedArrayPool">共享缓存数组池，默认使用 ArrayPool 池</param>
+            <param name="bufferLength">缓存的数组长度，默认是 65535 的长度</param>
+            <param name="stepTimeOut">每一步 每一分段下载超时时间 默认 10 秒</param>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.FileDownloaderHelper.InnerSegmentFileDownloader.ServerSuggestionFileName">
+            <summary>
+            服务器端返回的文件名
+            </summary>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.FileDownloaderHelper.FileNameHelper">
+            <summary>
+            为文件名提供辅助方法。
+            </summary>
+            以下代码从 https://github.com/walterlv/Walterlv.Packages 抄的
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.FileDownloaderHelper.FileNameHelper.MakeSafeFileName(System.String,System.Char)">
+            <summary>
+            生成安全的文件名。字符串 <paramref name="text"/> 中的不合法字符将被替换成指定字符。
+            </summary>
+            <param name="text">要生成安全文件名的原始文件名。</param>
+            <param name="replacement">当遇到不能成为文件名的字符的时候应该替换的字符。</param>
+            <returns>安全的文件名。（不包含不合法的字符，但如果你的 <paramref name="text"/> 是空格，可能需要检查最终文件名是否是空白字符串。）</returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.FileDownloaderHelper.FileNameHelper.GuessFileNameFromUrl(System.String,System.Nullable{System.Int32},System.String)">
+            <summary>
+            从 URL 中猜文件名。
+            </summary>
+            <param name="url">要猜测文件名的 URL 来源字符串。</param>
+            <param name="limitedFileNameLength">如果需要，可以限制最终生成文件名的长度。</param>
+            <param name="fallbackName">当无法猜出文件名，或文件名长度过长时，将取此名字。</param>
+            <returns>猜出的文件名。</returns>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.IRandomFileWriter">
+            <summary>
+            不按照顺序，随机写入文件
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.IRandomFileWriter.QueueWrite(System.Int64,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            加入写文件队列
+            </summary>
+        </member>
+        <member name="E:dotnetCampus.FileDownloader.IRandomFileWriter.StepWriteFinished">
+            <summary>
+            每次写完触发事件
+            </summary>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.ISharedArrayPool">
+            <summary>
+            提供共享的数组
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.ISharedArrayPool.Rent(System.Int32)">
+            <summary>
+            租借数组，要求返回的数组长度最小是 <paramref name="minLength"/> 长度
+            </summary>
+            <param name="minLength"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.ISharedArrayPool.Return(System.Byte[])">
+            <summary>
+            将租借的数组返回，将会被下次租借使用
+            </summary>
+            <param name="array"></param>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.DownloadProgress">
+            <summary>
+            下载进度
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.DownloadProgress.GetCurrentDownloadSegmentList">
+            <summary>
+            获取当前所有下载段
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.FileDownloadSpeedProgress">
+            <summary>
+            接近用户层的下载进度，包含下载速度
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.FileDownloadSpeedProgress.#ctor(System.Nullable{System.TimeSpan})">
+            <summary>
+            文件下载速度监控
+            </summary>
+            <param name="delayTime">触发事件延迟时间，默认是 500 毫秒</param>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.FileDownloadSpeedProgress.DownloadInfoProgress">
+            <summary>
+            下载进度
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.FileDownloadSpeedProgress.DownloadInfoProgress.#ctor(System.String,System.String,System.String,dotnetCampus.FileDownloader.DownloadProgress)">
+            <summary>
+            创建下载进度
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.FileDownloadSpeedProgress.DownloadInfoProgress.IsFinished">
+            <summary>
+            是否下载完成
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.FileDownloadSpeedProgress.DownloadInfoProgress.FileSize">
+            <summary>
+            文件大小
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.FileDownloadSpeedProgress.DownloadInfoProgress.DownloadProcess">
+            <summary>
+            下载进度 1MB/2MB
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.FileDownloadSpeedProgress.DownloadInfoProgress.DownloadSpeed">
+            <summary>
+            下载速度 1MB/s
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.FileDownloadSpeedProgress.DownloadInfoProgress.DownloadProgress">
+            <summary>
+            下载进度原信息
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.FileSizeFormatter.FormatSize(System.Int64,System.String)">
+            <summary>
+            获取字节数的格式化字符串
+            </summary>
+            <param name="bytes"></param>
+            <param name="formatString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.FileSizeFormatter.FormatSize(System.Double,System.String)">
+            <summary>
+            获取字节数的格式化字符串。因为可能存在“平均字节数”，所以支持小数
+            </summary>
+            <param name="bytes"></param>
+            <param name="formatString"></param>
+            <returns></returns>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.RandomFileWriter">
+            <summary>
+            不按照顺序，随机写入文件
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.RandomFileWriter.#ctor(System.IO.FileStream)">
+            <summary>
+            不按照顺序，随机写入文件
+            </summary>
+            <param name="stream"></param>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.RandomFileWriter.QueueWrite(System.Int64,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            加入写文件队列
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.RandomFileWriter.WriteAsync(System.Int64,System.Byte[])">
+            <summary>
+            写入文件，可不等待
+            </summary>
+            <param name="fileStartPoint">从文件的哪里开始写</param>
+            <param name="data">写入的数据</param>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.RandomFileWriter.WriteAsync(System.Int64,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            写入文件，可不等待
+            </summary>
+            <param name="fileStartPoint">从文件的哪里开始写</param>
+            <param name="data">写入的数据</param>
+            <param name="dataOffset"></param>
+            <param name="dataLength"></param>
+        </member>
+        <member name="E:dotnetCampus.FileDownloader.RandomFileWriter.StepWriteFinished">
+            <summary>
+            每次写完触发事件
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.RandomFileWriter.FileSegment.FileStartPoint">
+            <summary>
+            文件开始写入的点
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.RandomFileWriter.FileSegment.DataOffset">
+            <summary>
+            表示从 <see cref="P:dotnetCampus.FileDownloader.RandomFileWriter.FileSegment.Data"/> 的读取点
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.RandomFileWriter.FileSegment.Data">
+            <summary>
+            写入文件的数据
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.RandomFileWriter.FileSegment.DataLength">
+            <summary>
+            表示从 <see cref="P:dotnetCampus.FileDownloader.RandomFileWriter.FileSegment.Data"/> 的读取长度
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.RandomFileWriter.DisposeAsync">
+            <summary>
+            等待文件写入，文件写入完成时磁盘文件不一定写入完成
+            </summary>
+            <exception cref="T:System.IO.IOException"></exception>
+            <returns></returns>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.RandomFileWriterWithOrderFirst">
+            <summary>
+            顺序写入优先的支持乱序多线程的文件写入方法
+            </summary>
+            和 <see cref="T:dotnetCampus.FileDownloader.RandomFileWriter"/> 不同的是，这个方法采用让文件写入时，尽可能是连续写入，这样磁盘写入性能比较快，在下载速度比写入速度快的时候
+            这个方法可以做到比 <see cref="T:dotnetCampus.FileDownloader.RandomFileWriter"/> 提升更多的速度
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.RandomFileWriterWithOrderFirst.#ctor(System.IO.FileStream)">
+            <summary>
+            创建文件写入方法
+            </summary>
+            <param name="stream"></param>
+        </member>
+        <member name="E:dotnetCampus.FileDownloader.RandomFileWriterWithOrderFirst.StepWriteFinished">
+            <summary>
+            每次写完触发事件
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.RandomFileWriterWithOrderFirst.QueueWrite(System.Int64,System.Byte[],System.Int32,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.RandomFileWriterWithOrderFirst.FileSegment.FileStartPoint">
+            <summary>
+            文件开始写入的点
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.RandomFileWriterWithOrderFirst.FileSegment.DataOffset">
+            <summary>
+            表示从 <see cref="P:dotnetCampus.FileDownloader.RandomFileWriterWithOrderFirst.FileSegment.Data"/> 的读取点
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.RandomFileWriterWithOrderFirst.FileSegment.Data">
+            <summary>
+            写入文件的数据
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.RandomFileWriterWithOrderFirst.FileSegment.DataLength">
+            <summary>
+            表示从 <see cref="P:dotnetCampus.FileDownloader.RandomFileWriterWithOrderFirst.FileSegment.Data"/> 的读取长度
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.RandomFileWriterWithOrderFirst.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.SegmentFileDownloader">
+            <summary>
+            分段文件下载器
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.SegmentFileDownloader.#ctor(System.String,System.IO.FileInfo,dotnetCampus.FileDownloader.ILogger{dotnetCampus.FileDownloader.SegmentFileDownloader},System.IProgress{dotnetCampus.FileDownloader.DownloadProgress},dotnetCampus.FileDownloader.ISharedArrayPool,System.Int32,System.Nullable{System.TimeSpan})">
+            <summary>
+            创建分段文件下载器
+            </summary>
+            <param name="url">下载链接，不对下载链接是否有效进行校对</param>
+            <param name="file">下载的文件路径</param>
+            <param name="logger">下载时的内部日志，默认将使用 Debug 输出</param>
+            <param name="progress">下载进度</param>
+            <param name="sharedArrayPool">共享缓存数组池，默认使用 ArrayPool 池</param>
+            <param name="bufferLength">缓存的数组长度，默认是 65535 的长度</param>
+            <param name="stepTimeOut">每一步 每一分段下载超时时间 默认 10 秒</param>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.SegmentFileDownloader.BufferLength">
+            <summary>
+            缓存的数组长度，默认是 65535 的长度
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.SegmentFileDownloader.SharedArrayPool">
+            <summary>
+            共享缓存数组池，默认使用 ArrayPool 池
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.SegmentFileDownloader.Url">
+            <summary>
+            下载链接
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.SegmentFileDownloader.File">
+            <summary>
+            下载的文件
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.SegmentFileDownloader.StepTimeOut">
+            <summary>
+            每一次分段下载的超时时间，默认10秒
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.SegmentFileDownloader.MaxThreadCount">
+            <summary>
+            最大线程数量
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.SegmentFileDownloader.ControlDelayTime">
+            <summary>
+            变速器
+            </summary>
+            默认3秒为一周期，每次将会根据当前网络响应时间决定下载线程数量。网络响应时间很慢，减少线程数量，提升性能
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.SegmentFileDownloader.MinSlowlyResponseTime">
+            <summary>
+            表示网络响应速度慢的时间，超过此时间表示当前网络响应速度慢
+            <para>默认是 10 秒，如果等待 10 秒都没有下载到任何内容，那证明这个网络响应速度慢，可以减少一些线程</para>
+            <para>这是经验值</para>
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.SegmentFileDownloader.MaxFastResponseTime">
+            <summary>
+            表示网络响应速度快的时间，小于此时间表示当前网络响应速度快
+            <para>默认是 600ms 如果每次都在此时间内能下载到内容，那么加上一些线程，让下载速度更快。依然受到 <see cref="P:dotnetCampus.FileDownloader.SegmentFileDownloader.MaxThreadCount"/> 的限制</para>
+            <para>这是经验值</para>
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.SegmentFileDownloader.ControlSwitch">
+            <summary>
+            网速控制开关，作用是在弱网下减少线程数量，等待网络速度恢复时，才加大线程数量，用于提升性能
+            </summary>
+            在网络很弱时，网络的响应很慢时，开启多个线程只会空白运行，不会加快任何速度，此时将会逐步降低为采用 1 个线程进行下载
+            
+            核心逻辑是通过网络的响应时间距离当前时间的距离判断，拿出距离最大的任务，如果时间距离超过了 10 秒，设置任务为暂停，释放此线程
+            感谢 [@maplewei](https://github.com/maplewei) 提供的方法
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.SegmentFileDownloader.StartDownloadTask">
+            <summary>
+            开启线程下载
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.SegmentFileDownloader.DownloadFileAsync">
+            <summary>
+            开始下载文件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.SegmentFileDownloader.GetContentLength">
+            <summary>
+            获取整个下载的长度
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.SegmentFileDownloader.CreateWebRequest(System.String)">
+            <summary>
+            通过 Url 创建出对应的 <see cref="T:System.Net.WebRequest"/> 实例
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.SegmentFileDownloader.OnWebRequestSet(System.Net.WebRequest)">
+            <summary>
+            在 <see cref="T:System.Net.WebRequest"/> 经过了应用设置之后调用，应用的设置包括下载的 Range 等值，调用这个方法之后的下一步将会是使用这个方法的返回值去下载文件
+            </summary>
+            <param name="webRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.SegmentFileDownloader.LogDebugInternal(System.String,System.Object[])">
+            <summary>
+            这是给我自己开发调试用的
+            </summary>
+            <param name="message"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.SegmentFileDownloader.GetResponseAsync(System.Net.WebRequest)">
+            <summary>
+            给继承的类可以从 <paramref name="request"/> 获取消息
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.SegmentFileDownloader.GetWebResponse(dotnetCampus.FileDownloader.DownloadSegment)">
+            <summary>
+            尝试获取链接响应
+            </summary>
+            <param name="downloadSegment"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.SegmentFileDownloader.DownloadSegmentInner(System.Net.WebResponse,dotnetCampus.FileDownloader.DownloadSegment)">
+            <summary>
+            下载的主要逻辑
+            </summary>
+            <param name="response"></param>
+            <param name="downloadSegment"></param>
+            <returns></returns>
+            这个方法如果触发异常，将会在上一层进行重试
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.SegmentManager">
+            <summary>
+            文件分段管理
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.SegmentManager.#ctor(System.Int64)">
+            <summary>
+            创建文件分段管理
+            </summary>
+            <param name="fileLength">文件长度</param>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.SegmentManager.#ctor(System.Collections.Generic.List{dotnetCampus.FileDownloader.DownloadSegment})">
+            <summary>
+            创建文件分段管理
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.SegmentManager.FileLength">
+            <summary>
+            下载文件长度
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.SegmentManager.GetNewDownloadSegment">
+            <summary>
+            创建一个新的分段用于下载
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.SegmentManager.IsFinished">
+            <summary>
+            是否下载完成
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.SegmentManager.GetMaxWaitReportTimeDownloadSegmentStatus">
+            <summary>
+            获取最大等待时间的下载段状态
+            </summary>
+            <returns>最大等待时间对应的段，当前依然在运行的段的数量，最大的等待响应时间</returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.SegmentManager.RegisterDownloadSegment(dotnetCampus.FileDownloader.DownloadSegment)">
+            <summary>
+            注册下载段
+            </summary>
+            <param name="downloadSegment"></param>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.SegmentManager.GetCurrentDownloadSegmentList">
+            <summary>
+            获取当前所有下载段
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.SegmentManager.GetDownloadedLength">
+            <summary>
+            获取下载完成的文件长度
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.SharedArrayPool">
+            <summary>
+            共享数组内存，底层使用 List&lt;WeakReference&lt;byte[]&gt;&gt; 实现
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.SharedArrayPool.Clean">
+            <summary>
+            客户端程序在下载完成之后强行回收内存
+            </summary>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.Utils.BreakpointResumptionTransmissions.BreakpointResumptionTransmissionInfo">
+            <summary>
+            断点续传信息
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.Utils.BreakpointResumptionTransmissions.BreakpointResumptionTransmissionInfo.DownloadLength">
+            <summary>
+            下载的长度
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.Utils.BreakpointResumptionTransmissions.BreakpointResumptionTransmissionInfo.DownloadedInfo">
+            <summary>
+            已经下载的信息
+            </summary>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.Utils.BreakpointResumptionTransmissions.BreakpointResumptionTransmissionManager">
+            <summary>
+            断点续传管理
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.FileDownloader.Utils.BreakpointResumptionTransmissions.BreakpointResumptionTransmissionManager.DownloadLength">
+            <summary>
+            下载的长度
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.Utils.BreakpointResumptionTransmissions.BreakpointResumptionTransmissionManager.CreateSegmentManager">
+            <summary>
+            创建分段下载数据
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.Utils.BreakpointResumptionTransmissions.BreakpointResumptionTransmissionManager.GetDownloadSegmentList(System.Collections.Generic.List{dotnetCampus.FileDownloader.Utils.BreakpointResumptionTransmissions.DataRange})">
+            <summary>
+            通过断点续传的信息获取下载的内容
+            </summary>
+            <param name="downloadedInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.Utils.BreakpointResumptionTransmissions.BreakpointResumptionTransmissionManager.RecordDownloaded(dotnetCampus.FileDownloader.StepWriteFinishedArgs)">
+            <summary>
+            记录已下载数据
+            </summary>
+            <param name="args"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+            <remarks>理论上每次只有单个线程可以进入，刚好是写入文件的线程才能访问此方法</remarks>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.Utils.BreakpointResumptionTransmissions.BreakpointResumptionTransmissionRecordFileFormatter">
+            <summary>
+            断点续传记录文件格式化器
+            </summary>
+            文件格式：【文件头】【下载文件的下载长度】【各个已下载的数据段信息】
+        </member>
+        <member name="F:dotnetCampus.FileDownloader.Utils.BreakpointResumptionTransmissions.BreakpointResumptionTransmissionRecordFileFormatter.DataType.DownloadFileLength">
+            <summary>
+            所需下载的文件长度
+            </summary>
+        </member>
+        <member name="F:dotnetCampus.FileDownloader.Utils.BreakpointResumptionTransmissions.BreakpointResumptionTransmissionRecordFileFormatter.DataType.DownloadedInfo">
+            <summary>
+            已下载的信息，包括起点和长度
+            </summary>
+        </member>
+        <member name="T:dotnetCampus.FileDownloader.Utils.WebResponseHelper">
+            <summary>
+            提供 <see cref="T:System.Net.WebResponse"/> 的辅助
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.Utils.WebResponseHelper.GetFileNameFromContentDisposition(System.Net.WebResponse)">
+            <summary>
+            从 <paramref name="response"/> 的 Headers 的 Content-Disposition 获取文件名
+            </summary>
+            <param name="response"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.FileDownloader.Utils.WebResponseHelper.GetFileNameFromContentDispositionText(System.String)">
+            <summary>
+            从 Content-Disposition 字符串获取文件名
+            </summary>
+            <param name="contentDispositionText"></param>
+            <returns></returns>
+        </member>
+        <member name="T:dotnetCampus.Threading.AsyncAutoResetEvent">
+            <summary>
+            异步等待的autoresetevent
+            WaitOneAsync方法会返回一个task，通过await方式等待
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncAutoResetEvent.#ctor(System.Boolean)">
+            <summary>
+            提供一个信号初始值，确定是否有信号
+            </summary>
+            <param name="initialState">true为有信号，第一个等待可以直接通过</param>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncAutoResetEvent.Finalize">
+            <summary>
+            析构方法
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncAutoResetEvent.WaitOneAsync">
+            <summary>
+            异步等待一个信号，需要 await 等待
+            <para></para>
+            可以通过返回值是 true 或 false 判断当前是收到信号还是此类被释放
+            </summary>
+            <returns>
+            如果是正常解锁，那么返回 true 值。如果是对象调用 <see cref="M:dotnetCampus.Threading.AsyncAutoResetEvent.Dispose"/> 释放，那么返回 false 值
+            </returns>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncAutoResetEvent.Set">
+            <summary>
+            设置一个信号量，让一个waitone获得信号，每次调用 <see cref="M:dotnetCampus.Threading.AsyncAutoResetEvent.Set"/> 方法最多只有一个等待通过
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncAutoResetEvent.Dispose">
+            <summary>
+            非线程安全 调用时将会释放所有等待 <see cref="M:dotnetCampus.Threading.AsyncAutoResetEvent.WaitOneAsync"/> 方法
+            </summary>
+        </member>
+        <member name="F:dotnetCampus.Threading.AsyncAutoResetEvent._isSignaled">
+            <summary>
+            用于在没有任何等待时让下一次等待通过
+            </summary>
+        </member>
+        <member name="T:dotnetCampus.Threading.AsyncManualResetEvent">
+            <summary>
+            异步等待的manualresetevent
+            WaitOneAsync方法会返回一个task，通过await方式等待
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncManualResetEvent.#ctor(System.Boolean)">
+            <summary>
+            提供一个信号初始值，确定是否有信号
+            </summary>
+            <param name="initialState">true为有信号，所有等待可以直接通过</param>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncManualResetEvent.WaitOneAsync">
+            <summary>
+            异步等待一个信号，需要await
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncManualResetEvent.Set">
+            <summary>
+            设置一个信号量，所有等待获得信号
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncManualResetEvent.Reset">
+            <summary>
+            设置一个信号量，所有wait等待
+            </summary>
+        </member>
+        <member name="T:dotnetCampus.Threading.AsyncQueue`1">
+            <summary>
+            提供一个异步的队列。可以使用 await 关键字异步等待出队，当有元素入队的时候，等待就会完成。
+            </summary>
+            <typeparam name="T">存入异步队列中的元素类型。</typeparam>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncQueue`1.#ctor">
+            <summary>
+            创建一个 <see cref="T:dotnetCampus.Threading.AsyncQueue`1"/> 的新实例。
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.Threading.AsyncQueue`1.Count">
+            <summary>
+            获取此刻队列中剩余元素的个数。
+            请注意：因为线程安全问题，此值获取后值即过时，所以获取此值的代码需要自行处理线程安全。
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncQueue`1.Enqueue(`0)">
+            <summary>
+            入队。
+            </summary>
+            <param name="item">要入队的元素。</param>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncQueue`1.EnqueueRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            将一组元素全部入队。
+            </summary>
+            <param name="source">要入队的元素序列。</param>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncQueue`1.DequeueAsync(System.Threading.CancellationToken)">
+            <summary>
+            异步等待出队。当队列中有新的元素时，异步等待就会返回。
+            </summary>
+            <param name="cancellationToken">
+            你可以通过此 <see cref="T:System.Threading.CancellationToken"/> 来取消等待出队。
+            由于此方法有返回值，后续方法可能依赖于此返回值，所以如果取消将抛出 <see cref="T:System.Threading.Tasks.TaskCanceledException"/>。
+            </param>
+            <returns>可以异步等待的队列返回的元素。</returns>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncQueue`1.WaitForCurrentFinished">
+            <summary>
+            等待当前的所有任务执行完成
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncQueue`1.Dispose">
+            <summary>
+            主要用来释放锁，让 DequeueAsync 方法返回，解决因为锁让此对象内存不释放
+            <para></para>
+            这个方法不是线程安全
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncQueue`1.DisposeAsync">
+            <summary>
+            等待任务执行完成之后返回，此方法不是线程安全
+            <para></para>
+            如果在调用此方法同时添加任务，那么添加的任务存在线程安全
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:dotnetCampus.Threading.AsyncTaskQueue">
+            <summary>
+            异步任务队列，将任务加入到队列里面按照顺序执行
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncTaskQueue.#ctor">
+            <summary>
+            异步任务队列
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncTaskQueue.ExecuteAsync``1(System.Func{System.Threading.Tasks.Task{``0}})">
+            <summary>
+            执行异步操作
+            </summary>
+            <typeparam name="T">返回结果类型</typeparam>
+            <param name="func">异步操作</param>
+            <returns>IsInvalid:异步操作是否有效(多任务时，如果设置了<see cref="P:dotnetCampus.Threading.AsyncTaskQueue.AutoCancelPreviousTask"/>，只会保留最后一个任务有效)；Result:异步操作结果</returns>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncTaskQueue.ExecuteAsync``1(System.Func{System.Threading.Tasks.Task})">
+            <summary>
+            执行异步操作
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncTaskQueue.GetExecutableTask(System.Action)">
+            <summary>
+            获取待执行任务
+            </summary>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncTaskQueue.GetExecutableTask``1(System.Func{``0})">
+            <summary>
+            获取待执行任务
+            </summary>
+            <typeparam name="TResult"></typeparam>
+            <param name="function"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncTaskQueue.AddPendingTaskToQueue(dotnetCampus.Threading.AwaitableTask)">
+            <summary>
+            添加待执行任务到队列
+            </summary>
+            <param name="task"></param>
+            <returns></returns>
+        </member>
+        <member name="F:dotnetCampus.Threading.AsyncTaskQueue._lastDoingTask">
+            <summary>
+            上一次异步操作
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncTaskQueue.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="M:dotnetCampus.Threading.AsyncTaskQueue.Finalize">
+            <summary>
+            析构任务队列
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.Threading.AsyncTaskQueue.UseSingleThread">
+            <summary>
+            是否使用单线程完成任务
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.Threading.AsyncTaskQueue.AutoCancelPreviousTask">
+            <summary>
+            自动取消以前的任务，此属性应该是在创建对象完成之后给定，不允许在任务执行过程中更改
+            </summary>
+            设置和获取不需要加上锁，因为这是原子的，业务上也不会有开发者不断修改这个值。也就是说这个属性只有在对象创建就给定
+        </member>
+        <member name="T:dotnetCampus.Threading.AwaitableTask">
+            <summary>
+            可等待的任务
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.Threading.AwaitableTask.Executable">
+            <summary>
+            获取任务是否为不可执行状态
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.Threading.AwaitableTask.IsValid">
+            <summary>
+            获取任务是否有效
+            注：对无效任务，可以不做处理。减少并发操作导致的干扰
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.AwaitableTask.SetNotExecutable">
+            <summary>
+            设置任务不可执行
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.AwaitableTask.MarkTaskInvalid">
+            <summary>
+            标记任务无效
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.AwaitableTask.#ctor(System.Threading.Tasks.Task)">
+            <summary>
+            初始化可等待的任务。
+            </summary>
+            <param name="task"></param>
+        </member>
+        <member name="P:dotnetCampus.Threading.AwaitableTask.IsCompleted">
+            <summary>
+            获取任务是否已完成
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.Threading.AwaitableTask.TaskId">
+            <summary>
+            任务的Id
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.AwaitableTask.Start">
+            <summary>
+            开始任务
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.AwaitableTask.RunSynchronously">
+            <summary>
+            同步执行开始任务
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.AwaitableTask.GetAwaiter">
+            <summary>
+            获取任务等待器
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:dotnetCampus.Threading.AwaitableTask.TaskAwaiter">
+            <summary>Provides an object that waits for the completion of an asynchronous task. </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.AwaitableTask.TaskAwaiter.#ctor(dotnetCampus.Threading.AwaitableTask)">
+            <summary>
+            任务等待器
+            </summary>
+            <param name="awaitableTask"></param>
+        </member>
+        <member name="P:dotnetCampus.Threading.AwaitableTask.TaskAwaiter.IsCompleted">
+            <summary>
+            任务是否完成.
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.AwaitableTask.TaskAwaiter.OnCompleted(System.Action)">
+            <inheritdoc />
+        </member>
+        <member name="M:dotnetCampus.Threading.AwaitableTask.TaskAwaiter.GetResult">
+            <summary>
+            获取任务结果
+            </summary>
+        </member>
+        <member name="T:dotnetCampus.Threading.AwaitableTask`1">
+            <summary>
+            可等待的任务
+            </summary>
+            <typeparam name="TResult"></typeparam>
+        </member>
+        <member name="M:dotnetCampus.Threading.AwaitableTask`1.#ctor(System.Threading.Tasks.Task{`0})">
+            <summary>
+            初始化可等待的任务
+            </summary>
+            <param name="task">需要执行的任务</param>
+        </member>
+        <member name="M:dotnetCampus.Threading.AwaitableTask`1.GetAwaiter">
+            <summary>
+            获取任务等待器
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:dotnetCampus.Threading.AwaitableTask`1.TaskAwaiter">
+            <summary>
+            任务等待器
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.AwaitableTask`1.TaskAwaiter.#ctor(dotnetCampus.Threading.AwaitableTask{`0})">
+            <summary>
+            初始化任务等待器
+            </summary>
+            <param name="awaitableTask"></param>
+        </member>
+        <member name="P:dotnetCampus.Threading.AwaitableTask`1.TaskAwaiter.IsCompleted">
+            <summary>
+            任务是否已完成。
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.AwaitableTask`1.TaskAwaiter.OnCompleted(System.Action)">
+            <inheritdoc />
+        </member>
+        <member name="M:dotnetCampus.Threading.AwaitableTask`1.TaskAwaiter.GetResult">
+            <summary>
+            获取任务结果。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:dotnetCampus.Threading.DoubleBuffer`2">
+            <summary>
+            提供双缓存 线程安全列表
+            </summary>
+            <typeparam name="T">用于存放 <typeparamref name="TU"/> 的集合</typeparam>
+            <typeparam name="TU"></typeparam>
+            写入的时候写入到一个列表，通过 SwitchBuffer 方法，可以切换当前缓存
+        </member>
+        <member name="M:dotnetCampus.Threading.DoubleBuffer`2.#ctor(`0,`0)">
+            <summary>
+            创建双缓存
+            </summary>
+            <param name="aList"></param>
+            <param name="bList"></param>
+        </member>
+        <member name="M:dotnetCampus.Threading.DoubleBuffer`2.Add(`1)">
+            <summary>
+            加入元素到缓存
+            </summary>
+            <param name="t"></param>
+        </member>
+        <member name="M:dotnetCampus.Threading.DoubleBuffer`2.SwitchBuffer">
+            <summary>
+            切换缓存
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.Threading.DoubleBuffer`2.DoAll(System.Action{`0})">
+            <summary>
+            执行完所有任务
+            </summary>
+            <param name="action">当前缓存里面存在的任务，请不要保存传入的 List 参数</param>
+        </member>
+        <member name="M:dotnetCampus.Threading.DoubleBuffer`2.DoAllAsync(System.Func{`0,System.Threading.Tasks.Task})">
+            <summary>
+            执行完所有任务
+            </summary>
+            <param name="action">当前缓存里面存在的任务，请不要保存传入的 List 参数</param>
+            <returns></returns>
+        </member>
+        <member name="T:dotnetCampus.Threading.DoubleBufferLazyInitializeTask`1">
+            <summary>
+            可等待初始化之后才执行实际任务的双缓存工具
+            <para>
+            在完成初始化之后需要调用 <see cref="M:dotnetCampus.Threading.DoubleBufferLazyInitializeTask`1.OnInitialized"/> 方法
+            </para>
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:dotnetCampus.Threading.DoubleBufferLazyInitializeTask`1.#ctor(System.Func{System.Collections.Generic.List{`0},System.Threading.Tasks.Task})">
+            <summary>
+            初始化可等待初始化之后才执行实际任务的双缓存工具
+            </summary>
+            <param name="runTask">只有在 <see cref="M:dotnetCampus.Threading.DoubleBufferLazyInitializeTask`1.OnInitialized"/> 方法被调用之后，才会执行的实际任务</param>
+        </member>
+        <member name="M:dotnetCampus.Threading.DoubleBufferLazyInitializeTask`1.OnInitialized">
+            <summary>
+            初始化完成之后调用，这个方法只能调用一次
+            </summary>
+            <exception cref="T:System.InvalidOperationException">如果调用多次，那么将抛出此异常</exception>
+        </member>
+        <member name="M:dotnetCampus.Threading.DoubleBufferLazyInitializeTask`1.AddTask(`0)">
+            <summary>
+            加入任务
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:dotnetCampus.Threading.DoubleBufferLazyInitializeTask`1.Finish">
+            <summary>
+            完成任务
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.DoubleBufferLazyInitializeTask`1.WaitAllTaskFinish">
+            <summary>
+            等待完成任务，只有在调用 <see cref="M:dotnetCampus.Threading.DoubleBufferLazyInitializeTask`1.Finish"/> 之后，所有任务执行完成才能完成
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:dotnetCampus.Threading.DoubleBufferTask`2">
+            <summary>
+            双缓存任务
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.DoubleBufferTask`2.#ctor(`0,`0,System.Func{`0,System.Threading.Tasks.Task})">
+            <summary>
+            创建双缓存任务，执行任务的方法放在 <paramref name="doTask"/> 方法
+            </summary>
+            <param name="doTask">
+            执行任务的方法
+            <para></para>
+            传入的 List&lt;T&gt; 就是需要执行的任务，请不要将传入的 List&lt;T&gt; 保存到本地字段
+            </param>
+            <param name="aList"></param>
+            <param name="bList"></param>
+        </member>
+        <member name="M:dotnetCampus.Threading.DoubleBufferTask`2.AddTask(`1)">
+            <summary>
+            加入任务
+            </summary>
+            <param name="t"></param>
+        </member>
+        <member name="M:dotnetCampus.Threading.DoubleBufferTask`2.Finish">
+            <summary>
+            完成任务
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.DoubleBufferTask`2.WaitAllTaskFinish">
+            <summary>
+            等待完成任务，只有在调用 <see cref="M:dotnetCampus.Threading.DoubleBufferTask`2.Finish"/> 之后，所有任务执行完成才能完成
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.Threading.DoubleBufferTask`2.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="T:dotnetCampus.Threading.DoubleBufferTask`1">
+            <summary>
+            双缓存任务
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:dotnetCampus.Threading.DoubleBufferTask`1.#ctor(System.Func{System.Collections.Generic.List{`0},System.Threading.Tasks.Task})">
+            <summary>
+            创建双缓存任务，执行任务的方法放在 <paramref name="doTask"/> 方法
+            </summary>
+            <param name="doTask"></param>
+        </member>
+        <member name="T:dotnetCampus.Threading.DoubleBuffer`1">
+            <summary>
+            提供双缓存 线程安全列表
+            </summary>
+            写入的时候写入到一个列表，通过 SwitchBuffer 方法，可以切换当前缓存
+        </member>
+        <member name="M:dotnetCampus.Threading.DoubleBuffer`1.#ctor">
+            <summary>
+            创建使用 <see cref="T:System.Collections.Generic.List`1"/> 的双缓存
+            </summary>
+        </member>
+        <member name="T:dotnetCampus.Threading.ExecuteOnceAwaiter`1">
+            <summary>
+            只执行一次的等待
+            </summary>
+            <typeparam name="TResult"></typeparam>
+        </member>
+        <member name="M:dotnetCampus.Threading.ExecuteOnceAwaiter`1.#ctor(System.Func{System.Threading.Tasks.Task{`0}})">
+            <summary>
+            创建只执行一次的等待，调用 <see cref="M:dotnetCampus.Threading.ExecuteOnceAwaiter`1.ExecuteAsync"/> 时，无论调用多少次，只会执行 <paramref name="asyncAction"/> 一次
+            <para></para>
+            因为此类使用了锁，因此需要调用方处理 <paramref name="asyncAction"/> 自身线程安全问题
+            </summary>
+            <param name="asyncAction">执行的具体逻辑，需要调用方处理自身线程安全问题</param>
+        </member>
+        <member name="M:dotnetCampus.Threading.ExecuteOnceAwaiter`1.ExecuteAsync">
+            <summary>
+            执行传入的具体逻辑，无论多少线程多少次调用，传入的具体逻辑只会执行一次
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.Threading.ExecuteOnceAwaiter`1.ResetWhileCompleted">
+            <summary>
+            在传入的具体逻辑执行完成之后，设置允许重新执行。如果此具体逻辑还在执行中，那么此方法调用无效
+            </summary>
+        </member>
+        <member name="T:dotnetCampus.Threading.LimitedRunningCountTask">
+            <summary>
+            限制执行数量的任务，执行的任务超过设置的数量将可以等待直到正在执行任务数小于设置的数量
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.LimitedRunningCountTask.#ctor(System.UInt32)">
+            <summary>
+            创建限制执行数量的任务
+            </summary>
+            <param name="maxRunningCount">允许最大的执行数量的任务</param>
+        </member>
+        <member name="P:dotnetCampus.Threading.LimitedRunningCountTask.RunningCount">
+            <summary>
+            执行的任务数
+            </summary>
+        </member>
+        <member name="P:dotnetCampus.Threading.LimitedRunningCountTask.MaxRunningCount">
+            <summary>
+            允许最大的执行数量的任务
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.LimitedRunningCountTask.Add(System.Threading.Tasks.Task)">
+            <summary>
+            加入执行任务
+            </summary>
+            <param name="task"></param>
+        </member>
+        <member name="M:dotnetCampus.Threading.LimitedRunningCountTask.AddAsync(System.Threading.Tasks.Task)">
+            <summary>
+            加入等待任务，在空闲之后等待才会返回
+            </summary>
+            <param name="task"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnetCampus.Threading.LimitedRunningCountTask.WaitForFree">
+            <summary>
+            等待空闲
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:dotnetCampus.Threading.Reentrancy.KeepLastReentrancyTask`2">
+            <summary>
+            执行当前队列中的最后一个任务，并对所有当前队列任务赋值该任务结果。
+            </summary>
+            <typeparam name="TParameter">
+            重入任务中单次执行时所使用的参数。
+            此重入策略不会忽略任何参数。
+            </typeparam>
+            <typeparam name="TReturn">
+            重入任务中单次执行时所得到的返回值。
+            此重入策略不会忽略任何返回值。
+            </typeparam>
+        </member>
+        <member name="F:dotnetCampus.Threading.Reentrancy.KeepLastReentrancyTask`2._isRunning">
+            <summary>
+            用于原子操作判断当前是否正在执行队列中的可重入任务。
+            1 表示当前正在执行可重入任务；0 表示不确定。
+            不可使用 bool 类型，因为 bool 类型无法执行可靠的原子操作。
+            </summary>
+        </member>
+        <member name="F:dotnetCampus.Threading.Reentrancy.KeepLastReentrancyTask`2._locker">
+            <summary>
+            由于原子操作仅提供高性能的并发处理而不保证准确性，因此需要一个锁来同步 <see cref="F:dotnetCampus.Threading.Reentrancy.KeepLastReentrancyTask`2._isRunning"/> 中值为 0 时所指的不确定情况。
+            不能使用一个锁来同步所有情况是因为在锁中使用 async/await 是不安全的，因此避免在锁中执行异步任务；我们使用原子操作来判断异步任务的执行条件。
+            </summary>
+        </member>
+        <member name="F:dotnetCampus.Threading.Reentrancy.KeepLastReentrancyTask`2._queue">
+            <summary>
+            使用一个并发队列来表示目前已加入到队列中的全部可重入任务。
+            因为我们的 <see cref="F:dotnetCampus.Threading.Reentrancy.KeepLastReentrancyTask`2._locker"/> 不能锁全部队列操作（原因见 <see cref="F:dotnetCampus.Threading.Reentrancy.KeepLastReentrancyTask`2._locker"/>），因此需要使用并发队列。
+            </summary>
+        </member>
+        <member name="F:dotnetCampus.Threading.Reentrancy.KeepLastReentrancyTask`2._skipQueue">
+            <summary>
+            使用一个队列表示当前执行任务开始时所有需要进行赋值结果的任务。
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.Reentrancy.KeepLastReentrancyTask`2.#ctor(System.Func{`0,System.Threading.Tasks.Task{`1}})">
+            <summary>
+            创建以KeepLast策略执行的可重入任务。
+            </summary>
+            <param name="task">可重入任务本身。</param>
+        </member>
+        <member name="M:dotnetCampus.Threading.Reentrancy.KeepLastReentrancyTask`2.InvokeAsync(`0)">
+            <summary>
+            以KeepLast策略执行重入任务，并获取此次重入任务的返回值。
+            此重入策略会确保执行当前队列中的最后一个任务，并对所有当前队列任务赋值该任务结果。
+            </summary>
+            <param name="arg">此次重入任务使用的参数。</param>
+            <returns>重入任务本次执行的返回值。</returns>
+        </member>
+        <member name="M:dotnetCampus.Threading.Reentrancy.KeepLastReentrancyTask`2.Run">
+            <summary>
+            以KeepLast策略执行重入任务。此方法确保线程安全。
+            </summary>
+        </member>
+        <member name="T:dotnetCampus.Threading.Reentrancy.KeepLastReentrancyTask`2.TaskWrapper">
+            <summary>
+            包装一个异步任务，以便在可以执行此异步任务的情况下可以在其他方法中监视其完成情况。
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.Reentrancy.KeepLastReentrancyTask`2.TaskWrapper.#ctor(System.Func{System.Threading.Tasks.Task{`1}})">
+            <summary>
+            创建一个任务包装。
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.Reentrancy.KeepLastReentrancyTask`2.TaskWrapper.RunAsync">
+            <summary>
+            执行此异步任务。
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.Reentrancy.KeepLastReentrancyTask`2.TaskWrapper.AsTask">
+            <summary>
+            将此异步包装器作为 <see cref="T:System.Threading.Tasks.Task"/> 使用，以便获得 async/await 特性。
+            </summary>
+        </member>
+        <member name="T:dotnetCampus.Threading.Reentrancy.QueueReentrancyTask`2">
+            <summary>
+            以队列策略执行的可重入任务。
+            </summary>
+            <typeparam name="TParameter">
+            重入任务中单次执行时所使用的参数。
+            此重入策略不会忽略任何参数。
+            </typeparam>
+            <typeparam name="TReturn">
+            重入任务中单次执行时所得到的返回值。
+            此重入策略不会忽略任何返回值。
+            </typeparam>
+        </member>
+        <member name="F:dotnetCampus.Threading.Reentrancy.QueueReentrancyTask`2._isRunning">
+            <summary>
+            用于原子操作判断当前是否正在执行队列中的可重入任务。
+            1 表示当前正在执行可重入任务；0 表示不确定。
+            不可使用 bool 类型，因为 bool 类型无法执行可靠的原子操作。
+            </summary>
+        </member>
+        <member name="F:dotnetCampus.Threading.Reentrancy.QueueReentrancyTask`2._locker">
+            <summary>
+            由于原子操作仅提供高性能的并发处理而不保证准确性，因此需要一个锁来同步 <see cref="F:dotnetCampus.Threading.Reentrancy.QueueReentrancyTask`2._isRunning"/> 中值为 0 时所指的不确定情况。
+            不能使用一个锁来同步所有情况是因为在锁中使用 async/await 是不安全的，因此避免在锁中执行异步任务；我们使用原子操作来判断异步任务的执行条件。
+            </summary>
+        </member>
+        <member name="F:dotnetCampus.Threading.Reentrancy.QueueReentrancyTask`2._queue">
+            <summary>
+            使用一个并发队列来表示目前已加入到队列中的全部可重入任务。
+            因为我们的 <see cref="F:dotnetCampus.Threading.Reentrancy.QueueReentrancyTask`2._locker"/> 不能锁全部队列操作（原因见 <see cref="F:dotnetCampus.Threading.Reentrancy.QueueReentrancyTask`2._locker"/>），因此需要使用并发队列。
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.Reentrancy.QueueReentrancyTask`2.#ctor(System.Func{`0,System.Threading.Tasks.Task{`1}},System.Boolean)">
+            <summary>
+            创建以队列策略执行的可重入任务。
+            </summary>
+            <param name="task">可重入任务本身。</param>
+            <param name="configureAwait"></param>
+        </member>
+        <member name="M:dotnetCampus.Threading.Reentrancy.QueueReentrancyTask`2.#ctor(System.Func{`0,System.Threading.Tasks.Task{`1}})">
+            <summary>
+            创建以队列策略执行的可重入任务
+            </summary>
+            <param name="task"></param>
+        </member>
+        <member name="M:dotnetCampus.Threading.Reentrancy.QueueReentrancyTask`2.InvokeAsync(`0)">
+            <summary>
+            以队列策略执行重入任务，并获取此次重入任务的返回值。
+            此重入策略会确保执行每一次可重入任务。
+            </summary>
+            <param name="arg">此次重入任务使用的参数。</param>
+            <returns>重入任务本次执行的返回值。</returns>
+        </member>
+        <member name="M:dotnetCampus.Threading.Reentrancy.QueueReentrancyTask`2.Run">
+            <summary>
+            以队列策略执行重入任务。此方法确保线程安全。
+            </summary>
+        </member>
+        <member name="T:dotnetCampus.Threading.Reentrancy.QueueReentrancyTask`2.TaskWrapper">
+            <summary>
+            包装一个异步任务，以便在可以执行此异步任务的情况下可以在其他方法中监视其完成情况。
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.Reentrancy.QueueReentrancyTask`2.TaskWrapper.#ctor(System.Func{System.Threading.Tasks.Task{`1}})">
+            <summary>
+            创建一个任务包装。
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.Reentrancy.QueueReentrancyTask`2.TaskWrapper.RunAsync">
+            <summary>
+            执行此异步任务。
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.Reentrancy.QueueReentrancyTask`2.TaskWrapper.AsTask">
+            <summary>
+            将此异步包装器作为 <see cref="T:System.Threading.Tasks.Task"/> 使用，以便获得 async/await 特性。
+            </summary>
+        </member>
+        <member name="T:dotnetCampus.Threading.Reentrancy.ReentrancyTask`2">
+            <summary>
+            表示一个可重入任务。使用不同的可重入任务子类，你可以使用不同的重入策略处理并发任务的重入问题。
+            </summary>
+            <typeparam name="TParameter">
+            重入任务中单次执行时所使用的参数。
+            注意，对于部分类型的重入任务，参数可能会被选择性忽略；具体取决于不同的重入策略是否会导致任务是否全部被执行。
+            </typeparam>
+            <typeparam name="TReturn">
+            重入任务中单次执行时所得到的返回值。
+            注意，对于部分类型的重入任务，返回值可能会是此类型的默认值；具体取决于不同的重入策略是否会导致任务是否全部被执行。
+            </typeparam>
+        </member>
+        <member name="P:dotnetCampus.Threading.Reentrancy.ReentrancyTask`2.WorkingTask">
+            <summary>
+            在派生类中执行重入任务的时候，从此处获取需要执行的可重入异步任务。
+            </summary>
+        </member>
+        <member name="M:dotnetCampus.Threading.Reentrancy.ReentrancyTask`2.#ctor(System.Func{`0,System.Threading.Tasks.Task{`1}})">
+            <summary>
+            初始化可重入任务的公共基类。
+            </summary>
+            <param name="task">可重入任务本身。</param>
+        </member>
+        <member name="M:dotnetCampus.Threading.Reentrancy.ReentrancyTask`2.InvokeAsync(`0)">
+            <summary>
+            执行重入任务，并获取此次重入任务的返回值。
+            如果此次任务不被执行，那么将返回类型的默认值。
+            </summary>
+            <param name="arg">此次重入任务使用的参数。</param>
+            <returns>重入任务当次执行的返回值。</returns>
+        </member>
+        <member name="M:dotnetCampus.Threading.Reentrancy.ReentrancyTask`2.RunCore(`0)">
+            <summary>
+            执行实际的异步任务，也就是用户部分的代码。
+            </summary>
+            <param name="arg">此次重入任务使用的参数。</param>
+            <returns>此次执行的返回值。</returns>
+        </member>
+        <member name="T:Microsoft.Extensions.Logging.EmptyClass">
+            <summary>
+            占空的定义，用于定义 Microsoft.Extensions.Logging 命名空间，兼容 .NET 4.5 的框架
+            </summary>
+        </member>
+    </members>
+</doc>
