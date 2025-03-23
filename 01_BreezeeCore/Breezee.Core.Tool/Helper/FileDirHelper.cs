@@ -1,4 +1,5 @@
-﻿using SharpCompress.Common;
+﻿using SharpCompress.Archives;
+using SharpCompress.Common;
 using SharpCompress.Readers;
 using System;
 using System.Collections.Generic;
@@ -115,6 +116,38 @@ namespace Breezee.Core.Tool.Helper
             else
             {
                 File.Copy(srcFile, sTargetPath, isOverWrite);
+            }
+        }
+
+        /// <summary>
+        /// 解压文件
+        /// </summary>
+        /// <param name="archivePath">压缩包目录</param>
+        /// <param name="extractPath">解压目录</param>
+        public static bool ExtractArchive(string archivePath, string extractPath)
+        {
+            try
+            {
+                using (var archive = ArchiveFactory.Open(archivePath))
+                {
+                    foreach (var entry in archive.Entries)
+                    {
+                        if (!entry.IsDirectory)
+                        {
+                            entry.WriteToDirectory(extractPath, new ExtractionOptions()
+                            {
+                                ExtractFullPath = true,
+                                Overwrite = true
+                            });
+                        }
+                    }
+                }
+                return true;
+            }
+            catch(Exception ex) 
+            {
+                Console.WriteLine(ex.Message);
+                return false;
             }
         }
 

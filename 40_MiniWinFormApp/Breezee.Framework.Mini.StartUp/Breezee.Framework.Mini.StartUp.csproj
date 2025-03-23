@@ -93,7 +93,6 @@
     <Compile Include="Common\FrmUserEnvironmentSet.Designer.cs">
       <DependentUpon>FrmUserEnvironmentSet.cs</DependentUpon>
     </Compile>
-    <Compile Include="Common\LatestVerion.cs" />
     <Compile Include="Common\LgoinConfig.cs" />
     <Compile Include="Common\LgoinConfigString.cs" />
     <Compile Include="Common\StartUpHelper.cs" />

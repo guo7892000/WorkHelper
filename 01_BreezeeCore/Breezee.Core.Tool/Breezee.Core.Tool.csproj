@@ -80,12 +80,16 @@
     <Compile Include="Helper\ExceptionHelper.cs" />
     <Compile Include="Helper\ExecuteResultHelper.cs" />
     <Compile Include="Helper\ExeProgramHelper.cs" />
-    <Compile Include="Helper\AppUpgradeTool.cs" />
+    <Compile Include="Upgrade\AppUpgradeTool.cs" />
     <Compile Include="Helper\FileDirHelper.cs" />
     <Compile Include="Helper\LogHelper.cs" />
     <Compile Include="Helper\NumberHelper.cs" />
     <Compile Include="Helper\ReflectHelper.cs" />
     <Compile Include="Helper\StringHelper.cs" />
+    <Compile Include="Upgrade\LatestVerionConfig.cs" />
+    <Compile Include="Upgrade\LocalClient.cs" />
+    <Compile Include="Upgrade\RemoteServer.cs" />
+    <Compile Include="Upgrade\UpgradeInfo.cs" />
     <Compile Include="Helper\VerifyHelper.cs" />
     <Compile Include="Helper\XmlHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
