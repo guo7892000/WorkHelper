@@ -50,8 +50,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         private static string strTableAlias = "A"; //查询和修改中的表别名
         private static string strTableAliasAndDot = "";
         private static readonly string _strUpdateCtrolColumnCode = "UPDATE_CONTROL_ID";
-        private string _strAutoSqlSuccess = "生成成功，并已复制到了粘贴板。详细见“生成的SQL”页签！";
-        private string _strImportSuccess = "导入成功！可点“生成SQL”按钮得到本次导入的变更SQL。";
         //数据集
         private IDBConfigSet _IDBConfigSet;
         private DbServerInfo _dbServer;
@@ -1116,7 +1114,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 tabControl1.SelectedTab = tpAutoSQL;
                 //生成SQL成功后提示
-                ShowInfo(_strAutoSqlSuccess);
+                ShowInfo(StaticValue.GenResultCopySuccessMsg);
                 rtbResult.Select(0, 0); //返回到第一行
             }
             catch (Exception ex)

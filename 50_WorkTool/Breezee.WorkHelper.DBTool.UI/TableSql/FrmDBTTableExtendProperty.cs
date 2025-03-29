@@ -28,8 +28,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         private BindingSource bsCos = new BindingSource();//
         private BindingSource bsThree = new BindingSource();//
         //常量
-        private string _strAutoSqlSuccess = "生成成功，并已复制到了粘贴板。详细见“生成的SQL”页签！";
-        private string _strImportSuccess = "导入成功！可点“生成SQL”按钮得到本次导入的变更SQL。";
         //文件路径
         string _DBConnString; //连接字符串
         //导入的SQL变量值
@@ -130,7 +128,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 tabControl1.SelectedTab = tpImport;
 
                 //导入成功提示
-                ShowInfo(_strImportSuccess);
+                ShowInfo(StaticValue.ImportSuccessMsg);
             }
             catch (Exception ex)
             {
@@ -271,7 +269,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             Clipboard.SetData(DataFormats.UnicodeText, sbAllSql.ToString());
             tabControl1.SelectedTab = tpAutoSQL;
             //生成SQL成功后提示
-            ShowInfo(_strAutoSqlSuccess);
+            ShowInfo(StaticValue.GenResultCopySuccessMsg);
             rtbResult.Select(0, 0); //返回到第一
             return;
             #endregion

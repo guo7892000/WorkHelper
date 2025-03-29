@@ -61,7 +61,7 @@ namespace Breezee.Core.Interface
         /// </summary>
         /// <param name="strValue">需要转换的对象</param>
         /// <returns>返回decimal</returns>
-        public static decimal ToDecimal(this string strValue,string strDefaultValue = "0.00")
+        public static decimal ToDecimal(this string strValue, string strDefaultValue = "0.00")
         {
             if (string.IsNullOrEmpty(strValue))
             {
@@ -87,7 +87,7 @@ namespace Breezee.Core.Interface
         /// <param name="strValue">需要转换的对象</param>
         /// <param name="iNum">小数位数</param>
         /// <returns>返回decimal</returns>
-        public static decimal ToDecimal(this string strValue,int iNum,string strDefaultValue = "0.00")
+        public static decimal ToDecimal(this string strValue, int iNum, string strDefaultValue = "0.00")
         {
             if (string.IsNullOrEmpty(strValue))
             {
@@ -232,9 +232,86 @@ namespace Breezee.Core.Interface
         }
         #endregion
 
-        public static bool EqualsIgnorEmptyCase(this string sSource,string sTarget)
+        public static bool EqualsIgnorEmptyCase(this string sSource, string sTarget)
         {
             return sSource.Replace(" ", "").Equals(sTarget.Replace(" ", ""), StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        /// <summary>
+        /// 获取粘贴板第一列的表
+        /// </summary>
+        /// <param name="pasteText"></param>
+        /// <param name="dt"></param>
+        /// <param name="isTrimData"></param>
+        /// <param name="AutoColumnName"></param>
+        /// <param name="isFirstColumnName"></param>
+        /// <param name="isAddRowNum"></param>
+        /// <param name="sRowNumColumnName"></param>
+        /// <returns></returns>
+        public static DataTable GetFirstColumnTable(this string pasteText, DataTable dt = null, bool isTrimData = false, bool AutoColumnName=false,bool isFirstColumnName = false,  bool isAddRowNum = true, string sRowNumColumnName = "ROWNO")
+        {
+            string sDataColumnName = string.Empty;
+
+            if (dt == null)
+            {
+                dt = new DataTable();
+            }
+            else if (dt.Columns.Count > 0)
+            {
+                foreach (DataColumn dc in dt.Columns)
+                {
+                    if (!sRowNumColumnName.Equals(dc.ColumnName))
+                    {
+                        sDataColumnName = dc.ColumnName;
+                        break;
+                    }
+                }
+            }
+
+            if (!dt.Columns.Contains(sRowNumColumnName) && isAddRowNum)
+            {
+                dt.Columns.Add(sRowNumColumnName, typeof(int)); //设置序号为整型
+            }
+            HashSet<string> doubleCol = new HashSet<string>();
+            string[] rows = pasteText.Trim().Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);//分割的行数数组
+            string[] colNames = rows[0].Split(new string[] { "\t" }, StringSplitOptions.RemoveEmptyEntries);//列头数组
+
+            
+            for (int i = 0; i < rows.Length; i++)//行
+            {
+                if (i == 0 && isFirstColumnName)//列名处理
+                {
+                    if (AutoColumnName)
+                    {
+                        string sColName = 0.ToUpperWord();
+                        if (!dt.Columns.Contains(sColName))
+                        {
+                            dt.Columns.Add(sColName, typeof(string));
+                        }
+                    }
+                    else
+                    {
+                        if (!dt.Columns.Contains(colNames[0].Trim()))
+                        {
+                            dt.Columns.Add(colNames[0].Trim(), typeof(string));
+                        }
+                        else
+                        {
+                            doubleCol.Add(colNames[0]);
+                        }
+                    }
+                }
+                else
+                {
+                    // 数据处理
+                    DataRow dr = dt.NewRow();
+                    string[] cols = isTrimData ? rows[i].Trim().Split(new string[] { "\t" }, StringSplitOptions.None) : rows[i].Split(new string[] { "\t" }, StringSplitOptions.None);//注：这里不要去掉空白
+                    dr[sRowNumColumnName] = i+1; //行号
+                    dr[sDataColumnName] = isTrimData ? cols[0].Trim('"').Trim() : cols[0].Trim('"'); //第一列为序号，需要跳过
+                    dt.Rows.Add(dr);
+                }
+            }
+            return dt;
         }
 
         /// <summary>
@@ -247,7 +324,7 @@ namespace Breezee.Core.Interface
         /// <param name="isTrimData">是否去掉数据前后空格</param>
         /// <param name="isAddRowNum">是否增加序号列</param>
         /// <returns></returns>
-        public static DataTable GetStringTable(this string pasteText, bool AutoColumnName, DataTable dt = null, string autoColumnEndString = "",bool isTrimData=false,bool isAddRowNum = true,string sRowNumColumnName= "ROWNO")
+        public static DataTable GetStringTable(this string pasteText, bool AutoColumnName, DataTable dt = null, string autoColumnEndString = "", bool isTrimData = false, bool isAddRowNum = true, string sRowNumColumnName = "ROWNO")
         {
             if (dt == null)
             {
@@ -257,7 +334,7 @@ namespace Breezee.Core.Interface
             int iRowNum = 0;
             if (!dt.Columns.Contains(sRowNumColumnName) && isAddRowNum)
             {
-                dt.Columns.Add(sRowNumColumnName,typeof(int)); ////设置序号为整型
+                dt.Columns.Add(sRowNumColumnName, typeof(int)); ////设置序号为整型
                 addNumRow = true;
                 iRowNum = 1;
             }
@@ -293,7 +370,7 @@ namespace Breezee.Core.Interface
                                 doubleCol.Add(s);
                             }
                         }
-                        if(doubleCol.Count > 0)
+                        if (doubleCol.Count > 0)
                         {
                             throw new Exception("粘贴的Excel存在重复的列名，请修改后重新粘贴！包括：" + string.Join(",", doubleCol));
                         }
@@ -303,9 +380,9 @@ namespace Breezee.Core.Interface
                 {
                     // 数据处理
                     DataRow dr = dt.NewRow();
-                    string[] cols = isTrimData ? rows[i].Trim().Split(new string[] { "\t" }, StringSplitOptions.None): rows[i].Split(new string[] { "\t" }, StringSplitOptions.None);//注：这里不要去掉空白
+                    string[] cols = isTrimData ? rows[i].Trim().Split(new string[] { "\t" }, StringSplitOptions.None) : rows[i].Split(new string[] { "\t" }, StringSplitOptions.None);//注：这里不要去掉空白
                     //增加数据列数与表列数的大小比较，防止访问表列的数组越界而报错。注：这里要去掉序号列
-                    if(cols.Length > (dt.Columns.Count- iRowNum))
+                    if (cols.Length > (dt.Columns.Count - iRowNum))
                     {
                         //数据列数大于表列数
                         if (addNumRow)
@@ -324,7 +401,7 @@ namespace Breezee.Core.Interface
                                     // 注：因为Excel中针对部分包含特殊字符的文本会在前后加上引号，所以后面会有去掉前后引号的处理。数据例如："	2023款 经典 2.0L CVT XV+领先版 国6"
                                     dr[okIndex + 1] = isTrimData ? cols[j].Trim('"').Trim() : cols[j].Trim('"'); //第一列为序号，需要跳过
                                     okIndex++;
-                                    if (okIndex >= dt.Columns.Count-1)
+                                    if (okIndex >= dt.Columns.Count - 1)
                                     {
                                         break;
                                     }
@@ -351,7 +428,7 @@ namespace Breezee.Core.Interface
                                         break;
                                     }
                                 }
-                                    
+
                             }
                         }
                     }
@@ -401,11 +478,11 @@ namespace Breezee.Core.Interface
                                         break;
                                     }
                                 }
-                                    
+
                             }
                         }
                     }
-                    
+
                     dt.Rows.Add(dr);
                 }
             }
@@ -448,7 +525,7 @@ namespace Breezee.Core.Interface
         public static string ToUnderscoreCase(this string str, bool isUpper = true)
         {
             string sUnderLine = string.Concat(str.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString()));
-            return isUpper? sUnderLine.ToUpper() : sUnderLine.ToLower();
+            return isUpper ? sUnderLine.ToUpper() : sUnderLine.ToLower();
         }
 
         /// <summary>
@@ -460,7 +537,5 @@ namespace Breezee.Core.Interface
         {
             return str.Replace("datetime(7)", "datetime").Replace("date(7)", "date").Replace("decimal(22,0)", "int").Replace("decimal(22)", "int");
         }
-
-        
     }
 }

@@ -32,7 +32,6 @@ namespace Breezee.WorkHelper.DBTool.UI
     public partial class FrmDBTMergeData : BaseForm
     {
         #region 变量
-        private string _strAutoSqlSuccess = "生成成功，详细见“生成结果”页签！";
         string sRowNo1 = "ROWNUM_0";
         string sRowNo2 = "ROWNUM_1";
         DataGridViewFindText dgvFindText;
@@ -233,7 +232,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     });
                     dgvResult.ShowRowNum(true);
                     tabControl1.SelectedTab = tpAutoSQL;
-                    ShowInfo(_strAutoSqlSuccess + sTotalSecode);//生成SQL成功后提示
+                    ShowInfo(StaticValue.GenResultOnlySuccessMsg + sTotalSecode);//生成SQL成功后提示
                 }
                 else
                 {

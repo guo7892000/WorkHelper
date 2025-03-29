@@ -25,7 +25,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 变量
         private readonly string _strTableName = "变更表清单";
         private BindingSource bsTable = new BindingSource();
-        private string _strAutoSqlSuccess = "生成成功，并已复制到了粘贴板。详细见“生成的SQL”页签！";
         CopyDataStringTemplate replaceStringData;//替换字符模板XML配置
         #endregion
 
@@ -270,7 +269,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 Clipboard.SetData(DataFormats.UnicodeText, sbAll.ToString());
                 tabControl1.SelectedTab = tpAutoSQL;
                 //生成SQL成功后提示
-                ShowInfo(_strAutoSqlSuccess);
+                ShowInfo(StaticValue.GenResultCopySuccessMsg);
                 rtbResult.Select(0, 0); //返回到第一
 
                 //保存用户偏好值

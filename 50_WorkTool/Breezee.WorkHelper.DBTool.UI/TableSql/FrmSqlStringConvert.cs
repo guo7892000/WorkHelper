@@ -28,7 +28,6 @@ namespace Breezee.WorkHelper.DBTool.UI
     public partial class FrmSqlStringConvert : BaseForm
     {
         private readonly string _sGridColumnSelect = "IsSelect";
-        private string _strAutoSqlSuccess = "生成成功，并已复制到了粘贴板。";
         private bool _allSelectOldNewChar = false;//默认全选，这里取反
         private bool _allSelectOldNewColumnChar = false;//默认全选，这里取反
         private bool _allSelectTableSource = false;//默认全选，这里取反
@@ -500,7 +499,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 stopwatch.Stop(); //结束计时
                 string sNeedSecond = (stopwatch.ElapsedMilliseconds/1000.00).ToString();
                 //生成SQL成功后提示
-                ShowInfo(_strAutoSqlSuccess + "共耗时："+ sNeedSecond +" 秒");
+                ShowInfo(StaticValue.GenResultCopySuccessMsg + "共耗时："+ sNeedSecond +" 秒");
                 rtbResult.Select(0, 0); //返回到第一行
             }
             catch (Exception ex)

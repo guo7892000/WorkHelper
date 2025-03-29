@@ -124,6 +124,7 @@
     </Compile>
     <Compile Include="Common\KeyValue.cs" />
     <Compile Include="Common\FTP\SftpTool.cs" />
+    <Compile Include="Common\StaticValue.cs" />
     <Compile Include="Common\UC_DbConnection.cs">
       <SubType>UserControl</SubType>
     </Compile>

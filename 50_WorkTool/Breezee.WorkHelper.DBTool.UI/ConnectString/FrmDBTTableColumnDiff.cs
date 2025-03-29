@@ -37,8 +37,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         private bool _allSelect = false;//默认全选，这里取反
         //常量
         private static string strTableAliasAndDot = "";
-        private string _strAutoSqlSuccess = "生成成功，并已复制到了粘贴板。详细见“生成的SQL”页签！";
-        private string _strImportSuccess = "导入成功！可点“生成SQL”按钮得到本次导入的变更SQL。";
         //数据集
         private IDBConfigSet _IDBConfigSet;
         private DbServerInfo _dbServerSource;

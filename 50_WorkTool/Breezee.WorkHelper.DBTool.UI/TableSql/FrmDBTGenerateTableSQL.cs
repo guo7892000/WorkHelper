@@ -38,8 +38,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         //
         private DataSet _dsExcelData;
         //
-        private string _strAutoSqlSuccess = "生成成功，并已复制到了粘贴板。详细见“生成的SQL”页签！";
-        private string _strImportSuccess = "导入成功！可点“生成SQL”按钮得到本次导入的变更SQL。";
         private string strTipInfo = "不需要的行，请选择整行后，按Delete键即可删除！";
 
         //生成过程用到的全局变量
@@ -470,7 +468,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     //dgvColList.DataSource = bsCos;
                     dgvColList.BindAutoColumn(dtTable);
                     dgvColList.ShowRowNum();
-                    ShowInfo(_strImportSuccess);
+                    ShowInfo(StaticValue.ImportSuccessMsg);
                 } 
                 #endregion
             }
@@ -602,7 +600,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     //绑定列网格
                     dgvColList.BindAutoColumn(dtColumn);
                     dgvColList.ShowRowNum();
-                    ShowInfo(_strImportSuccess);
+                    ShowInfo(StaticValue.ImportSuccessMsg);
                 } 
                 #endregion
             }
@@ -1109,7 +1107,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             docEntity.isQueryDataBase = "2".Equals(cbbInputType.SelectedValue)?true:false;
             TableStructGenerator.Generate(tabControl1, dtTalbeSelect, dtColumnSelect, docEntity);
             //生成SQL成功后提示
-            ShowSuccessMsg(_strAutoSqlSuccess);
+            ShowSuccessMsg(StaticValue.GenResultCopySuccessMsg);
             //保存用户喜好配置
             SaveUserLoveConfig();
             //初始化控件
