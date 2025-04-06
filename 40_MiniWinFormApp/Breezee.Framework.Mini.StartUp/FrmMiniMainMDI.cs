@@ -120,6 +120,14 @@ namespace Breezee.Framework.Mini.StartUp
             {
                 Task.Run(() => UpgradeSystem(false));
             }
+            // 设置样式
+            FormBackGroupStyleEntity styleEntity = this.SetFormBackGroupStyle(_WinFormConfig.Get(GlobalKey.MainSkinType, BaseForm.ChildFormStyleType), _WinFormConfig.Get(GlobalKey.MainSkinValue, BaseForm.ChildFormStyleValue));//设置主窗体样式
+            if (!styleEntity.IsUseImage)
+            {
+                txbMenuPath.BackColor = styleEntity.BackGroupColor;
+                txbGlobalMsg.BackColor = styleEntity.BackGroupColor;
+            }
+            tableLayoutPanel1.BackgroundImage = null;
         }
         #endregion
 
@@ -990,10 +998,17 @@ namespace Breezee.Framework.Mini.StartUp
             FrmUserEnvironmentSet f = new FrmUserEnvironmentSet();
             f.StartPosition = FormStartPosition.CenterScreen;
             f.ShowGlobalMsg += ShowGlobalMsg_Click;//绑定全局信息提示
-            if (f.ShowDialog() == DialogResult.OK)
+            if (f.ShowDialog() != DialogResult.OK)
             {
-                this.SetFormBackGroupStyle(_WinFormConfig.Get(GlobalKey.MainSkinType, BaseForm.ChildFormStyleType), _WinFormConfig.Get(GlobalKey.MainSkinValue, BaseForm.ChildFormStyleValue));//设置主窗体样式
+                return;
             }
+            FormBackGroupStyleEntity styleEntity = this.SetFormBackGroupStyle(_WinFormConfig.Get(GlobalKey.MainSkinType, BaseForm.ChildFormStyleType), _WinFormConfig.Get(GlobalKey.MainSkinValue, BaseForm.ChildFormStyleValue));//设置主窗体样式
+            if (!styleEntity.IsUseImage)
+            {
+                txbMenuPath.BackColor = styleEntity.BackGroupColor;
+                txbGlobalMsg.BackColor = styleEntity.BackGroupColor;
+            }
+            tableLayoutPanel1.BackgroundImage = null;
         } 
         #endregion
 

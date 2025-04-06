@@ -230,7 +230,6 @@
     <Content Include="Help\Html\Mini\WorkHelper.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Image\mandriva.png" />
     <None Include="Image\loveStar.png" />
     <Content Include="Image\ShortCut_In.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

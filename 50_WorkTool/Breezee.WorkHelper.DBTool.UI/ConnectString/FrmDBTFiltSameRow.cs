@@ -13,6 +13,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static Breezee.Core.Interface.KeyValuePairString;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -191,6 +192,15 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void tsmiPaste_Click(object sender, EventArgs e)
         {
             PasteTextFromClipse();
+        }
+
+        private void tsmiClear_Click(object sender, EventArgs e)
+        {
+            if (dgvTableList.GetBindingTable() != null)
+            {
+                dgvTableList.GetBindingTable().Columns.Clear();
+                dgvTableList.GetBindingTable().Clear();
+            }
         }
     }
 }

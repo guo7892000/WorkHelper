@@ -52,6 +52,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dgvResult = new System.Windows.Forms.DataGridView();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.tsmiClear = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -239,14 +240,15 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiPaste});
+            this.tsmiPaste,
+            this.tsmiClear});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(101, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
             // 
             // tsmiPaste
             // 
             this.tsmiPaste.Name = "tsmiPaste";
-            this.tsmiPaste.Size = new System.Drawing.Size(100, 22);
+            this.tsmiPaste.Size = new System.Drawing.Size(180, 22);
             this.tsmiPaste.Text = "粘贴";
             this.tsmiPaste.Click += new System.EventHandler(this.tsmiPaste_Click);
             // 
@@ -296,6 +298,13 @@
             this.dgvResult.RowTemplate.Height = 23;
             this.dgvResult.Size = new System.Drawing.Size(780, 315);
             this.dgvResult.TabIndex = 0;
+            // 
+            // tsmiClear
+            // 
+            this.tsmiClear.Name = "tsmiClear";
+            this.tsmiClear.Size = new System.Drawing.Size(180, 22);
+            this.tsmiClear.Text = "清除";
+            this.tsmiClear.Click += new System.EventHandler(this.tsmiClear_Click);
             // 
             // FrmDBTFiltSameRow
             // 
@@ -352,5 +361,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cbbGroupType;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ToolStripMenuItem tsmiClear;
     }
 }

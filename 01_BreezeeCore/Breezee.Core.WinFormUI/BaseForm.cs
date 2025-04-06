@@ -49,6 +49,7 @@ namespace Breezee.Core.WinFormUI
         //弹出窗体是否可以最大最小及调整大小
         public bool ShowPopFormMaxBox = false;
         public bool ShowPopFormMinBox = false;
+        public bool IsUseGlobalStyle = true;
         public FormBorderStyle ShowPopFormBorderStyle = FormBorderStyle.FixedSingle;//边框样式，如为FormBorderStyle.Sizable则可以调整大小。
         //默认子窗体样式类型与样式值
         public static string ChildFormStyleType = "0";//默认颜色
@@ -93,6 +94,10 @@ namespace Breezee.Core.WinFormUI
             #region 如果窗体的可视化设计模式打不开，请将以下代码注释掉
             if (!DesignMode)
             {
+                if (!IsUseGlobalStyle)
+                {
+                    return;
+                }
                 if (WinFormContext.DtUserEnviromentConfig != null) //这里如不加非空判断，会导致继承子窗体的设计窗体显示报错
                 {
                     this.SetFormBackGroupStyle(WinFormContext.DtUserEnviromentConfig, "ChildFormSkin");

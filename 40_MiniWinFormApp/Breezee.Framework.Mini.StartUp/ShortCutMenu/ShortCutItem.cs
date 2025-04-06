@@ -48,6 +48,7 @@ namespace Breezee.Framework.Mini.StartUp
             strOutFilePah = Path.Combine(strRootPath, "Image", "ShortCut_Out.png");
             this.BackgroundImage = Image.FromFile(strOutFilePah);
             this.BackgroundImageLayout = ImageLayout.Zoom;
+            this.BackColor = Color.Transparent;
 
             this.Click += Item_Click;
             lblMenuName.Click += Item_Click;

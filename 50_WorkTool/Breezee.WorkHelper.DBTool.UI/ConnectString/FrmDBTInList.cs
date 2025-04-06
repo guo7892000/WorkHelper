@@ -38,6 +38,22 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 加载事件
         private void FrmInList_Load(object sender, EventArgs e)
         {
+            //设置Tag
+            FlexGridColumnDefinition fdc = new FlexGridColumnDefinition();
+            fdc.AddColumn(
+                new FlexGridColumn.Builder().Name(_sColIn).Caption("IN字段").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(250).Edit().Visible().Build(),
+                new FlexGridColumn.Builder().Name(_sColUpper).Caption("大驼峰").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(200).Edit().Visible(false).Build(),
+                new FlexGridColumn.Builder().Name(_sColLower).Caption("小驼峰").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(200).Edit().Visible(false).Build()
+            );
+            dgvTableList.Tag = fdc.GetGridTagString();
+            DataTable dtIn = new DataTable();
+            dtIn.Columns.AddRange(new DataColumn[]
+                {
+                    new DataColumn(_sColIn),
+                    new DataColumn(_sColUpper),
+                    new DataColumn(_sColLower)
+                });
+            dgvTableList.BindDataGridView(dtIn, true); //初始化网格
             //初始化下拉框
             IDictionary<string, string> dic_List = new Dictionary<string, string>
             {
@@ -47,23 +63,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             };
             cbbSqlType.BindTypeValueDropDownList(dic_List.GetTextValueTable(false), false, true);
             cbbSqlType.SelectedValue = "1";
-            //初始化网格
-            DataTable dtIn = new DataTable();
-            dtIn.Columns.AddRange(new DataColumn[]
-                {
-                    new DataColumn(_sColIn),
-                    new DataColumn(_sColUpper),
-                    new DataColumn(_sColLower)
-                });
-            //设置Tag
-            FlexGridColumnDefinition fdc = new FlexGridColumnDefinition();
-            fdc.AddColumn(
-                new FlexGridColumn.Builder().Name(_sColIn).Caption("IN字段").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(150).Edit().Visible().Build(),
-                new FlexGridColumn.Builder().Name(_sColUpper).Caption("大驼峰").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(100).Edit().Visible(false).Build(),
-                new FlexGridColumn.Builder().Name(_sColLower).Caption("小驼峰").Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit().Visible(false).Build()
-            );
-            dgvTableList.Tag = fdc.GetGridTagString();
-            dgvTableList.BindDataGridView(dtIn, true);
+            
+            
             txbPreString.Text = "'";
             txbEndString.Text = "'";
             txbConcateString.Text = ",";
@@ -131,7 +132,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //} 
                 #endregion
 
-                pasteText.GetFirstColumnTable(dtMain, true, false, false);
+                DataTable dtNew = dtMain.Copy();
+                pasteText.GetFirstColumnTable(dtNew, true, false, false);
+                dgvTableList.BindDataGridView(dtNew,true);
                 dgvTableList.ShowRowNum(true); //显示行号
                 tsbAutoSQL.Enabled = true;
             }

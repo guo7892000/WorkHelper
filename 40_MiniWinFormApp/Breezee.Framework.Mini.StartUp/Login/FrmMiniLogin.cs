@@ -48,6 +48,7 @@ namespace Breezee.Framework.Mini.StartUp
         public FrmMiniLogin()
         {
             InitializeComponent();
+            IsUseGlobalStyle = false; // 不使用全局样式
         } 
         #endregion
 

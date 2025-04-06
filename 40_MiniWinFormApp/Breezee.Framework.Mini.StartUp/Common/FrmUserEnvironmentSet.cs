@@ -85,6 +85,7 @@ namespace Breezee.Framework.Mini.StartUp
 
             //子窗体
             string sCommonSkinType = _WinFormConfig.Get(GlobalKey.CommonSkinType, "0");
+            cbbSkinTypeCommon.SelectedValue = sCommonSkinType;
             if (sCommonSkinType.Equals("0") || sCommonSkinType.Equals("1"))
             {
                 cbbColorCommon.SelectedValue = _WinFormConfig.Get(GlobalKey.CommonSkinValue, "0");
