@@ -263,12 +263,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                     if (!string.IsNullOrEmpty(strColSeries))
                     {
                         //序列不为空时
-                        sbRemark.Append("comment on column " + strTableCode + "." + strColCode + " is '" + strColName + "：" + strColRemark + "。序列为" + strColSeries + "';\n");
+                        sbRemark.Append("comment on column " + strTableCode + "." + strColCode + " is '" + getFitRemark(strColName, strColRemark) + "。序列为" + strColSeries + "';\n");
                     }
                     else
                     {
                         //序列为空时
-                        sbRemark.Append("comment on column " + strTableCode + "." + strColCode + " is '" + strColName + "：" + strColRemark + strColSeries + "';\n");
+                        sbRemark.Append("comment on column " + strTableCode + "." + strColCode + " is '" + getFitRemark(strColName, strColRemark) + strColSeries + "';\n");
                     }
                 }
                 #endregion
@@ -358,12 +358,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                     if (strColDataType == "varchar2" || strColDataType == "nvarchar2" || strColDataType == "char")
                     {
                         //字符型处理
-                        strDefault_Full = AddRightBand("default '" + strColDefault + "'");
+                        strDefault_Full = AddRightBand(" default '" + strColDefault + "'");
                     }
                     else
                     {
                         //数值型处理
-                        strDefault_Full = AddRightBand("default " + strColDefault.Replace("'", ""));
+                        strDefault_Full = AddRightBand(" default " + strColDefault.Replace("'", ""));
                     }
                 }
                 #endregion
@@ -379,7 +379,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     }
                     else
                     {
-                        sbSql.Append("COMMENT ON COLUMN " + strTableCode + "." + strColCode + " IS '" + strColName + "：" + strColRemark + "';\n");
+                        sbSql.Append("COMMENT ON COLUMN " + strTableCode + "." + strColCode + " IS '" + getFitRemark(strColName, strColRemark) + "';\n");
                     }
                 }
                 else if (strColumnDealType ==  ColumnChangeType.Alter)
@@ -403,7 +403,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     }
                     else
                     {
-                        sbSql.Append("COMMENT ON COLUMN " + strTableCode + "." + strColCode + " IS '" + strColName + "：" + strColRemark + "';\n");
+                        sbSql.Append("COMMENT ON COLUMN " + strTableCode + "." + strColCode + " IS '" + getFitRemark(strColName, strColRemark) + "';\n");
                     }
                 }
                 j++;

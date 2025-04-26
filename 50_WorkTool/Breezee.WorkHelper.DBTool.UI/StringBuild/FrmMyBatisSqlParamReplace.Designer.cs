@@ -37,6 +37,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cbbSqlTextType = new System.Windows.Forms.ComboBox();
             this.btnConvert = new System.Windows.Forms.Button();
+            this.ckbValueRemoveEmpty = new System.Windows.Forms.CheckBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -45,7 +46,7 @@
             this.rtbParam = new System.Windows.Forms.RichTextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.rtbTo = new System.Windows.Forms.RichTextBox();
-            this.ckbValueRemoveEmpty = new System.Windows.Forms.CheckBox();
+            this.CkbLoadExampleData = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -105,12 +106,14 @@
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 5;
+            this.tableLayoutPanel1.ColumnCount = 6;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 373F));
+            this.tableLayoutPanel1.Controls.Add(this.CkbLoadExampleData, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbbSqlTextType, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnConvert, 2, 0);
@@ -155,6 +158,17 @@
             this.btnConvert.Text = "转换";
             this.btnConvert.UseVisualStyleBackColor = true;
             this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
+            // 
+            // ckbValueRemoveEmpty
+            // 
+            this.ckbValueRemoveEmpty.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbValueRemoveEmpty.AutoSize = true;
+            this.ckbValueRemoveEmpty.Location = new System.Drawing.Point(393, 7);
+            this.ckbValueRemoveEmpty.Name = "ckbValueRemoveEmpty";
+            this.ckbValueRemoveEmpty.Size = new System.Drawing.Size(108, 16);
+            this.ckbValueRemoveEmpty.TabIndex = 3;
+            this.ckbValueRemoveEmpty.Text = "值去掉前后空白";
+            this.ckbValueRemoveEmpty.UseVisualStyleBackColor = true;
             // 
             // splitContainer1
             // 
@@ -251,16 +265,18 @@
             this.rtbTo.TabIndex = 0;
             this.rtbTo.Text = "";
             // 
-            // ckbValueRemoveEmpty
+            // CkbLoadExampleData
             // 
-            this.ckbValueRemoveEmpty.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ckbValueRemoveEmpty.AutoSize = true;
-            this.ckbValueRemoveEmpty.Location = new System.Drawing.Point(393, 7);
-            this.ckbValueRemoveEmpty.Name = "ckbValueRemoveEmpty";
-            this.ckbValueRemoveEmpty.Size = new System.Drawing.Size(108, 16);
-            this.ckbValueRemoveEmpty.TabIndex = 3;
-            this.ckbValueRemoveEmpty.Text = "值去掉前后空白";
-            this.ckbValueRemoveEmpty.UseVisualStyleBackColor = true;
+            this.CkbLoadExampleData.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.CkbLoadExampleData.AutoSize = true;
+            this.CkbLoadExampleData.Location = new System.Drawing.Point(506, 7);
+            this.CkbLoadExampleData.Margin = new System.Windows.Forms.Padding(2);
+            this.CkbLoadExampleData.Name = "CkbLoadExampleData";
+            this.CkbLoadExampleData.Size = new System.Drawing.Size(96, 16);
+            this.CkbLoadExampleData.TabIndex = 4;
+            this.CkbLoadExampleData.Text = "加载示例数据";
+            this.CkbLoadExampleData.UseVisualStyleBackColor = true;
+            this.CkbLoadExampleData.CheckedChanged += new System.EventHandler(this.CkbLoadExampleData_CheckedChanged);
             // 
             // FrmMyBatisSqlParamReplace
             // 
@@ -314,5 +330,6 @@
         private System.Windows.Forms.RichTextBox rtbParam;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.CheckBox ckbValueRemoveEmpty;
+        private System.Windows.Forms.CheckBox CkbLoadExampleData;
     }
 }

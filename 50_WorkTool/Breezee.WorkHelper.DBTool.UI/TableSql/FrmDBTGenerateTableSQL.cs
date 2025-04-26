@@ -387,6 +387,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     //绑定表
                     DataTable dtTable = _dsExcelData.Tables[EntExcelSheet.Table];
+                    if (dtTable == null)
+                    {
+                        ShowInfo("【导入模板】不正确，可以下载后修改后，再尝试导入。");
+                        return;
+                    }
                     DataColumn dcSelected = new DataColumn(_sGridTableSelect, typeof(bool));
                     dcSelected.DefaultValue = "True";
                     dtTable.Columns.Add(dcSelected);
@@ -486,6 +491,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     //得到表结构的信息
                     DataTable dtExcelSource = _dsExcelData.Tables[EntlColLY.ExcelCol.SheetName];
+                    if (dtExcelSource == null)
+                    {
+                        ShowInfo("【LY导入模板】不正确，可以下载后修改后，再尝试导入。");
+                        return;
+                    }
                     //移除空行
                     foreach (DataRow dr in dtExcelSource.Select(EntlColLY.ExcelCol.Name + " is null"))
                     {
@@ -1215,6 +1225,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (importDBType == DataBaseType.None) return;
             string sExcelSheetName = GetExcelSheetNameCol(importDBType);
             DataTable dtCol = _dsExcelData.Tables[sExcelSheetName]; //更换【列】网格数据源
+            if (dtCol == null)
+            {
+                return;
+            }
             if (!dtCol.Columns.Contains(_sGridTableSelect))
             {
                 DataColumn dcSelected = new DataColumn(_sGridTableSelect, typeof(bool));

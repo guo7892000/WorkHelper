@@ -210,7 +210,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 else
                 {
-                    sbRemark.Append(" COMMENT ON COLUMN " + strTableCode + "." + strColCode + " IS '" + strColName + "：" + strColRemark + "';\n");
+                    sbRemark.Append(" COMMENT ON COLUMN " + strTableCode + "." + strColCode + " IS '" + getFitRemark(strColName, strColRemark) + "';\n");
                 }
                 #endregion
 
@@ -286,7 +286,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 #region 列备注的处理
                 //备注
-                sbRemark.Append(" COMMENT ON COLUMN " + strTableCode + "." + strColCode + " IS '" + strColName + ":" + strColRemark + "'");
+                sbRemark.Append(" COMMENT ON COLUMN " + strTableCode + "." + strColCode + " IS '" + getFitRemark(strColName, strColRemark) + "'");
                 #endregion
 
                 if (strColumnDealType == ColumnChangeType.Create)

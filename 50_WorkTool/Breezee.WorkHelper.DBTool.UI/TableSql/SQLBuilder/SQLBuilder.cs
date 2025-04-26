@@ -1,6 +1,7 @@
 ﻿using Breezee.Core.Interface;
 using Breezee.WorkHelper.DBTool.Entity;
 using Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL;
+using org.breezee.MyPeachNet;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -17,6 +18,7 @@ namespace Breezee.WorkHelper.DBTool.UI
     {
         protected readonly string sNull = " NULL ";   //可空
         protected readonly string sNotNull = " NOT NULL "; //非空
+        public static string RemarkSpliChar =  "："; //列名和备注的分隔符
         protected int iCalNum;
         protected bool _isAllConvert;
         protected ColumnTemplateType templateType;
@@ -182,8 +184,30 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             return "/*" + strColCode + "*/";
         }
+
+        protected string getFitRemark(string sColNameCn,string sRemark)
+        {
+            if (string.IsNullOrEmpty(sRemark))
+            {
+                return sColNameCn;
+            }
+            sRemark= sRemark.Trim();
+            if (sColNameCn.Equals(sRemark, StringComparison.OrdinalIgnoreCase))
+            {
+                return sColNameCn.Trim();
+            }
+
+            if(sRemark.StartsWith(sColNameCn))
+            {
+                return sRemark;
+            }
+            else
+            {
+                return sColNameCn + RemarkSpliChar + sRemark;
+            }
+        }
         #endregion
-       
+
 
         #region 获取全类型字符
         protected string GetFullTypeString(EntCol drCol, string strColDataType, string strColLen, string strColDecimalDigits)

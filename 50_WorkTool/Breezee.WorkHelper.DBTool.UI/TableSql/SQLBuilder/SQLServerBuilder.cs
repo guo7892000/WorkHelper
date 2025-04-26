@@ -198,7 +198,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     if (_isSqlServerDefaultValueNameAuto)
                     {
                         //方式一：采用默认名
-                        sbSql.Append(AddRightBand("DEFAULT(" + sRealDefaultValue + ")"));
+                        sbSql.Append(AddRightBand(" DEFAULT(" + sRealDefaultValue + ")"));
                     }
                     else
                     {
@@ -247,7 +247,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 else
                 {
                     sbRemark.Append("EXEC sys.sp_addextendedproperty @name = N'MS_Description', @value = N'"
-                        + strColName + "：" + drCol.commonCol.Remark + "',\n" +
+                        + getFitRemark(strColName, drCol.commonCol.Remark) + "',\n" +
                         "    @level0type = N'SCHEMA',@level0name = N'dbo', @level1type = N'TABLE',@level1name = N'" + strTableCode + "',  \n" +
                         "    @level2type = N'COLUMN', @level2name = N'" + strColCode + "'  \n");
                 }
@@ -367,7 +367,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     if (!string.IsNullOrEmpty(strColRemarkInfo))
                     {
-                        strColRemarkInfo = strColName + "：" + strColRemarkInfo;
+                        strColRemarkInfo = getFitRemark(strColName, strColRemarkInfo);
                     }
                     sbSql.Append("/*" + iCalNum.ToString() + "." + j.ToString() + strTableName + AddLeftRightKuoHao(strTableCode) + "增加" + strColName + AddRightBand(AddLeftRightKuoHao(strColCode)) + strColDataType + "字段*/ \n" +
                     "IF NOT EXISTS(SELECT 1 FROM SYSOBJECTS A,SYSCOLUMNS B \n" +
@@ -405,7 +405,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     if (!string.IsNullOrEmpty(strColRemarkInfo))
                     {
-                        strColRemarkInfo = strColName + "：" + strColRemarkInfo;
+                        strColRemarkInfo = getFitRemark(strColName, strColRemarkInfo);
                     }
                     sbSql.Append("/*" + iCalNum.ToString() + "." + j.ToString() + strTableName + AddLeftRightKuoHao(strTableCode) + "增加" + strColName + AddRightBand(AddLeftRightKuoHao(strColCode)) + strColDataType + "字段*/ \n" +
                         "IF EXISTS(SELECT 1 FROM SYSOBJECTS A,SYSCOLUMNS B \n" +

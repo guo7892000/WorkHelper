@@ -196,7 +196,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 else
                 {
-                    sbSql.Append(" COMMENT " + "'" + strColName + "：" + strColRemark + "'");
+                    sbSql.Append(" COMMENT " + "'" + getFitRemark(strColName, strColRemark) + "'");
                 }
                 #endregion
 
@@ -252,12 +252,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                     if (strColDataType == "varchar" || strColDataType == "nvarchar" || strColDataType == "char")
                     {
                         //字符型处理
-                        strDefault_Full = AddRightBand("default '" + strColDefault + "'");
+                        strDefault_Full = AddRightBand(" default '" + strColDefault + "'");
                     }
                     else
                     {
                         //数值型处理
-                        strDefault_Full = AddRightBand("default " + strColDefault.Replace("'", ""));
+                        strDefault_Full = AddRightBand(" default " + strColDefault.Replace("'", ""));
                     }
                     sbColSql.Append(strDefault_Full);
                 }
@@ -280,7 +280,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     sbColSql.Append(" AUTO_INCREMENT ");
                 }
                 //备注
-                sbColSql.Append(" COMMENT " + "'" + strColName + ":" + strColRemark + "';");
+                sbColSql.Append(" COMMENT " + "'" + getFitRemark(strColName, strColRemark) + "';");
                 #endregion
 
                 if (strColumnDealType ==  ColumnChangeType.Create)

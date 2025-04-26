@@ -87,6 +87,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                     sRealSql = sSqlAndParam.Substring(0, m.Index);
                     string sParam  = sSqlAndParam.Substring(m.Index + sMatchValue.Length);
                     string[] arrParam = sParam.Split(',');
+                    if (arrParam.Contains("null"))
+                    {
+                        ShowErr("存在null参数，无法转换！");
+                        return;
+                    }
                     int i = 0;
                     foreach(string strParam in arrParam)
                     {
@@ -121,6 +126,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                     if (arrParam.Length == 0)
                     {
                         ShowErr("没有类似【212(String), H2901(String)】的参数字符，请重新输入！");
+                        return;
+                    }
+                    if (arrParam.Contains("null"))
+                    {
+                        ShowErr("存在null参数，无法转换！");
                         return;
                     }
                     int i = 0;
@@ -254,6 +264,19 @@ namespace Breezee.WorkHelper.DBTool.UI
                 SortNo = sortNo;
                 DataValue = dataValue;
                 DataType = dataType;                
+            }
+        }
+
+        private void CkbLoadExampleData_CheckedChanged(object sender, EventArgs e)
+        {
+            if (CkbLoadExampleData.Checked)
+            {
+                rtbFrom.Text = @"==>  Preparing: SELECT A.PART_ID, /*配件ID*/A.PART_NO, /*配件编号*/ A.PART_NAME, /*配件名称*/ A.UNIT /*单位*/ FROM T_PA_DB_PART_LIST A /*配件清单表*/ LEFT JOIN T_PA_DB_PART_LIST_DLR LD ON A.PART_NO = LD.PART_NO AND LD.DLR_ID = ? WHERE 1=1 and A.PART_NO=? ORDER BY A.CREATED_DATE DESC,A.PART_NO DESC LIMIT ?
+==> Parameters: h2011(String), FDOD001(String), 20(Long)";
+            }
+            else
+            {
+                rtbFrom.Text = "";
             }
         }
     }

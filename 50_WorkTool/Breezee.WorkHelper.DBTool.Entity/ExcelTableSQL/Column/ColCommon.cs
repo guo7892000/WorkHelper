@@ -121,6 +121,7 @@ namespace Breezee.WorkHelper.DBTool.Entity
                 else
                 {
                     sDataLength = sArr[1];
+                    sDataDotLength = string.Empty;
                 }
             }
         }
