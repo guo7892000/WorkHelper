@@ -788,6 +788,7 @@
             // btnLoadData
             // 
             this.btnLoadData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLoadData.ForeColor = System.Drawing.Color.Red;
             this.btnLoadData.Location = new System.Drawing.Point(3, 25);
             this.btnLoadData.Name = "btnLoadData";
             this.btnLoadData.Size = new System.Drawing.Size(72, 23);

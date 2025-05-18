@@ -413,36 +413,13 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         public override void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue, DataBaseType impDbType)
         {
-            switch (impDbType)
-            {
-                case DataBaseType.SqlServer:
-                    //类型
-                    sDbType = sDbType.ToLower().Replace("varchar", "varchar2").Replace("datetime", "date");
-                    //默认值
-                    sDefaultValue = sDefaultValue.ToLower().Replace("getdate()", "sysdate")
-                        .Replace("newid()", "sys_guid()");
-                    break;
-                case DataBaseType.Oracle:
-                    break;
-                case DataBaseType.MySql:
-                    //类型
-                    sDbType = sDbType.ToLower().Replace("decimal", "number");
-                    //默认值
-                    sDefaultValue = sDefaultValue.ToLower().Replace("now()", "sysdate").Replace("uuid()", "sys_guid()");
-                    break;
-                case DataBaseType.SQLite:
-                    //默认值
-                    sDefaultValue = sDefaultValue.ToLower().Replace("(datetime('now','localtime'))", "sysdate");
-                    break;
-                case DataBaseType.PostgreSql:
-                    //类型
-                    sDbType = sDbType.ToLower().Replace("character varying", "varchar2");
-                    //默认值
-                    sDefaultValue = sDefaultValue.ToLower().Replace("now()", "sysdate");
-                    break;
-                default:
-                    throw new Exception("暂不支持该数据库类型！");
-            }
+            //类型
+            sDbType = sDbType.ToLower().Replace("varchar", "varchar2").Replace("nvarchar", "nvarchar2").Replace("datetime", "date")
+                .Replace("decimal", "number").Replace("numeric", "number")
+                .Replace("character varying", "varchar2").Replace("int4", "int").Replace("int8", "bigint");
+            //默认值
+            sDefaultValue = sDefaultValue.ToLower().Replace("getdate()", "sysdate").Replace("newid()", "sys_guid()")
+                .Replace("now()", "sysdate").Replace("uuid()", "sys_guid()");
         }
 
         /// <summary>

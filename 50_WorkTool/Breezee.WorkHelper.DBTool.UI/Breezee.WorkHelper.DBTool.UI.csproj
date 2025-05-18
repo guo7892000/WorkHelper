@@ -577,6 +577,9 @@
     <Content Include="Doc\Study\MySql\0020_查询\查询.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Doc\Study\MySql\0050_索引\索引.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Doc\Study\MySql\0090_用户权限\系统对象.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -670,6 +673,9 @@
     <Content Include="Doc\Study\Oracle\9000_实例\获取含字母的流水号.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Doc\Study\PostgreSQL\0022_更新\更新.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Doc\Study\PostgreSQL\0032_函数\函数.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -689,6 +695,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Doc\Study\PostgreSQL\0020_查询\查询.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Doc\Study\PostgreSQL\0050_索引\索引.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Doc\Study\PostgreSQL\0090_用户权限\系统对象.sql">
@@ -1213,14 +1222,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Doc\Study\MySql\0040_脚本\" />
-    <Folder Include="Doc\Study\MySql\0050_索引\" />
     <Folder Include="Doc\Study\MySql\0070_Job\" />
     <Folder Include="Doc\Study\MySql\0080_其他对象\" />
     <Folder Include="Doc\Study\MySql\0100_触发器\" />
     <Folder Include="Doc\Study\MySql\9000_实例\" />
-    <Folder Include="Doc\Study\PostgreSQL\0022_更新\" />
     <Folder Include="Doc\Study\PostgreSQL\0040_脚本\" />
-    <Folder Include="Doc\Study\PostgreSQL\0050_索引\" />
     <Folder Include="Doc\Study\PostgreSQL\0070_Job\" />
     <Folder Include="Doc\Study\PostgreSQL\0080_其他对象\" />
     <Folder Include="Doc\Study\SqlServer\0050_索引\" />

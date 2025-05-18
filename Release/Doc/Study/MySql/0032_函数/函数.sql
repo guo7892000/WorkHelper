@@ -16,3 +16,5 @@
 select instr(A.NEW_CAR_TYPE_CODE,':') >0
 FROM t_car_type
 ;
+
+

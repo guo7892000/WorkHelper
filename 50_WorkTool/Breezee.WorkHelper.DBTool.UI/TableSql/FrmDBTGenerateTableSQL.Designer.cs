@@ -75,6 +75,7 @@
             this.txbReplaceTemplateName = new System.Windows.Forms.TextBox();
             this.btnSaveReplaceTemplate = new System.Windows.Forms.Button();
             this.btnRemoveTemplate = new System.Windows.Forms.Button();
+            this.btnCopyAdd = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
             this.dgvNewTableInfo = new System.Windows.Forms.DataGridView();
@@ -230,7 +231,7 @@
             // ckbTableFixed
             // 
             this.ckbTableFixed.AutoSize = true;
-            this.ckbTableFixed.Location = new System.Drawing.Point(281, -1);
+            this.ckbTableFixed.Location = new System.Drawing.Point(281, -2);
             this.ckbTableFixed.Name = "ckbTableFixed";
             this.ckbTableFixed.Size = new System.Drawing.Size(51, 21);
             this.ckbTableFixed.TabIndex = 25;
@@ -588,7 +589,8 @@
             // 
             // tableLayoutPanel7
             // 
-            this.tableLayoutPanel7.ColumnCount = 5;
+            this.tableLayoutPanel7.ColumnCount = 6;
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -598,8 +600,9 @@
             this.tableLayoutPanel7.Controls.Add(this.cbbTemplateType, 1, 0);
             this.tableLayoutPanel7.Controls.Add(this.label21, 0, 3);
             this.tableLayoutPanel7.Controls.Add(this.txbReplaceTemplateName, 1, 3);
-            this.tableLayoutPanel7.Controls.Add(this.btnSaveReplaceTemplate, 3, 3);
-            this.tableLayoutPanel7.Controls.Add(this.btnRemoveTemplate, 4, 3);
+            this.tableLayoutPanel7.Controls.Add(this.btnSaveReplaceTemplate, 2, 3);
+            this.tableLayoutPanel7.Controls.Add(this.btnRemoveTemplate, 3, 3);
+            this.tableLayoutPanel7.Controls.Add(this.btnCopyAdd, 4, 3);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 19);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
@@ -651,6 +654,7 @@
             // 
             // btnSaveReplaceTemplate
             // 
+            this.btnSaveReplaceTemplate.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.btnSaveReplaceTemplate.Location = new System.Drawing.Point(231, 34);
             this.btnSaveReplaceTemplate.Name = "btnSaveReplaceTemplate";
             this.btnSaveReplaceTemplate.Size = new System.Drawing.Size(72, 22);
@@ -662,6 +666,7 @@
             // 
             // btnRemoveTemplate
             // 
+            this.btnRemoveTemplate.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.btnRemoveTemplate.Location = new System.Drawing.Point(309, 34);
             this.btnRemoveTemplate.Name = "btnRemoveTemplate";
             this.btnRemoveTemplate.Size = new System.Drawing.Size(66, 22);
@@ -670,6 +675,17 @@
             this.toolTip1.SetToolTip(this.btnRemoveTemplate, "删除模板");
             this.btnRemoveTemplate.UseVisualStyleBackColor = true;
             this.btnRemoveTemplate.Click += new System.EventHandler(this.btnRemoveTemplate_Click);
+            // 
+            // btnCopyAdd
+            // 
+            this.btnCopyAdd.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnCopyAdd.Location = new System.Drawing.Point(381, 34);
+            this.btnCopyAdd.Name = "btnCopyAdd";
+            this.btnCopyAdd.Size = new System.Drawing.Size(66, 22);
+            this.btnCopyAdd.TabIndex = 8;
+            this.btnCopyAdd.Text = "复制新增";
+            this.btnCopyAdd.UseVisualStyleBackColor = true;
+            this.btnCopyAdd.Click += new System.EventHandler(this.btnCopyAdd_Click);
             // 
             // groupBox2
             // 
@@ -1457,5 +1473,6 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiRemoveAll;
         private System.Windows.Forms.CheckBox ckbTableFixed;
         private System.Windows.Forms.CheckBox ckbColumnFixed;
+        private System.Windows.Forms.Button btnCopyAdd;
     }
 }

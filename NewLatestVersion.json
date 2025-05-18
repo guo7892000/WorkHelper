@@ -1,7 +1,7 @@
 {
-  "version": "1.3.7.3",
-  "date": "2025-04-25",
-  "publishRemark": "1.IN清单拼接：优化，提升速度。\r\n2.环境设置：针对界面样式的美化。",
+  "version": "1.3.7.4",
+  "date": "2025-05-18",
+  "publishRemark": "1.SQL总结增加示例；/r/n2、表结构变更：数据标准增加复制新增功能，类型转换等优化。",
   "appName": "WorkHelper",
   "zipFormats": "zip|rar|7z",
   "downUrlPublishLatest": "https://gitee.com/breezee2000/WorkHelper/releases/download/Latest/#appName##version#",

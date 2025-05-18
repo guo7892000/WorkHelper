@@ -64,11 +64,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.cmsGird = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiInsert = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiClear = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmpPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.lblTableData = new System.Windows.Forms.Label();
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.tsmpPaste = new System.Windows.Forms.ToolStripMenuItem();
+            this.ckbRemoveLastChar = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -94,7 +95,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(926, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(1066, 27);
             this.toolStrip1.TabIndex = 22;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -123,14 +124,14 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 27);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(926, 52);
+            this.groupBox1.Size = new System.Drawing.Size(1066, 52);
             this.groupBox1.TabIndex = 25;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "选项";
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 10;
+            this.tableLayoutPanel1.ColumnCount = 11;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -140,7 +141,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 51F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Controls.Add(this.ckbRemoveLastChar, 9, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbbDbType, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.lblDbType, 2, 0);
@@ -157,7 +160,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 14F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(920, 32);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1060, 32);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
             // label1
@@ -270,7 +273,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.grbConSting.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbConSting.Location = new System.Drawing.Point(0, 0);
             this.grbConSting.Name = "grbConSting";
-            this.grbConSting.Size = new System.Drawing.Size(926, 133);
+            this.grbConSting.Size = new System.Drawing.Size(1066, 165);
             this.grbConSting.TabIndex = 26;
             this.grbConSting.TabStop = false;
             this.grbConSting.Text = "拼接字符";
@@ -280,7 +283,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.rtbConString.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbConString.Location = new System.Drawing.Point(3, 49);
             this.rtbConString.Name = "rtbConString";
-            this.rtbConString.Size = new System.Drawing.Size(920, 81);
+            this.rtbConString.Size = new System.Drawing.Size(1060, 113);
             this.rtbConString.TabIndex = 5;
             this.rtbConString.Text = "";
             // 
@@ -308,12 +311,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tableLayoutPanel7.RowCount = 2;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(920, 32);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(1060, 32);
             this.tableLayoutPanel7.TabIndex = 7;
             // 
             // btnSaveOther
             // 
-            this.btnSaveOther.Location = new System.Drawing.Point(556, 2);
+            this.btnSaveOther.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnSaveOther.Location = new System.Drawing.Point(556, 3);
             this.btnSaveOther.Margin = new System.Windows.Forms.Padding(2);
             this.btnSaveOther.Name = "btnSaveOther";
             this.btnSaveOther.Size = new System.Drawing.Size(55, 20);
@@ -403,7 +407,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(926, 307);
+            this.tabControl1.Size = new System.Drawing.Size(1066, 384);
             this.tabControl1.TabIndex = 27;
             // 
             // tpImport
@@ -413,7 +417,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tpImport.Location = new System.Drawing.Point(4, 22);
             this.tpImport.Name = "tpImport";
             this.tpImport.Padding = new System.Windows.Forms.Padding(3);
-            this.tpImport.Size = new System.Drawing.Size(918, 281);
+            this.tpImport.Size = new System.Drawing.Size(1058, 358);
             this.tpImport.TabIndex = 0;
             this.tpImport.Text = "导入清单";
             // 
@@ -425,7 +429,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.grbTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbTable.Location = new System.Drawing.Point(3, 3);
             this.grbTable.Name = "grbTable";
-            this.grbTable.Size = new System.Drawing.Size(912, 275);
+            this.grbTable.Size = new System.Drawing.Size(1052, 352);
             this.grbTable.TabIndex = 1;
             this.grbTable.TabStop = false;
             this.grbTable.Text = "粘贴的数据列表";
@@ -439,7 +443,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.dgvTableList.Location = new System.Drawing.Point(3, 17);
             this.dgvTableList.Name = "dgvTableList";
             this.dgvTableList.RowTemplate.Height = 23;
-            this.dgvTableList.Size = new System.Drawing.Size(906, 255);
+            this.dgvTableList.Size = new System.Drawing.Size(1046, 332);
             this.dgvTableList.TabIndex = 0;
             this.dgvTableList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvTableList_KeyDown);
             // 
@@ -451,21 +455,28 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tsmiClear,
             this.tsmpPaste});
             this.cmsGird.Name = "contextMenuStrip1";
-            this.cmsGird.Size = new System.Drawing.Size(181, 92);
+            this.cmsGird.Size = new System.Drawing.Size(101, 70);
             // 
             // tsmiInsert
             // 
             this.tsmiInsert.Name = "tsmiInsert";
-            this.tsmiInsert.Size = new System.Drawing.Size(180, 22);
+            this.tsmiInsert.Size = new System.Drawing.Size(100, 22);
             this.tsmiInsert.Text = "加入";
             this.tsmiInsert.Click += new System.EventHandler(this.TsmiInsert_Click);
             // 
             // tsmiClear
             // 
             this.tsmiClear.Name = "tsmiClear";
-            this.tsmiClear.Size = new System.Drawing.Size(180, 22);
+            this.tsmiClear.Size = new System.Drawing.Size(100, 22);
             this.tsmiClear.Text = "清空";
             this.tsmiClear.Click += new System.EventHandler(this.tsmiClear_Click_1);
+            // 
+            // tsmpPaste
+            // 
+            this.tsmpPaste.Name = "tsmpPaste";
+            this.tsmpPaste.Size = new System.Drawing.Size(100, 22);
+            this.tsmpPaste.Text = "粘贴";
+            this.tsmpPaste.Click += new System.EventHandler(this.tsmpPaste_Click);
             // 
             // lblTableData
             // 
@@ -514,22 +525,27 @@ namespace Breezee.WorkHelper.DBTool.UI
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(926, 444);
-            this.splitContainer1.SplitterDistance = 133;
+            this.splitContainer1.Size = new System.Drawing.Size(1066, 553);
+            this.splitContainer1.SplitterDistance = 165;
             this.splitContainer1.TabIndex = 28;
             // 
-            // tsmpPaste
+            // ckbRemoveLastChar
             // 
-            this.tsmpPaste.Name = "tsmpPaste";
-            this.tsmpPaste.Size = new System.Drawing.Size(180, 22);
-            this.tsmpPaste.Text = "粘贴";
-            this.tsmpPaste.Click += new System.EventHandler(this.tsmpPaste_Click);
+            this.ckbRemoveLastChar.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbRemoveLastChar.AutoSize = true;
+            this.ckbRemoveLastChar.Location = new System.Drawing.Point(913, 5);
+            this.ckbRemoveLastChar.Margin = new System.Windows.Forms.Padding(2);
+            this.ckbRemoveLastChar.Name = "ckbRemoveLastChar";
+            this.ckbRemoveLastChar.Size = new System.Drawing.Size(96, 16);
+            this.ckbRemoveLastChar.TabIndex = 6;
+            this.ckbRemoveLastChar.Text = "去掉最后字符";
+            this.ckbRemoveLastChar.UseVisualStyleBackColor = true;
             // 
             // FrmDBTCopyData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(926, 523);
+            this.ClientSize = new System.Drawing.Size(1066, 632);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.toolStrip1);
@@ -602,5 +618,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         private Button btnRemoveTemplate;
         private Button btnSaveOther;
         private ToolStripMenuItem tsmpPaste;
+        private CheckBox ckbRemoveLastChar;
     }
 }

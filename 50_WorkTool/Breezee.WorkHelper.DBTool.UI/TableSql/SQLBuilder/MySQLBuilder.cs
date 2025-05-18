@@ -73,7 +73,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     sbSql.Append(strPK);//主键的处理,MySql是一句独立的
                 }
                 //表创建完毕：直接在后面加上备注
-                sbSql.Append(sTableRemark); 
+                sbSql.Append(sTableRemark + Environment.NewLine); 
                 //sbSql.Append(");\n");
                 //sbSql.Append(strUqueList);//唯一和外键
                 //sbSql.Append(sbRemark.ToString());//添加列说明
@@ -309,31 +309,13 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         public override void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue, DataBaseType impDbType)
         {
-            switch (impDbType)
-            {
-                case DataBaseType.SqlServer:
-                    //默认值
-                    sDefaultValue = sDefaultValue.ToLower().Replace("getdate()", "now()");
-                    break;
-                case DataBaseType.Oracle:
-                    //类型
-                    sDbType = sDbType.ToLower().Replace("varchar2", "varchar").Replace("date", "datetime").Replace("number", "decimal").Replace("timestamp", "datetime");
-                    //默认值
-                    sDefaultValue = sDefaultValue.ToLower().Replace("sysdate", "now()").Replace("sys_guid()", "uuid()");
-                    break;
-                case DataBaseType.MySql:
-                    break;
-                case DataBaseType.SQLite:
-                    //默认值
-                    sDefaultValue = sDefaultValue.ToLower().Replace("(datetime('now','localtime'))", "now()");
-                    break;
-                case DataBaseType.PostgreSql:
-                    //类型
-                    sDbType = sDbType.ToLower().Replace("character varying", "varchar").Replace("date", "datetime");
-                    break;
-                default:
-                    throw new Exception("暂不支持该数据库类型！");
-            }
+            //类型
+            sDbType = sDbType.ToLower().Replace("varchar2", "varchar").Replace("number", "decimal").Replace("timestamp", "datetime")
+                .Replace("character varying", "varchar").Replace("int4", "int").Replace("int8", "bigint")
+                .Replace("datetime", "dfatetime").Replace("date", "datetime").Replace("dfatetime", "datetime"); //为防止把datetime中的date替换为datetime，先将其转换为dfatetime，最后再换回来
+            //默认值
+            sDefaultValue = sDefaultValue.ToLower().Replace("sysdate", "now()").Replace("sys_guid()", "uuid()")
+                .Replace("getdate()", "now()").Replace("(datetime('now','localtime'))", "now()");
         }
 
         /// <summary>

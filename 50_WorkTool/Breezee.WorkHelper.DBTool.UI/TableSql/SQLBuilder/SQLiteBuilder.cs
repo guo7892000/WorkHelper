@@ -302,37 +302,13 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         public override void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue, DataBaseType impDbType)
         {
-            switch (impDbType)
-            {
-                case DataBaseType.SqlServer:
-                    //默认值
-                    sDefaultValue = sDefaultValue.ToLower().Replace("getdate()", "(datetime('now','localtime'))")
-                        .Replace("newid()", "");
-                    break;
-                case DataBaseType.Oracle:
-                    //类型
-                    sDbType = sDbType.ToLower().Replace("varchar2", "varchar").
-                        Replace("date", "datetime");
-                    //默认值
-                    sDefaultValue = sDefaultValue.ToLower().Replace("sysdate", "(datetime('now','localtime'))")
-                        .Replace("sys_guid()", "");
-                    break;
-                case DataBaseType.MySql:
-                    //默认值
-                    sDefaultValue = sDefaultValue.ToLower().Replace("now()", "");
-                    break;
-                case DataBaseType.SQLite:
-                    break;
-                case DataBaseType.PostgreSql:
-                    //类型
-                    sDbType = sDbType.ToLower().Replace("character varying", "varchar")
-                        .Replace("date", "datetime");
-                    //默认值
-                    sDefaultValue = sDefaultValue.ToLower().Replace("now()", "");
-                    break;
-                default:
-                    throw new Exception("暂不支持该数据库类型！");
-            }
+            //类型
+            sDbType = sDbType.ToLower().Replace("varchar2", "varchar")
+                .Replace("character varying", "varchar");
+            //默认值
+            sDefaultValue = sDefaultValue.ToLower().Replace("sysdate", "(datetime('now','localtime'))")
+                .Replace("sys_guid()", "")
+                .Replace("getdate()", "(datetime('now','localtime'))").Replace("newid()", "");
         }
 
         /// <summary>

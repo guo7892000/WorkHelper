@@ -265,6 +265,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                     #endregion
                 }
                 rtbResult.Clear();
+                if (ckbRemoveLastChar.Checked && sbAll.Length > 2)
+                {
+                    sbAll.Remove(sbAll.Length - 1, 1);
+                }
                 rtbResult.AppendText(sbAll.ToString() + "\n");
                 Clipboard.SetData(DataFormats.UnicodeText, sbAll.ToString());
                 tabControl1.SelectedTab = tpAutoSQL;

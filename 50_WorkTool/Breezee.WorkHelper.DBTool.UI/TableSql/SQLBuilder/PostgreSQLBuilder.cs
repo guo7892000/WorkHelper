@@ -79,7 +79,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
 
                 //表创建完毕
-                sbSql.Append(");\n");
+                sbSql.Append(");"+Environment.NewLine);
 
                 sbSql.Append(sbRemark.ToString());//添加列说明
                 sbRemark = new StringBuilder();
@@ -314,35 +314,12 @@ namespace Breezee.WorkHelper.DBTool.UI
         }
         public override void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue, DataBaseType impDbType)
         {
-            switch (impDbType)
-            {
-                case DataBaseType.SqlServer:
-                    //类型
-                    sDbType = sDbType.ToLower().Replace("varchar", "character varying").Replace("datetime", "date");
-                    //默认值
-                    sDefaultValue = sDefaultValue.ToLower().Replace("getdate()", "now()");
-                    break;
-                case DataBaseType.Oracle:
-                    //类型
-                    sDbType = sDbType.ToLower().Replace("varchar2", "character varying");
-                    //默认值
-                    sDefaultValue = sDefaultValue.ToLower().Replace("sysdate", "now()");
-                    break;
-                case DataBaseType.MySql:
-                    //类型
-                    sDbType = sDbType.ToLower().Replace("varchar", "character varying").Replace("datetime", "date");
-                    break;
-                case DataBaseType.SQLite:
-                    //类型
-                    sDbType = sDbType.ToLower().Replace("varchar", "character varying").Replace("datetime", "date");
-                    //默认值
-                    sDefaultValue = sDefaultValue.ToLower().Replace("(datetime('now','localtime'))", "now()");
-                    break;
-                case DataBaseType.PostgreSql:
-                    break;
-                default:
-                    throw new Exception("暂不支持该数据库类型！");
-            }
+            //类型
+            sDbType = sDbType.ToLower().Replace("datetime", "date").Replace("int", "int4").Replace("bigint", "int8")
+                .Replace("varchar2", "varchar");
+            //默认值
+            sDefaultValue = sDefaultValue.ToLower().Replace("getdate()", "now()")
+                .Replace("(datetime('now','localtime'))", "now()");
         }
 
         /// <summary>

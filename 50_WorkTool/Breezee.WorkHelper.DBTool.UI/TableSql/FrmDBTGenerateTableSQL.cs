@@ -414,7 +414,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         if ("PK".Equals(dr[ColCommon.ExcelCol.KeyType].ToString()))
                         {
                             //统一主键处理
-                            string sPKName = "PK_" + dr[ColCommon.ExcelCol.TableCode].ToString();
+                            string sPKName = "PK_" + dr[ColCommon.ExcelCol.TableCode].ToString().Trim();
                             if (ckbAllConvert.Checked)
                             {
                                 //针对特殊数据的字段赋值
@@ -556,7 +556,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         {
                             //表编码和名称处理
                             drNew = dtTable.NewRow();
-                            sTableCode = dr[EntlColLY.ExcelCol.DataType].ToString().Trim().Replace("表编码:", "").Replace("表编码：", "");
+                            sTableCode = dr[EntlColLY.ExcelCol.DataType].ToString().Trim().Replace("表编码:", "").Replace("表编码：", "").Trim();
                             sTableName = sColNameCn.Replace("表名称:", "").Replace("表名称：", ""); 
                             drNew[ExcelTable.Num] = iTalbe;
                             drNew[ExcelTable.Name] = sTableName;
@@ -1031,8 +1031,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                         public static string Comments = "R";//包括列名称和额外信息
                         public static string Extra = "R1";//列额外信息：从列备注中拆分
                      */
+
                     string sDataType = drSource[DBColumnSimpleEntity.SqlString.DataType].ToString();
                     string sDataLength = drSource[DBColumnSimpleEntity.SqlString.DataLength].ToString();
+                    string sDefault = drSource[DBColumnSimpleEntity.SqlString.Default].ToString();
+                    builder.ConvertDBTypeDefaultValueString(ref sDataType, ref sDefault, importDBType);//转换了列类型和默认值
                     //string sDataPrecision = drSource[DBColumnSimpleEntity.SqlString.DataPrecision].ToString();
                     string sDataScale = drSource[DBColumnSimpleEntity.SqlString.DataScale].ToString();
                     string sColName = drSource[DBColumnSimpleEntity.SqlString.Name].ToString();
@@ -1044,7 +1047,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     dr[ColCommon.ExcelCol.DataType] = sDataType;
                     dr[ColCommon.ExcelCol.DataLength] = sDataLength;
                     dr[ColCommon.ExcelCol.DataDotLength] = sDataScale;
-                    dr[ColCommon.ExcelCol.Default] = drSource[DBColumnSimpleEntity.SqlString.Default].ToString();
+                    dr[ColCommon.ExcelCol.Default] = sDefault;
                     dr[ColCommon.ExcelCol.KeyType] = drSource[DBColumnSimpleEntity.SqlString.KeyType].ToString();
                     dr[ColCommon.ExcelCol.NotNull] = "1".Equals(drSource[DBColumnSimpleEntity.SqlString.NotNull].ToString()) ? "是" : "";
                     dr[ColCommon.ExcelCol.Remark] = drSource[DBColumnSimpleEntity.SqlString.Extra].ToString();
@@ -1772,6 +1775,23 @@ namespace Breezee.WorkHelper.DBTool.UI
             ShowInfo("分类删除成功！");
         }
 
+        /// <summary>
+        /// 复制新增
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCopyAdd_Click(object sender, EventArgs e)
+        {
+            DataTable dtCopy = dgvOldNewChar.GetBindingTable();
+            if(dtCopy!=null && dtCopy.Rows.Count > 0)
+            {
+                DataTable dtNew = dtCopy.Copy();
+                cbbTemplateType.SelectedIndex = -1;
+                txbReplaceTemplateName.Text = string.Empty;
+                dgvOldNewChar.BindDataGridView(dtNew);
+                ShowInfo("已复制，请输入新分类名称后，请点击【保存分类】保存数据 ！");
+            }
+        }
         private void dgvOldNewChar_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             if (this.dgvOldNewChar.Columns[e.ColumnIndex].Name == _sGridColumnSelectEn)
@@ -1965,8 +1985,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             dgvTableList.SeachText(sSearch, ref dgvFindTextTable, null, isNext,ckbTableFixed.Checked);
             lblFindTable.Text = dgvFindTextTable.CurrentMsg;
         }
+
         #endregion
 
-        
     }
 }
