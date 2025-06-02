@@ -23,10 +23,6 @@ namespace Breezee.WorkHelper.DBTool.UI
     {
         #region 变量
         private readonly string _strTableName = "变更表清单";
-        //
-        private BindingSource bsTable = new BindingSource();
-        private BindingSource bsCos = new BindingSource();//
-        private BindingSource bsThree = new BindingSource();//
         //常量
         //文件路径
         string _DBConnString; //连接字符串
@@ -54,8 +50,26 @@ namespace Breezee.WorkHelper.DBTool.UI
             //数据库类型
             DataTable dtDbType = DBToolUIHelper.GetBaseDataTypeTable();
             cbbDbType.BindTypeValueDropDownList(dtDbType, false, true);
+            IDictionary<string, string> dic_List = new Dictionary<string, string>
+            {
+                { "1", "表列索引" },
+                { "2", "表列注释" }
+            };
+            cbbGenerateType.BindTypeValueDropDownList(dic_List.GetTextValueTable(false), false, true);
             //
-            lblTableData.Text = "SQLite不支持注释。MySql只支持增加表注释，因为导入的信息不足以生成列注释！";
+        }
+
+        private void cbbGenerateType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbbGenerateType.SelectedValue == null) return;
+            if ("2".Equals(cbbGenerateType.SelectedValue.ToString()))
+            {
+                lblTableData.Text = "SQLite不支持注释。MySql只支持增加表注释，因为导入的信息不足以生成列注释！";
+            }
+            else
+            {
+                lblTableData.Text = "";
+            }
         }
 
         private void tsbImport_Click(object sender, EventArgs e)
@@ -63,66 +77,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             try
             {
                 dsExcel = new DataSet();
-
-                //表清单
-                //_strMainSql = @"SELECT 表名,列名,扩展属性说明
-                //     FROM [表列扩展属性说明$] where 表名 is not null order by [表名]";
-                ////错误提示信息
-                //_strErr = @"请确定工作表包括名为“表列扩展属性说明”。其中“变更表清单”包括列“表名,列名,扩展说明”。";
-                //#endregion
-
-                //OpenFileDialog opd = new OpenFileDialog();
-                ////opd.Filter = "Excel文件(*.xls,*.xlsx)|*.xls;*.xlsx";  //支持2003、2007以上格式的Excel
-                //opd.Filter = "Excel文件(*.xlsx)|*.xlsx"; //只支持2007以上格式的Excel
-                //opd.FilterIndex = 0;
-                //opd.Title = "选择对应类型的导入模板Excel文件";
-                //opd.RestoreDirectory = false;
-
-                //if (DialogResult.Cancel == opd.ShowDialog())
-                //{
-                //    return;
-                //}
-                //string sFilePath = opd.FileName;
-                //string[] strFileNam = sFilePath.Split('.');
-
-
-                //string strFileFormart = strFileNam[strFileNam.Length - 1].ToString().ToLower();
-                //if (strFileFormart == "xls")
-                //{
-                //    _DBConnString = @"Provider=Microsoft.jet.OleDb.4.0;Data Source=" + sFilePath + ";Extended Properties='Excel 8.0;IMEX=1'";
-                //}
-                //else if (strFileFormart == "xlsx")
-                //{
-                //    _DBConnString = @"Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + sFilePath + "; Extended Properties='Excel 12.0 Xml;HDR=YES;IMEX=1'";
-                //}
-                //using (OleDbConnection con = new OleDbConnection(_DBConnString))
-                //{
-                //    if (con.State != ConnectionState.Open)
-                //    {
-                //        con.Open();
-                //    }
-                //    try
-                //    {
-                //        OleDbDataAdapter daTable = new OleDbDataAdapter(_strMainSql, con);
-                //        //打开连接并填充表
-                //        daTable.Fill(dsExcel, _strTableName);
-                //        bsTable.DataSource = dsExcel.Tables[_strTableName];
-                //        dgvTableList.DataSource = bsTable;
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        ShowErr(ex.Message);
-                //        return;
-                //    }
-                //}
-
                 dsExcel = ExportHelper.GetExcelDataSet();//得到Excel数据
                 if (dsExcel == null)
                 {
                     return;
                 }
-                bsTable.DataSource = dsExcel.Tables[0];
-                dgvTableList.DataSource = bsTable;
+
+                dgvTableList.BindAutoColumn(dsExcel.Tables[0]);
                 //导入成功后处理
                 tsbAutoSQL.Enabled = true;
                 tabControl1.SelectedTab = tpImport;
@@ -138,16 +99,17 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private void tsbAutoSQL_Click(object sender, EventArgs e)
         {
-            #region 表列扩展属性变更
+            if (cbbGenerateType.SelectedValue == null) return;
             int iDbType = int.Parse(cbbDbType.SelectedValue.ToString());
             DataBaseType selectDBType = (DataBaseType)iDbType;
-            if (selectDBType == DataBaseType.SQLite)
+            if ("2".Equals(cbbGenerateType.SelectedValue.ToString()) && selectDBType == DataBaseType.SQLite)
             {
                 ShowInfo("SQLite不支持注释！");
                 return;
             }
+
             //取得数据源
-            DataTable dtMain = (DataTable)bsTable.DataSource;
+            DataTable dtMain = dgvTableList.GetBindingTable();
 
             #region 移除空行
             string strColNameList = "";
@@ -168,7 +130,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 dtMain.Rows.Remove(dr);
             }
-            #endregion
 
             //得到变更后数据
             dtMain.AcceptChanges();
@@ -177,92 +138,142 @@ namespace Breezee.WorkHelper.DBTool.UI
                 ShowInfo("没有可生成的数据！");
                 return;
             }
-            string strExtendList = "";
-            int iTableExtend = 1;
-            string sbAllSql = "";
-            if (selectDBType == DataBaseType.SqlServer)
-            {
-                #region SqlServer
-                foreach (DataRow drCol in dtMain.Rows)
-                {
-                    string strExtendTableName = drCol["表名"].ToString();
-                    string strExtendColName = drCol["列名"].ToString();
-                    string strExtendText = drCol["扩展属性说明"].ToString();
+            #endregion
 
-                    string strExtend = " SELECT " + StringHelper.ChangeIntoSqlString(strExtendTableName) + " TABLE_NAME,"
-                            + StringHelper.ChangeIntoSqlString(strExtendColName) + " COLUMNS_NAME,"
-                            + StringHelper.ChangeIntoSqlString(strExtendText) + " EXTEND_TEXT"
-                            + " \n";
-                    if (iTableExtend != 1)
+            StringBuilder sbTableColumnList = new StringBuilder();
+            string sbAllSql = "";
+
+            if ("2".Equals(cbbGenerateType.SelectedValue.ToString()))
+            {
+                #region 表列注释
+                int iTableExtend = 1;
+                if (selectDBType == DataBaseType.SqlServer)
+                {
+                    #region SqlServer
+                    foreach (DataRow drCol in dtMain.Rows)
                     {
-                        strExtend = " UNION " + strExtend;
+                        string strExtendTableName = drCol["表名"].ToString();
+                        string strExtendColName = drCol["列名"].ToString();
+                        string strExtendText = drCol["注释"].ToString();
+
+                        string strExtend = " SELECT " + StringHelper.ChangeIntoSqlString(strExtendTableName) + " TABLE_NAME,"
+                                + StringHelper.ChangeIntoSqlString(strExtendColName) + " COLUMNS_NAME,"
+                                + StringHelper.ChangeIntoSqlString(strExtendText) + " EXTEND_TEXT"
+                                + " \n";
+                        if (iTableExtend != 1)
+                        {
+                            strExtend = " UNION " + strExtend;
+                        }
+                        sbTableColumnList.Append(strExtend);
+                        iTableExtend++;
                     }
-                    strExtendList = strExtendList + strExtend;
-                    iTableExtend++;
+                    //读取并替换
+                    sbAllSql = File.ReadAllText(GetSystemFullPath(@"DataTemplate/DBTool/TableSQL/1.001_修改表列说明.sql"), Encoding.Default).Replace("#EXTEND_LIST#", sbTableColumnList.ToString());
+                    #endregion
                 }
-                //读取并替换
-                sbAllSql = File.ReadAllText(GetSystemFullPath(@"DataTemplate/DBTool/TableSQL/1.001_修改表列说明.sql"), Encoding.Default).Replace("#EXTEND_LIST#", strExtendList); 
+                else
+                {
+                    foreach (DataRow drCol in dtMain.Rows)
+                    {
+                        string strExtendTableName = drCol["表名"].ToString();
+                        string strExtendColName = drCol["列名"].ToString();
+                        string strExtendText = drCol["注释"].ToString().Trim();
+                        if (string.IsNullOrEmpty(strExtendTableName))
+                        {
+                            iTableExtend++;
+                            continue;
+                        }
+
+                        if (string.IsNullOrEmpty(strExtendColName))
+                        {
+                            if (selectDBType == DataBaseType.Oracle)
+                            {
+                                sbTableColumnList.Append(string.Format(@"COMMENT ON TABLE {0} IS '{1}';" + "\n", strExtendTableName, strExtendText));
+                            }
+                            else if (selectDBType == DataBaseType.MySql)
+                            {
+                                sbTableColumnList.Append(string.Format(@"ALTER TABLE {0} COMMENT = '{1}';" + "\n", strExtendTableName, strExtendText));
+                            }
+                            else if (selectDBType == DataBaseType.PostgreSql)
+                            {
+                                //
+                                sbTableColumnList.Append(string.Format(@"COMMENT ON TABLE {0} IS '{1}';" + "\n", strExtendTableName, strExtendText));
+                            }
+                            else
+                            {
+                                throw new Exception("暂不支持该数据库类型");
+                            }
+                        }
+                        else
+                        {
+                            if (selectDBType == DataBaseType.Oracle)
+                            {
+                                sbTableColumnList.Append(string.Format(@"COMMENT ON COLUMN {0}.{1} IS '{2}';" + "\n", strExtendTableName, strExtendColName, strExtendText));
+                            }
+                            else if (selectDBType == DataBaseType.MySql)
+                            {
+                                //需要加上原字段信息，所以建议利用修改表列的SQL来修改
+                                //strExtendList += string.Format(@"ALTER TABLE {0} MODIFY COLUMN {1} COMMENT '{2}';" + "\n", strExtendTableName, strExtendColName, strExtendText);
+                            }
+                            else if (selectDBType == DataBaseType.PostgreSql)
+                            {
+                                //
+                                sbTableColumnList.Append(string.Format(@"COMMENT ON COLUMN {0}.{1} IS '{2}';" + "\n", strExtendTableName, strExtendColName, strExtendText));
+                            }
+                            else
+                            {
+                                throw new Exception("暂不支持该数据库类型");
+                            }
+
+                        }
+                        iTableExtend++;
+                    }
+                    sbAllSql = sbTableColumnList.ToString();
+                }
                 #endregion
             }
             else
             {
+                #region 表列索引
+                SQLBuilder builder;
+                switch (selectDBType)
+                {
+                    case DataBaseType.SqlServer:
+                        builder = new SQLServerBuilder();
+                        break;
+                    case DataBaseType.Oracle:
+                        builder = new OracleBuilder();
+                        break;
+                    case DataBaseType.MySql:
+                        builder = new MySQLBuilder();
+                        break;
+                    case DataBaseType.SQLite:
+                        builder = new SQLiteBuilder();
+                        break;
+                    case DataBaseType.PostgreSql:
+                        builder = new PostgreSQLBuilder();
+                        break;
+                    default:
+                        builder = new SQLServerBuilder();
+                        break;
+                }
+
                 foreach (DataRow drCol in dtMain.Rows)
                 {
-                    string strExtendTableName = drCol["表名"].ToString();
-                    string strExtendColName = drCol["列名"].ToString();
-                    string strExtendText = drCol["扩展属性说明"].ToString().Trim();
-                    if (string.IsNullOrEmpty(strExtendTableName))
+                    string sTableName = drCol["表名"].ToString();
+                    string sColName = drCol["列名"].ToString();
+                    if(string.IsNullOrEmpty(sTableName) || string.IsNullOrEmpty(sColName))
                     {
-                        iTableExtend++;
                         continue;
                     }
-
-                    if (string.IsNullOrEmpty(strExtendColName))
-                    {
-                        if (selectDBType == DataBaseType.Oracle)
-                        {
-                            strExtendList += string.Format(@"COMMENT ON TABLE {0} IS '{1}';" + "\n", strExtendTableName, strExtendText);
-                        }
-                        else if (selectDBType == DataBaseType.MySql)
-                        {
-                            strExtendList += string.Format(@"ALTER TABLE {0} COMMENT = '{1}';" + "\n", strExtendTableName, strExtendText);
-                        }
-                        else if (selectDBType == DataBaseType.PostgreSql)
-                        {
-                            //
-                            strExtendList += string.Format(@"COMMENT ON TABLE {0} IS '{1}';" + "\n", strExtendTableName, strExtendText);
-                        }
-                        else
-                        {
-                            throw new Exception("暂不支持该数据库类型");
-                        }
-                    }
-                    else
-                    {
-                        if (selectDBType == DataBaseType.Oracle)
-                        {
-                            strExtendList += string.Format(@"COMMENT ON COLUMN {0}.{1} IS '{2}';" + "\n", strExtendTableName, strExtendColName, strExtendText);
-                        }
-                        else if (selectDBType == DataBaseType.MySql)
-                        {
-                            //需要加上原字段信息，所以建议利用修改表列的SQL来修改
-                            //strExtendList += string.Format(@"ALTER TABLE {0} MODIFY COLUMN {1} COMMENT '{2}';" + "\n", strExtendTableName, strExtendColName, strExtendText);
-                        }
-                        else if (selectDBType == DataBaseType.PostgreSql)
-                        {
-                            //
-                            strExtendList += string.Format(@"COMMENT ON COLUMN {0}.{1} IS '{2}';" + "\n", strExtendTableName, strExtendColName, strExtendText);
-                        }
-                        else
-                        {
-                            throw new Exception("暂不支持该数据库类型");
-                        }
-                        
-                    }
-                    iTableExtend++;
+                    bool sIsUniqueIndex = "是".Equals(drCol["是否唯一索引"].ToString());
+                    string sIndexName = drCol["索引名"].ToString();
+                    sbTableColumnList.AppendLine(builder.GenerateIndexSql(sTableName, sColName, sIsUniqueIndex, sIndexName));
                 }
-                sbAllSql = strExtendList;
+                sbAllSql = sbTableColumnList.ToString();
+                #endregion
             }
+
             //生成SQL并提示
             rtbResult.Clear();
             rtbResult.AppendText(sbAllSql.ToString() + "\n");
@@ -271,18 +282,21 @@ namespace Breezee.WorkHelper.DBTool.UI
             //生成SQL成功后提示
             ShowInfo(StaticValue.GenResultCopySuccessMsg);
             rtbResult.Select(0, 0); //返回到第一
-            return;
-            #endregion
         }
 
         private void tsbDownLoad_Click(object sender, EventArgs e)
         {
-            DBToolUIHelper.DownloadFile(DBTGlobalValue.TableSQL.Excel_TableColumnRemark, "模板_表列备注扩展信息", true);
+            DBToolUIHelper.DownloadFile(DBTGlobalValue.TableSQL.Excel_TableColumnRemark, "模板_表列注释", true);
         }
 
+        private void tsbIndexTemplateDownload_Click(object sender, EventArgs e)
+        {
+            DBToolUIHelper.DownloadFile(DBTGlobalValue.TableSQL.Excel_TableColumnIndex, "模板_表列索引", true); 
+        }
         private void tsbExit_Click(object sender, EventArgs e)
         {
             Close();
         }
+        
     }
 }

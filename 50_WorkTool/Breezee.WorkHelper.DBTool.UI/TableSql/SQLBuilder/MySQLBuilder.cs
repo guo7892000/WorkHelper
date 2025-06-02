@@ -309,10 +309,9 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         public override void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue, DataBaseType impDbType)
         {
-            //类型
+            //类型：支持date和datetime
             sDbType = sDbType.ToLower().Replace("varchar2", "varchar").Replace("number", "decimal").Replace("timestamp", "datetime")
-                .Replace("character varying", "varchar").Replace("int4", "int").Replace("int8", "bigint")
-                .Replace("datetime", "dfatetime").Replace("date", "datetime").Replace("dfatetime", "datetime"); //为防止把datetime中的date替换为datetime，先将其转换为dfatetime，最后再换回来
+                .Replace("character varying", "varchar").Replace("int4", "int").Replace("int8", "bigint"); 
             //默认值
             sDefaultValue = sDefaultValue.ToLower().Replace("sysdate", "now()").Replace("sys_guid()", "uuid()")
                 .Replace("getdate()", "now()").Replace("(datetime('now','localtime'))", "now()");
@@ -353,6 +352,38 @@ namespace Breezee.WorkHelper.DBTool.UI
                     //MatchReplace(ref sSql, sMatchIfNull, SqlFuncString.IfNull, PostgreSQLBuilder.SqlFuncString.IfNull); //相同
                     //MatchReplace(ref sSql, sMatchsSysGuid, SqlFuncString.Guid, PostgreSQLBuilder.SqlFuncString.Guid); //相同
                     break;
+            }
+        }
+
+        public override string GenerateIndexSql(string sTableName, string sColumnList, bool isUnique,string idxName)
+        {
+            string[] sColList = sColumnList.Split(new char[] { ',',',' }, StringSplitOptions.RemoveEmptyEntries);
+            StringBuilder sb = new StringBuilder();
+            string sPre = isUnique ? "UK_" : "IDX_";
+            if (string.IsNullOrEmpty(idxName))
+            {
+                if (sColList.Length == 1)
+                {
+                    sb.Append(sPre).Append(sTableName).Append("_").Append(sColList[0]);
+
+                }
+                else
+                {
+                    sb.Append(sPre).Append(sTableName).Append("_").Append(sColList[0]).Append(sColList.Count());
+                }
+            }
+            else
+            {
+                sb.Append(idxName);
+            }
+
+            if (isUnique)
+            {
+                return string.Format("alter table {0} add unique key {1} ({2});", sTableName, sb.ToString(), sColumnList);
+            }
+            else
+            {
+                return string.Format("alter table {0} add key {1} ({2});", sTableName, sb.ToString(), sColumnList);
             }
         }
 

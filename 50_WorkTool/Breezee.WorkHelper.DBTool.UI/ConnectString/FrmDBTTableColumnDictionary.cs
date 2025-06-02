@@ -24,6 +24,7 @@ using org.breezee.MyPeachNet;
 using static Breezee.WorkHelper.DBTool.UI.TableColumnDicTemplate;
 using Breezee.Core.Entity;
 using FluentFTP;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -189,6 +190,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             toolTip1.SetToolTip(ckbIsPage, "选中后，在生成的YAPI参数里会包括分页相关参数。");
             toolTip1.SetToolTip(ckbNotFoundAdd, "选中后，在匹配时，如果找不到相关列信息，但还是会加到【已选择】网格中。");
             toolTip1.SetToolTip(cbbTemplateType, "如果我们需要对生成的字符，做进一步字符替换处理时，\r\n可选择预保存好的字符替换模板。");
+            toolTip1.SetToolTip(btnMatch, "仅匹配数据");
+            toolTip1.SetToolTip(btnGenCondition, "自动生成查询条件参数的API字符，并复制到粘贴板中。"); 
+            toolTip1.SetToolTip(btnGenResult, "自动生成查询结果所有列的API字符，并复制到粘贴板中。");
             //加载模板数据
             replaceStringData = new ReplaceStringXmlConfig(DBTGlobalValue.TableColumnDictionary.Xml_FileName);
             string sColName = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
@@ -204,7 +208,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             dgvOldNewChar.Tag = fdc.GetGridTagString();
             dgvOldNewChar.BindDataGridView(null, false);
             dgvOldNewChar.AllowUserToAddRows = true;
-            
+            // 设置初始分割比例
+            splitContainer2.SplitterDistance = splitContainer2.Width / 2;
         }
 
         #region 显示全局提示信息事件
@@ -496,6 +501,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             return isChangeTap;
         }
 
+        /// <summary>
+        /// 匹配并生成
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnMatchGenerate_Click(object sender, EventArgs e)
         {
             if (MatchData())
@@ -512,6 +522,51 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void btnMatch_Click(object sender, EventArgs e)
         {
             MatchData();
+        }
+
+        /// <summary>
+        /// 匹配并生成查询条件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnGenCondition_Click(object sender, EventArgs e)
+        {
+            GenSqlApiString("1");
+        }
+
+        /// <summary>
+        /// 生成SQL的API字符
+        /// </summary>
+        /// <param name="sType">类型：1-匹配SQL条件,2-匹配SQL结果</param>
+        private bool GenSqlApiString(string sType)
+        {
+            try
+            {
+                string sSql = rtbInputSql.Text.Trim();
+                if (string.IsNullOrEmpty(sSql))
+                {
+                    ShowInfo("请先输入SQL！");
+                    return false;
+                }
+                cbbInputType.SelectedValue = sType; //匹配SQL条件
+                btnMatchGenerate.PerformClick();
+            }
+            catch (Exception ex)
+            {
+                ShowErr(ex);
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 匹配并生成查询结果
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnGenResult_Click(object sender, EventArgs e)
+        {
+            GenSqlApiString("2");
         }
 
         private bool MatchData()
@@ -2313,6 +2368,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             ResetQueryParam();
         }
+
     }
 
     public enum MybatisStringType

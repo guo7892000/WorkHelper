@@ -44,7 +44,8 @@ namespace Breezee.WorkHelper.DBTool.Entity
         {
             public static string Excel_TableColumn = TableSQL_Pre + "模板_表列结构.xlsx";
             public static string Excel_TableColumnLY = TableSQL_Pre + @"\LY\模板_LY数据库变更.xlsm";
-            public static string Excel_TableColumnRemark = TableSQL_Pre + "模板_表列备注扩展信息.xlsx";
+            public static string Excel_TableColumnRemark = TableSQL_Pre + "模板_表列注释.xlsx";
+            public static string Excel_TableColumnIndex = TableSQL_Pre + "模板_表列索引.xlsx";
             //资源路径
             public static string Html_Html = DataSQL_SourcePre + "Html.txt";
             public static string Html_Table = DataSQL_SourcePre + "Table.txt";

@@ -38,7 +38,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             string strPK = "";
             string strUqueList = "";
 
-            if ((createType ==  SQLCreateType.Drop || createType ==  SQLCreateType.Drop_Create) && tableDealType == TableChangeType.Create)
+            if ((createType == SQLCreateType.Drop || createType == SQLCreateType.Drop_Create) && tableDealType == TableChangeType.Create)
             {
                 sbDelete = sbDelete.Insert(0, "DROP TABLE IF EXISTS " + strTableCode + ";\n");//倒着删除掉
             }
@@ -57,7 +57,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     sbRemark.Append("COMMENT ON TABLE " + strTableCode + " IS '" + strTableName + "：" + strTableRemark + "';\n");
                 }
-                    
+
                 int j = tableCols.Count();
                 //string strDefaultList = "";//默认值
                 //string strUqueList = "";
@@ -79,7 +79,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
 
                 //表创建完毕
-                sbSql.Append(");"+Environment.NewLine);
+                sbSql.Append(");" + Environment.NewLine);
 
                 sbSql.Append(sbRemark.ToString());//添加列说明
                 sbRemark = new StringBuilder();
@@ -249,9 +249,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
 
                 //生成删除列SQL脚本
-                if (createType ==  SQLCreateType.Drop || createType ==  SQLCreateType.Drop_Create)
+                if (createType == SQLCreateType.Drop || createType == SQLCreateType.Drop_Create)
                 {
-                    if (strColumnDealType ==  ColumnChangeType.Create || strColumnDealType == ColumnChangeType.Drop_Create)
+                    if (strColumnDealType == ColumnChangeType.Create || strColumnDealType == ColumnChangeType.Drop_Create)
                     {
                         sbDelete.Append("ALTER TABLE " + strTableCode + " DROP COLUMN " + strColCode + ";\n");
                     }
@@ -266,7 +266,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 sbColSql.Append(AddRightBand(strColCode) + sDataType_Full);
 
                 #region 非空的处理
-                if (strColNoNull ==  YesNoType.Yes)
+                if (strColNoNull == YesNoType.Yes)
                 {
                     sbColSql.Append(sNotNull);
                 }
@@ -315,11 +315,20 @@ namespace Breezee.WorkHelper.DBTool.UI
         public override void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue, DataBaseType impDbType)
         {
             //类型
-            sDbType = sDbType.ToLower().Replace("datetime", "date").Replace("int", "int4").Replace("bigint", "int8")
-                .Replace("varchar2", "varchar");
+            sDbType = sDbType.ToLower().Replace("datetime", "timestamp").Replace("bigint", "ilnt8").Replace("int", "int4").Replace("ilnt8", "int8")
+                .Replace("varchar2", "varchar").Replace("character varying", "varchar");
+            // PG的整型不支持框号
+            if (sDbType.StartsWith("int4(") || sDbType.StartsWith("int8("))
+            {
+                sDbType = sDbType.Substring(0,4);
+            }
+            else if (sDbType.StartsWith("int("))
+            {
+                sDbType = sDbType.Substring(0, 3);
+            }
             //默认值
             sDefaultValue = sDefaultValue.ToLower().Replace("getdate()", "now()")
-                .Replace("(datetime('now','localtime'))", "now()");
+            .Replace("(datetime('now','localtime'))", "now()");
         }
 
         /// <summary>
@@ -357,6 +366,38 @@ namespace Breezee.WorkHelper.DBTool.UI
                     break;
                 case DataBaseType.PostgreSql:
                     break;
+            }
+        }
+
+        public override string GenerateIndexSql(string sTableName, string sColumnList, bool isUnique, string idxName)
+        {
+            string[] sColList = sColumnList.Split(new char[] { ',', ',' }, StringSplitOptions.RemoveEmptyEntries);
+            StringBuilder sb = new StringBuilder();
+            string sPre = isUnique ? "UK_" : "IDX_";
+            if (string.IsNullOrEmpty(idxName))
+            {
+                if (sColList.Length == 1)
+                {
+                    sb.Append(sPre).Append(sTableName).Append("_").Append(sColList[0]);
+
+                }
+                else
+                {
+                    sb.Append(sPre).Append(sTableName).Append("_").Append(sColList[0]).Append(sColList.Count());
+                }
+            }
+            else
+            {
+                sb.Append(idxName);
+            }
+
+            if (isUnique)
+            {
+                return string.Format("create unique index {1} ON {0}({2});", sTableName, sb.ToString(), sColumnList);
+            }
+            else
+            {
+                return string.Format("create index {1} ON {0}({2});", sTableName, sb.ToString(), sColumnList);
             }
         }
 

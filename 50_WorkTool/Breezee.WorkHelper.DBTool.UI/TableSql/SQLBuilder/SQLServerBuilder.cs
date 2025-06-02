@@ -430,9 +430,8 @@ namespace Breezee.WorkHelper.DBTool.UI
         public override void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue, DataBaseType impDbType)
         {
             //类型
-            sDbType = sDbType.ToLower().Replace("varchar2", "varchar").Replace("nvarchar2", "nvarchar").Replace("number", "decimal")
-                .Replace("character varying", "varchar").Replace("int", "integer").Replace("int4", "int").Replace("int8", "bigint")
-                .Replace("datetime", "dfatetime").Replace("date", "datetime").Replace("dfatetime", "datetime"); //为防止把datetime中的date替换为datetime，先将其转换为dfatetime，最后再换回来
+            sDbType = sDbType.ToLower().Replace("varchar2", "varchar").Replace("number", "decimal")
+                .Replace("character varying", "varchar").Replace("integer", "int").Replace("int4", "int").Replace("int8", "bigint");
             //默认值
             sDefaultValue = sDefaultValue.ToLower().Replace("sysdate", "getdate()").Replace("sys_guid()", "newid()")
                 .Replace("now()", "getdate()")
@@ -477,6 +476,37 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
         }
 
+        public override string GenerateIndexSql(string sTableName, string sColumnList, bool isUnique, string idxName)
+        {
+            string[] sColList = sColumnList.Split(new char[] { ',', ',' }, StringSplitOptions.RemoveEmptyEntries);
+            StringBuilder sb = new StringBuilder();
+            string sPre = isUnique ? "UK_" : "IDX_";
+            if (string.IsNullOrEmpty(idxName))
+            {
+                if (sColList.Length == 1)
+                {
+                    sb.Append(sPre).Append(sTableName).Append("_").Append(sColList[0]);
+
+                }
+                else
+                {
+                    sb.Append(sPre).Append(sTableName).Append("_").Append(sColList[0]).Append(sColList.Count());
+                }
+            }
+            else
+            {
+                sb.Append(idxName);
+            }
+
+            if (isUnique)
+            {
+                return string.Format("CREATE UNIQUE NONCLUSTERED INDEX {1} ON [dbo].[{0}]([{2}] ASC);", sTableName, sb.ToString(), sColumnList);
+            }
+            else
+            {
+                return string.Format("CREATE NONCLUSTERED INDEX {1} ON [dbo].[{0}]([{2}] ASC);", sTableName, sb.ToString(), sColumnList);
+            }
+        }
         public class SqlFuncString
         {
             public static string NowDate = "GETDATE";

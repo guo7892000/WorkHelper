@@ -349,6 +349,38 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
         }
 
+        public override string GenerateIndexSql(string sTableName, string sColumnList, bool isUnique, string idxName)
+        {
+            string[] sColList = sColumnList.Split(new char[] { ',', ',' }, StringSplitOptions.RemoveEmptyEntries);
+            StringBuilder sb = new StringBuilder();
+            string sPre = isUnique ? "UK_" : "IDX_";
+            if (string.IsNullOrEmpty(idxName))
+            {
+                if (sColList.Length == 1)
+                {
+                    sb.Append(sPre).Append(sTableName).Append("_").Append(sColList[0]);
+
+                }
+                else
+                {
+                    sb.Append(sPre).Append(sTableName).Append("_").Append(sColList[0]).Append(sColList.Count());
+                }
+            }
+            else
+            {
+                sb.Append(idxName);
+            }
+
+            if (isUnique)
+            {
+                return string.Format("CREATE UNIQUE INDEX {1} ON {0}({2});", sTableName, sb.ToString(), sColumnList);
+            }
+            else
+            {
+                return string.Format("CREATE INDEX {1} ON {0}({2});", sTableName, sb.ToString(), sColumnList);
+            }
+        }
+
         public class SqlFuncString
         {
             public static string NowDate = "NOW";

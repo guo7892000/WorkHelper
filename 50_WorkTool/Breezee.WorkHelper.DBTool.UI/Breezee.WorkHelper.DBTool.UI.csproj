@@ -373,7 +373,10 @@
     <None Include="DataTemplate\DBTool\TableSQL\LY\模板_LY数据库变更.xlsm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="DataTemplate\DBTool\TableSQL\模板_表列备注扩展信息.xlsx">
+    <None Include="DataTemplate\DBTool\TableSQL\模板_表列索引.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="DataTemplate\DBTool\TableSQL\模板_表列注释.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="DataTemplate\DBTool\TableSQL\模板_表列结构.xlsx">

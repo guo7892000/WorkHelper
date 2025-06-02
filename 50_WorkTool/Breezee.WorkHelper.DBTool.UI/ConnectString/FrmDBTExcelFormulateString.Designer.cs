@@ -74,6 +74,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.cbbConnString = new System.Windows.Forms.ComboBox();
             this.lblColumnNum = new System.Windows.Forms.Label();
             this.uC_DbConnection1 = new Breezee.WorkHelper.DBTool.UI.UC_DbConnection();
+            this.ckbEmptyToNull = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.grbOrcNet.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -513,7 +514,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 10;
+            this.tableLayoutPanel1.ColumnCount = 11;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -523,7 +524,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 260F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.nudColumnNum, 7, 0);
             this.tableLayoutPanel1.Controls.Add(this.ckbLastFengHao, 8, 0);
@@ -533,6 +535,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tableLayoutPanel1.Controls.Add(this.lblColumnNum, 6, 0);
             this.tableLayoutPanel1.Controls.Add(this.lblTable, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.txbTableName, 5, 0);
+            this.tableLayoutPanel1.Controls.Add(this.ckbEmptyToNull, 9, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -591,6 +594,17 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.uC_DbConnection1.Name = "uC_DbConnection1";
             this.uC_DbConnection1.Size = new System.Drawing.Size(1087, 78);
             this.uC_DbConnection1.TabIndex = 35;
+            // 
+            // ckbEmptyToNull
+            // 
+            this.ckbEmptyToNull.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbEmptyToNull.AutoSize = true;
+            this.ckbEmptyToNull.Location = new System.Drawing.Point(824, 5);
+            this.ckbEmptyToNull.Name = "ckbEmptyToNull";
+            this.ckbEmptyToNull.Size = new System.Drawing.Size(84, 16);
+            this.ckbEmptyToNull.TabIndex = 9;
+            this.ckbEmptyToNull.Text = "空值为null";
+            this.ckbEmptyToNull.UseVisualStyleBackColor = true;
             // 
             // FrmDBTExcelFormulateString
             // 
@@ -684,5 +698,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         private GroupBox groupBox2;
         private Label label3;
         private DataGridView dgvExcelCol;
+        private CheckBox ckbEmptyToNull;
     }
 }

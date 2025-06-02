@@ -73,8 +73,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Add("1", "新增");
             _dicString.Add("2", "修改");
             _dicString.Add("3", "查询");
-            _dicString.Add("4", "删除"); 
+            _dicString.Add("4", "删除");
             _dicString.Add("6", "查询新增"); //这里要使用6，参数使用了5
+            _dicString.Add("7", "同表新增");
             cmbType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
             //
             _dicString.Clear();
@@ -83,9 +84,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Add("3", "MyBatis参数");
             _dicString.Add("4", "MyBatis动态参数");
             _dicString.Add("10", "自定义");
-            
             cbbParaType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
-
 
             IDictionary<string, string> dic_List = new Dictionary<string, string>
             {
@@ -94,6 +93,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                 { "2", "大驼峰式" }
             };
             cbbWordConvert.BindTypeValueDropDownList(dic_List.GetTextValueTable(false), false, true);
+
+            //
+            dic_List = new Dictionary<string, string>
+            {
+                { "0", "无" },
+                { "1", "大写" },
+                { "2", "小写" }
+            };
+            cbbUpperLower.BindTypeValueDropDownList(dic_List.GetTextValueTable(false), false, true);
             #endregion
 
             #region 设置数据库连接控件
@@ -102,7 +110,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             uC_DbConnection1.SetDbConnComboBoxSource(dtConn);
             uC_DbConnection1.IsDbNameNotNull = true;
             uC_DbConnection1.DBType_SelectedIndexChanged += cbbDatabaseType_SelectedIndexChanged;//数据库类型下拉框变化事件
-            uC_DbConnection1.DBConnName_SelectedIndexChanged+= DBConnName_SelectedIndexChanged;
+            uC_DbConnection1.DBConnName_SelectedIndexChanged += DBConnName_SelectedIndexChanged;
             uC_DbConnection1.ShowGlobalMsg += ShowGlobalMsg_Click;
             #endregion
 
@@ -200,7 +208,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             //设置Tag
             SetTableTag(dtTable);
             SetColTag(dtTable);
-            
+
             //导入成功后处理
             tsbAutoSQL.Enabled = true;
             tabControl1.SelectedTab = tpImport;
@@ -272,14 +280,14 @@ namespace Breezee.WorkHelper.DBTool.UI
             dtCols.Columns.Add(dcDynamic);
 
 
-            
+
             dtCols.TableName = _strColName;
 
             foreach (DataRow dr in dtCols.Rows)
             {
                 //备份默认值
                 dr[_sGridColumnDefault] = dr[DBColumnEntity.SqlString.Default];
-                if(_dtDefault!=null && _dtDefault.Rows.Count > 0)
+                if (_dtDefault != null && _dtDefault.Rows.Count > 0)
                 {
                     string sDefaultColName;
                     switch (_dbServer.DatabaseType)
@@ -366,6 +374,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                 ShowInfo("请先查询！");
                 return;
             }
+            //大小写类型
+            string sUpperLowerType = cbbUpperLower.SelectedValue.ToString();
+            bool isSameTableQueryInsert = "7".Equals(cmbType.SelectedValue.ToString()); //是否同表查询新增
             #endregion
 
             #region 生成增删改查SQL
@@ -374,6 +385,14 @@ namespace Breezee.WorkHelper.DBTool.UI
             string sWordConvert = cbbWordConvert.SelectedValue.ToString();
             string sBegin = "_BEG";
             string sEnd = "_END";
+            string sNewPre = "NEW_";
+            // 2-小写。PostgreSQL列一般也只是小写
+            if ("2".Equals(sUpperLowerType) || (_dbServer != null && _dbServer.DatabaseType == DataBaseType.PostgreSql))
+            {
+                sBegin = "_beg";
+                sEnd = "_end";
+                sNewPre = "new_";
+            }
             sqlEntity = new DBSqlEntity();
             sqlEntity.NewLine = ckbNewLine.Checked ? DataBaseCommon.NewLine : "";
             //sqlEntity.Tab = ckbNewLine.Checked ? DataBaseCommon.Tab : "";
@@ -505,7 +524,15 @@ namespace Breezee.WorkHelper.DBTool.UI
             for (int i = 0; i < dtColumnCondition.Rows.Count; i++)
             {
                 //变量声明
-                string strColCode = dtColumnCondition.Rows[i][DBColumnEntity.SqlString.Name].ToString().Trim().ToUpper();
+                string strColCode = dtColumnCondition.Rows[i][DBColumnEntity.SqlString.Name].ToString().Trim();
+                if ("1".Equals(sUpperLowerType))
+                {
+                    strColCode = strColCode.ToUpper(); // 1-大写
+                }
+                else if ("2".Equals(sUpperLowerType))
+                {
+                    strColCode = strColCode.ToLower(); // 2-小写
+                }
                 string strColType = dtColumnCondition.Rows[i][DBColumnEntity.SqlString.DataType].ToString().Trim().ToUpper();
                 string strColFixedValue = dtColumnCondition.Rows[i][DBColumnEntity.SqlString.Default].ToString().Trim();//固定值
                 string strColDynamic = dtColumnCondition.Rows[i][_sGridColumnDynamic].ToString().Trim();//动态列复选框
@@ -518,7 +545,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 //转换列的编码
                 string strColCodeParm = strColCode;
-                if(sqlEntity.WordUpperType == WordUpperType.LowerCamelCase)
+                if (sqlEntity.WordUpperType == WordUpperType.LowerCamelCase)
                 {
                     strColCodeParm =  FirstLetterUpper(strColCode,false);
                 }
@@ -663,7 +690,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 StringBuilder sbInsertColums = new StringBuilder();
                 StringBuilder sbInsertVale = new StringBuilder();
                 StringBuilder sbUpdate = new StringBuilder();
-
+                StringBuilder sbSameTableQueryInsert= new StringBuilder(); //同表查询新增
                 string strOneSql = "";
                 #endregion
 
@@ -674,8 +701,17 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     DataRow drCol = dtColumnSelect.Rows[j];
                     #region 变量
-                    string strColCode = drCol[DBColumnEntity.SqlString.Name].ToString().Trim().ToUpper();
+                    string strColCode = drCol[DBColumnEntity.SqlString.Name].ToString().Trim();
+                    if ("1".Equals(sUpperLowerType))
+                    {
+                        strColCode = strColCode.ToUpper(); // 1-大写
+                    }
+                    else if ("2".Equals(sUpperLowerType))
+                    {
+                        strColCode = strColCode.ToLower(); // 2-小写
+                    }
                     string strColType = drCol[DBColumnEntity.SqlString.DataType].ToString().Trim().ToUpper();
+                    string strKeyType = drCol[DBColumnEntity.SqlString.KeyType].ToString().Trim().ToUpper();
                     string strColFixedValue = drCol[DBColumnEntity.SqlString.Default].ToString().Trim();//固定值
                     string sColGlobalFixedValue = drCol[_sGridColumnGlobalValue].ToString().Trim();
                     string sColGlobalAdd = drCol[_sGridColumnGlobalValueInsert].ToString().Trim();//新增语句是否使用默认值
@@ -712,13 +748,16 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                     //转换列的编码
                     string strColCodeParm = strColCode;
+                    string strColCodeParmNew = sNewPre + strColCode;//列增加NEW_前缀的列编码，同表查询新增使用
                     if (sqlEntity.WordUpperType == WordUpperType.LowerCamelCase)
                     {
                         strColCodeParm = FirstLetterUpper(strColCode, false);
+                        strColCodeParmNew = FirstLetterUpper(strColCodeParmNew, false);
                     }
                     else if (sqlEntity.WordUpperType == WordUpperType.UpperCamelCase)
                     {
                         strColCodeParm = FirstLetterUpper(strColCode);
+                        strColCodeParmNew = FirstLetterUpper(strColCodeParmNew);
                     }
 
                     //确定列值
@@ -743,12 +782,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                         {
                             case SqlParamFormatType.BeginEndHash:
                                 strColCodeParm = "#" + strColCodeParm + "#"; //加上#号的列编码
+                                strColCodeParmNew = "#" + strColCodeParmNew + "#";
                                 break;
                             case SqlParamFormatType.SqlParm:
                                 strColCodeParm = sParamPre + strColCodeParm;
+                                strColCodeParmNew = sParamPre + strColCodeParmNew;
                                 break;
                             case SqlParamFormatType.MyBatis:
                                 strColCodeParm = sDefineFormat.Replace(sParamPre, strColCodeParm);//strColCodeParm = "#{" + strColCodeParm + "}";
+                                strColCodeParmNew = sDefineFormat.Replace(sParamPre, strColCodeParmNew);
                                 break;
                             case SqlParamFormatType.MyBatisDynamicColoumn:
                                 //strColCodeParm = "#{" + sParamPre + "." + strColCodeParm + "}";
@@ -760,10 +802,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                                 {
                                     //针对没有选中的列，还是按MyBatis参数化的方式赋值
                                     strColCodeParm = "#{" + sDefineFormat + strColCodeParm + "}";
+                                    strColCodeParmNew = "#{" + sDefineFormat + strColCodeParmNew + "}";
                                 }
                                 break;
                             case SqlParamFormatType.UserDefine://自定义
                                 strColCodeParm = sDefineFormat.Replace(sParamPre, strColCodeParm);
+                                strColCodeParmNew = sDefineFormat.Replace(sParamPre, strColCodeParmNew);
                                 break;
                         }
                     }
@@ -961,9 +1005,96 @@ namespace Breezee.WorkHelper.DBTool.UI
                                 sColValueComment = sColValueDynamic;
                             }
                             //最后一行不用加逗号
-                            sbInsertColums.Append(sqlEntity.Tab + strTableAliasAndDot + sColInsert + ")" + sqlEntity.NewLine);
+                            sbInsertColums.Append(sqlEntity.Tab + sColInsert + ")" + sqlEntity.NewLine);
                             // 值不需要加左右括号
                             sbInsertVale.Append(sColValueComment + sqlEntity.NewLine);
+                        }
+                        #endregion
+                    }
+
+                    if (isSameTableQueryInsert)
+                    {
+                        #region 同表查询新增(insert into段)
+                        strTableAlias = "";
+                        if ((j == 0 && j == iSelectLastNumber) || j == iSelectLastNumber)//只有一列
+                        {
+                            strNowComma = "";
+                        }
+                        string sColInsert = strTableAlias + strColCode + strNowComma + sqlEntity.NewLine;
+                        string sColInsertDynamic = string.Format("<if test=\"{0} != null and {0} != ''\">{1},</if>", sDefineFormat + strColCodeParm, strTableAlias + strColCodeParm) + sqlEntity.NewLine;
+
+                        string sColValueComment = MakeColumnValueComment(sqlEntity.SqlType, strNowComma, strColCode, strColValue, strColComments, strColType, sqlEntity.ParamType, strColCodeParm);
+                        string sColValueDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} != null and {0} != ''\">#{1}{0}{2},</if>", sDefineFormat + strColCodeParm, "{", "}");
+
+                        if (j == 0) //首行
+                        {
+                            if (j == iSelectLastNumber)//只有一列
+                            {
+                                sbSameTableQueryInsert.Append("INSERT INTO" + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment)
+                                        + "(" + sqlEntity.NewLine + sqlEntity.Tab + sColInsert + ")" + sqlEntity.NewLine);
+                            }
+                            else
+                            {
+                                if (bDynamicCol)
+                                {
+                                    sColInsert = sColInsertDynamic;
+                                    sColValueComment = sColValueDynamic;
+                                }
+                                sbSameTableQueryInsert.Append("INSERT INTO" + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment)
+                                        + "(" + sqlEntity.NewLine + "" + sqlEntity.Tab + sColInsert);
+                            }
+                        }
+                        else if (j != iSelectLastNumber) //中间行
+                        {
+                            if (bDynamicCol)
+                            {
+                                sColInsert = sColInsertDynamic;
+                                sColValueComment = sColValueDynamic;
+                            }
+                            sbSameTableQueryInsert.Append(sqlEntity.Tab + sColInsert);
+                        }
+                        else //尾行
+                        {
+                            if (bDynamicCol)
+                            {
+                                sColInsert = sColInsertDynamic;
+                                sColValueComment = sColValueDynamic;
+                            }
+                            //最后一行不用加逗号
+                            sbSameTableQueryInsert.Append(sqlEntity.Tab + sColInsert + ")" + sqlEntity.NewLine);
+                        }
+                        #endregion
+
+                        #region 查询段
+                        string sFrom = ckbNewLine.Checked ? "FROM" : " FROM";
+                        if ((j == 0 && j == iSelectLastNumber) || j == iSelectLastNumber)//只有一列
+                        {
+                            strNowComma = "";
+                        }
+                        sColValueComment = MakeQueryColumnComment(strNowComma, strTableAliasAndDot + strColCode, strColComments) + sqlEntity.NewLine;
+                        if ("PK".Equals(strKeyType))
+                        {
+                            sColValueComment = MakeColumnValueComment(SqlType.Insert, strNowComma, strColCode, strColValue, strColComments, strColType, sqlEntity.ParamType, strColCodeParmNew) + sqlEntity.NewLine;
+                        }
+                        strTableAlias = sqlEntity.TableAlias;
+                        if (j == 0) //首行
+                        {
+                            if (j == iSelectLastNumber)//只有一列
+                            {
+                                sbSelect.Append("SELECT" + Environment.NewLine +  sColValueComment + sFrom + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment));
+                            }
+                            else
+                            {
+                                sbSelect.Append("SELECT" + Environment.NewLine + sColValueComment);
+                            }
+                        }
+                        else if (j != iSelectLastNumber) //中间行
+                        {
+                            sbSelect.Append(sColValueComment);
+                        }
+                        else //尾行
+                        {
+                            sbSelect.Append(sColValueComment + sFrom + MakeTableComment(strDataTableName + DataBaseCommon.AddRightBand(strTableAlias), strDataTableComment));
                         }
                         #endregion
                     }
@@ -994,6 +1125,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                 else 
                 {
                     //SqlType.Parameter
+                }
+                if (isSameTableQueryInsert)
+                {
+                    strOneSql = sbSameTableQueryInsert.ToString() + sbSelect.ToString() + sbWhereSql.ToString();
                 }
                 #endregion
 
@@ -1175,6 +1310,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                     break;
                 case "6":
                     sqlTypeNow = SqlType.InsertSelect;
+                    break;
+                case "7":
+                    sqlTypeNow = SqlType.Parameter; //同表查询新增：这里取参数
                     break;
                 default:
                     throw new Exception("暂不支持该SqlType枚举");

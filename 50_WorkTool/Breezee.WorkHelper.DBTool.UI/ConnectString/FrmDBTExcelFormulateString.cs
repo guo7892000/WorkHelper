@@ -102,8 +102,10 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             //加载用户偏好值
             cmbType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ExcelFomulate_Type, "1").Value;
+            cbbConnString.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ExcelFomulate_ConnStringType, "1").Value;
             txbTableName.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ExcelFomulate_TableName, "").Value;
             nudColumnNum.Value = int.Parse(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ExcelFomulate_ColumnNum, "1").Value);
+            ckbEmptyToNull.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ExcelFomulate_EmptyToNull, "0").Value);
             //
             lblInfo.Text = "请将生成的字符复制到Excel数据模板中最后列的右边前两行。注：列名要跟表的列名一致！";
             tsbAutoSQL.ToolTipText = "生成新增表数据的Excel数据模板公式字符";
@@ -341,7 +343,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             if ("2".Equals(cmbType.SelectedValue.ToString()))
             {
                 txbTableName.Focus();
-                //2、直接输入表名称列数据来生成Excel公式
+                //2、自定义:直接输入表名称列数据来生成Excel公式
                 string sTableName = txbTableName.Text.Trim();
                 if (string.IsNullOrEmpty(sTableName))
                 {
@@ -395,7 +397,16 @@ namespace Breezee.WorkHelper.DBTool.UI
                             }
                             else
                             {
-                                sDataChar = isAddYinHao ? string.Format("&\"\'\"&{0}2&\"\'\"", sExcelCol) : string.Format("&\"\"&{0}2&\"\"", sExcelCol);
+                                if (ckbEmptyToNull.Checked)
+                                {
+                                    // 空值为null
+                                    sDataChar = isAddYinHao ? string.Format("&IF(ISBLANK({0}2),\"null\", \"\'\"&{0}2&\"\'\")&\"\"", sExcelCol) : string.Format("&\"\"&IF(ISBLANK({0}2), \"null\", {0}2)&\"\"", sExcelCol);
+                                }
+                                else
+                                {
+                                    // 空值为''
+                                    sDataChar = isAddYinHao ? string.Format("&\"\'\"&{0}2&\"\'\"", sExcelCol) : string.Format("&\"\"&{0}2&\"\"", sExcelCol);
+                                }
                             }
                         }
                         else
@@ -429,7 +440,16 @@ namespace Breezee.WorkHelper.DBTool.UI
                             else
                             {
                                 // 非日期：有单引号时，左右单引号要作为独立一项；无单引号时，直接加上单元格数据即可
-                                sDataChar = isAddYinHao ? string.Format(",\"'\",{0}2,\"'\"", sExcelCol) : string.Format(",{0}2", sExcelCol);
+                                if (ckbEmptyToNull.Checked)
+                                {
+                                    // 空值为null
+                                    sDataChar = isAddYinHao ? string.Format(",IF(ISBLANK({0}2), \"null\",\"\'\"&{0}2&\"\'\")", sExcelCol) : string.Format(",IF(ISBLANK({0}2), \"null\", {0}2)", sExcelCol);
+                                }
+                                else
+                                {
+                                    // 空值为''
+                                    sDataChar = isAddYinHao ? string.Format(",\"'\",{0}2,\"'\"", sExcelCol) : string.Format(",{0}2", sExcelCol);
+                                }
                             }
                         }
                         else
@@ -448,10 +468,11 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 //保存用户偏好值
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ExcelFomulate_Type, cmbType.SelectedValue.ToString(), "【生成数据Excel公式】的列名来源");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ExcelFomulate_ConnStringType, cbbConnString.SelectedValue.ToString(), "【生成数据Excel公式】的连接符类型"); 
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ExcelFomulate_TableName, txbTableName.Text.Trim(), "【生成数据Excel公式】的表名");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ExcelFomulate_ColumnNum, nudColumnNum.Value.ToString(), "【生成数据Excel公式】的表列数量");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ExcelFomulate_EmptyToNull, ckbEmptyToNull.Checked ? "1" : "0", "【生成数据Excel公式】的空转为null");
                 WinFormContext.UserLoveSettings.Save();
-
                 rtbResult.Clear();
                 rtbResult.AppendText(sbHead.ToString());
                 rtbResult.AppendText(System.Environment.NewLine);

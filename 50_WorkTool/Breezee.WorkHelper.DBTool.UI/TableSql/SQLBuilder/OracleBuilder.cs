@@ -413,8 +413,8 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         public override void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue, DataBaseType impDbType)
         {
-            //类型
-            sDbType = sDbType.ToLower().Replace("varchar", "varchar2").Replace("nvarchar", "nvarchar2").Replace("datetime", "date")
+            //类型：Oracle的DATE类型包含时分秒；小数使用number
+            sDbType = sDbType.ToLower().Replace("varchar", "varchar2").Replace("datetime", "date")
                 .Replace("decimal", "number").Replace("numeric", "number")
                 .Replace("character varying", "varchar2").Replace("int4", "int").Replace("int8", "bigint");
             //默认值
@@ -1091,6 +1091,38 @@ SELECT  TO_CHAR(A.OUT_STORE_DATE, 'YYYY/MM/DD') OUT_STORE_DATE,
                 sSql = sSql.Replace(mt.Value, sb.ToString());
             }
 
+        }
+
+        public override string GenerateIndexSql(string sTableName, string sColumnList, bool isUnique, string idxName)
+        {
+            string[] sColList = sColumnList.Split(new char[] { ',', ',' }, StringSplitOptions.RemoveEmptyEntries);
+            StringBuilder sb = new StringBuilder();
+            string sPre = isUnique ? "UK_" : "IDX_";
+            if (string.IsNullOrEmpty(idxName))
+            {
+                if (sColList.Length == 1)
+                {
+                    sb.Append(sPre).Append(sTableName).Append("_").Append(sColList[0]);
+
+                }
+                else
+                {
+                    sb.Append(sPre).Append(sTableName).Append("_").Append(sColList[0]).Append(sColList.Count());
+                }
+            }
+            else
+            {
+                sb.Append(idxName);
+            }
+
+            if (isUnique)
+            {
+                return string.Format("CREATE UNIQUE INDEX {1} ON {0}({2});", sTableName, sb.ToString(), sColumnList);
+            }
+            else
+            {
+                return string.Format("CREATE INDEX {1} ON {0}({2});", sTableName, sb.ToString(), sColumnList);
+            }
         }
 
         public class SqlFuncString

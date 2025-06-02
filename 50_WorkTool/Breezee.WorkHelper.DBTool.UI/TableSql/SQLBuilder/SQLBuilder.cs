@@ -305,6 +305,15 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="sSql">SQL语句</param>
         /// <param name="targetDbType">目标数据库类型</param>
         public abstract void ConvertToDbSql(ref string sSql, DataBaseType targetDbType);
+
+        /// <summary>
+        /// 获取索引SQL
+        /// </summary>
+        /// <param name="sTableName">表名</param>
+        /// <param name="sColumnList">逗号分隔的列名</param>
+        /// <param name="isUnique">是否唯一索引</param>
+        /// <param name="idxName">索引名</param>
+        public abstract string GenerateIndexSql(string sTableName,string sColumnList, bool isUnique=false, string idxName="");
     }
 
     public enum BracketDealType

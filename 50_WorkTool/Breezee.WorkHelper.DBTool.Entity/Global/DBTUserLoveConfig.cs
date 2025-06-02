@@ -68,8 +68,11 @@ namespace Breezee.WorkHelper.DBTool.Entity
         #endregion
         //Excel公式
         public static readonly string ExcelFomulate_Type = "ExcelFomulate_Type";
+        public static readonly string ExcelFomulate_ConnStringType = "ExcelFomulate_ConnStringType";
         public static readonly string ExcelFomulate_TableName = "ExcelFomulate_TableName";
         public static readonly string ExcelFomulate_ColumnNum = "ExcelFomulate_ColumnNum";
+        public static readonly string ExcelFomulate_EmptyToNull = "ExcelFomulate_EmptyToNull";
+        
         //SQL自动参数化验证
         public static readonly string SQLAutoParamVerify_BeforeSql = "SQLAutoParamVerify_BeforeSql";
 
