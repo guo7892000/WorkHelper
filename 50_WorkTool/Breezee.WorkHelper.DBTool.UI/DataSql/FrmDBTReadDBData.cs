@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using Breezee.WorkHelper.DBTool.Entity;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -70,6 +71,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             #region 设置数据库连接控件
             _IDBConfigSet = ContainerContext.Container.Resolve<IDBConfigSet>();
             //过滤指定数据库类型配置
+            _dicQuery[DT_DBT_BD_DB_CONFIG.SqlString.IS_ENABLED] = "1";
             DataTable dtConn = _IDBConfigSet.QueryDbConfig(_dicQuery).SafeGetDictionaryTable();
             uC_DbConnection1.SetDbConnComboBoxSource(dtConn);
             uC_DbConnection1.IsDbNameNotNull = false;

@@ -106,6 +106,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             #region 设置数据库连接控件
             _IDBConfigSet = ContainerContext.Container.Resolve<IDBConfigSet>();
+            _dicQuery[DT_DBT_BD_DB_CONFIG.SqlString.IS_ENABLED] = "1";
             DataTable dtConn = _IDBConfigSet.QueryDbConfig(_dicQuery).SafeGetDictionaryTable();
             uC_DbConnection1.SetDbConnComboBoxSource(dtConn);
             uC_DbConnection1.IsDbNameNotNull = true;
@@ -121,9 +122,14 @@ namespace Breezee.WorkHelper.DBTool.UI
             //加载用户偏好值
             cbbParaType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbGetSql_ParamType, "3").Value;
             cbbWordConvert.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbGetSql_FirstWordType, "1").Value;
+            txbExcludeColName.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DbGetSql_ExcludeColName, "").Value;
             //设置上部分分隔的高度
             splitContainer1.SplitterDistance = 40;
             grbOrcNet.AddFoldRightMenu();
+            //提示
+            string sExcCol = "支持输入逗号分隔的列名作为排除的列，\r\n即选择表名变化时，如表包括该列，那么该列为不选中。";
+            toolTip1.SetToolTip(txbExcludeColName, sExcCol);
+            toolTip1.SetToolTip(lblExcludeCol, sExcCol);
         }
 
         private void DBConnName_SelectedIndexChanged(object sender, EventArgs e)
@@ -279,9 +285,18 @@ namespace Breezee.WorkHelper.DBTool.UI
             dcDynamic = new DataColumn(_sGridColumnDefault);//增加一个备份的默认值
             dtCols.Columns.Add(dcDynamic);
 
-
-
             dtCols.TableName = _strColName;
+
+            HashSet<string> colExclude = new HashSet<string>();
+            string sExcludeCol = txbExcludeColName.Text.Trim();
+            if (!string.IsNullOrEmpty(sExcludeCol))
+            {
+                string[] arrEx = sExcludeCol.Split(new char[] { ',','，' });
+                foreach (string s in arrEx)
+                {
+                    colExclude.Add(s);
+                }
+            }
 
             foreach (DataRow dr in dtCols.Rows)
             {
@@ -325,6 +340,21 @@ namespace Breezee.WorkHelper.DBTool.UI
                     }
                 }
             }
+
+            // 排除列处理
+            if (colExclude.Count > 0)
+            {
+                foreach (var col in colExclude) 
+                {
+                    string sFiter = string.Format("{0}='{1}'", DT_DBT_BD_COLUMN_DEFAULT.SqlString.COLUMN_NAME, col);
+                    var drArr = dtCols.Select(sFiter);
+                    if (drArr.Length > 0)
+                    {
+                        drArr[0][_sGridColumnSelect] = "0";
+                    }
+                }
+            }
+
             //查询结果
             FlexGridColumnDefinition fdc = new FlexGridColumnDefinition();
             fdc.AddColumn(
@@ -1142,6 +1172,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             //保存用户偏好值
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbGetSql_ParamType, cbbParaType.SelectedValue.ToString(), "【增删改查SQL生成】参数类型");
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbGetSql_FirstWordType, cbbWordConvert.SelectedValue.ToString(), "【增删改查SQL生成】首字母方式");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DbGetSql_ExcludeColName, txbExcludeColName.Text.Trim(), "【增删改查SQL生成】排除列名");
+ 
             WinFormContext.UserLoveSettings.Save();
             //生成SQL成功后提示
             ShowInfo(StaticValue.GenResultCopySuccessMsg);

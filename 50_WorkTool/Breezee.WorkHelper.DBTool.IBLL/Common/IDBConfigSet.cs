@@ -34,7 +34,7 @@ namespace Breezee.WorkHelper.DBTool.IBLL
             public static readonly string DB_CONFIG_CODE = "DB_CONFIG_CODE";
             public static readonly string DB_TYPE = "DB_TYPE";
             public static readonly string DB_NAME = "DB_NAME";
-            //public static readonly string ORG_ID = "ORG_ID";
+            public static readonly string IS_ENABLED = "IS_ENABLED";
         }
 
         public static class SaveDbConfig_InDicKey

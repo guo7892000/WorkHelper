@@ -24,31 +24,31 @@ namespace Breezee.Core.Interface
         /// <summary>
         /// SqlServer数据库
         /// </summary>
-        SqlServer,
+        SqlServer=0,
 
         /// <summary>
         /// Oracle数据库
         /// </summary>
-        Oracle,
+        Oracle = 1,
 
         /// <summary>
         /// SQLite数据库
         /// </summary>
-        MySql,
+        MySql = 2,
 
         /// <summary>
         /// PostgreSql数据库
         /// </summary>
-        SQLite,
+        SQLite = 3,
 
         /// <summary>
         /// MySql数据库
         /// </summary>
-        PostgreSql,
+        PostgreSql = 4,
 
         /// <summary>
         /// 未指定
         /// </summary>
-        None,
+        None=9999,
     }
 }

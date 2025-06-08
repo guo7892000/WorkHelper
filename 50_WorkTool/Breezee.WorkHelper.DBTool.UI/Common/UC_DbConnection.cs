@@ -182,10 +182,13 @@ namespace Breezee.WorkHelper.DBTool.UI
         #endregion
 
         #region 设置数据库连接数据源
-        public void SetDbConnComboBoxSource(DataTable dtDbConn)
+        public void SetDbConnComboBoxSource(DataTable dtDbConn,bool isAddEmptyRow=true)
         {
             //数据库连接配置
-            dtDbConn.Rows.InsertAt(dtDbConn.NewRow(), 0);//新增一个空行
+            if (isAddEmptyRow)
+            {
+                dtDbConn.Rows.InsertAt(dtDbConn.NewRow(), 0);//新增一个空行
+            }
             cbbDbConnName.BindDropDownList(dtDbConn,DT_DBT_BD_DB_CONFIG.SqlString.DB_CONFIG_ID, DT_DBT_BD_DB_CONFIG.SqlString.DB_CONFIG_CODE, true);
         }
         #endregion

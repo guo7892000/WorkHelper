@@ -65,13 +65,14 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             #region 设置数据库连接控件
             //数据库1
+            _dicQuery[DT_DBT_BD_DB_CONFIG.SqlString.IS_ENABLED] = "1";
             DataTable dtConn = _IDBConfigSet.QueryDbConfig(_dicQuery).SafeGetDictionaryTable();
             uC_DbConnectionSource.SetDbConnComboBoxSource(dtConn);
             uC_DbConnectionSource.IsDbNameNotNull = true;
             uC_DbConnectionSource.ShowGlobalMsg += ShowGlobalMsg_Click;
             uC_DbConnectionSource.DBConnName_SelectedIndexChanged += cbbDBConnNameSource_SelectedIndexChanged;
             //数据库2
-            uC_DbConnectionTarget.SetDbConnComboBoxSource(dtConn.Copy());
+            uC_DbConnectionTarget.SetDbConnComboBoxSource(dtConn.Copy(),false);
             uC_DbConnectionTarget.IsDbNameNotNull = true;
             uC_DbConnectionTarget.ShowGlobalMsg += ShowGlobalMsg_Click;
             uC_DbConnectionTarget.DBConnName_SelectedIndexChanged += cbbDBConnNameTarget_SelectedIndexChanged;

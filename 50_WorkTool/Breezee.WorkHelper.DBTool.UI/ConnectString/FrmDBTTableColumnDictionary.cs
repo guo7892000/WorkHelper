@@ -112,6 +112,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             #region 设置数据库连接控件
             _IDBConfigSet = ContainerContext.Container.Resolve<IDBConfigSet>();
+            _dicQuery[DT_DBT_BD_DB_CONFIG.SqlString.IS_ENABLED] = "1";
             DataTable dtConn = _IDBConfigSet.QueryDbConfig(_dicQuery).SafeGetDictionaryTable();
             uC_DbConnection1.SetDbConnComboBoxSource(dtConn);
             uC_DbConnection1.IsDbNameNotNull = true;
@@ -193,6 +194,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             toolTip1.SetToolTip(btnMatch, "仅匹配数据");
             toolTip1.SetToolTip(btnGenCondition, "自动生成查询条件参数的API字符，并复制到粘贴板中。"); 
             toolTip1.SetToolTip(btnGenResult, "自动生成查询结果所有列的API字符，并复制到粘贴板中。");
+            toolTip1.SetToolTip(ckbIncludeCommonColumn, "选中时，会将【编码名称】中【通用】列为选中的列加到生成结果中，\r\n例如：在保存时，【用户ID】和【员工姓名】通常需要前端传入。");
             //加载模板数据
             replaceStringData = new ReplaceStringXmlConfig(DBTGlobalValue.TableColumnDictionary.Xml_FileName);
             string sColName = replaceStringData.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
@@ -285,10 +287,24 @@ namespace Breezee.WorkHelper.DBTool.UI
                 DBColumnSimpleEntity.SqlString.Name,
                 DBColumnSimpleEntity.SqlString.NameCN,
                 DBColumnSimpleEntity.SqlString.NameUpper,
-                DBColumnSimpleEntity.SqlString.NameLower
+                DBColumnSimpleEntity.SqlString.NameLower,
+                DBColumnSimpleEntity.SqlString.NotNull
             });
             codeNameColumn = new MiniXmlConfig(GlobalContext.PathData(), "CodeNameColumnConfig.xml", list, DBColumnSimpleEntity.SqlString.Name);
             DataTable dtCodeNameCol = codeNameColumn.Load();
+            if (!dtCodeNameCol.Columns.Contains(DBColumnSimpleEntity.SqlString.NotNull))
+            {
+                DataColumn dcCodeName = new DataColumn(DBColumnSimpleEntity.SqlString.NotNull);
+                dcCodeName.DefaultValue = "0";
+                dtCodeNameCol.Columns.Add(dcCodeName);
+            }
+            foreach (DataRow row in dtCodeNameCol.Rows)
+            {
+                if (string.IsNullOrEmpty(row[DBColumnSimpleEntity.SqlString.NotNull].ToString()))
+                {
+                    row[DBColumnSimpleEntity.SqlString.NotNull] = "0";
+                }
+            }
             dcSelected = new DataColumn(_sGridColumnSelect);
             dcSelected.DefaultValue = "1";
             dtCodeNameCol.Columns.Add(dcSelected);
@@ -299,7 +315,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.Name).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(true).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameCN).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(true).Visible().Build(),
                 new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameUpper).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
-                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameLower).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build()
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NameLower).Type(DataGridViewColumnTypeEnum.TextBox).Align(DataGridViewContentAlignment.MiddleLeft).Width(100).Edit(false).Visible().Build(),
+                new FlexGridColumn.Builder().Name(DBColumnSimpleEntity.SqlString.NotNull).Caption("通用").Type(DataGridViewColumnTypeEnum.CheckBox).Align(DataGridViewContentAlignment.MiddleCenter).Width(50).Edit().Visible().Build()
             );
             //
             dgvCodeNameCol.Tag = fdc.GetGridTagString();
@@ -1039,6 +1056,27 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             #endregion
 
+            // 额外的公共列加入到选择中
+            if (ckbIncludeCommonColumn.Checked)
+            {
+                DataTable dtCommonCol = dgvCodeNameCol.GetBindingTable();
+                sFiter = string.Format("{0}='1'", DBColumnSimpleEntity.SqlString.NotNull);
+                DataRow[] drArrCommon = dtCommonCol.Select(sFiter);
+                if(drArrCommon.Length > 0)
+                {
+                    foreach (DataRow item in drArrCommon)
+                    {
+                        sFiter = string.Format("{0}='{1}'", DBColumnSimpleEntity.SqlString.Name, item[DBColumnSimpleEntity.SqlString.Name]);
+                        DataRow[] drArrCommonSelct = dtColumnSelect.Select(sFiter);
+                        if (drArrCommonSelct.Length == 0)
+                        {
+                            dtColumnSelect.ImportRow(item);
+                        }
+                    }
+                    
+                }
+            }
+
             //取出第一个符合#列名#的：这个列作为必填的字段名
             //1查询条件处理
             string firstParamPatter = @"#\w+#";
@@ -1564,6 +1602,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             label3.Focus();
             DataRow dataRow = dgvSelect.GetCurrentRow();
             if (dataRow == null) return;
+            if (string.IsNullOrEmpty(dataRow[DBColumnSimpleEntity.SqlString.NotNull].ToString()))
+            {
+                dataRow[DBColumnSimpleEntity.SqlString.NotNull] = "0";
+            }
             dgvCodeNameCol.GetBindingTable().ImportRow(dataRow);
         }
 
@@ -1942,7 +1984,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             foreach (var item in filterArr)
             {
                 string sFilePath = drF.Field<string>(DBTableEntity.SqlString.Name);
-                if (sFilePath.Contains(item))
+                if (sFilePath.EndsWith(item))
                 {
                     return true;
                 }
@@ -2369,6 +2411,20 @@ namespace Breezee.WorkHelper.DBTool.UI
             ResetQueryParam();
         }
 
+        private void dgvTableList_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)
+        {
+            cmsRemoveSelect.Visible = false;
+        }
+
+        private void dgvSelect_MouseDown(object sender, MouseEventArgs e)
+        {
+            tsmiAddCodeName.Visible = true; //显示【加入编码名称】右键菜单
+        }
+
+        private void dgvInput_MouseDown(object sender, MouseEventArgs e)
+        {
+            tsmiAddCodeName.Visible = false; //隐藏【加入编码名称】右键菜单
+        }
     }
 
     public enum MybatisStringType

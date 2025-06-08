@@ -37,12 +37,13 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string ColumnDic_QueryConditionParamNameLatest = "ColumnDic_QueryConditionParamNameLatest";//最后设置的参数名
         public static readonly string ColumnDic_QueryConditionParamColumnLatest = "ColumnDic_QueryConditionParamColumnLatest";//最后设置的参数列 
         #endregion
-        //点击复制
+        // 点击复制
         public static readonly string ClickCopy_Path = "ClickCopy_Path";
         public static readonly string DirString_LastSelectedPath = "DirString_LastSelectedPath";
-        //  获取SQL
+        // 获取SQL
         public static readonly string DbGetSql_ParamType = "DbGetSql_ParamType";
         public static readonly string DbGetSql_FirstWordType = "DbGetSql_FirstWordType";
+        public static readonly string DbGetSql_ExcludeColName = "DbGetSql_ExcludeColName"; 
         // 自动实体
         public static readonly string AutoEntity_Path = "AutoEntity_Path";
         public static readonly string AutoCode_Path = "AutoCode_Path";

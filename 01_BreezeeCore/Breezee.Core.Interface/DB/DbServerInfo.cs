@@ -293,6 +293,29 @@ namespace Breezee.Core.Interface
             if (!dbServer.Database.Equals(dbOtherServer.Database, StringComparison.OrdinalIgnoreCase)) return false;
             return true;
         }
+
+        /// <summary>
+        /// 返回数据库类型表
+        /// </summary>
+        /// <param name="isHasEmpty">是否有一个空白行</param>
+        /// <param name="hasNone">是否包括一个None类型的数据库</param>
+        /// <returns></returns>
+        public static DataTable GetDbTypeTable(bool isHasEmpty,bool hasNone=false)
+        {
+            IDictionary<string, string> map = new Dictionary<string, string>()
+            {
+                {"0","SqlServer" },
+                {"1","Oracle" },
+                {"2","MySql" },
+                {"3","SQLite" },
+                {"4","PostgreSql" }
+            };
+            if (hasNone)
+            {
+                map["9999"] = "None";
+            }
+            return map.GetTextValueTable(isHasEmpty);
+        }
     }
 }
 

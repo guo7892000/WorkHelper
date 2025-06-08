@@ -57,8 +57,17 @@ namespace Breezee.WorkHelper.DBTool.UI
             //数据库类型
             DataTable dtDbType = DBToolUIHelper.GetBaseDataTypeTable();
             cbbDatabaseType.BindTypeValueDropDownList(dtDbType, false, true);
+            //状态
+            _dicString["1"] = "启用";
+            _dicString["0"] = "禁用";
+            DataTable dtIsEnabel = _dicString.GetTextValueTable(false);
+            cbbIsEnable.BindTypeValueDropDownList(dtIsEnabel.Copy(), false, true);
             #endregion
 
+            string sSortIdInfo = "值越小，连接名下拉框显示的位置就越靠前。";
+            toolTip1.SetToolTip(txbSortNum, sSortIdInfo);
+            toolTip1.SetToolTip(lblSortId, sSortIdInfo);
+            toolTip1.SetToolTip(cbbIsEnable, "禁用的连接不会出现连接名下拉框中。");
             //设置控件关系
             SetControlColumnRelation();
 
@@ -103,6 +112,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.USER_NAME, txbUserName));
             _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.USER_PASSWORD, txbPassword));
             _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.REMARK, txbRemark));
+            _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.IS_ENABLED, cbbIsEnable)); //是否可用
+            _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.SORT_ID, txbSortNum)); //排序号
         }
         #endregion
 

@@ -22,6 +22,8 @@ namespace Breezee.WorkHelper.DBTool.UI
     {
         #region 变量
         IDBConfigSet _IDBConfigSet;
+        DataTable dtIsEnabel;
+        DataTable dtDbType;
         bool _IsMoreSelected = false; //是否多选，默认为否
         public bool In_IsMoreSelected
         {
@@ -49,12 +51,17 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="e"></param>
         private void FrmVersionInfo_Load(object sender, EventArgs e)
         {
+            _IDBConfigSet = ContainerContext.Container.Resolve<IDBConfigSet>();
+
             SetTag();//设置Tag
             //数据库类型
-            DataTable dtDbType = DBToolUIHelper.GetBaseDataTypeTable();
+            dtDbType = DBToolUIHelper.GetBaseDataTypeTable();
             cbbDbType.BindTypeValueDropDownList(dtDbType, true, true);
-            //
-            _IDBConfigSet = ContainerContext.Container.Resolve<IDBConfigSet>();
+            //状态
+            _dicString["1"] = "启用";
+            _dicString["0"] = "禁用";
+            dtIsEnabel = _dicString.GetTextValueTable(false);
+            cbbStatus.BindTypeValueDropDownList(dtIsEnabel.Copy(), true, true);
         }
         #endregion
 
@@ -65,11 +72,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             FlexGridColumnDefinition fdc = new FlexGridColumnDefinition();
             fdc.AddColumn("ROWNO", "序号", DataGridViewColumnTypeEnum.TextBox, true, 40, DataGridViewContentAlignment.MiddleLeft, false, 800);
             fdc.AddColumn("IS_SELECTED", "选择", DataGridViewColumnTypeEnum.CheckBox, _IsMoreSelected, 60, DataGridViewContentAlignment.MiddleCenter, true, 800);
-            fdc.AddColumn("DB_CONFIG_CODE", "配置编码", DataGridViewColumnTypeEnum.TextBox, true, 80, DataGridViewContentAlignment.MiddleLeft, false, 800);
-            fdc.AddColumn("DB_CONFIG_NAME", "配置名称", DataGridViewColumnTypeEnum.TextBox, true, 100, DataGridViewContentAlignment.MiddleLeft, false, 800);
-            //fdc.AddColumn("DB_TYPE_" + "_NAME", "数据库类型", DataGridViewColumnTypeEnum.TextBox, true, 160, DataGridViewContentAlignment.MiddleLeft, false, 800);
-            fdc.AddColumn("SERVER_IP", "服务器IP", DataGridViewColumnTypeEnum.TextBox, true, 260, DataGridViewContentAlignment.MiddleLeft, false, 800);
-            fdc.AddColumn("DB_NAME", "数据库名称", DataGridViewColumnTypeEnum.TextBox, true, 160, DataGridViewContentAlignment.MiddleLeft, false, 800);
+            fdc.AddColumn(DT_DBT_BD_DB_CONFIG.SqlString.DB_CONFIG_CODE, "配置编码", DataGridViewColumnTypeEnum.TextBox, true, 80, DataGridViewContentAlignment.MiddleLeft, false, 800);
+            fdc.AddColumn(DT_DBT_BD_DB_CONFIG.SqlString.DB_CONFIG_NAME, "配置名称", DataGridViewColumnTypeEnum.TextBox, true, 100, DataGridViewContentAlignment.MiddleLeft, false, 800);
+            fdc.AddColumn(DT_DBT_BD_DB_CONFIG.SqlString.DB_TYPE, "数据库类型", DataGridViewColumnTypeEnum.ComboBox, true, 160, DataGridViewContentAlignment.MiddleLeft, false, 800);
+            fdc.AddColumn(DT_DBT_BD_DB_CONFIG.SqlString.SERVER_IP, "服务器IP", DataGridViewColumnTypeEnum.TextBox, true, 260, DataGridViewContentAlignment.MiddleLeft, false, 800);
+            fdc.AddColumn(DT_DBT_BD_DB_CONFIG.SqlString.DB_NAME, "数据库名称", DataGridViewColumnTypeEnum.TextBox, true, 160, DataGridViewContentAlignment.MiddleLeft, false, 800);
+            fdc.AddColumn(DT_DBT_BD_DB_CONFIG.SqlString.IS_ENABLED, "状态", DataGridViewColumnTypeEnum.ComboBox, true, 80, DataGridViewContentAlignment.MiddleLeft, false, 800);
+            fdc.AddColumn(DT_DBT_BD_DB_CONFIG.SqlString.SORT_ID, "排序号", DataGridViewColumnTypeEnum.TextBox, true, 80, DataGridViewContentAlignment.MiddleLeft, false, 800);
             fdc.AddColumn(DT_DBT_BD_DB_CONFIG.SqlString.REMARK, "备注", DataGridViewColumnTypeEnum.TextBox, true, 160, DataGridViewContentAlignment.MiddleLeft, false, 800);
             fdc.AddColumn(DT_DBT_BD_DB_CONFIG.SqlString.CREATE_TIME, "创建日期", DataGridViewColumnTypeEnum.TextBox, true, 100, DataGridViewContentAlignment.MiddleLeft, false, 800);
             dgvQuery.Tag = fdc.GetGridTagString();
@@ -83,8 +92,20 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicQuery[IDBConfigSet.QueryDbConfig_InDicKey.DB_TYPE] = cbbDbType.SelectedValue.ToString();
             _dicQuery[IDBConfigSet.QueryDbConfig_InDicKey.DB_CONFIG_CODE] = txbConfigCode.Text.Trim();
             _dicQuery[IDBConfigSet.QueryDbConfig_InDicKey.DB_NAME] = txbDbName.Text.Trim();
+            _dicQuery[IDBConfigSet.QueryDbConfig_InDicKey.IS_ENABLED] = cbbStatus.SelectedValue.ToString();
             DataTable dtQuery = _IDBConfigSet.QueryDbConfig(_dicQuery).SafeGetDictionaryTable();
             dgvQuery.BindDataGridView(dtQuery);
+
+            //状态
+            var cmbBig = (DataGridViewComboBoxColumn)dgvQuery.Columns[DT_DBT_BD_DB_CONFIG.SqlString.IS_ENABLED];
+            cmbBig.ValueMember = DT_BAS_VALUE.VALUE_CODE;
+            cmbBig.DisplayMember = DT_BAS_VALUE.VALUE_NAME;
+            cmbBig.DataSource = dtIsEnabel;
+            //数据库类型
+            cmbBig = (DataGridViewComboBoxColumn)dgvQuery.Columns[DT_DBT_BD_DB_CONFIG.SqlString.DB_TYPE];
+            cmbBig.ValueMember = DT_BAS_VALUE.VALUE_CODE;
+            cmbBig.DisplayMember = DT_BAS_VALUE.VALUE_NAME;
+            cmbBig.DataSource = dtDbType;
         } 
         #endregion
 
