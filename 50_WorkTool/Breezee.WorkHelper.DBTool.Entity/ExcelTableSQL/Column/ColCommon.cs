@@ -46,7 +46,8 @@ namespace Breezee.WorkHelper.DBTool.Entity
             ent.KeyType = dr[ExcelCol.KeyType].ToString().Trim();
             ent.KeyTypeEnum = TableSqlCommon.GetColumnKeyType(dr[ExcelCol.KeyType].ToString().ToUpper().Trim());
             ent.NotNull = TableSqlCommon.GetYesNoType(dr[ExcelCol.NotNull].ToString().Trim());
-            ent.Default = dr[ExcelCol.Default].ToString().Trim().Replace("'", "");
+            // 默认值：这里不再去掉单引号
+            ent.Default = dr[ExcelCol.Default].ToString().Trim();   //.Replace("'", "");
             ent.Remark = dr[ExcelCol.Remark].ToString().Trim();
             //这个不在Excel模板内，会自动转换
             ent.DataTypeNew = ent.DataType;
@@ -163,6 +164,7 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static bool ValidateData(DataTable dtTable, DataTable dtAllCol, GenerateParamEntity paramEntity, out StringBuilder sb)
         {
             sb = new StringBuilder();
+            StringBuilder sbOther = new StringBuilder();
             DataRow[] drErrorArray;
             if (dtTable.Select(ExcelCol.ChangeType + " not in ('新增','修改')").Length > 0)
             {
@@ -200,16 +202,26 @@ namespace Breezee.WorkHelper.DBTool.Entity
                     {
                         dr[ExcelCol.Name] = paramEntity.defaultColNameCN + "列";//直接给为空的列中文名赋值
                     }
-                    else
-                    {
-                        sb.AppendLine("表编码：" + dr[ExcelTable.Code].ToString() + ",列编码：" + dr[ExcelCol.Code].ToString() + "，其列名称不能为空！");
-                    }
+                    //else
+                    //{
+                    //    sb.AppendLine("表编码：" + dr[ExcelTable.Code].ToString() + ",列编码：" + dr[ExcelCol.Code].ToString() + "，其列名称不能为空！");
+                    //}
                 }
             }
 
-            if (dtAllCol.Select(ExcelTable.Code + "='' or " + ExcelCol.Name + "='' or " + ExcelCol.Code + "='' or " + ExcelCol.DataType + "=''").Length > 0)
+            drErrorArray = dtAllCol.Select(ExcelTable.Code + "='' or " + ExcelCol.Name + "='' or " + ExcelCol.Code + "='' or " + ExcelCol.DataType + "=''");
+            if (drErrorArray.Length > 0)
             {
-                sb.AppendLine("新增的列中" + ExcelTable.Code + "、" + ExcelCol.Name + "、" + ExcelCol.Code + "、" + ExcelCol.DataType + "不能为空！");
+                for (int i = 0; i < drErrorArray.Length; i++)
+                {
+                    DataRow dr = drErrorArray[i];
+                    sbOther.Append((i+1).ToString() +"、表(").Append(dr[ExcelTable.Code].ToString())
+                        .Append(")-列名称(").Append(dr[ExcelCol.Name].ToString())
+                        .Append(")-列编码(").Append(dr[ExcelCol.Code].ToString())
+                        .Append(")-类型(").Append(dr[ExcelCol.DataType].ToString()).AppendLine(")；");
+                }
+                sb.AppendLine("新增的列中" + ExcelTable.Code + "、" + ExcelCol.Name + "、" + ExcelCol.Code + "、" + ExcelCol.DataType + "不能为空，包括：");
+                sb.AppendLine(sbOther.ToString());
             }
             foreach (DataRow dr in dtAllCol.Select("(" + ExcelCol.DataType + " like 'VARCHAR%' or " + ExcelCol.DataType + " like 'NVARCHAR%' or "
                 + ExcelCol.DataType + " like 'CHAR%') and (" + ExcelCol.DataLength + " is null)"))

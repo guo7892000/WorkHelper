@@ -322,6 +322,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     //得到修改表增加列语句
                     sbSql.AppendLine("ALTER TABLE " + strTableCode + " ADD " +  sbColSql.ToString() + ";");
+                    sbSql.Append(sbRemark.toString());
                 }
                 j++;
                 #endregion

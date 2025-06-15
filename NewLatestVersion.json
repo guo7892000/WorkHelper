@@ -1,14 +1,14 @@
 {
-  "version": "1.3.7.7",
-  "date": "2025-06-08",
-  "publishRemark": "1.表结构SQL生成：针对PostgreSQL，修正修改表字段的生成SQL。\r\n2.数据库连接配置：增加状态和排序号维护，其他功能的连接名下拉框只显示启用状态的连接，且按排序号正序排列。\r\n3.数据字典：增加【通用列】复选框，方便生成结果带上自行设定的通用列（如用户ID）及其他优化。",
+  "version": "1.3.7.8",
+  "date": "2025-06-15",
+  "publishRemark": "1.表结构SQL生成：生成时将不符合要求的列提示出来，方便修正；默认值不去掉单引号；针对PG修改表增加列时增加说明；LY导入模板的表名区分增加支持空格（通常是冒号），如【表名称 物料表】也能正确认出表名称是【物料表】。",
   "appName": "WorkHelper",
   "zipFormats": "zip|rar|7z",
   "downUrlPublishLatest": "https://gitee.com/breezee2000/WorkHelper/releases/download/Latest/#appName##version#",
   "downUrlPublishGitee": "https://gitee.com/breezee2000/WorkHelper/releases/download/#version#/#appName##version#",
   "downUrlPublishGithub": "https://github.com/guo7892000/WorkHelper/releases/download/#version#/#appName##version#",
-  "stableVersion": "1.3.7.4",
-  "stableDate": "2025-05-18",
-  "stableRemark": "1.功能优化：SQL总结增加示例。",
+  "stableVersion": "1.3.7.7",
+  "stableDate": "2025-06-08",
+  "stableRemark": "1.表结构SQL生成：针对PostgreSQL，修正修改表字段的生成SQL。\r\n2.数据库连接配置：增加状态和排序号维护，其他功能的连接名下拉框只显示启用状态的连接，且按排序号正序排列。\r\n3.数据字典：增加【通用列】复选框，方便生成结果带上自行设定的通用列（如用户ID）及其他优化。",
   "stableDownUrlPublish": "https://gitee.com/breezee2000/WorkHelper/releases/download/StableRealse/#appName##version#"
 }

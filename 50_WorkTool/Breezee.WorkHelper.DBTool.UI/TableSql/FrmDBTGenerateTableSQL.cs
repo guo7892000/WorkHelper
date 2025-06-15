@@ -498,7 +498,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         return;
                     }
                     //移除空行
-                    foreach (DataRow dr in dtExcelSource.Select(EntlColLY.ExcelCol.Name + " is null"))
+                    foreach (DataRow dr in dtExcelSource.Select(EntlColLY.ExcelCol.Name + " is null and "+ EntlColLY.ExcelCol.Code + " is null"))
                     {
                         dtExcelSource.Rows.Remove(dr);
                     }
@@ -553,12 +553,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                     foreach (DataRow dr in dtExcelSource.Rows)
                     {
                         string sColNameCn = dr[EntlColLY.ExcelCol.Name].ToString().Trim();
-                        if (sColNameCn.StartsWith("表名称:") || sColNameCn.StartsWith("表名称："))
+                        if (sColNameCn.StartsWith("表名称:") || sColNameCn.StartsWith("表名称：") || sColNameCn.StartsWith("表名称 "))
                         {
                             //表编码和名称处理
                             drNew = dtTable.NewRow();
                             sTableCode = dr[EntlColLY.ExcelCol.DataType].ToString().Trim().Replace("表编码:", "").Replace("表编码：", "").Trim();
-                            sTableName = sColNameCn.Replace("表名称:", "").Replace("表名称：", ""); 
+                            sTableName = sColNameCn.Replace("表名称:", "").Replace("表名称：", "").Replace("表名称 ", ""); 
                             drNew[ExcelTable.Num] = iTalbe;
                             drNew[ExcelTable.Name] = sTableName;
                             drNew[ExcelTable.Code] = sTableCode;
@@ -819,7 +819,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 dtTable.Rows.Remove(dr);
             }
-            sFilter= ColCommon.ExcelCol.Code + " is null or " + ColCommon.ExcelCol.TableCode + " is null";
+            sFilter= "("+ColCommon.ExcelCol.Code + " is null and "+ ColCommon.ExcelCol.Name + " is null)or " + ColCommon.ExcelCol.TableCode + " is null";
             foreach (DataRow dr in dtAllCol.Select(sFilter))
             {
                 dtAllCol.Rows.Remove(dr);
@@ -981,13 +981,13 @@ namespace Breezee.WorkHelper.DBTool.UI
                     dr[ColCommon.ExcelCol.Default] = string.Empty; //针对主键列去掉默认值
                 }
                 dr[ColCommon.ExcelCol.DataTypeFullNew] = ColCommon.GetFullDataType(sDataType, sDataLength, sDataDotLength);
-                if (string.IsNullOrEmpty(dr[ColCommon.ExcelCol.Name].ToString()))
+                if (string.IsNullOrEmpty(dr[ColCommon.ExcelCol.Name].ToString()) && ckbDefaultColNameCn.Checked)
                 {
                     dr[ColCommon.ExcelCol.Name] = txbDefaultColNameCN.Text.Trim() + "列";
                 }
                 dr[ColCommon.ExcelCol.OldTableCode] = dr[ColCommon.ExcelCol.TableCode].ToString(); //数据迁移旧表名也赋值
             }
-
+            
             #region 通用列模板的处理
             string sCommonTable = cbbTemplateType.Text.Trim(); //模板名称
             if (!string.IsNullOrEmpty(sCommonTable))
