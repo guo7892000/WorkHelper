@@ -16,5 +16,5 @@ SELECT SUBSTRING('breakfast',5) AS col1,
 	SUBSTRING('lunch', -3) AS col3;
 SELECT POSITION('ball' IN 'football');
 SELECT REVERSE('abc');
-
+SELECT 'A'||'B' AS "Á¬½Ó×Ö·û";
 

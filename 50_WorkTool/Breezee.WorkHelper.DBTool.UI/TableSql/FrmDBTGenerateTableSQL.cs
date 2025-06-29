@@ -19,6 +19,9 @@ using static Breezee.WorkHelper.DBTool.Entity.DBTGlobalValue;
 using System.ComponentModel;
 using static Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL.EntTable;
 using Breezee.Core;
+using FluentFTP;
+using System.Reflection.Emit;
+using System.Drawing;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -65,8 +68,8 @@ namespace Breezee.WorkHelper.DBTool.UI
         MiniXmlConfig commonColumn; //数据字典通用列配置
         MiniXmlConfig codeNameColumn; //编码名称配置
         StandardColumnClassXmlConfig standardColumnData;//标准列分类配置
-
-
+        //数据标准
+        DataStandardConfig dataCfg;
         #endregion
 
         #region 构造函数
@@ -145,14 +148,16 @@ namespace Breezee.WorkHelper.DBTool.UI
             toolTip1.SetToolTip(cbbTargetDbType, "目标数据库类型，即生成哪种类型数据库的SQL或文档！");
             toolTip1.SetToolTip(ckbLYTemplate, "当选中时，生成的文档会以LY模板方式呈现，然后我们可以复制出来，\n并粘贴到数据库变更文档中做数据库变更申请！");
             toolTip1.SetToolTip(ckbFullTypeDoc, "当选中时，生成的文档中，列类型包括类型、长度或精度信息！");
-            toolTip1.SetToolTip(cbbCreateType, "生成的SQL类型，如新增表、修改表、删除表等！"); 
+            toolTip1.SetToolTip(cbbCreateType, "生成的SQL类型，如新增表、修改表、删除表等！");
+            tsbFitStandardCheck.ToolTipText = "只针对在标准范围内（跟标准列编码一致或以其结尾）的列做检查，没在标准范围内的都算符合！";
             //加载通用列数据
             LoadCommonColumnData();
             //增加折叠功能
             gbTable.AddFoldRightMenu();
             groupBox5.AddFoldRightMenu();
             groupBox1.AddFoldRightMenu();
-
+            //
+            dataCfg = new DataStandardConfig();
         }
 
         /// <summary>
@@ -475,7 +480,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     dgvColList.BindAutoColumn(dtTable);
                     dgvColList.ShowRowNum();
                     ShowInfo(StaticValue.ImportSuccessMsg);
-                } 
+                }
                 #endregion
             }
             else if (_ImportInputLY.Equals(cbbInputType.SelectedValue.ToString()))
@@ -487,6 +492,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                     return;
                 }
 
+                List<string> listTable = new List<string>(); //用于判断是否有表名重复
+                StringBuilder sbError = new StringBuilder(); //表名重复的错误信息
                 _dsExcelData = ExportHelper.GetExcelDataSet();//得到Excel数据
                 if (_dsExcelData != null)
                 {
@@ -498,7 +505,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         return;
                     }
                     //移除空行
-                    foreach (DataRow dr in dtExcelSource.Select(EntlColLY.ExcelCol.Name + " is null and "+ EntlColLY.ExcelCol.Code + " is null"))
+                    foreach (DataRow dr in dtExcelSource.Select(EntlColLY.ExcelCol.Name + " is null and " + EntlColLY.ExcelCol.Code + " is null"))
                     {
                         dtExcelSource.Rows.Remove(dr);
                     }
@@ -508,7 +515,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     dcSelected.DefaultValue = "True";
                     dtTable.Columns.Add(dcSelected);
                     dtTable.Columns[_sGridTableSelect].SetOrdinal(0);//设置选择列在最前面
-                    
+
                     //得到导入模板类型
                     switch (importDBType)
                     {
@@ -541,6 +548,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     //表清单处理
                     DataRow drNew = null;
                     DataRow drColNew = null;
+                    
                     int iTalbe = 1;
                     int iColumn = 1;
                     string sTableCode = string.Empty;
@@ -558,7 +566,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                             //表编码和名称处理
                             drNew = dtTable.NewRow();
                             sTableCode = dr[EntlColLY.ExcelCol.DataType].ToString().Trim().Replace("表编码:", "").Replace("表编码：", "").Trim();
-                            sTableName = sColNameCn.Replace("表名称:", "").Replace("表名称：", "").Replace("表名称 ", ""); 
+                            sTableName = sColNameCn.Replace("表名称:", "").Replace("表名称：", "").Replace("表名称 ", "");
                             drNew[ExcelTable.Num] = iTalbe;
                             drNew[ExcelTable.Name] = sTableName;
                             drNew[ExcelTable.Code] = sTableCode;
@@ -566,17 +574,25 @@ namespace Breezee.WorkHelper.DBTool.UI
                             dtTable.Rows.Add(drNew);
                             iTalbe++;
                             iColumn = 1;
+                            if (listTable.Contains(sTableCode))
+                            {
+                                sbError.Append(sTableCode+"表重复；");
+                            }
+                            else
+                            {
+                                listTable.Add(sTableCode);
+                            }
                         }
-                        else if(sColNameCn.StartsWith("约束说明:") || sColNameCn.StartsWith("约束说明：")) //约束说明: 
+                        else if (sColNameCn.StartsWith("约束说明:") || sColNameCn.StartsWith("约束说明：")) //约束说明: 
                         {
                             //表更多注释处理
                             string sRemark = sColNameCn.Replace("约束说明:", "").Replace("约束说明：", "").Trim();
-                            if (drNew!=null && !sRemark.Equals(drNew[ExcelTable.Name].ToString()))
+                            if (drNew != null && !sRemark.Equals(drNew[ExcelTable.Name].ToString()))
                             {
                                 drNew[ExcelTable.Remark] = sRemark;
                             }
                         }
-                        else if("列名称".Equals(sColNameCn))
+                        else if ("列名称".Equals(sColNameCn))
                         {
                             continue; //跳过列头信息
                         }
@@ -591,14 +607,14 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                             sFullDataType = dr[EntlColLY.ExcelCol.DataType].ToString().Trim();
                             drColNew[ColCommon.ExcelCol.DataTypeFull] = sFullDataType; //全类型
-                            ColCommon.SplitFullDataType(sFullDataType,ref sDataType, ref sDataLength, ref sDataDotLength);
+                            ColCommon.SplitFullDataType(sFullDataType, ref sDataType, ref sDataLength, ref sDataDotLength);
                             drColNew[ColCommon.ExcelCol.DataType] = sDataType;
                             drColNew[ColCommon.ExcelCol.DataLength] = sDataLength;
                             drColNew[ColCommon.ExcelCol.DataDotLength] = sDataDotLength;
                             drColNew[ColCommon.ExcelCol.KeyType] = dr[EntlColLY.ExcelCol.KeyType].ToString().Trim();
                             drColNew[ColCommon.ExcelCol.NotNull] = dr[EntlColLY.ExcelCol.NotNull].ToString().Trim();
                             drColNew[ColCommon.ExcelCol.Default] = dr[EntlColLY.ExcelCol.Default].ToString().Trim();
-                            drColNew[ColCommon.ExcelCol.Remark] = dr[EntlColLY.ExcelCol.Remark].ToString().Trim(); 
+                            drColNew[ColCommon.ExcelCol.Remark] = dr[EntlColLY.ExcelCol.Remark].ToString().Trim();
                             drColNew[ColCommon.ExcelCol.ChangeType] = dr[EntlColLY.ExcelCol.ChangeType].ToString().Trim();
                             dtColumn.Rows.Add(drColNew);
                             iColumn++;
@@ -611,8 +627,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                     //绑定列网格
                     dgvColList.BindAutoColumn(dtColumn);
                     dgvColList.ShowRowNum();
-                    ShowInfo(StaticValue.ImportSuccessMsg);
-                } 
+                    if (string.IsNullOrEmpty(sbError.ToString()))
+                    {
+                        ShowInfo(StaticValue.ImportSuccessMsg);
+                    }
+                    else
+                    {
+                        ShowInfo(sbError.ToString() + "请修正后，再次导入！");
+                    }
+                }
                 #endregion
             }
             else
@@ -731,7 +754,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             dgvColList.AutoGenerateColumns = true;
             dgvColList.AllowUserToAddRows = false;
             tabControl1.SelectedTab = tpImport;
-
+            // 重新导入后，所有行都会选中，所以这里要取反。
+            _allTableSelect = false;//默认全选，这里取反
+            _allColumnSelect = false;//默认全选，这里取反
         }
 
         private void SaveUserLoveConfig()
@@ -828,6 +853,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             dtAllCol.AcceptChanges();
 
             //筛选选中的表
+            List<string> listTable = new List<string>();
+            List<string> listTableOld = new List<string>();
             DataTable dtTalbeSelect = dtTable.Clone();
             DataTable dtNewTable = dgvNewTableInfo.GetBindingTable();//录入的新表
             if (ckbIsOnlyReplaceTable.Checked)
@@ -836,10 +863,17 @@ namespace Breezee.WorkHelper.DBTool.UI
                 foreach (DataRow dr in dtNewTable.FilterSelected(_sGridColumnSelect))
                 {
                     //查找表是否存在，存在则导入
+                    string sOldTableCode = dr[ExcelTable.Code + "_OLD"].ToString();
+                    string sNewTableCode = dr[ExcelTable.Code].ToString();
                     sFilter = ExcelTable.Code + "='" + dr[ExcelTable.Code + "_OLD"].ToString() + "'";
                     DataRow[] drArr = dtTable.Select(sFilter);
                     if (drArr.Length > 0)
                     {
+                        
+                        if (JudgeNewOldRepeat(listTable, listTableOld, sOldTableCode, sNewTableCode))
+                        {
+                            return;
+                        }
                         dtTalbeSelect.ImportRow(drArr[0]);
                     }
                 }
@@ -854,6 +888,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //导入选中的
                 foreach (DataRow dr in dtTable.FilterSelected(_sGridTableSelect))
                 {
+                    if (listTable.Contains(dr[ExcelTable.Code]))
+                    {
+                        ShowErr("表名存在重复，不能生成！");
+                        return;
+                    }
+                    else
+                    {
+                        listTable.Add(dr[ExcelTable.Code].ToString());
+                    }
                     dtTalbeSelect.ImportRow(dr);
                 }
                 //还要导入新表
@@ -861,14 +904,29 @@ namespace Breezee.WorkHelper.DBTool.UI
                 foreach (DataRow dr in dtNewTable.FilterSelected(_sGridColumnSelect))
                 {
                     //查找表是否存在，存在则导入
-                    //sFilter = ExcelTable.Code + "='" + dr[ExcelTable.Code + "_OLD"].ToString() + "'";
-                    DataRow[] drArr = dtTable.FilterValue(ExcelTable.Code, dr[ExcelTable.Code + "_OLD"].ToString());
+                    string sOldTableCode = dr[ExcelTable.Code + "_OLD"].ToString();
+                    string sNewTableCode = dr[ExcelTable.Code].ToString();
+                    //sFilter = ExcelTable.Code + "='" + sOldTableCode + "'";
+                    DataRow[] drArr = dtTable.FilterValue(ExcelTable.Code, sOldTableCode);
                     if (drArr.Length > 0)
                     {
-                        DataRow[] drArrSelect = dtTalbeSelect.FilterValue(ExcelTable.Code, dr[ExcelTable.Code + "_OLD"].ToString());
+                        
+                        DataRow[] drArrSelect = dtTalbeSelect.FilterValue(ExcelTable.Code, sOldTableCode);
                         if (drArrSelect.Length == 0)
                         {
+                            // 新表判断重复
+                            if(JudgeNewOldRepeat(listTable, listTableOld, sOldTableCode, sNewTableCode))
+                            {
+                                return;
+                            }
                             dtTalbeSelect.ImportRow(drArr[0]);
+                        }
+                        else
+                        {
+                            if (JudgeNewOldRepeat(listTable, listTableOld, sOldTableCode, sNewTableCode))
+                            {
+                                return;
+                            }
                         }
                     }
                 }
@@ -1126,6 +1184,40 @@ namespace Breezee.WorkHelper.DBTool.UI
             SaveUserLoveConfig();
             //初始化控件
             ckbAllConvert.Enabled = true;
+        }
+
+        /// <summary>
+        /// 判断新旧表是否重复
+        /// </summary>
+        /// <param name="listTable"></param>
+        /// <param name="listTableOld"></param>
+        /// <param name="sOldTableCode"></param>
+        /// <param name="sNewTableCode"></param>
+        /// <returns>重复标志：true-有重复，false-没有重复</returns>
+        private bool JudgeNewOldRepeat(List<string> listTable, List<string> listTableOld, string sOldTableCode, string sNewTableCode)
+        {
+            if (listTable.Contains(sNewTableCode))
+            {
+                ShowErr("表名存在重复，不能生成！");
+                tabControl1.SelectedTab = tpDataStandard;
+                return true;
+            }
+            else
+            {
+                listTable.Add(sNewTableCode);
+            }
+            // 旧表判断重复
+            if (listTableOld.Contains(sOldTableCode))
+            {
+                ShowErr("旧表名存在重复，不能生成！");
+                tabControl1.SelectedTab = tpDataStandard;
+                return true;
+            }
+            else
+            {
+                listTableOld.Add(sOldTableCode);
+            }
+            return false;
         }
 
         private static bool GetLinqDynamicWhere(DataRowCollection filterArr, DataRow drF)
@@ -1989,5 +2081,279 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         #endregion
 
+        /// <summary>
+        /// 符合标准检查
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsbFitStandardCheck_Click(object sender, EventArgs e)
+        {
+            label3.Focus();
+            int iDbType = int.Parse(cbbImportDBType.SelectedValue.ToString());
+            DataBaseType curImportDBType = (DataBaseType)iDbType;
+
+            DataTable dtCol = dgvColList.GetBindingTable();
+            if (dtCol == null || dtCol.Rows.Count == 0)
+            {
+                ShowErr("请先导入数据库结构生成模板，或查询数据库中的表结构信息！");
+                return;
+            }
+
+            if (dtCol == null || dtCol.Rows.Count == 0) return;
+            //增加标准的相关列
+            foreach (string sCol in ColumnStandardString.GetList())
+            {
+                if (!dtCol.Columns.Contains(sCol))
+                {
+                    dtCol.Columns.Add(sCol);
+                }
+            }
+            //清空列内容
+            foreach (DataRow row in dtCol.Select(string.Format("{0} is not null", ColumnStandardString.ColCode)))
+            {
+                foreach (string sCol in ColumnStandardString.GetList())
+                {
+                    row[sCol] = DBNull.Value; // 设置为空值
+                }
+            }
+
+            // 查询标准
+            DataTable dtCommonCol = dataCfg.XmlConfig.Load();
+            string sFliter = string.Empty;
+            DataRow[] drArr;
+            StringBuilder sbErr = new StringBuilder();
+
+            //合并两个表的列名
+            DataTable dtAll = dtCol.Clone();
+            foreach (DataColumn item in dtCommonCol.Columns)
+            {
+                if (!dtAll.Columns.Contains(item.ColumnName))
+                {
+                    dtAll.Columns.Add(item.ColumnName);
+                }
+                else
+                {
+                    dtAll.Columns.Add(item.ColumnName + "_1");
+                }
+            }
+
+            string sTableCode = ColCommon.ExcelCol.TableCode;
+            string sColCode = ColCommon.ExcelCol.Code;
+
+            #region 与标准同名列处理
+            //查询相同列名
+            var query = from f in dtCol.AsEnumerable()
+                        join s in dtCommonCol.AsEnumerable()
+                        on f.Field<string>(ColCommon.ExcelCol.Code)
+                        equals s.Field<string>(DataStandardStr.Name)
+                        select new { F1 = f, S1 = s };
+
+            //查询交集数据
+            var joinList = query.ToList();
+            var restult = joinList.Select(t => t.F1.ItemArray.Concat(t.S1.ItemArray).ToArray()); //这里最后必须要加上ToArray
+            foreach (var item in restult)
+            {
+                dtAll.Rows.Add(item);
+            }
+            #endregion
+
+            #region 以标准结尾的列处理
+            //查询以标准结尾的列数据
+            var colTable = dtCol.AsEnumerable()
+                .Select(row => row.Field<string>(ColCommon.ExcelCol.Code));
+            var commonTable = dtCommonCol.AsEnumerable()
+                .Select(row => row.Field<string>(DataStandardStr.Name));
+
+            query = from f in dtCol.AsEnumerable()
+                    from s in dtCommonCol.AsEnumerable()
+                    where f.Field<string>(ColCommon.ExcelCol.Code).EndsWith(s.Field<string>(DataStandardStr.Name))
+                      && !f.Field<string>(ColCommon.ExcelCol.Code).Equals(s.Field<string>(DataStandardStr.Name))
+                      && string.IsNullOrEmpty(f.Field<string>(ColumnStandardString.ErrorMsg))
+                    select new { F1 = f, S1 = s };
+            joinList = query.ToList();
+            restult = joinList.Select(t => t.F1.ItemArray.Concat(t.S1.ItemArray).ToArray()); //这里最后必须要加上ToArray
+            foreach (var item in restult)
+            {
+                dtAll.Rows.Add(item);
+            }
+            #endregion
+
+            foreach (DataRow item in dtAll.Rows)
+            {
+                bool isSame = true;
+                string sColType = string.Empty;
+                string sColDataLength = string.Empty;
+                string sColTypeSize = string.Empty;
+                switch (curImportDBType)
+                {
+                    case DataBaseType.SqlServer:
+                        sColType = item[DataStandardStr.SqlServerDataType].ToString();
+                        sColDataLength = item[DataStandardStr.SqlServerDataLength].ToString();
+                        sColTypeSize = item[DataStandardStr.SqlServerDataTypeFull].ToString();
+                        break;
+                    case DataBaseType.Oracle:
+                        sColType = item[DataStandardStr.OracleDataType].ToString();
+                        sColDataLength = item[DataStandardStr.OracleDataLength].ToString();
+                        sColTypeSize = item[DataStandardStr.OracleDataTypeFull].ToString();
+                        break;
+                    case DataBaseType.MySql:
+                        sColType = item[DataStandardStr.MySqlDataType].ToString();
+                        sColDataLength = item[DataStandardStr.MySqlDataLength].ToString();
+                        sColTypeSize = item[DataStandardStr.MySqlDataTypeFull].ToString();
+                        break;
+                    case DataBaseType.SQLite:
+                        sColType = item[DataStandardStr.SQLiteDataType].ToString();
+                        sColDataLength = item[DataStandardStr.SQLiteDataLength].ToString();
+                        sColTypeSize = item[DataStandardStr.SQLiteDataTypeFull].ToString();
+                        break;
+                    case DataBaseType.PostgreSql:
+                        sColType = item[DataStandardStr.PostgreSqlDataType].ToString();
+                        sColDataLength = item[DataStandardStr.PostgreSqlDataLength].ToString();
+                        sColTypeSize = item[DataStandardStr.PostgreSqlDataTypeFull].ToString();
+                        break;
+                    case DataBaseType.None:
+                    default:
+                        sColType = item[DataStandardStr.DataType].ToString();
+                        sColDataLength = item[DataStandardStr.DataLength].ToString();
+                        sColTypeSize = item[DataStandardStr.DataTypeFull].ToString();
+                        break;
+                }
+
+                string sExcelType = item[ColCommon.ExcelCol.DataType].ToString();
+                if (curImportDBType == DataBaseType.PostgreSql)
+                {
+                    if ((sColType.Equals("varchar", StringComparison.OrdinalIgnoreCase) || sColType.Equals("character varying", StringComparison.OrdinalIgnoreCase))
+                        && sExcelType.Equals("varchar", StringComparison.OrdinalIgnoreCase) || sExcelType.Equals("character varying", StringComparison.OrdinalIgnoreCase))
+                    {
+                        //针对varchar和character varying为相同类型的处理
+                        if (!string.IsNullOrEmpty(sColDataLength) && !item[ColCommon.ExcelCol.DataLength].Equals(sColDataLength))
+                        {
+                            sbErr.Append("长度不同;");
+                            isSame = false;
+                        }
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(sColType) && !sExcelType.Equals(sColType))
+                        {
+                            sbErr.Append("类型不同;");
+                            isSame = false;
+                        }
+
+                        if (!string.IsNullOrEmpty(sColDataLength) && !item[ColCommon.ExcelCol.DataLength].Equals(sColDataLength))
+                        {
+                            sbErr.Append("长度不同;");
+                            isSame = false;
+                        }
+                        if (isSame && !item[ColCommon.ExcelCol.DataTypeFull].Equals(sColTypeSize))
+                        {
+                            sbErr.Append("全类型不同;");
+                        }
+                    }
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(sColType) && !item[ColCommon.ExcelCol.DataType].ToString().Equals(sColType))
+                    {
+                        sbErr.Append("类型不同;");
+                        isSame = false;
+                    }
+                    if (!string.IsNullOrEmpty(sColDataLength) && !item[ColCommon.ExcelCol.DataLength].Equals(sColDataLength))
+                    {
+                        sbErr.Append("长度不同;");
+                        isSame = false;
+                    }
+                    if (isSame && !item[ColCommon.ExcelCol.DataTypeFull].Equals(sColTypeSize))
+                    {
+                        sbErr.Append("全类型不同;");
+                    }
+                }
+                // 查找同名列
+                sFliter = string.Format("{0}='{1}' and {2}='{3}' and {4} is null", sTableCode, item[sTableCode].ToString(), sColCode,
+                    item[sColCode].ToString(), ColumnStandardString.ErrorMsg);
+                drArr = dtCol.Select(sFliter);
+                if (drArr.Length > 0)
+                {
+                    drArr[0][ColumnStandardString.ColCode] = item[DataStandardStr.Name];
+                    drArr[0][ColumnStandardString.ColName] = item[DataStandardStr.NameCN];
+                    drArr[0][ColumnStandardString.ColType] = sColType;
+                    drArr[0][ColumnStandardString.ColLength] = sColDataLength;
+                    drArr[0][ColumnStandardString.ColTypeSize] = sColTypeSize;
+                    drArr[0][ColumnStandardString.ErrorMsg] = sbErr.ToString();
+                }
+                sbErr.Clear();
+            }
+
+            sFliter = string.Format("{0} is not null and {0} <>''", ColumnStandardString.ErrorMsg);
+            DataRow[] dtErr = dtCol.Select(sFliter);
+            SetStandardNotFitColor(); //设置不符合标准时的颜色
+            ShowInfo(string.Format("已检查完毕，共{0}列不符合标准！", dtErr.Length));
+        }
+
+        /// <summary>
+        /// 设置不符合标准时的颜色
+        /// </summary>
+        private void SetStandardNotFitColor()
+        {
+            foreach (DataGridViewRow row in dgvColList.Rows)
+            {
+                if(!row.Cells.Cast<DataGridViewCell>().Any(cell => cell.OwningColumn.Name == ColumnStandardString.ErrorMsg))
+                {
+                    break; //不包括错语信息列时，直接跳出
+                }
+                if (!string.IsNullOrEmpty(row.Cells[ColumnStandardString.ErrorMsg].Value.ToString()))
+                {
+                    row.DefaultCellStyle.BackColor = Color.Yellow; //错误列非空时，设置整行的背景色为黄色
+                }
+                else
+                {
+                    row.DefaultCellStyle.BackColor = Color.White; //错误列为空时，设置整行的背景色为白色
+                }
+            }
+        }
+
+        /// <summary>
+        /// 按标准修正
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsbRerighByStandard_Click(object sender, EventArgs e)
+        {
+            DataTable dtCol = dgvColList.GetBindingTable();
+            string sFliter = string.Format("{0} is not null and {0} <>''", ColumnStandardString.ErrorMsg);
+            DataRow[] dtErr = dtCol.Select(sFliter);
+            foreach (DataRow dr in dtErr) 
+            {
+                if (string.IsNullOrEmpty(dr[ColumnStandardString.ErrorMsg].ToString()))
+                {
+                    continue; //怕一个字段有多个标准。后续就直接跳过了
+                }
+                dr[ColCommon.ExcelCol.DataType] = dr[ColumnStandardString.ColType];
+                dr[ColCommon.ExcelCol.DataLength] = dr[ColumnStandardString.ColLength];
+                dr[ColCommon.ExcelCol.DataTypeFull] = dr[ColumnStandardString.ColTypeSize];
+                dr[ColumnStandardString.ErrorMsg] = string.Empty;
+            }
+            SetStandardNotFitColor(); //设置不符合标准时的颜色
+            ShowInfo(string.Format("已修正共{0}个不符合标准的列！", dtErr.Length));
+        }
+
+        private void dgvColList_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            SetStandardNotFitColor(); //设置不符合标准时的颜色
+        }
+    }
+
+    internal class ColumnStandardString
+    {
+        public readonly static string ColCode = "标准列编码";
+        public readonly static string ColName = "标准列名称";
+        public readonly static string ColType = "标准列类型";
+        public readonly static string ColLength = "标准列长度";
+        public readonly static string ColTypeSize = "标准列全类型";
+        public readonly static string ErrorMsg = "不符信息";
+        public static string[] GetList()
+        {
+            return new string[] { ColCode, ColName, ColType, ColLength, ColTypeSize, ErrorMsg };
+        }
     }
 }

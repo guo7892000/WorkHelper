@@ -49,3 +49,7 @@ ALTER TABLE aprilspring.bas_type2 DROP COLUMN IN_QTY;
 /*修改列名:ALTER TABLE 表名 CHANGE 旧列名 新列名 数据类型;*/
 ALTER TABLE aprilspring.bas_type2 CHANGE CREATOR_ID CREATOR_ID2 varchar(36) NOT NULL COMMENT '创建人ID';
 ALTER TABLE aprilspring.bas_type2 CHANGE CREATOR_ID CREATOR_ID2 varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人ID';
+
+
+
+

@@ -234,6 +234,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 #region 修改表处理
                 StringBuilder sbColSql = new StringBuilder();//列的SQL
                 StringBuilder sbColDefaultSql = new StringBuilder();//列的SQL
+                StringBuilder sbColRemark = new StringBuilder();//列说明
 
                 if (strColDataType.Contains("("))
                 {
@@ -288,13 +289,15 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 #region 列备注的处理
                 //备注
-                sbRemark.Append(" COMMENT ON COLUMN " + strTableCode + "." + strColCode + " IS '" + getFitRemark(strColName, strColRemark) + "'");
+                sbRemark.Append("COMMENT ON COLUMN " + strTableCode + "." + strColCode + " IS '" + getFitRemark(strColName, strColRemark) + "'");
+                sbColRemark.Append("COMMENT ON COLUMN " + strTableCode + "." + strColCode + " IS '" + getFitRemark(strColName, strColRemark) + "';");
                 #endregion
 
                 if (strColumnDealType == ColumnChangeType.Create)
                 {
                     //得到修改表增加列语句
                     sbSql.AppendLine("ALTER TABLE " + strTableCode + " ADD " + sbColSql.ToString() + ";");
+                    sbSql.AppendLine(sbColRemark.toString());
                 }
                 else if (strColumnDealType == ColumnChangeType.Alter)
                 {
@@ -307,12 +310,17 @@ namespace Breezee.WorkHelper.DBTool.UI
                     }
                     else
                     {
-                        sbSql.AppendLine(string.Format("ALTER TABLE {0} ALTER COLUMN {1} SET NULL;", strTableCode, strColCode));
+                        sbSql.AppendLine(string.Format("ALTER TABLE {0} ALTER COLUMN {1} DROP NOT NULL;", strTableCode, strColCode));
                     }
                     if (!string.IsNullOrEmpty(strColDefault))
                     {
                         sbSql.AppendLine(string.Format("ALTER TABLE {0} ALTER COLUMN {1} SET DEFAULT {2};", strTableCode, strColCode, strColDefault));
                     }
+                    else
+                    {
+                        sbSql.AppendLine(string.Format("ALTER TABLE {0} ALTER COLUMN {1} DROP DEFAULT;", strTableCode, strColCode));
+                    }
+                    sbSql.AppendLine(sbColRemark.toString());
                 }
                 else if (strColumnDealType == ColumnChangeType.Drop)
                 {
@@ -322,7 +330,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     //得到修改表增加列语句
                     sbSql.AppendLine("ALTER TABLE " + strTableCode + " ADD " +  sbColSql.ToString() + ";");
-                    sbSql.Append(sbRemark.toString());
+                    sbSql.AppendLine(sbColRemark.toString());
                 }
                 j++;
                 #endregion

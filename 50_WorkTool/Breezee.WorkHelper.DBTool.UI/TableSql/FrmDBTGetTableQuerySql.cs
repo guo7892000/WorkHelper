@@ -989,8 +989,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                         {
                             strNowComma = "";
                         }
-                        string sColInsert = strTableAliasAndDot + strColCode + strNowComma + sqlEntity.NewLine;
-                        string sColInsertDynamic = string.Format("<if test=\"{0} != null and {0} != ''\">{1},</if>", sDefineFormat + strColCodeParm, strTableAliasAndDot + strColCodeParm) + sqlEntity.NewLine;
+                        string sColInsert = strColCode + strNowComma + sqlEntity.NewLine;
+                        string sColInsertDynamic = string.Format("<if test=\"{0} != null and {0} != ''\">{1},</if>", sDefineFormat + strColCodeParm, strColCodeParm) + sqlEntity.NewLine;
 
                         string sColValueComment = MakeColumnValueComment(sqlEntity.SqlType, strNowComma, strColCode, strColValue, strColComments, strColType, sqlEntity.ParamType, strColCodeParm);
                         string sColValueDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} != null and {0} != ''\">#{1}{0}{2},</if>", sDefineFormat + strColCodeParm, "{", "}");

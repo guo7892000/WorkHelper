@@ -62,17 +62,29 @@ COMMENT ON TABLE BAS_TYPE IS '类型表：';
 
 /*二、修改表：增加列*/
 /*增加列*/
-ALTER TABLE public.t_test_db_supplier ADD supply_addr varchar(500) NULL;
-COMMENT ON COLUMN public.t_test_db_supplier.supply_addr IS '供应商地址';
+ALTER TABLE t_test_db_supplier ADD supply_addr varchar(500) NULL;
+COMMENT ON COLUMN t_test_db_supplier.supply_addr IS '供应商地址';
 
 /*修改列长度*/
-ALTER TABLE public.t_test_db_supplier ALTER COLUMN supplier_full_name TYPE varchar(300) USING supplier_full_name::varchar(300);
+ALTER TABLE t_test_db_supplier ALTER COLUMN supplier_full_name TYPE varchar(300) USING supplier_full_name::varchar(300);
 /*设置列非空*/
-ALTER TABLE public.t_test_db_supplier ALTER COLUMN supplier_full_name SET NOT NULL;
+ALTER TABLE t_test_db_supplier ALTER COLUMN supplier_full_name SET NOT NULL;
 /*修改列默认值*/
-ALTER TABLE public.t_test_db_supplier ALTER COLUMN supplier_full_name SET DEFAULT 2;
+ALTER TABLE t_test_db_supplier ALTER COLUMN supplier_full_name SET DEFAULT 2;
 
 /*删除列*/
-ALTER TABLE public.t_test_db_supplier DROP COLUMN sort_id;
+ALTER TABLE t_test_db_supplier DROP COLUMN sort_id;
 /*重命名列*/
-ALTER TABLE public.t_test_db_supplier RENAME COLUMN supply_addr TO supply_addr1;
+ALTER TABLE t_test_db_supplier RENAME COLUMN supply_addr TO supply_addr1;
+
+/*设置列默认值*/
+ALTER TABLE table_name ALTER COLUMN column_name SET DEFAULT 'new_value';
+/*去掉列的默认值*/
+ALTER TABLE table_name ALTER COLUMN column_name DROP DEFAULT;
+
+/*设置列非空*/
+ALTER TABLE table_name ALTER COLUMN column_name SET NOT NULL;
+/*去掉列的非空约束*/
+ALTER TABLE your_table_name ALTER COLUMN column_name DROP NOT NULL;
+
+

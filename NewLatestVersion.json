@@ -1,7 +1,7 @@
 {
-  "version": "1.3.7.8",
-  "date": "2025-06-15",
-  "publishRemark": "1.表结构SQL生成：生成时将不符合要求的列提示出来，方便修正；默认值不去掉单引号；针对PG修改表增加列时增加说明；LY导入模板的表名区分增加支持空格（通常是冒号），如【表名称 物料表】也能正确认出表名称是【物料表】。",
+  "version": "1.3.8.0",
+  "date": "2025-06-28",
+  "publishRemark": "1.表结构SQL生成：修正PG的修改列为空是使用DROP；增加可选的【符合标准检查】与【按标准修正】功能；增加重复表判断。\r\n2.数据Excel公式生成：修正根据数据库生成时缺少最后的括号和分号。\r\n3.增删改查SQL生成：针对【查询新增】去掉INSERT段中字段的别名。\r\n4.数据字典：针对PG的SQL中有::类型转换，将不会被误认为是查询参数。\r\n",
   "appName": "WorkHelper",
   "zipFormats": "zip|rar|7z",
   "downUrlPublishLatest": "https://gitee.com/breezee2000/WorkHelper/releases/download/Latest/#appName##version#",

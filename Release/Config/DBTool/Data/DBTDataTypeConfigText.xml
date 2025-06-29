@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?> 
 <xml>
-  <key kid="DataStandardTypeText" name ="文本类" oracle="varchar2" mysql="varchar" sqlserver="varchar" postgresql="character varying" sqlite="varchar">
+  <key kid="DataStandardTypeText" name ="文本类" oracle="varchar2" mysql="varchar" sqlserver="varchar" postgresql="varchar" sqlite="varchar">
 	<value vid="bool" name="是否(2)" length="2" />
     <value vid="flag" name="标志类(10)" length="10" />
     <value vid="id" name="主键类(36)" length="36" />

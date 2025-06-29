@@ -336,6 +336,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             #region 判断并取得数据
             if (cmbType.SelectedValue == null) return;
+            label2.Focus();
             string sConnString = cbbConnString.SelectedValue.ToString();
             string sLastAddKuoHao = string.Empty;
 
@@ -594,6 +595,14 @@ namespace Breezee.WorkHelper.DBTool.UI
             rtbResult.AppendText(sbBegin.ToString());
             rtbResult.AppendText(System.Environment.NewLine);
             rtbResult.AppendText(sbEnd.ToString());
+            if ("1".Equals(sConnString))
+            {
+                rtbResult.AppendText("&\");\"");
+            }
+            else
+            {
+                rtbResult.AppendText(",\");\")");
+            }    
             Clipboard.SetData(DataFormats.UnicodeText, rtbResult.Text);
             tabControl1.SelectedTab = tpAutoSQL;
             //生成SQL成功后提示

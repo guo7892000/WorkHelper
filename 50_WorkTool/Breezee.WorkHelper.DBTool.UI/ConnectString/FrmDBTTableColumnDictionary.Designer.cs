@@ -567,6 +567,7 @@
             this.dgvCodeNameCol.Size = new System.Drawing.Size(388, 425);
             this.dgvCodeNameCol.TabIndex = 0;
             this.dgvCodeNameCol.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCodeNameCol_CellEndEdit);
+            this.dgvCodeNameCol.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvCodeNameCol_ColumnHeaderMouseDoubleClick);
             // 
             // groupBox9
             // 

@@ -46,6 +46,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private bool _allSelectAll = false;//默认全选，这里取反
         private bool _allSelectTable = false;//默认全选，这里取反
         private bool _allSelectCommon = false;//默认全选，这里取反
+        private bool _allSelectNameCode = false;//默认全选，这里取反
         private bool _allSelectColumnIsMust = false;//默认全选，这里取反
         //常量
         private static string strTableAlias = "A"; //查询和修改中的表别名
@@ -706,6 +707,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                     mcColl = regex.Matches(sSql);
                     foreach (Match mt in mcColl)
                     {
+                        if (":".Equals(sSql.Substring(mt.Index - 1, 1)))
+                        {
+                            continue; //PostgreSQL中存在::转换数据类型，这里要跳过，不作为条件
+                        }
                         //去掉参数前后缀
                         string sCol = mt.Value.Replace("#{param.", "")
                             .Replace("#{para.", "")
@@ -1965,6 +1970,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             DataTable dtFtpFile = dgvTableList.GetBindingTable();
             if (dtFtpFile.Rows.Count == 0) return;
 
+            //先把所有表未选中的先选中
+            DataRow[] sOldSelectArr = dtFtpFile.Select(_sGridColumnSelect + "='0'");
+            foreach (DataRow sRow in sOldSelectArr)
+            {
+                sRow[_sGridColumnSelect] = "1"; //设置为选中
+            }
+
             var query = from f in dtFtpFile.AsEnumerable()
                         where GetLinqDynamicWhere(sFilter, f)
                         select f;
@@ -2424,6 +2436,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void dgvInput_MouseDown(object sender, MouseEventArgs e)
         {
             tsmiAddCodeName.Visible = false; //隐藏【加入编码名称】右键菜单
+        }
+
+        private void dgvCodeNameCol_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            SelectAllOrCancel(dgvCodeNameCol, ref _allSelectNameCode, e);
         }
     }
 
