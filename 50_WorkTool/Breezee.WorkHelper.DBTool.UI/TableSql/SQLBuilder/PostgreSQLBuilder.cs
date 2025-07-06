@@ -139,12 +139,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             //其他变量
             string strTable_Col = strTableCode + "_" + strColCode;//表编码+"_"+列编码
-            string sOneSql = "";
+            // string sOneSql = "";
 
             #region 转换字段类型与默认值
             if (importDBType != targetDBType && paramEntity.isNeedColumnTypeConvert)
             {
-                ConvertDBTypeDefaultValueString(ref strColDataType, ref strColDefault, importDBType);
+                ConvertDBTypeDefaultValueString(ref strColDataType, ref strColDefault,ref strColLen, importDBType);
             }
             #endregion
 
@@ -336,23 +336,24 @@ namespace Breezee.WorkHelper.DBTool.UI
                 #endregion
             }
         }
-        public override void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue, DataBaseType impDbType)
+        public override void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue, ref string sLength, DataBaseType impDbType)
         {
             //类型
             sDbType = sDbType.ToLower().Replace("datetime", "timestamp").Replace("bigint", "ilnt8").Replace("int", "int4").Replace("ilnt8", "int8")
                 .Replace("varchar2", "varchar").Replace("character varying", "varchar");
-            // PG的整型不支持框号
-            if (sDbType.StartsWith("int4(") || sDbType.StartsWith("int8("))
-            {
-                sDbType = sDbType.Substring(0,4);
-            }
-            else if (sDbType.StartsWith("int("))
-            {
-                sDbType = sDbType.Substring(0, 3);
-            }
             //默认值
             sDefaultValue = sDefaultValue.ToLower().Replace("getdate()", "now()")
             .Replace("(datetime('now','localtime'))", "now()");
+
+            // 针对没有长度字段的处理
+            string[] sTypeArr = new string[] { "int", "int4", "int8", "timestamp" };
+            foreach (string sType in sTypeArr)
+            {
+                if (sDbType.Equals(sType))
+                {
+                    sLength = "";
+                }
+            }
         }
 
         /// <summary>

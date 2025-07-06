@@ -5,6 +5,7 @@ using System.Text;
 using Breezee.Core.Interface;
 using Breezee.WorkHelper.DBTool.Entity;
 using Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL;
+using org.breezee.MyPeachNet;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -140,7 +141,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             #region 转换字段类型与默认值
             if (importDBType != targetDBType && paramEntity.isNeedColumnTypeConvert)
             {
-                ConvertDBTypeDefaultValueString(ref strColDataType, ref strColDefault, importDBType);
+                ConvertDBTypeDefaultValueString(ref strColDataType, ref strColDefault, ref strColLen,importDBType);
             }
             #endregion
 
@@ -427,7 +428,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
         }
 
-        public override void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue, DataBaseType impDbType)
+        public override void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue, ref string sLength, DataBaseType impDbType)
         {
             //类型
             sDbType = sDbType.ToLower().Replace("varchar2", "varchar").Replace("number", "decimal")
@@ -436,6 +437,15 @@ namespace Breezee.WorkHelper.DBTool.UI
             sDefaultValue = sDefaultValue.ToLower().Replace("sysdate", "getdate()").Replace("sys_guid()", "newid()")
                 .Replace("now()", "getdate()")
                 .Replace("(datetime('now','localtime'))", "getdate()");
+            // 针对没有长度字段的处理
+            string[] sTypeArr = new string[] { "int", "datetime" };
+            foreach (string sType in sTypeArr)
+            {
+                if (sDbType.Equals(sType))
+                {
+                    sLength = "";
+                }
+            }
         }
 
         /// <summary>

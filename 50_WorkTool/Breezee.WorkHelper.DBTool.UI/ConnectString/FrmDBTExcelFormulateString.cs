@@ -558,10 +558,18 @@ namespace Breezee.WorkHelper.DBTool.UI
                 sbBegin.Append(j == dtColumnSelect.Rows.Count - 1 ? strColCode + ") VALUES (" : strColCode + ",");
                 bool isLast = j == dtColumnSelect.Rows.Count - 1;
                 string sExcelCol = j.ToExcelColumnWord();
+                bool isAddYinHao = drCol[_sGridColumnDynamic].ToString().Trim().Equals("1"); //是否加引号
 
                 string sFixedValue = string.Format(",\"{0}\"", strColFixedValue);
                 string sDataChar = string.Format(",\"'\",{0}2,\"'\"", sExcelCol);
                 string sDataCharNo = string.Format(",{0}2", sExcelCol);
+                if (ckbEmptyToNull.Checked)
+                {
+                    // 针对空值为NULL的处理
+                    sDataChar = string.Format(",IF(ISBLANK({0}2), \"null\",\"\'\"&{0}2&\"\'\")", sExcelCol);
+                    sDataCharNo = string.Format(",IF(ISBLANK({0}2), \"null\", {0}2)", sExcelCol);
+                }
+
                 string sDouhao = string.Format(",\"{0}\"", ",");
                 string sLastKuohao = string.Format(",\"{0}\"", sLastAddKuoHao);
                 if ("1".Equals(sConnString))
@@ -570,6 +578,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                     sFixedValue = string.Format("&\"{0}\"", strColFixedValue);
                     sDataChar = string.Format("&\"'\"&{0}2&\"'\"", sExcelCol);
                     sDataCharNo = string.Format("&{0}2", sExcelCol);
+                    if (ckbEmptyToNull.Checked)
+                    {
+                        // 针对空值为NULL的处理
+                        sDataChar = string.Format("&IF(ISBLANK({0}2),\"null\", \"\'\"&{0}2&\"\'\")&\"\"", sExcelCol);
+                        sDataCharNo = string.Format("&\"\"&IF(ISBLANK({0}2), \"null\", {0}2)&\"\"", sExcelCol);
+                    }
                     sDouhao = string.Format("&\"{0}\"", ",");
                     sLastKuohao = string.Format("&\"{0}\"", sLastAddKuoHao);
                 }                    

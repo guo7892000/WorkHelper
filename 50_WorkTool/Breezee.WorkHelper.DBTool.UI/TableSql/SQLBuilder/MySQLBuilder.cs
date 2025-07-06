@@ -134,7 +134,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             #region 转换字段类型与默认值
             if (importDBType != targetDBType && paramEntity.isNeedColumnTypeConvert)
             {
-                ConvertDBTypeDefaultValueString(ref strColDataType, ref strColDefault, importDBType);
+                ConvertDBTypeDefaultValueString(ref strColDataType, ref strColDefault,ref strColLen, importDBType);
             }
             #endregion
 
@@ -307,7 +307,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
         }
 
-        public override void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue, DataBaseType impDbType)
+        public override void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue,ref string sLength, DataBaseType impDbType)
         {
             //类型：支持date和datetime
             sDbType = sDbType.ToLower().Replace("varchar2", "varchar").Replace("number", "decimal").Replace("timestamp", "datetime")
@@ -315,6 +315,15 @@ namespace Breezee.WorkHelper.DBTool.UI
             //默认值
             sDefaultValue = sDefaultValue.ToLower().Replace("sysdate", "now()").Replace("sys_guid()", "uuid()")
                 .Replace("getdate()", "now()").Replace("(datetime('now','localtime'))", "now()");
+            // 针对没有长度字段的处理
+            string[] sTypeArr = new string[] { "datetime", "int", "bigint"};
+            foreach (string sType in sTypeArr)
+            {
+                if (sDbType.Equals(sType))
+                {
+                    sLength = "";
+                }
+            }
         }
 
         /// <summary>

@@ -1030,7 +1030,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                 string sDefault = dr[ColCommon.ExcelCol.Default].ToString();
                 string sDataLength = dr[ColCommon.ExcelCol.DataLength].ToString();
                 string sDataDotLength = dr[ColCommon.ExcelCol.DataDotLength].ToString();
-                builder.ConvertDBTypeDefaultValueString(ref sDataType, ref sDefault, importDBType);//转换了列类型和默认值
+                builder.ConvertDBTypeDefaultValueString(ref sDataType, ref sDefault,ref sDataLength, importDBType);//转换了列类型和默认值
+                dr[ColCommon.ExcelCol.DataLength] = sDataLength;//重新修正长度
+                dr[ColCommon.ExcelCol.DataType] = sDataType; //重新修正类型
                 isNeedColumnTypeConvert = false;//这里就设置为不需要转换了
                 dr[ColCommon.ExcelCol.DataTypeNew] = sDataType; //得到新类型
                 dr[ColCommon.ExcelCol.Default] = sDefault; //得到新默认值
@@ -1094,7 +1096,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     string sDataType = drSource[DBColumnSimpleEntity.SqlString.DataType].ToString();
                     string sDataLength = drSource[DBColumnSimpleEntity.SqlString.DataLength].ToString();
                     string sDefault = drSource[DBColumnSimpleEntity.SqlString.Default].ToString();
-                    builder.ConvertDBTypeDefaultValueString(ref sDataType, ref sDefault, importDBType);//转换了列类型和默认值
+                    builder.ConvertDBTypeDefaultValueString(ref sDataType, ref sDefault,ref sDataLength, importDBType);//转换了列类型和默认值
                     //string sDataPrecision = drSource[DBColumnSimpleEntity.SqlString.DataPrecision].ToString();
                     string sDataScale = drSource[DBColumnSimpleEntity.SqlString.DataScale].ToString();
                     string sColName = drSource[DBColumnSimpleEntity.SqlString.Name].ToString();
@@ -1121,6 +1123,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 string sOldTableCode = dr[EntTable.ExcelTable.Code + "_OLD"].ToString();
                 string sNewTableCode = dr[EntTable.ExcelTable.Code].ToString();
+                string sNewTableRemark = dr[EntTable.ExcelTable.Name].ToString();
                 string sRemark = dr[EntTable.ExcelTable.Remark].ToString();
                 if(string.IsNullOrEmpty(sOldTableCode) || string.IsNullOrEmpty(sNewTableCode))
                 {
@@ -1131,6 +1134,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (drArrNew.Length==0) continue;
                 //修改表名
                 drArrNew[0][EntTable.ExcelTable.Code] = sNewTableCode;
+                drArrNew[0][EntTable.ExcelTable.Name] = sNewTableRemark;
                 drArrNew[0][EntTable.ExcelTable.Remark] = sRemark;
                 //修改列清单
                 sFilterNew = ColCommon.ExcelCol.TableCode + "='" + sOldTableCode + "'";

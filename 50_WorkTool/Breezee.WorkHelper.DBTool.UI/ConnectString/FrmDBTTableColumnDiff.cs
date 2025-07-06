@@ -797,7 +797,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 string sDataScale = drSource[sPreString + DBColumnSimpleEntity.SqlString.DataScale].ToString();
                 string sColName = drSource[sPreString + DBColumnSimpleEntity.SqlString.Name].ToString();
                 string sDefault = drSource[sPreString + DBColumnSimpleEntity.SqlString.Default].ToString();
-                sqlBuilder.ConvertDBTypeDefaultValueString(ref sDataType, ref sDefault, importBaseType);
+                sqlBuilder.ConvertDBTypeDefaultValueString(ref sDataType, ref sDefault, ref sDataLength, importBaseType);
                 dr[ColCommon.ExcelCol.ChangeType] = "新增";
                 dr[ColCommon.ExcelCol.TableCode] = sTableCode;
                 dr[ColCommon.ExcelCol.Code] = sColName;

@@ -298,7 +298,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="sDbType"></param>
         /// <param name="sDefaultValue"></param>
         /// <param name="impDbType"></param>
-        public abstract void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue, DataBaseType impDbType);
+        public abstract void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue, ref string sLength, DataBaseType impDbType);
         /// <summary>
         /// 转换为对应数据库类型的SQL
         /// </summary>
