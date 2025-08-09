@@ -414,7 +414,8 @@ namespace Breezee.WorkHelper.DBTool.UI
         public override void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue, ref string sLength, DataBaseType impDbType)
         {
             //类型：Oracle的DATE类型包含时分秒；小数使用number
-            sDbType = sDbType.ToLower().Replace("varchar", "varchar2").Replace("datetime", "date")
+            sDbType = sDbType.ToLower().Replace("varchar2", "varxxchar2").Replace("varchar", "varchar2").Replace("varxxchar2", "varchar2")
+                .Replace("datetime", "date")
                 .Replace("decimal", "number").Replace("numeric", "number")
                 .Replace("character varying", "varchar2").Replace("int4", "int").Replace("int8", "bigint");
             //默认值

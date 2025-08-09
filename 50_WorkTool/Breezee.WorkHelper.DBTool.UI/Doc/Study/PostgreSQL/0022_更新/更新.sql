@@ -1,4 +1,18 @@
-﻿-- 更新语句
+﻿-- 更新语句：注意PG更新语句中更新表可以加别名，可用于条件中，但不能在更新的列前面加别名.，那样会报错！！
+update t_ebom_db_material_type T
+set cost_attr=B."C",
+cost_attr_name=B."D"
+from (
+SELECT  '1'  AS "ROWNO", 'TJGC'  AS "A", '通机国产'  AS "B", 'TJGC'  AS "C", '通机国产'  AS "D"
+UNION ALL SELECT  '2' , 'TJJP' , '通机进口' , 'TJJP' , '通机进口' 
+UNION ALL SELECT  '3' , 'JKRX' , '进口日系' , 'TJJPB' , '通机进口(保税)' 
+) B
+join t_ebom_db_material_type PR /**/
+ on PR.material_type_no = B."A"
+where T.level_num ='2' 
+ and T.parent_material_type_id = PR.material_type_id
+;
+-- 或在条件中使用要更新表全名来指定列条件
 update t_ebom_db_material_type
 set cost_attr=B."C",
 cost_attr_name=B."D"
@@ -59,7 +73,6 @@ CREATE TABLE test (
     posts INT NOT NULL DEFAULT 0
 );
 */
-
 MERGE INTO test t
 USING (VALUES ('sql'),('pg17')) AS s(tag)
 ON t.tag = s.tag

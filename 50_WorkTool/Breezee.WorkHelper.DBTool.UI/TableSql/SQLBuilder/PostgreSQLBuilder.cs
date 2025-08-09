@@ -339,7 +339,8 @@ namespace Breezee.WorkHelper.DBTool.UI
         public override void ConvertDBTypeDefaultValueString(ref string sDbType, ref string sDefaultValue, ref string sLength, DataBaseType impDbType)
         {
             //类型
-            sDbType = sDbType.ToLower().Replace("datetime", "timestamp").Replace("bigint", "ilnt8").Replace("int", "int4").Replace("ilnt8", "int8")
+            sDbType = sDbType.ToLower().Replace("datetime", "timestamp").Replace("bigint", "ilnt8").Replace("int4", "ilnt4").Replace("int8", "ilnt8").Replace("int", "int4")
+                .Replace("ilnt8", "int8").Replace("ilnt4", "int4")
                 .Replace("varchar2", "varchar").Replace("character varying", "varchar");
             //默认值
             sDefaultValue = sDefaultValue.ToLower().Replace("getdate()", "now()")

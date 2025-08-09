@@ -910,6 +910,11 @@ namespace Breezee.WorkHelper.DBTool.UI
                             strNowComma = "";
                         }
                         strTableAlias = sqlEntity.TableAlias;
+                        if(_dbServer!=null && _dbServer.DatabaseType== DataBaseType.PostgreSql)
+                        {
+                            strTableAliasAndDot = " ";//postgreSql不支持set的列名前加别名
+                        }
+                        
                         string sColValueComment = MakeColumnValueComment(sqlEntity.SqlType, strNowComma, strColCode, strColValue, strColComments, strColType, sqlEntity.ParamType, strColCodeParm) + sqlEntity.NewLine;
                         string sColValueDynamic = sqlEntity.Tab + string.Format("<if test=\"{0} != null and {0} !=''\">{1}=#{2}{0}{3},</if>", sDefineFormat + strColCodeParm, strTableAliasAndDot + strColCodeParm, "{", "}") + sqlEntity.NewLine;
                         string sSet = ckbNewLine.Checked ? "SET" : "SET";
