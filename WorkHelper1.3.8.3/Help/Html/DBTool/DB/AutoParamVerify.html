@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自动参数化SQL验证</title>
+</head>
+<body>
+    <div>
+        <h1>自动参数化SQL验证</h1>
+        <div>
+            <h2>一、功能概述</h2>
+            针对个人项目MyPeach.Net中自动化参数SQL的功能测试验证（MyPeach是Java版的）。即在SQL中，我们可以将需要参数化或动态化的条件，以#参数#表示动态部分，经过MyPeach.Net处理后，
+            #参数#会被替换为参数或字符，或如无值传入，会被移除或替换为1=1等，最终得到被参数化的SQL及有效条件集合。这样就减少了字符的拼接，以一个完整的SQL来验证语法是否存在错误！
+            * 参数配置示例：#MDLIST:M:R:LS:F:D-now()-r-n:N#。键大类支持中英文冒号(:：)、分号(;；)分隔，键小类支持横杆(-)、竖线(|)、与(&)、电邮字符（@）分隔。
+            其中第一项必须是为参数名（本例为MDLIST）；M（Must）是必填；R（Replace）是替换值；LS是字符列表（List String），LI是指整型列表； F是优化配置项（First）；
+            D为默认值，其支持-&|@四种字符作为分隔符的更多属性配置（不区分大小写），其中第二个必须是默认值（注：如包括R配置，则会去掉值中的单引号），后面的R、N分别是值替换、不加引号配置。
+            * 条件动态SQL段：可以根据条件值动态加入SQL段，格式：/*@MP&DYN {[参数=1]}& {[SQL段]}  @MP&DYN*/，即配置在/**/中，并且注释中有@MP&DYN字符，作为条件动态SQL段声明，
+            内容由&关联条件与SQL段，两者都由{[条件或SQL段]}包裹起来(注：包裹字符是{}[]至少一个组合)。示例：/***@MP&DYN {[id=1]}& {[A.ID,B.ID]}  @MP&DYN****/，即表示id条件值为1时，加入A.ID,B.ID的SQL段。
+            操作符包括：整型比较：>=、>、<=、<，字符比较： =、! =、<>
+        </div>
+        <div>
+            <h2>二、界面截图</h2>
+            主界面及参数化前：<br>
+            <img src="Images\AutoParamVerify01.jpg" alt=""><br>
+            参数化后：<br>
+            <img src="Images\AutoParamVerify02.jpg" alt=""><br>
+        </div>
+
+        <div>
+            <h2>三、操作步骤</h2>
+            <b>1、【连接配置名】：</b>选择一个数据库。<br>
+            <b>2、输入【参数化前的SQL】。</b><br>
+            <b>3、点击【获取条件】：</b>会将#参数#中的参数加载到【参数化前传入的条件】网格中<br>
+            <b>4、在【参数化前传入的条件】网格中的【IN_VALUE】中输入条件值。</b><br>
+            <b>5、点击【参数化】：</b>将得到最终参数化的SQL和有效条件！<br>
+            <b>6、点击【执行最终SQL】：</b>将在选择的数据库中执行最终SQL，结果会显示在【查询结果】网格中！<br>
+        </div>        
+        <div>
+            <h2>四、逻辑与业务规则</h2>
+            <div>
+                <b>在【参数化前的SQL】不变的情况下，</b>我们可以通过改变【参数化前传入的条件】中的值来观察参数化SQL的变化。<br>
+                <b>如【参数化前的SQL】有改变，</b>那么需要重新点【获取条件】，以获取正确的【参数化前传入的条件】。<br>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

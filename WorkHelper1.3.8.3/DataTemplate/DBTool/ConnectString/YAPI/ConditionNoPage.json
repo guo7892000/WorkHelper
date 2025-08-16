@@ -1,0 +1,10 @@
+﻿{
+  "type": "object",
+  "title": "empty object",
+  "properties": {
+    #COLUMN_DESC#
+  },
+  "required": [
+    #COLUMN_MUST#
+  ]
+}

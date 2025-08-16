@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<xml>
+  <key kid="DataStandardTypeDecimal" name ="小数类" oracle="number" mysql="decimal" sqlserver="decimal" postgresql="numeric" sqlite="decimal">
+    <value vid="money" name="金额类(2)" length ="2" />
+	<value vid="number" name="数值类(4)" length ="4" />
+    <value vid="cost" name="成本类(6)" length ="6" />
+	<value vid="myDecimal" name="自定义(?)" length ="?" />
+  </key>
+</xml>  

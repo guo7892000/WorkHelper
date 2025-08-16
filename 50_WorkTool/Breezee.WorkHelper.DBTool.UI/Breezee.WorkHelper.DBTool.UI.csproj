@@ -599,279 +599,279 @@
     <EmbeddedResource Include="DataTemplate\DBTool\TableSQL\LY\Columns.txt" />
     <EmbeddedResource Include="DataTemplate\DBTool\TableSQL\LY\ColumnsMove.txt" />
     <EmbeddedResource Include="DataTemplate\DBTool\TableSQL\LY\TableMerge.txt" />
-    <Content Include="Doc\Study\MySql\0032_函数\函数.sql">
+    <None Include="Doc\Study\MySql\0032_函数\函数.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\MySql\0001_基础\基础.sql">
+    </None>
+    <None Include="Doc\Study\MySql\0001_基础\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\MySql\0001_基础\字符.sql">
+    </None>
+    <None Include="Doc\Study\MySql\0001_基础\字符.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\MySql\0030_存储过程\存储过程.sql">
+    </None>
+    <None Include="Doc\Study\MySql\0030_存储过程\存储过程.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\MySql\0001_基础\常用.sql">
+    </None>
+    <None Include="Doc\Study\MySql\0001_基础\常用.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
     <None Include="Doc\Study\MySql\0001_基础\日期.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="Doc\Study\MySql\0022_更新\更新.sql">
+    <None Include="Doc\Study\MySql\0022_更新\更新.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\MySql\0020_查询\查询.sql">
+    </None>
+    <None Include="Doc\Study\MySql\0020_查询\查询.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\MySql\0050_索引\索引.sql">
+    </None>
+    <None Include="Doc\Study\MySql\0050_索引\索引.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\MySql\0090_用户权限\系统对象.sql">
+    </None>
+    <None Include="Doc\Study\MySql\0090_用户权限\系统对象.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\MySql\0010_表\表.sql">
+    </None>
+    <None Include="Doc\Study\MySql\0010_表\表.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\MySql\0060_视图\视图.sql">
+    </None>
+    <None Include="Doc\Study\MySql\0060_视图\视图.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0010_表\自增长.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0010_表\自增长.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0020_查询\行转列.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0020_查询\行转列.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0030_存储过程\实例.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0030_存储过程\实例.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0032_函数\函数.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0032_函数\函数.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0033_包\包体.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0033_包\包体.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0033_包\包定义.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0033_包\包定义.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0033_包\包概述.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0033_包\包概述.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0040_脚本\动态SQL.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0040_脚本\动态SQL.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0060_视图\固化视图.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0060_视图\固化视图.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0001_基础\基础.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0001_基础\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0080_其他对象\DBLink.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0080_其他对象\DBLink.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0080_其他对象\同义词.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0080_其他对象\同义词.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0070_Job\Job.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0070_Job\Job.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0090_用户权限\空间.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0090_用户权限\空间.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0040_脚本\游标.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0040_脚本\游标.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0022_更新\更新.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0022_更新\更新.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0040_脚本\脚本执行.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0040_脚本\脚本执行.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0050_索引\索引.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0050_索引\索引.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0090_用户权限\权限.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0090_用户权限\权限.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0001_基础\字符.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0001_基础\字符.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0030_存储过程\存储过程.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0030_存储过程\存储过程.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0001_基础\常用.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0001_基础\常用.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0080_其他对象\序列.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0080_其他对象\序列.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0001_基础\循环.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0001_基础\循环.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0001_基础\日期.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0001_基础\日期.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0020_查询\查询.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0020_查询\查询.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0090_用户权限\系统对象.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0090_用户权限\系统对象.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0010_表\表.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0010_表\表.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0060_视图\视图.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0060_视图\视图.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\0100_触发器\触发器.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\0100_触发器\触发器.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\9000_实例\生成单号.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\9000_实例\生成单号.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\Oracle\9000_实例\获取含字母的流水号.sql">
+    </None>
+    <None Include="Doc\Study\Oracle\9000_实例\获取含字母的流水号.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\PostgreSQL\0022_更新\更新.sql">
+    </None>
+    <None Include="Doc\Study\PostgreSQL\0022_更新\更新.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\PostgreSQL\0032_函数\函数.sql">
+    </None>
+    <None Include="Doc\Study\PostgreSQL\0032_函数\函数.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\PostgreSQL\0001_基础\基础.sql">
+    </None>
+    <None Include="Doc\Study\PostgreSQL\0001_基础\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\PostgreSQL\0001_基础\字符.sql">
+    </None>
+    <None Include="Doc\Study\PostgreSQL\0001_基础\字符.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\PostgreSQL\0030_存储过程\存储过程.sql">
+    </None>
+    <None Include="Doc\Study\PostgreSQL\0030_存储过程\存储过程.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\PostgreSQL\0001_基础\常用.sql">
+    </None>
+    <None Include="Doc\Study\PostgreSQL\0001_基础\常用.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\PostgreSQL\0001_基础\日期.sql">
+    </None>
+    <None Include="Doc\Study\PostgreSQL\0001_基础\日期.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\PostgreSQL\0020_查询\查询.sql">
+    </None>
+    <None Include="Doc\Study\PostgreSQL\0020_查询\查询.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\PostgreSQL\0050_索引\索引.sql">
+    </None>
+    <None Include="Doc\Study\PostgreSQL\0050_索引\索引.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\PostgreSQL\0090_用户权限\系统对象.sql">
+    </None>
+    <None Include="Doc\Study\PostgreSQL\0090_用户权限\系统对象.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\PostgreSQL\0010_表\表.sql">
+    </None>
+    <None Include="Doc\Study\PostgreSQL\0010_表\表.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\PostgreSQL\0060_视图\视图.sql">
+    </None>
+    <None Include="Doc\Study\PostgreSQL\0060_视图\视图.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\PostgreSQL\0100_触发器\触发器.sql">
+    </None>
+    <None Include="Doc\Study\PostgreSQL\0100_触发器\触发器.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\PostgreSQL\9000_实例\加密解密.sql">
+    </None>
+    <None Include="Doc\Study\PostgreSQL\9000_实例\加密解密.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SQLite\0022_更新\更新.sql">
+    </None>
+    <None Include="Doc\Study\SQLite\0022_更新\更新.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SQLite\0032_函数\函数.sql">
+    </None>
+    <None Include="Doc\Study\SQLite\0032_函数\函数.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SQLite\0001_基础\基础.sql">
+    </None>
+    <None Include="Doc\Study\SQLite\0001_基础\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SQLite\0001_基础\字符.sql">
+    </None>
+    <None Include="Doc\Study\SQLite\0001_基础\字符.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SQLite\0001_基础\常用.sql">
+    </None>
+    <None Include="Doc\Study\SQLite\0001_基础\常用.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SQLite\0001_基础\日期.sql">
+    </None>
+    <None Include="Doc\Study\SQLite\0001_基础\日期.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SQLite\0020_查询\查询.sql">
+    </None>
+    <None Include="Doc\Study\SQLite\0020_查询\查询.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SQLite\0090_用户权限\系统对象.sql">
+    </None>
+    <None Include="Doc\Study\SQLite\0090_用户权限\系统对象.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SQLite\0010_表\表.sql">
+    </None>
+    <None Include="Doc\Study\SQLite\0010_表\表.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SQLite\0060_视图\视图.sql">
+    </None>
+    <None Include="Doc\Study\SQLite\0060_视图\视图.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SQLite\0100_触发器\触发器.sql">
+    </None>
+    <None Include="Doc\Study\SQLite\0100_触发器\触发器.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SqlServer\0022_更新\删除.sql">
+    </None>
+    <None Include="Doc\Study\SqlServer\0022_更新\删除.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SqlServer\0040_脚本\动态SQL.sql">
+    </None>
+    <None Include="Doc\Study\SqlServer\0040_脚本\动态SQL.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SqlServer\0001_基础\游标.sql">
+    </None>
+    <None Include="Doc\Study\SqlServer\0001_基础\游标.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SqlServer\0020_查询\行列转换.sql">
+    </None>
+    <None Include="Doc\Study\SqlServer\0020_查询\行列转换.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SqlServer\0040_脚本\脚本执行.sql">
+    </None>
+    <None Include="Doc\Study\SqlServer\0040_脚本\脚本执行.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SqlServer\0032_函数\函数.sql">
+    </None>
+    <None Include="Doc\Study\SqlServer\0032_函数\函数.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SqlServer\0001_基础\基础.sql">
+    </None>
+    <None Include="Doc\Study\SqlServer\0001_基础\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SqlServer\0001_基础\字符.sql">
+    </None>
+    <None Include="Doc\Study\SqlServer\0001_基础\字符.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SqlServer\0030_存储过程\存储过程.sql">
+    </None>
+    <None Include="Doc\Study\SqlServer\0030_存储过程\存储过程.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SqlServer\0001_基础\常用.sql">
+    </None>
+    <None Include="Doc\Study\SqlServer\0001_基础\常用.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SqlServer\0001_基础\日期.sql">
+    </None>
+    <None Include="Doc\Study\SqlServer\0001_基础\日期.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SqlServer\0020_查询\查询.sql">
+    </None>
+    <None Include="Doc\Study\SqlServer\0020_查询\查询.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SqlServer\0090_用户权限\系统对象.sql">
+    </None>
+    <None Include="Doc\Study\SqlServer\0090_用户权限\系统对象.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SqlServer\0010_表\表.sql">
+    </None>
+    <None Include="Doc\Study\SqlServer\0010_表\表.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SqlServer\0022_更新\更新.sql">
+    </None>
+    <None Include="Doc\Study\SqlServer\0022_更新\更新.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SqlServer\0060_视图\视图.sql">
+    </None>
+    <None Include="Doc\Study\SqlServer\0060_视图\视图.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SqlServer\0070_Job\Job.sql">
+    </None>
+    <None Include="Doc\Study\SqlServer\0070_Job\Job.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SqlServer\0100_触发器\触发器.sql">
+    </None>
+    <None Include="Doc\Study\SqlServer\0100_触发器\触发器.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SqlServer\9000_实例\存储过程实例-002.sql">
+    </None>
+    <None Include="Doc\Study\SqlServer\9000_实例\存储过程实例-002.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\SqlServer\9000_实例\存储过程实例-001.sql">
+    </None>
+    <None Include="Doc\Study\SqlServer\9000_实例\存储过程实例-001.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\综合\大小写.sql">
+    </None>
+    <None Include="Doc\Study\综合\大小写.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Doc\Study\综合\多表更新.sql">
+    </None>
+    <None Include="Doc\Study\综合\多表更新.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
     <Content Include="Help\Html\DBTool\DB\AutoEntity.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1287,7 +1287,7 @@
     <Folder Include="Doc\Study\MySql\0080_其他对象\" />
     <Folder Include="Doc\Study\MySql\0100_触发器\" />
     <Folder Include="Doc\Study\MySql\9000_实例\" />
-    <Folder Include="Doc\Study\MySql\9800_连接工具\SQL Server Management Studio\" />
+    <Folder Include="Doc\Study\MySql\9800_连接工具\SQLServerManagementStudio\" />
     <Folder Include="Doc\Study\Oracle\9800_连接工具\PLSQL\" />
     <Folder Include="Doc\Study\PostgreSQL\0040_脚本\" />
     <Folder Include="Doc\Study\PostgreSQL\0070_Job\" />

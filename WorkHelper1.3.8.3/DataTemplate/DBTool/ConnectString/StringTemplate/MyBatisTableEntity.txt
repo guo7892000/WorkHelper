@@ -1,0 +1,3 @@
+    @ApiModelProperty("#C1#")
+    @TableField("#C#")
+    private String #C3#;
