@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommonMark, Version=0.1.0.0, Culture=neutral, PublicKeyToken=001ef8810438905d, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CommonMark.NET.0.15.1\lib\net45\CommonMark.dll</HintPath>
+    </Reference>
     <Reference Include="FluentFTP, Version=48.0.1.0, Culture=neutral, PublicKeyToken=f4af092b1d8df44f, processorArchitecture=MSIL">
       <HintPath>..\..\packages\FluentFTP.48.0.1\lib\net472\FluentFTP.dll</HintPath>
     </Reference>
@@ -44,8 +47,21 @@
       <HintPath>..\..\packages\SSH.NET.2023.0.0\lib\net462\Renci.SshNet.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Buffers.4.6.0\lib\net462\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Memory.4.6.0\lib\net462\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Numerics.Vectors.4.6.0\lib\net462\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.1.0\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -210,6 +226,12 @@
     </Compile>
     <Compile Include="DataSql\FrmDBTReadDBData.Designer.cs">
       <DependentUpon>FrmDBTReadDBData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Doc\FrmDBTDevelop.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Doc\FrmDBTDevelop.Designer.cs">
+      <DependentUpon>FrmDBTDevelop.cs</DependentUpon>
     </Compile>
     <Compile Include="Doc\FrmDBTSqlStady.cs">
       <SubType>Form</SubType>
@@ -382,6 +404,24 @@
     <None Include="DataTemplate\DBTool\TableSQL\模板_表列结构.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\Develop\C#\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\JavaScript\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\Java\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\Linux\Linux命令.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\综合\MarkDown常用语法.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Study\综合\连接工具\DBeaver\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -461,6 +501,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataSql\FrmDBTReadDBData.resx">
       <DependentUpon>FrmDBTReadDBData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Doc\FrmDBTDevelop.resx">
+      <DependentUpon>FrmDBTDevelop.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Doc\FrmDBTSqlStady.resx">
       <DependentUpon>FrmDBTSqlStady.cs</DependentUpon>
@@ -571,9 +614,9 @@
     <Content Include="Doc\Study\MySql\0001_基础\常用.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Doc\Study\MySql\0001_基础\日期.sql">
+    <None Include="Doc\Study\MySql\0001_基础\日期.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
     <Content Include="Doc\Study\MySql\0022_更新\更新.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -604,6 +647,15 @@
     <Content Include="Doc\Study\Oracle\0032_函数\函数.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Doc\Study\Oracle\0033_包\包体.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Doc\Study\Oracle\0033_包\包定义.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Doc\Study\Oracle\0033_包\包概述.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Doc\Study\Oracle\0040_脚本\动态SQL.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -611,6 +663,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Doc\Study\Oracle\0001_基础\基础.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Doc\Study\Oracle\0080_其他对象\DBLink.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Doc\Study\Oracle\0080_其他对象\同义词.sql">
@@ -1232,11 +1287,15 @@
     <Folder Include="Doc\Study\MySql\0080_其他对象\" />
     <Folder Include="Doc\Study\MySql\0100_触发器\" />
     <Folder Include="Doc\Study\MySql\9000_实例\" />
+    <Folder Include="Doc\Study\MySql\9800_连接工具\SQL Server Management Studio\" />
+    <Folder Include="Doc\Study\Oracle\9800_连接工具\PLSQL\" />
     <Folder Include="Doc\Study\PostgreSQL\0040_脚本\" />
     <Folder Include="Doc\Study\PostgreSQL\0070_Job\" />
     <Folder Include="Doc\Study\PostgreSQL\0080_其他对象\" />
+    <Folder Include="Doc\Study\PostgreSQL\9800_连接工具\Pgadmin\" />
     <Folder Include="Doc\Study\SqlServer\0050_索引\" />
     <Folder Include="Doc\Study\SqlServer\0080_其他对象\" />
+    <Folder Include="Doc\Study\综合\连接工具\Navicat\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

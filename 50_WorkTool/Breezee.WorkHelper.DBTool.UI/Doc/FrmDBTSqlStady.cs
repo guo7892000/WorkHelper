@@ -4,6 +4,7 @@ using Breezee.Core.WinFormUI;
 using Breezee.WorkHelper.DBTool.Entity;
 using System;
 using System.Data;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -11,9 +12,9 @@ using System.Windows.Forms;
 namespace Breezee.WorkHelper.DBTool.UI
 {
     /// <summary>
-    /// 功能名称：交换字符位置
-    /// 使用场景：界面元素赋值和取值
-    /// 最后更新日期：2021-08-17
+    /// 功能名称：SQL总结
+    /// 使用场景：
+    /// 最后更新日期：2023-12-03
     /// 修改人员：黄国辉
     /// </summary>
     public partial class FrmDBTSqlStady : BaseForm
@@ -31,9 +32,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             DataTable dtEncode = BaseFileEncoding.GetEncodingTable(false);
             cbbCharSetEncode.BindTypeValueDropDownList(dtEncode, false, true);
-            cbbCharSetEncodeNew.BindTypeValueDropDownList(dtEncode.Copy(), false, true);
             toolTip1.SetToolTip(cbbCharSetEncode, "如文件出现乱码，需要修改文件字符集！");
-            toolTip1.SetToolTip(cbbCharSetEncodeNew, "可选择新的文件字符集，然后点击【文件字符集覆盖为】即可！");
             //加载配置
             cbbCharSetEncode.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.SQLStudy_FileCharsetEncoding, BaseFileEncoding.FileEncodingString.GB2312).Value;
             //加载树数据
@@ -114,9 +113,9 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             if ("文件".Equals(trSelect.ToolTipText))
             {
-                rtbFileContent.Clear();
-                string sContent = (string)trSelect.Tag;
-                rtbFileContent.Text = sContent;
+                var mdContent = (string)trSelect.Tag;
+                var html = CommonMark.CommonMarkConverter.Convert(mdContent);
+                webBrowser1.DocumentText = html;
             }
 
         }
@@ -169,39 +168,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                 sEncode = cbbCharSetEncode.SelectedValue.ToString();
             }
 
-            rtbFileContent.Clear();
-            rtbFileContent.Text = File.ReadAllText(trSelect.Name, BaseFileEncoding.GetEncodingByKey(sEncode));
-           
+            var mdContent = File.ReadAllText(trSelect.Name, BaseFileEncoding.GetEncodingByKey(sEncode));
+            var html = CommonMark.CommonMarkConverter.Convert(mdContent);
+            webBrowser1.DocumentText = html;
         }
-
-        private void btnCharSetOverWriteTo_Click(object sender, EventArgs e)
-        {
-            string sContent = rtbFileContent.Text.Trim();
-            if (string.IsNullOrEmpty(sContent))
-            {
-                ShowInfo("没有可保存的内容！");
-                return;
-            }
-            TreeNode trSelect = tvList.SelectedNode;
-            if (trSelect == null)
-            {
-                ShowInfo("请选择一个节点！");
-                return;
-            }
-            string sEncode = string.Empty;
-            if (cbbCharSetEncodeNew.SelectedValue == null || string.IsNullOrEmpty(cbbCharSetEncodeNew.SelectedValue.ToString()))
-            {
-                sEncode = BaseFileEncoding.FileEncodingString.GB2312;
-            }
-            else
-            {
-                sEncode = cbbCharSetEncodeNew.SelectedValue.ToString();
-            }
-
-            if (ShowOkCancel("确定要修改文件字符集？") == DialogResult.Cancel) return;
-            File.Delete(trSelect.Name);
-            File.WriteAllText(trSelect.Name, sContent, BaseFileEncoding.GetEncodingByKey(sEncode));
-            ShowInfo("保存成功！");
-        }
+        
     }
 }

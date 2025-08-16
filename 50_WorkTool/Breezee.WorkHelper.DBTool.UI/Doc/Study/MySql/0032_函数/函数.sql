@@ -1,3 +1,32 @@
+/*创建函数示例1*/
+CREATE DEFINER=`mysqladmin`@`%` FUNCTION `test`.`f_isnum`(p_str varchar(200)) RETURNS int
+BEGIN
+  declare ls_int int default 0;
+
+  declare ls_str varchar(200);
+
+  if ifnull(p_str,'')='' then
+     RETURN ls_int;
+  end if;
+
+  -- 判断字符串是否含小数点
+  if instr(p_str,'.')>0 then
+     -- 截取小数点前面位数判断是否是整数
+  select substr(p_str,1,instr(p_str,'.')-1) into ls_str;
+
+     SELECT ls_str REGEXP '^[0-9]*$' into ls_int;
+
+     if ls_int=1 then
+ -- 截取小数点后面判断是否是整数
+ select substr(p_str,instr(p_str,'.')+1,length(p_str)) into ls_str;
+       SELECT ls_str REGEXP '^[0-9]*$' into ls_int;
+  end if;
+  else
+     SELECT p_str REGEXP '^[0-9]*$' into ls_int;
+  end if;
+  RETURN ls_int;
+END
+
 /*Mysql的分析函数
 格式：	函数名() OVER(PARTITION BY 列名1 ORDER BY 列名2 DESC) AS 列别名1	
 行号：	ROW_NUMBER() OVER(PARTITION BY VIN ORDER BY INVOICE_DATE, INVOICE_NO DESC) AS ORDER_NUM	

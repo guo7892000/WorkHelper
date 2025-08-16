@@ -41,3 +41,10 @@ SELECT REPLACE('abcdeef','e','oo') "test",REPLACE('abcdeef','ee','oo') "test1",R
 
 /*SQL中的SQL，把单引号换成两个单引号就好了*/
 SELECT 'INSERT INTO (a, b,c,d) VALUES(''aa'', 2, '''',3)' from dual;
+
+-- 逗号分隔组装列：箱,变,锡
+Select listagg(a.DIC_NAME, ',') within Group(Order By DIC_SEQ) As names
+From T_SYS_T_DIC a
+Where a.P_DIC_CODE = 'OUT_STORE_TYPE'
+;
+

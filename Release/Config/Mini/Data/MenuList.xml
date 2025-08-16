@@ -56,6 +56,7 @@
     </Class>
 	<Class Guid="1BB63F97-1161-4745-B5CB-B1B7C5498FA3" Name="学习" Code="M_DB_TOOL_STADY" ShortCutKey="">
 		<Menu Guid="0B8AA269-D819-40E7-B351-CCF9AF4664C2" Name="SQL总结" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTSqlStady"  HelpPath="/Help/Html/DBTool/DB/SqlQueryExecute.html"/>
+		<Menu Guid="A93F7DD3-A8BE-4B53-961F-37C35C3A3BC7" Name="软件开发总结" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTDevelop"  HelpPath="/Help/Html/DBTool/DB/SqlQueryExecute.html"/>
 	</Class>
   </Model>
   

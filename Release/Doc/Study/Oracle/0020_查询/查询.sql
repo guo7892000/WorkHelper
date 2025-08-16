@@ -57,3 +57,24 @@ WITH RECURSIVE employee_cte (employee_id, name, manager_id, level) AS (
    INNER JOIN employee_cte ec ON e.manager_id = ec.employee_id -- 连接条件
 )
 SELECT * FROM employee_cte;
+
+/*语法：DENSE_RANK() OVER ([PARTITION BY partition_expression] ORDER BY sort_expression [ASC|DESC])
+rank()：返回的数据排名会跳跃；案例:1，2，2，2，5
+dense_rank()：返回的数据排名不会跳跃；1，2，2，2，3
+row_number()：递增序列;1,2,3,4,5
+partition by对结果集进行分区。
+partition by只是将原始数据进行名次排列(记录数不变)
+group by是对原始数据进行聚合统计(记录数可能变少, 每组返回一条)
+使用rank over()的时候，空值是最大的，如果排序字段为null, 可能造成null字段排在最前面，影响排序结果。
+*/
+
+select student_name,
+      score ,
+      rank() over(order by score ) rank,
+      dense_rank() over(order by score ) dense_rank,
+      row_number() over(order by score ) row_number,
+      rank() over (partition by course order by score desc),
+      dense_rank() over (partition by course order by score desc),
+      row_number() over (partition by course order by score desc)
+ from T_STUDENT ;
+
