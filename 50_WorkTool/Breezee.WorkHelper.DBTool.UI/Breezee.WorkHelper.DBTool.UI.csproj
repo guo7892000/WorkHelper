@@ -227,11 +227,11 @@
     <Compile Include="DataSql\FrmDBTReadDBData.Designer.cs">
       <DependentUpon>FrmDBTReadDBData.cs</DependentUpon>
     </Compile>
-    <Compile Include="Doc\FrmDBTDevelop.cs">
+    <Compile Include="Doc\FrmDBTCodeDevelop.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Doc\FrmDBTDevelop.Designer.cs">
-      <DependentUpon>FrmDBTDevelop.cs</DependentUpon>
+    <Compile Include="Doc\FrmDBTCodeDevelop.Designer.cs">
+      <DependentUpon>FrmDBTCodeDevelop.cs</DependentUpon>
     </Compile>
     <Compile Include="Doc\FrmDBTSqlStady.cs">
       <SubType>Form</SubType>
@@ -410,16 +410,40 @@
     <None Include="Doc\Develop\JavaScript\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\Develop\Java\注解.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\Develop\Java\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Develop\Linux\Linux命令.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\Develop\综合\字符编码.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\Develop\综合\MarkDown常用语法.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Doc\Study\综合\连接工具\DBeaver\基础.md">
+    <None Include="Doc\Study\Oracle\9800_连接工具\OracleInstantClient\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Study\Oracle\9800_连接工具\PLSQL Developer\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Study\Oracle\1000_PLSQL语言\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Study\PostgreSQL\9800_连接工具\Pgadmin\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Study\SqlServer\9800_连接工具\SQLServerManagementStudio\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Study\连接工具\DBeaver\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Study\连接工具\Navicat\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
@@ -502,8 +526,8 @@
     <EmbeddedResource Include="DataSql\FrmDBTReadDBData.resx">
       <DependentUpon>FrmDBTReadDBData.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Doc\FrmDBTDevelop.resx">
-      <DependentUpon>FrmDBTDevelop.cs</DependentUpon>
+    <EmbeddedResource Include="Doc\FrmDBTCodeDevelop.resx">
+      <DependentUpon>FrmDBTCodeDevelop.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Doc\FrmDBTSqlStady.resx">
       <DependentUpon>FrmDBTSqlStady.cs</DependentUpon>
@@ -971,6 +995,9 @@
     <Content Include="Help\Html\DBTool\DB\Images\AutoParamVerify02.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Help\Html\DBTool\DB\Images\CodeDevelop.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\Html\DBTool\DB\Images\CommonMergeScript.001.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1070,6 +1097,9 @@
     <Content Include="Help\Html\DBTool\DB\Images\SqlQueryExecute01.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Help\Html\DBTool\DB\Images\SqlStady.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\Html\DBTool\DB\Images\TableSqlExcelImport.001.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1134,6 +1164,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\DB\MyBatisSqlParamReplace.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\DB\CodeDevelop.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\DB\SqlStady.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\DB\SqlQueryExecute.html">
@@ -1229,7 +1265,6 @@
     <Content Include="Help\Html\DBTool\String\TowExcelMerge.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Help\表结构设计.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\01_BreezeeCore\Breezee.Core.Entity\Breezee.Core.Entity.csproj">
@@ -1287,15 +1322,12 @@
     <Folder Include="Doc\Study\MySql\0080_其他对象\" />
     <Folder Include="Doc\Study\MySql\0100_触发器\" />
     <Folder Include="Doc\Study\MySql\9000_实例\" />
-    <Folder Include="Doc\Study\MySql\9800_连接工具\SQLServerManagementStudio\" />
-    <Folder Include="Doc\Study\Oracle\9800_连接工具\PLSQL\" />
+    <Folder Include="Doc\Study\MySql\9800_连接工具\" />
     <Folder Include="Doc\Study\PostgreSQL\0040_脚本\" />
     <Folder Include="Doc\Study\PostgreSQL\0070_Job\" />
     <Folder Include="Doc\Study\PostgreSQL\0080_其他对象\" />
-    <Folder Include="Doc\Study\PostgreSQL\9800_连接工具\Pgadmin\" />
     <Folder Include="Doc\Study\SqlServer\0050_索引\" />
     <Folder Include="Doc\Study\SqlServer\0080_其他对象\" />
-    <Folder Include="Doc\Study\综合\连接工具\Navicat\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

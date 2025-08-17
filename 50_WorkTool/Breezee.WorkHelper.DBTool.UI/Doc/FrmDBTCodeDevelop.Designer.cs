@@ -1,6 +1,6 @@
 ﻿namespace Breezee.WorkHelper.DBTool.UI
 {
-    partial class FrmDBTDevelop
+    partial class FrmDBTCodeDevelop
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDBTDevelop));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDBTCodeDevelop));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbReload = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();

@@ -55,8 +55,8 @@
       <Menu Guid="FAC4990F-07F5-41C7-AE6A-86915CEFD282" Name="合并脚本" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTScriptMerge"  HelpPath="/Help/Html/DBTool/DB/MergeScript.html"/>
     </Class>
 	<Class Guid="1BB63F97-1161-4745-B5CB-B1B7C5498FA3" Name="学习" Code="M_DB_TOOL_STADY" ShortCutKey="">
-		<Menu Guid="0B8AA269-D819-40E7-B351-CCF9AF4664C2" Name="SQL总结" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTSqlStady"  HelpPath="/Help/Html/DBTool/DB/SqlQueryExecute.html"/>
-		<Menu Guid="A93F7DD3-A8BE-4B53-961F-37C35C3A3BC7" Name="软件开发总结" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTDevelop"  HelpPath="/Help/Html/DBTool/DB/SqlQueryExecute.html"/>
+		<Menu Guid="0B8AA269-D819-40E7-B351-CCF9AF4664C2" Name="SQL总结" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTSqlStady"  HelpPath="/Help/Html/DBTool/DB/SqlStady.html"/>
+		<Menu Guid="A93F7DD3-A8BE-4B53-961F-37C35C3A3BC7" Name="软件开发总结" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTCodeDevelop"  HelpPath="/Help/Html/DBTool/DB/CodeDevelop.html"/>
 	</Class>
   </Model>
   

@@ -1,3 +1,4 @@
+### 动态SQL
 ```
 /*执行动态SQL并返回值*/
 DECLARE @IntVariable int;

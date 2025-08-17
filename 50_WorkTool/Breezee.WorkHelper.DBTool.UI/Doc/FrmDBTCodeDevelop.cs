@@ -4,6 +4,7 @@ using Breezee.Core.WinFormUI;
 using Breezee.WorkHelper.DBTool.Entity;
 using System;
 using System.Data;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -16,10 +17,10 @@ namespace Breezee.WorkHelper.DBTool.UI
     /// 最后更新日期：2025-08-15
     /// 修改人员：黄国辉
     /// </summary>
-    public partial class FrmDBTDevelop : BaseForm
+    public partial class FrmDBTCodeDevelop : BaseForm
     {
         private string sRootDir;
-        public FrmDBTDevelop()
+        public FrmDBTCodeDevelop()
         {
             InitializeComponent();
         }
@@ -58,6 +59,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             tvList.Nodes[0].Expand();
             //保存配置
             WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.SQLStudy_FileCharsetEncoding, cbbCharSetEncode.SelectedValue.ToString(), "【SQL总结】文件的字符集类型");
+            WinFormContext.UserLoveSettings.Save();
         }
 
         #region 获取目录文件方法
@@ -104,18 +106,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private void tvList_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            TreeNode trSelect = e.Node;
-            if (trSelect == null)
-            {
-                return;
-            }
-
-            if ("文件".Equals(trSelect.ToolTipText))
-            {
-                var mdContent = (string)trSelect.Tag;
-                var html = CommonMark.CommonMarkConverter.Convert(mdContent);
-                webBrowser1.DocumentText = html;
-            }
+            ShowFileContent();
         }
 
         private void tsbReload_Click(object sender, EventArgs e)
@@ -151,6 +142,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="e"></param>
         private void cbbCharSetEncode_SelectedIndexChanged(object sender, EventArgs e)
         {
+            ShowFileContent();
+        }
+
+        private void ShowFileContent()
+        {
             TreeNode trSelect = tvList.SelectedNode;
             if (trSelect == null)
             {
@@ -166,11 +162,17 @@ namespace Breezee.WorkHelper.DBTool.UI
                 sEncode = cbbCharSetEncode.SelectedValue.ToString();
             }
 
-            var mdContent = File.ReadAllText(trSelect.Name, BaseFileEncoding.GetEncodingByKey(sEncode));
-            var html = CommonMark.CommonMarkConverter.Convert(mdContent);
-            webBrowser1.DocumentText = html;
+            if ("文件".Equals(trSelect.ToolTipText))
+            {
+                var mdContent = File.ReadAllText(trSelect.Name, BaseFileEncoding.GetEncodingByKey(sEncode));
+                var html = CommonMark.CommonMarkConverter.Convert(mdContent);
+                webBrowser1.DocumentText = html;
+            }
+            else
+            {
+                webBrowser1.DocumentText = "";
+            }
         }
 
-       
     }
 }

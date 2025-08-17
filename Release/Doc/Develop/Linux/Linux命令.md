@@ -31,7 +31,7 @@
 进入根目录：cd /  
 
 ## tar压缩/解压命令
-/**-c：建立压缩档案、 -x：解压、-t：查看内容、-r：向压缩归档文件末尾追加文件、-u：更新原压缩包中的文件*/  
+*-c：建立压缩档案、 -x：解压、-t：查看内容、-r：向压缩归档文件末尾追加文件、-u：更新原压缩包中的文件*  
 压缩文件：tar -czvf HouseWeb.war.tar.gz HouseWeb.war  
 将目录里所有jpg文件打包成jpg.tar：tar -cvf jpg.tar *.jpg  
 解压指定文件：tar -xzf HouseWeb.war  
