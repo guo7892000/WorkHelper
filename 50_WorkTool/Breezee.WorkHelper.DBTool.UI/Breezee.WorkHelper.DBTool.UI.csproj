@@ -833,7 +833,7 @@
     <None Include="Doc\Study\PostgreSQL\0060_视图\视图.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Doc\Study\PostgreSQL\0100_触发器\触发器.md">
+    <None Include="Doc\Study\PostgreSQL\0075_触发器\触发器.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Study\PostgreSQL\9000_实例\加密解密.md">
@@ -875,7 +875,7 @@
     <None Include="Doc\Study\SqlServer\0022_更新\删除.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Doc\Study\SqlServer\0040_脚本\动态SQL.md">
+    <None Include="Doc\Study\SqlServer\0085_脚本\动态SQL.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Study\SqlServer\0001_基础\游标.md">
@@ -884,7 +884,7 @@
     <None Include="Doc\Study\SqlServer\0020_查询\行列转换.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Doc\Study\SqlServer\0040_脚本\脚本执行.md">
+    <None Include="Doc\Study\SqlServer\0085_脚本\脚本执行.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Study\SqlServer\0032_函数\函数.md">
@@ -923,7 +923,7 @@
     <None Include="Doc\Study\SqlServer\0070_Job\Job.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Doc\Study\SqlServer\0100_触发器\触发器.md">
+    <None Include="Doc\Study\SqlServer\0075_触发器\触发器.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Study\SqlServer\9000_实例\实例-接收接口明细.md">
@@ -1362,16 +1362,16 @@
     <Folder Include="Doc\Develop\C#\NetCore\" />
     <Folder Include="Doc\Develop\C#\WinForm\" />
     <Folder Include="Doc\Develop\C#\WPF\" />
-    <Folder Include="Doc\Study\MySql\0040_脚本\" />
     <Folder Include="Doc\Study\MySql\0070_Job\" />
+    <Folder Include="Doc\Study\MySql\0075_触发器\" />
     <Folder Include="Doc\Study\MySql\0080_其他对象\" />
-    <Folder Include="Doc\Study\MySql\0100_触发器\" />
+    <Folder Include="Doc\Study\MySql\0085_脚本\" />
     <Folder Include="Doc\Study\MySql\9000_实例\" />
     <Folder Include="Doc\Study\MySql\9800_连接工具\" />
     <Folder Include="Doc\Study\Oracle\9000_实例\" />
-    <Folder Include="Doc\Study\PostgreSQL\0040_脚本\" />
     <Folder Include="Doc\Study\PostgreSQL\0070_Job\" />
     <Folder Include="Doc\Study\PostgreSQL\0080_其他对象\" />
+    <Folder Include="Doc\Study\PostgreSQL\0085_脚本\" />
     <Folder Include="Doc\Study\SqlServer\0050_索引\" />
     <Folder Include="Doc\Study\SqlServer\0080_其他对象\" />
   </ItemGroup>
