@@ -26,5 +26,17 @@ BEGIN
     dbms_output.put_line(V_SON_ORG_CODE);
     dbms_output.put_line(V_SON_ORG_CODE1);          
 END; 
+
+/*动态SQL中字符的处理*/
+declare strSql varchar2(8000);
+begin
+  strSql:='UPDATE T_FI_BU_GATHERING_ORDER_D T 
+            SET T.VOUCHER_STATUE = V_VOUCHERSTATE
+       WHERE NET_CODE = V_NETCODE
+       AND T.GATHERING_ORDER_D_ID IN(V_ORDERID)
+       AND T.IS_ENABLE=''1'' and IS_SYSTEM=''0''';
+  dbms_output.put_line(strSql);     
+end;
+
 ```
 

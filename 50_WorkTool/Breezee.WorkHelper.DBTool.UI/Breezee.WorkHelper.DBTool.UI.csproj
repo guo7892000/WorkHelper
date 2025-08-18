@@ -407,7 +407,28 @@
     <None Include="Doc\Develop\C#\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\Develop\DB\MyBatis\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\JavaScript\JQuery\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\JavaScript\循环.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\JavaScript\字符.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\JavaScript\示例.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\Develop\JavaScript\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\Java\Maven\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\Java\Spring\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Develop\Java\注解.md">
@@ -419,10 +440,31 @@
     <None Include="Doc\Develop\Linux\Linux命令.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\Develop\综合\正则表达式.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\Develop\综合\字符编码.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Develop\综合\MarkDown常用语法.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Study\Oracle\0001_基础\判断.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Study\Oracle\0020_查询\实例-物品台账查询.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Study\Oracle\0020_查询\递归查询.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Study\Oracle\0001_基础\变量.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Study\Oracle\0030_存储过程\实例-物品入出库统计.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Study\Oracle\0080_其他对象\锁.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Study\Oracle\9800_连接工具\OracleInstantClient\基础.md">
@@ -665,7 +707,7 @@
     <None Include="Doc\Study\Oracle\0020_查询\行转列.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Doc\Study\Oracle\0030_存储过程\实例.md">
+    <None Include="Doc\Study\Oracle\0030_存储过程\实例-更新物品库存.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Study\Oracle\0032_函数\函数.md">
@@ -680,7 +722,7 @@
     <None Include="Doc\Study\Oracle\0033_包\包概述.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Doc\Study\Oracle\0040_脚本\动态SQL.md">
+    <None Include="Doc\Study\Oracle\0085_脚本\动态SQL.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Study\Oracle\0060_视图\固化视图.md">
@@ -701,13 +743,13 @@
     <None Include="Doc\Study\Oracle\0090_用户权限\空间.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Doc\Study\Oracle\0040_脚本\游标.md">
+    <None Include="Doc\Study\Oracle\0001_基础\游标.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Study\Oracle\0022_更新\更新.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Doc\Study\Oracle\0040_脚本\脚本执行.md">
+    <None Include="Doc\Study\Oracle\0085_脚本\脚本执行.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Study\Oracle\0050_索引\索引.md">
@@ -746,13 +788,13 @@
     <None Include="Doc\Study\Oracle\0060_视图\视图.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Doc\Study\Oracle\0100_触发器\触发器.md">
+    <None Include="Doc\Study\Oracle\0075_触发器\触发器.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Doc\Study\Oracle\9000_实例\生成单号.md">
+    <None Include="Doc\Study\Oracle\0030_存储过程\实例-生成单号.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Doc\Study\Oracle\9000_实例\获取含字母的流水号.md">
+    <None Include="Doc\Study\Oracle\0032_函数\实例-获取含字母的流水号.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Study\PostgreSQL\0022_更新\更新.md">
@@ -884,10 +926,10 @@
     <None Include="Doc\Study\SqlServer\0100_触发器\触发器.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Doc\Study\SqlServer\9000_实例\存储过程实例-002.md">
+    <None Include="Doc\Study\SqlServer\9000_实例\实例-接收接口明细.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Doc\Study\SqlServer\9000_实例\存储过程实例-001.md">
+    <None Include="Doc\Study\SqlServer\9000_实例\实例-接收接口格式.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Study\综合\大小写.md">
@@ -1317,12 +1359,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Doc\Develop\C#\NetCore\" />
+    <Folder Include="Doc\Develop\C#\WinForm\" />
+    <Folder Include="Doc\Develop\C#\WPF\" />
     <Folder Include="Doc\Study\MySql\0040_脚本\" />
     <Folder Include="Doc\Study\MySql\0070_Job\" />
     <Folder Include="Doc\Study\MySql\0080_其他对象\" />
     <Folder Include="Doc\Study\MySql\0100_触发器\" />
     <Folder Include="Doc\Study\MySql\9000_实例\" />
     <Folder Include="Doc\Study\MySql\9800_连接工具\" />
+    <Folder Include="Doc\Study\Oracle\9000_实例\" />
     <Folder Include="Doc\Study\PostgreSQL\0040_脚本\" />
     <Folder Include="Doc\Study\PostgreSQL\0070_Job\" />
     <Folder Include="Doc\Study\PostgreSQL\0080_其他对象\" />

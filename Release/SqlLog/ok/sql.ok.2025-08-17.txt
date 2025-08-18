@@ -1,0 +1,525 @@
+﻿*******************【2025-08-17 23:17:49】**************************
+【SQL语句】：
+SELECT  UR.USER_ID ,
+                    UR.USER_CODE ,
+                    UR.EMP_ID ,
+                    UR.USER_NAME,
+                    UR.USER_NAME_EN ,
+                    UR.USER_PASSWORD ,
+                    UR.USER_TYPE ,
+                    UR.PIN_YIN ,
+                    UR.LAST_LOGIN_TIME ,
+                    UR.LOGIN_STATE ,
+                    UR.TICKET_ID ,
+                    UR.DESCRIPTION ,
+                    UR.ACTIVE_TIME ,
+                    UR.DISABLE_TIME ,
+                    UR.SORT_ID ,
+                    UR.REMARK ,
+                    UR.CREATE_TIME ,
+                    UR.CREATOR_ID ,
+                    UR.CREATOR ,
+                    UR.MODIFIER_ID ,
+                    UR.MODIFIER ,
+                    UR.LAST_UPDATED_TIME ,
+                    UR.IS_ENABLED ,
+                    UR.IS_SYSTEM ,
+                    UR.UPDATE_CONTROL_ID ,
+                    UR.TFLAG
+            FROM    SYS_USER UR /*用户*/ 
+            WHERE   UR.USER_CODE = @USER_CODE
+              
+【SQL参数】：
+参数编码：USER_CODE，参数值：xtadmin，参数类型：String，是否必须的参数：Option
+【执行时长(秒)】：0.006
+
+*******************【2025-08-17 22:29:11】**************************
+【SQL语句】：
+SELECT  UR.USER_ID ,
+                    UR.USER_CODE ,
+                    UR.EMP_ID ,
+                    UR.USER_NAME,
+                    UR.USER_NAME_EN ,
+                    UR.USER_PASSWORD ,
+                    UR.USER_TYPE ,
+                    UR.PIN_YIN ,
+                    UR.LAST_LOGIN_TIME ,
+                    UR.LOGIN_STATE ,
+                    UR.TICKET_ID ,
+                    UR.DESCRIPTION ,
+                    UR.ACTIVE_TIME ,
+                    UR.DISABLE_TIME ,
+                    UR.SORT_ID ,
+                    UR.REMARK ,
+                    UR.CREATE_TIME ,
+                    UR.CREATOR_ID ,
+                    UR.CREATOR ,
+                    UR.MODIFIER_ID ,
+                    UR.MODIFIER ,
+                    UR.LAST_UPDATED_TIME ,
+                    UR.IS_ENABLED ,
+                    UR.IS_SYSTEM ,
+                    UR.UPDATE_CONTROL_ID ,
+                    UR.TFLAG
+            FROM    SYS_USER UR /*用户*/ 
+            WHERE   UR.USER_CODE = @USER_CODE
+              
+【SQL参数】：
+参数编码：USER_CODE，参数值：xtadmin，参数类型：String，是否必须的参数：Option
+【执行时长(秒)】：0.008
+
+*******************【2025-08-17 19:44:19】**************************
+【SQL语句】：
+SELECT  UR.USER_ID ,
+                    UR.USER_CODE ,
+                    UR.EMP_ID ,
+                    UR.USER_NAME,
+                    UR.USER_NAME_EN ,
+                    UR.USER_PASSWORD ,
+                    UR.USER_TYPE ,
+                    UR.PIN_YIN ,
+                    UR.LAST_LOGIN_TIME ,
+                    UR.LOGIN_STATE ,
+                    UR.TICKET_ID ,
+                    UR.DESCRIPTION ,
+                    UR.ACTIVE_TIME ,
+                    UR.DISABLE_TIME ,
+                    UR.SORT_ID ,
+                    UR.REMARK ,
+                    UR.CREATE_TIME ,
+                    UR.CREATOR_ID ,
+                    UR.CREATOR ,
+                    UR.MODIFIER_ID ,
+                    UR.MODIFIER ,
+                    UR.LAST_UPDATED_TIME ,
+                    UR.IS_ENABLED ,
+                    UR.IS_SYSTEM ,
+                    UR.UPDATE_CONTROL_ID ,
+                    UR.TFLAG
+            FROM    SYS_USER UR /*用户*/ 
+            WHERE   UR.USER_CODE = @USER_CODE
+              
+【SQL参数】：
+参数编码：USER_CODE，参数值：xtadmin，参数类型：String，是否必须的参数：Option
+【执行时长(秒)】：0.023
+
+*******************【2025-08-17 12:47:21】**************************
+【SQL语句】：
+SELECT  UR.USER_ID ,
+                    UR.USER_CODE ,
+                    UR.EMP_ID ,
+                    UR.USER_NAME,
+                    UR.USER_NAME_EN ,
+                    UR.USER_PASSWORD ,
+                    UR.USER_TYPE ,
+                    UR.PIN_YIN ,
+                    UR.LAST_LOGIN_TIME ,
+                    UR.LOGIN_STATE ,
+                    UR.TICKET_ID ,
+                    UR.DESCRIPTION ,
+                    UR.ACTIVE_TIME ,
+                    UR.DISABLE_TIME ,
+                    UR.SORT_ID ,
+                    UR.REMARK ,
+                    UR.CREATE_TIME ,
+                    UR.CREATOR_ID ,
+                    UR.CREATOR ,
+                    UR.MODIFIER_ID ,
+                    UR.MODIFIER ,
+                    UR.LAST_UPDATED_TIME ,
+                    UR.IS_ENABLED ,
+                    UR.IS_SYSTEM ,
+                    UR.UPDATE_CONTROL_ID ,
+                    UR.TFLAG
+            FROM    SYS_USER UR /*用户*/ 
+            WHERE   UR.USER_CODE = @USER_CODE
+              
+【SQL参数】：
+参数编码：USER_CODE，参数值：xtadmin，参数类型：String，是否必须的参数：Option
+【执行时长(秒)】：0.007
+
+*******************【2025-08-17 12:42:18】**************************
+【SQL语句】：
+SELECT  UR.USER_ID ,
+                    UR.USER_CODE ,
+                    UR.EMP_ID ,
+                    UR.USER_NAME,
+                    UR.USER_NAME_EN ,
+                    UR.USER_PASSWORD ,
+                    UR.USER_TYPE ,
+                    UR.PIN_YIN ,
+                    UR.LAST_LOGIN_TIME ,
+                    UR.LOGIN_STATE ,
+                    UR.TICKET_ID ,
+                    UR.DESCRIPTION ,
+                    UR.ACTIVE_TIME ,
+                    UR.DISABLE_TIME ,
+                    UR.SORT_ID ,
+                    UR.REMARK ,
+                    UR.CREATE_TIME ,
+                    UR.CREATOR_ID ,
+                    UR.CREATOR ,
+                    UR.MODIFIER_ID ,
+                    UR.MODIFIER ,
+                    UR.LAST_UPDATED_TIME ,
+                    UR.IS_ENABLED ,
+                    UR.IS_SYSTEM ,
+                    UR.UPDATE_CONTROL_ID ,
+                    UR.TFLAG
+            FROM    SYS_USER UR /*用户*/ 
+            WHERE   UR.USER_CODE = @USER_CODE
+              
+【SQL参数】：
+参数编码：USER_CODE，参数值：xtadmin，参数类型：String，是否必须的参数：Option
+【执行时长(秒)】：0.007
+
+*******************【2025-08-17 12:40:43】**************************
+【SQL语句】：
+SELECT  UR.USER_ID ,
+                    UR.USER_CODE ,
+                    UR.EMP_ID ,
+                    UR.USER_NAME,
+                    UR.USER_NAME_EN ,
+                    UR.USER_PASSWORD ,
+                    UR.USER_TYPE ,
+                    UR.PIN_YIN ,
+                    UR.LAST_LOGIN_TIME ,
+                    UR.LOGIN_STATE ,
+                    UR.TICKET_ID ,
+                    UR.DESCRIPTION ,
+                    UR.ACTIVE_TIME ,
+                    UR.DISABLE_TIME ,
+                    UR.SORT_ID ,
+                    UR.REMARK ,
+                    UR.CREATE_TIME ,
+                    UR.CREATOR_ID ,
+                    UR.CREATOR ,
+                    UR.MODIFIER_ID ,
+                    UR.MODIFIER ,
+                    UR.LAST_UPDATED_TIME ,
+                    UR.IS_ENABLED ,
+                    UR.IS_SYSTEM ,
+                    UR.UPDATE_CONTROL_ID ,
+                    UR.TFLAG
+            FROM    SYS_USER UR /*用户*/ 
+            WHERE   UR.USER_CODE = @USER_CODE
+              
+【SQL参数】：
+参数编码：USER_CODE，参数值：xtadmin，参数类型：String，是否必须的参数：Option
+【执行时长(秒)】：0.007
+
+*******************【2025-08-17 11:56:02】**************************
+【SQL语句】：
+SELECT  UR.USER_ID ,
+                    UR.USER_CODE ,
+                    UR.EMP_ID ,
+                    UR.USER_NAME,
+                    UR.USER_NAME_EN ,
+                    UR.USER_PASSWORD ,
+                    UR.USER_TYPE ,
+                    UR.PIN_YIN ,
+                    UR.LAST_LOGIN_TIME ,
+                    UR.LOGIN_STATE ,
+                    UR.TICKET_ID ,
+                    UR.DESCRIPTION ,
+                    UR.ACTIVE_TIME ,
+                    UR.DISABLE_TIME ,
+                    UR.SORT_ID ,
+                    UR.REMARK ,
+                    UR.CREATE_TIME ,
+                    UR.CREATOR_ID ,
+                    UR.CREATOR ,
+                    UR.MODIFIER_ID ,
+                    UR.MODIFIER ,
+                    UR.LAST_UPDATED_TIME ,
+                    UR.IS_ENABLED ,
+                    UR.IS_SYSTEM ,
+                    UR.UPDATE_CONTROL_ID ,
+                    UR.TFLAG
+            FROM    SYS_USER UR /*用户*/ 
+            WHERE   UR.USER_CODE = @USER_CODE
+              
+【SQL参数】：
+参数编码：USER_CODE，参数值：xtadmin，参数类型：String，是否必须的参数：Option
+【执行时长(秒)】：0.007
+
+*******************【2025-08-17 11:28:55】**************************
+【SQL语句】：
+SELECT  UR.USER_ID ,
+                    UR.USER_CODE ,
+                    UR.EMP_ID ,
+                    UR.USER_NAME,
+                    UR.USER_NAME_EN ,
+                    UR.USER_PASSWORD ,
+                    UR.USER_TYPE ,
+                    UR.PIN_YIN ,
+                    UR.LAST_LOGIN_TIME ,
+                    UR.LOGIN_STATE ,
+                    UR.TICKET_ID ,
+                    UR.DESCRIPTION ,
+                    UR.ACTIVE_TIME ,
+                    UR.DISABLE_TIME ,
+                    UR.SORT_ID ,
+                    UR.REMARK ,
+                    UR.CREATE_TIME ,
+                    UR.CREATOR_ID ,
+                    UR.CREATOR ,
+                    UR.MODIFIER_ID ,
+                    UR.MODIFIER ,
+                    UR.LAST_UPDATED_TIME ,
+                    UR.IS_ENABLED ,
+                    UR.IS_SYSTEM ,
+                    UR.UPDATE_CONTROL_ID ,
+                    UR.TFLAG
+            FROM    SYS_USER UR /*用户*/ 
+            WHERE   UR.USER_CODE = @USER_CODE
+              
+【SQL参数】：
+参数编码：USER_CODE，参数值：xtadmin，参数类型：String，是否必须的参数：Option
+【执行时长(秒)】：0.007
+
+*******************【2025-08-17 11:14:10】**************************
+【SQL语句】：
+SELECT  UR.USER_ID ,
+                    UR.USER_CODE ,
+                    UR.EMP_ID ,
+                    UR.USER_NAME,
+                    UR.USER_NAME_EN ,
+                    UR.USER_PASSWORD ,
+                    UR.USER_TYPE ,
+                    UR.PIN_YIN ,
+                    UR.LAST_LOGIN_TIME ,
+                    UR.LOGIN_STATE ,
+                    UR.TICKET_ID ,
+                    UR.DESCRIPTION ,
+                    UR.ACTIVE_TIME ,
+                    UR.DISABLE_TIME ,
+                    UR.SORT_ID ,
+                    UR.REMARK ,
+                    UR.CREATE_TIME ,
+                    UR.CREATOR_ID ,
+                    UR.CREATOR ,
+                    UR.MODIFIER_ID ,
+                    UR.MODIFIER ,
+                    UR.LAST_UPDATED_TIME ,
+                    UR.IS_ENABLED ,
+                    UR.IS_SYSTEM ,
+                    UR.UPDATE_CONTROL_ID ,
+                    UR.TFLAG
+            FROM    SYS_USER UR /*用户*/ 
+            WHERE   UR.USER_CODE = @USER_CODE
+              
+【SQL参数】：
+参数编码：USER_CODE，参数值：xtadmin，参数类型：String，是否必须的参数：Option
+【执行时长(秒)】：0.008
+
+*******************【2025-08-17 11:11:51】**************************
+【SQL语句】：
+SELECT  UR.USER_ID ,
+                    UR.USER_CODE ,
+                    UR.EMP_ID ,
+                    UR.USER_NAME,
+                    UR.USER_NAME_EN ,
+                    UR.USER_PASSWORD ,
+                    UR.USER_TYPE ,
+                    UR.PIN_YIN ,
+                    UR.LAST_LOGIN_TIME ,
+                    UR.LOGIN_STATE ,
+                    UR.TICKET_ID ,
+                    UR.DESCRIPTION ,
+                    UR.ACTIVE_TIME ,
+                    UR.DISABLE_TIME ,
+                    UR.SORT_ID ,
+                    UR.REMARK ,
+                    UR.CREATE_TIME ,
+                    UR.CREATOR_ID ,
+                    UR.CREATOR ,
+                    UR.MODIFIER_ID ,
+                    UR.MODIFIER ,
+                    UR.LAST_UPDATED_TIME ,
+                    UR.IS_ENABLED ,
+                    UR.IS_SYSTEM ,
+                    UR.UPDATE_CONTROL_ID ,
+                    UR.TFLAG
+            FROM    SYS_USER UR /*用户*/ 
+            WHERE   UR.USER_CODE = @USER_CODE
+              
+【SQL参数】：
+参数编码：USER_CODE，参数值：xtadmin，参数类型：String，是否必须的参数：Option
+【执行时长(秒)】：0.007
+
+*******************【2025-08-17 10:58:04】**************************
+【SQL语句】：
+SELECT  UR.USER_ID ,
+                    UR.USER_CODE ,
+                    UR.EMP_ID ,
+                    UR.USER_NAME,
+                    UR.USER_NAME_EN ,
+                    UR.USER_PASSWORD ,
+                    UR.USER_TYPE ,
+                    UR.PIN_YIN ,
+                    UR.LAST_LOGIN_TIME ,
+                    UR.LOGIN_STATE ,
+                    UR.TICKET_ID ,
+                    UR.DESCRIPTION ,
+                    UR.ACTIVE_TIME ,
+                    UR.DISABLE_TIME ,
+                    UR.SORT_ID ,
+                    UR.REMARK ,
+                    UR.CREATE_TIME ,
+                    UR.CREATOR_ID ,
+                    UR.CREATOR ,
+                    UR.MODIFIER_ID ,
+                    UR.MODIFIER ,
+                    UR.LAST_UPDATED_TIME ,
+                    UR.IS_ENABLED ,
+                    UR.IS_SYSTEM ,
+                    UR.UPDATE_CONTROL_ID ,
+                    UR.TFLAG
+            FROM    SYS_USER UR /*用户*/ 
+            WHERE   UR.USER_CODE = @USER_CODE
+              
+【SQL参数】：
+参数编码：USER_CODE，参数值：xtadmin，参数类型：String，是否必须的参数：Option
+【执行时长(秒)】：0.007
+
+*******************【2025-08-17 10:49:34】**************************
+【SQL语句】：
+SELECT  UR.USER_ID ,
+                    UR.USER_CODE ,
+                    UR.EMP_ID ,
+                    UR.USER_NAME,
+                    UR.USER_NAME_EN ,
+                    UR.USER_PASSWORD ,
+                    UR.USER_TYPE ,
+                    UR.PIN_YIN ,
+                    UR.LAST_LOGIN_TIME ,
+                    UR.LOGIN_STATE ,
+                    UR.TICKET_ID ,
+                    UR.DESCRIPTION ,
+                    UR.ACTIVE_TIME ,
+                    UR.DISABLE_TIME ,
+                    UR.SORT_ID ,
+                    UR.REMARK ,
+                    UR.CREATE_TIME ,
+                    UR.CREATOR_ID ,
+                    UR.CREATOR ,
+                    UR.MODIFIER_ID ,
+                    UR.MODIFIER ,
+                    UR.LAST_UPDATED_TIME ,
+                    UR.IS_ENABLED ,
+                    UR.IS_SYSTEM ,
+                    UR.UPDATE_CONTROL_ID ,
+                    UR.TFLAG
+            FROM    SYS_USER UR /*用户*/ 
+            WHERE   UR.USER_CODE = @USER_CODE
+              
+【SQL参数】：
+参数编码：USER_CODE，参数值：xtadmin，参数类型：String，是否必须的参数：Option
+【执行时长(秒)】：0.011
+
+*******************【2025-08-17 10:44:36】**************************
+【SQL语句】：
+SELECT  UR.USER_ID ,
+                    UR.USER_CODE ,
+                    UR.EMP_ID ,
+                    UR.USER_NAME,
+                    UR.USER_NAME_EN ,
+                    UR.USER_PASSWORD ,
+                    UR.USER_TYPE ,
+                    UR.PIN_YIN ,
+                    UR.LAST_LOGIN_TIME ,
+                    UR.LOGIN_STATE ,
+                    UR.TICKET_ID ,
+                    UR.DESCRIPTION ,
+                    UR.ACTIVE_TIME ,
+                    UR.DISABLE_TIME ,
+                    UR.SORT_ID ,
+                    UR.REMARK ,
+                    UR.CREATE_TIME ,
+                    UR.CREATOR_ID ,
+                    UR.CREATOR ,
+                    UR.MODIFIER_ID ,
+                    UR.MODIFIER ,
+                    UR.LAST_UPDATED_TIME ,
+                    UR.IS_ENABLED ,
+                    UR.IS_SYSTEM ,
+                    UR.UPDATE_CONTROL_ID ,
+                    UR.TFLAG
+            FROM    SYS_USER UR /*用户*/ 
+            WHERE   UR.USER_CODE = @USER_CODE
+              
+【SQL参数】：
+参数编码：USER_CODE，参数值：xtadmin，参数类型：String，是否必须的参数：Option
+【执行时长(秒)】：0.015
+
+*******************【2025-08-17 00:01:41】**************************
+【SQL语句】：
+SELECT  UR.USER_ID ,
+                    UR.USER_CODE ,
+                    UR.EMP_ID ,
+                    UR.USER_NAME,
+                    UR.USER_NAME_EN ,
+                    UR.USER_PASSWORD ,
+                    UR.USER_TYPE ,
+                    UR.PIN_YIN ,
+                    UR.LAST_LOGIN_TIME ,
+                    UR.LOGIN_STATE ,
+                    UR.TICKET_ID ,
+                    UR.DESCRIPTION ,
+                    UR.ACTIVE_TIME ,
+                    UR.DISABLE_TIME ,
+                    UR.SORT_ID ,
+                    UR.REMARK ,
+                    UR.CREATE_TIME ,
+                    UR.CREATOR_ID ,
+                    UR.CREATOR ,
+                    UR.MODIFIER_ID ,
+                    UR.MODIFIER ,
+                    UR.LAST_UPDATED_TIME ,
+                    UR.IS_ENABLED ,
+                    UR.IS_SYSTEM ,
+                    UR.UPDATE_CONTROL_ID ,
+                    UR.TFLAG
+            FROM    SYS_USER UR /*用户*/ 
+            WHERE   UR.USER_CODE = @USER_CODE
+              
+【SQL参数】：
+参数编码：USER_CODE，参数值：xtadmin，参数类型：String，是否必须的参数：Option
+【执行时长(秒)】：0.007
+
+*******************【2025-08-17 00:00:29】**************************
+【SQL语句】：
+SELECT  UR.USER_ID ,
+                    UR.USER_CODE ,
+                    UR.EMP_ID ,
+                    UR.USER_NAME,
+                    UR.USER_NAME_EN ,
+                    UR.USER_PASSWORD ,
+                    UR.USER_TYPE ,
+                    UR.PIN_YIN ,
+                    UR.LAST_LOGIN_TIME ,
+                    UR.LOGIN_STATE ,
+                    UR.TICKET_ID ,
+                    UR.DESCRIPTION ,
+                    UR.ACTIVE_TIME ,
+                    UR.DISABLE_TIME ,
+                    UR.SORT_ID ,
+                    UR.REMARK ,
+                    UR.CREATE_TIME ,
+                    UR.CREATOR_ID ,
+                    UR.CREATOR ,
+                    UR.MODIFIER_ID ,
+                    UR.MODIFIER ,
+                    UR.LAST_UPDATED_TIME ,
+                    UR.IS_ENABLED ,
+                    UR.IS_SYSTEM ,
+                    UR.UPDATE_CONTROL_ID ,
+                    UR.TFLAG
+            FROM    SYS_USER UR /*用户*/ 
+            WHERE   UR.USER_CODE = @USER_CODE
+              
+【SQL参数】：
+参数编码：USER_CODE，参数值：xtadmin，参数类型：String，是否必须的参数：Option
+【执行时长(秒)】：0.007
+
