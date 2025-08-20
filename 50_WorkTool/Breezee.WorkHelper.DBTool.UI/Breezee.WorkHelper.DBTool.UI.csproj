@@ -452,6 +452,9 @@
     <None Include="Doc\Study\Oracle\0001_基础\判断.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\Study\Oracle\0002_游标\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\Study\Oracle\0020_查询\实例-物品台账查询.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -743,7 +746,7 @@
     <None Include="Doc\Study\Oracle\0090_用户权限\空间.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Doc\Study\Oracle\0001_基础\游标.md">
+    <None Include="Doc\Study\Oracle\0002_游标\游标.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Study\Oracle\0022_更新\更新.md">

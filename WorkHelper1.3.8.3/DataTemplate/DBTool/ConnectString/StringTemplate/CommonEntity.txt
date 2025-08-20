@@ -1,2 +1,0 @@
-@ApiModelProperty("#C1#")
-private String #C3#;
