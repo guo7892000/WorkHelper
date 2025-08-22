@@ -10,15 +10,15 @@ select * from dba_jobs_running;
 DECLARE JOBID NUMBER;
 BEGIN
   SELECT MAX(JOB)+1 INTO JOBID FROM ALL_JOBS;
-  DBMS_JOB.SUBMIT(JOBID, 'P_PA_DELETE_OVERDUE_LACK_AUTO;', SYSDATE,'TRUNC(SYSDATE+1)');
+  DBMS_JOB.SUBMIT(JOBID, 'P_GD_DELETE_OVERDUE_LACK_AUTO;', SYSDATE,'TRUNC(SYSDATE+1)');
   COMMIT;
 END;
 
 /*ÐÞ¸ÄJOB*/
 declare jobID number;
 begin
-  select JOB into jobID from all_jobs where what='P_SE_IR_DAY_ONCE;';
-  dbms_job.change(jobID ,'P_SE_IR_DAY_ONCE;', sysdate+1,'sysdate+1/24' );
+  select JOB into jobID from all_jobs where what='P_GD_IR_DAY_ONCE;';
+  dbms_job.change(jobID ,'P_GD_IR_DAY_ONCE;', sysdate+1,'sysdate+1/24' );
   commit;
 end;
 
