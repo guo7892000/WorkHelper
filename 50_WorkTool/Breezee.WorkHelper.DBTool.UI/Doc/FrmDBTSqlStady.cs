@@ -28,7 +28,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void FrmDBTExchangeStringPlace_Load(object sender, EventArgs e)
         {
             //SQL学习文本根路径
-            sRootDir = Path.Combine(GlobalContext.AppBaseDirectory, "Doc", "Study");
+            sRootDir = Path.Combine(GlobalContext.AppBaseDirectory, "Doc", "SQL");
 
             DataTable dtEncode = BaseFileEncoding.GetEncodingTable(false);
             cbbCharSetEncode.BindTypeValueDropDownList(dtEncode, false, true);
