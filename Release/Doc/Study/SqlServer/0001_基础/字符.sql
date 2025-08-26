@@ -1,0 +1,13 @@
+select CONVERT(varchar(10),getdate(),121),
+	CONVERT(varchar,getdate(),121),
+	format(getdate(),'yyyy-MM-dd HH:mm:ss'),
+	DATEPART(day,getdate()),
+	DATEPART(month,getdate()),
+	DATEPART(year,getdate()),
+	RIGHT('0'+ cast(DATEPART(month,getdate()) AS varchar),2),
+	RIGHT('0'+ cast(DATEPART(day,getdate()) AS varchar),2),
+	SUBSTRING(format(getdate(),'yyyy-MM-dd HH:mm:ss'),1,10),
+	LEFT(format(getdate(),'yyyy-MM-dd HH:mm:ss'),3),
+	TRIM('  111   '),
+	LTRIM('  111   '),
+	RTRIM('  111   ')

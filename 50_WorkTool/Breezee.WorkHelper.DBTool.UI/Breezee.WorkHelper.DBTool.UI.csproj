@@ -488,6 +488,9 @@
     <None Include="Doc\Develop\DB\MyBatis\配置.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\Develop\JavaScript\JQuery\循环.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\Develop\JavaScript\JQuery\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

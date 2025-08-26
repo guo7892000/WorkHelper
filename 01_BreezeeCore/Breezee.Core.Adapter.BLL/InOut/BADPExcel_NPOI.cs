@@ -141,15 +141,42 @@ namespace Breezee.Core.Adapter.BLL
 
             FileStream fs = File.OpenRead(tempPath);
             IWorkbook workbook = null;
+            bool isHasError = false;
             try
             {
-                //先尝试创建07以上格式
-                workbook = new XSSFWorkbook(fs);
+                // 通用处理方式（自动检测格式）
+                workbook = WorkbookFactory.Create(fs);
+                isHasError = false;
             }
             catch
             {
-                //创建03格式
-                workbook = new HSSFWorkbook(fs);
+                isHasError = true;
+            }
+            if (isHasError)
+            {
+                try
+                {
+                    //创建07以上格式
+                    workbook = new XSSFWorkbook(fs);
+                    isHasError = false;
+                }
+                catch
+                {
+                    isHasError = true;
+                }
+            }
+            if (isHasError)
+            {
+                try
+                {
+                    //创建03格式
+                    workbook = new HSSFWorkbook(fs);
+                    isHasError = false;
+                }
+                catch
+                {
+                    isHasError = true;
+                }
             }
 
             try
