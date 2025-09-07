@@ -41,8 +41,11 @@
             this.tsmiExpandAll = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiCloseAll = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.cbbShowType = new System.Windows.Forms.ComboBox();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -86,13 +89,15 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
+            this.groupBox1.Controls.Add(this.cbbShowType);
+            this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.label16);
             this.groupBox1.Controls.Add(this.cbbCharSetEncode);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 41);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(6);
             this.groupBox1.Size = new System.Drawing.Size(1646, 102);
             this.groupBox1.TabIndex = 35;
             this.groupBox1.TabStop = false;
@@ -114,7 +119,7 @@
             // 
             this.cbbCharSetEncode.FormattingEnabled = true;
             this.cbbCharSetEncode.Location = new System.Drawing.Point(190, 40);
-            this.cbbCharSetEncode.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cbbCharSetEncode.Margin = new System.Windows.Forms.Padding(6);
             this.cbbCharSetEncode.Name = "cbbCharSetEncode";
             this.cbbCharSetEncode.Size = new System.Drawing.Size(238, 32);
             this.cbbCharSetEncode.TabIndex = 7;
@@ -125,7 +130,7 @@
             this.tvList.ContextMenuStrip = this.contextMenuStrip1;
             this.tvList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tvList.Location = new System.Drawing.Point(0, 0);
-            this.tvList.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.tvList.Margin = new System.Windows.Forms.Padding(6);
             this.tvList.Name = "tvList";
             this.tvList.Size = new System.Drawing.Size(548, 951);
             this.tvList.TabIndex = 36;
@@ -158,7 +163,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 143);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(6);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -167,6 +172,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.richTextBox1);
             this.splitContainer1.Panel2.Controls.Add(this.webBrowser1);
             this.splitContainer1.Size = new System.Drawing.Size(1646, 951);
             this.splitContainer1.SplitterDistance = 548;
@@ -183,6 +189,36 @@
             this.webBrowser1.Size = new System.Drawing.Size(1090, 951);
             this.webBrowser1.TabIndex = 2;
             // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.Location = new System.Drawing.Point(501, 45);
+            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(130, 24);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "显示类型：";
+            // 
+            // cbbShowType
+            // 
+            this.cbbShowType.FormattingEnabled = true;
+            this.cbbShowType.Location = new System.Drawing.Point(640, 38);
+            this.cbbShowType.Name = "cbbShowType";
+            this.cbbShowType.Size = new System.Drawing.Size(225, 32);
+            this.cbbShowType.TabIndex = 9;
+            this.cbbShowType.SelectedIndexChanged += new System.EventHandler(this.cbbShowType_SelectedIndexChanged);
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.richTextBox1.Location = new System.Drawing.Point(0, 793);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(1090, 158);
+            this.richTextBox1.TabIndex = 3;
+            this.richTextBox1.Text = "";
+            // 
             // FrmDBTSqlStady
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 24F);
@@ -192,7 +228,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmDBTSqlStady";
             this.Text = "SQL语法总结";
             this.Load += new System.EventHandler(this.FrmDBTExchangeStringPlace_Load);
@@ -225,5 +261,8 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiExpandAll;
         private System.Windows.Forms.ToolStripMenuItem tsmiCloseAll;
         private System.Windows.Forms.WebBrowser webBrowser1;
+        private System.Windows.Forms.ComboBox cbbShowType;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }

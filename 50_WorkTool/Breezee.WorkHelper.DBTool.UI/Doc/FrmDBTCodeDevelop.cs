@@ -32,6 +32,12 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             DataTable dtEncode = BaseFileEncoding.GetEncodingTable(false);
             cbbCharSetEncode.BindTypeValueDropDownList(dtEncode, false, true);
+
+            _dicString.Add("1", "MD格式");
+            _dicString.Add("2", "文本格式");
+            cbbShowType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
+            richTextBox1.Visible = false;
+
             toolTip1.SetToolTip(cbbCharSetEncode, "如文件出现乱码，需要修改文件字符集！");;
             //加载配置
             cbbCharSetEncode.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.SQLStudy_FileCharsetEncoding, BaseFileEncoding.FileEncodingString.GB2312).Value;
@@ -165,8 +171,22 @@ namespace Breezee.WorkHelper.DBTool.UI
             if ("文件".Equals(trSelect.ToolTipText))
             {
                 var mdContent = File.ReadAllText(trSelect.Name, BaseFileEncoding.GetEncodingByKey(sEncode));
-                var html = CommonMark.CommonMarkConverter.Convert(mdContent);
-                webBrowser1.DocumentText = html;
+                if ("1".Equals(cbbShowType.SelectedValue.ToString()))
+                {
+                    richTextBox1.Visible = false;
+                    webBrowser1.Visible = true;
+                    webBrowser1.Dock = DockStyle.Fill;
+                    var html = CommonMark.CommonMarkConverter.Convert(mdContent);
+                    webBrowser1.DocumentText = html;
+                }
+                else
+                {
+                    webBrowser1.Visible = false;
+                    richTextBox1.Visible = true;
+                    richTextBox1.Dock = DockStyle.Fill;
+                    richTextBox1.Clear();
+                    richTextBox1.AppendText(mdContent);
+                }
             }
             else
             {
@@ -174,5 +194,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
         }
 
+        private void cbbShowType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ShowFileContent();
+        }
     }
 }

@@ -240,15 +240,17 @@ namespace Breezee.Core.Interface
         /// <summary>
         /// 获取粘贴板第一列的表
         /// </summary>
-        /// <param name="pasteText"></param>
-        /// <param name="dt"></param>
-        /// <param name="isTrimData"></param>
-        /// <param name="AutoColumnName"></param>
-        /// <param name="isFirstColumnName"></param>
-        /// <param name="isAddRowNum"></param>
-        /// <param name="sRowNumColumnName"></param>
+        /// <param name="pasteText"粘贴的文本</param>
+        /// <param name="dt">粘贴数据到的目标表</param>
+        /// <param name="isTrimData">是否数据去掉前后空白字符</param>
+        /// <param name="AutoColumnName">是否将数字变为字母名</param>
+        /// <param name="isFirstColumnName">是否第一行数据为列名</param>
+        /// <param name="isAddRowNum">是否增加行号</param>
+        /// <param name="sRowNumColumnName">行号列名</param>
+        /// <param name="sDataColumName">指定第一列名称</param>
+        /// <param name="isRemoveRepeat">是否去重</param>
         /// <returns></returns>
-        public static DataTable GetFirstColumnTable(this string pasteText, DataTable dt = null, bool isTrimData = false, bool AutoColumnName=false,bool isFirstColumnName = false,  bool isAddRowNum = true, string sRowNumColumnName = "ROWNO")
+        public static DataTable GetFirstColumnTable(this string pasteText, DataTable dt = null, bool isTrimData = false, bool AutoColumnName=false,bool isFirstColumnName = false,  bool isAddRowNum = true, string sRowNumColumnName = "ROWNO",string sDataColumName="",bool isRemoveRepeat=false)
         {
             string sDataColumnName = string.Empty;
 
@@ -258,12 +260,19 @@ namespace Breezee.Core.Interface
             }
             else if (dt.Columns.Count > 0)
             {
-                foreach (DataColumn dc in dt.Columns)
+                if(!string.IsNullOrEmpty(sDataColumName) && dt.Columns.Contains(sDataColumName))
                 {
-                    if (!sRowNumColumnName.Equals(dc.ColumnName))
+                    sDataColumnName = sDataColumName;
+                }
+                else
+                {
+                    foreach (DataColumn dc in dt.Columns)
                     {
-                        sDataColumnName = dc.ColumnName;
-                        break;
+                        if (!sRowNumColumnName.Equals(dc.ColumnName))
+                        {
+                            sDataColumnName = dc.ColumnName;
+                            break;
+                        }
                     }
                 }
             }
@@ -308,7 +317,18 @@ namespace Breezee.Core.Interface
                     string[] cols = isTrimData ? rows[i].Trim().Split(new string[] { "\t" }, StringSplitOptions.None) : rows[i].Split(new string[] { "\t" }, StringSplitOptions.None);//注：这里不要去掉空白
                     dr[sRowNumColumnName] = i+1; //行号
                     dr[sDataColumnName] = isTrimData ? cols[0].Trim('"').Trim() : cols[0].Trim('"'); //第一列为序号，需要跳过
-                    dt.Rows.Add(dr);
+                    if (isRemoveRepeat)
+                    {
+                        string sColCond = string.Format("{0}='{1}' ", sDataColumnName, dr[sDataColumnName].ToString());
+                        if (dt.Select(sColCond).Length == 0)
+                        {
+                            dt.Rows.Add(dr);
+                        }
+                    }
+                    else
+                    {
+                        dt.Rows.Add(dr);
+                    }
                 }
             }
             return dt;
@@ -323,6 +343,7 @@ namespace Breezee.Core.Interface
         /// <param name="autoColumnEndString">自动列名的生缀</param>
         /// <param name="isTrimData">是否去掉数据前后空格</param>
         /// <param name="isAddRowNum">是否增加序号列</param>
+        /// <param name="sRowNumColumnName">行号列名/param>
         /// <returns></returns>
         public static DataTable GetStringTable(this string pasteText, bool AutoColumnName, DataTable dt = null, string autoColumnEndString = "", bool isTrimData = false, bool isAddRowNum = true, string sRowNumColumnName = "ROWNO")
         {
@@ -484,6 +505,217 @@ namespace Breezee.Core.Interface
                     }
 
                     dt.Rows.Add(dr);
+                }
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 获取字符分隔的表(只针对传入列名赋值)
+        /// </summary>
+        /// <param name="pasteText">粘贴的文本</param>
+        /// <param name="dt"></param>
+        /// <param name="sColumnArr">需要赋值的列名</param>
+        /// <param name="AutoColumnName"></param>
+        /// <param name="autoColumnEndString"></param>
+        /// <param name="isPasteTextFirtRowIsColum"></param>
+        /// <param name="isJudgeRepeat"></param>
+        /// <param name="isTrimData"></param>
+        /// <param name="isAddRowNum"></param>
+        /// <param name="sRowNumColumnName"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public static DataTable GetStringTable(this string pasteText, DataTable dt, string[] sColumnArr, bool isPasteTextFirtRowIsColum = true, bool isJudgeRepeat = false, bool AutoColumnName=false, string autoColumnEndString = "", bool isTrimData = false,  bool isAddRowNum = true, string sRowNumColumnName = "ROWNO")
+        {
+            if(sColumnArr== null || sColumnArr.Length == 0)
+            {
+                throw new Exception("入参：列名数组不能为空！" );
+            }
+
+            if (dt == null)
+            {
+                dt = new DataTable();
+                foreach (string s in sColumnArr)
+                {
+                    if (!dt.Columns.Contains(s))
+                    {
+                        dt.Columns.Add(s); 
+                    }
+                }
+            }
+            // 数据处理
+            bool addNumRow = false;
+            int iRowNum = 0;
+            if (!dt.Columns.Contains(sRowNumColumnName) && isAddRowNum)
+            {
+                dt.Columns.Add(sRowNumColumnName, typeof(int)); ////设置序号为整型
+                addNumRow = true;
+                iRowNum = 1;
+            }
+
+            HashSet<string> doubleCol = new HashSet<string>();
+            string[] rows = pasteText.Trim().Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);//分割的行数数组
+            string[] colNames = rows[0].Split(new string[] { "\t" }, StringSplitOptions.RemoveEmptyEntries);//列头数组
+            for (int i = 0; i < rows.Length; i++)//行
+            {
+                if (i == 0 && isPasteTextFirtRowIsColum)//列名处理
+                {
+                    if (AutoColumnName)
+                    {
+                        for (int j = 0; j < colNames.Length; j++)
+                        {
+                            string sColName = j.ToUpperWord() + autoColumnEndString;
+                            if (!dt.Columns.Contains(sColName))
+                            {
+                                dt.Columns.Add(sColName, typeof(string));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (string s in colNames)
+                        {
+                            if (!dt.Columns.Contains(s.Trim()))
+                            {
+                                dt.Columns.Add(s.Trim(), typeof(string));
+                            }
+                            else
+                            {
+                                doubleCol.Add(s);
+                            }
+                        }
+                        if (doubleCol.Count > 0)
+                        {
+                            throw new Exception("粘贴的Excel存在重复的列名，请修改后重新粘贴！包括：" + string.Join(",", doubleCol));
+                        }
+                    }
+                }
+                else
+                {
+                    // 数据处理
+                    DataRow dr = dt.NewRow();
+                    string[] cols = isTrimData ? rows[i].Trim().Split(new string[] { "\t" }, StringSplitOptions.None) : rows[i].Split(new string[] { "\t" }, StringSplitOptions.None);//注：这里不要去掉空白
+                    //增加数据列数与表列数的大小比较，防止访问表列的数组越界而报错。注：这里要去掉序号列
+                    if (cols.Length > (dt.Columns.Count - iRowNum))
+                    {
+                        //数据列数大于表列数
+                        if (addNumRow)
+                        {
+                            // 有序号列
+                            dr[sRowNumColumnName] = i; //行号
+                            int okIndex = 0;
+                            for (int j = 0; j < cols.Length; j++)
+                            {
+                                if ("\"".Equals(cols[j]))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    // 注：因为Excel中针对部分包含特殊字符的文本会在前后加上引号，所以后面会有去掉前后引号的处理。数据例如："	2023款 经典 2.0L CVT XV+领先版 国6"
+                                    dr[sColumnArr[okIndex]] = isTrimData ? cols[j].Trim('"').Trim() : cols[j].Trim('"'); //第一列为序号，需要跳过
+                                    okIndex++;
+                                    if (okIndex >= dt.Columns.Count - 1 || okIndex >= sColumnArr.Length)
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // 无序号列
+                            int okIndex = 0;
+                            for (int j = 0; j < cols.Length; j++)
+                            {
+                                if ("\"".Equals(cols[j]))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    // 注：因为Excel中针对部分包含特殊字符的文本会在前后加上引号，所以后面会有去掉前后引号的处理。数据例如："	2023款 经典 2.0L CVT XV+领先版 国6"
+                                    dr[sColumnArr[okIndex]] = isTrimData ? cols[j].Trim('"').Trim() : cols[j].Trim('"'); //第一列为实际数据
+                                    okIndex++;
+                                    if (okIndex >= dt.Columns.Count || okIndex>= sColumnArr.Length)
+                                    {
+                                        break;
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //数据列数小于等于表列数
+                        if (addNumRow)
+                        {
+                            // 有序号列
+                            dr[sRowNumColumnName] = i; //行号
+                            int okIndex = 0;
+                            for (int j = 0; j < cols.Length; j++)
+                            {
+                                if ("\"".Equals(cols[j]))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    // 注：因为Excel中针对部分包含特殊字符的文本会在前后加上引号，所以后面会有去掉前后引号的处理。数据例如："	2023款 经典 2.0L CVT XV+领先版 国6"
+                                    dr[sColumnArr[okIndex]] = isTrimData ? cols[j].Trim('"').Trim() : cols[j].Trim('"'); //第一列为序号，需要跳过
+                                    okIndex++;
+                                    if (okIndex >= dt.Columns.Count - 1 || okIndex >= sColumnArr.Length)
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // 无序号列
+                            int okIndex = 0;
+                            for (int j = 0; j < cols.Length; j++)
+                            {
+                                if ("\"".Equals(cols[j]))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    // 注：因为Excel中针对部分包含特殊字符的文本会在前后加上引号，所以后面会有去掉前后引号的处理。数据例如："	2023款 经典 2.0L CVT XV+领先版 国6"
+                                    dr[sColumnArr[okIndex]] = isTrimData ? cols[j].Trim('"').Trim() : cols[j].Trim('"'); //第一列为实际数据
+                                    okIndex++;
+                                    if (okIndex >= dt.Columns.Count || okIndex >= sColumnArr.Length)
+                                    {
+                                        break;
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+
+                    if (isJudgeRepeat)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        string sConn = "";
+                        foreach (string s in sColumnArr)
+                        {
+                            string sColCond = string.Format(sConn + "{0}='{1}' ", s, dr[s].ToString());
+                            sb.Append(sColCond);
+                            sConn = " and ";
+                        }
+                        if (dt.Select(sb.ToString()).Length == 0)
+                        {
+                            dt.Rows.Add(dr); //不重复，直接添加
+                        }
+                    }
+                    else
+                    {
+                        dt.Rows.Add(dr); //不判断重复，直接添加
+                    }
                 }
             }
             return dt;

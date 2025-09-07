@@ -239,6 +239,14 @@
     <Compile Include="Doc\FrmDBTSqlStady.Designer.cs">
       <DependentUpon>FrmDBTSqlStady.cs</DependentUpon>
     </Compile>
+    <Compile Include="GetFile\CopyJavaClassFile\GetJavaClassEntity.cs" />
+    <Compile Include="GetFile\CopyJavaClassFile\JavaPublishFileConfig.cs" />
+    <Compile Include="GetFile\FrmGetJavaPublishFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GetFile\FrmGetJavaPublishFile.Designer.cs">
+      <DependentUpon>FrmGetJavaPublishFile.cs</DependentUpon>
+    </Compile>
     <Compile Include="GetFile\FrmGetUpdateDirectoryFile.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -473,6 +481,27 @@
     <None Include="Doc\Develop\C#\基础\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\Develop\CSS\Less\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\CSS\Sass\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\CSS\原生\样式.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\CSS\原生\浮动.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\CSS\原生\选择器.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\CSS\原生\属性.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\CSS\原生\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\Develop\DB\MyBatis-Plus\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -485,13 +514,52 @@
     <None Include="Doc\Develop\DB\MyBatis\总结.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\Develop\DB\MyBatis\SQL配置.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\Develop\DB\MyBatis\配置.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\IDE\Eclipse\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\IDE\IntelliJ IDEA\快捷键.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\IDE\IntelliJ IDEA\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\IDE\VisualStudio\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\IDE\VS Code\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\JavaScript\Express\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\JavaScript\Express\示例.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Develop\JavaScript\JQuery\循环.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Develop\JavaScript\JQuery\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\JavaScript\Nodejs\路由.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\JavaScript\Nodejs\路径.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\JavaScript\Nodejs\模块化.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\JavaScript\Nodejs\总结.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\JavaScript\Nodejs\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Develop\JavaScript\Vue\基础.md">
@@ -527,6 +595,18 @@
     <None Include="Doc\Develop\Java\JDBC\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\Develop\Java\JSON\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\Java\JSON\示例3.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\Java\JSON\示例2.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\Java\JSON\示例1.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\Develop\Java\Maven\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -551,6 +631,9 @@
     <None Include="Doc\Develop\Java\Spring\JdbcTemplate\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\Develop\Java\Spring\配置.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\Develop\Java\Spring\概述.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -561,6 +644,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Develop\Java\反射\示例.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\Java\工程.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Develop\Java\多线程\基础.md">
@@ -579,6 +665,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Develop\Java\第三方\WebJars\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\Java\第三方\包引用.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Develop\Linux\命令2.md">
@@ -765,6 +854,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Doc\FrmDBTSqlStady.resx">
       <DependentUpon>FrmDBTSqlStady.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GetFile\FrmGetJavaPublishFile.resx">
+      <DependentUpon>FrmGetJavaPublishFile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GetFile\FrmGetUpdateDirectoryFile.resx">
       <DependentUpon>FrmGetUpdateDirectoryFile.cs</DependentUpon>
@@ -1427,6 +1519,9 @@
     <Content Include="Help\Html\DBTool\String\ExcelCopyConn.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Help\Html\DBTool\String\GetJavaPublishFile.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\Html\DBTool\String\Images\CommonClickCopy.001.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1443,6 +1538,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\String\Images\FilterRepeatRowData.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\String\Images\GetJavaPublishFile.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\String\Images\GetJavaPublishFile.002.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\String\Images\StringDirectoryList.001.jpg">
