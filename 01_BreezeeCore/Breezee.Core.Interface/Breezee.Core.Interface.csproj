@@ -58,6 +58,7 @@
     <Compile Include="Entity\BaseFileEncoding.cs" />
     <Compile Include="Enum\FtpProtocolType.cs" />
     <Compile Include="Enum\SqlLogAddType.cs" />
+    <Compile Include="Enum\StringCovertUpperLowerEnum.cs" />
     <Compile Include="Global\GlobalFile.cs" />
     <Compile Include="Global\GlobalDir.cs" />
     <Compile Include="Config\KeyValueGroup\KeyValueGroupString.cs" />

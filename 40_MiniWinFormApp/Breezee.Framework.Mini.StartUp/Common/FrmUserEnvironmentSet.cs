@@ -130,6 +130,9 @@ namespace Breezee.Framework.Mini.StartUp
             nudGridHeaderHight.Value = decimal.Parse(_WinFormConfig.Get(GlobalKey.GridHeaderHeight, "30"));
             cbbGridHeaderColor.SelectedValue = _WinFormConfig.Get(GlobalKey.GridHeaderBackColor, "LightBlue");
             cbbOddNumberRowColor.SelectedValue = _WinFormConfig.Get(GlobalKey.GridOddRowBackColor, "LightYellow");
+
+            toolTip1.SetToolTip(btnSelectMySettingPath, "设置目录");
+            toolTip1.SetToolTip(btnSelectUpgradeTmpPath, "设置目录");
         }
         #endregion
 
@@ -570,7 +573,21 @@ namespace Breezee.Framework.Mini.StartUp
             txbErrLogPath.Text = @"\SqlLog\err";
             nudErrKeepDays.Value = 0;
             cbbErrAppendType.SelectedValue = "1";
-        } 
+        }
         #endregion
+
+        /// <summary>
+        /// 打开所在目录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnOpenBelongDir_Click(object sender, EventArgs e)
+        {
+            string sText = txbMyLoveSettingPath.Text.Trim();
+            if (Directory.Exists(sText))
+            {
+                System.Diagnostics.Process.Start("explorer.exe", sText);
+            }
+        }
     }
 }

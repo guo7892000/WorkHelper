@@ -4583,8 +4583,9 @@ namespace Breezee.Core.Interface
         /// <param name="dr">数据行</param>
         /// <param name="isKey">是否使用字典的键</param>
         /// <param name="separator">分隔符：可传空，也可自定义</param>
+        /// <param name="isIgnorUpperLower">是否忽略大小写</param>
         /// <returns>拼接的字段值字符串</returns>
-        public static string GetLinqDynamicTableColumnString(this IDictionary<string, string> dic,DataRow dr, bool isKey,ref string separator)
+        public static string GetLinqDynamicTableColumnString(this IDictionary<string, string> dic,DataRow dr, bool isKey,ref string separator, StringCovertUpperLowerEnum covertType= StringCovertUpperLowerEnum.None)
         {
             if (string.IsNullOrEmpty(separator))
             {
@@ -4594,10 +4595,25 @@ namespace Breezee.Core.Interface
             foreach (var kvp in dic)
             {
                 string columnName = isKey ? kvp.Key : kvp.Value;
-                string value = dr[columnName].ToString();
+                string value;
+                switch (covertType)
+                {
+                    case StringCovertUpperLowerEnum.Upper:
+                        value = dr[columnName].ToString().ToUpper(); //值转换为大写
+                        break;
+                    case StringCovertUpperLowerEnum.Lower:
+                        value = dr[columnName].ToString().ToLower(); //值转换为小写
+                        break;
+                    case StringCovertUpperLowerEnum.None:
+                    default:
+                        value = dr[columnName].ToString(); //值不需要转换，即区分大小写
+                        break;
+                }
                 builder.Append(value).Append(separator);
             }
             return builder.ToString().TrimEnd(separator.ToCharArray());
         }
+
+        
     }
 }

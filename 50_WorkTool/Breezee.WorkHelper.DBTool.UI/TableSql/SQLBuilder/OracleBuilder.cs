@@ -179,7 +179,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                 sbSql.Append(AddRightBand(strColCode) + sDataType_Full);
                 if (strKey ==  ColKeyType.PK) //主键处理
                 {
-                    string strPK_Name = string.IsNullOrEmpty(strColPKName) ? "PK_" + strTableCode : strColPKName;
+                    // 针对例如：PA.T_PA_TEST表，主键名要去掉PA.
+                    string sRemovePrefixTable = strTableCode.IndexOf(".") > 0 ? strTableCode.Substring(strTableCode.IndexOf(".") + 1) : strTableCode;
+                    string strPK_Name = string.IsNullOrEmpty(strColPKName) ? "PK_" + sRemovePrefixTable : strColPKName;
                     strPK = "alter table " + strTableCode + " add constraint " + strPK_Name + " primary key (" + strColCode + ");\n";
                 }
                 #endregion

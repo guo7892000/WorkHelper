@@ -38,21 +38,23 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.cbbFiltType = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnGen = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.cbbGroupType = new System.Windows.Forms.ComboBox();
+            this.cbbValueConvertType = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btnGen = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpSource = new System.Windows.Forms.TabPage();
             this.grbTable = new System.Windows.Forms.GroupBox();
             this.dgvTableList = new System.Windows.Forms.DataGridView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiPaste = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiClear = new System.Windows.Forms.ToolStripMenuItem();
             this.lblTableData = new System.Windows.Forms.Label();
             this.tpResult = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dgvResult = new System.Windows.Forms.DataGridView();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.tsmiClear = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -75,7 +77,8 @@
             this.tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(800, 27);
+            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 4, 0);
+            this.toolStrip1.Size = new System.Drawing.Size(1600, 41);
             this.toolStrip1.TabIndex = 23;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -84,7 +87,7 @@
             this.tsbAutoSQL.Image = ((System.Drawing.Image)(resources.GetObject("tsbAutoSQL.Image")));
             this.tsbAutoSQL.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbAutoSQL.Name = "tsbAutoSQL";
-            this.tsbAutoSQL.Size = new System.Drawing.Size(72, 24);
+            this.tsbAutoSQL.Size = new System.Drawing.Size(119, 35);
             this.tsbAutoSQL.Text = "生成(&A)";
             this.tsbAutoSQL.Click += new System.EventHandler(this.tsbAutoSQL_Click);
             // 
@@ -93,7 +96,7 @@
             this.tsbExport.Image = ((System.Drawing.Image)(resources.GetObject("tsbExport.Image")));
             this.tsbExport.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbExport.Name = "tsbExport";
-            this.tsbExport.Size = new System.Drawing.Size(71, 24);
+            this.tsbExport.Size = new System.Drawing.Size(115, 35);
             this.tsbExport.Text = "导出(&E)";
             this.tsbExport.Click += new System.EventHandler(this.tsbExport_Click);
             // 
@@ -102,7 +105,7 @@
             this.tsbExit.Image = ((System.Drawing.Image)(resources.GetObject("tsbExit.Image")));
             this.tsbExit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbExit.Name = "tsbExit";
-            this.tsbExit.Size = new System.Drawing.Size(72, 24);
+            this.tsbExit.Size = new System.Drawing.Size(117, 35);
             this.tsbExit.Text = "退出(&X)";
             this.tsbExit.Click += new System.EventHandler(this.tsbExit_Click);
             // 
@@ -110,103 +113,139 @@
             // 
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox1.Location = new System.Drawing.Point(0, 27);
+            this.groupBox1.Location = new System.Drawing.Point(0, 41);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(800, 56);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(6);
+            this.groupBox1.Size = new System.Drawing.Size(1600, 112);
             this.groupBox1.TabIndex = 24;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "选项";
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 6;
+            this.tableLayoutPanel1.ColumnCount = 8;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 522F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.Controls.Add(this.cbbFiltType, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnGen, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.label2, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbbGroupType, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.cbbValueConvertType, 5, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label3, 4, 0);
+            this.tableLayoutPanel1.Controls.Add(this.btnGen, 6, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(6, 34);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(6);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(794, 34);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1588, 68);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // cbbFiltType
             // 
+            this.cbbFiltType.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cbbFiltType.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbbFiltType.FormattingEnabled = true;
-            this.cbbFiltType.Location = new System.Drawing.Point(74, 3);
+            this.cbbFiltType.Location = new System.Drawing.Point(148, 12);
+            this.cbbFiltType.Margin = new System.Windows.Forms.Padding(6);
             this.cbbFiltType.Name = "cbbFiltType";
-            this.cbbFiltType.Size = new System.Drawing.Size(121, 25);
+            this.cbbFiltType.Size = new System.Drawing.Size(238, 39);
             this.cbbFiltType.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 9);
+            this.label1.Location = new System.Drawing.Point(6, 20);
+            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 12);
+            this.label1.Size = new System.Drawing.Size(130, 24);
             this.label1.TabIndex = 1;
             this.label1.Text = "筛选类型：";
-            // 
-            // btnGen
-            // 
-            this.btnGen.BackColor = System.Drawing.Color.LightBlue;
-            this.btnGen.Location = new System.Drawing.Point(456, 3);
-            this.btnGen.Name = "btnGen";
-            this.btnGen.Size = new System.Drawing.Size(68, 23);
-            this.btnGen.TabIndex = 2;
-            this.btnGen.Text = "生成";
-            this.btnGen.UseVisualStyleBackColor = false;
-            this.btnGen.Click += new System.EventHandler(this.btnGen_Click);
             // 
             // label2
             // 
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(201, 9);
+            this.label2.Location = new System.Drawing.Point(398, 20);
+            this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 12);
+            this.label2.Size = new System.Drawing.Size(130, 24);
             this.label2.TabIndex = 1;
             this.label2.Text = "分组方式：";
             // 
             // cbbGroupType
             // 
+            this.cbbGroupType.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cbbGroupType.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbbGroupType.FormattingEnabled = true;
-            this.cbbGroupType.Location = new System.Drawing.Point(272, 3);
+            this.cbbGroupType.Location = new System.Drawing.Point(540, 12);
+            this.cbbGroupType.Margin = new System.Windows.Forms.Padding(6);
             this.cbbGroupType.Name = "cbbGroupType";
-            this.cbbGroupType.Size = new System.Drawing.Size(178, 25);
+            this.cbbGroupType.Size = new System.Drawing.Size(352, 39);
             this.cbbGroupType.TabIndex = 0;
+            this.cbbGroupType.SelectedIndexChanged += new System.EventHandler(this.cbbGroupType_SelectedIndexChanged);
+            // 
+            // cbbValueConvertType
+            // 
+            this.cbbValueConvertType.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cbbValueConvertType.FormattingEnabled = true;
+            this.cbbValueConvertType.Location = new System.Drawing.Point(1085, 16);
+            this.cbbValueConvertType.Name = "cbbValueConvertType";
+            this.cbbValueConvertType.Size = new System.Drawing.Size(180, 32);
+            this.cbbValueConvertType.TabIndex = 4;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(901, 20);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(178, 24);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "比较前值转换：";
+            // 
+            // btnGen
+            // 
+            this.btnGen.BackColor = System.Drawing.Color.LightBlue;
+            this.btnGen.Location = new System.Drawing.Point(1274, 6);
+            this.btnGen.Margin = new System.Windows.Forms.Padding(6);
+            this.btnGen.Name = "btnGen";
+            this.btnGen.Size = new System.Drawing.Size(136, 52);
+            this.btnGen.TabIndex = 2;
+            this.btnGen.Text = "生成";
+            this.btnGen.UseVisualStyleBackColor = false;
+            this.btnGen.Click += new System.EventHandler(this.btnGen_Click);
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tpSource);
             this.tabControl1.Controls.Add(this.tpResult);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 83);
+            this.tabControl1.Location = new System.Drawing.Point(0, 153);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(6);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(800, 367);
+            this.tabControl1.Size = new System.Drawing.Size(1600, 747);
             this.tabControl1.TabIndex = 25;
             // 
             // tpSource
             // 
             this.tpSource.Controls.Add(this.grbTable);
-            this.tpSource.Location = new System.Drawing.Point(4, 22);
+            this.tpSource.Location = new System.Drawing.Point(8, 39);
+            this.tpSource.Margin = new System.Windows.Forms.Padding(6);
             this.tpSource.Name = "tpSource";
-            this.tpSource.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSource.Size = new System.Drawing.Size(792, 341);
+            this.tpSource.Padding = new System.Windows.Forms.Padding(6);
+            this.tpSource.Size = new System.Drawing.Size(1584, 700);
             this.tpSource.TabIndex = 0;
             this.tpSource.Text = "Excel源数据";
             this.tpSource.UseVisualStyleBackColor = true;
@@ -217,9 +256,11 @@
             this.grbTable.Controls.Add(this.dgvTableList);
             this.grbTable.Controls.Add(this.lblTableData);
             this.grbTable.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grbTable.Location = new System.Drawing.Point(3, 3);
+            this.grbTable.Location = new System.Drawing.Point(6, 6);
+            this.grbTable.Margin = new System.Windows.Forms.Padding(6);
             this.grbTable.Name = "grbTable";
-            this.grbTable.Size = new System.Drawing.Size(786, 335);
+            this.grbTable.Padding = new System.Windows.Forms.Padding(6);
+            this.grbTable.Size = new System.Drawing.Size(1572, 688);
             this.grbTable.TabIndex = 2;
             this.grbTable.TabStop = false;
             this.grbTable.Text = "粘贴的数据列表";
@@ -230,27 +271,37 @@
             this.dgvTableList.ContextMenuStrip = this.contextMenuStrip1;
             this.dgvTableList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvTableList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
-            this.dgvTableList.Location = new System.Drawing.Point(3, 17);
+            this.dgvTableList.Location = new System.Drawing.Point(6, 34);
+            this.dgvTableList.Margin = new System.Windows.Forms.Padding(6);
             this.dgvTableList.Name = "dgvTableList";
+            this.dgvTableList.RowHeadersWidth = 82;
             this.dgvTableList.RowTemplate.Height = 23;
-            this.dgvTableList.Size = new System.Drawing.Size(780, 315);
+            this.dgvTableList.Size = new System.Drawing.Size(1560, 648);
             this.dgvTableList.TabIndex = 0;
             this.dgvTableList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvTableList_KeyDown);
             // 
             // contextMenuStrip1
             // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiPaste,
             this.tsmiClear});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(137, 80);
             // 
             // tsmiPaste
             // 
             this.tsmiPaste.Name = "tsmiPaste";
-            this.tsmiPaste.Size = new System.Drawing.Size(180, 22);
+            this.tsmiPaste.Size = new System.Drawing.Size(136, 38);
             this.tsmiPaste.Text = "粘贴";
             this.tsmiPaste.Click += new System.EventHandler(this.tsmiPaste_Click);
+            // 
+            // tsmiClear
+            // 
+            this.tsmiClear.Name = "tsmiClear";
+            this.tsmiClear.Size = new System.Drawing.Size(136, 38);
+            this.tsmiClear.Text = "清除";
+            this.tsmiClear.Click += new System.EventHandler(this.tsmiClear_Click);
             // 
             // lblTableData
             // 
@@ -259,19 +310,21 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTableData.AutoSize = true;
             this.lblTableData.ForeColor = System.Drawing.Color.Red;
-            this.lblTableData.Location = new System.Drawing.Point(305, 0);
+            this.lblTableData.Location = new System.Drawing.Point(610, 0);
+            this.lblTableData.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblTableData.Name = "lblTableData";
-            this.lblTableData.Size = new System.Drawing.Size(53, 12);
+            this.lblTableData.Size = new System.Drawing.Size(106, 24);
             this.lblTableData.TabIndex = 12;
             this.lblTableData.Text = "提示信息";
             // 
             // tpResult
             // 
             this.tpResult.Controls.Add(this.groupBox2);
-            this.tpResult.Location = new System.Drawing.Point(4, 22);
+            this.tpResult.Location = new System.Drawing.Point(8, 39);
+            this.tpResult.Margin = new System.Windows.Forms.Padding(6);
             this.tpResult.Name = "tpResult";
-            this.tpResult.Padding = new System.Windows.Forms.Padding(3);
-            this.tpResult.Size = new System.Drawing.Size(792, 341);
+            this.tpResult.Padding = new System.Windows.Forms.Padding(6);
+            this.tpResult.Size = new System.Drawing.Size(1584, 700);
             this.tpResult.TabIndex = 1;
             this.tpResult.Text = "筛选结果";
             this.tpResult.UseVisualStyleBackColor = true;
@@ -281,9 +334,11 @@
             this.groupBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
             this.groupBox2.Controls.Add(this.dgvResult);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Location = new System.Drawing.Point(3, 3);
+            this.groupBox2.Location = new System.Drawing.Point(6, 6);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(786, 335);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(6);
+            this.groupBox2.Size = new System.Drawing.Size(1572, 688);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "筛选结果数据列表";
@@ -293,28 +348,24 @@
             this.dgvResult.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvResult.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
-            this.dgvResult.Location = new System.Drawing.Point(3, 17);
+            this.dgvResult.Location = new System.Drawing.Point(6, 34);
+            this.dgvResult.Margin = new System.Windows.Forms.Padding(6);
             this.dgvResult.Name = "dgvResult";
+            this.dgvResult.RowHeadersWidth = 82;
             this.dgvResult.RowTemplate.Height = 23;
-            this.dgvResult.Size = new System.Drawing.Size(780, 315);
+            this.dgvResult.Size = new System.Drawing.Size(1560, 648);
             this.dgvResult.TabIndex = 0;
-            // 
-            // tsmiClear
-            // 
-            this.tsmiClear.Name = "tsmiClear";
-            this.tsmiClear.Size = new System.Drawing.Size(180, 22);
-            this.tsmiClear.Text = "清除";
-            this.tsmiClear.Click += new System.EventHandler(this.tsmiClear_Click);
             // 
             // FrmDBTFiltSameRow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1600, 900);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
+            this.Margin = new System.Windows.Forms.Padding(12);
             this.Name = "FrmDBTFiltSameRow";
             this.Text = "筛选重复行";
             this.Load += new System.EventHandler(this.FrmDBTFiltSameRow_Load);
@@ -362,5 +413,7 @@
         private System.Windows.Forms.ComboBox cbbGroupType;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ToolStripMenuItem tsmiClear;
+        private System.Windows.Forms.ComboBox cbbValueConvertType;
+        private System.Windows.Forms.Label label3;
     }
 }

@@ -23,14 +23,16 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 键
             entity.ColKeys.Add(KeyString.Name);
             entity.ColKeys.Add(KeyString.CodeDir);
-            entity.ColKeys.Add(KeyString.ClassDir);
             entity.ColKeys.Add(KeyString.CopyToDir);
             entity.ColKeys.Add(KeyString.CopyCoverType);
+            entity.ColKeys.Add(KeyString.ClassDir);
             entity.ColKeys.Add(KeyString.ExcludeRelateDir);
             entity.ColKeys.Add(KeyString.ExcludeRelateFile);
             // 值
+            entity.ColVals.Add(ValueString.IsCopyFromSrc);
             entity.ColVals.Add(ValueString.RelCodeDir);
             entity.ColVals.Add(ValueString.RelClassDir);
+            entity.ColVals.Add(ValueString.RelCopyToDir);
             MoreXmlConfig = new MoreKeyValueGroupConfig(entity);
         }
 
@@ -41,8 +43,8 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             public static readonly string Name = "Name";
             public static readonly string CodeDir = "CodeDir";
-            public static readonly string ClassDir = "ClassDir";
             public static readonly string CopyToDir = "CopyToDir";
+            public static readonly string ClassDir = "ClassDir";
             public static readonly string CopyCoverType = "CopyCoverType";
             public static readonly string ExcludeRelateDir = "ExcludeRelateDir";
             public static readonly string ExcludeRelateFile = "ExcludeRelateFile";
@@ -53,8 +55,13 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// </summary>
         public static class ValueString
         {
+            /// <summary>
+            /// 是否从源码复制
+            /// </summary>
+            public static readonly string IsCopyFromSrc = "IsCopyFromSrc";
             public static readonly string RelCodeDir = "RelCodeDir";
-            public static readonly string RelClassDir = "RelClassDir"; 
+            public static readonly string RelClassDir = "RelClassDir";
+            public static readonly string RelCopyToDir = "RelCopyToDir";
         }
 
     }

@@ -30,4 +30,5 @@ namespace Breezee.WorkHelper.DBTool.UI
         CoverNow = 2,
         AwaysNew = 3
     }
+
 }

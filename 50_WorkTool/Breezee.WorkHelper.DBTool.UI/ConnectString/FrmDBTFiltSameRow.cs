@@ -36,7 +36,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Add("1", "列拼接分组(列数无限制)");
             _dicString.Add("2", "列组合分组(最多60列)");
             cbbGroupType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
-
+            //值转换类型
+            _dicString.Clear();
+            _dicString.Add("0", "无");
+            _dicString.Add("1", "大写");
+            _dicString.Add("2", "小写");
+            cbbValueConvertType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
+            
             DataTable dtCopy = new DataTable();
             dtCopy.TableName = _strTableName;
             dgvTableList.BindAutoTable(dtCopy);
@@ -103,7 +109,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
 
             bool isRepeat = (cbbFiltType.SelectedValue == null || "1".Equals(cbbFiltType.SelectedValue.ToString())) ? true : false;
-
+            string sValueConvertType = cbbValueConvertType.SelectedValue == null ? "0" : cbbValueConvertType.SelectedValue.ToString();
+            StringCovertUpperLowerEnum stringCovert = (StringCovertUpperLowerEnum)int.Parse(sValueConvertType);
             // 是否使用动态
             bool isUseDynamic = cbbGroupType.SelectedValue==null || "1".Equals(cbbGroupType.SelectedValue.ToString());
             if (isUseDynamic)
@@ -112,7 +119,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 // 生成拼接字段字符串作为分组依据
                 var separator = string.Empty; // 选择一个不易出现的分隔符
                 var query = from data in dtMain.AsEnumerable()
-                            group data by dic.GetLinqDynamicTableColumnString(data, true,ref separator) into gData
+                            group data by dic.GetLinqDynamicTableColumnString(data, true,ref separator, stringCovert) into gData
                             where isRepeat ? gData.Count() > 1 : gData.Count() == 1
                             select new { g = gData, c = gData.Count() };
                 var rs = query.ToList();
@@ -200,6 +207,21 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 dgvTableList.GetBindingTable().Columns.Clear();
                 dgvTableList.GetBindingTable().Clear();
+            }
+        }
+
+        private void cbbGroupType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            bool isUseDynamic = cbbGroupType.SelectedValue == null || "1".Equals(cbbGroupType.SelectedValue.ToString());
+            if (isUseDynamic)
+            {
+                label3.Visible = true;
+                cbbValueConvertType.Visible = true;
+            }
+            else
+            {
+                label3.Visible = false;
+                cbbValueConvertType.Visible = false;
             }
         }
     }

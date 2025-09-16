@@ -51,10 +51,12 @@
             this.opfSelectPic = new System.Windows.Forms.OpenFileDialog();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpBase = new System.Windows.Forms.TabPage();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.ckbUpgradeAutoAjustDesktopQuickLink = new System.Windows.Forms.CheckBox();
+            this.ckbUpgradeSuccessDelOldVerion = new System.Windows.Forms.CheckBox();
             this.ckbUpgradeDelNewZipFile = new System.Windows.Forms.CheckBox();
             this.ckbDelOldNeedConfirm = new System.Windows.Forms.CheckBox();
-            this.ckbUpgradeSuccessDelOldVerion = new System.Windows.Forms.CheckBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.btnSelectUpgradeTmpPath = new System.Windows.Forms.Button();
             this.txbUpgradeTempDir = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -121,8 +123,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.fbdSelectPath = new System.Windows.Forms.FolderBrowserDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.ckbUpgradeAutoAjustDesktopQuickLink = new System.Windows.Forms.CheckBox();
-            this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.btnOpenBelongDir = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -130,6 +131,7 @@
             this.tableLayoutPanel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpBase.SuspendLayout();
+            this.groupBox11.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -151,7 +153,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudKeepDays)).BeginInit();
             this.tpOther.SuspendLayout();
             this.groupBox5.SuspendLayout();
-            this.groupBox11.SuspendLayout();
             this.SuspendLayout();
             // 
             // label2
@@ -212,7 +213,7 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 349F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 351F));
             this.tableLayoutPanel3.Controls.Add(this.btnSelectPicMain, 3, 1);
             this.tableLayoutPanel3.Controls.Add(this.txbSkinValueMain, 1, 1);
             this.tableLayoutPanel3.Controls.Add(this.cbbColorMain, 2, 0);
@@ -296,7 +297,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 349F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 351F));
             this.tableLayoutPanel2.Controls.Add(this.btnSelectPicCommon, 3, 1);
             this.tableLayoutPanel2.Controls.Add(this.txbSkinValueCommon, 1, 1);
             this.tableLayoutPanel2.Controls.Add(this.cbbColorCommon, 2, 0);
@@ -378,19 +379,39 @@
             this.tpBase.Text = "基本配置";
             this.tpBase.UseVisualStyleBackColor = true;
             // 
-            // groupBox6
+            // groupBox11
             // 
-            this.groupBox6.Controls.Add(this.btnSelectUpgradeTmpPath);
-            this.groupBox6.Controls.Add(this.txbUpgradeTempDir);
-            this.groupBox6.Controls.Add(this.label6);
-            this.groupBox6.Controls.Add(this.ckbAutoCheckVersion);
-            this.groupBox6.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox6.Location = new System.Drawing.Point(3, 104);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(770, 67);
-            this.groupBox6.TabIndex = 2;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "升级配置";
+            this.groupBox11.Controls.Add(this.ckbUpgradeAutoAjustDesktopQuickLink);
+            this.groupBox11.Controls.Add(this.ckbUpgradeSuccessDelOldVerion);
+            this.groupBox11.Controls.Add(this.ckbUpgradeDelNewZipFile);
+            this.groupBox11.Controls.Add(this.ckbDelOldNeedConfirm);
+            this.groupBox11.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox11.Location = new System.Drawing.Point(3, 171);
+            this.groupBox11.Name = "groupBox11";
+            this.groupBox11.Size = new System.Drawing.Size(770, 46);
+            this.groupBox11.TabIndex = 3;
+            this.groupBox11.TabStop = false;
+            this.groupBox11.Text = "升级成功后操作";
+            // 
+            // ckbUpgradeAutoAjustDesktopQuickLink
+            // 
+            this.ckbUpgradeAutoAjustDesktopQuickLink.AutoSize = true;
+            this.ckbUpgradeAutoAjustDesktopQuickLink.Location = new System.Drawing.Point(341, 20);
+            this.ckbUpgradeAutoAjustDesktopQuickLink.Name = "ckbUpgradeAutoAjustDesktopQuickLink";
+            this.ckbUpgradeAutoAjustDesktopQuickLink.Size = new System.Drawing.Size(144, 16);
+            this.ckbUpgradeAutoAjustDesktopQuickLink.TabIndex = 7;
+            this.ckbUpgradeAutoAjustDesktopQuickLink.Text = "自动修正桌面快捷方式";
+            this.ckbUpgradeAutoAjustDesktopQuickLink.UseVisualStyleBackColor = true;
+            // 
+            // ckbUpgradeSuccessDelOldVerion
+            // 
+            this.ckbUpgradeSuccessDelOldVerion.AutoSize = true;
+            this.ckbUpgradeSuccessDelOldVerion.Location = new System.Drawing.Point(11, 20);
+            this.ckbUpgradeSuccessDelOldVerion.Name = "ckbUpgradeSuccessDelOldVerion";
+            this.ckbUpgradeSuccessDelOldVerion.Size = new System.Drawing.Size(84, 16);
+            this.ckbUpgradeSuccessDelOldVerion.TabIndex = 4;
+            this.ckbUpgradeSuccessDelOldVerion.Text = "删除旧版本";
+            this.ckbUpgradeSuccessDelOldVerion.UseVisualStyleBackColor = true;
             // 
             // ckbUpgradeDelNewZipFile
             // 
@@ -412,19 +433,23 @@
             this.ckbDelOldNeedConfirm.Text = "删除旧版本需要确认";
             this.ckbDelOldNeedConfirm.UseVisualStyleBackColor = true;
             // 
-            // ckbUpgradeSuccessDelOldVerion
+            // groupBox6
             // 
-            this.ckbUpgradeSuccessDelOldVerion.AutoSize = true;
-            this.ckbUpgradeSuccessDelOldVerion.Location = new System.Drawing.Point(11, 20);
-            this.ckbUpgradeSuccessDelOldVerion.Name = "ckbUpgradeSuccessDelOldVerion";
-            this.ckbUpgradeSuccessDelOldVerion.Size = new System.Drawing.Size(84, 16);
-            this.ckbUpgradeSuccessDelOldVerion.TabIndex = 4;
-            this.ckbUpgradeSuccessDelOldVerion.Text = "删除旧版本";
-            this.ckbUpgradeSuccessDelOldVerion.UseVisualStyleBackColor = true;
+            this.groupBox6.Controls.Add(this.btnSelectUpgradeTmpPath);
+            this.groupBox6.Controls.Add(this.txbUpgradeTempDir);
+            this.groupBox6.Controls.Add(this.label6);
+            this.groupBox6.Controls.Add(this.ckbAutoCheckVersion);
+            this.groupBox6.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox6.Location = new System.Drawing.Point(3, 104);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(770, 67);
+            this.groupBox6.TabIndex = 2;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "升级配置";
             // 
             // btnSelectUpgradeTmpPath
             // 
-            this.btnSelectUpgradeTmpPath.Location = new System.Drawing.Point(703, 16);
+            this.btnSelectUpgradeTmpPath.Location = new System.Drawing.Point(682, 15);
             this.btnSelectUpgradeTmpPath.Name = "btnSelectUpgradeTmpPath";
             this.btnSelectUpgradeTmpPath.Size = new System.Drawing.Size(19, 23);
             this.btnSelectUpgradeTmpPath.TabIndex = 3;
@@ -437,7 +462,7 @@
             this.txbUpgradeTempDir.Location = new System.Drawing.Point(101, 17);
             this.txbUpgradeTempDir.Name = "txbUpgradeTempDir";
             this.txbUpgradeTempDir.ReadOnly = true;
-            this.txbUpgradeTempDir.Size = new System.Drawing.Size(596, 21);
+            this.txbUpgradeTempDir.Size = new System.Drawing.Size(575, 21);
             this.txbUpgradeTempDir.TabIndex = 2;
             // 
             // label6
@@ -461,6 +486,7 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.btnOpenBelongDir);
             this.groupBox4.Controls.Add(this.label4);
             this.groupBox4.Controls.Add(this.btnSelectMySettingPath);
             this.groupBox4.Controls.Add(this.txbMyLoveSettingPath);
@@ -496,7 +522,7 @@
             this.txbMyLoveSettingPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txbMyLoveSettingPath.Location = new System.Drawing.Point(101, 18);
             this.txbMyLoveSettingPath.Name = "txbMyLoveSettingPath";
-            this.txbMyLoveSettingPath.Size = new System.Drawing.Size(653, 21);
+            this.txbMyLoveSettingPath.Size = new System.Drawing.Size(575, 21);
             this.txbMyLoveSettingPath.TabIndex = 1;
             // 
             // groupBox3
@@ -617,7 +643,7 @@
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 173F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 175F));
             this.tableLayoutPanel4.Controls.Add(this.label8, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.ckbIsDefineGridHeader, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.cbbOddNumberRowColor, 1, 1);
@@ -1166,29 +1192,15 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "网格样式临时文件：";
             // 
-            // ckbUpgradeAutoAjustDesktopQuickLink
+            // btnOpenBelongDir
             // 
-            this.ckbUpgradeAutoAjustDesktopQuickLink.AutoSize = true;
-            this.ckbUpgradeAutoAjustDesktopQuickLink.Location = new System.Drawing.Point(341, 20);
-            this.ckbUpgradeAutoAjustDesktopQuickLink.Name = "ckbUpgradeAutoAjustDesktopQuickLink";
-            this.ckbUpgradeAutoAjustDesktopQuickLink.Size = new System.Drawing.Size(144, 16);
-            this.ckbUpgradeAutoAjustDesktopQuickLink.TabIndex = 7;
-            this.ckbUpgradeAutoAjustDesktopQuickLink.Text = "自动修正桌面快捷方式";
-            this.ckbUpgradeAutoAjustDesktopQuickLink.UseVisualStyleBackColor = true;
-            // 
-            // groupBox11
-            // 
-            this.groupBox11.Controls.Add(this.ckbUpgradeAutoAjustDesktopQuickLink);
-            this.groupBox11.Controls.Add(this.ckbUpgradeSuccessDelOldVerion);
-            this.groupBox11.Controls.Add(this.ckbUpgradeDelNewZipFile);
-            this.groupBox11.Controls.Add(this.ckbDelOldNeedConfirm);
-            this.groupBox11.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox11.Location = new System.Drawing.Point(3, 171);
-            this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(770, 46);
-            this.groupBox11.TabIndex = 3;
-            this.groupBox11.TabStop = false;
-            this.groupBox11.Text = "升级成功后操作";
+            this.btnOpenBelongDir.Location = new System.Drawing.Point(680, 16);
+            this.btnOpenBelongDir.Name = "btnOpenBelongDir";
+            this.btnOpenBelongDir.Size = new System.Drawing.Size(85, 23);
+            this.btnOpenBelongDir.TabIndex = 4;
+            this.btnOpenBelongDir.Text = "打开配置目录";
+            this.btnOpenBelongDir.UseVisualStyleBackColor = true;
+            this.btnOpenBelongDir.Click += new System.EventHandler(this.btnOpenBelongDir_Click);
             // 
             // FrmUserEnvironmentSet
             // 
@@ -1211,6 +1223,8 @@
             this.tableLayoutPanel2.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tpBase.ResumeLayout(false);
+            this.groupBox11.ResumeLayout(false);
+            this.groupBox11.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -1240,8 +1254,6 @@
             this.tpOther.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
-            this.groupBox11.ResumeLayout(false);
-            this.groupBox11.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1342,5 +1354,6 @@
         private System.Windows.Forms.Button btnLogReset;
         private System.Windows.Forms.CheckBox ckbUpgradeAutoAjustDesktopQuickLink;
         private System.Windows.Forms.GroupBox groupBox11;
+        private System.Windows.Forms.Button btnOpenBelongDir;
     }
 }

@@ -156,16 +156,18 @@ namespace Breezee.WorkHelper.DBTool.UI
                 sbSql.Append("\t");
                 if (strKey == ColKeyType.PK)
                 {
+                    // 针对例如：PA.T_PA_TEST表，主键名要去掉PA.
+                    string sRemovePrefixTable = strTableCode.IndexOf(".") > 0 ? strTableCode.Substring(strTableCode.IndexOf(".") + 1) : strTableCode;
                     //主键处理
                     if (!string.IsNullOrEmpty(strColAddNum) && (strColDataType == "int" || strColDataType == "bigint"))
                     {
                         sbSql.Append(AddRightBand(strColCode) + AddRightBand(strColDataType) + AddRightBand("IDENTITY" + AddLeftRightKuoHao(strColAddNum)
-                            + " CONSTRAINT [PK_" + strTableCode + "] PRIMARY KEY(" + strColCode + ") "));
+                            + " CONSTRAINT [PK_" + sRemovePrefixTable + "] PRIMARY KEY(" + strColCode + ") "));
                     }
                     else
                     {
                         sbSql.Append(AddRightBand(strColCode) + AddRightBand(sDataType_Full)
-                            + " CONSTRAINT [PK_" + strTableCode + "] PRIMARY KEY(" + strColCode + ") ");
+                            + " CONSTRAINT [PK_" + sRemovePrefixTable + "] PRIMARY KEY(" + strColCode + ") ");
                     }
                     strPK = strColCode;
                 }
