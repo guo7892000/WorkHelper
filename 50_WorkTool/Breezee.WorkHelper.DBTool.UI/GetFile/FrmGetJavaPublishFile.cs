@@ -129,6 +129,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (string.IsNullOrEmpty(sCodePath))
                 {
                     ShowErr("请选择【源代码目录】！");
+                    tabControl1.SelectedTab = tpConfig;
                     return;
                 }
                 else
@@ -136,6 +137,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     if (!Directory.Exists(sCodePath))
                     {
                         ShowErr("【源代码目录】不存在，请重新选择或录入！");
+                        tabControl1.SelectedTab = tpConfig;
                         return;
                     }
                 }
@@ -144,6 +146,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (string.IsNullOrEmpty(sClassPath))
                 {
                     ShowErr("请选择【复制源目录】！");
+                    tabControl1.SelectedTab = tpConfig;
                     return;
                 }
                 else
@@ -151,6 +154,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     if (!Directory.Exists(sClassPath))
                     {
                         ShowErr("【复制源目录】不存在，请重新选择或录入！");
+                        tabControl1.SelectedTab = tpConfig;
                         return;
                     }
                 }
@@ -159,6 +163,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (string.IsNullOrEmpty(sCopyToPath))
                 {
                     ShowErr("请选择【复制到目录】！");
+                    tabControl1.SelectedTab = tpConfig;
                     return;
                 }
                 else
@@ -166,6 +171,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     if (!Directory.Exists(sCopyToPath))
                     {
                         ShowErr("【复制到目录】不存在，请重新选择或录入！");
+                        tabControl1.SelectedTab = tpConfig;
                         return;
                     }
                 }
@@ -181,6 +187,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (dtInputFiles.Rows.Count == 0)
                 {
                     ShowErr("请在【变化文件录入】网格中输入并勾选要获取的文件清单！");
+                    tabControl1.SelectedTab = tpSource;
                     return;
                 }
 
@@ -195,6 +202,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if ( dtRelCfgSelet.Rows.Count == 0)
                 {
                     ShowErr("【源代码与复制源目录对照关系配置】不能为空，至少输入并选择一项！");
+                    tabControl1.SelectedTab = tpConfig;
                     return;
                 }
 
@@ -312,14 +320,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                         if("1".Equals(isCopyFormSrc))
                         {
                             // 这里取代码路径：如class取源码下的target目录、页面和JS就取源码目录
-                            sCopySourceFileFullPath = getJavaClassEntity.CodePath + "\\" + sCodeFilePath; //从源码读取时，还是取完整路径
-                            sCoptyToFullPath = getJavaClassEntity.CopyToPath + "\\" + sCfgClassPath + sCfgCopyToPath + "\\" + sCfgClassEndPath;
+                            sCopySourceFileFullPath = Path.Combine(getJavaClassEntity.CodePath,sCodeFilePath); //从源码读取时，还是取完整路径
+                            sCoptyToFullPath = Path.Combine(getJavaClassEntity.CopyToPath,sCfgCopyToPath, sCfgClassPath, sCfgClassEndPath);
                         }
                         else
                         {
                             // 这里取JBoss发布生成的class路径：主要针对JBoss的发布，可以使用该方式在一个目录中获取class、页面和JS。
-                            sCopySourceFileFullPath = getJavaClassEntity.ClassPath + "\\" + sCfgClassPath + "\\" + sCfgClassEndPath;
-                            sCoptyToFullPath = getJavaClassEntity.CopyToPath + "\\" + sCfgClassPath + sCfgCopyToPath + "\\" + sCfgClassEndPath;
+                            sCopySourceFileFullPath = Path.Combine(getJavaClassEntity.ClassPath,sCfgClassPath,sCfgClassEndPath);
+                            sCoptyToFullPath = Path.Combine(getJavaClassEntity.CopyToPath, sCfgCopyToPath, sCfgClassPath ,sCfgClassEndPath);
                         }
                         
                         // 查找class文件是否存在

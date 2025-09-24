@@ -1418,7 +1418,11 @@ namespace Breezee.Framework.Mini.StartUp
             {
                 if (isHandUpdate)
                 {
-                    MsgHelper.ShowInfo("升级出错：" + ex.Message);
+                    DialogResult dialogResult = MsgHelper.ShowYesNo("升级出错，是否打开网页下载？\r\n本次报错信息：" + ex.Message);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        System.Diagnostics.Process.Start("https://gitee.com/breezee2000/WorkHelper/releases/tag/Latest");
+                    }
                 }
                 else
                 {
@@ -1514,7 +1518,11 @@ namespace Breezee.Framework.Mini.StartUp
             {
                 if (isHandUpdate)
                 {
-                    MsgHelper.ShowInfo("升级出错：" + ex.Message);
+                    DialogResult dialogResult = MsgHelper.ShowYesNo("升级出错，是否打开网页下载？\r\n本次报错信息：" + ex.Message);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        System.Diagnostics.Process.Start("https://gitee.com/breezee2000/WorkHelper/releases/tag/StableRealse");
+                    }
                 }
                 else
                 {
