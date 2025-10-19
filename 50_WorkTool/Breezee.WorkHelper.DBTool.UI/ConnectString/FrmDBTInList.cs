@@ -222,6 +222,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             else if (strSqlType == "2")
             {
+                dgvTableList.Columns[_sColLower].Visible = false;
+                dgvTableList.Columns[_sColUpper].Visible = false;
                 grbInputString.Visible = true;
             }
             else

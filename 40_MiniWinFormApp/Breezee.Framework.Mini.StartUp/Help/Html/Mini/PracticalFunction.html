@@ -5,6 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>实用功能</title>
+    <style>
+        .star {
+            color: #FF0000; /* 星星的默认颜色 */
+            font-size: 24px; /* 星星的大小 */
+            cursor: pointer; /* 鼠标悬停时显示为手形 */
+        }
+
+        .star::before {
+            content: "\2605"; /* Unicode字符用于显示星星 */
+        }
+
+        .star.active::before {
+            color: gold; /* 激活星星的颜色 */
+        }
+    </style>
 </head>
 <body>
     <div>
@@ -14,39 +29,69 @@
             推荐使用的本工具比较实用的功能。
         </div>
         <div>
-            <h2>二、功能清单</h2>
+            <h2>二、功能分类</h2>
+            <h2>1、基础功能</h2>
             <b>【数据库连接配置】：</b><br>
             配置本工具用到的所有数据库连接。<br>
-            <b>【表结构SQL生成】：</b><br>
+
+            <h2>2、数据库功能</h2>
+            <b>【表结构SQL生成】：</b><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><br>
             读取旧数据库或填写Excel模板，来生成数据库变更脚本或新Excel模板，以支持数据库变更。<br>
-            <b>【增删改查SQL生成】：</b><br>
+            <b>【增删改查SQL生成】：</b><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><br>
             生成单张表的新增、修改、删除、查询SQL：包含列的注释，参数化等。<br>
-            <b>【SQL跨库转换】：</b><br>
-            主要是将Oracle语法的SQL转换为符合MySql语法的SQL。<br>
-            <b>【数据字典】：</b><br>
-            可以将SQL中的条件或查询结果转换为YAPI、MyBatis表实体、通用实体等字符构造。<br>
-            <b>【复制数据拼接】：</b><br>
-            复制Excel内容后，自动拼接组合文档。<br>
-            <b>【两个Excel合并】：</b><br>
-            将两个Excel的内容进行比较、合并等操作，快速找出差异、独有部分。<br>
-            <b>【点击复制字符】：</b><br>
-            根据模板格式配置经常需要复制的文档，点击一下就复制了，不用到处找文本复制粘贴了。<br>
-            <b>【文件字符替换】、【文件字符替换UC】：</b><br>
-            将本地文件夹所有文本类文件，或从FTP服务器上下载好文件后，按指定替换新旧文本，替换后拷贝到指定目录。还可以指定拷贝的文件，或上传到FTP服务上。<br>
-            <b>【IN清单拼接】：</b><br>
-            快速生成IN清单。<br>
-            <b>【字符分隔拼接】：</b><br>
-            根据指定的分隔符，分隔并自定义拼接。<br>
-            <b>【目录字符生成】：</b><br>
-            生成指定目录的子目录、文件的相对或全路径字符。<br>
-            <b>【合并脚本】：</b><br>
+            <b>【数据Excel公式生成】：</b></span><span class="star"></span><span class="star"></span><span class="star"></span><br>
+            生成新增表的Excel公式，方便在Excel中填写表的所有列，然后最后一列为根据行中的数据生成表新增SQL。<br>
+            <b>【合并脚本】：</b></span><span class="star"></span><span class="star"></span><span class="star"></span><br>
             根据配置模板，将多个文件合并成单个文件；支持多对多。<br>
-            <b>【实体文件生成】：</b><br>
+
+            <h2>3、字符拼接</h2>
+            <b>【IN清单拼接】：</b><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><br>
+            快速生成IN清单。<br>
+            <b>【复制数据拼接】：</b><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><br>
+            复制Excel内容后，自动拼接组合文档。<br>
+            <b>【字符分隔拼接】：</b><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><br>
+            根据指定的分隔符，分隔并自定义拼接。<br>
+            <b>【文件字符替换】、【文件字符替换UC】：</b><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><br>
+            将本地文件夹所有文本类文件，或从FTP服务器上下载好文件后，按指定替换新旧文本，替换后拷贝到指定目录。还可以指定拷贝的文件，或上传到FTP服务上。<br>
+            <b>【数据库数据拼接】：</b><br>
+            通过查询数据库某个表的数据，然后将其某些列数据拼接起来。<br>
+
+            <h2>4、程序开发</h2>
+            <b>【数据字典】：</b><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><br>
+            可以将SQL中的条件或查询结果转换为YAPI、MyBatis表实体、通用实体等字符构造。<br>
+            <b>【MyBatis的SQL转换】：</b><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><br>
+            以实际值来替换MyBatis输出SQL的参数部分（?为参数占位符），最终得到可运行的SQL。<br>
+            <b>【实体文件生成】：</b><span class="star"></span><span class="star"></span><span class="star"></span><br>
             优点：根据配置好的实体模板，来生成实体文件。可以多个表同时生成多个实体。<br>
             缺点：需要花点时间了解配置模板的提供系统变量，以及如何使用这些变量。<br>
-            <b>【代码文件生成】：</b><br>
+            <b>【代码文件生成】：</b><span class="star"></span><span class="star"></span><span class="star"></span><br>
             优点：根据配置好的代码文件模板，来生成对应的代码文件。一次只能根据一个表实体来生成多个代码文件。<br>
             缺点：需要花点时间了解配置模板的提供系统变量，以及如何使用这些变量。<br>
+            <b>【SQL跨库转换】：</b></span><span class="star"></span><span class="star"></span><span class="star"></span><br>
+            主要是将Oracle语法的SQL转换为符合MySql语法的SQL。<br>
+            <b>【获取Java的class文件】：</b></span><span class="star"></span><span class="star"></span><span class="star"></span><br>
+            针对修改过的源码，获取其对应的class文件，方便于替换发布。<br>
+            <b>【获取变化的文件】：</b></span><span class="star"></span><span class="star"></span><br>
+            获取并备份本地目录（普通目录或git目录）修改过或新增的文件。<br>
+
+            <h2>5、数据比较</h2>
+            <b>【两个Excel合并】：</b><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><br>
+            将两个Excel的内容进行比较、合并等操作，快速找出差异、独有部分。<br>
+            <b>【筛选重复行】：</b><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><br>
+            从Excel中复制出来数据，然后找出重复行或唯一行。<br>
+
+            <h2>6、学习总结</h2>
+            <b>【SQL总结】：</b><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><br>
+            数据库的基础、语法、SQL示例、工具等相关知识，以及个人总结。<br>
+            <b>【软件开发总结】：</b><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><br>
+            程序开发的基础、语法、代码示例、工具等知识，以及个人总结等。<br>
+
+            <h2>7、文本提取</h2>
+            <b>【点击复制字符】：</b><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><br>
+            根据模板格式配置经常需要复制的文档，点击一下就复制了，不用到处找文本复制粘贴了。<br>
+            <b>【目录字符生成】：</b></span><span class="star"></span><span class="star"></span><span class="star"></span><br>
+            生成指定目录的子目录、文件的相对或全路径字符。<br>
+
         </div>
     </div>
 </body>

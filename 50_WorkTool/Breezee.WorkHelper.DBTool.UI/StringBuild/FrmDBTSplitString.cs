@@ -137,7 +137,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             }
             if ("2".Equals(newLineType) || "3".Equals(newLineType))
             {
-                listNewLine.Add(txbEveryLineEndChar.Text.Trim());
+                listNewLine.Add(txbEveryLineEndChar.Text);
             }
 
             // 分隔的行数数组
@@ -730,7 +730,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.SplitConnString_IsTrimData, ckbEveryDataTrim.Checked ? "1" : "0", "【分隔拼接字符】是否每项剔除前后空白字符");
                 //WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.SplitConnString_IsFixNewLine, ckbEveryLineEndChar.Checked ? "1" : "0", "【分隔拼接字符】是否指定换行符");
 
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.SplitConnString_NewLineString, txbEveryLineEndChar.Text.Trim(), "【分隔拼接字符】换行符");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.SplitConnString_NewLineString, txbEveryLineEndChar.Text, "【分隔拼接字符】换行符");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.SplitConnString_SplitList, txbSplitList.Text.Trim(), "【分隔拼接字符】分隔符列表");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.SplitConnString_SplitListSplitByChar, txbSplitListSplitChar.Text.Trim(), "【分隔拼接字符】分隔符列表的分隔符");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.SplitConnString_LastInputSplitString, rtbSplitList.Text.Trim(), "【分隔拼接字符】最后输入的要分隔的字符串");
