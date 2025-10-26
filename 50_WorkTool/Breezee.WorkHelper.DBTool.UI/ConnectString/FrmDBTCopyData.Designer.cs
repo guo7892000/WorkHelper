@@ -37,6 +37,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.ckbRemoveLastChar = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.cbbDbType = new System.Windows.Forms.ComboBox();
             this.lblDbType = new System.Windows.Forms.Label();
@@ -69,7 +70,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.ckbRemoveLastChar = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -142,7 +142,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 49F));
             this.tableLayoutPanel1.Controls.Add(this.ckbRemoveLastChar, 9, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbbDbType, 3, 0);
@@ -162,6 +162,18 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 14F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1060, 32);
             this.tableLayoutPanel1.TabIndex = 4;
+            // 
+            // ckbRemoveLastChar
+            // 
+            this.ckbRemoveLastChar.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbRemoveLastChar.AutoSize = true;
+            this.ckbRemoveLastChar.Location = new System.Drawing.Point(913, 5);
+            this.ckbRemoveLastChar.Margin = new System.Windows.Forms.Padding(2);
+            this.ckbRemoveLastChar.Name = "ckbRemoveLastChar";
+            this.ckbRemoveLastChar.Size = new System.Drawing.Size(96, 16);
+            this.ckbRemoveLastChar.TabIndex = 6;
+            this.ckbRemoveLastChar.Text = "去掉最后字符";
+            this.ckbRemoveLastChar.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -297,7 +309,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 366F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 447F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel7.Controls.Add(this.btnSaveOther, 6, 0);
             this.tableLayoutPanel7.Controls.Add(this.label14, 0, 0);
             this.tableLayoutPanel7.Controls.Add(this.cbbTemplateType, 1, 0);
@@ -498,7 +511,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tpAutoSQL.Location = new System.Drawing.Point(4, 22);
             this.tpAutoSQL.Name = "tpAutoSQL";
             this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3);
-            this.tpAutoSQL.Size = new System.Drawing.Size(918, 281);
+            this.tpAutoSQL.Size = new System.Drawing.Size(1058, 358);
             this.tpAutoSQL.TabIndex = 1;
             this.tpAutoSQL.Text = "生成结果";
             // 
@@ -507,7 +520,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.rtbResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbResult.Location = new System.Drawing.Point(3, 3);
             this.rtbResult.Name = "rtbResult";
-            this.rtbResult.Size = new System.Drawing.Size(912, 275);
+            this.rtbResult.Size = new System.Drawing.Size(1052, 352);
             this.rtbResult.TabIndex = 3;
             this.rtbResult.Text = "";
             // 
@@ -528,18 +541,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.splitContainer1.Size = new System.Drawing.Size(1066, 553);
             this.splitContainer1.SplitterDistance = 165;
             this.splitContainer1.TabIndex = 28;
-            // 
-            // ckbRemoveLastChar
-            // 
-            this.ckbRemoveLastChar.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ckbRemoveLastChar.AutoSize = true;
-            this.ckbRemoveLastChar.Location = new System.Drawing.Point(913, 5);
-            this.ckbRemoveLastChar.Margin = new System.Windows.Forms.Padding(2);
-            this.ckbRemoveLastChar.Name = "ckbRemoveLastChar";
-            this.ckbRemoveLastChar.Size = new System.Drawing.Size(96, 16);
-            this.ckbRemoveLastChar.TabIndex = 6;
-            this.ckbRemoveLastChar.Text = "去掉最后字符";
-            this.ckbRemoveLastChar.UseVisualStyleBackColor = true;
             // 
             // FrmDBTCopyData
             // 

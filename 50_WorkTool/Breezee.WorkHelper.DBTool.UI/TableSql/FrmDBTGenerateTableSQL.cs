@@ -90,8 +90,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             
             //创建方式
             _dicString.Add(((int)SQLCreateType.Create).ToString(), "不判断增加");
-            _dicString.Add(((int)SQLCreateType.Drop_Create).ToString(), "先删后增加");
-            _dicString.Add(((int)SQLCreateType.Drop).ToString(), "生成删除SQL");
+            _dicString.Add(((int)SQLCreateType.Drop_Create_Direct).ToString(), "先删后增加");
+            _dicString.Add(((int)SQLCreateType.Drop_Direct).ToString(), "生成删除SQL");
+            _dicString.Add(((int)SQLCreateType.Drop_Create).ToString(), "先删后增加(动态)");
+            _dicString.Add(((int)SQLCreateType.Drop).ToString(), "生成删除SQL(动态)");
             cbbCreateType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
             _dicString.Clear();
             //录入方式

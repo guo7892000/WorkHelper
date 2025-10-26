@@ -43,6 +43,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 sbDelete = sbDelete.Insert(0, "DROP TABLE IF EXISTS " + strTableCode + ";\n");//倒着删除掉
             }
+            else if ((createType == SQLCreateType.Drop_Direct || createType == SQLCreateType.Drop_Create_Direct) && tableDealType == TableChangeType.Create)
+            {
+                sbDelete = sbDelete.Insert(0, "DROP TABLE IF EXISTS " + strTableCode + ";\n");//倒着删除掉
+            }
+
             if (tableDealType == TableChangeType.Create)
             {
                 #region 新增处理
@@ -253,6 +258,18 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 //生成删除列SQL脚本
                 if (createType == SQLCreateType.Drop || createType == SQLCreateType.Drop_Create)
+                {
+                    if (strColumnDealType == ColumnChangeType.Create || strColumnDealType == ColumnChangeType.Drop_Create)
+                    {
+                        sbDelete.Append("ALTER TABLE " + strTableCode + " DROP COLUMN " + strColCode + ";\n");
+                    }
+                    //对于删除，直接下一个字段
+                    if (createType == SQLCreateType.Drop)
+                    {
+                        return;//continue;
+                    }
+                }
+                else if (createType == SQLCreateType.Drop_Direct || createType == SQLCreateType.Drop_Create_Direct)
                 {
                     if (strColumnDealType == ColumnChangeType.Create || strColumnDealType == ColumnChangeType.Drop_Create)
                     {

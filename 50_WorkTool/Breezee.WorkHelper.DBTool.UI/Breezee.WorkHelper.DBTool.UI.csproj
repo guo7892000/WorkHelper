@@ -760,6 +760,12 @@
     <None Include="Doc\Develop\设计模式\原则.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\SQL\MySql\0010_表\表列.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\Oracle\0001_基础\字符分隔.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\SQL\Oracle\0001_基础\特殊.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -767,6 +773,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\SQL\Oracle\0002_游标\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\Oracle\0010_表\表列.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\SQL\Oracle\0020_查询\实例-物品台账查询.md">
@@ -796,7 +805,16 @@
     <None Include="Doc\SQL\Oracle\1000_PLSQL语言\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\SQL\PostgreSQL\0010_表\表列.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\SQL\PostgreSQL\9800_连接工具\Pgadmin\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\SQLite\0010_表\表列.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\SqlServer\0010_表\表列.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\SQL\SqlServer\9800_连接工具\SQLServerManagementStudio\基础.md">

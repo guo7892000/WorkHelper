@@ -51,18 +51,56 @@ namespace Breezee.WorkHelper.DBTool.UI
             if ((createType ==  SQLCreateType.Drop || createType ==  SQLCreateType.Drop_Create) && strTableDealType ==  TableChangeType.Create)
             {
                 //strDeleteSql = strDeleteSql.Insert(0, "DROP TABLE " + strTableCode + ";\n");//倒着删除掉
-                sbDelete = sbDelete.Insert(0, "declare  nCount  number;\n"
-                    + "begin\n"
-                    + "  nCount:=0;\n"
-                    + "  select count(1) into nCount from user_objects\n "
-                    + "  where upper(object_name) = '" + strTableCode + "' and upper(object_type) = 'TABLE';\n"
-                    + "  if nCount = 1 then \n"
-                    + "    begin \n"
-                    + "      execute immediate 'drop TABLE " + strTableCode + "';\n"
-                    + "    end;\n"
-                    + "  end if;\n"
-                    + "end;\n"
-                    + "/\n");
+                bool isHasOwner = strTableCode.Contains(".") ? true : false;
+                if (isHasOwner)
+                {
+                    // 用户名.表名：这里要查all_objects表，并且加入OWNER条件
+                    string[] arrOwnerTable = strTableCode.Split('.');
+                    sbDelete = sbDelete.Insert(0, "declare  nCount  number;\n"
+                        + "begin\n"
+                        + "  nCount:=0;\n"
+                        + "  select count(1) into nCount from all_objects\n "
+                        + "  where upper(OWNER)= upper('" + arrOwnerTable[0] + "') and upper(object_name) = '" + arrOwnerTable[1] + "' and upper(object_type) = 'TABLE';\n"
+                        + "  if nCount = 1 then \n"
+                        + "    begin \n"
+                        + "      execute immediate 'drop TABLE " + strTableCode + "';\n"
+                        + "    end;\n"
+                        + "  end if;\n"
+                        + "end;\n"
+                        + "/\n");
+                    if (createType == SQLCreateType.Drop)
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    sbDelete = sbDelete.Insert(0, "declare  nCount  number;\n"
+                        + "begin\n"
+                        + "  nCount:=0;\n"
+                        + "  select count(1) into nCount from user_objects\n "
+                        + "  where upper(object_name) = '" + strTableCode + "' and upper(object_type) = 'TABLE';\n"
+                        + "  if nCount = 1 then \n"
+                        + "    begin \n"
+                        + "      execute immediate 'drop TABLE " + strTableCode + "';\n"
+                        + "    end;\n"
+                        + "  end if;\n"
+                        + "end;\n"
+                        + "/\n");
+                    if (createType == SQLCreateType.Drop)
+                    {
+                        return;
+                    }
+                }
+            }
+            else if ((createType == SQLCreateType.Drop_Direct || createType == SQLCreateType.Drop_Create_Direct) && strTableDealType == TableChangeType.Create)
+            {
+                // 针对直接删除
+                sbDelete = sbDelete.Insert(0, "DROP TABLE " + strTableCode + ";\n");
+                if (createType == SQLCreateType.Drop_Direct)
+                {
+                    return;
+                }
             }
 
             string strSequence = "";//序列：一张表就一个，名字为:Se_表名
@@ -305,23 +343,57 @@ namespace Breezee.WorkHelper.DBTool.UI
                     if (strColumnDealType ==  ColumnChangeType.Create || strColumnDealType == ColumnChangeType.Drop_Create)
                     {
                         //strDeleteSql += "alter table " + strTableCode + " drop column " + strColCode + ";\n";
-                        sbDelete.Append("declare iCount number;\n"
-                        + "begin\n"
-                        + "  iCount:=0;\n"
-                        + "  select count(1) into iCount \n"
-                        + "  from user_tab_columns where upper(table_name)= upper('" + strTableCode + "') and upper(column_name)=  upper('" + strColCode.ToUpper() + "'); \n"
-                        + "  if iCount = 1 then \n"
-                        + "    begin \n"
-                        + "      execute immediate 'alter table " + strTableCode + " drop column " + strColCode + "';\n"
-                        + "    end;\n"
-                        + "  end if;\n"
-                        + "end;\n"
-                        + "/\n");
+                        bool isHasOwner = strTableCode.Contains(".") ? true : false;
+                        if (isHasOwner) 
+                        {
+                            // 用户名.表名：这里要查all_tab_columns表，并且加入OWNER条件
+                            string[] arrOwnerTable = strTableCode.Split('.');
+                            sbDelete.Append("declare iCount number;\n"
+                                                + "begin\n"
+                                                + "  iCount:=0;\n"
+                                                + "  select count(1) into iCount \n"
+                                                + "  from all_tab_columns where upper(OWNER)= upper('" + arrOwnerTable[0] + "') and upper(table_name)= upper('" + arrOwnerTable[1] + "') and upper(column_name)=  upper('" + strColCode.ToUpper() + "'); \n"
+                                                + "  if iCount = 1 then \n"
+                                                + "    begin \n"
+                                                + "      execute immediate 'alter table " + strTableCode + " drop column " + strColCode + "';\n"
+                                                + "    end;\n"
+                                                + "  end if;\n"
+                                                + "end;\n"
+                                                + "/\n");
+                        }
+                        else
+                        {
+                            // 表名：这里要查user_tab_columns表
+                            sbDelete.Append("declare iCount number;\n"
+                                                + "begin\n"
+                                                + "  iCount:=0;\n"
+                                                + "  select count(1) into iCount \n"
+                                                + "  from user_tab_columns where upper(table_name)= upper('" + strTableCode + "') and upper(column_name)=  upper('" + strColCode.ToUpper() + "'); \n"
+                                                + "  if iCount = 1 then \n"
+                                                + "    begin \n"
+                                                + "      execute immediate 'alter table " + strTableCode + " drop column " + strColCode + "';\n"
+                                                + "    end;\n"
+                                                + "  end if;\n"
+                                                + "end;\n"
+                                                + "/\n");
+                        }
                     }
                     //对于删除，直接下一个字段
                     if (createType ==  SQLCreateType.Drop)
                     {
                         return; 
+                    }
+                }
+                else if (createType == SQLCreateType.Drop_Direct || createType == SQLCreateType.Drop_Create_Direct)
+                {
+                    if (strColumnDealType == ColumnChangeType.Create || strColumnDealType == ColumnChangeType.Drop_Create)
+                    {
+                        sbDelete.Append("alter table " + strTableCode + " drop column " + strColCode + ";\n");
+                    }
+                    //对于删除，直接下一个字段
+                    if (createType == SQLCreateType.Drop_Direct)
+                    {
+                        return;
                     }
                 }
 

@@ -163,7 +163,18 @@ namespace Breezee.WorkHelper.DBTool.UI
                             strOneData = strOneData.Replace("#" + dtMain.Columns[j].ColumnName + "#", strData);
                         }
                         //所有SQL文本累加
-                        sbAll.Append(strOneData + (ckbResultNewLine.Checked ? "\n" : ""));
+                        if(i== dtMain.Rows.Count - 1)
+                        {
+                            sbAll.Append(strOneData); //最后一行不加换行符
+                        }
+                        else
+                        {
+                            sbAll.Append(strOneData + (ckbResultNewLine.Checked ? Environment.NewLine : ""));
+                        }
+                    }
+                    if (ckbRemoveLastChar.Checked && sbAll.Length > 2)
+                    {
+                        sbAll.Remove(sbAll.Length - 1, 1);
                     }
                     #endregion
                 }
@@ -265,10 +276,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                     #endregion
                 }
                 rtbResult.Clear();
-                if (ckbRemoveLastChar.Checked && sbAll.Length > 2)
-                {
-                    sbAll.Remove(sbAll.Length - 1, 1);
-                }
                 rtbResult.AppendText(sbAll.ToString() + "\n");
                 Clipboard.SetData(DataFormats.UnicodeText, sbAll.ToString());
                 tabControl1.SelectedTab = tpAutoSQL;
@@ -298,12 +305,14 @@ namespace Breezee.WorkHelper.DBTool.UI
             string strSqlType = cbbSqlType.SelectedValue.ToString();
             if (strSqlType == "1")
             {
+                // 自定义拼接字符串
                 grbConSting.Visible = true;
                 cbbDbType.Visible = false;
                 lblDbType.Visible = false;
                 cbbWordConvert.Visible = true;
                 lblWordConvert.Visible = true;
                 splitContainer1.Panel1Collapsed = false; //设计上方非折叠
+                ckbRemoveLastChar.Visible = true;
             }
             else
             {
@@ -313,8 +322,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 cbbWordConvert.Visible = false;
                 lblWordConvert.Visible = false;
                 splitContainer1.Panel1Collapsed = true;  //设计上方折叠
+                ckbRemoveLastChar.Visible = false;
             }
-            
         }
         #endregion
 
@@ -368,8 +377,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                 ShowInfo("模板名称不能为空！");
                 return;
             }
-            
-            string sContent = rtbConString.Text.Trim();
+            //注：这里不去掉前后空格
+            string sContent = rtbConString.Text;
             if (string.IsNullOrEmpty(sContent))
             {
                 ShowInfo("请录入模板内容！");

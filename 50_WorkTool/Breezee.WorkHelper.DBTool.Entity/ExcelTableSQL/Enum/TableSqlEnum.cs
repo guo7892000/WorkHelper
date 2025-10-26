@@ -12,13 +12,21 @@ namespace Breezee.WorkHelper.DBTool.Entity
         /// </summary>
         Create,
         /// <summary>
-        /// 先删除后增加
+        /// 先动态删除后增加
         /// </summary>
         Drop_Create,
         /// <summary>
-        /// 仅删除
+        /// 动态删除
         /// </summary>
-        Drop
+        Drop,
+        /// <summary>
+        /// 直接删除
+        /// </summary>
+        Drop_Direct,
+        /// <summary>
+        /// 直接删除后增加
+        /// </summary>
+        Drop_Create_Direct
     }
     public enum TableChangeType
     {
