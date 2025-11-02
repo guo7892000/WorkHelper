@@ -30,8 +30,9 @@ namespace Breezee.WorkHelper.DBTool.UI
     {
         #region 变量
         private readonly string _sGridColumnSelect = "IsSelect";
-        private bool _allSelectFile = false;//默认全选，这里取反
-        private bool _allSelectCodeClass = false;//默认全选，这里取反
+        private bool _allSelectFile = true;//默认全选，这里取反
+        private bool _allSelectCodeClass = true;//默认全选，这里取反
+        private bool _isGetPath = false;
         int iFileNum = 0;
         //分隔的字符数组
         char[] splitCharArr = new char[] { ',', '，', '：', ';', '；', '|' };
@@ -39,6 +40,8 @@ namespace Breezee.WorkHelper.DBTool.UI
         List<string> _listFilePath; //复制了哪些
         string sKeyId;
         JavaPublishFileConfig javaPublishFileConfig;
+        DateTime lastGetEndTime;
+        DataGridViewFindText dgvFindText;
         #endregion
 
         #region 构造函数
@@ -61,7 +64,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString["3"] = "每次新增";
             cbbCopyType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
             toolTip1.SetToolTip(label3, "覆盖：复制的文件放根目录，并覆盖其下所有文件；\r\n覆盖当天：当天目录，不存在则新增目录，存在则覆盖其下所有文件；\r\n每次新增：每次复制都新增年月日时分秒的目标，然后文件放入其中。");
-            
+            //录入方式下拉框
+            _dicString.Clear();
+            _dicString["1"] = "手工粘贴";
+            _dicString["2"] = "查询获取";
+            cbbGetChangCodeType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
 
             javaPublishFileConfig = new JavaPublishFileConfig("JavaPublishFileConfig.xml");
             sKeyId = javaPublishFileConfig.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
@@ -91,6 +98,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                 );
             dgvCodeClassRelConfig.Tag = fdc.GetGridTagString();
             dgvCodeClassRelConfig.BindDataGridView(null, false);
+            DataTable dtCfg = dgvCodeClassRelConfig.GetBindingTable();
+            dtCfg.Columns[_sGridColumnSelect].DefaultValue = "1";
+            dtCfg.Columns[JavaPublishFileConfig.ValueString.IsCopyFromSrc].DefaultValue = "0";
+            dgvCodeClassRelConfig.AllowUserToAddRows = true;
             // 设置提示信息
             string sCodePathTip = "代码工程中src目录的父目录绝对路径。";
             toolTip1.SetToolTip(label3, sCodePathTip);
@@ -110,10 +121,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             toolTip1.SetToolTip(btnGetFile, sCodePathTip);
             tsbAutoSQL.ToolTipText = sCodePathTip;
             toolTip1.SetToolTip(ckbSelectConfig, "不选中时，选择配置变化时，跳转到【变更的源代码文件】页。");
-
+            toolTip1.SetToolTip(label13, "注：同一个文件被修改多次，只能查询最后提交的最新代码，不能获取历史版本！");
+            //加载喜好设置：已加入配置中
+            //cbbGetChangCodeType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetJavaFile_GetChangCodeType, "1").Value;
             //增加折叠功能
             grbGetFile.AddFoldRightMenu();
             tabControl1.SelectedTab = tpConfig;
+            cbbCopyType.SelectedValue = "3";
         }
         #endregion
 
@@ -199,7 +213,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     dtRelCfgSelet.ImportRow(dr);
                 }
-                if ( dtRelCfgSelet.Rows.Count == 0)
+                if (dtRelCfgSelet.Rows.Count == 0)
                 {
                     ShowErr("【源代码与复制源目录对照关系配置】不能为空，至少输入并选择一项！");
                     tabControl1.SelectedTab = tpConfig;
@@ -212,7 +226,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 StringBuilder sbFrom = new StringBuilder();
                 DirectoryInfo codeDirectory = new DirectoryInfo(sCodePath);
                 GetJavaClassEntity getJavaClassEntity = new GetJavaClassEntity();
-                getJavaClassEntity.ClassPath = sClassPath.Replace("/","\\").Trim('\\'); //将路径中的分隔符修改为符合Windows目录的
+                getJavaClassEntity.ClassPath = sClassPath.Replace("/", "\\").Trim('\\'); //将路径中的分隔符修改为符合Windows目录的
                 getJavaClassEntity.CodePath = sCodePath.Replace("/", "\\").Trim('\\'); //将路径中的分隔符修改为符合Windows目录的
                 getJavaClassEntity.CopyToPath = sCopyToPath.Replace("/", "\\").Trim('\\'); //将路径中的分隔符修改为符合Windows目录的
                 getJavaClassEntity.CopyCoverType = copyCoverType;
@@ -224,7 +238,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     case CopyCoverTypeEnum.Cover:
                         break;
                     case CopyCoverTypeEnum.CoverNow:
-                        getJavaClassEntity.CopyToPath = Path.Combine(getJavaClassEntity.CopyToPath,DateTime.Now.ToString("yyyy-MM-dd"));
+                        getJavaClassEntity.CopyToPath = Path.Combine(getJavaClassEntity.CopyToPath, DateTime.Now.ToString("yyyy-MM-dd"));
                         break;
                     case CopyCoverTypeEnum.AwaysNew:
                         getJavaClassEntity.CopyToPath = Path.Combine(getJavaClassEntity.CopyToPath, DateTime.Now.ToString("yyyyMMdd-HHmmss"));
@@ -247,16 +261,20 @@ namespace Breezee.WorkHelper.DBTool.UI
                 tsbAutoSQL.Enabled = true; //重置按钮为有效
                 rtbString.AppendText(string.Format("复制成功 {0} 个文件！可能会包含$符号的内部类或匿名类文件。", _listFilePath.Count) + Environment.NewLine);
                 rtbString.AppendText(sb.ToString());
-                rtbString.AppendText("---------------以上文件的复制源文件路径如下-------------"+System.Environment.NewLine);
-        
+                rtbString.AppendText("---------------以上文件的复制源文件路径如下-------------" + System.Environment.NewLine);
+
                 rtbString.AppendText(sbFrom.ToString());
-                // 保存
+                //保存
                 SaveCfg(false);
+                //保存喜好设置
+                //WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetJavaFile_GetChangCodeType, cbbGetChangCodeType.SelectedValue.ToString(), "【获取修改过的文件】获取类型");
+                //WinFormContext.UserLoveSettings.Save();
+
                 if (string.IsNullOrEmpty(sSelectCfgId))
                 {
                     cbbTemplateType.SelectedValue = sSelectCfgId;
                 }
-                
+
                 if (iFileNum <= 0)
                 {
                     ShowInfo("异步获取文件完成，没有修改的文件！");
@@ -267,7 +285,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 tabControl1.SelectedTab = tpResult;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ShowErr(ex.Message);
             }
@@ -287,11 +305,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             foreach (DataRow dr in getJavaClassEntity.ChangList.Rows)
             {
                 // 查找源码文件是否存在
-                string sCodeFilePath = dr["file"].ToString().Replace("/","\\").Trim('\\');
+                string sCodeFilePath = dr["file"].ToString().Replace("/", "\\").Trim('\\');
                 string sFullFilePath = Path.Combine(getJavaClassEntity.CodePath, sCodeFilePath);
                 if (!File.Exists(sFullFilePath))
                 {
-                    sb.AppendLine(sFullFilePath+"：源码文件不存在！");
+                    sb.AppendLine(sFullFilePath + "：源码文件不存在！");
                     continue;
                 }
 
@@ -317,19 +335,19 @@ namespace Breezee.WorkHelper.DBTool.UI
                             sJavaClassFileName = sCfgClassEndPath.substring(sCfgClassEndPath.LastIndexOf("\\"), sCfgClassEndPath.LastIndexOf(".")).Trim('\\');
                         }
                         // 得到复制源文件的全路径
-                        if("1".Equals(isCopyFormSrc))
+                        if ("1".Equals(isCopyFormSrc))
                         {
                             // 这里取代码路径：如class取源码下的target目录、页面和JS就取源码目录
-                            sCopySourceFileFullPath = Path.Combine(getJavaClassEntity.CodePath,sCodeFilePath); //从源码读取时，还是取完整路径
-                            sCoptyToFullPath = Path.Combine(getJavaClassEntity.CopyToPath,sCfgCopyToPath, sCfgClassPath, sCfgClassEndPath);
+                            sCopySourceFileFullPath = Path.Combine(getJavaClassEntity.CodePath, sCodeFilePath); //从源码读取时，还是取完整路径
+                            sCoptyToFullPath = Path.Combine(getJavaClassEntity.CopyToPath, sCfgCopyToPath, sCfgClassPath, sCfgClassEndPath);
                         }
                         else
                         {
                             // 这里取JBoss发布生成的class路径：主要针对JBoss的发布，可以使用该方式在一个目录中获取class、页面和JS。
-                            sCopySourceFileFullPath = Path.Combine(getJavaClassEntity.ClassPath,sCfgClassPath,sCfgClassEndPath);
-                            sCoptyToFullPath = Path.Combine(getJavaClassEntity.CopyToPath, sCfgCopyToPath, sCfgClassPath ,sCfgClassEndPath);
+                            sCopySourceFileFullPath = Path.Combine(getJavaClassEntity.ClassPath, sCfgClassPath, sCfgClassEndPath);
+                            sCoptyToFullPath = Path.Combine(getJavaClassEntity.CopyToPath, sCfgCopyToPath, sCfgClassPath, sCfgClassEndPath);
                         }
-                        
+
                         // 查找class文件是否存在
                         if (!File.Exists(sCopySourceFileFullPath))
                         {
@@ -358,7 +376,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                             //文件处理
                             foreach (FileInfo file in classDirectory.GetFiles())
                             {
-                                if(file.Name.StartsWith(sJavaClassFileName+ "$"))
+                                if (file.Name.StartsWith(sJavaClassFileName + "$"))
                                 {
                                     string sNewPath = Path.Combine(sNewClassPath, file.Name);
                                     File.Copy(file.FullName, sNewPath, true);
@@ -369,7 +387,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                                 }
                             }
                         }
-                        
+
                         break;
                     }
                 }
@@ -378,7 +396,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     sb.AppendLine(sFullFilePath + "：对应的class文件不存在！");
                     continue;
                 }
-            }            
+            }
         }
         #endregion
 
@@ -413,27 +431,182 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             //获取文件
             DataTable dtInput = dgvInput.GetBindingTable();
-            if (dtInput != null && dtInput.Rows.Count>0)
+            if (dtInput != null && dtInput.Rows.Count > 0)
             {
                 dtInput.Clear();
             }
+            _listFilePath = new List<string>();
             DirectoryInfo codeDirectory = new DirectoryInfo(sCodePath);
-            string[] sExcludeFullDir = rtbExcludeRelateDir.Text.Trim().Replace("/", "\\").ToLower().Split(splitCharArr,StringSplitOptions.RemoveEmptyEntries); //得到排除的相对目录
-            string[] sExcludeFullFile = rtbExcludeRelateFile.Text.Trim().Replace("/", "\\").ToLower().Split(splitCharArr, StringSplitOptions.RemoveEmptyEntries); //得到排除的相对文件
-            GetDirectoryFile(codeDirectory, sExcludeFullDir, sCodePath, sExcludeFullFile);
+            string[] sExcludeFullDir = rtbExcludeRelateDir.Text.Trim().GetLinuxPath().ToLower().Split(splitCharArr, StringSplitOptions.RemoveEmptyEntries); //得到排除的相对目录
+            string[] sExcludeFullFile = rtbExcludeRelateFile.Text.Trim().GetLinuxPath().ToLower().Split(splitCharArr, StringSplitOptions.RemoveEmptyEntries); //得到排除的相对文件
+            string[] sExcludeExt = txbExcludeEndprx.Text.Trim().ToLower().Split(splitCharArr, StringSplitOptions.RemoveEmptyEntries); //得到排除后缀
+            //GetDirectoryLocalFile(codeDirectory, sExcludeFullDir, sCodePath, sExcludeFullFile); //获取本地文件方式
+            GetGitDirectoryFile(codeDirectory, sExcludeFullDir, sCodePath, sExcludeFullFile, sExcludeExt); //获取Git目录变化文件
+            _isGetPath = true;
+            SaveCfg(false);//保存配置
+            _isGetPath = false;
         }
 
-        #region 获取目录文件方法
+        #region 获取Git目录文件方法
         /// <summary>
-        /// 获取目录文件方法
+        /// 获取Git目录文件方法
+        /// </summary>
+        /// <param name="rootDirectory"></param>
+        /// <param name="sExcludeFullDir"></param>
+        /// <param name="sCodePath"></param>
+        /// <param name="sExcludeFullFile"></param>
+        private async void GetGitDirectoryFile(DirectoryInfo rootDirectory, string[] sExcludeFullDir, string sCodePath, string[] sExcludeFullFile, string[] sExcludeExt)
+        {
+
+            //1：git源码管理目录处理
+            DirectoryInfo[] dirArr = rootDirectory.GetDirectories();//迭代子目录
+            var gitDir = dirArr.AsQueryable().Where(t => t.Name.Equals(".git", StringComparison.OrdinalIgnoreCase));
+            //判断是否
+            if (gitDir.Count() == 0)
+            {
+                ShowErr("【源代码目录】没包含.git目录，不是git源码目录，请重新选择！");
+                return;
+            }
+            string sDirName = gitDir.First().FullName;
+            string sParentDirName = gitDir.First().Parent.FullName;
+            string sEmail = txbEmail.Text.Trim();
+            string sUserName = txbUserName.Text.Trim();
+
+            using (var repo = new Repository(sDirName))
+            {
+                //查找变化的文件：包括未跟踪的
+                using (var changes = repo.Diff.Compare<TreeChanges>(null, true))
+                {
+                    //新增的
+                    foreach (var item in changes.Added)
+                    {
+                        FileInfo file = new FileInfo(Path.Combine(sParentDirName, item.Path));
+                        if (file.Exists)
+                        {
+                            GetGitChangFilePath(file, true, sExcludeFullDir, sCodePath, sExcludeFullFile, sExcludeExt);
+                        }
+                    }
+                    //修改的
+                    foreach (var item in changes.Modified)
+                    {
+                        FileInfo file = new FileInfo(Path.Combine(sParentDirName, item.Path));
+                        if (file.Exists)
+                        {
+                            GetGitChangFilePath(file, true, sExcludeFullDir, sCodePath, sExcludeFullFile, sExcludeExt);
+                        }
+                    }
+                }
+
+                //查找已提交的
+                ///get commits from all branches, not just master
+                var commits = repo.Commits.QueryBy(new CommitFilter());
+                foreach (var commit in commits)
+                {
+                    //取指定人提交的文件
+                    if (!string.IsNullOrEmpty(sEmail) && !sEmail.Equals(commit.Author.Email)) continue; //如邮件不为空，且不相等，则跳过
+                    if (!string.IsNullOrEmpty(sUserName) && !sUserName.Equals(commit.Author.Name)) continue;//如用户名不为空，且不相等，则跳过
+                                                                                                            //不在选择的时间范围内
+                    if (commit.Committer.When < dtpBegin.Value || commit.Committer.When > dtpEnd.Value)
+                    {
+                        continue;
+                    }
+                    foreach (var parent in commit.Parents)
+                    {
+                        //要排除冲突时帮其他人提交的文件：不知道为什么还是包括不是指定人改的文件？？？
+                        if (!string.IsNullOrEmpty(sEmail) && !sEmail.Equals(parent.Author.Email)) continue; //如邮件不为空，且不相等，则跳过
+                        if (!string.IsNullOrEmpty(sUserName) && !sUserName.Equals(parent.Author.Name)) continue;//如用户名不为空，且不相等，则跳过
+                        foreach (TreeEntryChanges change in repo.Diff.Compare<TreeChanges>(parent.Tree, commit.Tree))
+                        {
+                            FileInfo file = new FileInfo(Path.Combine(sParentDirName, change.Path));
+                            if (file.Exists)
+                            {
+                                GetGitChangFilePath(file, true, sExcludeFullDir, sCodePath, sExcludeFullFile, sExcludeExt);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取Git变化文件路径
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="isCommitFile"></param>
+        /// <param name="sExcludeFullDir"></param>
+        /// <param name="sCodePath"></param>
+        /// <param name="sExcludeFullFile"></param>
+        private void GetGitChangFilePath(FileInfo file, bool isCommitFile, string[] sExcludeFullDir, string sCodePath, string[] sExcludeFullFile, string[] sExcludeExt)
+        {
+            string sRelFilePath = file.FullName.Replace(sCodePath, "").GetLinuxPath();
+            
+            if (file.Attributes == FileAttributes.System || file.Attributes == FileAttributes.Temporary || file.Attributes == FileAttributes.Hidden)
+            {
+                return;
+            }
+
+            //已提交日期不在范围内，则直接跳过
+            if (file.LastWriteTime < dtpBegin.Value || file.LastWriteTime > dtpEnd.Value)
+            {
+                return;  //不在修改时间范围内的文件跳过
+            }
+
+            //跳过忽略的后缀
+            foreach (string sExt in sExcludeExt)
+            {
+                string sExtNew = sExt.StartsWith(".") ? sExt : "." + sExt;
+                if (file.Extension.Equals(sExtNew, StringComparison.OrdinalIgnoreCase))
+                {
+                    return;
+                }
+            }
+
+            //跳过忽略的相对文件名
+            foreach (string sFile in sExcludeFullFile)
+            {
+                if (sRelFilePath.Equals(sFile, StringComparison.OrdinalIgnoreCase))
+                {
+                    return;
+                }
+            }
+
+            //跳过忽略的相对目录
+            foreach (string sDir in sExcludeFullDir)
+            {
+                if (sRelFilePath.StartsWith(sDir,StringComparison.OrdinalIgnoreCase))
+                {
+                    return;
+                }
+            }
+
+            //跳过已包含的文件
+            if (_listFilePath.Contains(file.FullName))
+            {
+                return;
+            }
+            _listFilePath.Add(file.FullName);
+
+            //文件加入到网格中
+            DataTable dtInput = dgvInput.GetBindingTable();
+            DataRow drNew = dtInput.NewRow();
+            drNew["file"] = file.FullName.Replace(sCodePath, "").GetLinuxPath();
+            drNew["ROWNO"] = dtInput.Rows.Count + 1;
+            dtInput.Rows.Add(drNew);
+            iFileNum++;
+        }
+        #endregion
+
+        #region 获取本地目录文件方法
+        /// <summary>
+        /// 获取本地目录文件方法
         /// </summary>
         /// <param name="sb"></param>
         /// <param name="rootDirectory"></param>
         /// <param name="getJavaClassEntity"></param>
-        private async void GetDirectoryFile(DirectoryInfo rootDirectory, string[] sExcludeFullDir, string sCodePath, string[] sExcludeFullFile)
+        private async void GetDirectoryLocalFile(DirectoryInfo rootDirectory, string[] sExcludeFullDir, string sCodePath, string[] sExcludeFullFile)
         {
             //文件处理
-            foreach (FileInfo file in rootDirectory.GetFiles()) 
+            foreach (FileInfo file in rootDirectory.GetFiles())
             {
                 getChangCodeFileList(file, sCodePath, sExcludeFullFile);
             }
@@ -445,9 +618,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                     continue; //跳过点开头的系统目录
                 }
                 bool isSkip = false;
-                foreach(string sRelDir in sExcludeFullDir)
+                foreach (string sRelDir in sExcludeFullDir)
                 {
-                    if(path.FullName.StartsWith(Path.Combine(sCodePath, sRelDir.Trim().Trim('\\'))))
+                    if (path.FullName.StartsWith(Path.Combine(sCodePath, sRelDir.Trim().Trim('\\'))))
                     {
                         isSkip = true;
                         break;
@@ -459,7 +632,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     continue;
                 }
                 // 递归查询其下目录
-                GetDirectoryFile(path, sExcludeFullDir, sCodePath, sExcludeFullFile);
+                GetDirectoryLocalFile(path, sExcludeFullDir, sCodePath, sExcludeFullFile);
             }
         }
         #endregion
@@ -486,7 +659,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             bool isSkip = false;
             foreach (string sRelDir in sExcludeFullFile)
             {
-                if (file.FullName.Equals(Path.Combine(sCodePath, sRelDir.Trim().Trim('\\')),StringComparison.OrdinalIgnoreCase))
+                if (file.FullName.Equals(Path.Combine(sCodePath, sRelDir.Trim().Trim('\\')), StringComparison.OrdinalIgnoreCase))
                 {
                     isSkip = true;
                     break;
@@ -500,7 +673,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             //文件加入到网格中
             DataTable dtInput = dgvInput.GetBindingTable();
             DataRow drNew = dtInput.NewRow();
-            drNew["file"] = file.FullName.Replace(sCodePath,"").Trim('\\');
+            drNew["file"] = file.FullName.Replace(sCodePath, "").Trim('\\');
             drNew["ROWNO"] = dtInput.Rows.Count + 1;
             dtInput.Rows.Add(drNew);
         }
@@ -524,11 +697,13 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 DataTable dtCfg = dgvCodeClassRelConfig.GetBindingTable();
                 if (dtCfg != null && dtCfg.Rows.Count > 0)
-
                 {
                     dtCfg.Clear();
                 }
-                tabControl1.SelectedTab = tpConfig;
+                if (!_isGetPath)
+                {
+                    tabControl1.SelectedTab = tpConfig;
+                }
                 return;
             }
 
@@ -538,6 +713,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             DataRow[] drArr = javaPublishFileConfig.MoreXmlConfig.KeyData.Select(sKeyId + "='" + sTempType + "'");
             if (drArr.Length > 0)
             {
+                cbbGetChangCodeType.SelectedValue = drArr[0][JavaPublishFileConfig.KeyString.SourceGetType].ToString();
+                txbExcludeEndprx.Text = drArr[0][JavaPublishFileConfig.KeyString.ExcludeExt].ToString();
                 //代码目录
                 txbCodePath.Text = drArr[0][JavaPublishFileConfig.KeyString.CodeDir].ToString();
                 //class目录
@@ -548,6 +725,23 @@ namespace Breezee.WorkHelper.DBTool.UI
                 // 排除目录
                 rtbExcludeRelateDir.Text = drArr[0][JavaPublishFileConfig.KeyString.ExcludeRelateDir].ToString();
                 rtbExcludeRelateFile.Text = drArr[0][JavaPublishFileConfig.KeyString.ExcludeRelateFile].ToString();
+                //用户名
+                txbUserName.Text = drArr[0][JavaPublishFileConfig.KeyString.UserName].ToString();
+                txbEmail.Text = drArr[0][JavaPublishFileConfig.KeyString.Email].ToString();
+                //开始和结束时间
+                string sLastBegin = drArr[0][JavaPublishFileConfig.KeyString.DateTimeBegin].ToString();
+                if (!string.IsNullOrEmpty(sLastBegin))
+                {
+                    dtpBegin.Value = DateTime.Parse(sLastBegin);
+                }
+
+                string sLastEnd = drArr[0][JavaPublishFileConfig.KeyString.DateTimeEnd].ToString();
+                if (!string.IsNullOrEmpty(sLastEnd)) 
+                {
+                    lastGetEndTime = DateTime.Parse(sLastEnd);
+                    dtpEnd.Value = lastGetEndTime;
+                }
+                
 
                 // 查询明细
                 string sKeyId = javaPublishFileConfig.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
@@ -558,7 +752,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     string sCodeDir = dr[JavaPublishFileConfig.ValueString.RelCodeDir].ToString();
                     string sClassDir = dr[JavaPublishFileConfig.ValueString.RelClassDir].ToString();
-                    if(string.IsNullOrEmpty(sCodeDir))
+                    if (string.IsNullOrEmpty(sCodeDir))
                     {
                         continue;
                     }
@@ -574,7 +768,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
                 dgvCodeClassRelConfig.BindDataGridView(dtConfig);
                 dgvCodeClassRelConfig.AllowUserToAddRows = true;
-                tabControl1.SelectedTab = ckbSelectConfig.Checked ? tpConfig : tpSource;
+                if (!_isGetPath)
+                {
+                    tabControl1.SelectedTab = ckbSelectConfig.Checked ? tpConfig : tpSource;
+                }
             }
         }
 
@@ -588,15 +785,42 @@ namespace Breezee.WorkHelper.DBTool.UI
             SaveCfg();
         }
 
-        private bool SaveCfg(bool isShowConfirm = true)
+        /// <summary>
+        /// 复制配置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCopyCfg_Click(object sender, EventArgs e)
+        {
+            SaveCfg(true,true);
+        }
+
+        /// <summary>
+        /// 保存配置方法
+        /// </summary>
+        /// <param name="isShowConfirm">是否显示确认</param>
+        /// <param name="isCopy">是否复制</param>
+        /// <returns></returns>
+        private bool SaveCfg(bool isShowConfirm = true,bool isCopy=false)
         {
             string sTempName = txbReplaceTemplateName.Text.Trim();
             string sLastSelectValue = (cbbTemplateType.SelectedValue == null || string.IsNullOrEmpty(cbbTemplateType.Text.Trim())) ? string.Empty : cbbTemplateType.SelectedValue.ToString();
 
-            if (string.IsNullOrEmpty(sTempName))
+            if (isCopy)
             {
-                ShowInfo("配置名称不能为空！");
-                return false;
+                if (cbbTemplateType.SelectedValue == null)
+                {
+                    ShowInfo("请选择一个配置！");
+                    return false;
+                }
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(sTempName))
+                {
+                    ShowInfo("配置名称不能为空！");
+                    return false;
+                }
             }
 
             DataTable dtCodeClass = dgvCodeClassRelConfig.GetBindingTable();
@@ -609,7 +833,14 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             if (isShowConfirm)
             {
-                if (ShowOkCancel("确定要保存配置？") == DialogResult.Cancel) return false;
+                if (isCopy)
+                {
+                    if (ShowOkCancel("确定要复制该配置？") == DialogResult.Cancel) return false;
+                }
+                else
+                {
+                    if (ShowOkCancel("确定要保存配置？") == DialogResult.Cancel) return false;
+                }
             }
 
             string sKeyId = javaPublishFileConfig.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
@@ -620,13 +851,15 @@ namespace Breezee.WorkHelper.DBTool.UI
             string sKeyIdNew = string.Empty;
             DataRow dr;
             bool isAdd = string.IsNullOrEmpty(cbbTemplateType.Text.Trim()) ? true : false;
+            isAdd = isCopy ? true : isAdd; //当为复制时，也是新增状态
+            
             if (isAdd)
             {
                 //新增
                 sKeyIdNew = Guid.NewGuid().ToString();
                 dr = dtKeyConfig.NewRow();
                 dr[sKeyId] = sKeyIdNew;
-                
+
                 dtKeyConfig.Rows.Add(dr);
             }
             else
@@ -646,14 +879,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     dr = drArrKey[0];
                 }
-                // 统一赋值
-                dr[JavaPublishFileConfig.KeyString.Name] = sTempName;
-                dr[JavaPublishFileConfig.KeyString.CodeDir] = txbCodePath.Text.Trim();
-                dr[JavaPublishFileConfig.KeyString.ClassDir] = txbClassPath.Text.Trim();
-                dr[JavaPublishFileConfig.KeyString.CopyToDir] = txbCopyToPath.Text.Trim();
-                dr[JavaPublishFileConfig.KeyString.CopyCoverType] = cbbCopyType.SelectedValue.ToString();
-                dr[JavaPublishFileConfig.KeyString.ExcludeRelateDir] = rtbExcludeRelateDir.Text.Trim().Replace("/","\\");
-                dr[JavaPublishFileConfig.KeyString.ExcludeRelateFile] = rtbExcludeRelateFile.Text.Trim().Replace("/", "\\");
 
                 if (drArrVal.Length > 0)
                 {
@@ -664,7 +889,20 @@ namespace Breezee.WorkHelper.DBTool.UI
                     dtValConfig.AcceptChanges();
                 }
             }
-
+            // 统一赋值
+            dr[JavaPublishFileConfig.KeyString.Name] = isCopy ? sTempName + "(复制)" : sTempName;
+            dr[JavaPublishFileConfig.KeyString.CodeDir] = txbCodePath.Text.Trim();
+            dr[JavaPublishFileConfig.KeyString.ClassDir] = txbClassPath.Text.Trim();
+            dr[JavaPublishFileConfig.KeyString.CopyToDir] = txbCopyToPath.Text.Trim();
+            dr[JavaPublishFileConfig.KeyString.CopyCoverType] = cbbCopyType.SelectedValue.ToString();
+            dr[JavaPublishFileConfig.KeyString.ExcludeRelateDir] = rtbExcludeRelateDir.Text.Trim().GetLinuxPath();
+            dr[JavaPublishFileConfig.KeyString.ExcludeRelateFile] = rtbExcludeRelateFile.Text.Trim().GetLinuxPath();
+            dr[JavaPublishFileConfig.KeyString.ExcludeExt] = txbExcludeEndprx.Text.Trim().GetLinuxPath();
+            dr[JavaPublishFileConfig.KeyString.DateTimeBegin] = dtpBegin.Value.ToString();
+            dr[JavaPublishFileConfig.KeyString.DateTimeEnd] = dtpEnd.Value.ToString();
+            dr[JavaPublishFileConfig.KeyString.UserName] = txbUserName.Text.Trim();
+            dr[JavaPublishFileConfig.KeyString.Email] = txbEmail.Text.Trim();
+            dr[JavaPublishFileConfig.KeyString.SourceGetType] = cbbGetChangCodeType.SelectedValue.ToString();
             foreach (DataRow drCode in dtCodeClass.Rows)
             {
                 DataRow drNew = dtValConfig.NewRow();
@@ -685,7 +923,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             if (isShowConfirm)
             {
-                ShowInfo("配置保存成功！"); 
+                ShowInfo(isCopy ? "复制配置成功！" : "配置保存成功！");
             }
             return true;
         }
@@ -734,14 +972,14 @@ namespace Breezee.WorkHelper.DBTool.UI
             //重新绑定下拉框
             cbbTemplateType.BindDropDownList(javaPublishFileConfig.MoreXmlConfig.KeyData, sKeyId, JavaPublishFileConfig.KeyString.Name, true, true);
             ShowInfo("配置删除成功！");
-        } 
+        }
         #endregion
 
         private void btnGetFile_Click(object sender, EventArgs e)
         {
             tsbAutoSQL.PerformClick();
         }
-        
+
         #region 路径按钮事件
         private void SelectFilePath(TextBox tb)
         {
@@ -794,6 +1032,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 网格头双击事件
         private void dgvInput_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
+            label1.Focus();
             SelectAllOrCancel(dgvInput, ref _allSelectFile, e);
         }
 
@@ -811,6 +1050,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private void dgvCodeClassRelConfig_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
+            label1.Focus();
             SelectAllOrCancel(dgvCodeClassRelConfig, ref _allSelectCodeClass, e);
         }
 
@@ -827,7 +1067,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 return;
             }
-        } 
+        }
         #endregion
 
         private void dgvInput_KeyDown(object sender, KeyEventArgs e)
@@ -859,7 +1099,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
 
                 DataTable dtNew = dtMain.Copy();
-                pasteText.GetFirstColumnTable(dtNew, true, false, false,true,"ROWNO", "file",true);
+                pasteText.GetFirstColumnTable(dtNew, true, false, false, true, "ROWNO", "file", true);
                 dgvInput.BindDataGridView(dtNew, true);
                 dgvInput.ShowRowNum(true); //显示行号
                 dgvInput.AllowUserToAddRows = true;
@@ -908,7 +1148,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     dtMain.Clear();
                 }
-                string sFilter = string.Format("{0} is null or {0}='' ",JavaPublishFileConfig.ValueString.RelCodeDir);
+                string sFilter = string.Format("{0} is null or {0}='' ", JavaPublishFileConfig.ValueString.RelCodeDir);
                 foreach (DataRow dr in dtMain.Select(sFilter))
                 {
                     dtMain.Rows.Remove(dr);
@@ -916,7 +1156,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 DataTable dtNew = dtMain.Copy();
                 // 粘贴字符
-                pasteText.GetStringTable(dtNew,new string[] { JavaPublishFileConfig.ValueString.RelCodeDir,JavaPublishFileConfig.ValueString.RelClassDir,JavaPublishFileConfig.ValueString.RelCopyToDir },false,true);
+                pasteText.GetStringTable(dtNew, new string[] { JavaPublishFileConfig.ValueString.RelCodeDir, JavaPublishFileConfig.ValueString.RelClassDir, JavaPublishFileConfig.ValueString.RelCopyToDir }, false, true);
                 dgvCodeClassRelConfig.BindDataGridView(dtNew, true);
                 dgvCodeClassRelConfig.ShowRowNum(true); //显示行号
             }
@@ -1006,5 +1246,84 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
             }
         }
+
+        private void cbbGetChangCodeType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbbGetChangCodeType.SelectedValue == null) return;
+            if ("1".Equals(cbbGetChangCodeType.SelectedValue.ToString()))
+            {
+                grbGetFile.Visible = false;
+                ckbIsPasteAppend.Visible = true;
+            }
+            else
+            {
+                grbGetFile.Visible = true;
+                ckbIsPasteAppend.Visible = false;
+            }
+        }
+
+        /// <summary>
+        /// 排除文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsbExcludeFile_Click(object sender, EventArgs e)
+        {
+            string sExFile = rtbExcludeRelateFile.Text.Trim();
+            if (dgvInput.GetCurrentRow() == null) return;
+            bool isExists = false;
+            string sCurRowFilePath = dgvInput.GetCurrentRow()["file"].ToString();
+            if (sExFile.Length == 0)
+            {
+                rtbExcludeRelateFile.AppendText(sCurRowFilePath);
+            }
+            else
+            {
+                string[] arr = sExFile.Split(new char[] {',','，', '、', ';', '；' });
+                foreach (string s in arr) 
+                {
+                    if (sCurRowFilePath.Equals(s, StringComparison.OrdinalIgnoreCase)) {
+                        isExists = true;
+                        break;
+                    }
+                }
+                if (!isExists)
+                {
+                    rtbExcludeRelateFile.AppendText("，" + sCurRowFilePath);
+                }
+            }
+            dgvInput.GetCurrentRow().Delete();
+        }
+
+        private void ckbUseLastEndTime_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ckbUseLastEndTime.Checked && lastGetEndTime!=null)
+            {
+                dtpBegin.Value = lastGetEndTime;
+                dtpEnd.Value = DateTime.Now;
+                label1.Focus();
+            }
+        }
+
+        #region 查找按钮事件
+
+        private void btnFindNext_Click(object sender, EventArgs e)
+        {
+            FindGridText(true);
+        }
+
+        private void btnFindFront_Click(object sender, EventArgs e)
+        {
+            FindGridText(false);
+        }
+
+        private void FindGridText(bool isNext)
+        {
+            string sSearch = txbSearchTableName.Text.Trim();
+            if (string.IsNullOrEmpty(sSearch)) return;
+            dgvInput.SeachText(sSearch, ref dgvFindText, null, isNext, ckbTableFixed.Checked);
+            lblFind.Text = dgvFindText.CurrentMsg;
+        }
+        #endregion
     }
 }

@@ -51,6 +51,7 @@ namespace Breezee.WorkHelper.DBTool.Entity
         public static readonly string MergeScript_Path = "MergeScript_Path";
         #region 获取修改文件
         //获取修改文件
+        public static readonly string GetFile_GetType = "GetFile_GetType";
         public static readonly string GetFile_ReadPath = "GetFile_ReadPath";
         public static readonly string GetFile_TargetPath = "GetFile_TargetPath";
         public static readonly string GetFile_ExcludeEndprx = "GetFile_ExcludeEndprx";

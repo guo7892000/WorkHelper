@@ -59,7 +59,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 { "1", "IN清单" },
                 { "2", "自定义前后缀" },
-                { "3", "驼峰式" }
+                { "3", "驼峰式" },
+                { "4", "生成Guid" }
             };
             cbbSqlType.BindTypeValueDropDownList(dic_List.GetTextValueTable(false), false, true);
             cbbSqlType.SelectedValue = "1";
@@ -155,6 +156,31 @@ namespace Breezee.WorkHelper.DBTool.UI
             string strEndStr = txbEndString.Text;
             string strConnStr = txbConcateString.Text;
             string strReturnStr = cbkIsNewLine.Checked ? "\n" : "";
+
+            if (strSqlType == "4")
+            {
+                // 4-生成Guid
+                int iRowNum;
+                if (!int.TryParse(txbNum.Text.Trim(),out iRowNum))
+                {
+                    ShowInfo("生成个数必须输入整数！");
+                    txbNum.Focus();
+                    return;
+                }
+                if (dtMain.Rows.Count > 0)
+                {
+                    dtMain.Clear();
+                }
+                for (int i = 0; i < iRowNum; i++)
+                {
+                    string sGuid = ckbNoLine.Checked ? Guid.NewGuid().ToString().Replace("-", "") : Guid.NewGuid().ToString();
+                    dtMain.Rows.Add(sGuid);
+                }
+                dgvTableList.ShowRowNum(true); //显示行号
+                tabControl1.SelectedTab = tpImport;
+                return;
+            }
+
             //得到变更后数据
             dtMain.AcceptChanges();
             if (dtMain.Rows.Count == 0)
@@ -212,8 +238,23 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 语句类型选择变化事件
         private void cbbSqlType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //1-IN清单,2-自定义前后缀,3-驼峰式
+            //1-IN清单,2-自定义前后缀,3-驼峰式,4-生成Guid
             string strSqlType = cbbSqlType.SelectedValue.ToString();
+
+            if (strSqlType == "4")
+            {
+                grbInputString.Visible = false;
+                dgvTableList.Columns[_sColLower].Visible = false;
+                dgvTableList.Columns[_sColUpper].Visible = false;
+                lblNum.Visible = true;
+                txbNum.Visible = true;
+                ckbNoLine.Visible = true;
+                return;
+            }
+
+            lblNum.Visible = false;
+            txbNum.Visible = false;
+            ckbNoLine.Visible = false;
             if (strSqlType == "1")
             {
                 dgvTableList.Columns[_sColLower].Visible = false;
@@ -232,6 +273,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 dgvTableList.Columns[_sColLower].Visible = true;
                 dgvTableList.Columns[_sColUpper].Visible = true;
             }
+            
         }
         #endregion
 

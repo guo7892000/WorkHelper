@@ -133,6 +133,23 @@ namespace Breezee.WorkHelper.DBTool.UI
                         ShowInfo("没有可生成的数据！");
                         return;
                     }
+
+                    int iRowNum=0;
+                    bool bAddRowEndChar = false; //是否增加行结束符号
+                    string sRowNum = txbRowNum.Text.Trim();
+                    string sRowEndChar = txbRowEndChar.Text.Trim();
+                    
+                    if(!string.IsNullOrEmpty(sRowNum) && !string.IsNullOrEmpty(sRowEndChar))
+                    {
+                        if (!int.TryParse(txbRowNum.Text.Trim(), out iRowNum))
+                        {
+                            ShowInfo("每多少行必须输入整数！");
+                            txbRowNum.Focus();
+                            return;
+                        }
+                        bAddRowEndChar = true;
+                    }
+
                     for (int i = 0; i < dtMain.Rows.Count; i++)
                     {
                         //初始化单条数据为书写的文本
@@ -165,11 +182,27 @@ namespace Breezee.WorkHelper.DBTool.UI
                         //所有SQL文本累加
                         if(i== dtMain.Rows.Count - 1)
                         {
-                            sbAll.Append(strOneData); //最后一行不加换行符
+                            if (bAddRowEndChar)
+                            {
+                                sbAll.Append(strOneData + Environment.NewLine); //针对增加指定符的，最后一行也加换行符
+                                if ((i + 1) % iRowNum != 0)
+                                {
+                                    sbAll.AppendLine(sRowEndChar); //最后一行不是每行的整数倍时
+                                }
+                            }
+                            else
+                            {
+                                sbAll.Append(strOneData); //最后一行不加换行符
+                            } 
                         }
                         else
                         {
                             sbAll.Append(strOneData + (ckbResultNewLine.Checked ? Environment.NewLine : ""));
+                        }
+                        //每多少行增加固定字符
+                        if(bAddRowEndChar && (i + 1) % iRowNum==0)
+                        {
+                            sbAll.AppendLine(sRowEndChar);
                         }
                     }
                     if (ckbRemoveLastChar.Checked && sbAll.Length > 2)

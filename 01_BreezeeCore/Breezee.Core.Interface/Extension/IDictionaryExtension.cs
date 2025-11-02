@@ -4585,7 +4585,7 @@ namespace Breezee.Core.Interface
         /// <param name="separator">分隔符：可传空，也可自定义</param>
         /// <param name="isIgnorUpperLower">是否忽略大小写</param>
         /// <returns>拼接的字段值字符串</returns>
-        public static string GetLinqDynamicTableColumnString(this IDictionary<string, string> dic,DataRow dr, bool isKey,ref string separator, StringCovertUpperLowerEnum covertType= StringCovertUpperLowerEnum.None)
+        public static string GetLinqDynamicTableColumnString(this IDictionary<string, string> dic,DataRow dr, bool isKey,ref string separator, StringCovertUpperLowerEnum covertType= StringCovertUpperLowerEnum.None,bool trimData=true)
         {
             if (string.IsNullOrEmpty(separator))
             {
@@ -4609,6 +4609,7 @@ namespace Breezee.Core.Interface
                         value = dr[columnName].ToString(); //值不需要转换，即区分大小写
                         break;
                 }
+                value = trimData ? value.Trim() : value;
                 builder.Append(value).Append(separator);
             }
             return builder.ToString().TrimEnd(separator.ToCharArray());

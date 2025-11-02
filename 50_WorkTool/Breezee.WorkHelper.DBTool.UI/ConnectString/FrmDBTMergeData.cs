@@ -1,25 +1,26 @@
-﻿using Breezee.Core.WinFormUI;
-using Breezee.Core.Interface;
-using Breezee.Core.Tool;
+﻿using Breezee.AutoSQLExecutor.Common;
+using Breezee.AutoSQLExecutor.Core;
 using Breezee.Core.Entity;
+using Breezee.Core.Interface;
+using Breezee.Core.IOC;
+using Breezee.Core.Tool;
+using Breezee.Core.WinFormUI;
+using Breezee.WorkHelper.DBTool.Entity;
+using Breezee.WorkHelper.DBTool.IBLL;
+using org.breezee.MyPeachNet;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using Setting = Breezee.WorkHelper.DBTool.UI.Properties.Settings;
-using System.Threading.Tasks;
 using System.Net.NetworkInformation;
-using Breezee.WorkHelper.DBTool.Entity;
-using org.breezee.MyPeachNet;
-using Breezee.AutoSQLExecutor.Core;
-using Breezee.Core.IOC;
-using Breezee.AutoSQLExecutor.Common;
-using Breezee.WorkHelper.DBTool.IBLL;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using static Breezee.Core.Interface.KeyValuePairString;
+using Setting = Breezee.WorkHelper.DBTool.UI.Properties.Settings;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -35,6 +36,10 @@ namespace Breezee.WorkHelper.DBTool.UI
         string sRowNo1 = "ROWNUM_0";
         string sRowNo2 = "ROWNUM_1";
         DataGridViewFindText dgvFindText;
+        DataGridViewFindText dgvFindTextColumn1;
+        DataGridViewFindText dgvFindTextColumn2;
+        IList<string> _listCond=new List<string>();//自动增加的条件
+        int _autoCon = 0; 
         #endregion
 
         #region 构造函数
@@ -54,14 +59,19 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString.Add(((int)MergeDoubleDataStyle.RightJoin).ToString(), "右集");
             _dicString.Add(((int)MergeDoubleDataStyle.UnionAll).ToString(), "并集");
             cbbSqlType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
-
+            //分组类型
+            _dicString.Clear();
+            _dicString.Add("1", "列拼接分组(列数无限制)");
+            _dicString.Add("2", "列组合分组(最多60列)");
+            cbbGroupType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
+            //
             DataTable dtCopy = new DataTable();
             dgvExcel1.BindAutoColumn(dtCopy);
             dgvExcel2.BindAutoColumn(dtCopy.Copy());
             dgvResult.BindAutoColumn(dtCopy.Copy());
             //
             lblTableData.Text = "可在Excel中复制数据后，点击网格后按ctrl + v粘贴即可。注：第一行为列名！";
-            lblInfo2.Text = "可在Excel中复制数据后，点击网格后按ctrl + v粘贴即可。注：第一行为列名！";
+            //lblInfo2.Text = "可在Excel中复制数据后，点击网格后按ctrl + v粘贴即可。注：第一行为列名！";
             ckbAutoColumnName.Checked = true;
             toolTip1.SetToolTip(ckbNullNotEquals, "选中时为忽略条件中的空值，即两个空值不相等。如取消选中，且两个Excel中条件对应列存在较多空值时，\n就会因为大量的笛卡尔乘积记录消耗内存，而导致【System.OutOfMemoryException】内存不足错误！所以还是建议选中该项！");
         }
@@ -87,7 +97,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
 
                 DataTable dtMain = new DataTable();
-                pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain, "", false, true, sRowNo1);
+                pasteText.GetStringTable(ckbAutoColumnName.Checked, dtMain, "", true, true, sRowNo1);
                 dgvExcel1.BindAutoColumn(dtMain, false, new List<FlexGridColumn> {
                         new FlexGridColumn.Builder().Name(sRowNo1).Caption("序号1").Width(60).Build()
                     });
@@ -265,8 +275,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                 DataTable dtResult = dtResultIn.Clone();
 
                 int iCondCount = dic.Keys.Count;
-                // 使用动态属性
-                //查询
+                // 1-无列数限制
+                string sSplitChar = "";
+                var queryFull = from f in dtMain.AsEnumerable()
+                                join s in dtSec.AsEnumerable()
+                                on dic.GetLinqDynamicTableColumnString(f, true, ref sSplitChar, StringCovertUpperLowerEnum.Lower)
+                                equals dic.GetLinqDynamicTableColumnString(s, false, ref sSplitChar, StringCovertUpperLowerEnum.Lower)
+                                where ckbNullNotEquals.Checked ? GetLinqDynamicWhere(dic, f, s) : true
+                                select new { F1 = f, S1 = s };
+                // 2-有列数限制60
                 var query = from f in dtMain.AsEnumerable()
                             join s in dtSec.AsEnumerable()
                             on dic.GetLinqDynamicTableColumnObj(f, true)
@@ -274,8 +291,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                             where ckbNullNotEquals.Checked ? GetLinqDynamicWhere(dic, f, s) : true
                             select new { F1 = f, S1 = s };
 
-                //查询交集数据
-                var joinList = query.ToList();
+                
+                //查询交集数据：根据分组类型来确定用哪一种
+                var joinList = "1".Equals(cbbGroupType.SelectedValue.ToString()) ? queryFull.ToList() : query.ToList();
+
                 var restult = joinList.Select(t => t.F1.ItemArray.Concat(t.S1.ItemArray).ToArray()); //这里最后必须要加上ToArray
                 foreach (var item in restult)
                 {
@@ -609,6 +628,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
         }
 
+        #region 网格查找相关
         private void btnFindNext_Click(object sender, EventArgs e)
         {
             FindGridText(true);
@@ -622,9 +642,46 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             string sSearch = txbSearchColumn.Text.Trim();
             if (string.IsNullOrEmpty(sSearch)) return;
-            dgvResult.SeachText(sSearch, ref dgvFindText, null, isNext);
+            dgvResult.SeachText(sSearch, ref dgvFindText, null, isNext, ckbColumnFixed.Checked);
             lblFind.Text = dgvFindText.CurrentMsg;
         }
+
+        private void btnFindNextColumn1_Click(object sender, EventArgs e)
+        {
+            FindGridColumn1Text(true);
+        }
+
+        private void btnFindFrontColumn1_Click(object sender, EventArgs e)
+        {
+            FindGridColumn1Text(false);
+        }
+
+        private void FindGridColumn1Text(bool isNext)
+        {
+            string sSearch = txbSearchColumn1.Text.Trim();
+            if (string.IsNullOrEmpty(sSearch)) return;
+            dgvExcel1.SeachText(sSearch, ref dgvFindTextColumn1, null, isNext, ckbColumnFixed1.Checked);
+            lblFindColum1.Text = dgvFindTextColumn1.CurrentMsg;
+        }
+
+        private void btnFindNextColumn2_Click(object sender, EventArgs e)
+        {
+            FindGridColumn2Text(true);
+        }
+
+        private void btnFindFrontColumn2_Click(object sender, EventArgs e)
+        {
+            FindGridColumn2Text(false);
+        }
+
+        private void FindGridColumn2Text(bool isNext)
+        {
+            string sSearch = txbSearchColumn2.Text.Trim();
+            if (string.IsNullOrEmpty(sSearch)) return;
+            dgvExcel2.SeachText(sSearch, ref dgvFindTextColumn2, null, isNext, ckbColumnFixed2.Checked);
+            lblFindColum2.Text = dgvFindTextColumn2.CurrentMsg;
+        }
+        #endregion
 
         private void tsmiJoin_Click(object sender, EventArgs e)
         {
@@ -648,7 +705,68 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
         }
 
+        #region 增加或减少条件
+        private void btnAddCond_Click(object sender, EventArgs e)
+        {
+            string sCon = rtbConString.Text.Trim();
+            if (sCon.Length == 0)
+            {
+                string sColNum = _autoCon.ToExcelColumnWord();
+                rtbConString.AppendText(string.Format("{0}={0}1", sColNum));
+                _listCond.Add(sColNum);
+                _autoCon++;
+            }
+            else
+            {
+                string[] arr = sCon.Split(new char[] { '，',','});
+                foreach (string s in arr) 
+                {
+                    string[] arrEq = s.Split(new char[] { '=', '=' });
+                    if (arrEq.Length>0 && !_listCond.Contains(arrEq[0]))
+                    {
+                        _listCond.Add(arrEq[0]);
+                    }
+                }
+
+                string sColNum = _autoCon.ToExcelColumnWord();
+                while (_listCond.Contains(sColNum))
+                {
+                    _autoCon++;
+                    sColNum = _autoCon.ToExcelColumnWord();
+                }
+                rtbConString.AppendText(string.Format(",{0}={0}1", sColNum));
+                _listCond.Add(sColNum);
+                _autoCon++;
+            }
+        }
+
+        private void btnRemoveCond_Click(object sender, EventArgs e)
+        {
+            string sCon = rtbConString.Text.Trim();
+            if (sCon.Length > 0)
+            {
+                if (sCon.LastIndexOf(",") > -1)
+                {
+                    rtbConString.Text = sCon.Substring(0, sCon.LastIndexOf(','));
+                    _listCond.RemoveAt(_listCond.Count - 1);
+                    _autoCon--;
+                }
+                else
+                {
+                    rtbConString.Text = "";
+                    _listCond.Clear();
+                    _autoCon = 0;
+                }
+            }
+        } 
         
+        private void ckbAutoColumnName_CheckedChanged(object sender, EventArgs e)
+        {
+            btnAddCond.Visible = ckbAutoColumnName.Checked;
+            btnRemoveCond.Visible = ckbAutoColumnName.Checked;
+        }
+        #endregion
+
     }
 
     /// <summary>

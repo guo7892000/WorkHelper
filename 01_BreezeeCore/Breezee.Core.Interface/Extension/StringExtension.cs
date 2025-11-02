@@ -769,5 +769,26 @@ namespace Breezee.Core.Interface
         {
             return str.Replace("datetime(7)", "datetime").Replace("date(7)", "date").Replace("decimal(22,0)", "int").Replace("decimal(22)", "int");
         }
+
+        /// <summary>
+        /// 获取Window路径（\）
+        ///  注：开头和结束都会去掉该字符\
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string GetWinPath(this string str)
+        {
+            return str.Trim().Replace("/","\\").Trim('\\');
+        }
+        /// <summary>
+        /// 获取Linux路径（/）
+        /// 注：开头和结束都会去掉该字符/
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string GetLinuxPath(this string str)
+        {
+            return str.Trim().Replace("\\", "/").Trim('/');
+        }
     }
 }

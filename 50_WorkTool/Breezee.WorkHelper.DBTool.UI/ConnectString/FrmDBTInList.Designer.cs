@@ -52,11 +52,15 @@
             this.grbTable = new System.Windows.Forms.GroupBox();
             this.dgvTableList = new System.Windows.Forms.DataGridView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiClear = new System.Windows.Forms.ToolStripMenuItem();
             this.lblTableData = new System.Windows.Forms.Label();
             this.tpAutoSQL = new System.Windows.Forms.TabPage();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
-            this.tsmiPaste = new System.Windows.Forms.ToolStripMenuItem();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblNum = new System.Windows.Forms.Label();
+            this.txbNum = new System.Windows.Forms.TextBox();
+            this.ckbNoLine = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.grbInputString.SuspendLayout();
@@ -67,6 +71,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableList)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.tpAutoSQL.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -102,10 +107,8 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
-            this.groupBox1.Controls.Add(this.ckbIsPasteAppend);
+            this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Controls.Add(this.lblRuleInfo);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.cbbSqlType);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 27);
             this.groupBox1.Name = "groupBox1";
@@ -115,10 +118,11 @@
             // 
             // ckbIsPasteAppend
             // 
+            this.ckbIsPasteAppend.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbIsPasteAppend.AutoSize = true;
             this.ckbIsPasteAppend.Checked = true;
             this.ckbIsPasteAppend.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbIsPasteAppend.Location = new System.Drawing.Point(227, 19);
+            this.ckbIsPasteAppend.Location = new System.Drawing.Point(465, 5);
             this.ckbIsPasteAppend.Name = "ckbIsPasteAppend";
             this.ckbIsPasteAppend.Size = new System.Drawing.Size(72, 16);
             this.ckbIsPasteAppend.TabIndex = 5;
@@ -137,9 +141,10 @@
             // 
             // label1
             // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.Red;
-            this.label1.Location = new System.Drawing.Point(8, 18);
+            this.label1.Location = new System.Drawing.Point(3, 7);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 12);
             this.label1.TabIndex = 3;
@@ -148,7 +153,7 @@
             // cbbSqlType
             // 
             this.cbbSqlType.FormattingEnabled = true;
-            this.cbbSqlType.Location = new System.Drawing.Point(79, 15);
+            this.cbbSqlType.Location = new System.Drawing.Point(74, 3);
             this.cbbSqlType.Name = "cbbSqlType";
             this.cbbSqlType.Size = new System.Drawing.Size(142, 20);
             this.cbbSqlType.TabIndex = 2;
@@ -311,12 +316,19 @@
             this.tsmiPaste,
             this.tsmiClear});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(101, 48);
+            // 
+            // tsmiPaste
+            // 
+            this.tsmiPaste.Name = "tsmiPaste";
+            this.tsmiPaste.Size = new System.Drawing.Size(100, 22);
+            this.tsmiPaste.Text = "粘贴";
+            this.tsmiPaste.Click += new System.EventHandler(this.tsmiPaste_Click);
             // 
             // tsmiClear
             // 
             this.tsmiClear.Name = "tsmiClear";
-            this.tsmiClear.Size = new System.Drawing.Size(180, 22);
+            this.tsmiClear.Size = new System.Drawing.Size(100, 22);
             this.tsmiClear.Text = "清空";
             this.tsmiClear.Click += new System.EventHandler(this.tsmiClear_Click);
             // 
@@ -353,12 +365,61 @@
             this.rtbResult.TabIndex = 3;
             this.rtbResult.Text = "";
             // 
-            // tsmiPaste
+            // tableLayoutPanel1
             // 
-            this.tsmiPaste.Name = "tsmiPaste";
-            this.tsmiPaste.Size = new System.Drawing.Size(180, 22);
-            this.tsmiPaste.Text = "粘贴";
-            this.tsmiPaste.Click += new System.EventHandler(this.tsmiPaste_Click);
+            this.tableLayoutPanel1.ColumnCount = 7;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Controls.Add(this.ckbIsPasteAppend, 5, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.cbbSqlType, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.lblNum, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.txbNum, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.ckbNoLine, 4, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(586, 38);
+            this.tableLayoutPanel1.TabIndex = 6;
+            // 
+            // lblNum
+            // 
+            this.lblNum.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblNum.AutoSize = true;
+            this.lblNum.ForeColor = System.Drawing.Color.Red;
+            this.lblNum.Location = new System.Drawing.Point(222, 7);
+            this.lblNum.Name = "lblNum";
+            this.lblNum.Size = new System.Drawing.Size(65, 12);
+            this.lblNum.TabIndex = 3;
+            this.lblNum.Text = "生成个数：";
+            // 
+            // txbNum
+            // 
+            this.txbNum.Location = new System.Drawing.Point(293, 3);
+            this.txbNum.Name = "txbNum";
+            this.txbNum.Size = new System.Drawing.Size(100, 21);
+            this.txbNum.TabIndex = 6;
+            // 
+            // ckbNoLine
+            // 
+            this.ckbNoLine.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbNoLine.AutoSize = true;
+            this.ckbNoLine.Checked = true;
+            this.ckbNoLine.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbNoLine.Location = new System.Drawing.Point(399, 5);
+            this.ckbNoLine.Name = "ckbNoLine";
+            this.ckbNoLine.Size = new System.Drawing.Size(60, 16);
+            this.ckbNoLine.TabIndex = 5;
+            this.ckbNoLine.Text = "无横杆";
+            this.ckbNoLine.UseVisualStyleBackColor = true;
             // 
             // FrmDBTInList
             // 
@@ -388,6 +449,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvTableList)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             this.tpAutoSQL.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -422,5 +485,9 @@
         private System.Windows.Forms.Label lblRuleInfo;
         private System.Windows.Forms.CheckBox ckbIsPasteAppend;
         private System.Windows.Forms.ToolStripMenuItem tsmiPaste;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Label lblNum;
+        private System.Windows.Forms.TextBox txbNum;
+        private System.Windows.Forms.CheckBox ckbNoLine;
     }
 }

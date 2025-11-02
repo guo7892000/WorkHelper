@@ -57,6 +57,13 @@ namespace Breezee.WorkHelper.DBTool.UI
             _dicString["9"] = "普通目录";
             cbbDirType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false),false,true);
             toolTip1.SetToolTip(cbbDirType, "【含git源码的目录】：针对有变化的新增和修改的文件，git拉取下来的文件不含在内，但【普通目录】会包括！");
+            toolTip1.SetToolTip(ckbGetRelatePath, "针对【获取变化源码路径】按钮使用，选中为输出相对源码的目录，不选中为全路径！");
+
+            //合并类型
+            _dicString.Clear();
+            _dicString.Add("1", "复制文件");
+            _dicString.Add("2", "获取文件路径");
+            cbbGetType.BindTypeValueDropDownList(_dicString.GetTextValueTable(false), false, true);
 
             //加载用户偏好值
             //读取目录
@@ -74,6 +81,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             ckbDateDir.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_IsGenerateDateTimeDir, "0").Value) ? true : false;
             cbbDirType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_DirType, "1").Value;
+            cbbGetType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_GetType, "1").Value;
             //排除项
             txbExcludeEndprx.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_ExcludeEndprx, "").Value;
             txbExcludeDirName.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_ExcludeDirName, "").Value;
@@ -134,9 +142,15 @@ namespace Breezee.WorkHelper.DBTool.UI
         }
         #endregion
 
-        #region 生成SQL按钮事件
+        #region 获取按钮事件
         private async void tsbAutoSQL_Click(object sender, EventArgs e)
         {
+            if ("2".Equals(cbbGetType.SelectedValue.ToString()))
+            {
+                GetSourcePath(); //获取文件路径
+                return;
+            }
+
             try
             {
                 string sPath = txbReadPath.Text.Trim();
@@ -185,6 +199,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
 
                 }
+
+                if (ShowOkCancel("确定要异步获取文件？") == DialogResult.Cancel)
+                {
+                    return;
+                }
+
                 tsbAutoSQL.Enabled = false;
                 ShowDestopTipMsg("正在异步获取文件清单，请稍等一会...");
                 //异步获取文件
@@ -194,6 +214,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 //保存用户偏好值
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_ReadPath, sPath, "【获取修改过的文件】最后选择的读取目录");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_GetType, cbbGetType.SelectedValue.ToString(), "【获取修改过的文件】获取类型");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_TargetPath, sTargePath, "【获取修改过的文件】最后选择的生成目录");
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_ExcludeEndprx, txbExcludeEndprx.Text.Trim(), "【获取修改过的文件】的排除扩展名列表");
 
@@ -502,13 +523,331 @@ namespace Breezee.WorkHelper.DBTool.UI
             if ("1".Equals(cbbDirType.SelectedValue.ToString()))
             {
                 panel1.Visible = true;
-                panel2.Visible = true;
+                ckbNowModify.Visible = true;
+                ckbNowAdd.Visible = true;
+                ckbIncludeCommit.Visible = true;
+                panel1.Visible = true;
             }
             else
             {
                 panel1.Visible = false;
-                panel2.Visible = false;
+                ckbNowModify.Visible = false;
+                ckbNowAdd.Visible = false;
+                ckbIncludeCommit.Visible = false;
+                panel1.Visible=false;
             }
+        }
+
+        private async void GetSourcePath()
+        {
+            try
+            {
+                string sPath = txbReadPath.Text.Trim();
+                if (string.IsNullOrEmpty(sPath))
+                {
+                    ShowErr("请选择读取目录！");
+                    return;
+                }
+
+                if (ckbEndToNow.Checked)
+                {
+                    dtpEnd.Value = DateTime.Now;
+                }
+                else
+                {
+                    if (dtpBegin.Value.CompareTo(dtpEnd.Value) > 0)
+                    {
+                        ShowErr("修改的开始时间不能大于结束时间！");
+                        return;
+                    }
+                }
+
+                rtbString.Clear();
+                _listFilePath = new List<string>();
+                StringBuilder sb = new StringBuilder();
+                DirectoryInfo rootDirectory = new DirectoryInfo(sPath);
+                //查找并输出文件
+                iFileNum = 0;
+                sDirType = cbbDirType.SelectedValue.ToString();
+                if ("1".Equals(sDirType))
+                {
+                    if (!ckbNowAdd.Checked && !ckbNowModify.Checked && !ckbIncludeCommit.Checked)
+                    {
+                        ShowInfo("含正在修改、含将新增、含之前提交，这三个复选框至少选择一个！");
+                        return;
+                    }
+                }
+                else
+                {
+
+                }
+                if (ShowOkCancel("确定要异步获取路径？") == DialogResult.Cancel)
+                {
+                    return;
+                }
+                tsbAutoSQL.Enabled = false;
+                ShowDestopTipMsg("正在异步获取文件路径，请稍等一会...");
+                //异步获取文件
+                await Task.Run(() => GetDirectoryFilePathNoCopy(sb, rootDirectory));
+                tsbAutoSQL.Enabled = true; //重置按钮为有效
+                rtbString.AppendText(sb.ToString());
+
+                //保存用户偏好值
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_ReadPath, sPath, "【获取修改过的文件】最后选择的读取目录");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_GetType, cbbGetType.SelectedValue.ToString(), "【获取修改过的文件】获取类型");
+                //WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_TargetPath, sTargePath, "【获取修改过的文件】最后选择的生成目录");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_ExcludeEndprx, txbExcludeEndprx.Text.Trim(), "【获取修改过的文件】的排除扩展名列表");
+
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_ExcludeDirName, txbExcludeDirName.Text.Trim(), "【获取修改过的文件】的排除目录名列表");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_ExcludeFullDir, txbExcludeFullDir.Text.Trim(), "【获取修改过的文件】的排除全路径目录列表");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_ExcludeFileName, txbExcludeFile.Text.Trim(), "【获取修改过的文件】的排除文件名列表");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_ExcludeFullFileName, txbExcludeFullFile.Text.Trim(), "【获取修改过的文件】的排除全路径文件名列表");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_IsGenerateDateTimeDir, ckbDateDir.Checked ? "1" : "0", "【获取修改过的文件】的是否生成日期目录");
+
+                if (ckbSaveEndTime.Checked)
+                {
+                    WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_LastSaveEndDateTime, dtpEnd.Value.ToString("yyyy-MM-dd HH:mm:ss"), "【获取修改过的文件】的最后修改时间");
+                }
+
+                //包含已提交
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_IsIncludeAdd, ckbNowAdd.Checked ? "1" : "0", "【获取修改过的文件】的是否包含将增加");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_IsIncludeModify, ckbNowModify.Checked ? "1" : "0", "【获取修改过的文件】的是否包含正在修改");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_IsIncludeCommit, ckbIncludeCommit.Checked ? "1" : "0", "【获取修改过的文件】的是否包含之前提交");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_Email, txbEmail.Text.Trim(), "【获取修改过的文件】的Email");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_UserName, txbUserName.Text.Trim(), "【获取修改过的文件】的用户名");
+
+                WinFormContext.UserLoveSettings.Save();
+                if (iFileNum <= 0)
+                {
+                    ShowInfo("异步获取文件路径完成，没有变更的文件！");
+                }
+                else
+                {
+                    ShowInfo("异步获取文件路径完成，文件数为：" + iFileNum.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErr(ex.Message);
+            }
+        }
+
+        #region 获取文件路径方法（不复制文件）
+        /// <summary>
+        /// 获取文件路径方法（不复制文件）
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="rootDirectory"></param>
+        /// <param name="sOutType">输出类型：1仅文件，2仅目录，3目录和文件</param>
+        /// <param name="sPathType">路径类型：1全路径，2仅文件名，3相对路径</param>
+        /// <param name="IsSearchDept"></param>
+        /// <param name="iDeep"></param>
+        private async void GetDirectoryFilePathNoCopy(StringBuilder sb, DirectoryInfo rootDirectory)
+        {
+
+            //得到排除项
+            sExcludeDirName = txbExcludeDirName.Text.Trim().ToLower().Split(splitCharArr); //得到排除的目录名
+            sExcludeFullDir = txbExcludeFullDir.Text.Trim().ToLower().Split(splitCharArr); //得到排除的绝对目录
+            sExcludeFileName = txbExcludeFile.Text.Trim().ToLower().Split(splitCharArr); //得到排除的文件名
+            sExcludeFullFileName = txbExcludeFullFile.Text.Trim().ToLower().Split(splitCharArr); //得到排除的绝对路径文件名
+
+            if ("1".Equals(sDirType))
+            {
+                //1：git源码管理目录处理
+                bool isGitDir = false;
+                DirectoryInfo[] dirArr = rootDirectory.GetDirectories();//迭代子目录
+                var gitDir = dirArr.AsQueryable().Where(t => t.Name.Equals(".git", StringComparison.OrdinalIgnoreCase));
+                //判断是否
+                if (gitDir.Count() > 0)
+                {
+                    //
+                    isGitDir = true;
+                    string sDirName = gitDir.First().FullName;
+                    string sParentDirName = gitDir.First().Parent.FullName;
+                    string sEmail = txbEmail.Text.Trim();
+                    string sUserName = txbUserName.Text.Trim();
+
+                    using (var repo = new Repository(sDirName))
+                    {
+                        //查找变化的文件：包括未跟踪的
+                        using (var changes = repo.Diff.Compare<TreeChanges>(null, true))
+                        {
+                            if (ckbNowAdd.Checked)
+                            {
+                                //新增的
+                                foreach (var item in changes.Added)
+                                {
+                                    FileInfo file = new FileInfo(Path.Combine(sParentDirName, item.Path));
+                                    if (file.Exists)
+                                    {
+                                        OutFilePath(file, sb);
+                                    }
+                                }
+                            }
+                            if (ckbNowModify.Checked)
+                            {
+                                //修改的
+                                foreach (var item in changes.Modified)
+                                {
+                                    FileInfo file = new FileInfo(Path.Combine(sParentDirName, item.Path));
+                                    if (file.Exists)
+                                    {
+                                        OutFilePath(file, sb);
+                                    }
+                                }
+                            }
+                        }
+                        //查找已提交的
+                        if (ckbIncludeCommit.Checked)
+                        {
+                            ///get commits from all branches, not just master
+                            var commits = repo.Commits.QueryBy(new CommitFilter());
+                            foreach (var commit in commits)
+                            {
+                                //取指定人提交的文件
+                                if (!string.IsNullOrEmpty(sEmail) && !sEmail.Equals(commit.Author.Email)) continue; //如邮件不为空，且不相等，则跳过
+                                if (!string.IsNullOrEmpty(sUserName) && !sUserName.Equals(commit.Author.Name)) continue;//如用户名不为空，且不相等，则跳过
+                                //不在选择的时间范围内
+                                if (commit.Committer.When < dtpBegin.Value || commit.Committer.When > dtpEnd.Value)
+                                {
+                                    continue;
+                                }
+                                foreach (var parent in commit.Parents)
+                                {
+                                    //要排除冲突时帮其他人提交的文件：不知道为什么还是包括不是指定人改的文件？？？
+                                    if (!string.IsNullOrEmpty(sEmail) && !sEmail.Equals(parent.Author.Email)) continue; //如邮件不为空，且不相等，则跳过
+                                    if (!string.IsNullOrEmpty(sUserName) && !sUserName.Equals(parent.Author.Name)) continue;//如用户名不为空，且不相等，则跳过
+                                    foreach (TreeEntryChanges change in repo.Diff.Compare<TreeChanges>(parent.Tree, commit.Tree))
+                                    {
+                                        FileInfo file = new FileInfo(Path.Combine(sParentDirName, change.Path));
+                                        if (file.Exists)
+                                        {
+                                            OutFilePath(file, sb, true);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                //当前目录不包括.git目录，那么继续查找子目录
+                if (!isGitDir)
+                {
+                    foreach (DirectoryInfo path in rootDirectory.GetDirectories())
+                    {
+                        if (path.Name.StartsWith("."))
+                        {
+                            continue; //跳过点开头的系统目录
+                        }
+                        //目录名、绝对目录
+                        if (sExcludeDirName.Contains(path.Name.ToLower()) || sExcludeFullDir.Contains(path.FullName.ToLower()))
+                        {
+                            continue;
+                        }
+                        GetDirectoryFilePathNoCopy(sb, path);
+                    }
+                }
+            }
+            else
+            {
+                //9：普通目录的处理
+                foreach (FileInfo file in rootDirectory.GetFiles()) //文件的处理
+                {
+                    OutFilePath(file, sb);
+                }
+
+                foreach (DirectoryInfo path in rootDirectory.GetDirectories())
+                {
+                    if (path.Name.StartsWith("."))
+                    {
+                        continue; //跳过点开头的系统目录
+                    }
+                    //目录名、绝对目录
+                    if (sExcludeDirName.Contains(path.Name.ToLower()) || sExcludeFullDir.Contains(path.FullName.ToLower()))
+                    {
+                        continue;
+                    }
+                    GetDirectoryFilePathNoCopy(sb, path);
+                }
+            }
+        }
+        #endregion
+
+        /// <summary>
+        /// 输出文件路径
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="sb"></param>
+        private void OutFilePath(FileInfo file, StringBuilder sb, bool isCommitFile = false)
+        {
+            string sReadPath = txbReadPath.Text.Trim();
+
+            string[] sExcludeEndprx = txbExcludeEndprx.Text.Trim().ToLower().Split(splitCharArr);//得到排除的后缀
+
+            if (file.Attributes == FileAttributes.System || file.Attributes == FileAttributes.Temporary || file.Attributes == FileAttributes.Hidden)
+            {
+                return;
+            }
+            //这里如果是包括已提交，则直接跳过
+            if (!isCommitFile)
+            {
+                if (file.LastWriteTime < dtpBegin.Value || file.LastWriteTime > dtpEnd.Value)
+                {
+                    return;  //不在修改时间范围内的文件跳过
+                }
+            }
+            //排除后缀
+            if (!string.IsNullOrEmpty(file.Extension) && (sExcludeEndprx.Contains(file.Extension.Substring(1))))
+            {
+                return;
+            }
+
+            //跳过忽略的文件名、绝对路径文件名
+            if (sExcludeFileName.Contains(file.Name.ToLower()) || sExcludeFullFileName.Contains(file.FullName.ToLower()))
+            {
+                return;
+            }
+
+            //跳过忽略的绝对目录
+            if (sExcludeFullDir.Contains(file.DirectoryName))
+            {
+                return;
+            }
+
+            //跳过忽略的目录名
+            string[] sFileDirs = file.DirectoryName.ToLower().Split(new char[] { '\\', '/' });
+            foreach (var sDir in sFileDirs)
+            {
+                if (sExcludeDirName.Contains(sDir))
+                {
+                    return;
+                }
+            }
+
+            //跳过已包含的文件
+            if (_listFilePath.Contains(file.FullName))
+            {
+                return;
+            }
+            _listFilePath.Add(file.FullName);
+
+            //输出文件路径
+            if (ckbGetRelatePath.Checked)
+            {
+                sb.Append(file.FullName.Replace(txbReadPath.Text.Trim(), "").TrimStart('/').TrimStart('\\') + "\n");
+            }
+            else
+            {
+                sb.Append(file.FullName + "\n");
+            }
+            iFileNum++;
+        }
+
+        private void cbbGetType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbbGetType.SelectedValue == null) return;
+            ckbGetRelatePath.Visible = "2".Equals(cbbGetType.SelectedValue.ToString()) ? true : false;
         }
     }
 }

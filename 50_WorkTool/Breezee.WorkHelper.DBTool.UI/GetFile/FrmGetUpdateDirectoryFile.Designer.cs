@@ -34,7 +34,6 @@
             this.tsbAutoSQL = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.ckbNowModify = new System.Windows.Forms.CheckBox();
             this.ckbNowAdd = new System.Windows.Forms.CheckBox();
             this.ckbIncludeCommit = new System.Windows.Forms.CheckBox();
@@ -75,13 +74,19 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.rtbString = new System.Windows.Forms.RichTextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.ckbGetRelatePath = new System.Windows.Forms.CheckBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.label12 = new System.Windows.Forms.Label();
+            this.cbbGetType = new System.Windows.Forms.ComboBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.grbExclude.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -92,7 +97,7 @@
             this.tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(937, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(1160, 27);
             this.toolStrip1.TabIndex = 22;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -101,8 +106,8 @@
             this.tsbAutoSQL.Image = ((System.Drawing.Image)(resources.GetObject("tsbAutoSQL.Image")));
             this.tsbAutoSQL.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbAutoSQL.Name = "tsbAutoSQL";
-            this.tsbAutoSQL.Size = new System.Drawing.Size(96, 24);
-            this.tsbAutoSQL.Text = "获取文件(&A)";
+            this.tsbAutoSQL.Size = new System.Drawing.Size(72, 24);
+            this.tsbAutoSQL.Text = "获取(&A)";
             this.tsbAutoSQL.Click += new System.EventHandler(this.tsbAutoSQL_Click);
             // 
             // tsbExit
@@ -116,10 +121,6 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.panel2);
-            this.groupBox2.Controls.Add(this.panel1);
-            this.groupBox2.Controls.Add(this.cbbDirType);
-            this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.ckbSetBeginAsLastSaveEnd);
             this.groupBox2.Controls.Add(this.ckbEndToNow);
             this.groupBox2.Controls.Add(this.ckbSaveEndTime);
@@ -136,29 +137,20 @@
             this.groupBox2.Controls.Add(this.txbTargetPath);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox2.ForeColor = System.Drawing.Color.Red;
-            this.groupBox2.Location = new System.Drawing.Point(0, 27);
+            this.groupBox2.Location = new System.Drawing.Point(0, 83);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(937, 158);
+            this.groupBox2.Size = new System.Drawing.Size(1160, 135);
             this.groupBox2.TabIndex = 31;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "读取与生成配置";
             // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.ckbNowModify);
-            this.panel2.Controls.Add(this.ckbNowAdd);
-            this.panel2.Controls.Add(this.ckbIncludeCommit);
-            this.panel2.Location = new System.Drawing.Point(265, 127);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(256, 25);
-            this.panel2.TabIndex = 19;
-            // 
             // ckbNowModify
             // 
+            this.ckbNowModify.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbNowModify.AutoSize = true;
             this.ckbNowModify.Checked = true;
             this.ckbNowModify.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbNowModify.Location = new System.Drawing.Point(2, 5);
+            this.ckbNowModify.Location = new System.Drawing.Point(529, 7);
             this.ckbNowModify.Name = "ckbNowModify";
             this.ckbNowModify.Size = new System.Drawing.Size(84, 16);
             this.ckbNowModify.TabIndex = 18;
@@ -167,10 +159,11 @@
             // 
             // ckbNowAdd
             // 
+            this.ckbNowAdd.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbNowAdd.AutoSize = true;
             this.ckbNowAdd.Checked = true;
             this.ckbNowAdd.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbNowAdd.Location = new System.Drawing.Point(92, 5);
+            this.ckbNowAdd.Location = new System.Drawing.Point(619, 7);
             this.ckbNowAdd.Name = "ckbNowAdd";
             this.ckbNowAdd.Size = new System.Drawing.Size(72, 16);
             this.ckbNowAdd.TabIndex = 18;
@@ -179,10 +172,11 @@
             // 
             // ckbIncludeCommit
             // 
+            this.ckbIncludeCommit.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbIncludeCommit.AutoSize = true;
             this.ckbIncludeCommit.Checked = true;
             this.ckbIncludeCommit.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbIncludeCommit.Location = new System.Drawing.Point(170, 5);
+            this.ckbIncludeCommit.Location = new System.Drawing.Point(697, 7);
             this.ckbIncludeCommit.Name = "ckbIncludeCommit";
             this.ckbIncludeCommit.Size = new System.Drawing.Size(84, 16);
             this.ckbIncludeCommit.TabIndex = 15;
@@ -196,16 +190,16 @@
             this.panel1.Controls.Add(this.lblEmail);
             this.panel1.Controls.Add(this.txbUserName);
             this.panel1.Controls.Add(this.txbEmail);
-            this.panel1.Location = new System.Drawing.Point(524, 127);
+            this.panel1.Location = new System.Drawing.Point(787, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(401, 25);
+            this.panel1.Size = new System.Drawing.Size(360, 25);
             this.panel1.TabIndex = 17;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.ForeColor = System.Drawing.Color.Black;
-            this.label9.Location = new System.Drawing.Point(231, 7);
+            this.label9.Location = new System.Drawing.Point(189, 7);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(53, 12);
             this.label9.TabIndex = 17;
@@ -223,7 +217,7 @@
             // 
             // txbUserName
             // 
-            this.txbUserName.Location = new System.Drawing.Point(288, 3);
+            this.txbUserName.Location = new System.Drawing.Point(248, 3);
             this.txbUserName.Name = "txbUserName";
             this.txbUserName.Size = new System.Drawing.Size(106, 21);
             this.txbUserName.TabIndex = 16;
@@ -232,23 +226,24 @@
             // 
             this.txbEmail.Location = new System.Drawing.Point(58, 2);
             this.txbEmail.Name = "txbEmail";
-            this.txbEmail.Size = new System.Drawing.Size(167, 21);
+            this.txbEmail.Size = new System.Drawing.Size(124, 21);
             this.txbEmail.TabIndex = 16;
             // 
             // cbbDirType
             // 
             this.cbbDirType.FormattingEnabled = true;
-            this.cbbDirType.Location = new System.Drawing.Point(106, 131);
+            this.cbbDirType.Location = new System.Drawing.Point(300, 3);
             this.cbbDirType.Name = "cbbDirType";
-            this.cbbDirType.Size = new System.Drawing.Size(153, 20);
+            this.cbbDirType.Size = new System.Drawing.Size(121, 20);
             this.cbbDirType.TabIndex = 14;
             this.cbbDirType.SelectedIndexChanged += new System.EventHandler(this.cbbDirType_SelectedIndexChanged);
             // 
             // label8
             // 
+            this.label8.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label8.AutoSize = true;
             this.label8.ForeColor = System.Drawing.Color.Red;
-            this.label8.Location = new System.Drawing.Point(23, 134);
+            this.label8.Location = new System.Drawing.Point(217, 9);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(77, 12);
             this.label8.TabIndex = 0;
@@ -396,10 +391,10 @@
             this.grbExclude.Controls.Add(this.tableLayoutPanel1);
             this.grbExclude.Controls.Add(this.lblExcludeTip);
             this.grbExclude.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grbExclude.ForeColor = System.Drawing.Color.Red;
-            this.grbExclude.Location = new System.Drawing.Point(0, 185);
+            this.grbExclude.ForeColor = System.Drawing.Color.Black;
+            this.grbExclude.Location = new System.Drawing.Point(0, 218);
             this.grbExclude.Name = "grbExclude";
-            this.grbExclude.Size = new System.Drawing.Size(937, 75);
+            this.grbExclude.Size = new System.Drawing.Size(1160, 75);
             this.grbExclude.TabIndex = 32;
             this.grbExclude.TabStop = false;
             this.grbExclude.Text = "排除目录或文件选项";
@@ -435,7 +430,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 13F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(931, 55);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1154, 55);
             this.tableLayoutPanel1.TabIndex = 5;
             // 
             // label5
@@ -545,9 +540,9 @@
             // 
             this.groupBox3.Controls.Add(this.rtbString);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(0, 260);
+            this.groupBox3.Location = new System.Drawing.Point(0, 293);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(937, 242);
+            this.groupBox3.Size = new System.Drawing.Size(1160, 349);
             this.groupBox3.TabIndex = 34;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "生成的字符";
@@ -557,18 +552,95 @@
             this.rtbString.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbString.Location = new System.Drawing.Point(3, 17);
             this.rtbString.Name = "rtbString";
-            this.rtbString.Size = new System.Drawing.Size(931, 222);
+            this.rtbString.Size = new System.Drawing.Size(1154, 329);
             this.rtbString.TabIndex = 0;
             this.rtbString.Text = "";
+            // 
+            // ckbGetRelatePath
+            // 
+            this.ckbGetRelatePath.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbGetRelatePath.AutoSize = true;
+            this.ckbGetRelatePath.Checked = true;
+            this.ckbGetRelatePath.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbGetRelatePath.ForeColor = System.Drawing.Color.Black;
+            this.ckbGetRelatePath.Location = new System.Drawing.Point(427, 7);
+            this.ckbGetRelatePath.Name = "ckbGetRelatePath";
+            this.ckbGetRelatePath.Size = new System.Drawing.Size(96, 16);
+            this.ckbGetRelatePath.TabIndex = 20;
+            this.ckbGetRelatePath.Text = "获取相对路径";
+            this.ckbGetRelatePath.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.tableLayoutPanel2);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox1.Location = new System.Drawing.Point(0, 27);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(1160, 56);
+            this.groupBox1.TabIndex = 35;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "类型选项";
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 9;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 672F));
+            this.tableLayoutPanel2.Controls.Add(this.panel1, 8, 0);
+            this.tableLayoutPanel2.Controls.Add(this.ckbIncludeCommit, 7, 0);
+            this.tableLayoutPanel2.Controls.Add(this.ckbNowAdd, 6, 0);
+            this.tableLayoutPanel2.Controls.Add(this.ckbNowModify, 5, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label12, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.cbbGetType, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label8, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.ckbGetRelatePath, 4, 0);
+            this.tableLayoutPanel2.Controls.Add(this.cbbDirType, 3, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 17);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 2;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1154, 32);
+            this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // label12
+            // 
+            this.label12.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label12.AutoSize = true;
+            this.label12.ForeColor = System.Drawing.Color.Red;
+            this.label12.Location = new System.Drawing.Point(3, 9);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(65, 12);
+            this.label12.TabIndex = 0;
+            this.label12.Text = "获取类型：";
+            // 
+            // cbbGetType
+            // 
+            this.cbbGetType.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cbbGetType.FormattingEnabled = true;
+            this.cbbGetType.Location = new System.Drawing.Point(74, 5);
+            this.cbbGetType.Name = "cbbGetType";
+            this.cbbGetType.Size = new System.Drawing.Size(137, 20);
+            this.cbbGetType.TabIndex = 1;
+            this.cbbGetType.SelectedIndexChanged += new System.EventHandler(this.cbbGetType_SelectedIndexChanged);
             // 
             // FrmGetUpdateDirectoryFile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(937, 502);
+            this.ClientSize = new System.Drawing.Size(1160, 642);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.grbExclude);
             this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -579,8 +651,6 @@
             this.toolStrip1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.grbExclude.ResumeLayout(false);
@@ -588,6 +658,9 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -632,7 +705,6 @@
         private System.Windows.Forms.CheckBox ckbIncludeCommit;
         private System.Windows.Forms.CheckBox ckbNowAdd;
         private System.Windows.Forms.CheckBox ckbNowModify;
-        private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox txbExcludeFile;
@@ -640,5 +712,10 @@
         private System.Windows.Forms.TextBox txbExcludeEndprx;
         private System.Windows.Forms.TextBox txbExcludeFullDir;
         private System.Windows.Forms.TextBox txbExcludeFullFile;
+        private System.Windows.Forms.CheckBox ckbGetRelatePath;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ComboBox cbbGetType;
     }
 }
