@@ -1,7 +1,7 @@
 {
-  "version": "1.3.9.0",
-  "date": "2025-11-02",
-  "publishRemark": "1.IN清单：增加生成指定数量的Guid。\r\n2.复制数据拼接：增加每多少行后面增加指定字符。\r\n3.获取Java发布文件：增加复制配置；增加录入方式，支持根据Git历史获取变化文件；支持排除文件、排除后缀。\r\n4.获取变化的文件：增加获取代码文件路径。\r\n5.两个Excel合并：增加分组方式；支持快速增加和减少条件。\r\n",
+  "version": "1.3.9.1",
+  "date": "2025-11-03",
+  "publishRemark": "1.获取Java发布文件：只针对历史提交的及其他优化。\r\n",
   "appName": "WorkHelper",
   "zipFormats": "zip|rar|7z",
   "downUrlPublishLatest": "https://gitee.com/breezee2000/WorkHelper/releases/download/Latest/#appName##version#",

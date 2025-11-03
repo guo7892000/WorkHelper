@@ -40,7 +40,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         List<string> _listFilePath; //复制了哪些
         string sKeyId;
         JavaPublishFileConfig javaPublishFileConfig;
-        DateTime lastGetEndTime;
+        DateTime lastGetEndTime = DateTime.Now;
         DataGridViewFindText dgvFindText;
         #endregion
 
@@ -407,11 +407,19 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="e"></param>
         private void btnGetChangeFile_Click(object sender, EventArgs e)
         {
-            if (dtpBegin.Value.CompareTo(dtpEnd.Value) > 0)
+            if (ckbEndToNow.Checked)
             {
-                ShowErr("修改的开始时间不能大于结束时间！");
-                return;
+                dtpEnd.Value = DateTime.Now;
             }
+            else
+            {
+                if (dtpBegin.Value.CompareTo(dtpEnd.Value) > 0)
+                {
+                    ShowErr("修改的开始时间不能大于结束时间！");
+                    return;
+                }
+            }
+
             string sCodePath = txbCodePath.Text.Trim().Trim('\\');
             string sSelectCfgId = cbbTemplateType.SelectedValue == null ? "" : cbbTemplateType.SelectedValue.ToString();
             CopyCoverTypeEnum copyCoverType = (CopyCoverTypeEnum)int.Parse(cbbCopyType.SelectedValue.ToString());
@@ -445,6 +453,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             _isGetPath = true;
             SaveCfg(false);//保存配置
             _isGetPath = false;
+            ShowInfo("获取文件列表完成！");
         }
 
         #region 获取Git目录文件方法
@@ -474,28 +483,30 @@ namespace Breezee.WorkHelper.DBTool.UI
 
             using (var repo = new Repository(sDirName))
             {
+                #region 这里取消(不取当前新增和修改的)
                 //查找变化的文件：包括未跟踪的
-                using (var changes = repo.Diff.Compare<TreeChanges>(null, true))
-                {
-                    //新增的
-                    foreach (var item in changes.Added)
-                    {
-                        FileInfo file = new FileInfo(Path.Combine(sParentDirName, item.Path));
-                        if (file.Exists)
-                        {
-                            GetGitChangFilePath(file, true, sExcludeFullDir, sCodePath, sExcludeFullFile, sExcludeExt);
-                        }
-                    }
-                    //修改的
-                    foreach (var item in changes.Modified)
-                    {
-                        FileInfo file = new FileInfo(Path.Combine(sParentDirName, item.Path));
-                        if (file.Exists)
-                        {
-                            GetGitChangFilePath(file, true, sExcludeFullDir, sCodePath, sExcludeFullFile, sExcludeExt);
-                        }
-                    }
-                }
+                //using (var changes = repo.Diff.Compare<TreeChanges>(null, true))
+                //{
+                //    //新增的
+                //    foreach (var item in changes.Added)
+                //    {
+                //        FileInfo file = new FileInfo(Path.Combine(sParentDirName, item.Path));
+                //        if (file.Exists)
+                //        {
+                //            GetGitChangFilePath(file, true, sExcludeFullDir, sCodePath, sExcludeFullFile, sExcludeExt);
+                //        }
+                //    }
+                //    //修改的
+                //    foreach (var item in changes.Modified)
+                //    {
+                //        FileInfo file = new FileInfo(Path.Combine(sParentDirName, item.Path));
+                //        if (file.Exists)
+                //        {
+                //            GetGitChangFilePath(file, true, sExcludeFullDir, sCodePath, sExcludeFullFile, sExcludeExt);
+                //        }
+                //    }
+                //} 
+                #endregion
 
                 //查找已提交的
                 ///get commits from all branches, not just master
@@ -730,16 +741,32 @@ namespace Breezee.WorkHelper.DBTool.UI
                 txbEmail.Text = drArr[0][JavaPublishFileConfig.KeyString.Email].ToString();
                 //开始和结束时间
                 string sLastBegin = drArr[0][JavaPublishFileConfig.KeyString.DateTimeBegin].ToString();
+                DateTime dtBeginTime;
                 if (!string.IsNullOrEmpty(sLastBegin))
                 {
-                    dtpBegin.Value = DateTime.Parse(sLastBegin);
+                    if (DateTime.TryParse(sLastBegin, out dtBeginTime))
+                    {
+                        dtpBegin.Value = dtBeginTime;
+                    }
+                    else
+                    {
+                        dtpBegin.Value = DateTime.Now.AddDays(-1);
+                    }
                 }
 
                 string sLastEnd = drArr[0][JavaPublishFileConfig.KeyString.DateTimeEnd].ToString();
+                DateTime dtEndTime;
                 if (!string.IsNullOrEmpty(sLastEnd)) 
                 {
-                    lastGetEndTime = DateTime.Parse(sLastEnd);
-                    dtpEnd.Value = lastGetEndTime;
+                    if (DateTime.TryParse(sLastEnd, out dtEndTime))
+                    {
+                        dtpEnd.Value = dtEndTime;
+                    }
+                    else
+                    {
+                        dtpEnd.Value = DateTime.Now;
+                    }
+                    lastGetEndTime = dtpEnd.Value;
                 }
                 
 
@@ -899,7 +926,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             dr[JavaPublishFileConfig.KeyString.ExcludeRelateFile] = rtbExcludeRelateFile.Text.Trim().GetLinuxPath();
             dr[JavaPublishFileConfig.KeyString.ExcludeExt] = txbExcludeEndprx.Text.Trim().GetLinuxPath();
             dr[JavaPublishFileConfig.KeyString.DateTimeBegin] = dtpBegin.Value.ToString();
-            dr[JavaPublishFileConfig.KeyString.DateTimeEnd] = dtpEnd.Value.ToString();
+            if (ckbSaveEndTime.Checked)
+            {
+                dr[JavaPublishFileConfig.KeyString.DateTimeEnd] = dtpEnd.Value.ToString();
+            }
             dr[JavaPublishFileConfig.KeyString.UserName] = txbUserName.Text.Trim();
             dr[JavaPublishFileConfig.KeyString.Email] = txbEmail.Text.Trim();
             dr[JavaPublishFileConfig.KeyString.SourceGetType] = cbbGetChangCodeType.SelectedValue.ToString();
@@ -1252,6 +1282,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (cbbGetChangCodeType.SelectedValue == null) return;
             if ("1".Equals(cbbGetChangCodeType.SelectedValue.ToString()))
             {
+                //手工粘贴
                 grbGetFile.Visible = false;
                 ckbIsPasteAppend.Visible = true;
             }
@@ -1295,13 +1326,22 @@ namespace Breezee.WorkHelper.DBTool.UI
             dgvInput.GetCurrentRow().Delete();
         }
 
-        private void ckbUseLastEndTime_CheckedChanged(object sender, EventArgs e)
+        /// <summary>
+        /// 从上次结束时间开始复选框选中事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ckbSetBeginAsLastSaveEnd_CheckedChanged(object sender, EventArgs e)
         {
-            if (ckbUseLastEndTime.Checked && lastGetEndTime!=null)
+            if (ckbSetBeginAsLastSaveEnd.Checked)
             {
                 dtpBegin.Value = lastGetEndTime;
-                dtpEnd.Value = DateTime.Now;
-                label1.Focus();
+                dtpBegin.Enabled = false;
+            }
+            else
+            {
+                dtpBegin.Enabled = true;
+                dtpBegin.Value = DateTime.Now.AddDays(-1);
             }
         }
 
@@ -1325,5 +1365,18 @@ namespace Breezee.WorkHelper.DBTool.UI
             lblFind.Text = dgvFindText.CurrentMsg;
         }
         #endregion
+
+        private void ckbEndToNow_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ckbEndToNow.Checked)
+            {
+                dtpEnd.Value = DateTime.Now;
+                dtpEnd.Enabled = false;
+            }
+            else
+            {
+                dtpEnd.Enabled = true;
+            }
+        }
     }
 }
