@@ -424,6 +424,9 @@
     <None Include="Doc\Develop\C#\IoC\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\Develop\Linux\常用命令.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\Develop\本项目\喜好设置.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

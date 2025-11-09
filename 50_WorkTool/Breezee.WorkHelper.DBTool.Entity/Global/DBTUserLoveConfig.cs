@@ -180,5 +180,8 @@ namespace Breezee.WorkHelper.DBTool.Entity
         // MyBatis参数化（占位符）的SQL转换实际可执行的SQL
         public static readonly string MyBatisSqlConvert_SqlAndParam = "MyBatisSqlConvert_SqlAndParam"; // SQL和参数
         public static readonly string MyBatisSqlConvert_Param = "MyBatisSqlConvert_Param"; // 参数
+        // 获取Java发布文件
+        public static readonly string GetJavaFile_IsOpenGenerateDir = "GetJavaFile_IsOpenGenerateDir"; // 是否打开生成的目录
+        public static readonly string GetJavaFile_IsEndToNow = "GetJavaFile_IsEndToNow"; // 是否结束时间为当前时间
     }
 }

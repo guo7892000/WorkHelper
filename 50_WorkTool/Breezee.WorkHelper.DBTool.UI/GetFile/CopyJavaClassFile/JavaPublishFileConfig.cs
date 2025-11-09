@@ -34,6 +34,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             entity.ColKeys.Add(KeyString.Email);
             entity.ColKeys.Add(KeyString.UserName);
             entity.ColKeys.Add(KeyString.SourceGetType);
+            entity.ColKeys.Add(KeyString.IsJumpConfig);
             // 值
             entity.ColVals.Add(ValueString.IsCopyFromSrc);
             entity.ColVals.Add(ValueString.RelCodeDir);
@@ -60,6 +61,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             public static readonly string Email = "Email";
             public static readonly string UserName = "UserName";
             public static readonly string SourceGetType = "SourceGetType";
+            public static readonly string IsJumpConfig = "IsJumpConfig";
         }
 
         /// <summary>

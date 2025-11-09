@@ -42,6 +42,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         JavaPublishFileConfig javaPublishFileConfig;
         DateTime lastGetEndTime = DateTime.Now;
         DataGridViewFindText dgvFindText;
+        string _lastSelectCfgId = string.Empty;
         #endregion
 
         #region 构造函数
@@ -114,6 +115,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             sCodePathTip = "相对于【源代码目录】的相对路径，且会自动过滤以.开头的文件；\r\n支持逗号（中英文）、分号（中英文）、冒号（中文）、竖线（英文）分隔的多个排除项配置。";
             toolTip1.SetToolTip(label8, sCodePathTip);
             toolTip1.SetToolTip(rtbExcludeRelateFile, sCodePathTip);
+            sCodePathTip = "支持逗号（中英文）、分号（中英文）、冒号（中文）、竖线（英文）分隔的多个排除后缀配置。";
+            toolTip1.SetToolTip(txbExcludeEndprx, sCodePathTip);
+            toolTip1.SetToolTip(label11, sCodePathTip);
             toolTip1.SetToolTip(cbbCopyType, "覆盖：任何日期的复制，文件都会直接复制到【复制到目录】下，并覆盖之前日期复制的文件。\r\n覆盖当天：在【复制到目录】下创建一个当天日期目录，然后复制的文件放该目录下。当天多次复制，都会使用该目录，并覆盖之前的文件。\r\n每次新增：每次生成，都在【复制到目录】下创建一个当天日期-时分秒目录，文件放入其中。当天多次复制，每次都放入不同目录。");
             toolTip1.SetToolTip(btnGetChangeFile, "会将这段时间内修改的代码文件加入到【变化文件录入】网格中。");
             toolTip1.SetToolTip(cbbTemplateType, "可以选择之前保存过的配置名称，系统会自动带出该配置详细信息，不用重复录入。");
@@ -123,7 +127,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             toolTip1.SetToolTip(ckbSelectConfig, "不选中时，选择配置变化时，跳转到【变更的源代码文件】页。");
             toolTip1.SetToolTip(label13, "注：同一个文件被修改多次，只能查询最后提交的最新代码，不能获取历史版本！");
             //加载喜好设置：已加入配置中
-            //cbbGetChangCodeType.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetJavaFile_GetChangCodeType, "1").Value;
+            ckbOpenGenDir.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetJavaFile_IsOpenGenerateDir, "1").Value,StringComparison.OrdinalIgnoreCase) ? true : false;
+            ckbEndToNow.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetJavaFile_IsEndToNow, "1").Value, StringComparison.OrdinalIgnoreCase) ? true : false;
             //增加折叠功能
             grbGetFile.AddFoldRightMenu();
             tabControl1.SelectedTab = tpConfig;
@@ -267,8 +272,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //保存
                 SaveCfg(false);
                 //保存喜好设置
-                //WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetJavaFile_GetChangCodeType, cbbGetChangCodeType.SelectedValue.ToString(), "【获取修改过的文件】获取类型");
-                //WinFormContext.UserLoveSettings.Save();
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetJavaFile_IsOpenGenerateDir, ckbOpenGenDir.Checked?"1":"0", "【获取Java发布文件】是否打开生成的目录");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetJavaFile_IsEndToNow, ckbEndToNow.Checked ? "1" : "0", "【获取Java发布文件】是否结束时间为当前时间"); 
+                WinFormContext.UserLoveSettings.Save();
 
                 if (string.IsNullOrEmpty(sSelectCfgId))
                 {
@@ -282,6 +288,13 @@ namespace Breezee.WorkHelper.DBTool.UI
                 else
                 {
                     ShowInfo("异步获取文件完成，修改的文件数为：" + iFileNum.ToString());
+                    if (ckbOpenGenDir.Checked)
+                    {
+                        if (Directory.Exists(getJavaClassEntity.CopyToPath))
+                        {
+                            System.Diagnostics.Process.Start("explorer.exe", getJavaClassEntity.CopyToPath);
+                        }
+                    }
                 }
                 tabControl1.SelectedTab = tpResult;
             }
@@ -452,6 +465,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             GetGitDirectoryFile(codeDirectory, sExcludeFullDir, sCodePath, sExcludeFullFile, sExcludeExt); //获取Git目录变化文件
             _isGetPath = true;
             SaveCfg(false);//保存配置
+            //保存喜好设置
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetJavaFile_IsOpenGenerateDir, ckbOpenGenDir.Checked ? "1" : "0", "【获取Java发布文件】是否打开生成的目录");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetJavaFile_IsEndToNow, ckbEndToNow.Checked ? "1" : "0", "【获取Java发布文件】是否结束时间为当前时间");
+            WinFormContext.UserLoveSettings.Save();
             _isGetPath = false;
             ShowInfo("获取文件列表完成！");
         }
@@ -739,6 +756,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 //用户名
                 txbUserName.Text = drArr[0][JavaPublishFileConfig.KeyString.UserName].ToString();
                 txbEmail.Text = drArr[0][JavaPublishFileConfig.KeyString.Email].ToString();
+                ckbSelectConfig.Checked = "1".Equals(drArr[0][JavaPublishFileConfig.KeyString.IsJumpConfig].ToString(), StringComparison.OrdinalIgnoreCase) ? true : false;
                 //开始和结束时间
                 string sLastBegin = drArr[0][JavaPublishFileConfig.KeyString.DateTimeBegin].ToString();
                 DateTime dtBeginTime;
@@ -800,6 +818,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     tabControl1.SelectedTab = ckbSelectConfig.Checked ? tpConfig : tpSource;
                 }
             }
+
         }
 
         /// <summary>
@@ -933,6 +952,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             dr[JavaPublishFileConfig.KeyString.UserName] = txbUserName.Text.Trim();
             dr[JavaPublishFileConfig.KeyString.Email] = txbEmail.Text.Trim();
             dr[JavaPublishFileConfig.KeyString.SourceGetType] = cbbGetChangCodeType.SelectedValue.ToString();
+            dr[JavaPublishFileConfig.KeyString.IsJumpConfig] = ckbSelectConfig.Checked ? "1" : "0";
             foreach (DataRow drCode in dtCodeClass.Rows)
             {
                 DataRow drNew = dtValConfig.NewRow();
