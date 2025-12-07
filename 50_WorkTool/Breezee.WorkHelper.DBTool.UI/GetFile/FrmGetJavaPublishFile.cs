@@ -43,6 +43,8 @@ namespace Breezee.WorkHelper.DBTool.UI
         DateTime lastGetEndTime = DateTime.Now;
         DataGridViewFindText dgvFindText;
         string _lastSelectCfgId = string.Empty;
+        string sLastBegin;//上次保存的开始时间：没什么用
+        string sLastEnd;//上次保存的结束时间
         #endregion
 
         #region 构造函数
@@ -223,6 +225,18 @@ namespace Breezee.WorkHelper.DBTool.UI
                     ShowErr("【源代码与复制源目录对照关系配置】不能为空，至少输入并选择一项！");
                     tabControl1.SelectedTab = tpConfig;
                     return;
+                }
+
+                // 判断是否有从源码复制，这里提示一下
+                sFilter = string.Format("{0}='1' or {0}='True'", JavaPublishFileConfig.ValueString.IsCopyFromSrc);
+                DataRow[] drArrayCopySource = dtRelCodeClass.Select(sFilter);
+                if (drArrayCopySource.Length > 0)
+                {
+                    if (ShowYesNo("一般是从构建目录中复制文件，但当前配置存在从源码中复制的配置，确定继续？") == DialogResult.No)
+                    {
+                        tabControl1.SelectedTab= tpConfig;
+                        return;
+                    }
                 }
 
                 rtbString.Clear();
@@ -495,8 +509,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             }
             string sDirName = gitDir.First().FullName;
             string sParentDirName = gitDir.First().Parent.FullName;
-            string sEmail = txbEmail.Text.Trim();
-            string sUserName = txbUserName.Text.Trim();
+            //string sEmail = txbEmail.Text.Trim();
+            //string sUserName = txbUserName.Text.Trim();
 
             using (var repo = new Repository(sDirName))
             {
@@ -530,9 +544,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                 var commits = repo.Commits.QueryBy(new CommitFilter());
                 foreach (var commit in commits)
                 {
-                    //取指定人提交的文件
-                    if (!string.IsNullOrEmpty(sEmail) && !sEmail.Equals(commit.Author.Email)) continue; //如邮件不为空，且不相等，则跳过
-                    if (!string.IsNullOrEmpty(sUserName) && !sUserName.Equals(commit.Author.Name)) continue;//如用户名不为空，且不相等，则跳过
+                    //取指定人提交的文件：这个不准，已取消
+                    //if (!string.IsNullOrEmpty(sEmail) && !sEmail.Equals(commit.Author.Email)) continue; //如邮件不为空，且不相等，则跳过
+                    //if (!string.IsNullOrEmpty(sUserName) && !sUserName.Equals(commit.Author.Name)) continue;//如用户名不为空，且不相等，则跳过
                                                                                                             //不在选择的时间范围内
                     if (commit.Committer.When < dtpBegin.Value || commit.Committer.When > dtpEnd.Value)
                     {
@@ -541,8 +555,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                     foreach (var parent in commit.Parents)
                     {
                         //要排除冲突时帮其他人提交的文件：不知道为什么还是包括不是指定人改的文件？？？
-                        if (!string.IsNullOrEmpty(sEmail) && !sEmail.Equals(parent.Author.Email)) continue; //如邮件不为空，且不相等，则跳过
-                        if (!string.IsNullOrEmpty(sUserName) && !sUserName.Equals(parent.Author.Name)) continue;//如用户名不为空，且不相等，则跳过
+                        //if (!string.IsNullOrEmpty(sEmail) && !sEmail.Equals(parent.Author.Email)) continue; //如邮件不为空，且不相等，则跳过
+                        //if (!string.IsNullOrEmpty(sUserName) && !sUserName.Equals(parent.Author.Name)) continue;//如用户名不为空，且不相等，则跳过
                         foreach (TreeEntryChanges change in repo.Diff.Compare<TreeChanges>(parent.Tree, commit.Tree))
                         {
                             FileInfo file = new FileInfo(Path.Combine(sParentDirName, change.Path));
@@ -754,39 +768,18 @@ namespace Breezee.WorkHelper.DBTool.UI
                 rtbExcludeRelateDir.Text = drArr[0][JavaPublishFileConfig.KeyString.ExcludeRelateDir].ToString();
                 rtbExcludeRelateFile.Text = drArr[0][JavaPublishFileConfig.KeyString.ExcludeRelateFile].ToString();
                 //用户名
-                txbUserName.Text = drArr[0][JavaPublishFileConfig.KeyString.UserName].ToString();
-                txbEmail.Text = drArr[0][JavaPublishFileConfig.KeyString.Email].ToString();
+                //txbUserName.Text = drArr[0][JavaPublishFileConfig.KeyString.UserName].ToString();
+                //txbEmail.Text = drArr[0][JavaPublishFileConfig.KeyString.Email].ToString();
                 ckbSelectConfig.Checked = "1".Equals(drArr[0][JavaPublishFileConfig.KeyString.IsJumpConfig].ToString(), StringComparison.OrdinalIgnoreCase) ? true : false;
-                //开始和结束时间
-                string sLastBegin = drArr[0][JavaPublishFileConfig.KeyString.DateTimeBegin].ToString();
-                DateTime dtBeginTime;
-                if (!string.IsNullOrEmpty(sLastBegin))
-                {
-                    if (DateTime.TryParse(sLastBegin, out dtBeginTime))
-                    {
-                        dtpBegin.Value = dtBeginTime;
-                    }
-                    else
-                    {
-                        dtpBegin.Value = DateTime.Now.AddDays(-1);
-                    }
-                }
-
-                string sLastEnd = drArr[0][JavaPublishFileConfig.KeyString.DateTimeEnd].ToString();
-                DateTime dtEndTime;
-                if (!string.IsNullOrEmpty(sLastEnd)) 
-                {
-                    if (DateTime.TryParse(sLastEnd, out dtEndTime))
-                    {
-                        dtpEnd.Value = dtEndTime;
-                    }
-                    else
-                    {
-                        dtpEnd.Value = DateTime.Now;
-                    }
-                    lastGetEndTime = dtpEnd.Value;
-                }
                 
+                //开始和结束时间
+                sLastBegin = drArr[0][JavaPublishFileConfig.KeyString.DateTimeBegin].ToString();
+                sLastEnd = drArr[0][JavaPublishFileConfig.KeyString.DateTimeEnd].ToString();
+
+                //从多少天开始
+                ckbBeginDateNum.Checked = "1".Equals(drArr[0][JavaPublishFileConfig.KeyString.IsFromDateBefore].ToString(), StringComparison.OrdinalIgnoreCase) ? true : false;
+                string sFromDateBefore = drArr[0][JavaPublishFileConfig.KeyString.BeforeDateQty].ToString();
+                nudFromDateBefore.Value = int.Parse(string.IsNullOrEmpty(sFromDateBefore) ? "0" : sFromDateBefore);
 
                 // 查询明细
                 string sKeyId = javaPublishFileConfig.MoreXmlConfig.MoreKeyValue.KeyIdPropName;
@@ -945,12 +938,14 @@ namespace Breezee.WorkHelper.DBTool.UI
             dr[JavaPublishFileConfig.KeyString.ExcludeRelateFile] = rtbExcludeRelateFile.Text.Trim().GetLinuxPath();
             dr[JavaPublishFileConfig.KeyString.ExcludeExt] = txbExcludeEndprx.Text.Trim().GetLinuxPath();
             dr[JavaPublishFileConfig.KeyString.DateTimeBegin] = dtpBegin.Value.ToString();
+            dr[JavaPublishFileConfig.KeyString.IsFromDateBefore] = ckbBeginDateNum.Checked ? "1" : "0";
+            dr[JavaPublishFileConfig.KeyString.BeforeDateQty] = nudFromDateBefore.Value.ToString();
             if (ckbSaveEndTime.Checked)
             {
                 dr[JavaPublishFileConfig.KeyString.DateTimeEnd] = dtpEnd.Value.ToString();
             }
-            dr[JavaPublishFileConfig.KeyString.UserName] = txbUserName.Text.Trim();
-            dr[JavaPublishFileConfig.KeyString.Email] = txbEmail.Text.Trim();
+            //dr[JavaPublishFileConfig.KeyString.UserName] = txbUserName.Text.Trim();
+            //dr[JavaPublishFileConfig.KeyString.Email] = txbEmail.Text.Trim();
             dr[JavaPublishFileConfig.KeyString.SourceGetType] = cbbGetChangCodeType.SelectedValue.ToString();
             dr[JavaPublishFileConfig.KeyString.IsJumpConfig] = ckbSelectConfig.Checked ? "1" : "0";
             foreach (DataRow drCode in dtCodeClass.Rows)
@@ -1355,13 +1350,24 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             if (ckbSetBeginAsLastSaveEnd.Checked)
             {
-                dtpBegin.Value = lastGetEndTime;
+                ckbBeginDateNum.Checked = false;
+                DateTime dtBeginTime;
+                if (!string.IsNullOrEmpty(sLastEnd))
+                {
+                    if (DateTime.TryParse(sLastEnd, out dtBeginTime))
+                    {
+                        dtpBegin.Value = dtBeginTime;
+                    }
+                    else
+                    {
+                        dtpBegin.Value = DateTime.Now.AddDays(-1);
+                    }
+                }
                 dtpBegin.Enabled = false;
             }
             else
             {
                 dtpBegin.Enabled = true;
-                dtpBegin.Value = DateTime.Now.AddDays(-1);
             }
         }
 
@@ -1396,6 +1402,30 @@ namespace Breezee.WorkHelper.DBTool.UI
             else
             {
                 dtpEnd.Enabled = true;
+            }
+        }
+
+        /// <summary>
+        /// 从多少天开始获取
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ckbBeginDateNum_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ckbBeginDateNum.Checked)
+            {
+                int iDayBefore = int.Parse(nudFromDateBefore.Value.ToString());
+                dtpBegin.Value = DateTime.Now.Date.AddDays(-iDayBefore);
+                ckbSetBeginAsLastSaveEnd.Checked = false;
+            }
+        }
+
+        private void nudFromDateBefore_ValueChanged(object sender, EventArgs e)
+        {
+            if (ckbBeginDateNum.Checked)
+            {
+                int iDayBefore = int.Parse(nudFromDateBefore.Value.ToString());
+                dtpBegin.Value = DateTime.Now.Date.AddDays(-iDayBefore);
             }
         }
     }

@@ -177,27 +177,30 @@
             this.tabControl1.Controls.Add(this.tpAutoSQL);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tabControl1.Location = new System.Drawing.Point(0, 271);
+            this.tabControl1.Location = new System.Drawing.Point(0, 538);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1240, 410);
+            this.tabControl1.Size = new System.Drawing.Size(2480, 824);
             this.tabControl1.TabIndex = 25;
             // 
             // tpImport
             // 
             this.tpImport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
             this.tpImport.Controls.Add(this.splitContainer1);
-            this.tpImport.Location = new System.Drawing.Point(4, 26);
+            this.tpImport.Location = new System.Drawing.Point(8, 45);
+            this.tpImport.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tpImport.Name = "tpImport";
-            this.tpImport.Padding = new System.Windows.Forms.Padding(3);
-            this.tpImport.Size = new System.Drawing.Size(1232, 380);
+            this.tpImport.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.tpImport.Size = new System.Drawing.Size(2464, 771);
             this.tpImport.TabIndex = 0;
             this.tpImport.Text = "导入清单";
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer1.Location = new System.Drawing.Point(6, 6);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -208,8 +211,9 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.grbColumn);
-            this.splitContainer1.Size = new System.Drawing.Size(1226, 374);
-            this.splitContainer1.SplitterDistance = 70;
+            this.splitContainer1.Size = new System.Drawing.Size(2452, 759);
+            this.splitContainer1.SplitterDistance = 142;
+            this.splitContainer1.SplitterWidth = 8;
             this.splitContainer1.TabIndex = 9;
             // 
             // grbTable
@@ -224,8 +228,10 @@
             this.grbTable.Controls.Add(this.lblTableData);
             this.grbTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbTable.Location = new System.Drawing.Point(0, 0);
+            this.grbTable.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.grbTable.Name = "grbTable";
-            this.grbTable.Size = new System.Drawing.Size(1226, 70);
+            this.grbTable.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.grbTable.Size = new System.Drawing.Size(2452, 142);
             this.grbTable.TabIndex = 1;
             this.grbTable.TabStop = false;
             this.grbTable.Text = "表清单";
@@ -233,9 +239,10 @@
             // ckbTableFixed
             // 
             this.ckbTableFixed.AutoSize = true;
-            this.ckbTableFixed.Location = new System.Drawing.Point(281, -2);
+            this.ckbTableFixed.Location = new System.Drawing.Point(562, -4);
+            this.ckbTableFixed.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbTableFixed.Name = "ckbTableFixed";
-            this.ckbTableFixed.Size = new System.Drawing.Size(51, 21);
+            this.ckbTableFixed.Size = new System.Drawing.Size(94, 35);
             this.ckbTableFixed.TabIndex = 25;
             this.ckbTableFixed.Text = "精确";
             this.ckbTableFixed.UseVisualStyleBackColor = true;
@@ -247,17 +254,19 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblFindTable.AutoSize = true;
             this.lblFindTable.ForeColor = System.Drawing.Color.Red;
-            this.lblFindTable.Location = new System.Drawing.Point(459, -1);
+            this.lblFindTable.Location = new System.Drawing.Point(918, -2);
+            this.lblFindTable.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblFindTable.Name = "lblFindTable";
-            this.lblFindTable.Size = new System.Drawing.Size(56, 17);
+            this.lblFindTable.Size = new System.Drawing.Size(110, 31);
             this.lblFindTable.TabIndex = 24;
             this.lblFindTable.Text = "查找提示";
             // 
             // btnFindFrontTable
             // 
-            this.btnFindFrontTable.Location = new System.Drawing.Point(398, -4);
+            this.btnFindFrontTable.Location = new System.Drawing.Point(796, -8);
+            this.btnFindFrontTable.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btnFindFrontTable.Name = "btnFindFrontTable";
-            this.btnFindFrontTable.Size = new System.Drawing.Size(55, 23);
+            this.btnFindFrontTable.Size = new System.Drawing.Size(110, 46);
             this.btnFindFrontTable.TabIndex = 23;
             this.btnFindFrontTable.Text = "往前找";
             this.btnFindFrontTable.UseVisualStyleBackColor = true;
@@ -265,9 +274,10 @@
             // 
             // btnFindNextTable
             // 
-            this.btnFindNextTable.Location = new System.Drawing.Point(336, -2);
+            this.btnFindNextTable.Location = new System.Drawing.Point(672, -4);
+            this.btnFindNextTable.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btnFindNextTable.Name = "btnFindNextTable";
-            this.btnFindNextTable.Size = new System.Drawing.Size(56, 21);
+            this.btnFindNextTable.Size = new System.Drawing.Size(112, 42);
             this.btnFindNextTable.TabIndex = 21;
             this.btnFindNextTable.Text = "下一个";
             this.btnFindNextTable.UseVisualStyleBackColor = true;
@@ -275,9 +285,10 @@
             // 
             // txbSearchTable
             // 
-            this.txbSearchTable.Location = new System.Drawing.Point(51, -3);
+            this.txbSearchTable.Location = new System.Drawing.Point(102, -6);
+            this.txbSearchTable.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.txbSearchTable.Name = "txbSearchTable";
-            this.txbSearchTable.Size = new System.Drawing.Size(228, 23);
+            this.txbSearchTable.Size = new System.Drawing.Size(452, 39);
             this.txbSearchTable.TabIndex = 20;
             // 
             // dgvTableList
@@ -286,40 +297,43 @@
             this.dgvTableList.ContextMenuStrip = this.contextMenuStrip1;
             this.dgvTableList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvTableList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
-            this.dgvTableList.Location = new System.Drawing.Point(3, 19);
+            this.dgvTableList.Location = new System.Drawing.Point(6, 38);
+            this.dgvTableList.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.dgvTableList.Name = "dgvTableList";
+            this.dgvTableList.RowHeadersWidth = 82;
             this.dgvTableList.RowTemplate.Height = 23;
-            this.dgvTableList.Size = new System.Drawing.Size(1220, 48);
+            this.dgvTableList.Size = new System.Drawing.Size(2440, 98);
             this.dgvTableList.TabIndex = 0;
             this.dgvTableList.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvTableList_ColumnHeaderMouseDoubleClick);
             // 
             // contextMenuStrip1
             // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiChooseOrNot,
             this.tsmiDirectShow,
             this.tsmiSortBySelectItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(154, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(243, 118);
             // 
             // tsmiChooseOrNot
             // 
             this.tsmiChooseOrNot.Name = "tsmiChooseOrNot";
-            this.tsmiChooseOrNot.Size = new System.Drawing.Size(153, 22);
+            this.tsmiChooseOrNot.Size = new System.Drawing.Size(242, 38);
             this.tsmiChooseOrNot.Text = "选中/取消选中";
             this.tsmiChooseOrNot.Click += new System.EventHandler(this.tsmiChooseOrNot_Click);
             // 
             // tsmiDirectShow
             // 
             this.tsmiDirectShow.Name = "tsmiDirectShow";
-            this.tsmiDirectShow.Size = new System.Drawing.Size(153, 22);
+            this.tsmiDirectShow.Size = new System.Drawing.Size(242, 38);
             this.tsmiDirectShow.Text = "显示方向切换";
             this.tsmiDirectShow.Click += new System.EventHandler(this.tsmiDirectShow_Click);
             // 
             // tsmiSortBySelectItem
             // 
             this.tsmiSortBySelectItem.Name = "tsmiSortBySelectItem";
-            this.tsmiSortBySelectItem.Size = new System.Drawing.Size(153, 22);
+            this.tsmiSortBySelectItem.Size = new System.Drawing.Size(242, 38);
             this.tsmiSortBySelectItem.Text = "按选择倒序";
             this.tsmiSortBySelectItem.Click += new System.EventHandler(this.tsmiSortBySelectItem_Click);
             // 
@@ -330,9 +344,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTableData.AutoSize = true;
             this.lblTableData.ForeColor = System.Drawing.Color.Red;
-            this.lblTableData.Location = new System.Drawing.Point(778, 0);
+            this.lblTableData.Location = new System.Drawing.Point(1556, 0);
+            this.lblTableData.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblTableData.Name = "lblTableData";
-            this.lblTableData.Size = new System.Drawing.Size(56, 17);
+            this.lblTableData.Size = new System.Drawing.Size(110, 31);
             this.lblTableData.TabIndex = 12;
             this.lblTableData.Text = "提示信息";
             // 
@@ -348,8 +363,10 @@
             this.grbColumn.Controls.Add(this.dgvColList);
             this.grbColumn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbColumn.Location = new System.Drawing.Point(0, 0);
+            this.grbColumn.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.grbColumn.Name = "grbColumn";
-            this.grbColumn.Size = new System.Drawing.Size(1226, 300);
+            this.grbColumn.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.grbColumn.Size = new System.Drawing.Size(2452, 609);
             this.grbColumn.TabIndex = 8;
             this.grbColumn.TabStop = false;
             this.grbColumn.Text = "列清单";
@@ -357,18 +374,20 @@
             // ckbColumnFixed
             // 
             this.ckbColumnFixed.AutoSize = true;
-            this.ckbColumnFixed.Location = new System.Drawing.Point(281, -3);
+            this.ckbColumnFixed.Location = new System.Drawing.Point(562, -6);
+            this.ckbColumnFixed.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbColumnFixed.Name = "ckbColumnFixed";
-            this.ckbColumnFixed.Size = new System.Drawing.Size(51, 21);
+            this.ckbColumnFixed.Size = new System.Drawing.Size(94, 35);
             this.ckbColumnFixed.TabIndex = 26;
             this.ckbColumnFixed.Text = "精确";
             this.ckbColumnFixed.UseVisualStyleBackColor = true;
             // 
             // btnFindFront
             // 
-            this.btnFindFront.Location = new System.Drawing.Point(403, -7);
+            this.btnFindFront.Location = new System.Drawing.Point(806, -14);
+            this.btnFindFront.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btnFindFront.Name = "btnFindFront";
-            this.btnFindFront.Size = new System.Drawing.Size(55, 25);
+            this.btnFindFront.Size = new System.Drawing.Size(110, 50);
             this.btnFindFront.TabIndex = 22;
             this.btnFindFront.Text = "往前找";
             this.btnFindFront.UseVisualStyleBackColor = true;
@@ -381,17 +400,19 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblFind.AutoSize = true;
             this.lblFind.ForeColor = System.Drawing.Color.Red;
-            this.lblFind.Location = new System.Drawing.Point(464, 0);
+            this.lblFind.Location = new System.Drawing.Point(928, 0);
+            this.lblFind.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblFind.Name = "lblFind";
-            this.lblFind.Size = new System.Drawing.Size(56, 17);
+            this.lblFind.Size = new System.Drawing.Size(110, 31);
             this.lblFind.TabIndex = 21;
             this.lblFind.Text = "查找提示";
             // 
             // btnFindNext
             // 
-            this.btnFindNext.Location = new System.Drawing.Point(341, -5);
+            this.btnFindNext.Location = new System.Drawing.Point(682, -10);
+            this.btnFindNext.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btnFindNext.Name = "btnFindNext";
-            this.btnFindNext.Size = new System.Drawing.Size(56, 21);
+            this.btnFindNext.Size = new System.Drawing.Size(112, 42);
             this.btnFindNext.TabIndex = 20;
             this.btnFindNext.Text = "下一个";
             this.btnFindNext.UseVisualStyleBackColor = true;
@@ -399,9 +420,10 @@
             // 
             // txbSearchColumn
             // 
-            this.txbSearchColumn.Location = new System.Drawing.Point(51, -5);
+            this.txbSearchColumn.Location = new System.Drawing.Point(102, -10);
+            this.txbSearchColumn.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.txbSearchColumn.Name = "txbSearchColumn";
-            this.txbSearchColumn.Size = new System.Drawing.Size(228, 23);
+            this.txbSearchColumn.Size = new System.Drawing.Size(452, 39);
             this.txbSearchColumn.TabIndex = 19;
             // 
             // lblColumnInfo
@@ -411,9 +433,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblColumnInfo.AutoSize = true;
             this.lblColumnInfo.ForeColor = System.Drawing.Color.Red;
-            this.lblColumnInfo.Location = new System.Drawing.Point(778, -2);
+            this.lblColumnInfo.Location = new System.Drawing.Point(1556, -4);
+            this.lblColumnInfo.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblColumnInfo.Name = "lblColumnInfo";
-            this.lblColumnInfo.Size = new System.Drawing.Size(56, 17);
+            this.lblColumnInfo.Size = new System.Drawing.Size(110, 31);
             this.lblColumnInfo.TabIndex = 13;
             this.lblColumnInfo.Text = "提示信息";
             // 
@@ -422,10 +445,12 @@
             this.dgvColList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvColList.ContextMenuStrip = this.contextMenuStrip1;
             this.dgvColList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvColList.Location = new System.Drawing.Point(3, 19);
+            this.dgvColList.Location = new System.Drawing.Point(6, 38);
+            this.dgvColList.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.dgvColList.Name = "dgvColList";
+            this.dgvColList.RowHeadersWidth = 82;
             this.dgvColList.RowTemplate.Height = 23;
-            this.dgvColList.Size = new System.Drawing.Size(1220, 278);
+            this.dgvColList.Size = new System.Drawing.Size(2440, 565);
             this.dgvColList.TabIndex = 0;
             this.dgvColList.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvColList_ColumnHeaderMouseClick);
             this.dgvColList.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvColList_ColumnHeaderMouseDoubleClick);
@@ -433,9 +458,10 @@
             // tpDataStandard
             // 
             this.tpDataStandard.Controls.Add(this.splitContainer2);
-            this.tpDataStandard.Location = new System.Drawing.Point(4, 26);
+            this.tpDataStandard.Location = new System.Drawing.Point(8, 45);
+            this.tpDataStandard.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tpDataStandard.Name = "tpDataStandard";
-            this.tpDataStandard.Size = new System.Drawing.Size(1232, 380);
+            this.tpDataStandard.Size = new System.Drawing.Size(2464, 767);
             this.tpDataStandard.TabIndex = 2;
             this.tpDataStandard.Text = "数据标准";
             this.tpDataStandard.UseVisualStyleBackColor = true;
@@ -444,6 +470,7 @@
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
@@ -455,14 +482,16 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.groupBox2);
             this.splitContainer2.Panel2.Controls.Add(this.groupBox4);
-            this.splitContainer2.Size = new System.Drawing.Size(1232, 380);
-            this.splitContainer2.SplitterDistance = 701;
+            this.splitContainer2.Size = new System.Drawing.Size(2464, 767);
+            this.splitContainer2.SplitterDistance = 1402;
+            this.splitContainer2.SplitterWidth = 8;
             this.splitContainer2.TabIndex = 0;
             // 
             // splitContainer3
             // 
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer3.Location = new System.Drawing.Point(0, 83);
+            this.splitContainer3.Location = new System.Drawing.Point(0, 166);
+            this.splitContainer3.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.splitContainer3.Name = "splitContainer3";
             // 
             // splitContainer3.Panel1
@@ -472,8 +501,9 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.groupBox3);
-            this.splitContainer3.Size = new System.Drawing.Size(701, 297);
-            this.splitContainer3.SplitterDistance = 359;
+            this.splitContainer3.Size = new System.Drawing.Size(1402, 601);
+            this.splitContainer3.SplitterDistance = 718;
+            this.splitContainer3.SplitterWidth = 8;
             this.splitContainer3.TabIndex = 6;
             // 
             // groupBox12
@@ -482,8 +512,10 @@
             this.groupBox12.Controls.Add(this.dgvOldNewChar);
             this.groupBox12.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox12.Location = new System.Drawing.Point(0, 0);
+            this.groupBox12.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(359, 297);
+            this.groupBox12.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.groupBox12.Size = new System.Drawing.Size(718, 601);
             this.groupBox12.TabIndex = 4;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "分类数据列清单";
@@ -492,9 +524,10 @@
             // 
             this.lblReplaceInfo.AutoSize = true;
             this.lblReplaceInfo.ForeColor = System.Drawing.Color.Red;
-            this.lblReplaceInfo.Location = new System.Drawing.Point(107, 0);
+            this.lblReplaceInfo.Location = new System.Drawing.Point(214, 0);
+            this.lblReplaceInfo.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblReplaceInfo.Name = "lblReplaceInfo";
-            this.lblReplaceInfo.Size = new System.Drawing.Size(32, 17);
+            this.lblReplaceInfo.Size = new System.Drawing.Size(62, 31);
             this.lblReplaceInfo.TabIndex = 3;
             this.lblReplaceInfo.Text = "提示";
             // 
@@ -503,32 +536,35 @@
             this.dgvOldNewChar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvOldNewChar.ContextMenuStrip = this.cmsClass;
             this.dgvOldNewChar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvOldNewChar.Location = new System.Drawing.Point(3, 19);
+            this.dgvOldNewChar.Location = new System.Drawing.Point(6, 38);
+            this.dgvOldNewChar.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.dgvOldNewChar.Name = "dgvOldNewChar";
+            this.dgvOldNewChar.RowHeadersWidth = 82;
             this.dgvOldNewChar.RowTemplate.Height = 23;
-            this.dgvOldNewChar.Size = new System.Drawing.Size(353, 275);
+            this.dgvOldNewChar.Size = new System.Drawing.Size(706, 557);
             this.dgvOldNewChar.TabIndex = 0;
             this.dgvOldNewChar.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvOldNewChar_DataError);
             // 
             // cmsClass
             // 
+            this.cmsClass.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.cmsClass.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiRemove,
             this.tsmiRemoveAll});
             this.cmsClass.Name = "contextMenuStrip3";
-            this.cmsClass.Size = new System.Drawing.Size(125, 48);
+            this.cmsClass.Size = new System.Drawing.Size(185, 80);
             // 
             // tsmiRemove
             // 
             this.tsmiRemove.Name = "tsmiRemove";
-            this.tsmiRemove.Size = new System.Drawing.Size(124, 22);
+            this.tsmiRemove.Size = new System.Drawing.Size(184, 38);
             this.tsmiRemove.Text = "移除";
             this.tsmiRemove.Click += new System.EventHandler(this.tsmiRemove_Click);
             // 
             // tsmiRemoveAll
             // 
             this.tsmiRemoveAll.Name = "tsmiRemoveAll";
-            this.tsmiRemoveAll.Size = new System.Drawing.Size(124, 22);
+            this.tsmiRemoveAll.Size = new System.Drawing.Size(184, 38);
             this.tsmiRemoveAll.Text = "移除全部";
             this.tsmiRemoveAll.Click += new System.EventHandler(this.tsmiRemoveAll_Click);
             // 
@@ -537,8 +573,10 @@
             this.groupBox3.Controls.Add(this.dgvDataDictionary);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(0, 0);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(338, 297);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.groupBox3.Size = new System.Drawing.Size(676, 601);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "数据字典";
@@ -548,23 +586,26 @@
             this.dgvDataDictionary.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDataDictionary.ContextMenuStrip = this.cmsDataDictionary;
             this.dgvDataDictionary.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvDataDictionary.Location = new System.Drawing.Point(3, 19);
+            this.dgvDataDictionary.Location = new System.Drawing.Point(6, 38);
+            this.dgvDataDictionary.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.dgvDataDictionary.Name = "dgvDataDictionary";
+            this.dgvDataDictionary.RowHeadersWidth = 82;
             this.dgvDataDictionary.RowTemplate.Height = 23;
-            this.dgvDataDictionary.Size = new System.Drawing.Size(332, 275);
+            this.dgvDataDictionary.Size = new System.Drawing.Size(664, 557);
             this.dgvDataDictionary.TabIndex = 0;
             // 
             // cmsDataDictionary
             // 
+            this.cmsDataDictionary.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.cmsDataDictionary.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiAdd});
             this.cmsDataDictionary.Name = "contextMenuStrip2";
-            this.cmsDataDictionary.Size = new System.Drawing.Size(101, 26);
+            this.cmsDataDictionary.Size = new System.Drawing.Size(137, 42);
             // 
             // tsmiAdd
             // 
             this.tsmiAdd.Name = "tsmiAdd";
-            this.tsmiAdd.Size = new System.Drawing.Size(100, 22);
+            this.tsmiAdd.Size = new System.Drawing.Size(136, 38);
             this.tsmiAdd.Text = "加入";
             this.tsmiAdd.Click += new System.EventHandler(this.tsmiAdd_Click);
             // 
@@ -574,8 +615,10 @@
             this.groupBox13.Controls.Add(this.tableLayoutPanel7);
             this.groupBox13.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox13.Location = new System.Drawing.Point(0, 0);
+            this.groupBox13.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(701, 83);
+            this.groupBox13.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.groupBox13.Size = new System.Drawing.Size(1402, 166);
             this.groupBox13.TabIndex = 5;
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "分类选项";
@@ -584,9 +627,10 @@
             // 
             this.lblClassInfo.AutoSize = true;
             this.lblClassInfo.ForeColor = System.Drawing.Color.Red;
-            this.lblClassInfo.Location = new System.Drawing.Point(84, 2);
+            this.lblClassInfo.Location = new System.Drawing.Point(168, 4);
+            this.lblClassInfo.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblClassInfo.Name = "lblClassInfo";
-            this.lblClassInfo.Size = new System.Drawing.Size(32, 17);
+            this.lblClassInfo.Size = new System.Drawing.Size(62, 31);
             this.lblClassInfo.TabIndex = 3;
             this.lblClassInfo.Text = "提示";
             // 
@@ -598,7 +642,7 @@
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 418F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 836F));
             this.tableLayoutPanel7.Controls.Add(this.label14, 0, 0);
             this.tableLayoutPanel7.Controls.Add(this.cbbTemplateType, 1, 0);
             this.tableLayoutPanel7.Controls.Add(this.label21, 0, 3);
@@ -607,23 +651,25 @@
             this.tableLayoutPanel7.Controls.Add(this.btnRemoveTemplate, 3, 3);
             this.tableLayoutPanel7.Controls.Add(this.btnCopyAdd, 4, 3);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 19);
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(6, 38);
+            this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 4;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(695, 59);
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(1390, 118);
             this.tableLayoutPanel7.TabIndex = 6;
             // 
             // label14
             // 
             this.label14.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(3, 7);
+            this.label14.Location = new System.Drawing.Point(6, 10);
+            this.label14.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(68, 17);
+            this.label14.Size = new System.Drawing.Size(134, 31);
             this.label14.TabIndex = 5;
             this.label14.Text = "分类选择：";
             // 
@@ -631,9 +677,10 @@
             // 
             this.cbbTemplateType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbTemplateType.FormattingEnabled = true;
-            this.cbbTemplateType.Location = new System.Drawing.Point(77, 3);
+            this.cbbTemplateType.Location = new System.Drawing.Point(152, 6);
+            this.cbbTemplateType.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.cbbTemplateType.Name = "cbbTemplateType";
-            this.cbbTemplateType.Size = new System.Drawing.Size(148, 25);
+            this.cbbTemplateType.Size = new System.Drawing.Size(292, 39);
             this.cbbTemplateType.TabIndex = 0;
             this.cbbTemplateType.SelectedIndexChanged += new System.EventHandler(this.cbbTemplateType_SelectedIndexChanged);
             // 
@@ -641,26 +688,29 @@
             // 
             this.label21.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(3, 36);
+            this.label21.Location = new System.Drawing.Point(6, 69);
+            this.label21.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(68, 17);
+            this.label21.Size = new System.Drawing.Size(134, 31);
             this.label21.TabIndex = 5;
             this.label21.Text = "分类名称：";
             // 
             // txbReplaceTemplateName
             // 
             this.txbReplaceTemplateName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbReplaceTemplateName.Location = new System.Drawing.Point(77, 34);
+            this.txbReplaceTemplateName.Location = new System.Drawing.Point(152, 65);
+            this.txbReplaceTemplateName.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.txbReplaceTemplateName.Name = "txbReplaceTemplateName";
-            this.txbReplaceTemplateName.Size = new System.Drawing.Size(148, 23);
+            this.txbReplaceTemplateName.Size = new System.Drawing.Size(292, 39);
             this.txbReplaceTemplateName.TabIndex = 6;
             // 
             // btnSaveReplaceTemplate
             // 
             this.btnSaveReplaceTemplate.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnSaveReplaceTemplate.Location = new System.Drawing.Point(231, 34);
+            this.btnSaveReplaceTemplate.Location = new System.Drawing.Point(456, 69);
+            this.btnSaveReplaceTemplate.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btnSaveReplaceTemplate.Name = "btnSaveReplaceTemplate";
-            this.btnSaveReplaceTemplate.Size = new System.Drawing.Size(72, 22);
+            this.btnSaveReplaceTemplate.Size = new System.Drawing.Size(144, 30);
             this.btnSaveReplaceTemplate.TabIndex = 7;
             this.btnSaveReplaceTemplate.Text = "保存分类";
             this.toolTip1.SetToolTip(this.btnSaveReplaceTemplate, "保存模板");
@@ -670,9 +720,10 @@
             // btnRemoveTemplate
             // 
             this.btnRemoveTemplate.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnRemoveTemplate.Location = new System.Drawing.Point(309, 34);
+            this.btnRemoveTemplate.Location = new System.Drawing.Point(612, 69);
+            this.btnRemoveTemplate.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btnRemoveTemplate.Name = "btnRemoveTemplate";
-            this.btnRemoveTemplate.Size = new System.Drawing.Size(66, 22);
+            this.btnRemoveTemplate.Size = new System.Drawing.Size(132, 30);
             this.btnRemoveTemplate.TabIndex = 8;
             this.btnRemoveTemplate.Text = "删除分类";
             this.toolTip1.SetToolTip(this.btnRemoveTemplate, "删除模板");
@@ -682,9 +733,10 @@
             // btnCopyAdd
             // 
             this.btnCopyAdd.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnCopyAdd.Location = new System.Drawing.Point(381, 34);
+            this.btnCopyAdd.Location = new System.Drawing.Point(756, 69);
+            this.btnCopyAdd.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btnCopyAdd.Name = "btnCopyAdd";
-            this.btnCopyAdd.Size = new System.Drawing.Size(66, 22);
+            this.btnCopyAdd.Size = new System.Drawing.Size(132, 30);
             this.btnCopyAdd.TabIndex = 8;
             this.btnCopyAdd.Text = "复制新增";
             this.btnCopyAdd.UseVisualStyleBackColor = true;
@@ -695,9 +747,11 @@
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.dgvNewTableInfo);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Location = new System.Drawing.Point(0, 53);
+            this.groupBox2.Location = new System.Drawing.Point(0, 106);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(527, 327);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.groupBox2.Size = new System.Drawing.Size(1054, 661);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "需要替换的新表信息";
@@ -706,9 +760,10 @@
             // 
             this.label4.AutoSize = true;
             this.label4.ForeColor = System.Drawing.Color.Red;
-            this.label4.Location = new System.Drawing.Point(159, 2);
+            this.label4.Location = new System.Drawing.Point(318, 4);
+            this.label4.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(124, 17);
+            this.label4.Size = new System.Drawing.Size(246, 31);
             this.label4.TabIndex = 4;
             this.label4.Text = "支持粘贴(备注列可空)";
             // 
@@ -717,10 +772,12 @@
             this.dgvNewTableInfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvNewTableInfo.ContextMenuStrip = this.cmsClass;
             this.dgvNewTableInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvNewTableInfo.Location = new System.Drawing.Point(3, 19);
+            this.dgvNewTableInfo.Location = new System.Drawing.Point(6, 38);
+            this.dgvNewTableInfo.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.dgvNewTableInfo.Name = "dgvNewTableInfo";
+            this.dgvNewTableInfo.RowHeadersWidth = 82;
             this.dgvNewTableInfo.RowTemplate.Height = 23;
-            this.dgvNewTableInfo.Size = new System.Drawing.Size(521, 305);
+            this.dgvNewTableInfo.Size = new System.Drawing.Size(1042, 617);
             this.dgvNewTableInfo.TabIndex = 1;
             this.dgvNewTableInfo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvNewTableInfo_KeyDown);
             // 
@@ -729,8 +786,10 @@
             this.groupBox4.Controls.Add(this.ckbIsOnlyReplaceTable);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox4.Location = new System.Drawing.Point(0, 0);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(527, 53);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.groupBox4.Size = new System.Drawing.Size(1054, 106);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "替换选项";
@@ -738,9 +797,10 @@
             // ckbIsOnlyReplaceTable
             // 
             this.ckbIsOnlyReplaceTable.AutoSize = true;
-            this.ckbIsOnlyReplaceTable.Location = new System.Drawing.Point(21, 20);
+            this.ckbIsOnlyReplaceTable.Location = new System.Drawing.Point(42, 40);
+            this.ckbIsOnlyReplaceTable.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbIsOnlyReplaceTable.Name = "ckbIsOnlyReplaceTable";
-            this.ckbIsOnlyReplaceTable.Size = new System.Drawing.Size(123, 21);
+            this.ckbIsOnlyReplaceTable.Size = new System.Drawing.Size(238, 35);
             this.ckbIsOnlyReplaceTable.TabIndex = 0;
             this.ckbIsOnlyReplaceTable.Text = "仅选中要替换的表";
             this.ckbIsOnlyReplaceTable.UseVisualStyleBackColor = true;
@@ -749,19 +809,21 @@
             // 
             this.tpAutoSQL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(226)))), ((int)(((byte)(243)))));
             this.tpAutoSQL.Controls.Add(this.rtbResult);
-            this.tpAutoSQL.Location = new System.Drawing.Point(4, 26);
+            this.tpAutoSQL.Location = new System.Drawing.Point(8, 45);
+            this.tpAutoSQL.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tpAutoSQL.Name = "tpAutoSQL";
-            this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(3);
-            this.tpAutoSQL.Size = new System.Drawing.Size(1232, 380);
+            this.tpAutoSQL.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.tpAutoSQL.Size = new System.Drawing.Size(2464, 767);
             this.tpAutoSQL.TabIndex = 1;
             this.tpAutoSQL.Text = "生成结果";
             // 
             // rtbResult
             // 
             this.rtbResult.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbResult.Location = new System.Drawing.Point(3, 3);
+            this.rtbResult.Location = new System.Drawing.Point(6, 6);
+            this.rtbResult.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.rtbResult.Name = "rtbResult";
-            this.rtbResult.Size = new System.Drawing.Size(1226, 374);
+            this.rtbResult.Size = new System.Drawing.Size(2452, 755);
             this.rtbResult.TabIndex = 3;
             this.rtbResult.Text = "";
             // 
@@ -771,9 +833,11 @@
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.groupBox1.Location = new System.Drawing.Point(0, 27);
+            this.groupBox1.Location = new System.Drawing.Point(0, 50);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1240, 56);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.groupBox1.Size = new System.Drawing.Size(2480, 112);
             this.groupBox1.TabIndex = 24;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "导入或查询选项";
@@ -793,8 +857,8 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbbInputType, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label2, 2, 0);
@@ -809,13 +873,14 @@
             this.tableLayoutPanel1.Controls.Add(this.txbDefaultColNameCN, 11, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 19);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(6, 38);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 11F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1234, 34);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 58F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(2468, 68);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // label3
@@ -823,9 +888,10 @@
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label3.AutoSize = true;
             this.label3.ForeColor = System.Drawing.Color.Red;
-            this.label3.Location = new System.Drawing.Point(3, 7);
+            this.label3.Location = new System.Drawing.Point(6, 10);
+            this.label3.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(68, 17);
+            this.label3.Size = new System.Drawing.Size(134, 31);
             this.label3.TabIndex = 1;
             this.label3.Text = "录入方式：";
             // 
@@ -833,9 +899,10 @@
             // 
             this.cbbInputType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbInputType.FormattingEnabled = true;
-            this.cbbInputType.Location = new System.Drawing.Point(77, 3);
+            this.cbbInputType.Location = new System.Drawing.Point(152, 6);
+            this.cbbInputType.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.cbbInputType.Name = "cbbInputType";
-            this.cbbInputType.Size = new System.Drawing.Size(96, 25);
+            this.cbbInputType.Size = new System.Drawing.Size(188, 39);
             this.cbbInputType.TabIndex = 18;
             this.cbbInputType.SelectedIndexChanged += new System.EventHandler(this.cbbInputType_SelectedIndexChanged);
             // 
@@ -844,9 +911,10 @@
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(179, 7);
+            this.label2.Location = new System.Drawing.Point(352, 10);
+            this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(68, 17);
+            this.label2.Size = new System.Drawing.Size(134, 31);
             this.label2.TabIndex = 1;
             this.label2.Text = "导入类型：";
             // 
@@ -854,9 +922,10 @@
             // 
             this.cbbImportDBType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbImportDBType.FormattingEnabled = true;
-            this.cbbImportDBType.Location = new System.Drawing.Point(253, 3);
+            this.cbbImportDBType.Location = new System.Drawing.Point(498, 6);
+            this.cbbImportDBType.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.cbbImportDBType.Name = "cbbImportDBType";
-            this.cbbImportDBType.Size = new System.Drawing.Size(110, 25);
+            this.cbbImportDBType.Size = new System.Drawing.Size(216, 39);
             this.cbbImportDBType.TabIndex = 4;
             this.cbbImportDBType.SelectedIndexChanged += new System.EventHandler(this.cbbImportDBType_SelectedIndexChanged);
             // 
@@ -864,9 +933,10 @@
             // 
             this.cbbTargetDbType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbTargetDbType.FormattingEnabled = true;
-            this.cbbTargetDbType.Location = new System.Drawing.Point(443, 3);
+            this.cbbTargetDbType.Location = new System.Drawing.Point(872, 6);
+            this.cbbTargetDbType.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.cbbTargetDbType.Name = "cbbTargetDbType";
-            this.cbbTargetDbType.Size = new System.Drawing.Size(110, 25);
+            this.cbbTargetDbType.Size = new System.Drawing.Size(216, 39);
             this.cbbTargetDbType.TabIndex = 3;
             // 
             // lblThree
@@ -874,9 +944,10 @@
             this.lblThree.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblThree.AutoSize = true;
             this.lblThree.ForeColor = System.Drawing.Color.Red;
-            this.lblThree.Location = new System.Drawing.Point(559, 7);
+            this.lblThree.Location = new System.Drawing.Point(1100, 10);
+            this.lblThree.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblThree.Name = "lblThree";
-            this.lblThree.Size = new System.Drawing.Size(68, 17);
+            this.lblThree.Size = new System.Drawing.Size(134, 31);
             this.lblThree.TabIndex = 1;
             this.lblThree.Text = "创建方式：";
             // 
@@ -884,18 +955,20 @@
             // 
             this.cbbCreateType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbCreateType.FormattingEnabled = true;
-            this.cbbCreateType.Location = new System.Drawing.Point(633, 3);
+            this.cbbCreateType.Location = new System.Drawing.Point(1246, 6);
+            this.cbbCreateType.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.cbbCreateType.Name = "cbbCreateType";
-            this.cbbCreateType.Size = new System.Drawing.Size(135, 25);
+            this.cbbCreateType.Size = new System.Drawing.Size(266, 39);
             this.cbbCreateType.TabIndex = 5;
             // 
             // ckbAllConvert
             // 
             this.ckbAllConvert.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbAllConvert.AutoSize = true;
-            this.ckbAllConvert.Location = new System.Drawing.Point(774, 5);
+            this.ckbAllConvert.Location = new System.Drawing.Point(1524, 8);
+            this.ckbAllConvert.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbAllConvert.Name = "ckbAllConvert";
-            this.ckbAllConvert.Size = new System.Drawing.Size(75, 21);
+            this.ckbAllConvert.Size = new System.Drawing.Size(142, 35);
             this.ckbAllConvert.TabIndex = 7;
             this.ckbAllConvert.Text = "综合转换";
             this.ckbAllConvert.UseVisualStyleBackColor = true;
@@ -906,9 +979,10 @@
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.Red;
-            this.label1.Location = new System.Drawing.Point(369, 7);
+            this.label1.Location = new System.Drawing.Point(726, 10);
+            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(68, 17);
+            this.label1.Size = new System.Drawing.Size(134, 31);
             this.label1.TabIndex = 1;
             this.label1.Text = "目标类型：";
             // 
@@ -916,9 +990,10 @@
             // 
             this.ckbDefaulePK.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbDefaulePK.AutoSize = true;
-            this.ckbDefaulePK.Location = new System.Drawing.Point(855, 5);
+            this.ckbDefaulePK.Location = new System.Drawing.Point(1678, 8);
+            this.ckbDefaulePK.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbDefaulePK.Name = "ckbDefaulePK";
-            this.ckbDefaulePK.Size = new System.Drawing.Size(75, 21);
+            this.ckbDefaulePK.Size = new System.Drawing.Size(142, 35);
             this.ckbDefaulePK.TabIndex = 25;
             this.ckbDefaulePK.Text = "默认主键";
             this.ckbDefaulePK.UseVisualStyleBackColor = true;
@@ -927,9 +1002,10 @@
             // 
             this.ckbDefaultColNameCn.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbDefaultColNameCn.AutoSize = true;
-            this.ckbDefaultColNameCn.Location = new System.Drawing.Point(936, 5);
+            this.ckbDefaultColNameCn.Location = new System.Drawing.Point(1832, 8);
+            this.ckbDefaultColNameCn.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbDefaultColNameCn.Name = "ckbDefaultColNameCn";
-            this.ckbDefaultColNameCn.Size = new System.Drawing.Size(99, 21);
+            this.ckbDefaultColNameCn.Size = new System.Drawing.Size(190, 35);
             this.ckbDefaultColNameCn.TabIndex = 26;
             this.ckbDefaultColNameCn.Text = "默认表列名称";
             this.ckbDefaultColNameCn.UseVisualStyleBackColor = true;
@@ -937,19 +1013,20 @@
             // txbDefaultColNameCN
             // 
             this.txbDefaultColNameCN.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbDefaultColNameCN.Location = new System.Drawing.Point(1041, 4);
+            this.txbDefaultColNameCN.Location = new System.Drawing.Point(2034, 6);
+            this.txbDefaultColNameCN.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.txbDefaultColNameCN.Name = "txbDefaultColNameCN";
-            this.txbDefaultColNameCN.Size = new System.Drawing.Size(142, 23);
+            this.txbDefaultColNameCN.Size = new System.Drawing.Size(280, 39);
             this.txbDefaultColNameCN.TabIndex = 27;
             this.txbDefaultColNameCN.Text = "未知";
             // 
             // btnSaveOther
             // 
             this.btnSaveOther.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveOther.Location = new System.Drawing.Point(630, 2);
-            this.btnSaveOther.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSaveOther.Location = new System.Drawing.Point(1204, 4);
+            this.btnSaveOther.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSaveOther.Name = "btnSaveOther";
-            this.btnSaveOther.Size = new System.Drawing.Size(89, 25);
+            this.btnSaveOther.Size = new System.Drawing.Size(178, 50);
             this.btnSaveOther.TabIndex = 17;
             this.btnSaveOther.Text = "SQL另存为";
             this.btnSaveOther.UseVisualStyleBackColor = true;
@@ -959,9 +1036,10 @@
             // 
             this.ckbLYTemplate.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbLYTemplate.AutoSize = true;
-            this.ckbLYTemplate.Location = new System.Drawing.Point(3, 4);
+            this.ckbLYTemplate.Location = new System.Drawing.Point(6, 11);
+            this.ckbLYTemplate.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbLYTemplate.Name = "ckbLYTemplate";
-            this.ckbLYTemplate.Size = new System.Drawing.Size(64, 21);
+            this.ckbLYTemplate.Size = new System.Drawing.Size(120, 35);
             this.ckbLYTemplate.TabIndex = 23;
             this.ckbLYTemplate.Text = "LY模板";
             this.ckbLYTemplate.UseVisualStyleBackColor = true;
@@ -971,9 +1049,10 @@
             // 
             this.ckbFullTypeDoc.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbFullTypeDoc.AutoSize = true;
-            this.ckbFullTypeDoc.Location = new System.Drawing.Point(73, 4);
+            this.ckbFullTypeDoc.Location = new System.Drawing.Point(138, 11);
+            this.ckbFullTypeDoc.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbFullTypeDoc.Name = "ckbFullTypeDoc";
-            this.ckbFullTypeDoc.Size = new System.Drawing.Size(63, 21);
+            this.ckbFullTypeDoc.Size = new System.Drawing.Size(118, 35);
             this.ckbFullTypeDoc.TabIndex = 22;
             this.ckbFullTypeDoc.Text = "全类型";
             this.ckbFullTypeDoc.UseVisualStyleBackColor = true;
@@ -982,9 +1061,10 @@
             // 
             this.ckbOnlyRemark.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbOnlyRemark.AutoSize = true;
-            this.ckbOnlyRemark.Location = new System.Drawing.Point(142, 4);
+            this.ckbOnlyRemark.Location = new System.Drawing.Point(268, 11);
+            this.ckbOnlyRemark.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbOnlyRemark.Name = "ckbOnlyRemark";
-            this.ckbOnlyRemark.Size = new System.Drawing.Size(87, 21);
+            this.ckbOnlyRemark.Size = new System.Drawing.Size(166, 35);
             this.ckbOnlyRemark.TabIndex = 24;
             this.ckbOnlyRemark.Text = "备注含名称";
             this.ckbOnlyRemark.UseVisualStyleBackColor = true;
@@ -993,9 +1073,10 @@
             // 
             this.ckbColNameSameRemark.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbColNameSameRemark.AutoSize = true;
-            this.ckbColNameSameRemark.Location = new System.Drawing.Point(235, 4);
+            this.ckbColNameSameRemark.Location = new System.Drawing.Point(446, 11);
+            this.ckbColNameSameRemark.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbColNameSameRemark.Name = "ckbColNameSameRemark";
-            this.ckbColNameSameRemark.Size = new System.Drawing.Size(87, 21);
+            this.ckbColNameSameRemark.Size = new System.Drawing.Size(166, 35);
             this.ckbColNameSameRemark.TabIndex = 28;
             this.ckbColNameSameRemark.Text = "名称同备注";
             this.ckbColNameSameRemark.UseVisualStyleBackColor = true;
@@ -1004,9 +1085,10 @@
             // 
             this.ckbDoubleColName.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbDoubleColName.AutoSize = true;
-            this.ckbDoubleColName.Location = new System.Drawing.Point(328, 4);
+            this.ckbDoubleColName.Location = new System.Drawing.Point(624, 11);
+            this.ckbDoubleColName.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbDoubleColName.Name = "ckbDoubleColName";
-            this.ckbDoubleColName.Size = new System.Drawing.Size(99, 21);
+            this.ckbDoubleColName.Size = new System.Drawing.Size(190, 35);
             this.ckbDoubleColName.TabIndex = 28;
             this.ckbDoubleColName.Text = "增加原列编码";
             this.ckbDoubleColName.UseVisualStyleBackColor = true;
@@ -1016,9 +1098,10 @@
             this.lblTableName.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lblTableName.AutoSize = true;
             this.lblTableName.ForeColor = System.Drawing.Color.Red;
-            this.lblTableName.Location = new System.Drawing.Point(3, 8);
+            this.lblTableName.Location = new System.Drawing.Point(6, 18);
+            this.lblTableName.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblTableName.Name = "lblTableName";
-            this.lblTableName.Size = new System.Drawing.Size(44, 17);
+            this.lblTableName.Size = new System.Drawing.Size(86, 31);
             this.lblTableName.TabIndex = 1;
             this.lblTableName.Text = "表名：";
             // 
@@ -1026,9 +1109,10 @@
             // 
             this.ckbGetTableList.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbGetTableList.AutoSize = true;
-            this.ckbGetTableList.Location = new System.Drawing.Point(350, 6);
+            this.ckbGetTableList.Location = new System.Drawing.Point(694, 16);
+            this.ckbGetTableList.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbGetTableList.Name = "ckbGetTableList";
-            this.ckbGetTableList.Size = new System.Drawing.Size(87, 21);
+            this.ckbGetTableList.Size = new System.Drawing.Size(166, 35);
             this.ckbGetTableList.TabIndex = 20;
             this.ckbGetTableList.Text = "获取表清单";
             this.ckbGetTableList.UseVisualStyleBackColor = true;
@@ -1038,9 +1122,10 @@
             // 
             this.cbbTableName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbTableName.FormattingEnabled = true;
-            this.cbbTableName.Location = new System.Drawing.Point(53, 4);
+            this.cbbTableName.Location = new System.Drawing.Point(104, 14);
+            this.cbbTableName.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.cbbTableName.Name = "cbbTableName";
-            this.cbbTableName.Size = new System.Drawing.Size(291, 25);
+            this.cbbTableName.Size = new System.Drawing.Size(578, 39);
             this.cbbTableName.TabIndex = 19;
             this.cbbTableName.SelectedIndexChanged += new System.EventHandler(this.cbbTableName_SelectedIndexChanged);
             // 
@@ -1057,7 +1142,8 @@
             this.tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1240, 27);
+            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 4, 0);
+            this.toolStrip1.Size = new System.Drawing.Size(2480, 50);
             this.toolStrip1.TabIndex = 23;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -1066,7 +1152,7 @@
             this.tsbImport.Image = ((System.Drawing.Image)(resources.GetObject("tsbImport.Image")));
             this.tsbImport.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbImport.Name = "tsbImport";
-            this.tsbImport.Size = new System.Drawing.Size(68, 24);
+            this.tsbImport.Size = new System.Drawing.Size(109, 44);
             this.tsbImport.Text = "导入(&I)";
             this.tsbImport.Click += new System.EventHandler(this.tsbImport_Click);
             // 
@@ -1075,7 +1161,7 @@
             this.tsbAutoSQL.Image = ((System.Drawing.Image)(resources.GetObject("tsbAutoSQL.Image")));
             this.tsbAutoSQL.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbAutoSQL.Name = "tsbAutoSQL";
-            this.tsbAutoSQL.Size = new System.Drawing.Size(72, 24);
+            this.tsbAutoSQL.Size = new System.Drawing.Size(119, 44);
             this.tsbAutoSQL.Text = "生成(&A)";
             this.tsbAutoSQL.Click += new System.EventHandler(this.tsbAutoSQL_Click);
             // 
@@ -1084,7 +1170,7 @@
             this.tsbFitStandardCheck.Image = ((System.Drawing.Image)(resources.GetObject("tsbFitStandardCheck.Image")));
             this.tsbFitStandardCheck.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbFitStandardCheck.Name = "tsbFitStandardCheck";
-            this.tsbFitStandardCheck.Size = new System.Drawing.Size(104, 24);
+            this.tsbFitStandardCheck.Size = new System.Drawing.Size(182, 44);
             this.tsbFitStandardCheck.Text = "符合标准检查";
             this.tsbFitStandardCheck.Click += new System.EventHandler(this.tsbFitStandardCheck_Click);
             // 
@@ -1093,7 +1179,7 @@
             this.tsbRerighByStandard.Image = ((System.Drawing.Image)(resources.GetObject("tsbRerighByStandard.Image")));
             this.tsbRerighByStandard.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbRerighByStandard.Name = "tsbRerighByStandard";
-            this.tsbRerighByStandard.Size = new System.Drawing.Size(92, 24);
+            this.tsbRerighByStandard.Size = new System.Drawing.Size(158, 44);
             this.tsbRerighByStandard.Text = "按标准修正";
             this.tsbRerighByStandard.Click += new System.EventHandler(this.tsbRerighByStandard_Click);
             // 
@@ -1102,7 +1188,7 @@
             this.tsbDownLoad.Image = ((System.Drawing.Image)(resources.GetObject("tsbDownLoad.Image")));
             this.tsbDownLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbDownLoad.Name = "tsbDownLoad";
-            this.tsbDownLoad.Size = new System.Drawing.Size(97, 24);
+            this.tsbDownLoad.Size = new System.Drawing.Size(168, 44);
             this.tsbDownLoad.Text = "下载模板(&D)";
             this.tsbDownLoad.Click += new System.EventHandler(this.tsbDownLoad_Click);
             // 
@@ -1111,7 +1197,7 @@
             this.tsbDownloadLYTemplate.Image = ((System.Drawing.Image)(resources.GetObject("tsbDownloadLYTemplate.Image")));
             this.tsbDownloadLYTemplate.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbDownloadLYTemplate.Name = "tsbDownloadLYTemplate";
-            this.tsbDownloadLYTemplate.Size = new System.Drawing.Size(110, 24);
+            this.tsbDownloadLYTemplate.Size = new System.Drawing.Size(194, 44);
             this.tsbDownloadLYTemplate.Text = "下载LY模板(&D)";
             this.tsbDownloadLYTemplate.Click += new System.EventHandler(this.tsbDownloadLYTemplate_Click);
             // 
@@ -1120,7 +1206,7 @@
             this.tsbExit.Image = ((System.Drawing.Image)(resources.GetObject("tsbExit.Image")));
             this.tsbExit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbExit.Name = "tsbExit";
-            this.tsbExit.Size = new System.Drawing.Size(72, 24);
+            this.tsbExit.Size = new System.Drawing.Size(117, 44);
             this.tsbExit.Text = "退出(&X)";
             this.tsbExit.Click += new System.EventHandler(this.tsbExit_Click);
             // 
@@ -1129,9 +1215,11 @@
             this.gbTable.Controls.Add(this.tableLayoutPanel2);
             this.gbTable.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbTable.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.gbTable.Location = new System.Drawing.Point(0, 216);
+            this.gbTable.Location = new System.Drawing.Point(0, 428);
+            this.gbTable.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.gbTable.Name = "gbTable";
-            this.gbTable.Size = new System.Drawing.Size(1240, 55);
+            this.gbTable.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.gbTable.Size = new System.Drawing.Size(2480, 110);
             this.gbTable.TabIndex = 37;
             this.gbTable.TabStop = false;
             this.gbTable.Text = "表信息";
@@ -1150,8 +1238,8 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 112F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 224F));
             this.tableLayoutPanel2.Controls.Add(this.lblTableName, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.cbbTableName, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.ckbGetTableList, 2, 0);
@@ -1163,22 +1251,24 @@
             this.tableLayoutPanel2.Controls.Add(this.btnConnect, 4, 0);
             this.tableLayoutPanel2.Controls.Add(this.ckbIsAutoFillColNameCn, 3, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 19);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(6, 38);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 3;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1234, 35);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(2468, 70);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // ckbQueryColumnRealTime
             // 
             this.ckbQueryColumnRealTime.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbQueryColumnRealTime.AutoSize = true;
-            this.ckbQueryColumnRealTime.Location = new System.Drawing.Point(642, 6);
+            this.ckbQueryColumnRealTime.Location = new System.Drawing.Point(1262, 16);
+            this.ckbQueryColumnRealTime.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbQueryColumnRealTime.Name = "ckbQueryColumnRealTime";
-            this.ckbQueryColumnRealTime.Size = new System.Drawing.Size(87, 21);
+            this.ckbQueryColumnRealTime.Size = new System.Drawing.Size(166, 35);
             this.ckbQueryColumnRealTime.TabIndex = 23;
             this.ckbQueryColumnRealTime.Text = "实时查询列";
             this.ckbQueryColumnRealTime.UseVisualStyleBackColor = true;
@@ -1187,9 +1277,10 @@
             // 
             this.btnGenerateSql.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.btnGenerateSql.ForeColor = System.Drawing.Color.Red;
-            this.btnGenerateSql.Location = new System.Drawing.Point(581, 3);
+            this.btnGenerateSql.Location = new System.Drawing.Point(1140, 7);
+            this.btnGenerateSql.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btnGenerateSql.Name = "btnGenerateSql";
-            this.btnGenerateSql.Size = new System.Drawing.Size(55, 27);
+            this.btnGenerateSql.Size = new System.Drawing.Size(110, 54);
             this.btnGenerateSql.TabIndex = 24;
             this.btnGenerateSql.Text = "生成";
             this.btnGenerateSql.UseVisualStyleBackColor = true;
@@ -1199,9 +1290,10 @@
             // 
             this.ckbUpdateDefault.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbUpdateDefault.AutoSize = true;
-            this.ckbUpdateDefault.Location = new System.Drawing.Point(735, 6);
+            this.ckbUpdateDefault.Location = new System.Drawing.Point(1440, 16);
+            this.ckbUpdateDefault.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbUpdateDefault.Name = "ckbUpdateDefault";
-            this.ckbUpdateDefault.Size = new System.Drawing.Size(111, 21);
+            this.ckbUpdateDefault.Size = new System.Drawing.Size(214, 35);
             this.ckbUpdateDefault.TabIndex = 23;
             this.ckbUpdateDefault.Text = "实时获取默认值";
             this.ckbUpdateDefault.UseVisualStyleBackColor = true;
@@ -1212,9 +1304,10 @@
             this.ckbExcludeColumn.AutoSize = true;
             this.ckbExcludeColumn.Checked = true;
             this.ckbExcludeColumn.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbExcludeColumn.Location = new System.Drawing.Point(852, 6);
+            this.ckbExcludeColumn.Location = new System.Drawing.Point(1666, 16);
+            this.ckbExcludeColumn.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbExcludeColumn.Name = "ckbExcludeColumn";
-            this.ckbExcludeColumn.Size = new System.Drawing.Size(63, 21);
+            this.ckbExcludeColumn.Size = new System.Drawing.Size(118, 35);
             this.ckbExcludeColumn.TabIndex = 21;
             this.ckbExcludeColumn.Text = "排除列";
             this.ckbExcludeColumn.UseVisualStyleBackColor = true;
@@ -1223,18 +1316,20 @@
             // txbExcludeColumn
             // 
             this.txbExcludeColumn.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.txbExcludeColumn.Location = new System.Drawing.Point(921, 5);
+            this.txbExcludeColumn.Location = new System.Drawing.Point(1796, 14);
+            this.txbExcludeColumn.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.txbExcludeColumn.Name = "txbExcludeColumn";
-            this.txbExcludeColumn.Size = new System.Drawing.Size(272, 23);
+            this.txbExcludeColumn.Size = new System.Drawing.Size(540, 39);
             this.txbExcludeColumn.TabIndex = 22;
             // 
             // btnConnect
             // 
             this.btnConnect.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.btnConnect.ForeColor = System.Drawing.Color.Red;
-            this.btnConnect.Location = new System.Drawing.Point(524, 3);
+            this.btnConnect.Location = new System.Drawing.Point(1026, 6);
+            this.btnConnect.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(51, 28);
+            this.btnConnect.Size = new System.Drawing.Size(102, 56);
             this.btnConnect.TabIndex = 25;
             this.btnConnect.Text = "连接";
             this.btnConnect.UseVisualStyleBackColor = true;
@@ -1244,9 +1339,10 @@
             // 
             this.ckbIsAutoFillColNameCn.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbIsAutoFillColNameCn.AutoSize = true;
-            this.ckbIsAutoFillColNameCn.Location = new System.Drawing.Point(443, 6);
+            this.ckbIsAutoFillColNameCn.Location = new System.Drawing.Point(872, 16);
+            this.ckbIsAutoFillColNameCn.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbIsAutoFillColNameCn.Name = "ckbIsAutoFillColNameCn";
-            this.ckbIsAutoFillColNameCn.Size = new System.Drawing.Size(75, 21);
+            this.ckbIsAutoFillColNameCn.Size = new System.Drawing.Size(142, 35);
             this.ckbIsAutoFillColNameCn.TabIndex = 26;
             this.ckbIsAutoFillColNameCn.Text = "修复列名";
             this.toolTip1.SetToolTip(this.ckbIsAutoFillColNameCn, "当列名称为空时，自动根据查询结果、数据字典、编码名称中查找来替换");
@@ -1258,9 +1354,11 @@
             this.groupBox5.Controls.Add(this.tableLayoutPanel3);
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox5.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.groupBox5.Location = new System.Drawing.Point(0, 83);
+            this.groupBox5.Location = new System.Drawing.Point(0, 162);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(1240, 50);
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.groupBox5.Size = new System.Drawing.Size(2480, 100);
             this.groupBox5.TabIndex = 0;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "生成文档选项";
@@ -1276,8 +1374,8 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 493F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 986F));
             this.tableLayoutPanel3.Controls.Add(this.ckbFullTypeDoc, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.ckbLYTemplate, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.ckbOnlyRemark, 2, 0);
@@ -1288,22 +1386,24 @@
             this.tableLayoutPanel3.Controls.Add(this.ckbIsColumnHeadMerge, 6, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 19);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(6, 38);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 3;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(1234, 28);
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(2468, 56);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // ckbIsPkRemoveDefault
             // 
             this.ckbIsPkRemoveDefault.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbIsPkRemoveDefault.AutoSize = true;
-            this.ckbIsPkRemoveDefault.Location = new System.Drawing.Point(433, 4);
+            this.ckbIsPkRemoveDefault.Location = new System.Drawing.Point(826, 11);
+            this.ckbIsPkRemoveDefault.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbIsPkRemoveDefault.Name = "ckbIsPkRemoveDefault";
-            this.ckbIsPkRemoveDefault.Size = new System.Drawing.Size(111, 21);
+            this.ckbIsPkRemoveDefault.Size = new System.Drawing.Size(214, 35);
             this.ckbIsPkRemoveDefault.TabIndex = 22;
             this.ckbIsPkRemoveDefault.Text = "主键剔除默认值";
             this.ckbIsPkRemoveDefault.UseVisualStyleBackColor = true;
@@ -1311,9 +1411,10 @@
             // ckbIsColumnHeadMerge
             // 
             this.ckbIsColumnHeadMerge.AutoSize = true;
-            this.ckbIsColumnHeadMerge.Location = new System.Drawing.Point(550, 3);
+            this.ckbIsColumnHeadMerge.Location = new System.Drawing.Point(1052, 6);
+            this.ckbIsColumnHeadMerge.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbIsColumnHeadMerge.Name = "ckbIsColumnHeadMerge";
-            this.ckbIsColumnHeadMerge.Size = new System.Drawing.Size(75, 21);
+            this.ckbIsColumnHeadMerge.Size = new System.Drawing.Size(142, 35);
             this.ckbIsColumnHeadMerge.TabIndex = 29;
             this.ckbIsColumnHeadMerge.Text = "列头合并";
             this.ckbIsColumnHeadMerge.UseVisualStyleBackColor = true;
@@ -1321,17 +1422,17 @@
             // uC_DbConnection1
             // 
             this.uC_DbConnection1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.uC_DbConnection1.Location = new System.Drawing.Point(0, 133);
-            this.uC_DbConnection1.Margin = new System.Windows.Forms.Padding(4);
+            this.uC_DbConnection1.Location = new System.Drawing.Point(0, 262);
+            this.uC_DbConnection1.Margin = new System.Windows.Forms.Padding(8, 8, 8, 8);
             this.uC_DbConnection1.Name = "uC_DbConnection1";
-            this.uC_DbConnection1.Size = new System.Drawing.Size(1240, 83);
+            this.uC_DbConnection1.Size = new System.Drawing.Size(2480, 166);
             this.uC_DbConnection1.TabIndex = 36;
             // 
             // FrmDBTExcelGenerateTableSQL
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1240, 681);
+            this.ClientSize = new System.Drawing.Size(2480, 1362);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.gbTable);
             this.Controls.Add(this.uC_DbConnection1);
@@ -1339,7 +1440,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Margin = new System.Windows.Forms.Padding(8, 8, 8, 8);
             this.Name = "FrmDBTExcelGenerateTableSQL";
             this.Text = "生成表SQL";
             this.Load += new System.EventHandler(this.FrmDBTImportExcelGenerateTableSQL_Load);

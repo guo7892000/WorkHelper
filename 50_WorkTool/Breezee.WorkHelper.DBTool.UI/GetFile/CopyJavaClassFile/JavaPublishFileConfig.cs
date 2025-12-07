@@ -35,6 +35,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             entity.ColKeys.Add(KeyString.UserName);
             entity.ColKeys.Add(KeyString.SourceGetType);
             entity.ColKeys.Add(KeyString.IsJumpConfig);
+            entity.ColKeys.Add(KeyString.IsFromDateBefore);
+            entity.ColKeys.Add(KeyString.BeforeDateQty);
             // 值
             entity.ColVals.Add(ValueString.IsCopyFromSrc);
             entity.ColVals.Add(ValueString.RelCodeDir);
@@ -62,6 +64,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             public static readonly string UserName = "UserName";
             public static readonly string SourceGetType = "SourceGetType";
             public static readonly string IsJumpConfig = "IsJumpConfig";
+            public static readonly string IsFromDateBefore = "IsFromDateBefore";
+            public static readonly string BeforeDateQty = "BeforeDateQty";
         }
 
         /// <summary>

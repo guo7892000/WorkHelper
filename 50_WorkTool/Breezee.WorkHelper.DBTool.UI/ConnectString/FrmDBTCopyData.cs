@@ -50,8 +50,12 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 { "0", "无" },
                 { "1", "小驼峰式" },
-                { "2", "大驼峰式" }
-            };
+                { "2", "大驼峰式" },
+                { "11", "全小写" },
+                { "21", "全大写" },
+                { "12", "无杆小写" },
+                { "22", "无杆大写" }
+        };
             cbbWordConvert.BindTypeValueDropDownList(dic_List.GetTextValueTable(false), false, true);
 
             //数据库类型
@@ -158,6 +162,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                         StringBuilder sb = new StringBuilder();
                         for (int j = 0; j < dtMain.Columns.Count; j++)
                         {
+                            if ("ROWNO".Equals(dtMain.Columns[j].ColumnName, StringComparison.OrdinalIgnoreCase))
+                            {
+                                continue;
+                            }
                             string strData = ckbTrim.Checked ? dtMain.Rows[i][j].ToString().Trim(): dtMain.Rows[i][j].ToString();
                             if ("1".Equals(sConvert) || "2".Equals(sConvert))
                             {
@@ -174,6 +182,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                                     }
                                 }
                                 strData = sb.ToString();
+                            }
+                            else if ("11".Equals(sConvert)|| "21".Equals(sConvert))
+                            {
+                                strData = "11".Equals(sConvert)? strData.ToLower() : strData.ToUpper();
+                            }
+                            else if ("12".Equals(sConvert) || "22".Equals(sConvert))
+                            {
+                                strData = "12".Equals(sConvert) ? strData.ToLower().Replace("_","") : strData.ToUpper().Replace("_", "");
                             }
 
                             //将数据中的列名替换为单元格中的数据

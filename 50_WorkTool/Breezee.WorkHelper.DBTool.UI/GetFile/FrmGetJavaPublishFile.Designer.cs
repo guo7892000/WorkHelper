@@ -82,16 +82,12 @@
             this.grbGetFile = new System.Windows.Forms.GroupBox();
             this.label13 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.lblEmail = new System.Windows.Forms.Label();
-            this.txbEmail = new System.Windows.Forms.TextBox();
             this.ckbSetBeginAsLastSaveEnd = new System.Windows.Forms.CheckBox();
             this.ckbEndToNow = new System.Windows.Forms.CheckBox();
             this.ckbSaveEndTime = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
             this.txbExcludeEndprx = new System.Windows.Forms.TextBox();
-            this.txbUserName = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
             this.dgvCodeClassRelConfig = new System.Windows.Forms.DataGridView();
@@ -112,6 +108,9 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.ckbSelectConfig = new System.Windows.Forms.CheckBox();
+            this.ckbBeginDateNum = new System.Windows.Forms.CheckBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.nudFromDateBefore = new System.Windows.Forms.NumericUpDown();
             this.toolStrip1.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
@@ -132,6 +131,7 @@
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudFromDateBefore)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -499,11 +499,11 @@
             // rtbExcludeRelateDir
             // 
             this.rtbExcludeRelateDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.SetColumnSpan(this.rtbExcludeRelateDir, 7);
+            this.tableLayoutPanel1.SetColumnSpan(this.rtbExcludeRelateDir, 8);
             this.rtbExcludeRelateDir.Location = new System.Drawing.Point(172, 119);
             this.rtbExcludeRelateDir.Margin = new System.Windows.Forms.Padding(6);
             this.rtbExcludeRelateDir.Name = "rtbExcludeRelateDir";
-            this.rtbExcludeRelateDir.Size = new System.Drawing.Size(1645, 54);
+            this.rtbExcludeRelateDir.Size = new System.Drawing.Size(1669, 54);
             this.rtbExcludeRelateDir.TabIndex = 17;
             this.rtbExcludeRelateDir.Text = "";
             // 
@@ -521,11 +521,11 @@
             // rtbExcludeRelateFile
             // 
             this.rtbExcludeRelateFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.SetColumnSpan(this.rtbExcludeRelateFile, 7);
+            this.tableLayoutPanel1.SetColumnSpan(this.rtbExcludeRelateFile, 8);
             this.rtbExcludeRelateFile.Location = new System.Drawing.Point(172, 185);
             this.rtbExcludeRelateFile.Margin = new System.Windows.Forms.Padding(6);
             this.rtbExcludeRelateFile.Name = "rtbExcludeRelateFile";
-            this.rtbExcludeRelateFile.Size = new System.Drawing.Size(1645, 54);
+            this.rtbExcludeRelateFile.Size = new System.Drawing.Size(1669, 54);
             this.rtbExcludeRelateFile.TabIndex = 17;
             this.rtbExcludeRelateFile.Text = "";
             // 
@@ -534,7 +534,7 @@
             this.btnGetChangeFile.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.btnGetChangeFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.btnGetChangeFile.ForeColor = System.Drawing.Color.Black;
-            this.btnGetChangeFile.Location = new System.Drawing.Point(756, 6);
+            this.btnGetChangeFile.Location = new System.Drawing.Point(1120, 6);
             this.btnGetChangeFile.Margin = new System.Windows.Forms.Padding(6);
             this.btnGetChangeFile.Name = "btnGetChangeFile";
             this.btnGetChangeFile.Size = new System.Drawing.Size(109, 54);
@@ -733,7 +733,8 @@
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 10;
+            this.tableLayoutPanel1.ColumnCount = 11;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -744,11 +745,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 112F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Controls.Add(this.label10, 6, 0);
             this.tableLayoutPanel1.Controls.Add(this.label9, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.lblEmail, 4, 0);
-            this.tableLayoutPanel1.Controls.Add(this.txbEmail, 5, 0);
             this.tableLayoutPanel1.Controls.Add(this.dtpBegin, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.ckbSetBeginAsLastSaveEnd, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.label8, 0, 3);
@@ -758,11 +755,13 @@
             this.tableLayoutPanel1.Controls.Add(this.ckbEndToNow, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.ckbSaveEndTime, 3, 1);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label11, 4, 1);
-            this.tableLayoutPanel1.Controls.Add(this.txbExcludeEndprx, 5, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label11, 5, 1);
+            this.tableLayoutPanel1.Controls.Add(this.txbExcludeEndprx, 6, 1);
             this.tableLayoutPanel1.Controls.Add(this.dtpEnd, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.txbUserName, 7, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnGetChangeFile, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.ckbBeginDateNum, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.btnGetChangeFile, 6, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label16, 5, 0);
+            this.tableLayoutPanel1.Controls.Add(this.nudFromDateBefore, 4, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(4, 32);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
@@ -776,18 +775,6 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1975, 256);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // label10
-            // 
-            this.label10.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label10.AutoSize = true;
-            this.label10.ForeColor = System.Drawing.Color.Black;
-            this.label10.Location = new System.Drawing.Point(1352, 21);
-            this.label10.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(106, 24);
-            this.label10.TabIndex = 17;
-            this.label10.Text = "用户名：";
-            // 
             // label9
             // 
             this.label9.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -799,27 +786,6 @@
             this.label9.Size = new System.Drawing.Size(154, 24);
             this.label9.TabIndex = 3;
             this.label9.Text = "修改时间从：";
-            // 
-            // lblEmail
-            // 
-            this.lblEmail.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.lblEmail.AutoSize = true;
-            this.lblEmail.ForeColor = System.Drawing.Color.Black;
-            this.lblEmail.Location = new System.Drawing.Point(990, 21);
-            this.lblEmail.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.lblEmail.Name = "lblEmail";
-            this.lblEmail.Size = new System.Drawing.Size(94, 24);
-            this.lblEmail.TabIndex = 17;
-            this.lblEmail.Text = "Email：";
-            // 
-            // txbEmail
-            // 
-            this.txbEmail.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.txbEmail.Location = new System.Drawing.Point(1096, 15);
-            this.txbEmail.Margin = new System.Windows.Forms.Padding(6);
-            this.txbEmail.Name = "txbEmail";
-            this.txbEmail.Size = new System.Drawing.Size(244, 35);
-            this.txbEmail.TabIndex = 16;
             // 
             // ckbSetBeginAsLastSaveEnd
             // 
@@ -851,6 +817,7 @@
             // 
             this.ckbSaveEndTime.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbSaveEndTime.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.ckbSaveEndTime, 2);
             this.ckbSaveEndTime.Location = new System.Drawing.Point(756, 75);
             this.ckbSaveEndTime.Margin = new System.Windows.Forms.Padding(6);
             this.ckbSaveEndTime.Name = "ckbSaveEndTime";
@@ -863,7 +830,7 @@
             // 
             this.label11.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(954, 77);
+            this.label11.Location = new System.Drawing.Point(978, 77);
             this.label11.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(130, 24);
@@ -874,20 +841,11 @@
             // 
             this.txbExcludeEndprx.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.SetColumnSpan(this.txbExcludeEndprx, 3);
-            this.txbExcludeEndprx.Location = new System.Drawing.Point(1096, 72);
+            this.txbExcludeEndprx.Location = new System.Drawing.Point(1120, 72);
             this.txbExcludeEndprx.Margin = new System.Windows.Forms.Padding(6);
             this.txbExcludeEndprx.Name = "txbExcludeEndprx";
             this.txbExcludeEndprx.Size = new System.Drawing.Size(721, 35);
             this.txbExcludeEndprx.TabIndex = 20;
-            // 
-            // txbUserName
-            // 
-            this.txbUserName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbUserName.Location = new System.Drawing.Point(1470, 15);
-            this.txbUserName.Margin = new System.Windows.Forms.Padding(6);
-            this.txbUserName.Name = "txbUserName";
-            this.txbUserName.Size = new System.Drawing.Size(347, 35);
-            this.txbUserName.TabIndex = 16;
             // 
             // groupBox1
             // 
@@ -1151,6 +1109,43 @@
             this.ckbSelectConfig.Text = "选择变化跳转到配置";
             this.ckbSelectConfig.UseVisualStyleBackColor = true;
             // 
+            // ckbBeginDateNum
+            // 
+            this.ckbBeginDateNum.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbBeginDateNum.AutoSize = true;
+            this.ckbBeginDateNum.Location = new System.Drawing.Point(753, 19);
+            this.ckbBeginDateNum.Name = "ckbBeginDateNum";
+            this.ckbBeginDateNum.Size = new System.Drawing.Size(66, 28);
+            this.ckbBeginDateNum.TabIndex = 23;
+            this.ckbBeginDateNum.Text = "从";
+            this.ckbBeginDateNum.UseVisualStyleBackColor = true;
+            this.ckbBeginDateNum.CheckedChanged += new System.EventHandler(this.ckbBeginDateNum_CheckedChanged);
+            // 
+            // label16
+            // 
+            this.label16.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(954, 21);
+            this.label16.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(154, 24);
+            this.label16.TabIndex = 5;
+            this.label16.Text = "天前开始获取";
+            // 
+            // nudFromDateBefore
+            // 
+            this.nudFromDateBefore.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.nudFromDateBefore.Location = new System.Drawing.Point(825, 15);
+            this.nudFromDateBefore.Name = "nudFromDateBefore";
+            this.nudFromDateBefore.Size = new System.Drawing.Size(120, 35);
+            this.nudFromDateBefore.TabIndex = 24;
+            this.nudFromDateBefore.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudFromDateBefore.ValueChanged += new System.EventHandler(this.nudFromDateBefore_ValueChanged);
+            // 
             // FrmGetJavaPublishFile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 24F);
@@ -1192,6 +1187,7 @@
             this.groupBox2.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudFromDateBefore)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1263,10 +1259,6 @@
         private System.Windows.Forms.ComboBox cbbGetChangCodeType;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label lblEmail;
-        private System.Windows.Forms.TextBox txbUserName;
-        private System.Windows.Forms.TextBox txbEmail;
         private System.Windows.Forms.ToolStripMenuItem tsbExcludeFile;
         private System.Windows.Forms.CheckBox ckbSetBeginAsLastSaveEnd;
         private System.Windows.Forms.Label label11;
@@ -1281,5 +1273,8 @@
         private System.Windows.Forms.CheckBox ckbEndToNow;
         private System.Windows.Forms.CheckBox ckbSaveEndTime;
         private System.Windows.Forms.CheckBox ckbOpenGenDir;
+        private System.Windows.Forms.CheckBox ckbBeginDateNum;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.NumericUpDown nudFromDateBefore;
     }
 }

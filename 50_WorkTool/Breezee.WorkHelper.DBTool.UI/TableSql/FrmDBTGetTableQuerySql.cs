@@ -186,7 +186,14 @@ namespace Breezee.WorkHelper.DBTool.UI
             string sFilter = DBTableEntity.SqlString.Name + "='" + sTableName + "'";
             if (!uC_DbConnection1.userTableDic.ContainsKey(uC_DbConnection1.LatestDbServerInfo.DbConnKey) || uC_DbConnection1.userTableDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey].Rows.Count == 0)
             {
-                drArr = _dataAccess.GetSchemaTables().Select(sFilter);
+                if (ckbQueryColumnRealTime.Checked && !sTableName.IsNullOrEmpty())
+                {
+                    drArr = _dataAccess.GetSchemaTables(sTableName).Select(sFilter);
+                }
+                else
+                {
+                    drArr = _dataAccess.GetSchemaTables().Select(sFilter);
+                }
             }
             else
             {

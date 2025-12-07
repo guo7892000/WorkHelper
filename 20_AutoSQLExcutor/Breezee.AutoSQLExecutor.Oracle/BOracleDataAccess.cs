@@ -82,7 +82,7 @@ namespace Breezee.AutoSQLExecutor.Oracle
              * 2、//localhost:1521/orcl：使用IP、端口号及TNS名称
              * 3、(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=127.0.0.1)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ORCL)))：TNS配置名称，这里是使用配置内容。注意需要写在一行中，不能换行。
              * 连接字符串示例：Data Source = HUI; User ID = test01; Password = test01;*/
-            _ConnectionString = server.UseConnString ? server.ConnString : string.Format("Data Source={0};User ID={1};Password={2};", server.ServerName, server.UserName, server.Password);
+            _ConnectionString = server.UseConnString ? server.ConnString : string.Format("Data Source={0};User ID={1};Password={2};Pooling=true;Min Pool Size=5;Max Pool Size=50;Incr Pool Size=5;", server.ServerName, server.UserName, server.Password);
         }
         #endregion
 
@@ -169,7 +169,9 @@ namespace Breezee.AutoSQLExecutor.Oracle
                 //查询数据并返回
                 DataTable dt = new DataTable();
                 adapter.SelectCommand.CommandTimeout = 60 * 60 * 10;
+                dt.BeginLoadData(); // 开始批量加载
                 adapter.Fill(dt);
+                dt.EndLoadData(); // 结束批量加载
                 dt.TableName = Guid.NewGuid().ToString("N");
                 stopwatch.Stop(); //结束计时
                 //写SQL日志
@@ -844,7 +846,7 @@ namespace Breezee.AutoSQLExecutor.Oracle
                 LEFT JOIN ALL_CONS_COLUMNS BB ON AA.CONSTRAINT_NAME=BB.CONSTRAINT_NAME AND AA.OWNER=BB.OWNER
                 WHERE AA.CONSTRAINT_TYPE='P' 
                 ) PK ON PK.TABLE_NAME = A.TABLE_NAME AND PK.COLUMN_NAME = A.COLUMN_NAME AND PK.OWNER=A.OWNER    
-            WHERE 1=1
+            WHERE A.COLUMN_ID > 0
                 AND A.TABLE_NAME IN (#TABLE_NAME_LIST:LS#)
                 AND A.TABLE_NAME = '#TABLE_NAME#'
                 AND A.OWNER = '#TABLE_SCHEMA#'

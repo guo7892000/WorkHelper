@@ -695,7 +695,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (!uC_DbConnection1.userTableDic.ContainsKey(uC_DbConnection1.LatestDbServerInfo.DbConnKey) || uC_DbConnection1.userTableDic[uC_DbConnection1.LatestDbServerInfo.DbConnKey].Rows.Count == 0)
                 {
                     _dataAccess = AutoSQLExecutors.Connect(_dbServer);
-                    dtTable = _dataAccess.GetSchemaTables();
+                    if (ckbQueryColumnRealTime.Checked && !sTableName.IsNullOrEmpty())
+                    {
+                        dtTable = _dataAccess.GetSchemaTables(sTableName);
+                    }
+                    else
+                    {
+                        dtTable = _dataAccess.GetSchemaTables();
+                    }
                 }
                 else
                 {
@@ -1461,11 +1468,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 //实时查询列信息
                 dtCols = _dataAccess.GetSqlSchemaTableColumns(sTableName, sSchema);
-                
             }
             else
             {
-                
                 //通过之前的查询结果过滤：速度快
                 if (!string.IsNullOrEmpty(sTableName))
                 {
