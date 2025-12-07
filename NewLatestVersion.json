@@ -1,7 +1,7 @@
 {
   "version": "1.3.9.3",
   "date": "2025-11-23",
-  "publishRemark": "1.表结构SQL生成：优化单表的查询速度。\r\n2.增删改查SQL生成：优化单表的查询速度。\r\n",
+  "publishRemark": "1.SQL总结、代码总结及其他功能完善。\r\n2.获取Java发布文件：增加前几天选择。\r\n",
   "appName": "WorkHelper",
   "zipFormats": "zip|rar|7z",
   "downUrlPublishLatest": "https://gitee.com/breezee2000/WorkHelper/releases/download/Latest/#appName##version#",
