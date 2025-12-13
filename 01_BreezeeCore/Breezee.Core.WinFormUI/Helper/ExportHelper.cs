@@ -643,10 +643,15 @@ namespace Breezee.Core.WinFormUI
             {
                 IRow row = sheet.GetRow(i);
                 DataRow dataRow = dt.NewRow();
+                if (row == null)
+                {
+                    continue;
+                }
+                int iFirstCellNum = row.FirstCellNum < 0 ? 0 : row.FirstCellNum;
 
                 if (row != null)
                 {
-                    for (int j = row.FirstCellNum; j < cellCount; j++)
+                    for (int j = iFirstCellNum; j < cellCount; j++)
                     {
                         if (row.GetCell(j) != null)
                         {

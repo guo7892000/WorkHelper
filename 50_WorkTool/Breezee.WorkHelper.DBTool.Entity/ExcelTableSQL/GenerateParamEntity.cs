@@ -30,9 +30,9 @@ namespace Breezee.WorkHelper.DBTool.Entity
         /// </summary>
         public bool isAllConvert { get; set; }
         /// <summary>
-        /// 是否默认主键
+        /// 主键类型：0-检查主键，1-默认主键，2-无主键。不推荐无主键
         /// </summary>
-        public bool isDefaultPK { get; set; }
+        public string isDefaultPK { get; set; }
         /// <summary>
         /// 是否默认字段中文名
         /// </summary>

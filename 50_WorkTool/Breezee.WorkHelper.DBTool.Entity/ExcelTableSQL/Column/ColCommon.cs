@@ -253,7 +253,7 @@ namespace Breezee.WorkHelper.DBTool.Entity
                 drErrorArray = dtAllCol.Select(ExcelTable.Code + "='" + strTableCode + "' and " + ExcelCol.KeyType + "='PK'");
                 if (drErrorArray.Length == 0)
                 {
-                    if (paramEntity.isDefaultPK)
+                    if ("1".Equals(paramEntity.isDefaultPK))
                     {
                         drErrorArray = dtAllCol.Select(ExcelTable.Code + "='" + strTableCode + "'", ExcelCol.OrderNo);
                         if(drErrorArray.Length > 0)
@@ -261,9 +261,13 @@ namespace Breezee.WorkHelper.DBTool.Entity
                             drErrorArray[0][ExcelCol.KeyType] = "PK";
                         }
                     }
-                    else
+                    else if ("0".Equals(paramEntity.isDefaultPK))
                     {
                         sb.AppendLine("新增的表" + strTableCode + "没有主键！请设置其中某一行的【" + ExcelCol.KeyType + "】列的值为【PK】即可。");
+                    }
+                    else
+                    {
+                        //无主键：不需要处理
                     }
                 }
                 listTable.Add(strTableCode);

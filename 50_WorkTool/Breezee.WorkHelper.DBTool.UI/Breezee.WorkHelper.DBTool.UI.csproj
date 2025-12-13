@@ -424,6 +424,15 @@
     <None Include="Doc\Develop\C#\IoC\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\Develop\JavaScript\JQuery\LigerUI\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\Java\Web\JBoss\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\Develop\Java\Web\JSP\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\Develop\Linux\应用部署示例.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

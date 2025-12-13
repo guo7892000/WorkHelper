@@ -32,4 +32,20 @@
     </delete>   
 </mapper>	
 ```
-
+### 执行包体方法
+```
+<select id="pushItem" parameterType="java.util.Map" statementType="CALLABLE">
+    <![CDATA[
+      {
+       CALL PKG_IF_TEST.P_ITEM_SEL_01(
+                #{TASKID,jdbcType=VARCHAR,mode=IN},
+                #{MATNR,jdbcType=VARCHAR,mode=IN},
+                #{O_SENDMESSAGE_CUR01,jdbcType=CURSOR,mode=OUT,javaType=java.sql.ResultSet,resultMap=ycErpMap},
+                #{O_RETURN_CODE,jdbcType=VARCHAR,mode=OUT},
+                #{O_ERROR_MESSAGE,jdbcType=VARCHAR,mode=OUT},
+                #{O_SQLERRM,jdbcType=VARCHAR,mode=OUT}
+         )
+       }
+  ]]>
+ </select>
+ ```
