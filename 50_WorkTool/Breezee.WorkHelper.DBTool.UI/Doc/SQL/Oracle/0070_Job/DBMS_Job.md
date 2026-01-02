@@ -1,13 +1,13 @@
-### DBMS_JOB
-DBMS_JOBÊÇOracleÔçÆÚ°æ±¾Ìá¹©µÄ¶¨Ê±ÈÎÎñ¹¤¾ß£¬ÊÊÓÃÓÚ11g¼°¸üÔç°æ±¾¡£ÆäºËÐÄÁ÷³Ì°üÀ¨´æ´¢¹ý³Ì´´½¨¡¢ÈÎÎñÌá½»ºÍÉúÃüÖÜÆÚ¹ÜÀíÈý¸ö½×¶Î¡£ 
+ï»¿### DBMS_JOB
+DBMS_JOBæ˜¯Oracleæ—©æœŸç‰ˆæœ¬æä¾›çš„å®šæ—¶ä»»åŠ¡å·¥å…·ï¼Œé€‚ç”¨äºŽ11gåŠæ›´æ—©ç‰ˆæœ¬ã€‚å…¶æ ¸å¿ƒæµç¨‹åŒ…æ‹¬å­˜å‚¨è¿‡ç¨‹åˆ›å»ºã€ä»»åŠ¡æäº¤å’Œç”Ÿå‘½å‘¨æœŸç®¡ç†ä¸‰ä¸ªé˜¶æ®µã€‚ 
 ```
---²é¿´ÈÎÎñ£º
+--æŸ¥çœ‹ä»»åŠ¡ï¼š
 select * from user_jobs;
 select * from all_jobs;
---²é¿´ÕýÔÚÔËÐÐµÄÈÎÎñ£¨²»ÍÆ¼öÊ¹ÓÃ£¬ËÙ¶ÈÂý£©£º
+--æŸ¥çœ‹æ­£åœ¨è¿è¡Œçš„ä»»åŠ¡ï¼ˆä¸æŽ¨èä½¿ç”¨ï¼Œé€Ÿåº¦æ…¢ï¼‰ï¼š
 select * from dba_jobs_running;
 
-/*Ìí¼ÓJOB*/
+/*æ·»åŠ JOB*/
 DECLARE JOBID NUMBER;
 BEGIN
   SELECT MAX(JOB)+1 INTO JOBID FROM ALL_JOBS;
@@ -15,7 +15,7 @@ BEGIN
   COMMIT;
 END;
 
-/*ÐÞ¸ÄJOB*/
+/*ä¿®æ”¹JOB*/
 declare jobID number;
 begin
   select JOB into jobID from all_jobs where what='P_GD_IR_DAY_ONCE;';
@@ -23,13 +23,33 @@ begin
   commit;
 end;
 
-/*JOBµÄÆäËûÃüÁî*/
+/*JOBçš„å…¶ä»–å‘½ä»¤*/
 begin
- dbms_job.remove(41); --É¾³ýJO
- dbms_job.broken(25,true); --Í£Ö¹job
- dbms_job.run(25); --ÔËÐÐjob
- dbms_job.what(v_job,'sp_fact_charge_code;'); --ÐÞ¸ÄWhatÄÚÈÝ
- dbms_job.next_date(v_job,sysdate); --ÐÞ¸ÄÄ³¸öjobÃû ÐÞ¸ÄÏÂÒ»´ÎÔËÐÐÊ±¼ä
+ dbms_job.remove(41); --åˆ é™¤JO
+ dbms_job.broken(25,true); --åœæ­¢job
+ dbms_job.run(25); --è¿è¡Œjob
+ dbms_job.what(v_job,'sp_fact_charge_code;'); --ä¿®æ”¹Whatå†…å®¹
+ dbms_job.next_date(v_job,sysdate); --ä¿®æ”¹æŸä¸ªjobå ä¿®æ”¹ä¸‹ä¸€æ¬¡è¿è¡Œæ—¶é—´
 end;
 
+```
+### åˆ›å»ºæœ‰å‚æ•°çš„JOB
+æ³¨ï¼š:jobè¡¨ç¤ºåœ¨æ‰§è¡Œæ—¶ï¼Œéœ€è¦è¾“å…¥JOBçš„IDã€‚ä½†å®žé™…ç”Ÿæˆçš„IDä¸æ˜¯ä½¿ç”¨è¾“å…¥å€¼ã€‚
+```
+begin
+Â sys.dbms_job.submit(job => :job,
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â what => 'declare
+Â V_RETURN_CODE varchar2(100);
+Â V_ERROR_MESSAGE varchar2(4000);
+Â V_SQLERRM varchar2(4000);
+begin
+Â PKG_IF_SAP.P_REC_ITEM_PRD_QTY_REDO(O_RETURN_CODE => V_RETURN_CODE,
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  O_ERROR_MESSAGE => V_ERROR_MESSAGE,
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  O_SQLERRM => V_SQLERRM);
+end;',
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â next_date => to_date('22-12-2025', 'dd-mm-yyyy'),
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â interval => 'sysdate+2/24');
+Â commit;
+end;
+/
 ```

@@ -43,10 +43,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         public static class ClassProp
         {
             /// <summary>
-            /// 对象类型：包括t(表)、f(函数)、v(视图)、p(存储过程)、d(数据)。
-            /// </summary>
-            public static string ObjectType = "objectType";
-            /// <summary>
             /// 最终文件名
             /// </summary>
             public static string FinalName = "finalName";
@@ -59,12 +55,14 @@ namespace Breezee.WorkHelper.DBTool.UI
             /// </summary>
             public static string SourcePathAbs = "sourcePathAbs";
 
-            public static string CharSet = "charset";
-
             /// <summary>
             /// 文件扩展名(逗号分隔多个扩展名，如txt,sql,prc)
             /// </summary>
             public static string FileExt = "fileExt";
+            /// <summary>
+            /// 备注
+            /// </summary>
+            public static string Remark = "remark";
         }
     }
 }

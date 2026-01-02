@@ -128,6 +128,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             tsbAutoSQL.ToolTipText = sCodePathTip;
             toolTip1.SetToolTip(ckbSelectConfig, "不选中时，选择配置变化时，跳转到【变更的源代码文件】页。");
             toolTip1.SetToolTip(label13, "注：同一个文件被修改多次，只能查询最后提交的最新代码，不能获取历史版本！");
+            toolTip1.SetToolTip(ckbTargitDirLower, "为了支持JF的测试与生产的最终生成的包目录大小写不一致问题，勾中时转换为小写（生产使用）");
             //加载喜好设置：已加入配置中
             ckbOpenGenDir.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetJavaFile_IsOpenGenerateDir, "1").Value,StringComparison.OrdinalIgnoreCase) ? true : false;
             ckbEndToNow.Checked = "1".Equals(WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetJavaFile_IsEndToNow, "1").Value, StringComparison.OrdinalIgnoreCase) ? true : false;
@@ -226,6 +227,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                     tabControl1.SelectedTab = tpConfig;
                     return;
                 }
+                else if (ckbTargitDirLower.Checked)
+                {
+                    //将生成目录转换为小写：为了支持JF的测试与生产的最终生成的包目录大小不一致
+                    foreach (DataRow drS in dtRelCfgSelet.Rows)
+                    {
+                        drS[JavaPublishFileConfig.ValueString.RelCopyToDir] = drS[JavaPublishFileConfig.ValueString.RelCopyToDir].ToString().ToLower();
+                    }
+                }
 
                 // 判断是否有从源码复制，这里提示一下
                 sFilter = string.Format("{0}='1' or {0}='True'", JavaPublishFileConfig.ValueString.IsCopyFromSrc);
@@ -234,7 +243,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 {
                     if (ShowYesNo("一般是从构建目录中复制文件，但当前配置存在从源码中复制的配置，确定继续？") == DialogResult.No)
                     {
-                        tabControl1.SelectedTab= tpConfig;
+                        tabControl1.SelectedTab = tpConfig;
                         return;
                     }
                 }

@@ -1,7 +1,9 @@
-﻿using Breezee.Core.WinFormUI;
+﻿using Breezee.Core.Interface;
 using Breezee.Core.Tool;
+using Breezee.Core.WinFormUI;
 using Breezee.WorkHelper.DBTool.Entity;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,8 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
-using Breezee.Core.Interface;
-using System.Collections;
+using Ude;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Breezee.WorkHelper.DBTool.UI
@@ -36,14 +37,20 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void FrmDBTScriptMerge_Load(object sender, EventArgs e)
         {
             ckbAutoOpen.Checked = true;
-            lblMergeInfo.Text= "请保证配置的字符集类型（charset）正确，请考虑将所有文件另存为UTF-8格式，并配置为UTF-8格式，那样合并后就不会出现乱码！";
+            lblMergeInfo.Text= "源目录会优先从配置文件中读取，如果目录不存在，会找该配置文件所在的目录！";
 
             DataTable dtEncode = BaseFileEncoding.GetEncodingTable(false);
             cbbCharSetEncode.BindTypeValueDropDownList(dtEncode, false, true);
-            toolTip1.SetToolTip(cbbCharSetEncode, "如文件出现乱码，需要修改文件字符集！可在class节点的charset属性上设置（优先使用），\r\n当没在该属性上设置时，全部使用本下拉框所选择的字符集值！");
+            toolTip1.SetToolTip(cbbCharSetEncode, "生成文件的字符集！");
             //加载用户偏好值
             txbSelectPath.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.MergeScript_Path, Path.Combine(DBTGlobalValue.AppPath, DBTGlobalValue.StringBuild.Xml_MergeScript)).Value;
         }
+        
+        /// <summary>
+        /// 选择文件按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnSelectFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog dia = new OpenFileDialog();
@@ -55,6 +62,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                 txbSelectPath.Text = sConfigPath;
             }
         }
+
+        /// <summary>
+        /// 合并脚本按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TsbAutoSQL_Click(object sender, EventArgs e)
         {
             sConfigPath = txbSelectPath.Text.Trim();
@@ -69,8 +82,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 ShowErr("输入的配置文件不存在，请重新输入或选择！");
                 return;
             }
-
-            //bool isGenDropSql = false;
+            
             rtbString.Clear();
             StringBuilder sbDrop = new StringBuilder();
             string sDirSource = Path.GetDirectoryName(sConfigPath);
@@ -78,6 +90,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             XmlNodeList rootList = XmlHelper.GetXmlNodeListByXpath(sConfigPath, ScriptMergeString.NodeString.Root); //configuration
             if (rootList.Count == 0) return;
 
+            //保存用户偏好值
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.MergeScript_Path, txbSelectPath.Text, "【合并脚本】选择路径");
+            WinFormContext.UserLoveSettings.Save();
             //获取根配置信息
             string sDB = rootList[0].GetAttributeValue(ScriptMergeString.RootProp.DBType); //DB
             string sSourcePath = rootList[0].GetAttributeValue(ScriptMergeString.RootProp.SourcePath);
@@ -85,6 +100,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 sDirSource = sSourcePath;
             }
+            lblRealReadDir.Text = "实际读取的目录:" + sDirSource;
+            //获取生成目录
             string sTargetPath = rootList[0].GetAttributeValue(ScriptMergeString.RootProp.TargetPath);
             if (!string.IsNullOrEmpty(sTargetPath))
             {
@@ -106,31 +123,27 @@ namespace Breezee.WorkHelper.DBTool.UI
             foreach (XmlNode cla in xmlList)
             {
                 //得到每个分类的属性
-                string sType = cla.GetAttributeValue(ScriptMergeString.ClassProp.ObjectType);
                 string sOutFileName = cla.GetAttributeValue(ScriptMergeString.ClassProp.FinalName);
                 string sSourcePathRel = cla.GetAttributeValue(ScriptMergeString.ClassProp.SourcePathRel);
                 string sSourcePathAbs = cla.GetAttributeValue(ScriptMergeString.ClassProp.SourcePathAbs);
-                string sCharSet = cla.GetAttributeValue(ScriptMergeString.ClassProp.CharSet);
                 string sFileExt = cla.GetAttributeValue(ScriptMergeString.ClassProp.FileExt);
+                string sRemak = cla.GetAttributeValue(ScriptMergeString.ClassProp.Remark);
+
                 string sFinalPath = Path.Combine(sDirTarget, sOutFileName);
                 Encoding useEnc = Encoding.UTF8; //默认为UTF-8
-                if (!string.IsNullOrEmpty(sCharSet))
+                if (cbbCharSetEncode.SelectedValue != null && !string.IsNullOrEmpty(cbbCharSetEncode.SelectedValue.ToString()))
                 {
-                    useEnc = BaseFileEncoding.GetEncodingByKey(sCharSet);
-                }
-                else
-                {
-                    if (cbbCharSetEncode.SelectedValue != null && !string.IsNullOrEmpty(cbbCharSetEncode.SelectedValue.ToString()))
-                    {
-                        useEnc = BaseFileEncoding.GetEncodingByKey(cbbCharSetEncode.SelectedValue.ToString());
-                    }
+                    useEnc = BaseFileEncoding.GetEncodingByKey(cbbCharSetEncode.SelectedValue.ToString());
                 }
                 //得到目录文件清单
-                if(string.IsNullOrEmpty(sSourcePathRel) && string.IsNullOrEmpty(sSourcePathAbs))
+                if (string.IsNullOrEmpty(sSourcePathRel) && string.IsNullOrEmpty(sSourcePathAbs))
                 {
-                    //没有配置相对目录和绝对目录时
+                    //没有配置相对目录和绝对目录时,读取源目录下的所有文件
                     sqlFiles = Directory.GetFiles(sDirSource, "*.*", SearchOption.AllDirectories);
-                    if (sqlFiles.Length == 0) continue;
+                    if (sqlFiles.Length == 0)
+                    {
+                        continue;
+                    }
                 }
                 else
                 {
@@ -147,7 +160,15 @@ namespace Breezee.WorkHelper.DBTool.UI
                         {
                             sSourcePathRel = sSourcePathRel.Substring(1); //去掉前面的斜杆，让后面的Path.Combine能正常合并路径；否则得到的路径是错的
                         }
-                        string[]  sqlFilesRel = Directory.GetFiles(Path.Combine(sDirSource, sSourcePathRel), "*.*", SearchOption.AllDirectories);
+                        string sFilePath = Path.Combine(sDirSource, sSourcePathRel);
+                        if (!Directory.Exists(sFilePath))
+                        {
+                            rtbString.AppendText(sFilePath + "文件夹不存在！" + Environment.NewLine);
+                            continue;
+                        }
+                        string[]  sqlFilesRel = Directory.GetFiles(sFilePath, "*.*", SearchOption.AllDirectories);
+                        //按名称排序
+                        Array.Sort(sqlFilesRel, StringComparer.OrdinalIgnoreCase);
                         if (sqlFiles == null)
                         {
                             sqlFiles = sqlFilesRel; //原SQL数组为空时，直接取相对目录文件数组
@@ -161,7 +182,10 @@ namespace Breezee.WorkHelper.DBTool.UI
                         }
                     }
                     //没有文件时继续下一个分类
-                    if (sqlFiles ==null || sqlFiles.Length == 0) continue;
+                    if (sqlFiles == null || sqlFiles.Length == 0)
+                    {
+                        continue;
+                    }
                 }
                
                 IList<string> fileList = new List<string>();
@@ -202,28 +226,73 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
 
                 if (fileList.Count == 0) continue;
-
-                using (StreamWriter writer = new StreamWriter(sFinalPath,false, useEnc))
+                using (StreamWriter writer = new StreamWriter(sFinalPath, false, useEnc))
                 {
-                    foreach (string file in fileList)
+                    foreach (string filePath in fileList)
                     {
-                        using (StreamReader reader = File.OpenText(file))
-                        {
-                            writer.Write(reader.ReadToEnd());
-                            writer.WriteLine();
-                        }
+                        var detectedEncoding = DetectEncoding(filePath);
+
+                        // 自动检测文件编码（优先尝试 GBK，再尝试 GB2312）
+                        Encoding fileEncoding = DetectEncoding(filePath) ?? Encoding.Default;
+                        string content = File.ReadAllText(filePath, fileEncoding);
+                        writer.Write(content);
                     }
                 }
+
                 rtbString.AppendText(sFinalPath + "\n");
+                sqlFiles = null;
             }
-            //保存用户偏好值
-            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.MergeScript_Path, txbSelectPath.Text, "【合并脚本】选择路径");
-            WinFormContext.UserLoveSettings.Save();
+            
             if (ckbAutoOpen.Checked)
             {
                 System.Diagnostics.Process.Start("explorer.exe", sDirTarget);//打开文件夹
             }
         }
+
+        private static Encoding DetectEncoding(string filePath)
+        {
+            return DetectEncoding(filePath, File.OpenRead(filePath));
+        }
+
+        private static Encoding DetectEncoding(string filePath, FileStream fs)
+        {
+            var detector = new CharsetDetector();
+            detector.Feed(fs);
+            detector.DataEnd();
+
+            if (detector.IsDone() && detector.Charset != null)
+            {
+                try
+                {
+                    return Encoding.GetEncoding(detector.Charset);
+                }
+                catch
+                {
+                    // 如果无法获取编码（如 detector 返回 "windows-949" 但 .NET 不支持名称），返回 null
+                }
+            }
+
+            // 如果 UDE 无法识别，回退到检查 BOM
+            return GetEncodingFromBom(filePath) ?? null;
+        }
+
+        private static Encoding GetEncodingFromBom(string filePath)
+        {
+            var bom = new byte[4];
+            using (var file = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                file.Read(bom, 0, 4);
+            }
+
+            if (bom[0] == 0xFF && bom[1] == 0xFE) return Encoding.Unicode;      // UTF-16 LE
+            if (bom[0] == 0xFE && bom[1] == 0xFF) return Encoding.BigEndianUnicode; // UTF-16 BE
+            if (bom[0] == 0xEF && bom[1] == 0xBB && bom[2] == 0xBF) return Encoding.UTF8;
+            if (bom[0] == 0x2B && bom[1] == 0x2F && bom[2] == 0x76) return Encoding.UTF7;
+            if (bom[0] == 0xFF && bom[1] == 0xFE && bom[2] == 0 && bom[3] == 0) return Encoding.UTF32;
+
+            return null; // 无 BOM
+        }
+
         private void TsbDownLoad_Click(object sender, EventArgs e)
         {
             DBToolUIHelper.DownloadFile(DBTGlobalValue.StringBuild.Xml_MergeScript, "合并脚本配置模板", true);

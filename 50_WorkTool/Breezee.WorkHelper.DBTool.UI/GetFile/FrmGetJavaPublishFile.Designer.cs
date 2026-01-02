@@ -88,6 +88,9 @@
             this.ckbSaveEndTime = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
             this.txbExcludeEndprx = new System.Windows.Forms.TextBox();
+            this.ckbBeginDateNum = new System.Windows.Forms.CheckBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.nudFromDateBefore = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
             this.dgvCodeClassRelConfig = new System.Windows.Forms.DataGridView();
@@ -108,9 +111,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.ckbSelectConfig = new System.Windows.Forms.CheckBox();
-            this.ckbBeginDateNum = new System.Windows.Forms.CheckBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.nudFromDateBefore = new System.Windows.Forms.NumericUpDown();
+            this.ckbTargitDirLower = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
@@ -119,6 +120,7 @@
             this.cmsInput.SuspendLayout();
             this.grbGetFile.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudFromDateBefore)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCodeClassRelConfig)).BeginInit();
             this.cmsCfg.SuspendLayout();
@@ -131,7 +133,6 @@
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudFromDateBefore)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -762,6 +763,7 @@
             this.tableLayoutPanel1.Controls.Add(this.btnGetChangeFile, 6, 0);
             this.tableLayoutPanel1.Controls.Add(this.label16, 5, 0);
             this.tableLayoutPanel1.Controls.Add(this.nudFromDateBefore, 4, 0);
+            this.tableLayoutPanel1.Controls.Add(this.ckbTargitDirLower, 7, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(4, 32);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
@@ -846,6 +848,43 @@
             this.txbExcludeEndprx.Name = "txbExcludeEndprx";
             this.txbExcludeEndprx.Size = new System.Drawing.Size(721, 35);
             this.txbExcludeEndprx.TabIndex = 20;
+            // 
+            // ckbBeginDateNum
+            // 
+            this.ckbBeginDateNum.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbBeginDateNum.AutoSize = true;
+            this.ckbBeginDateNum.Location = new System.Drawing.Point(753, 19);
+            this.ckbBeginDateNum.Name = "ckbBeginDateNum";
+            this.ckbBeginDateNum.Size = new System.Drawing.Size(66, 28);
+            this.ckbBeginDateNum.TabIndex = 23;
+            this.ckbBeginDateNum.Text = "从";
+            this.ckbBeginDateNum.UseVisualStyleBackColor = true;
+            this.ckbBeginDateNum.CheckedChanged += new System.EventHandler(this.ckbBeginDateNum_CheckedChanged);
+            // 
+            // label16
+            // 
+            this.label16.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(954, 21);
+            this.label16.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(154, 24);
+            this.label16.TabIndex = 5;
+            this.label16.Text = "天前开始获取";
+            // 
+            // nudFromDateBefore
+            // 
+            this.nudFromDateBefore.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.nudFromDateBefore.Location = new System.Drawing.Point(825, 15);
+            this.nudFromDateBefore.Name = "nudFromDateBefore";
+            this.nudFromDateBefore.Size = new System.Drawing.Size(120, 35);
+            this.nudFromDateBefore.TabIndex = 24;
+            this.nudFromDateBefore.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudFromDateBefore.ValueChanged += new System.EventHandler(this.nudFromDateBefore_ValueChanged);
             // 
             // groupBox1
             // 
@@ -1109,42 +1148,16 @@
             this.ckbSelectConfig.Text = "选择变化跳转到配置";
             this.ckbSelectConfig.UseVisualStyleBackColor = true;
             // 
-            // ckbBeginDateNum
+            // ckbTargitDirLower
             // 
-            this.ckbBeginDateNum.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ckbBeginDateNum.AutoSize = true;
-            this.ckbBeginDateNum.Location = new System.Drawing.Point(753, 19);
-            this.ckbBeginDateNum.Name = "ckbBeginDateNum";
-            this.ckbBeginDateNum.Size = new System.Drawing.Size(66, 28);
-            this.ckbBeginDateNum.TabIndex = 23;
-            this.ckbBeginDateNum.Text = "从";
-            this.ckbBeginDateNum.UseVisualStyleBackColor = true;
-            this.ckbBeginDateNum.CheckedChanged += new System.EventHandler(this.ckbBeginDateNum_CheckedChanged);
-            // 
-            // label16
-            // 
-            this.label16.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(954, 21);
-            this.label16.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(154, 24);
-            this.label16.TabIndex = 5;
-            this.label16.Text = "天前开始获取";
-            // 
-            // nudFromDateBefore
-            // 
-            this.nudFromDateBefore.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.nudFromDateBefore.Location = new System.Drawing.Point(825, 15);
-            this.nudFromDateBefore.Name = "nudFromDateBefore";
-            this.nudFromDateBefore.Size = new System.Drawing.Size(120, 35);
-            this.nudFromDateBefore.TabIndex = 24;
-            this.nudFromDateBefore.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nudFromDateBefore.ValueChanged += new System.EventHandler(this.nudFromDateBefore_ValueChanged);
+            this.ckbTargitDirLower.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbTargitDirLower.AutoSize = true;
+            this.ckbTargitDirLower.Location = new System.Drawing.Point(1238, 19);
+            this.ckbTargitDirLower.Name = "ckbTargitDirLower";
+            this.ckbTargitDirLower.Size = new System.Drawing.Size(174, 28);
+            this.ckbTargitDirLower.TabIndex = 25;
+            this.ckbTargitDirLower.Text = "war包名小写";
+            this.ckbTargitDirLower.UseVisualStyleBackColor = true;
             // 
             // FrmGetJavaPublishFile
             // 
@@ -1172,6 +1185,7 @@
             this.grbGetFile.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudFromDateBefore)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCodeClassRelConfig)).EndInit();
@@ -1187,7 +1201,6 @@
             this.groupBox2.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudFromDateBefore)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1276,5 +1289,6 @@
         private System.Windows.Forms.CheckBox ckbBeginDateNum;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.NumericUpDown nudFromDateBefore;
+        private System.Windows.Forms.CheckBox ckbTargitDirLower;
     }
 }
