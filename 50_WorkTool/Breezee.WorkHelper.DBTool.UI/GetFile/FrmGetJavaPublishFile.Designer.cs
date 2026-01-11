@@ -91,6 +91,7 @@
             this.ckbBeginDateNum = new System.Windows.Forms.CheckBox();
             this.label16 = new System.Windows.Forms.Label();
             this.nudFromDateBefore = new System.Windows.Forms.NumericUpDown();
+            this.ckbTargitDirLower = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
             this.dgvCodeClassRelConfig = new System.Windows.Forms.DataGridView();
@@ -111,7 +112,6 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.ckbSelectConfig = new System.Windows.Forms.CheckBox();
-            this.ckbTargitDirLower = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
@@ -763,7 +763,6 @@
             this.tableLayoutPanel1.Controls.Add(this.btnGetChangeFile, 6, 0);
             this.tableLayoutPanel1.Controls.Add(this.label16, 5, 0);
             this.tableLayoutPanel1.Controls.Add(this.nudFromDateBefore, 4, 0);
-            this.tableLayoutPanel1.Controls.Add(this.ckbTargitDirLower, 7, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(4, 32);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
@@ -885,6 +884,17 @@
             0,
             0});
             this.nudFromDateBefore.ValueChanged += new System.EventHandler(this.nudFromDateBefore_ValueChanged);
+            // 
+            // ckbTargitDirLower
+            // 
+            this.ckbTargitDirLower.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbTargitDirLower.AutoSize = true;
+            this.ckbTargitDirLower.Location = new System.Drawing.Point(949, 18);
+            this.ckbTargitDirLower.Name = "ckbTargitDirLower";
+            this.ckbTargitDirLower.Size = new System.Drawing.Size(174, 28);
+            this.ckbTargitDirLower.TabIndex = 25;
+            this.ckbTargitDirLower.Text = "war包名小写";
+            this.ckbTargitDirLower.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
@@ -1013,7 +1023,8 @@
             // 
             // tableLayoutPanel3
             // 
-            this.tableLayoutPanel3.ColumnCount = 6;
+            this.tableLayoutPanel3.ColumnCount = 7;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -1025,6 +1036,7 @@
             this.tableLayoutPanel3.Controls.Add(this.btnGetFile, 2, 0);
             this.tableLayoutPanel3.Controls.Add(this.ckbIsPasteAppend, 3, 0);
             this.tableLayoutPanel3.Controls.Add(this.ckbOpenGenDir, 4, 0);
+            this.tableLayoutPanel3.Controls.Add(this.ckbTargitDirLower, 5, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(6, 34);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(6);
@@ -1147,17 +1159,6 @@
             this.ckbSelectConfig.TabIndex = 6;
             this.ckbSelectConfig.Text = "选择变化跳转到配置";
             this.ckbSelectConfig.UseVisualStyleBackColor = true;
-            // 
-            // ckbTargitDirLower
-            // 
-            this.ckbTargitDirLower.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ckbTargitDirLower.AutoSize = true;
-            this.ckbTargitDirLower.Location = new System.Drawing.Point(1238, 19);
-            this.ckbTargitDirLower.Name = "ckbTargitDirLower";
-            this.ckbTargitDirLower.Size = new System.Drawing.Size(174, 28);
-            this.ckbTargitDirLower.TabIndex = 25;
-            this.ckbTargitDirLower.Text = "war包名小写";
-            this.ckbTargitDirLower.UseVisualStyleBackColor = true;
             // 
             // FrmGetJavaPublishFile
             // 

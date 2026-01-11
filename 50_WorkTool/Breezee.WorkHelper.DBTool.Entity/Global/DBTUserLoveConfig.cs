@@ -183,5 +183,7 @@ namespace Breezee.WorkHelper.DBTool.Entity
         // 获取Java发布文件
         public static readonly string GetJavaFile_IsOpenGenerateDir = "GetJavaFile_IsOpenGenerateDir"; // 是否打开生成的目录
         public static readonly string GetJavaFile_IsEndToNow = "GetJavaFile_IsEndToNow"; // 是否结束时间为当前时间
+        // 读取相同格式Excel内容
+        public static readonly string ReadSameFormatExcel_Path = "ReadSameFormatExcel_Path";
     }
 }

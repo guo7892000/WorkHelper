@@ -568,10 +568,17 @@ namespace Breezee.Core.WinFormUI
             {
                 for (int i = 0; i < sheetNums; i++)
                 {
-                    ISheet sheet = workbook.GetSheetAt(i);
-                    DataTable dt = ReadFromSheet(sheet);
-                    dt.TableName = sheet.SheetName;
-                    ds.Tables.Add(dt);
+                    if (workbook.NumberOfSheets == 0)
+                    {
+                        //读取数据失败
+                    }
+                    else
+                    {
+                        ISheet sheet = workbook.GetSheetAt(i);
+                        DataTable dt = ReadFromSheet(sheet);
+                        dt.TableName = sheet.SheetName;
+                        ds.Tables.Add(dt);
+                    }
                 }
             }
             catch

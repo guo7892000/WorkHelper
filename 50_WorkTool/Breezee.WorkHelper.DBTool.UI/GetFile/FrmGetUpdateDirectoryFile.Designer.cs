@@ -34,16 +34,6 @@
             this.tsbAutoSQL = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.ckbNowModify = new System.Windows.Forms.CheckBox();
-            this.ckbNowAdd = new System.Windows.Forms.CheckBox();
-            this.ckbIncludeCommit = new System.Windows.Forms.CheckBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label9 = new System.Windows.Forms.Label();
-            this.lblEmail = new System.Windows.Forms.Label();
-            this.txbUserName = new System.Windows.Forms.TextBox();
-            this.txbEmail = new System.Windows.Forms.TextBox();
-            this.cbbDirType = new System.Windows.Forms.ComboBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.ckbSetBeginAsLastSaveEnd = new System.Windows.Forms.CheckBox();
             this.ckbEndToNow = new System.Windows.Forms.CheckBox();
             this.ckbSaveEndTime = new System.Windows.Forms.CheckBox();
@@ -58,6 +48,16 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnTargetPath = new System.Windows.Forms.Button();
             this.txbTargetPath = new System.Windows.Forms.TextBox();
+            this.ckbNowModify = new System.Windows.Forms.CheckBox();
+            this.ckbNowAdd = new System.Windows.Forms.CheckBox();
+            this.ckbIncludeCommit = new System.Windows.Forms.CheckBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label9 = new System.Windows.Forms.Label();
+            this.lblEmail = new System.Windows.Forms.Label();
+            this.txbUserName = new System.Windows.Forms.TextBox();
+            this.txbEmail = new System.Windows.Forms.TextBox();
+            this.cbbDirType = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.grbExclude = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label5 = new System.Windows.Forms.Label();
@@ -97,7 +97,8 @@
             this.tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1160, 27);
+            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 4, 0);
+            this.toolStrip1.Size = new System.Drawing.Size(2320, 50);
             this.toolStrip1.TabIndex = 22;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -106,7 +107,7 @@
             this.tsbAutoSQL.Image = ((System.Drawing.Image)(resources.GetObject("tsbAutoSQL.Image")));
             this.tsbAutoSQL.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbAutoSQL.Name = "tsbAutoSQL";
-            this.tsbAutoSQL.Size = new System.Drawing.Size(72, 24);
+            this.tsbAutoSQL.Size = new System.Drawing.Size(119, 44);
             this.tsbAutoSQL.Text = "获取(&A)";
             this.tsbAutoSQL.Click += new System.EventHandler(this.tsbAutoSQL_Click);
             // 
@@ -115,7 +116,7 @@
             this.tsbExit.Image = ((System.Drawing.Image)(resources.GetObject("tsbExit.Image")));
             this.tsbExit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbExit.Name = "tsbExit";
-            this.tsbExit.Size = new System.Drawing.Size(72, 24);
+            this.tsbExit.Size = new System.Drawing.Size(117, 44);
             this.tsbExit.Text = "退出(&X)";
             this.tsbExit.Click += new System.EventHandler(this.tsbExit_Click);
             // 
@@ -137,12 +138,164 @@
             this.groupBox2.Controls.Add(this.txbTargetPath);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox2.ForeColor = System.Drawing.Color.Red;
-            this.groupBox2.Location = new System.Drawing.Point(0, 83);
+            this.groupBox2.Location = new System.Drawing.Point(0, 162);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1160, 135);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.groupBox2.Size = new System.Drawing.Size(2320, 270);
             this.groupBox2.TabIndex = 31;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "读取与生成配置";
+            // 
+            // ckbSetBeginAsLastSaveEnd
+            // 
+            this.ckbSetBeginAsLastSaveEnd.AutoSize = true;
+            this.ckbSetBeginAsLastSaveEnd.Location = new System.Drawing.Point(530, 160);
+            this.ckbSetBeginAsLastSaveEnd.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.ckbSetBeginAsLastSaveEnd.Name = "ckbSetBeginAsLastSaveEnd";
+            this.ckbSetBeginAsLastSaveEnd.Size = new System.Drawing.Size(330, 28);
+            this.ckbSetBeginAsLastSaveEnd.TabIndex = 13;
+            this.ckbSetBeginAsLastSaveEnd.Text = "从上次保存的结束时间开始";
+            this.ckbSetBeginAsLastSaveEnd.UseVisualStyleBackColor = true;
+            this.ckbSetBeginAsLastSaveEnd.CheckedChanged += new System.EventHandler(this.ckbSetBeginAsLastSaveEnd_CheckedChanged);
+            // 
+            // ckbEndToNow
+            // 
+            this.ckbEndToNow.AutoSize = true;
+            this.ckbEndToNow.Location = new System.Drawing.Point(530, 214);
+            this.ckbEndToNow.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.ckbEndToNow.Name = "ckbEndToNow";
+            this.ckbEndToNow.Size = new System.Drawing.Size(330, 28);
+            this.ckbEndToNow.TabIndex = 13;
+            this.ckbEndToNow.Text = "获取时结束时间取当前时间";
+            this.ckbEndToNow.UseVisualStyleBackColor = true;
+            this.ckbEndToNow.CheckedChanged += new System.EventHandler(this.ckbEndToNow_CheckedChanged);
+            // 
+            // ckbSaveEndTime
+            // 
+            this.ckbSaveEndTime.AutoSize = true;
+            this.ckbSaveEndTime.Location = new System.Drawing.Point(904, 214);
+            this.ckbSaveEndTime.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.ckbSaveEndTime.Name = "ckbSaveEndTime";
+            this.ckbSaveEndTime.Size = new System.Drawing.Size(186, 28);
+            this.ckbSaveEndTime.TabIndex = 13;
+            this.ckbSaveEndTime.Text = "保存结束时间";
+            this.ckbSaveEndTime.UseVisualStyleBackColor = true;
+            // 
+            // ckbDateDir
+            // 
+            this.ckbDateDir.AutoSize = true;
+            this.ckbDateDir.Location = new System.Drawing.Point(1260, 98);
+            this.ckbDateDir.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.ckbDateDir.Name = "ckbDateDir";
+            this.ckbDateDir.Size = new System.Drawing.Size(186, 28);
+            this.ckbDateDir.TabIndex = 13;
+            this.ckbDateDir.Text = "生成日期目录";
+            this.ckbDateDir.UseVisualStyleBackColor = true;
+            // 
+            // dtpEnd
+            // 
+            this.dtpEnd.CustomFormat = "yyyy-MM-dd HH:mm:ss";
+            this.dtpEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpEnd.Location = new System.Drawing.Point(212, 208);
+            this.dtpEnd.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.dtpEnd.Name = "dtpEnd";
+            this.dtpEnd.Size = new System.Drawing.Size(302, 35);
+            this.dtpEnd.TabIndex = 12;
+            // 
+            // txbReadPath
+            // 
+            this.txbReadPath.Location = new System.Drawing.Point(212, 34);
+            this.txbReadPath.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.txbReadPath.Multiline = true;
+            this.txbReadPath.Name = "txbReadPath";
+            this.txbReadPath.Size = new System.Drawing.Size(1028, 42);
+            this.txbReadPath.TabIndex = 1;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.Color.Red;
+            this.label3.Location = new System.Drawing.Point(26, 44);
+            this.label3.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(130, 24);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "读取目录：";
+            // 
+            // btnReadPath
+            // 
+            this.btnReadPath.Location = new System.Drawing.Point(162, 38);
+            this.btnReadPath.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnReadPath.Name = "btnReadPath";
+            this.btnReadPath.Size = new System.Drawing.Size(38, 38);
+            this.btnReadPath.TabIndex = 2;
+            this.btnReadPath.Text = "...";
+            this.btnReadPath.UseVisualStyleBackColor = true;
+            this.btnReadPath.Click += new System.EventHandler(this.btnReadPath_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.Color.Red;
+            this.label2.Location = new System.Drawing.Point(142, 216);
+            this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(58, 24);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "至：";
+            // 
+            // dtpBegin
+            // 
+            this.dtpBegin.CustomFormat = "yyyy-MM-dd HH:mm:ss";
+            this.dtpBegin.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpBegin.Location = new System.Drawing.Point(212, 154);
+            this.dtpBegin.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.dtpBegin.Name = "dtpBegin";
+            this.dtpBegin.Size = new System.Drawing.Size(302, 35);
+            this.dtpBegin.TabIndex = 11;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.Color.Red;
+            this.label4.Location = new System.Drawing.Point(26, 98);
+            this.label4.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(130, 24);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "生成目录：";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.Location = new System.Drawing.Point(46, 162);
+            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(154, 24);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "修改时间从：";
+            // 
+            // btnTargetPath
+            // 
+            this.btnTargetPath.Location = new System.Drawing.Point(162, 92);
+            this.btnTargetPath.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnTargetPath.Name = "btnTargetPath";
+            this.btnTargetPath.Size = new System.Drawing.Size(38, 38);
+            this.btnTargetPath.TabIndex = 2;
+            this.btnTargetPath.Text = "...";
+            this.btnTargetPath.UseVisualStyleBackColor = true;
+            this.btnTargetPath.Click += new System.EventHandler(this.btnTargetPath_Click);
+            // 
+            // txbTargetPath
+            // 
+            this.txbTargetPath.Location = new System.Drawing.Point(212, 92);
+            this.txbTargetPath.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.txbTargetPath.Multiline = true;
+            this.txbTargetPath.Name = "txbTargetPath";
+            this.txbTargetPath.Size = new System.Drawing.Size(1028, 42);
+            this.txbTargetPath.TabIndex = 1;
             // 
             // ckbNowModify
             // 
@@ -150,9 +303,10 @@
             this.ckbNowModify.AutoSize = true;
             this.ckbNowModify.Checked = true;
             this.ckbNowModify.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbNowModify.Location = new System.Drawing.Point(529, 7);
+            this.ckbNowModify.Location = new System.Drawing.Point(1044, 17);
+            this.ckbNowModify.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbNowModify.Name = "ckbNowModify";
-            this.ckbNowModify.Size = new System.Drawing.Size(84, 16);
+            this.ckbNowModify.Size = new System.Drawing.Size(162, 28);
             this.ckbNowModify.TabIndex = 18;
             this.ckbNowModify.Text = "含正在修改";
             this.ckbNowModify.UseVisualStyleBackColor = true;
@@ -163,9 +317,10 @@
             this.ckbNowAdd.AutoSize = true;
             this.ckbNowAdd.Checked = true;
             this.ckbNowAdd.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbNowAdd.Location = new System.Drawing.Point(619, 7);
+            this.ckbNowAdd.Location = new System.Drawing.Point(1218, 17);
+            this.ckbNowAdd.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbNowAdd.Name = "ckbNowAdd";
-            this.ckbNowAdd.Size = new System.Drawing.Size(72, 16);
+            this.ckbNowAdd.Size = new System.Drawing.Size(138, 28);
             this.ckbNowAdd.TabIndex = 18;
             this.ckbNowAdd.Text = "含将新增";
             this.ckbNowAdd.UseVisualStyleBackColor = true;
@@ -176,9 +331,10 @@
             this.ckbIncludeCommit.AutoSize = true;
             this.ckbIncludeCommit.Checked = true;
             this.ckbIncludeCommit.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbIncludeCommit.Location = new System.Drawing.Point(697, 7);
+            this.ckbIncludeCommit.Location = new System.Drawing.Point(1368, 17);
+            this.ckbIncludeCommit.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbIncludeCommit.Name = "ckbIncludeCommit";
-            this.ckbIncludeCommit.Size = new System.Drawing.Size(84, 16);
+            this.ckbIncludeCommit.Size = new System.Drawing.Size(162, 28);
             this.ckbIncludeCommit.TabIndex = 15;
             this.ckbIncludeCommit.Text = "含之前提交";
             this.ckbIncludeCommit.UseVisualStyleBackColor = true;
@@ -190,18 +346,20 @@
             this.panel1.Controls.Add(this.lblEmail);
             this.panel1.Controls.Add(this.txbUserName);
             this.panel1.Controls.Add(this.txbEmail);
-            this.panel1.Location = new System.Drawing.Point(787, 3);
+            this.panel1.Location = new System.Drawing.Point(1542, 6);
+            this.panel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(360, 25);
+            this.panel1.Size = new System.Drawing.Size(720, 50);
             this.panel1.TabIndex = 17;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.ForeColor = System.Drawing.Color.Black;
-            this.label9.Location = new System.Drawing.Point(189, 7);
+            this.label9.Location = new System.Drawing.Point(378, 14);
+            this.label9.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(53, 12);
+            this.label9.Size = new System.Drawing.Size(106, 24);
             this.label9.TabIndex = 17;
             this.label9.Text = "用户名：";
             // 
@@ -209,32 +367,36 @@
             // 
             this.lblEmail.AutoSize = true;
             this.lblEmail.ForeColor = System.Drawing.Color.Black;
-            this.lblEmail.Location = new System.Drawing.Point(4, 7);
+            this.lblEmail.Location = new System.Drawing.Point(8, 14);
+            this.lblEmail.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblEmail.Name = "lblEmail";
-            this.lblEmail.Size = new System.Drawing.Size(47, 12);
+            this.lblEmail.Size = new System.Drawing.Size(94, 24);
             this.lblEmail.TabIndex = 17;
             this.lblEmail.Text = "Email：";
             // 
             // txbUserName
             // 
-            this.txbUserName.Location = new System.Drawing.Point(248, 3);
+            this.txbUserName.Location = new System.Drawing.Point(496, 6);
+            this.txbUserName.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.txbUserName.Name = "txbUserName";
-            this.txbUserName.Size = new System.Drawing.Size(106, 21);
+            this.txbUserName.Size = new System.Drawing.Size(208, 35);
             this.txbUserName.TabIndex = 16;
             // 
             // txbEmail
             // 
-            this.txbEmail.Location = new System.Drawing.Point(58, 2);
+            this.txbEmail.Location = new System.Drawing.Point(116, 4);
+            this.txbEmail.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.txbEmail.Name = "txbEmail";
-            this.txbEmail.Size = new System.Drawing.Size(124, 21);
+            this.txbEmail.Size = new System.Drawing.Size(244, 35);
             this.txbEmail.TabIndex = 16;
             // 
             // cbbDirType
             // 
             this.cbbDirType.FormattingEnabled = true;
-            this.cbbDirType.Location = new System.Drawing.Point(300, 3);
+            this.cbbDirType.Location = new System.Drawing.Point(596, 6);
+            this.cbbDirType.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.cbbDirType.Name = "cbbDirType";
-            this.cbbDirType.Size = new System.Drawing.Size(121, 20);
+            this.cbbDirType.Size = new System.Drawing.Size(238, 32);
             this.cbbDirType.TabIndex = 14;
             this.cbbDirType.SelectedIndexChanged += new System.EventHandler(this.cbbDirType_SelectedIndexChanged);
             // 
@@ -243,147 +405,12 @@
             this.label8.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label8.AutoSize = true;
             this.label8.ForeColor = System.Drawing.Color.Red;
-            this.label8.Location = new System.Drawing.Point(217, 9);
+            this.label8.Location = new System.Drawing.Point(430, 19);
+            this.label8.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(77, 12);
+            this.label8.Size = new System.Drawing.Size(154, 24);
             this.label8.TabIndex = 0;
             this.label8.Text = "源目录类型：";
-            // 
-            // ckbSetBeginAsLastSaveEnd
-            // 
-            this.ckbSetBeginAsLastSaveEnd.AutoSize = true;
-            this.ckbSetBeginAsLastSaveEnd.Location = new System.Drawing.Point(265, 80);
-            this.ckbSetBeginAsLastSaveEnd.Name = "ckbSetBeginAsLastSaveEnd";
-            this.ckbSetBeginAsLastSaveEnd.Size = new System.Drawing.Size(168, 16);
-            this.ckbSetBeginAsLastSaveEnd.TabIndex = 13;
-            this.ckbSetBeginAsLastSaveEnd.Text = "从上次保存的结束时间开始";
-            this.ckbSetBeginAsLastSaveEnd.UseVisualStyleBackColor = true;
-            this.ckbSetBeginAsLastSaveEnd.CheckedChanged += new System.EventHandler(this.ckbSetBeginAsLastSaveEnd_CheckedChanged);
-            // 
-            // ckbEndToNow
-            // 
-            this.ckbEndToNow.AutoSize = true;
-            this.ckbEndToNow.Location = new System.Drawing.Point(265, 107);
-            this.ckbEndToNow.Name = "ckbEndToNow";
-            this.ckbEndToNow.Size = new System.Drawing.Size(168, 16);
-            this.ckbEndToNow.TabIndex = 13;
-            this.ckbEndToNow.Text = "获取时结束时间取当前时间";
-            this.ckbEndToNow.UseVisualStyleBackColor = true;
-            this.ckbEndToNow.CheckedChanged += new System.EventHandler(this.ckbEndToNow_CheckedChanged);
-            // 
-            // ckbSaveEndTime
-            // 
-            this.ckbSaveEndTime.AutoSize = true;
-            this.ckbSaveEndTime.Location = new System.Drawing.Point(452, 107);
-            this.ckbSaveEndTime.Name = "ckbSaveEndTime";
-            this.ckbSaveEndTime.Size = new System.Drawing.Size(96, 16);
-            this.ckbSaveEndTime.TabIndex = 13;
-            this.ckbSaveEndTime.Text = "保存结束时间";
-            this.ckbSaveEndTime.UseVisualStyleBackColor = true;
-            // 
-            // ckbDateDir
-            // 
-            this.ckbDateDir.AutoSize = true;
-            this.ckbDateDir.Location = new System.Drawing.Point(630, 49);
-            this.ckbDateDir.Name = "ckbDateDir";
-            this.ckbDateDir.Size = new System.Drawing.Size(96, 16);
-            this.ckbDateDir.TabIndex = 13;
-            this.ckbDateDir.Text = "生成日期目录";
-            this.ckbDateDir.UseVisualStyleBackColor = true;
-            // 
-            // dtpEnd
-            // 
-            this.dtpEnd.CustomFormat = "yyyy-MM-dd HH:mm:ss";
-            this.dtpEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpEnd.Location = new System.Drawing.Point(106, 104);
-            this.dtpEnd.Name = "dtpEnd";
-            this.dtpEnd.Size = new System.Drawing.Size(153, 21);
-            this.dtpEnd.TabIndex = 12;
-            // 
-            // txbReadPath
-            // 
-            this.txbReadPath.Location = new System.Drawing.Point(106, 17);
-            this.txbReadPath.Multiline = true;
-            this.txbReadPath.Name = "txbReadPath";
-            this.txbReadPath.Size = new System.Drawing.Size(516, 23);
-            this.txbReadPath.TabIndex = 1;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.Color.Red;
-            this.label3.Location = new System.Drawing.Point(13, 22);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(65, 12);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "读取目录：";
-            // 
-            // btnReadPath
-            // 
-            this.btnReadPath.Location = new System.Drawing.Point(81, 19);
-            this.btnReadPath.Name = "btnReadPath";
-            this.btnReadPath.Size = new System.Drawing.Size(19, 19);
-            this.btnReadPath.TabIndex = 2;
-            this.btnReadPath.Text = "...";
-            this.btnReadPath.UseVisualStyleBackColor = true;
-            this.btnReadPath.Click += new System.EventHandler(this.btnReadPath_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(71, 108);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(29, 12);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "至：";
-            // 
-            // dtpBegin
-            // 
-            this.dtpBegin.CustomFormat = "yyyy-MM-dd HH:mm:ss";
-            this.dtpBegin.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpBegin.Location = new System.Drawing.Point(106, 77);
-            this.dtpBegin.Name = "dtpBegin";
-            this.dtpBegin.Size = new System.Drawing.Size(153, 21);
-            this.dtpBegin.TabIndex = 11;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.ForeColor = System.Drawing.Color.Red;
-            this.label4.Location = new System.Drawing.Point(13, 49);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(65, 12);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "生成目录：";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.Color.Red;
-            this.label1.Location = new System.Drawing.Point(23, 81);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(77, 12);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "修改时间从：";
-            // 
-            // btnTargetPath
-            // 
-            this.btnTargetPath.Location = new System.Drawing.Point(81, 46);
-            this.btnTargetPath.Name = "btnTargetPath";
-            this.btnTargetPath.Size = new System.Drawing.Size(19, 19);
-            this.btnTargetPath.TabIndex = 2;
-            this.btnTargetPath.Text = "...";
-            this.btnTargetPath.UseVisualStyleBackColor = true;
-            this.btnTargetPath.Click += new System.EventHandler(this.btnTargetPath_Click);
-            // 
-            // txbTargetPath
-            // 
-            this.txbTargetPath.Location = new System.Drawing.Point(106, 46);
-            this.txbTargetPath.Multiline = true;
-            this.txbTargetPath.Name = "txbTargetPath";
-            this.txbTargetPath.Size = new System.Drawing.Size(516, 23);
-            this.txbTargetPath.TabIndex = 1;
             // 
             // grbExclude
             // 
@@ -392,9 +419,11 @@
             this.grbExclude.Controls.Add(this.lblExcludeTip);
             this.grbExclude.Dock = System.Windows.Forms.DockStyle.Top;
             this.grbExclude.ForeColor = System.Drawing.Color.Black;
-            this.grbExclude.Location = new System.Drawing.Point(0, 218);
+            this.grbExclude.Location = new System.Drawing.Point(0, 432);
+            this.grbExclude.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.grbExclude.Name = "grbExclude";
-            this.grbExclude.Size = new System.Drawing.Size(1160, 75);
+            this.grbExclude.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.grbExclude.Size = new System.Drawing.Size(2320, 150);
             this.grbExclude.TabIndex = 32;
             this.grbExclude.TabStop = false;
             this.grbExclude.Text = "排除目录或文件选项";
@@ -408,10 +437,10 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 319F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 638F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.Controls.Add(this.label5, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.txbExcludeEndprx, 5, 0);
             this.tableLayoutPanel1.Controls.Add(this.label6, 0, 0);
@@ -423,14 +452,15 @@
             this.tableLayoutPanel1.Controls.Add(this.label11, 2, 2);
             this.tableLayoutPanel1.Controls.Add(this.txbExcludeFullFile, 3, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(6, 34);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 13F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1154, 55);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 54F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(2308, 110);
             this.tableLayoutPanel1.TabIndex = 5;
             // 
             // label5
@@ -438,17 +468,19 @@
             this.label5.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label5.AutoSize = true;
             this.label5.ForeColor = System.Drawing.Color.Black;
-            this.label5.Location = new System.Drawing.Point(637, 7);
+            this.label5.Location = new System.Drawing.Point(1266, 11);
+            this.label5.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(65, 12);
+            this.label5.Size = new System.Drawing.Size(130, 24);
             this.label5.TabIndex = 3;
             this.label5.Text = "排除后缀：";
             // 
             // txbExcludeEndprx
             // 
-            this.txbExcludeEndprx.Location = new System.Drawing.Point(708, 3);
+            this.txbExcludeEndprx.Location = new System.Drawing.Point(1408, 6);
+            this.txbExcludeEndprx.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.txbExcludeEndprx.Name = "txbExcludeEndprx";
-            this.txbExcludeEndprx.Size = new System.Drawing.Size(216, 21);
+            this.txbExcludeEndprx.Size = new System.Drawing.Size(428, 35);
             this.txbExcludeEndprx.TabIndex = 13;
             // 
             // label6
@@ -456,18 +488,20 @@
             this.label6.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label6.AutoSize = true;
             this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(3, 7);
+            this.label6.Location = new System.Drawing.Point(6, 11);
+            this.label6.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(77, 12);
+            this.label6.Size = new System.Drawing.Size(154, 24);
             this.label6.TabIndex = 3;
             this.label6.Text = "排除目录名：";
             // 
             // txbExcludeDirName
             // 
             this.txbExcludeDirName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbExcludeDirName.Location = new System.Drawing.Point(86, 3);
+            this.txbExcludeDirName.Location = new System.Drawing.Point(172, 6);
+            this.txbExcludeDirName.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.txbExcludeDirName.Name = "txbExcludeDirName";
-            this.txbExcludeDirName.Size = new System.Drawing.Size(216, 21);
+            this.txbExcludeDirName.Size = new System.Drawing.Size(428, 35);
             this.txbExcludeDirName.TabIndex = 13;
             // 
             // label7
@@ -475,18 +509,20 @@
             this.label7.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label7.AutoSize = true;
             this.label7.ForeColor = System.Drawing.Color.Black;
-            this.label7.Location = new System.Drawing.Point(308, 7);
+            this.label7.Location = new System.Drawing.Point(612, 11);
+            this.label7.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(89, 12);
+            this.label7.Size = new System.Drawing.Size(178, 24);
             this.label7.TabIndex = 3;
             this.label7.Text = "排除绝对目录：";
             // 
             // txbExcludeFullDir
             // 
             this.txbExcludeFullDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbExcludeFullDir.Location = new System.Drawing.Point(415, 3);
+            this.txbExcludeFullDir.Location = new System.Drawing.Point(826, 6);
+            this.txbExcludeFullDir.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.txbExcludeFullDir.Name = "txbExcludeFullDir";
-            this.txbExcludeFullDir.Size = new System.Drawing.Size(216, 21);
+            this.txbExcludeFullDir.Size = new System.Drawing.Size(428, 35);
             this.txbExcludeFullDir.TabIndex = 13;
             // 
             // label10
@@ -494,17 +530,19 @@
             this.label10.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label10.AutoSize = true;
             this.label10.ForeColor = System.Drawing.Color.Black;
-            this.label10.Location = new System.Drawing.Point(3, 34);
+            this.label10.Location = new System.Drawing.Point(6, 62);
+            this.label10.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(77, 12);
+            this.label10.Size = new System.Drawing.Size(154, 24);
             this.label10.TabIndex = 3;
             this.label10.Text = "排除文件名：";
             // 
             // txbExcludeFile
             // 
-            this.txbExcludeFile.Location = new System.Drawing.Point(86, 30);
+            this.txbExcludeFile.Location = new System.Drawing.Point(172, 53);
+            this.txbExcludeFile.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.txbExcludeFile.Name = "txbExcludeFile";
-            this.txbExcludeFile.Size = new System.Drawing.Size(216, 21);
+            this.txbExcludeFile.Size = new System.Drawing.Size(428, 35);
             this.txbExcludeFile.TabIndex = 13;
             // 
             // label11
@@ -512,27 +550,30 @@
             this.label11.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label11.AutoSize = true;
             this.label11.ForeColor = System.Drawing.Color.Black;
-            this.label11.Location = new System.Drawing.Point(308, 34);
+            this.label11.Location = new System.Drawing.Point(612, 62);
+            this.label11.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(101, 12);
+            this.label11.Size = new System.Drawing.Size(202, 24);
             this.label11.TabIndex = 3;
             this.label11.Text = "排除绝对文件名：";
             // 
             // txbExcludeFullFile
             // 
             this.txbExcludeFullFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbExcludeFullFile.Location = new System.Drawing.Point(415, 30);
+            this.txbExcludeFullFile.Location = new System.Drawing.Point(826, 56);
+            this.txbExcludeFullFile.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.txbExcludeFullFile.Name = "txbExcludeFullFile";
-            this.txbExcludeFullFile.Size = new System.Drawing.Size(216, 21);
+            this.txbExcludeFullFile.Size = new System.Drawing.Size(428, 35);
             this.txbExcludeFullFile.TabIndex = 13;
             // 
             // lblExcludeTip
             // 
             this.lblExcludeTip.AutoSize = true;
             this.lblExcludeTip.ForeColor = System.Drawing.Color.Red;
-            this.lblExcludeTip.Location = new System.Drawing.Point(230, 2);
+            this.lblExcludeTip.Location = new System.Drawing.Point(460, 4);
+            this.lblExcludeTip.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblExcludeTip.Name = "lblExcludeTip";
-            this.lblExcludeTip.Size = new System.Drawing.Size(29, 12);
+            this.lblExcludeTip.Size = new System.Drawing.Size(58, 24);
             this.lblExcludeTip.TabIndex = 3;
             this.lblExcludeTip.Text = "提示";
             // 
@@ -540,9 +581,11 @@
             // 
             this.groupBox3.Controls.Add(this.rtbString);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(0, 293);
+            this.groupBox3.Location = new System.Drawing.Point(0, 582);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1160, 349);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.groupBox3.Size = new System.Drawing.Size(2320, 702);
             this.groupBox3.TabIndex = 34;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "生成的字符";
@@ -550,9 +593,10 @@
             // rtbString
             // 
             this.rtbString.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbString.Location = new System.Drawing.Point(3, 17);
+            this.rtbString.Location = new System.Drawing.Point(6, 34);
+            this.rtbString.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.rtbString.Name = "rtbString";
-            this.rtbString.Size = new System.Drawing.Size(1154, 329);
+            this.rtbString.Size = new System.Drawing.Size(2308, 662);
             this.rtbString.TabIndex = 0;
             this.rtbString.Text = "";
             // 
@@ -563,9 +607,10 @@
             this.ckbGetRelatePath.Checked = true;
             this.ckbGetRelatePath.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ckbGetRelatePath.ForeColor = System.Drawing.Color.Black;
-            this.ckbGetRelatePath.Location = new System.Drawing.Point(427, 7);
+            this.ckbGetRelatePath.Location = new System.Drawing.Point(846, 17);
+            this.ckbGetRelatePath.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.ckbGetRelatePath.Name = "ckbGetRelatePath";
-            this.ckbGetRelatePath.Size = new System.Drawing.Size(96, 16);
+            this.ckbGetRelatePath.Size = new System.Drawing.Size(186, 28);
             this.ckbGetRelatePath.TabIndex = 20;
             this.ckbGetRelatePath.Text = "获取相对路径";
             this.ckbGetRelatePath.UseVisualStyleBackColor = true;
@@ -574,9 +619,11 @@
             // 
             this.groupBox1.Controls.Add(this.tableLayoutPanel2);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox1.Location = new System.Drawing.Point(0, 27);
+            this.groupBox1.Location = new System.Drawing.Point(0, 50);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1160, 56);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.groupBox1.Size = new System.Drawing.Size(2320, 112);
             this.groupBox1.TabIndex = 35;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "类型选项";
@@ -592,7 +639,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 672F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1344F));
             this.tableLayoutPanel2.Controls.Add(this.panel1, 8, 0);
             this.tableLayoutPanel2.Controls.Add(this.ckbIncludeCommit, 7, 0);
             this.tableLayoutPanel2.Controls.Add(this.ckbNowAdd, 6, 0);
@@ -603,12 +650,13 @@
             this.tableLayoutPanel2.Controls.Add(this.ckbGetRelatePath, 4, 0);
             this.tableLayoutPanel2.Controls.Add(this.cbbDirType, 3, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 17);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(6, 34);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1154, 32);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(2308, 64);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // label12
@@ -616,9 +664,10 @@
             this.label12.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label12.AutoSize = true;
             this.label12.ForeColor = System.Drawing.Color.Red;
-            this.label12.Location = new System.Drawing.Point(3, 9);
+            this.label12.Location = new System.Drawing.Point(6, 19);
+            this.label12.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(65, 12);
+            this.label12.Size = new System.Drawing.Size(130, 24);
             this.label12.TabIndex = 0;
             this.label12.Text = "获取类型：";
             // 
@@ -626,24 +675,25 @@
             // 
             this.cbbGetType.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cbbGetType.FormattingEnabled = true;
-            this.cbbGetType.Location = new System.Drawing.Point(74, 5);
+            this.cbbGetType.Location = new System.Drawing.Point(148, 15);
+            this.cbbGetType.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.cbbGetType.Name = "cbbGetType";
-            this.cbbGetType.Size = new System.Drawing.Size(137, 20);
+            this.cbbGetType.Size = new System.Drawing.Size(270, 32);
             this.cbbGetType.TabIndex = 1;
             this.cbbGetType.SelectedIndexChanged += new System.EventHandler(this.cbbGetType_SelectedIndexChanged);
             // 
             // FrmGetUpdateDirectoryFile
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1160, 642);
+            this.ClientSize = new System.Drawing.Size(2320, 1284);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.grbExclude);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Margin = new System.Windows.Forms.Padding(8, 8, 8, 8);
             this.Name = "FrmGetUpdateDirectoryFile";
             this.Text = "获取修改过的文件";
             this.Load += new System.EventHandler(this.FrmDirectoryFileString_Load);
