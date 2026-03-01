@@ -87,15 +87,21 @@ namespace Breezee.WorkHelper.DBTool.UI
                     sRealSql = sSqlAndParam.Substring(0, m.Index);
                     string sParam  = sSqlAndParam.Substring(m.Index + sMatchValue.Length);
                     string[] arrParam = sParam.Split(',');
-                    if (arrParam.Contains("null"))
-                    {
-                        ShowErr("存在null参数，无法转换！");
-                        return;
-                    }
+                    //if (arrParam.Contains("null"))
+                    //{
+                    //    ShowErr("存在null参数，无法转换！");
+                    //    return;
+                    //}
                     int i = 0;
                     foreach(string strParam in arrParam)
                     {
                         string sValueAndType = strParam.Trim();
+                        if (sValueAndType.Equals("null"))
+                        {
+                            listParam.Add(new SortSqlParam(i, sValueAndType, null));
+                            i++;
+                            continue;
+                        }
                         string sValue = sValueAndType.Substring(0,sValueAndType.LastIndexOf("("));
                         if (ckbValueRemoveEmpty.Checked)
                         {
@@ -128,15 +134,21 @@ namespace Breezee.WorkHelper.DBTool.UI
                         ShowErr("没有类似【212(String), H2901(String)】的参数字符，请重新输入！");
                         return;
                     }
-                    if (arrParam.Contains("null"))
-                    {
-                        ShowErr("存在null参数，无法转换！");
-                        return;
-                    }
+                    //if (arrParam.Contains("null"))
+                    //{
+                    //    ShowErr("存在null参数，无法转换！");
+                    //    return;
+                    //}
                     int i = 0;
                     foreach (string strParam in arrParam)
                     {
                         string sValueAndType = strParam.Trim();
+                        if (sValueAndType.Equals("null"))
+                        {
+                            listParam.Add(new SortSqlParam(i, sValueAndType, null));
+                            i++;
+                            continue;
+                        }
                         string sValue = sValueAndType.Substring(0, sValueAndType.LastIndexOf("("));
                         if (ckbValueRemoveEmpty.Checked)
                         {

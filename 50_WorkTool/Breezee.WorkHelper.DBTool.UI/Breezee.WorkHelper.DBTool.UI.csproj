@@ -519,6 +519,9 @@
     <None Include="Doc\Develop\DB\MyBatis\批量.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\Develop\JavaScript\JQuery\LigerUI\发送请求.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\Develop\JavaScript\JQuery\LigerUI\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -882,6 +885,9 @@
     <None Include="Doc\SQL\Oracle\0001_基础\内置函数.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\SQL\Oracle\0001_基础\with.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\SQL\Oracle\0001_基础\特殊.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -922,6 +928,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\SQL\Oracle\0080_其他对象\锁.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\Oracle\9000_性能优化\性能优化.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\SQL\Oracle\9800_连接工具\OracleInstantClient\基础.md">
@@ -1743,6 +1752,9 @@
     <Content Include="Help\Html\DBTool\String\Images\GetJavaPublishFile.003.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Help\Html\DBTool\String\Images\NotStuctExcelFileRead01.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\Html\DBTool\String\Images\StringDirectoryList.001.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1777,6 +1789,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\String\FilterRepeatRowData.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\String\NotStuctExcelFileRead.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\String\StringConnChange.html">
@@ -1856,7 +1871,6 @@
     <Folder Include="Doc\SQL\MySql\0085_脚本\" />
     <Folder Include="Doc\SQL\MySql\9000_实例\" />
     <Folder Include="Doc\SQL\MySql\9800_连接工具\" />
-    <Folder Include="Doc\SQL\Oracle\9000_实例\" />
     <Folder Include="Doc\SQL\PostgreSQL\0070_Job\" />
     <Folder Include="Doc\SQL\PostgreSQL\0080_其他对象\" />
     <Folder Include="Doc\SQL\PostgreSQL\0085_脚本\" />

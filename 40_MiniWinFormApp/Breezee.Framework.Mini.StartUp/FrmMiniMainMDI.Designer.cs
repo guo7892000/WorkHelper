@@ -88,6 +88,7 @@
             this.tsmiMoveLeftOne = new System.Windows.Forms.ToolStripMenuItem();
             this.tpgDesktop = new System.Windows.Forms.TabPage();
             this.pnlDesktop = new System.Windows.Forms.Panel();
+            this.tsbNoBarGuid = new System.Windows.Forms.ToolStripButton();
             this.menuStrip.SuspendLayout();
             this.tspMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -101,6 +102,7 @@
             // 
             // menuStrip
             // 
+            this.menuStrip.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbStartMenu,
@@ -110,8 +112,8 @@
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.MdiWindowListItem = this.windowsMenu;
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Padding = new System.Windows.Forms.Padding(8, 1, 0, 1);
-            this.menuStrip.Size = new System.Drawing.Size(1684, 26);
+            this.menuStrip.Padding = new System.Windows.Forms.Padding(12, 2, 0, 2);
+            this.menuStrip.Size = new System.Drawing.Size(2526, 39);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "MenuStrip";
             // 
@@ -126,21 +128,21 @@
             this.tsbExitMenu});
             this.tsbStartMenu.ImageTransparentColor = System.Drawing.SystemColors.ActiveBorder;
             this.tsbStartMenu.Name = "tsbStartMenu";
-            this.tsbStartMenu.Size = new System.Drawing.Size(72, 24);
+            this.tsbStartMenu.Size = new System.Drawing.Size(113, 44);
             this.tsbStartMenu.Text = "开始(&B)";
             // 
             // tsbRestartMenu
             // 
             this.tsbRestartMenu.Image = ((System.Drawing.Image)(resources.GetObject("tsbRestartMenu.Image")));
             this.tsbRestartMenu.Name = "tsbRestartMenu";
-            this.tsbRestartMenu.Size = new System.Drawing.Size(172, 26);
+            this.tsbRestartMenu.Size = new System.Drawing.Size(275, 44);
             this.tsbRestartMenu.Text = "重新登录(&R)";
             // 
             // tsmiUserEnvrSet
             // 
             this.tsmiUserEnvrSet.Image = ((System.Drawing.Image)(resources.GetObject("tsmiUserEnvrSet.Image")));
             this.tsmiUserEnvrSet.Name = "tsmiUserEnvrSet";
-            this.tsmiUserEnvrSet.Size = new System.Drawing.Size(172, 26);
+            this.tsmiUserEnvrSet.Size = new System.Drawing.Size(275, 44);
             this.tsmiUserEnvrSet.Text = "环境设置";
             this.tsmiUserEnvrSet.Click += new System.EventHandler(this.TsmiUserEnvrSet_Click);
             // 
@@ -148,26 +150,26 @@
             // 
             this.tsmiLock.Image = ((System.Drawing.Image)(resources.GetObject("tsmiLock.Image")));
             this.tsmiLock.Name = "tsmiLock";
-            this.tsmiLock.Size = new System.Drawing.Size(172, 26);
+            this.tsmiLock.Size = new System.Drawing.Size(275, 44);
             this.tsmiLock.Text = "锁定系统";
             // 
             // tsmiChangePassword
             // 
             this.tsmiChangePassword.Image = ((System.Drawing.Image)(resources.GetObject("tsmiChangePassword.Image")));
             this.tsmiChangePassword.Name = "tsmiChangePassword";
-            this.tsmiChangePassword.Size = new System.Drawing.Size(172, 26);
+            this.tsmiChangePassword.Size = new System.Drawing.Size(275, 44);
             this.tsmiChangePassword.Text = "修改密码";
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(169, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(272, 6);
             // 
             // tsbExitMenu
             // 
             this.tsbExitMenu.Image = ((System.Drawing.Image)(resources.GetObject("tsbExitMenu.Image")));
             this.tsbExitMenu.Name = "tsbExitMenu";
-            this.tsbExitMenu.Size = new System.Drawing.Size(172, 26);
+            this.tsbExitMenu.Size = new System.Drawing.Size(275, 44);
             this.tsbExitMenu.Text = "退出(&X)";
             this.tsbExitMenu.Click += new System.EventHandler(this.tsbExitMenu_Click);
             // 
@@ -177,7 +179,7 @@
             this.toolBarToolStripMenuItem,
             this.statusBarToolStripMenuItem});
             this.viewMenu.Name = "viewMenu";
-            this.viewMenu.Size = new System.Drawing.Size(73, 24);
+            this.viewMenu.Size = new System.Drawing.Size(114, 44);
             this.viewMenu.Text = "视图(&V)";
             // 
             // toolBarToolStripMenuItem
@@ -186,7 +188,7 @@
             this.toolBarToolStripMenuItem.CheckOnClick = true;
             this.toolBarToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.toolBarToolStripMenuItem.Name = "toolBarToolStripMenuItem";
-            this.toolBarToolStripMenuItem.Size = new System.Drawing.Size(156, 26);
+            this.toolBarToolStripMenuItem.Size = new System.Drawing.Size(249, 44);
             this.toolBarToolStripMenuItem.Text = "工具栏(&T)";
             this.toolBarToolStripMenuItem.Click += new System.EventHandler(this.ToolBarToolStripMenuItem_Click);
             // 
@@ -196,7 +198,7 @@
             this.statusBarToolStripMenuItem.CheckOnClick = true;
             this.statusBarToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.statusBarToolStripMenuItem.Name = "statusBarToolStripMenuItem";
-            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(156, 26);
+            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(249, 44);
             this.statusBarToolStripMenuItem.Text = "状态栏(&S)";
             this.statusBarToolStripMenuItem.Click += new System.EventHandler(this.StatusBarToolStripMenuItem_Click);
             // 
@@ -209,41 +211,41 @@
             this.closeAllToolStripMenuItem,
             this.arrangeIconsToolStripMenuItem});
             this.windowsMenu.Name = "windowsMenu";
-            this.windowsMenu.Size = new System.Drawing.Size(78, 24);
+            this.windowsMenu.Size = new System.Drawing.Size(122, 44);
             this.windowsMenu.Text = "窗口(&W)";
             // 
             // cascadeToolStripMenuItem
             // 
             this.cascadeToolStripMenuItem.Name = "cascadeToolStripMenuItem";
-            this.cascadeToolStripMenuItem.Size = new System.Drawing.Size(174, 26);
+            this.cascadeToolStripMenuItem.Size = new System.Drawing.Size(278, 44);
             this.cascadeToolStripMenuItem.Text = "层叠(&C)";
             this.cascadeToolStripMenuItem.Click += new System.EventHandler(this.CascadeToolStripMenuItem_Click);
             // 
             // tileVerticalToolStripMenuItem
             // 
             this.tileVerticalToolStripMenuItem.Name = "tileVerticalToolStripMenuItem";
-            this.tileVerticalToolStripMenuItem.Size = new System.Drawing.Size(174, 26);
+            this.tileVerticalToolStripMenuItem.Size = new System.Drawing.Size(278, 44);
             this.tileVerticalToolStripMenuItem.Text = "垂直平铺(&V)";
             this.tileVerticalToolStripMenuItem.Click += new System.EventHandler(this.TileVerticalToolStripMenuItem_Click);
             // 
             // tileHorizontalToolStripMenuItem
             // 
             this.tileHorizontalToolStripMenuItem.Name = "tileHorizontalToolStripMenuItem";
-            this.tileHorizontalToolStripMenuItem.Size = new System.Drawing.Size(174, 26);
+            this.tileHorizontalToolStripMenuItem.Size = new System.Drawing.Size(278, 44);
             this.tileHorizontalToolStripMenuItem.Text = "水平平铺(&H)";
             this.tileHorizontalToolStripMenuItem.Click += new System.EventHandler(this.TileHorizontalToolStripMenuItem_Click);
             // 
             // closeAllToolStripMenuItem
             // 
             this.closeAllToolStripMenuItem.Name = "closeAllToolStripMenuItem";
-            this.closeAllToolStripMenuItem.Size = new System.Drawing.Size(174, 26);
+            this.closeAllToolStripMenuItem.Size = new System.Drawing.Size(278, 44);
             this.closeAllToolStripMenuItem.Text = "全部关闭(&L)";
             this.closeAllToolStripMenuItem.Click += new System.EventHandler(this.CloseAllToolStripMenuItem_Click);
             // 
             // arrangeIconsToolStripMenuItem
             // 
             this.arrangeIconsToolStripMenuItem.Name = "arrangeIconsToolStripMenuItem";
-            this.arrangeIconsToolStripMenuItem.Size = new System.Drawing.Size(174, 26);
+            this.arrangeIconsToolStripMenuItem.Size = new System.Drawing.Size(278, 44);
             this.arrangeIconsToolStripMenuItem.Text = "排列图标(&A)";
             this.arrangeIconsToolStripMenuItem.Click += new System.EventHandler(this.ArrangeIconsToolStripMenuItem_Click);
             // 
@@ -255,14 +257,14 @@
             this.tsmiDowloadLatestStableVersion,
             this.aboutToolStripMenuItem});
             this.helpMenu.Name = "helpMenu";
-            this.helpMenu.Size = new System.Drawing.Size(75, 24);
+            this.helpMenu.Size = new System.Drawing.Size(117, 44);
             this.helpMenu.Text = "帮助(&H)";
             // 
             // tsmiUserManual
             // 
             this.tsmiUserManual.Image = ((System.Drawing.Image)(resources.GetObject("tsmiUserManual.Image")));
             this.tsmiUserManual.Name = "tsmiUserManual";
-            this.tsmiUserManual.Size = new System.Drawing.Size(197, 26);
+            this.tsmiUserManual.Size = new System.Drawing.Size(315, 44);
             this.tsmiUserManual.Text = "用户手册";
             this.tsmiUserManual.Click += new System.EventHandler(this.tsmiUserManual_Click);
             // 
@@ -270,7 +272,7 @@
             // 
             this.tsbCheckUpdate.Image = ((System.Drawing.Image)(resources.GetObject("tsbCheckUpdate.Image")));
             this.tsbCheckUpdate.Name = "tsbCheckUpdate";
-            this.tsbCheckUpdate.Size = new System.Drawing.Size(197, 26);
+            this.tsbCheckUpdate.Size = new System.Drawing.Size(315, 44);
             this.tsbCheckUpdate.Text = "检查更新";
             this.tsbCheckUpdate.ToolTipText = "检测是否有最新版本";
             this.tsbCheckUpdate.Click += new System.EventHandler(this.tsbCheckUpdate_Click);
@@ -279,7 +281,7 @@
             // 
             this.tsmiDowloadLatestStableVersion.Image = ((System.Drawing.Image)(resources.GetObject("tsmiDowloadLatestStableVersion.Image")));
             this.tsmiDowloadLatestStableVersion.Name = "tsmiDowloadLatestStableVersion";
-            this.tsmiDowloadLatestStableVersion.Size = new System.Drawing.Size(197, 26);
+            this.tsmiDowloadLatestStableVersion.Size = new System.Drawing.Size(315, 44);
             this.tsmiDowloadLatestStableVersion.Text = "下载历史稳定版";
             this.tsmiDowloadLatestStableVersion.ToolTipText = "不是最新版，是之前的某个版本，更新频率相对低一些";
             this.tsmiDowloadLatestStableVersion.Click += new System.EventHandler(this.tsmiDowloadLatestStableVersion_Click);
@@ -288,7 +290,7 @@
             // 
             this.aboutToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aboutToolStripMenuItem.Image")));
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(197, 26);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(315, 44);
             this.aboutToolStripMenuItem.Text = "关于我们";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -298,6 +300,7 @@
             this.tspMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel1,
             this.tstbMenuSearch,
+            this.tsbNoBarGuid,
             this.tsbAutoGuid,
             this.saveToolStripButton,
             this.toolStripSeparator1,
@@ -306,23 +309,24 @@
             this.printPreviewToolStripButton,
             this.toolStripSeparator2,
             this.tsbHelp});
-            this.tspMain.Location = new System.Drawing.Point(0, 26);
+            this.tspMain.Location = new System.Drawing.Point(0, 39);
             this.tspMain.Name = "tspMain";
-            this.tspMain.Size = new System.Drawing.Size(1684, 27);
+            this.tspMain.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.tspMain.Size = new System.Drawing.Size(2526, 38);
             this.tspMain.TabIndex = 1;
             this.tspMain.Text = "ToolStrip";
             // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(54, 24);
+            this.toolStripLabel1.Size = new System.Drawing.Size(86, 44);
             this.toolStripLabel1.Text = "搜索：";
             // 
             // tstbMenuSearch
             // 
             this.tstbMenuSearch.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
             this.tstbMenuSearch.Name = "tstbMenuSearch";
-            this.tstbMenuSearch.Size = new System.Drawing.Size(200, 27);
+            this.tstbMenuSearch.Size = new System.Drawing.Size(298, 50);
             this.tstbMenuSearch.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tstbMenuSearch_KeyUp);
             // 
             // tsbAutoGuid
@@ -331,7 +335,7 @@
             this.tsbAutoGuid.Image = ((System.Drawing.Image)(resources.GetObject("tsbAutoGuid.Image")));
             this.tsbAutoGuid.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbAutoGuid.Name = "tsbAutoGuid";
-            this.tsbAutoGuid.Size = new System.Drawing.Size(29, 24);
+            this.tsbAutoGuid.Size = new System.Drawing.Size(46, 44);
             this.tsbAutoGuid.Text = "生成GUID";
             this.tsbAutoGuid.Click += new System.EventHandler(this.tsbAutoGuid_Click);
             // 
@@ -341,14 +345,14 @@
             this.saveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripButton.Image")));
             this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Black;
             this.saveToolStripButton.Name = "saveToolStripButton";
-            this.saveToolStripButton.Size = new System.Drawing.Size(29, 24);
+            this.saveToolStripButton.Size = new System.Drawing.Size(46, 44);
             this.saveToolStripButton.Text = "保存";
             this.saveToolStripButton.Visible = false;
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 50);
             // 
             // printToolStripButton
             // 
@@ -356,7 +360,7 @@
             this.printToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("printToolStripButton.Image")));
             this.printToolStripButton.ImageTransparentColor = System.Drawing.Color.Black;
             this.printToolStripButton.Name = "printToolStripButton";
-            this.printToolStripButton.Size = new System.Drawing.Size(29, 24);
+            this.printToolStripButton.Size = new System.Drawing.Size(46, 44);
             this.printToolStripButton.Text = "打印";
             this.printToolStripButton.Visible = false;
             // 
@@ -366,7 +370,7 @@
             this.tsbEnvironmentSet.Image = ((System.Drawing.Image)(resources.GetObject("tsbEnvironmentSet.Image")));
             this.tsbEnvironmentSet.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbEnvironmentSet.Name = "tsbEnvironmentSet";
-            this.tsbEnvironmentSet.Size = new System.Drawing.Size(29, 24);
+            this.tsbEnvironmentSet.Size = new System.Drawing.Size(46, 44);
             this.tsbEnvironmentSet.Text = "环境设置";
             this.tsbEnvironmentSet.Click += new System.EventHandler(this.tsbEnvironmentSet_Click);
             // 
@@ -376,14 +380,14 @@
             this.printPreviewToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("printPreviewToolStripButton.Image")));
             this.printPreviewToolStripButton.ImageTransparentColor = System.Drawing.Color.Black;
             this.printPreviewToolStripButton.Name = "printPreviewToolStripButton";
-            this.printPreviewToolStripButton.Size = new System.Drawing.Size(29, 24);
+            this.printPreviewToolStripButton.Size = new System.Drawing.Size(46, 44);
             this.printPreviewToolStripButton.Text = "打印预览";
             this.printPreviewToolStripButton.Visible = false;
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 50);
             this.toolStripSeparator2.Visible = false;
             // 
             // tsbHelp
@@ -392,7 +396,7 @@
             this.tsbHelp.Image = ((System.Drawing.Image)(resources.GetObject("tsbHelp.Image")));
             this.tsbHelp.ImageTransparentColor = System.Drawing.Color.Black;
             this.tsbHelp.Name = "tsbHelp";
-            this.tsbHelp.Size = new System.Drawing.Size(29, 24);
+            this.tsbHelp.Size = new System.Drawing.Size(46, 44);
             this.tsbHelp.Text = "帮助";
             this.tsbHelp.Click += new System.EventHandler(this.TsbHelp_Click);
             // 
@@ -401,17 +405,17 @@
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsslUserInfo});
-            this.statusStrip.Location = new System.Drawing.Point(0, 753);
+            this.statusStrip.Location = new System.Drawing.Point(0, 1205);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 20, 0);
-            this.statusStrip.Size = new System.Drawing.Size(1684, 26);
+            this.statusStrip.Padding = new System.Windows.Forms.Padding(2, 0, 30, 0);
+            this.statusStrip.Size = new System.Drawing.Size(2526, 41);
             this.statusStrip.TabIndex = 2;
             this.statusStrip.Text = "StatusStrip";
             // 
             // tsslUserInfo
             // 
             this.tsslUserInfo.Name = "tsslUserInfo";
-            this.tsslUserInfo.Size = new System.Drawing.Size(54, 20);
+            this.tsslUserInfo.Size = new System.Drawing.Size(86, 31);
             this.tsslUserInfo.Text = "用户名";
             // 
             // tvLeftMenu
@@ -419,10 +423,10 @@
             this.tvLeftMenu.ContextMenuStrip = this.cmsOpenTreeMenu;
             this.tvLeftMenu.Dock = System.Windows.Forms.DockStyle.Left;
             this.tvLeftMenu.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tvLeftMenu.Location = new System.Drawing.Point(0, 53);
-            this.tvLeftMenu.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tvLeftMenu.Location = new System.Drawing.Point(0, 77);
+            this.tvLeftMenu.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.tvLeftMenu.Name = "tvLeftMenu";
-            this.tvLeftMenu.Size = new System.Drawing.Size(232, 700);
+            this.tvLeftMenu.Size = new System.Drawing.Size(346, 1128);
             this.tvLeftMenu.TabIndex = 4;
             this.tvLeftMenu.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.tvLeftMenu_ItemDrag);
             this.tvLeftMenu.DoubleClick += new System.EventHandler(this.tvLeftMenu_DoubleClick);
@@ -433,12 +437,12 @@
             this.cmsOpenTreeMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiOpenNewForm});
             this.cmsOpenTreeMenu.Name = "cmsOpenTreeMenu";
-            this.cmsOpenTreeMenu.Size = new System.Drawing.Size(154, 28);
+            this.cmsOpenTreeMenu.Size = new System.Drawing.Size(209, 42);
             // 
             // tsmiOpenNewForm
             // 
             this.tsmiOpenNewForm.Name = "tsmiOpenNewForm";
-            this.tsmiOpenNewForm.Size = new System.Drawing.Size(153, 24);
+            this.tsmiOpenNewForm.Size = new System.Drawing.Size(208, 38);
             this.tsmiOpenNewForm.Text = "打开新窗体";
             this.tsmiOpenNewForm.ToolTipText = "支持同一个菜单打开多个窗体！";
             this.tsmiOpenNewForm.Click += new System.EventHandler(this.tsmiOpenNewForm_Click);
@@ -447,19 +451,19 @@
             // 
             this.pnlLeftMenu.Controls.Add(this.btnHideTree);
             this.pnlLeftMenu.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pnlLeftMenu.Location = new System.Drawing.Point(232, 53);
-            this.pnlLeftMenu.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pnlLeftMenu.Location = new System.Drawing.Point(346, 77);
+            this.pnlLeftMenu.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.pnlLeftMenu.Name = "pnlLeftMenu";
-            this.pnlLeftMenu.Size = new System.Drawing.Size(17, 700);
+            this.pnlLeftMenu.Size = new System.Drawing.Size(26, 1128);
             this.pnlLeftMenu.TabIndex = 5;
             // 
             // btnHideTree
             // 
             this.btnHideTree.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnHideTree.Location = new System.Drawing.Point(-1, 351);
-            this.btnHideTree.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnHideTree.Location = new System.Drawing.Point(-2, 566);
+            this.btnHideTree.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.btnHideTree.Name = "btnHideTree";
-            this.btnHideTree.Size = new System.Drawing.Size(20, 29);
+            this.btnHideTree.Size = new System.Drawing.Size(30, 46);
             this.btnHideTree.TabIndex = 0;
             this.btnHideTree.Text = "<";
             this.btnHideTree.UseVisualStyleBackColor = true;
@@ -469,10 +473,10 @@
             // 
             this.pnlMenuNavigate.Controls.Add(this.tableLayoutPanel1);
             this.pnlMenuNavigate.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlMenuNavigate.Location = new System.Drawing.Point(249, 53);
-            this.pnlMenuNavigate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pnlMenuNavigate.Location = new System.Drawing.Point(372, 77);
+            this.pnlMenuNavigate.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.pnlMenuNavigate.Name = "pnlMenuNavigate";
-            this.pnlMenuNavigate.Size = new System.Drawing.Size(1435, 29);
+            this.pnlMenuNavigate.Size = new System.Drawing.Size(2154, 46);
             this.pnlMenuNavigate.TabIndex = 6;
             // 
             // tableLayoutPanel1
@@ -481,18 +485,18 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 210F));
             this.tableLayoutPanel1.Controls.Add(this.txbGlobalMsg, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.txbMenuPath, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(6, 3, 6, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1435, 29);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(2154, 46);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // txbGlobalMsg
@@ -500,21 +504,21 @@
             this.txbGlobalMsg.BackColor = System.Drawing.SystemColors.Control;
             this.txbGlobalMsg.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txbGlobalMsg.ForeColor = System.Drawing.Color.Red;
-            this.txbGlobalMsg.Location = new System.Drawing.Point(527, 5);
-            this.txbGlobalMsg.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txbGlobalMsg.Location = new System.Drawing.Point(798, 8);
+            this.txbGlobalMsg.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.txbGlobalMsg.Name = "txbGlobalMsg";
             this.txbGlobalMsg.ReadOnly = true;
-            this.txbGlobalMsg.Size = new System.Drawing.Size(868, 18);
+            this.txbGlobalMsg.Size = new System.Drawing.Size(1302, 28);
             this.txbGlobalMsg.TabIndex = 3;
             // 
             // label1
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 6);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(6, 10);
+            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(82, 15);
+            this.label1.Size = new System.Drawing.Size(130, 24);
             this.label1.TabIndex = 0;
             this.label1.Text = "菜单导航：";
             // 
@@ -523,10 +527,10 @@
             this.txbMenuPath.BackColor = System.Drawing.SystemColors.Control;
             this.txbMenuPath.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txbMenuPath.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.txbMenuPath.Location = new System.Drawing.Point(94, 5);
-            this.txbMenuPath.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txbMenuPath.Location = new System.Drawing.Point(148, 8);
+            this.txbMenuPath.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.txbMenuPath.Name = "txbMenuPath";
-            this.txbMenuPath.Size = new System.Drawing.Size(425, 18);
+            this.txbMenuPath.Size = new System.Drawing.Size(638, 28);
             this.txbMenuPath.TabIndex = 1;
             // 
             // tcMenu
@@ -536,11 +540,11 @@
             this.tcMenu.ContextMenuStrip = this.cmsMenuSheet;
             this.tcMenu.Controls.Add(this.tpgDesktop);
             this.tcMenu.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tcMenu.Location = new System.Drawing.Point(249, 723);
-            this.tcMenu.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tcMenu.Location = new System.Drawing.Point(372, 1157);
+            this.tcMenu.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.tcMenu.Name = "tcMenu";
             this.tcMenu.SelectedIndex = 0;
-            this.tcMenu.Size = new System.Drawing.Size(1435, 30);
+            this.tcMenu.Size = new System.Drawing.Size(2154, 48);
             this.tcMenu.TabIndex = 7;
             this.tcMenu.SelectedIndexChanged += new System.EventHandler(this.tcMenu_SelectedIndexChanged);
             this.tcMenu.DoubleClick += new System.EventHandler(this.TcMenu_DoubleClick);
@@ -558,54 +562,54 @@
             this.tsmiMoveRightOne,
             this.tsmiMoveLeftOne});
             this.cmsMenuSheet.Name = "cmsMenuSheet";
-            this.cmsMenuSheet.Size = new System.Drawing.Size(154, 196);
+            this.cmsMenuSheet.Size = new System.Drawing.Size(209, 308);
             // 
             // tsmiMenuSheetTop
             // 
             this.tsmiMenuSheetTop.Name = "tsmiMenuSheetTop";
-            this.tsmiMenuSheetTop.Size = new System.Drawing.Size(153, 24);
+            this.tsmiMenuSheetTop.Size = new System.Drawing.Size(208, 38);
             this.tsmiMenuSheetTop.Text = "置顶部";
             this.tsmiMenuSheetTop.Click += new System.EventHandler(this.TsmiMenuSheetTop_Click);
             // 
             // tsmiMenuSheetBottom
             // 
             this.tsmiMenuSheetBottom.Name = "tsmiMenuSheetBottom";
-            this.tsmiMenuSheetBottom.Size = new System.Drawing.Size(153, 24);
+            this.tsmiMenuSheetBottom.Size = new System.Drawing.Size(208, 38);
             this.tsmiMenuSheetBottom.Text = "置底部";
             this.tsmiMenuSheetBottom.Click += new System.EventHandler(this.TsmiMenuSheetBottom_Click);
             // 
             // tsmiCloseMenu
             // 
             this.tsmiCloseMenu.Name = "tsmiCloseMenu";
-            this.tsmiCloseMenu.Size = new System.Drawing.Size(153, 24);
+            this.tsmiCloseMenu.Size = new System.Drawing.Size(208, 38);
             this.tsmiCloseMenu.Text = "关闭";
             this.tsmiCloseMenu.Click += new System.EventHandler(this.TsmiCloseMenu_Click);
             // 
             // tsbCloseAll
             // 
             this.tsbCloseAll.Name = "tsbCloseAll";
-            this.tsbCloseAll.Size = new System.Drawing.Size(153, 24);
+            this.tsbCloseAll.Size = new System.Drawing.Size(208, 38);
             this.tsbCloseAll.Text = "关闭所有";
             this.tsbCloseAll.Click += new System.EventHandler(this.tsbCloseAll_Click);
             // 
             // tsmiPutLast
             // 
             this.tsmiPutLast.Name = "tsmiPutLast";
-            this.tsmiPutLast.Size = new System.Drawing.Size(153, 24);
+            this.tsmiPutLast.Size = new System.Drawing.Size(208, 38);
             this.tsmiPutLast.Text = "移到最右边";
             this.tsmiPutLast.Click += new System.EventHandler(this.tsmiPutLast_Click);
             // 
             // tsmiPutFirst
             // 
             this.tsmiPutFirst.Name = "tsmiPutFirst";
-            this.tsmiPutFirst.Size = new System.Drawing.Size(153, 24);
+            this.tsmiPutFirst.Size = new System.Drawing.Size(208, 38);
             this.tsmiPutFirst.Text = "移到最左边";
             this.tsmiPutFirst.Click += new System.EventHandler(this.tsmiPutFirst_Click);
             // 
             // tsmiMoveRightOne
             // 
             this.tsmiMoveRightOne.Name = "tsmiMoveRightOne";
-            this.tsmiMoveRightOne.Size = new System.Drawing.Size(153, 24);
+            this.tsmiMoveRightOne.Size = new System.Drawing.Size(208, 38);
             this.tsmiMoveRightOne.Text = "右移一位";
             this.tsmiMoveRightOne.ToolTipText = "往右边移动一位";
             this.tsmiMoveRightOne.Click += new System.EventHandler(this.tsmiMoveRightOne_Click);
@@ -613,17 +617,17 @@
             // tsmiMoveLeftOne
             // 
             this.tsmiMoveLeftOne.Name = "tsmiMoveLeftOne";
-            this.tsmiMoveLeftOne.Size = new System.Drawing.Size(153, 24);
+            this.tsmiMoveLeftOne.Size = new System.Drawing.Size(208, 38);
             this.tsmiMoveLeftOne.Text = "左移一位";
             this.tsmiMoveLeftOne.ToolTipText = "往左边移动一位";
             this.tsmiMoveLeftOne.Click += new System.EventHandler(this.tsmiMoveLeftOne_Click);
             // 
             // tpgDesktop
             // 
-            this.tpgDesktop.Location = new System.Drawing.Point(4, 4);
-            this.tpgDesktop.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tpgDesktop.Location = new System.Drawing.Point(8, 8);
+            this.tpgDesktop.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.tpgDesktop.Name = "tpgDesktop";
-            this.tpgDesktop.Size = new System.Drawing.Size(1427, 1);
+            this.tpgDesktop.Size = new System.Drawing.Size(2138, 1);
             this.tpgDesktop.TabIndex = 0;
             this.tpgDesktop.Text = "桌面";
             this.tpgDesktop.UseVisualStyleBackColor = true;
@@ -632,17 +636,27 @@
             // 
             this.pnlDesktop.AccessibleDescription = "";
             this.pnlDesktop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlDesktop.Location = new System.Drawing.Point(249, 82);
-            this.pnlDesktop.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pnlDesktop.Location = new System.Drawing.Point(372, 123);
+            this.pnlDesktop.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.pnlDesktop.Name = "pnlDesktop";
-            this.pnlDesktop.Size = new System.Drawing.Size(1435, 59);
+            this.pnlDesktop.Size = new System.Drawing.Size(2154, 94);
             this.pnlDesktop.TabIndex = 8;
+            // 
+            // tsbNoBarGuid
+            // 
+            this.tsbNoBarGuid.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbNoBarGuid.Image = ((System.Drawing.Image)(resources.GetObject("tsbNoBarGuid.Image")));
+            this.tsbNoBarGuid.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbNoBarGuid.Name = "tsbNoBarGuid";
+            this.tsbNoBarGuid.Size = new System.Drawing.Size(46, 44);
+            this.tsbNoBarGuid.Text = "生成无杠GUID";
+            this.tsbNoBarGuid.Click += new System.EventHandler(this.tsbNoBarGuid_Click);
             // 
             // FrmMiniMainMDI
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1684, 779);
+            this.ClientSize = new System.Drawing.Size(2526, 1246);
             this.Controls.Add(this.pnlDesktop);
             this.Controls.Add(this.tcMenu);
             this.Controls.Add(this.pnlMenuNavigate);
@@ -654,7 +668,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip;
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.Name = "FrmMiniMainMDI";
             this.Text = "主窗体";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMainMDI_FormClosing);
@@ -737,6 +751,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiMoveRightOne;
         private System.Windows.Forms.ToolStripMenuItem tsmiMoveLeftOne;
         private System.Windows.Forms.ToolStripButton tsbEnvironmentSet;
+        private System.Windows.Forms.ToolStripButton tsbNoBarGuid;
     }
 }
 

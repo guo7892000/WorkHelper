@@ -38,6 +38,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         char[] splitCharArr = new char[] { ',', '，', '：', ';', '；', '|' };
 
         List<string> _listFilePath; //复制了哪些
+        List<string> _listFilePathFail; //哪些复制失败
         string sKeyId;
         JavaPublishFileConfig javaPublishFileConfig;
         DateTime lastGetEndTime = DateTime.Now;
@@ -250,6 +251,7 @@ namespace Breezee.WorkHelper.DBTool.UI
 
                 rtbString.Clear();
                 _listFilePath = new List<string>();
+                _listFilePathFail = new List<string>();
                 StringBuilder sb = new StringBuilder();
                 StringBuilder sbFrom = new StringBuilder();
                 DirectoryInfo codeDirectory = new DirectoryInfo(sCodePath);
@@ -287,9 +289,21 @@ namespace Breezee.WorkHelper.DBTool.UI
                 await Task.Run(() => GetFixedFile(sb, getJavaClassEntity, sbFrom));
 
                 tsbAutoSQL.Enabled = true; //重置按钮为有效
+                //先输入复制错误信息
+                if (_listFilePathFail.Count > 0)
+                {
+                    rtbString.AppendText(string.Format("复制失败文件{0}个！", _listFilePathFail.Count)+ Environment.NewLine);
+                    foreach (string item in _listFilePathFail)
+                    {
+                        rtbString.AppendText(item + Environment.NewLine);
+                    }
+                    rtbString.AppendText(Environment.NewLine);
+                }
+                
+                //输出成功信息
                 rtbString.AppendText(string.Format("复制成功 {0} 个文件！可能会包含$符号的内部类或匿名类文件。", _listFilePath.Count) + Environment.NewLine);
                 rtbString.AppendText(sb.ToString());
-                rtbString.AppendText("---------------以上文件的复制源文件路径如下-------------" + System.Environment.NewLine);
+                rtbString.AppendText("---------------以上文件的复制源文件路径如下-------------" + Environment.NewLine);
 
                 rtbString.AppendText(sbFrom.ToString());
                 //保存
@@ -307,10 +321,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (iFileNum <= 0)
                 {
                     ShowInfo("异步获取文件完成，没有修改的文件！");
+                    lblInfo.Text = "没有获取到有修改的文件！";
                 }
                 else
                 {
                     ShowInfo("异步获取文件完成，修改的文件数为：" + iFileNum.ToString());
+                    lblInfo.Text = string.Format("源文件数：{0}，获取成功文件数：{1}，获取失败文件数：{2}", dtInputFiles.Rows.Count, iFileNum, _listFilePathFail.Count);
                     if (ckbOpenGenDir.Checked)
                     {
                         if (Directory.Exists(getJavaClassEntity.CopyToPath))
@@ -346,11 +362,12 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (!File.Exists(sFullFilePath))
                 {
                     sb.AppendLine(sFullFilePath + "：源码文件不存在！");
+                    _listFilePathFail.Add(sFullFilePath + "：源码文件不存在！");
                     continue;
                 }
 
                 string sCopySourceFileFullPath = string.Empty;
-                string sCoptyToFullPath = string.Empty;
+                string sCopyToFullPath = string.Empty;
                 // 循环代码与复制目录的关系
                 foreach (DataRow drCfg in getJavaClassEntity.RelCodeClassList.Rows)
                 {
@@ -375,30 +392,31 @@ namespace Breezee.WorkHelper.DBTool.UI
                         {
                             // 这里取代码路径：如class取源码下的target目录、页面和JS就取源码目录
                             sCopySourceFileFullPath = Path.Combine(getJavaClassEntity.CodePath, sCodeFilePath); //从源码读取时，还是取完整路径
-                            sCoptyToFullPath = Path.Combine(getJavaClassEntity.CopyToPath, sCfgCopyToPath, sCfgClassPath, sCfgClassEndPath);
+                            sCopyToFullPath = Path.Combine(getJavaClassEntity.CopyToPath, sCfgCopyToPath, sCfgClassPath, sCfgClassEndPath);
                         }
                         else
                         {
                             // 这里取JBoss发布生成的class路径：主要针对JBoss的发布，可以使用该方式在一个目录中获取class、页面和JS。
                             sCopySourceFileFullPath = Path.Combine(getJavaClassEntity.ClassPath, sCfgClassPath, sCfgClassEndPath);
-                            sCoptyToFullPath = Path.Combine(getJavaClassEntity.CopyToPath, sCfgCopyToPath, sCfgClassPath, sCfgClassEndPath);
+                            sCopyToFullPath = Path.Combine(getJavaClassEntity.CopyToPath, sCfgCopyToPath, sCfgClassPath, sCfgClassEndPath);
                         }
 
                         // 查找class文件是否存在
                         if (!File.Exists(sCopySourceFileFullPath))
                         {
                             sb.AppendLine(sCopySourceFileFullPath + "文件不存在！");
+                            _listFilePathFail.Add(sCopySourceFileFullPath + "文件不存在！");
                             break;
                         }
 
-                        string sCopyToDirParent = sCoptyToFullPath.Substring(0, sCoptyToFullPath.LastIndexOf("\\"));
+                        string sCopyToDirParent = sCopyToFullPath.Substring(0, sCopyToFullPath.LastIndexOf("\\"));
                         if (!Directory.Exists(sCopyToDirParent))
                         {
                             Directory.CreateDirectory(sCopyToDirParent);
                         }
 
-                        File.Copy(sCopySourceFileFullPath, sCoptyToFullPath, true);
-                        sb.AppendLine(sCoptyToFullPath);
+                        File.Copy(sCopySourceFileFullPath, sCopyToFullPath, true);
+                        sb.AppendLine(sCopyToFullPath);
                         sbFrom.AppendLine(sCopySourceFileFullPath);
                         _listFilePath.Add(sCopySourceFileFullPath);
                         iFileNum++;
@@ -407,7 +425,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         if (!string.IsNullOrEmpty(sJavaClassFileName))
                         {
                             string sClassParentPath = sCopySourceFileFullPath.Substring(0, sCopySourceFileFullPath.LastIndexOf("\\"));
-                            string sNewClassPath = sCoptyToFullPath.Substring(0, sCoptyToFullPath.LastIndexOf("\\")).Trim('\\');
+                            string sNewClassPath = sCopyToFullPath.Substring(0, sCopyToFullPath.LastIndexOf("\\")).Trim('\\');
                             DirectoryInfo classDirectory = new DirectoryInfo(sClassParentPath);
                             //文件处理
                             foreach (FileInfo file in classDirectory.GetFiles())
@@ -418,7 +436,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                                     File.Copy(file.FullName, sNewPath, true);
                                     sb.AppendLine(sNewPath);
                                     sbFrom.AppendLine(file.FullName);
-                                    iFileNum++;
                                     _listFilePath.Add(sNewPath);
                                 }
                             }
@@ -430,6 +447,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (string.IsNullOrEmpty(sCopySourceFileFullPath))
                 {
                     sb.AppendLine(sFullFilePath + "：对应的class文件不存在！");
+                    _listFilePathFail.Add(sFullFilePath + "：对应的class文件不存在！");
                     continue;
                 }
             }

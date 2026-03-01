@@ -790,7 +790,11 @@ namespace Breezee.Framework.Mini.StartUp
         private void tsbAutoGuid_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(Guid.NewGuid().ToString().ToUpper());
-        } 
+        }
+        private void tsbNoBarGuid_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(Guid.NewGuid().ToString().ToUpper().Replace("-", ""));
+        }
         #endregion
 
         #region 页签选择变化
@@ -1536,5 +1540,7 @@ namespace Breezee.Framework.Mini.StartUp
         {
             tsmiUserEnvrSet.PerformClick();
         }
+
+        
     }
 }

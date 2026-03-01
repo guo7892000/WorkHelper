@@ -112,6 +112,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.ckbSelectConfig = new System.Windows.Forms.CheckBox();
+            this.lblInfo = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
@@ -1109,6 +1110,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.lblInfo);
             this.groupBox2.Controls.Add(this.tableLayoutPanel2);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox2.Location = new System.Drawing.Point(0, 41);
@@ -1160,6 +1162,17 @@
             this.ckbSelectConfig.Text = "选择变化跳转到配置";
             this.ckbSelectConfig.UseVisualStyleBackColor = true;
             // 
+            // lblInfo
+            // 
+            this.lblInfo.AutoSize = true;
+            this.lblInfo.ForeColor = System.Drawing.Color.Red;
+            this.lblInfo.Location = new System.Drawing.Point(480, 4);
+            this.lblInfo.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.lblInfo.Name = "lblInfo";
+            this.lblInfo.Size = new System.Drawing.Size(154, 24);
+            this.lblInfo.TabIndex = 38;
+            this.lblInfo.Text = "复制文件提示";
+            // 
             // FrmGetJavaPublishFile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 24F);
@@ -1200,6 +1213,7 @@
             this.tpResult.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
@@ -1291,5 +1305,6 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.NumericUpDown nudFromDateBefore;
         private System.Windows.Forms.CheckBox ckbTargitDirLower;
+        private System.Windows.Forms.Label lblInfo;
     }
 }
