@@ -148,15 +148,15 @@ namespace Breezee.Framework.Mini.StartUp
                 //菜单项
                 ToolStripMenuItem tmiNew = new ToolStripMenuItem();
                 tmiNew.Name = dMenu.Guid;
-                tmiNew.Text = string.IsNullOrEmpty(dMenu.ShortCutKey)? dMenu.Name: string.Format("{0}(&{1})", dMenu.Name, dMenu.ShortCutKey);
+                tmiNew.Text = string.IsNullOrEmpty(dMenu.ShortCutKey)? dMenu.MenuName: string.Format("{0}(&{1})", dMenu.MenuName, dMenu.ShortCutKey);
                 tmiNew.Tag = dMenu;
-                dMenu.FullPath = dMenu.Name;
+                dMenu.FullPath = dMenu.MenuName;
                 menuStrip.Items.Insert(iStartMenu + 1, tmiNew);
 
                 //左边树
                 TreeNode tnNew = new TreeNode();
                 tnNew.Name = dMenu.Guid;
-                tnNew.Text = dMenu.Name;
+                tnNew.Text = dMenu.MenuName;
                 tnNew.Tag = dMenu;
                 tvLeftMenu.Nodes.Add(tnNew);
 
@@ -204,9 +204,9 @@ namespace Breezee.Framework.Mini.StartUp
                 ToolStripButton button = new ToolStripButton();
                 button.Tag = menuItem;
                 button.DisplayStyle = ToolStripItemDisplayStyle.Image;
-                button.Text = childMenu.Name;
+                button.Text = childMenu.MenuName;
                 button.Image = Resources.loveStar;
-                button.ToolTipText = childMenu.Name;
+                button.ToolTipText = childMenu.MenuName;
                 tspMain.Items.Insert(iToolIndex, button);
                 button.Click += DynamicToolStripButton_Click;//点击时调用原菜单项点击事件打开功能
             }
@@ -229,7 +229,7 @@ namespace Breezee.Framework.Mini.StartUp
                     AddMenuItem(tmiNew, childMenuItem, childMenu);
                     if (!string.IsNullOrEmpty(childMenu.HelpPath))
                     {
-                        WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp(childMenu.HelpPath, childMenu.FullPath, childMenu.Name));
+                        WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp(childMenu.HelpPath, childMenu.FullPath, childMenu.MenuName));
                     }
 
                     //判断菜单ID的工具栏显示配置是否为1是
@@ -263,19 +263,19 @@ namespace Breezee.Framework.Mini.StartUp
         #region 增加菜单
         private void AddMenuItem(ToolStripMenuItem tmiParent, ToolStripMenuItem tmiNew, MenuEntity dMenu)
         {
-            tmiNew.Text = string.IsNullOrEmpty(dMenu.ShortCutKey) ? dMenu.Name : string.Format("{0}(&{1})", dMenu.Name, dMenu.ShortCutKey);
+            tmiNew.Text = string.IsNullOrEmpty(dMenu.ShortCutKey) ? dMenu.MenuName : string.Format("{0}(&{1})", dMenu.MenuName, dMenu.ShortCutKey);
             tmiNew.Name = dMenu.Guid;
             tmiNew.Tag = dMenu;
             tmiNew.Click += MenuItem_Click;
             
             //菜单查找自动完成数据源
-            tstbMenuSearch.AutoCompleteCustomSource.Add(dMenu.Name);
+            tstbMenuSearch.AutoCompleteCustomSource.Add(dMenu.MenuName);
             tmiParent.DropDownItems.Add(tmiNew);
         }
 
         private void AddMenuNode(TreeNode tnParent, TreeNode tnNew, MenuEntity dMenu)
         {
-            tnNew.Text = dMenu.Name;
+            tnNew.Text = dMenu.MenuName;
             tnNew.Tag = dMenu;
             tnParent.Nodes.Add(tnNew);
         } 
@@ -549,7 +549,7 @@ namespace Breezee.Framework.Mini.StartUp
 
             if (IsExpandTreeNode)
             {
-                OpenTreeNodeMenu(dOpenMenu.Name);
+                OpenTreeNodeMenu(dOpenMenu.MenuName);
             }
 
             //克隆一个新的菜单对象
@@ -566,7 +566,7 @@ namespace Breezee.Framework.Mini.StartUp
                 newForm.Activated += ChildForm_Active;
                 newForm.FormClosed += MdiChild_Close;
                 //增加页签：使用同菜单不同窗体GUID
-                tcMenu.TabPages.Add(dMenu.SameMenuNewFormGuid, dMenu.Name);
+                tcMenu.TabPages.Add(dMenu.SameMenuNewFormGuid, dMenu.MenuName);
                 tcMenu.TabPages[dMenu.SameMenuNewFormGuid].Tag = dMenu;
                 tcMenu.SelectedTab = tcMenu.TabPages[dMenu.SameMenuNewFormGuid];
                 txbMenuPath.Text = dMenu.FullPath;
@@ -579,13 +579,13 @@ namespace Breezee.Framework.Mini.StartUp
                 {
                     BaseForm fr = newForm as BaseForm;
                     fr.MainFormMode = MainFormModelEnum.Mini;
-                    fr.MenuName = dMenu.Name;
+                    fr.MenuName = dMenu.MenuName;
                     fr.ShowGlobalMsg += ShowGlobalMsg_Click;//显示全局提示信息
                 }
             }
             else
             {
-                MsgHelper.ShowErr("配置错误，【" + dMenu.Name + "】菜单不是窗体类型！");
+                MsgHelper.ShowErr("配置错误，【" + dMenu.MenuName + "】菜单不是窗体类型！");
             }
         } 
         #endregion
@@ -686,7 +686,7 @@ namespace Breezee.Framework.Mini.StartUp
                 {
                     XmlElement xnNew = xmlMenu.CreateElement("Menu");
                     xnNew.SetAttribute("Guid", dMenu.Guid);
-                    xnNew.SetAttribute("Name", dMenu.Name);
+                    xnNew.SetAttribute("Name", dMenu.MenuName);
                     xmlMenu.DocumentElement.AppendChild(xnNew);
 
                     if (!_ShortCutMenuList.ItemList.ContainsKey(dMenu.Guid))
@@ -966,8 +966,9 @@ namespace Breezee.Framework.Mini.StartUp
                     }
                 }
             }
-            catch(Exception ex)
+            catch
             {
+                
             }
         } 
         #endregion
@@ -1044,7 +1045,7 @@ namespace Breezee.Framework.Mini.StartUp
                 MenuEntity curMenu = tpSelect.Tag as MenuEntity;
                 if (!string.IsNullOrEmpty(curMenu.HelpPath))
                 {
-                    BaseForm.ShowHtmlHelpPage(curMenu.Name, curMenu.HelpPath);
+                    BaseForm.ShowHtmlHelpPage(curMenu.MenuName, curMenu.HelpPath);
                 }
             }
         }

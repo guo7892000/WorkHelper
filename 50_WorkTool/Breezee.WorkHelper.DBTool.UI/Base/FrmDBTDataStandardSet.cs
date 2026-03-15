@@ -27,7 +27,7 @@ namespace Breezee.WorkHelper.DBTool.UI
     public partial class FrmDBTDataStandardSet : BaseForm
     {
         IDBToolModule toolModule;
-        DataStandardTypeConfigDate DbRelation;
+        //DataStandardTypeConfigDate DbRelation;
         DataStandardConfig dataCfg;
         
         //数据类型配置文件

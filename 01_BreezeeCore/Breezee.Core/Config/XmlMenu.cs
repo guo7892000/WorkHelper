@@ -101,8 +101,8 @@ namespace Breezee.Core
             dMenu.Guid = xnModel.GetAttributeValue(MemuAttrString.Guid);
             dMenu.SameMenuNewFormGuid = xnModel.GetAttributeValue(MemuAttrString.Guid);//初始化为跟原菜单GUID一样
             dMenu.IsOpenSameMenuNewForm = false; //默认不开启打开重复菜单
-            dMenu.Name = xnModel.GetAttributeValue(MemuAttrString.Name);
-            dMenu.Code = xnModel.GetAttributeValue(MemuAttrString.Code);
+            dMenu.MenuName = xnModel.GetAttributeValue(MemuAttrString.Name);
+            dMenu.MenuCode = xnModel.GetAttributeValue(MemuAttrString.Code);
             dMenu.ShortCutKey = xnModel.GetAttributeValue(MemuAttrString.ShortCutKey);
             dMenu.DLLName = xnModel.GetAttributeValue(MemuAttrString.DLLName);
             dMenu.FormName = xnModel.GetAttributeValue(MemuAttrString.FormName);
@@ -112,11 +112,11 @@ namespace Breezee.Core
             dMenu.IsShowInToolStrip = false;
             if (!string.IsNullOrEmpty(parentMenuPath))
             {
-                dMenu.FullPath = parentMenuPath + FRA_FULL_MENU_PATH_SPLIT_CHAR + dMenu.Name;
+                dMenu.FullPath = parentMenuPath + FRA_FULL_MENU_PATH_SPLIT_CHAR + dMenu.MenuName;
             }
             else
             {
-                dMenu.FullPath = dMenu.Name;
+                dMenu.FullPath = dMenu.MenuName;
             }
             return dMenu;
         }

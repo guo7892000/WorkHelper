@@ -34,8 +34,8 @@ namespace Breezee.WorkHelper.DBTool.UI
     public partial class FrmDBTTableColumnDictionary : BaseForm
     {
         #region 变量
-        private readonly string _strTableName = "变更表清单";
-        private readonly string _strColName = "变更列清单";
+        //private readonly string _strTableName = "变更表清单";
+        //private readonly string _strColName = "变更列清单";
 
         private readonly string _sGridColumnSelect = "IsSelect";
         private readonly string _sGridColumnIsMust = "ColumnIsMust";
@@ -49,15 +49,15 @@ namespace Breezee.WorkHelper.DBTool.UI
         private bool _allSelectNameCode = false;//默认全选，这里取反
         private bool _allSelectColumnIsMust = false;//默认全选，这里取反
         //常量
-        private static string strTableAlias = "A"; //查询和修改中的表别名
+        //private static string strTableAlias = "A"; //查询和修改中的表别名
         private static string strTableAliasAndDot = "";
-        private static readonly string _strUpdateCtrolColumnCode = "UPDATE_CONTROL_ID";
+        //private static readonly string _strUpdateCtrolColumnCode = "UPDATE_CONTROL_ID";
         //数据集
         private IDBConfigSet _IDBConfigSet;
         private DbServerInfo _dbServer;
         private IDataAccess _dataAccess;
         private IDBDefaultValue _IDBDefaultValue;
-        private DataTable _dtDefault = null;
+        //private DataTable _dtDefault = null;
         DBSqlEntity sqlEntity;
 
         private readonly string _sInputColCode = "列编码";
@@ -748,7 +748,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         }
                         isOk = true;
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         isOk = false;
                     }

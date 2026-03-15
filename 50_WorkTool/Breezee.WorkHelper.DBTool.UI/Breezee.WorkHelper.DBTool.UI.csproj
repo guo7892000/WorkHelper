@@ -930,6 +930,9 @@
     <None Include="Doc\SQL\Oracle\0080_其他对象\锁.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\SQL\Oracle\9000_性能优化\性能优化示例.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\SQL\Oracle\9000_性能优化\性能优化.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

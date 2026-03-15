@@ -24,7 +24,7 @@ namespace Breezee.Framework.Mini.StartUp
     public partial class FrmDBConfig : BaseForm,IMainCommonFormCross
     {
         #region 变量
-        private DataRow _drEdit;
+        //private DataRow _drEdit;
         public bool IsDbNameNotNull = true;//是否数据库名非空
         public bool IsFilterDbExtnedFile = true;//是否过滤db后缀名的数据库文件
         //控件集合字典

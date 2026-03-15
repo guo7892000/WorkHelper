@@ -39,7 +39,7 @@ namespace Breezee.Framework.Mini.StartUp
             InitializeComponent();
             _Menu = dMenu;
 
-            lblMenuName.Text = dMenu.Name;
+            lblMenuName.Text = dMenu.MenuName;
         }
 
         private void ShortCutItem_Load(object sender, EventArgs e)

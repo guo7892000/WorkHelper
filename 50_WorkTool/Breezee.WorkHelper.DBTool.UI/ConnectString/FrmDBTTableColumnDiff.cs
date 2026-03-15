@@ -31,7 +31,7 @@ namespace Breezee.WorkHelper.DBTool.UI
     {
         #region 变量
         private readonly string _strTableName = "变更表清单";
-        private readonly string _strColName = "变更列清单";
+        //private readonly string _strColName = "变更列清单";
 
         private readonly string _sGridColumnSelect = "IsSelect";
         private bool _allSelect = false;//默认全选，这里取反
@@ -43,7 +43,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private DbServerInfo _dbServerTarget;
         private IDataAccess _dataAccess;
         DBSqlEntity sqlEntity;
-        string _sColumnList = "#COL_LIST#";
+        //string _sColumnList = "#COL_LIST#";
         DataGridViewFindText dgvFindTextSource;
         DataGridViewFindText dgvFindTextTarget;
         DataGridViewFindText dgvFindTextResult;

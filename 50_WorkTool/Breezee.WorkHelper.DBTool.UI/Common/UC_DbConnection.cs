@@ -353,7 +353,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (!defaultValueDic.ContainsKey(DbServer.DbConnKey))
             {
                 //异步查询默认值
-                Task.Run(() => QueryColumnsDefaultValue(DbServer));
+                await Task.Run(() => QueryColumnsDefaultValue(DbServer));
             }
             else
             {

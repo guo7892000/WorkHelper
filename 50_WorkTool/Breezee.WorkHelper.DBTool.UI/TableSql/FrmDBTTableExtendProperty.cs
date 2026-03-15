@@ -22,13 +22,13 @@ namespace Breezee.WorkHelper.DBTool.UI
     public partial class FrmDBTTableExtendProperty : BaseForm
     {
         #region 变量
-        private readonly string _strTableName = "变更表清单";
+        //private readonly string _strTableName = "变更表清单";
         //常量
         //文件路径
-        string _DBConnString; //连接字符串
+        //string _DBConnString; //连接字符串
         //导入的SQL变量值
-        private string _strMainSql = "";//主SQL
-        private string _strErr = "";//错误提示
+        //private string _strMainSql = "";//主SQL
+        //private string _strErr = "";//错误提示
 
         //数据集
         private DataSet dsExcel;

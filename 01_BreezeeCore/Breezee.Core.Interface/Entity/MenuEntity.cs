@@ -42,8 +42,8 @@ namespace Breezee.Core.Interface
         /// 菜单类型
         /// </summary>
         public MenuType MenuType;
-        public string Name;
-        public string Code;
+        public string MenuName;
+        public string MenuCode;
         public string ShortCutKey;
         public string DLLName;
         public string FormName;
@@ -62,8 +62,8 @@ namespace Breezee.Core.Interface
             clone.SameMenuNewFormGuid = SameMenuNewFormGuid;
             clone.IsOpenSameMenuNewForm = IsOpenSameMenuNewForm;
             clone.MenuType = MenuType;
-            clone.Name = Name;
-            clone.Code = Code;
+            clone.MenuName = MenuName;
+            clone.MenuCode = MenuCode;
             clone.ShortCutKey = ShortCutKey;
             clone.DLLName = DLLName;
             clone.FormName = FormName;

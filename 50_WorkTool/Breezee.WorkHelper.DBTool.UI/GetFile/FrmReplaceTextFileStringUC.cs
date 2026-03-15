@@ -39,7 +39,7 @@ namespace Breezee.WorkHelper.DBTool.UI
     public partial class FrmReplaceTextFileStringUC : BaseForm
     {
         private readonly string _sGridColumnSelect = "IsSelect";
-        private bool _allSelectFtp = false;//默认全选，这里取反
+        //private bool _allSelectFtp = false;//默认全选，这里取反
         private bool _allSelectWait = false;//默认全选，这里取反
         private bool _allSelectOldNewChar = false;//默认全选，这里取反
         private bool _allSelectResult = false;//默认全选，这里取反
@@ -569,7 +569,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
             }
             //替换文件文本
-            ReplaceFileTextAsync(sSavePath, dtResult, sFileEncoding, drReplace);
+            await ReplaceFileTextAsync(sSavePath, dtResult, sFileEncoding, drReplace);
         }
 
         /// <summary>

@@ -22,7 +22,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         public static readonly string Comma = ",";
         public static readonly string NewLine = System.Environment.NewLine;
 
-        private static string strTableAlias = "A"; //查询和修改中的表别名
+        //private static string strTableAlias = "A"; //查询和修改中的表别名
 
         public static AutoClassInfo ClassInfo = new AutoClassInfo();
 

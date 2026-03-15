@@ -1493,7 +1493,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         }
 
         #region 设置Tag方法
-        private void SetColTag(string sSchema, string sTableName, ColumnTemplateType templateType)
+        private async void SetColTag(string sSchema, string sTableName, ColumnTemplateType templateType)
         {
             DataTable dtCols;
             if (ckbQueryColumnRealTime.Checked)
@@ -1579,7 +1579,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             //如果选中更新默认值，那么直接调用
             if (ckbUpdateDefault.Checked)
             {
-                uC_DbConnection1.QueryColumnsDefaultValue(uC_DbConnection1.LatestDbServerInfo);
+                await uC_DbConnection1.QueryColumnsDefaultValue(uC_DbConnection1.LatestDbServerInfo);
             }
 
             DataTable dtColsNew = EntCol.GetTable(templateType);

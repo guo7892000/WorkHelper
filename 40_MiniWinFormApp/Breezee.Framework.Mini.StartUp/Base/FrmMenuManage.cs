@@ -1,7 +1,6 @@
 ﻿using Breezee.Core.Tool;
 using Breezee.Core.WinFormUI;
 using Breezee.Framework.Mini.Entity;
-using Breezee.Core.Tool;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -88,7 +87,7 @@ namespace Breezee.Framework.Mini.StartUp
                 //左边树
                 TreeNode tnNew = new TreeNode();
                 tnNew.Name = dMenu.Guid;
-                tnNew.Text = dMenu.Name;
+                tnNew.Text = dMenu.MenuName;
                 tnNew.Tag = dMenu;
                 tvLeftMenu.Nodes.Add(tnNew);
 
@@ -132,7 +131,7 @@ namespace Breezee.Framework.Mini.StartUp
             {
                 dMenu.IsShowInToolStrip = "1".Equals(_stripXmlConfig.MoreXmlConfig.Get(dMenu.Guid, "0")) ? true : false;
             }
-            tnNew.Text = dMenu.Name;
+            tnNew.Text = dMenu.MenuName;
             tnNew.Tag = dMenu;
             tnParent.Nodes.Add(tnNew);
         }
@@ -141,14 +140,14 @@ namespace Breezee.Framework.Mini.StartUp
         #region 保存按钮事件
         private void tsbSave_Click(object sender, EventArgs e)
         {
-            _saveMenu.Name = txbMenuName.Text.Trim();
-            _saveMenu.Code = txbMenuCode.Text.Trim();
+            _saveMenu.MenuName = txbMenuName.Text.Trim();
+            _saveMenu.MenuCode = txbMenuCode.Text.Trim();
             _saveMenu.DLLName = cbbDLL.Text;
             _saveMenu.FormName = txbClassFullPath.Text.Trim();
             _saveMenu.ShortCutKey = txbShortCutKey.Text.Trim();
             _saveMenu.HelpPath = txbHelpPath.Text.Trim();
             _saveMenu.IsShowInToolStrip = ckbShowInToolstrip.Checked;
-            if (string.IsNullOrEmpty(_saveMenu.Name))
+            if (string.IsNullOrEmpty(_saveMenu.MenuName))
             {
                 ShowErr("【菜单名称】不能为空！");
                 return;
@@ -248,8 +247,8 @@ namespace Breezee.Framework.Mini.StartUp
             }
             #endregion
 
-            xnNew.SetAttribute(MemuAttrString.Name, _saveMenu.Name);
-            xnNew.SetAttribute(MemuAttrString.Code, _saveMenu.Code);
+            xnNew.SetAttribute(MemuAttrString.Name, _saveMenu.MenuName);
+            xnNew.SetAttribute(MemuAttrString.Code, _saveMenu.MenuCode);
             xnNew.SetAttribute(MemuAttrString.DLLName, _saveMenu.DLLName);
             xnNew.SetAttribute(MemuAttrString.FormName, _saveMenu.FormName);
             xnNew.SetAttribute(MemuAttrString.ShortCutKey, _saveMenu.ShortCutKey);
@@ -367,8 +366,8 @@ namespace Breezee.Framework.Mini.StartUp
             _saveMenu = selectMenu;
             //绑定界面数据
             cbbMenuType.SelectedValue = ((int)_saveMenu.MenuType).ToString();
-            txbMenuName.Text = _saveMenu.Name;
-            txbMenuCode.Text = _saveMenu.Code;
+            txbMenuName.Text = _saveMenu.MenuName;
+            txbMenuCode.Text = _saveMenu.MenuCode;
             cbbDLL.Text = _saveMenu.DLLName;
             txbClassFullPath.Text = _saveMenu.FormName;
             txbShortCutKey.Text = _saveMenu.ShortCutKey;

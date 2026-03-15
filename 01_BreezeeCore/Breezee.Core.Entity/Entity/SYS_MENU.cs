@@ -157,8 +157,8 @@ namespace Breezee.Core.Entity
                     break;
             }
             
-            menu.Name = menu.MenuName;
-            menu.Code = menu.MenuCode;
+            menu.MenuName = menu.MenuName;
+            menu.MenuCode = menu.MenuCode;
             //menu.ShortCutKey = ShortCutKey;
             menu.DLLName = menu.DllName;
             menu.FormName = menu.MenuFullPath;

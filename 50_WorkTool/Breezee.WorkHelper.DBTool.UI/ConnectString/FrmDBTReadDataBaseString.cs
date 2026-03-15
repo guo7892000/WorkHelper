@@ -37,7 +37,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         //数据访问层
         private IDBConfigSet _IDBConfigSet;
         private DbServerInfo _dbServer;
-        private IDataAccess _dataAccess;
+        //private IDataAccess _dataAccess;
         #endregion
 
         #region 构造函数
