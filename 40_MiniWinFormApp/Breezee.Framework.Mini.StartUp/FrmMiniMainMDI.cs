@@ -39,7 +39,7 @@ namespace Breezee.Framework.Mini.StartUp
     public partial class FrmMiniMainMDI : Form, IMainForm, IForm
     {
         #region 变量
-        public event EventHandler<EventArgs> FormClosed;
+        public new event EventHandler<EventArgs> FormClosed;
         private delegate void ShowGlobalMsg(string msg);
         string _strAppPath = AppDomain.CurrentDomain.BaseDirectory;
         //string _strConfigFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WorkHelper/Config");

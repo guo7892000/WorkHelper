@@ -37,15 +37,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         //
         private IDataAccess _dataAccess;
         string sTip = "请您点击一个节点后，再按鼠标右键选择生成";
-        //string sGenPath = "GenPath";
-        //DataTable _dtGen;
-        //
-        //MiniXmlConfig _miniXml;
-        //List<string> _lstCol;
-        //DataTable _dtSet;
-
         DataSet _dsExcel;
-        //BindingSource _bsFileList;
         #endregion
 
         #region 构造函数

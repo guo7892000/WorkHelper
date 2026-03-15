@@ -49,16 +49,11 @@ namespace Breezee.WorkHelper.DBTool.UI
         private bool _allSelectNameCode = false;//默认全选，这里取反
         private bool _allSelectColumnIsMust = false;//默认全选，这里取反
         //常量
-        //private static string strTableAlias = "A"; //查询和修改中的表别名
-        private static string strTableAliasAndDot = "";
-        //private static readonly string _strUpdateCtrolColumnCode = "UPDATE_CONTROL_ID";
         //数据集
         private IDBConfigSet _IDBConfigSet;
         private DbServerInfo _dbServer;
         private IDataAccess _dataAccess;
         private IDBDefaultValue _IDBDefaultValue;
-        //private DataTable _dtDefault = null;
-        DBSqlEntity sqlEntity;
 
         private readonly string _sInputColCode = "列编码";
         private readonly string _sInputColName = "列名称";
@@ -1259,132 +1254,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         }
         #endregion
 
-        #region 生成增删改查SQL方法
-        /// <summary>
-        /// 设置表说明
-        /// </summary>
-        /// <param name="strTableCode"></param>
-        /// <param name="strColComments"></param>
-        /// <returns></returns>
-        public string MakeTableComment(string strTableCode, string strColComments)
-        {
-            if (!string.IsNullOrEmpty(strColComments))
-            {
-                return DataBaseCommon.AddLeftBand(strTableCode) + sqlEntity.Tab + "/*" + strColComments + "*/" + sqlEntity.NewLine;
-            }
-            return DataBaseCommon.AddLeftBand(strTableCode) + sqlEntity.Tab + sqlEntity.NewLine;
-        }
-
-        /// <summary>
-        /// 设置查询列说明
-        /// </summary>
-        /// <param name="strComma">为逗号或空</param>
-        /// <param name="strColCode">列编码</param>
-        /// <param name="strColComments">列说明</param>
-        /// <returns></returns>
-        public string MakeQueryColumnComment(string strComma, string strColCode, string strColComments)
-        {
-            if (!string.IsNullOrEmpty(strColComments))
-            {
-                return sqlEntity.Tab + strColCode + strComma + sqlEntity.Tab + "/*" + strColComments + "*/";
-            }
-            return sqlEntity.Tab + strColCode + strComma;
-        }
-
-        /// <summary>
-        /// 设置列值说明方法
-        /// </summary>
-        /// <param name="strComma">为逗号或空</param>
-        /// <param name="strColCode">列编码</param>
-        /// <param name="strColValue">列值</param>
-        /// <param name="strColComments">列说明</param>
-        /// <param name="strColType">列数据类型</param>
-        /// <returns></returns>
-        private string MakeColumnValueComment(SqlType sqlTypeNow, string strComma, string strColCode, string strColValue, string strColComments, string strColType, SqlParamFormatType paramType, string colParam)
-        {
-            string strColRemark = "";
-
-            if (!string.IsNullOrEmpty(strColComments))
-            {
-                if (sqlTypeNow == SqlType.Insert)
-                {
-                    strColRemark = "/*" + strColCode + ":" + strColComments + "*/";//新增显示列名和备注
-                }
-                else if (sqlTypeNow == SqlType.Update)
-                {
-                    strColRemark = "/*" + strColComments + "*/"; //修改不显示列名，只显示备注
-                }
-            }
-
-            string strColRelValue = "";
-            if (string.IsNullOrEmpty(strColValue)) //列没有默认值则加引号
-            {
-                //列值为空时
-                if (strColType == "DATE")
-                {
-                    //如果是Oracle的时间类型DATE，则需要将字符转为时间格式，要不会报“文字与字符串格式不匹配”错误
-                    strColRelValue = "TO_DATE(" + DataBaseCommon.QuotationMark + colParam + DataBaseCommon.QuotationMark + ",'YYYY-MM-DD')";
-                    if (paramType == SqlParamFormatType.SqlParm)
-                    {
-                        strColRelValue = "TO_DATE(" + colParam + ",'YYYY-MM-DD')";
-                    }
-                }
-                else
-                {
-                    strColRelValue = colParam;
-                    if (paramType == SqlParamFormatType.BeginEndHash)
-                    {
-                        strColRelValue = DataBaseCommon.QuotationMark + colParam + DataBaseCommon.QuotationMark;
-                    }
-                }
-            }
-            else //列有默认值则不加引号
-            {
-                strColRelValue = strColValue;
-            }
-
-            if (sqlTypeNow == SqlType.Insert)
-            {
-                return sqlEntity.Tab + strColRelValue + strComma + sqlEntity.Tab + strColRemark;
-            }
-            else //sqlTypeNow == SqlType.Update
-            {
-                return sqlEntity.Tab + strTableAliasAndDot + strColCode + "=" + strColRelValue + strComma + sqlEntity.Tab + strColRemark;
-            }
-        }
-
-
-        /// <summary>
-        /// 设置条件列说明
-        /// </summary>
-        /// <param name="strColCode">列编码</param>
-        /// <param name="strColValue">列值</param>
-        /// <param name="strColComments">列说明</param>
-        /// <returns></returns>
-        public string MakeConditionColumnComment(string strColCode, string strColValue, string strColComments, SqlParamFormatType paramType, string sTableAliasAndDot, string colParam)
-        {
-            string strRemark = sqlEntity.NewLine;
-            if (!string.IsNullOrEmpty(strColComments))
-            {
-                strRemark = "/*" + strColComments + "*/" + sqlEntity.NewLine + "";
-            }
-            if (string.IsNullOrEmpty(strColValue))
-            {
-                if (paramType == SqlParamFormatType.SqlParm)
-                {
-                    return sTableAliasAndDot + strColCode + " = " + colParam + sqlEntity.Tab + strRemark;
-                }
-                //列值为空时，设置为：'#列编码#'
-                return sTableAliasAndDot + strColCode + "=" + DataBaseCommon.QuotationMark + colParam + DataBaseCommon.QuotationMark + sqlEntity.Tab + strRemark;
-            }
-            else
-            {
-                //有固定值时
-                return sTableAliasAndDot + strColCode + "=" + strColValue + sqlEntity.Tab + strRemark;
-            }
-        }
-
-        #endregion
 
         #region 查找按钮事件
         private void btnFind_Click(object sender, EventArgs e)

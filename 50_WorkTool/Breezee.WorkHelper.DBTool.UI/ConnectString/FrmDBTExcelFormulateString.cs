@@ -50,9 +50,6 @@ namespace Breezee.WorkHelper.DBTool.UI
         private bool _allCondition = true;//默认全不选，这里取反
         private bool _allDynamic = false;//默认全选，这里取反
         //常量
-        //private static string strTableAlias = "A"; //查询和修改中的表别名
-        //private static string strTableAliasAndDot = "";
-        //private static readonly string _strUpdateCtrolColumnCode = "UPDATE_CONTROL_ID";
         private string _strImportSuccess = "导入成功！可点“生成”按钮得到结果。";
         //数据集
         private IDBConfigSet _IDBConfigSet;
