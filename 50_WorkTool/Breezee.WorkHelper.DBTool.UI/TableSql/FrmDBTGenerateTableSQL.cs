@@ -2265,8 +2265,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                 string sExcelType = item[ColCommon.ExcelCol.DataType].ToString();
                 if (curImportDBType == DataBaseType.PostgreSql)
                 {
+                    #region PostgreSql
                     if ((sColType.Equals("varchar", StringComparison.OrdinalIgnoreCase) || sColType.Equals("character varying", StringComparison.OrdinalIgnoreCase))
-                        && sExcelType.Equals("varchar", StringComparison.OrdinalIgnoreCase) || sExcelType.Equals("character varying", StringComparison.OrdinalIgnoreCase))
+                                    && sExcelType.Equals("varchar", StringComparison.OrdinalIgnoreCase) || sExcelType.Equals("character varying", StringComparison.OrdinalIgnoreCase))
                     {
                         //针对varchar和character varying为相同类型的处理
                         if (!string.IsNullOrEmpty(sColDataLength) && !item[ColCommon.ExcelCol.DataLength].Equals(sColDataLength))
@@ -2292,10 +2293,45 @@ namespace Breezee.WorkHelper.DBTool.UI
                         {
                             sbErr.Append("全类型不同;");
                         }
+                    } 
+                    #endregion
+                }
+                else if (curImportDBType == DataBaseType.Oracle)
+                {
+                    #region Oracle
+                    if ((sColType.Equals("varchar2", StringComparison.OrdinalIgnoreCase) || sColType.Equals("nvarchar2", StringComparison.OrdinalIgnoreCase))
+                                    && sExcelType.Equals("varchar2", StringComparison.OrdinalIgnoreCase) || sExcelType.Equals("nvarchar2", StringComparison.OrdinalIgnoreCase))
+                    {
+                        //针对varchar和character varying为相同类型的处理
+                        if (!string.IsNullOrEmpty(sColDataLength) && !item[ColCommon.ExcelCol.DataLength].Equals(sColDataLength))
+                        {
+                            sbErr.Append("长度不同;");
+                            isSame = false;
+                        }
                     }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(sColType) && !sExcelType.Equals(sColType))
+                        {
+                            sbErr.Append("类型不同;");
+                            isSame = false;
+                        }
+
+                        if (!string.IsNullOrEmpty(sColDataLength) && !item[ColCommon.ExcelCol.DataLength].Equals(sColDataLength))
+                        {
+                            sbErr.Append("长度不同;");
+                            isSame = false;
+                        }
+                        if (isSame && !item[ColCommon.ExcelCol.DataTypeFull].Equals(sColTypeSize))
+                        {
+                            sbErr.Append("全类型不同;");
+                        }
+                    } 
+                    #endregion
                 }
                 else
                 {
+                    #region 其他
                     if (!string.IsNullOrEmpty(sColType) && !item[ColCommon.ExcelCol.DataType].ToString().Equals(sColType))
                     {
                         sbErr.Append("类型不同;");
@@ -2309,7 +2345,8 @@ namespace Breezee.WorkHelper.DBTool.UI
                     if (isSame && !item[ColCommon.ExcelCol.DataTypeFull].Equals(sColTypeSize))
                     {
                         sbErr.Append("全类型不同;");
-                    }
+                    } 
+                    #endregion
                 }
                 // 查找同名列
                 sFliter = string.Format("{0}='{1}' and {2}='{3}' and {4} is null", sTableCode, item[sTableCode].ToString(), sColCode,

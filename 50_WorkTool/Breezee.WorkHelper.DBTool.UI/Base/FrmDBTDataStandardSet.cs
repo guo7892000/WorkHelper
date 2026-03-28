@@ -340,6 +340,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     return;
                 }
                 dr = dtSave.NewRow();
+                dtSave.Rows.Add(dr);
                 listData.GetControlValue(dr, true);
             }
             else

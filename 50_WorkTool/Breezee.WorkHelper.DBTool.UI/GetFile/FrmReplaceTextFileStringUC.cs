@@ -1,10 +1,21 @@
 ﻿using Breezee.AutoSQLExecutor.Core;
+using Breezee.Core;
 using Breezee.Core.Entity;
 using Breezee.Core.Interface;
 using Breezee.Core.Tool;
+using Breezee.Core.Tool.Helper;
 using Breezee.Core.WinFormUI;
 using Breezee.WorkHelper.DBTool.Entity;
+using FluentFTP;
+using FluentFTP.Helpers;
+using FluentFTP.Rules;
+using LibGit2Sharp;
+using Ookii.Dialogs.WinForms;
+using org.breezee.MyPeachNet;
+using Renci.SshNet;
+using Renci.SshNet.Sftp;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,22 +23,12 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using FluentFTP;
-using System.Threading;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
-using Breezee.Core;
-using Breezee.Core.Tool.Helper;
-using System.Collections;
-using org.breezee.MyPeachNet;
-using FluentFTP.Rules;
-using Renci.SshNet;
-using FluentFTP.Helpers;
-using StaticConstant = Breezee.Core.Entity.StaticConstant;
-using LibGit2Sharp;
-using Renci.SshNet.Sftp;
 using static System.Collections.Specialized.BitVector32;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using StaticConstant = Breezee.Core.Entity.StaticConstant;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -717,19 +718,37 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="e"></param>
         private void btnSavePath_Click(object sender, EventArgs e)
         {
-            var dialog = new FolderBrowserDialog();
-            var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_SavePath, "").Value;
+            #region 取消自带的FolderBrowserDialog
+            //var dialog = new FolderBrowserDialog();
+            //var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_SavePath, "").Value;
 
+            //if (!string.IsNullOrEmpty(strLastSelectedPath))
+            //{
+            //    dialog.SelectedPath = strLastSelectedPath;
+            //}
+            //dialog.Description = "请选择文件路径";
+            //if (dialog.ShowDialog() == DialogResult.OK)
+            //{
+            //    txbSavePath.Text = dialog.SelectedPath;
+            //    //保存用户偏好值
+            //    WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_SavePath, dialog.SelectedPath, "【文本文件字符替换】最终生成目录");
+            //    WinFormContext.UserLoveSettings.Save();
+            //} 
+            #endregion
+
+            var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_SavePath, "").Value;
+            //这里不使用自带的FolderBrowserDialog，那样选择目录很不方便。这个第3方库Ookii Dialogs，显示的界面更好用！！
+            VistaFolderBrowserDialog folderBrowserDialog = new VistaFolderBrowserDialog();
+            folderBrowserDialog.Description = "请选择一个目录";
             if (!string.IsNullOrEmpty(strLastSelectedPath))
             {
-                dialog.SelectedPath = strLastSelectedPath;
+                folderBrowserDialog.SelectedPath = strLastSelectedPath;
             }
-            dialog.Description = "请选择文件路径";
-            if (dialog.ShowDialog() == DialogResult.OK)
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                txbSavePath.Text = dialog.SelectedPath;
+                txbSavePath.Text = folderBrowserDialog.SelectedPath;
                 //保存用户偏好值
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_SavePath, dialog.SelectedPath, "【文本文件字符替换】最终生成目录");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_SavePath, folderBrowserDialog.SelectedPath, "【文本文件字符替换】最终生成目录");
                 WinFormContext.UserLoveSettings.Save();
             }
         }
@@ -742,19 +761,37 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="e"></param>
         private void btnFinalResultSelectDir_Click(object sender, EventArgs e)
         {
-            var dialog = new FolderBrowserDialog();
-            var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_ReplaceResultFilterSavePath, "").Value;
+            #region 取消自带的FolderBrowserDialog
+            //var dialog = new FolderBrowserDialog();
+            //var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_ReplaceResultFilterSavePath, "").Value;
 
+            //if (!string.IsNullOrEmpty(strLastSelectedPath))
+            //{
+            //    dialog.SelectedPath = strLastSelectedPath;
+            //}
+            //dialog.Description = "请选择文件路径";
+            //if (dialog.ShowDialog() == DialogResult.OK)
+            //{
+            //    txbFinalResultSavePath.Text = dialog.SelectedPath;
+            //    //保存用户偏好值
+            //    WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_ReplaceResultFilterSavePath, dialog.SelectedPath, "【文本文件字符替换】替换结果的二次筛选保存路径");
+            //    WinFormContext.UserLoveSettings.Save();
+            //} 
+            #endregion
+
+            var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_SavePath, "").Value;
+            //这里不使用自带的FolderBrowserDialog，那样选择目录很不方便。这个第3方库Ookii Dialogs，显示的界面更好用！！
+            VistaFolderBrowserDialog folderBrowserDialog = new VistaFolderBrowserDialog();
+            folderBrowserDialog.Description = "请选择一个目录";
             if (!string.IsNullOrEmpty(strLastSelectedPath))
             {
-                dialog.SelectedPath = strLastSelectedPath;
+                folderBrowserDialog.SelectedPath = strLastSelectedPath;
             }
-            dialog.Description = "请选择文件路径";
-            if (dialog.ShowDialog() == DialogResult.OK)
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                txbFinalResultSavePath.Text = dialog.SelectedPath;
+                txbFinalResultSavePath.Text = folderBrowserDialog.SelectedPath;
                 //保存用户偏好值
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_ReplaceResultFilterSavePath, dialog.SelectedPath, "【文本文件字符替换】替换结果的二次筛选保存路径");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_ReplaceResultFilterSavePath, folderBrowserDialog.SelectedPath, "【文本文件字符替换】替换结果的二次筛选保存路径");
                 WinFormContext.UserLoveSettings.Save();
             }
         }
@@ -851,7 +888,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             return false;
         } 
         #endregion
-
 
         #region 配置相关
         private void LoadFuncConfig()

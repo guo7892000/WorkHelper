@@ -1,21 +1,22 @@
+using Breezee.AutoSQLExecutor.Core;
+using Breezee.Core.Entity;
+using Breezee.Core.Interface;
+using Breezee.Core.IOC;
+using Breezee.Core.Tool;
+using Breezee.Core.WinFormUI;
+using Breezee.WorkHelper.DBTool.Entity;
+using Breezee.WorkHelper.DBTool.IBLL;
+using Ookii.Dialogs.WinForms;
+using org.breezee.MyPeachNet;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
-using System.Windows.Forms;
-using Breezee.WorkHelper.DBTool.Entity;
-using Breezee.Core.Entity;
-using Breezee.WorkHelper.DBTool.IBLL;
-using Breezee.Core.Tool;
-using Breezee.Core.Interface;
-using Breezee.Core.IOC;
 using System.IO;
 using System.Text;
-using Setting = Breezee.WorkHelper.DBTool.UI.Properties.Settings;
-using Breezee.Core.WinFormUI;
-using Breezee.AutoSQLExecutor.Core;
 using System.Text.RegularExpressions;
-using org.breezee.MyPeachNet;
+using System.Windows.Forms;
+using Setting = Breezee.WorkHelper.DBTool.UI.Properties.Settings;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -333,15 +334,28 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 选择路径按钮事件
         private void btnPath_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog dialog = new FolderBrowserDialog();
-            if (dialog.ShowDialog() == DialogResult.OK)
+            #region 取消自带的FolderBrowserDialog
+            //FolderBrowserDialog dialog = new FolderBrowserDialog();
+            //if (dialog.ShowDialog() == DialogResult.OK)
+            //{
+            //    txtPath.Text = dialog.SelectedPath;
+            //    //保存用户偏好值
+            //    WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.AutoEntity_Path, dialog.SelectedPath, "【实体生成】保存路径");
+            //    WinFormContext.UserLoveSettings.Save();
+            //    //Setting.Default.AutoEntity_Path1 = dialog.SelectedPath;
+            //    //Setting.Default.Save();
+            //} 
+            #endregion
+
+            //这里不使用自带的FolderBrowserDialog，那样选择目录很不方便。这个第3方库Ookii Dialogs，显示的界面更好用！！
+            VistaFolderBrowserDialog folderBrowserDialog = new VistaFolderBrowserDialog();
+            folderBrowserDialog.Description = "请选择一个目录";
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                txtPath.Text = dialog.SelectedPath;
+                txtPath.Text = folderBrowserDialog.SelectedPath;
                 //保存用户偏好值
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.AutoEntity_Path, dialog.SelectedPath, "【实体生成】保存路径");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.AutoEntity_Path, folderBrowserDialog.SelectedPath, "【实体生成】保存路径");
                 WinFormContext.UserLoveSettings.Save();
-                //Setting.Default.AutoEntity_Path1 = dialog.SelectedPath;
-                //Setting.Default.Save();
             }
         } 
         #endregion

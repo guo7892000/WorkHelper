@@ -1,12 +1,13 @@
-﻿using Breezee.Core.WinFormUI;
+﻿using Breezee.Core.Interface;
 using Breezee.Core.Tool;
-using System.Text;
-using AppSet = Breezee.WorkHelper.DBTool.UI.Properties.Settings;
-using Breezee.Core.Interface;
-using System.IO;
-using System;
-using System.Windows.Forms;
+using Breezee.Core.WinFormUI;
 using Breezee.WorkHelper.DBTool.Entity;
+using Ookii.Dialogs.WinForms;
+using System;
+using System.IO;
+using System.Text;
+using System.Windows.Forms;
+using AppSet = Breezee.WorkHelper.DBTool.UI.Properties.Settings;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -59,19 +60,36 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 选择路径按钮事件
         private void btnSelectPath_Click(object sender, EventArgs e)
         {
-            var dialog = new FolderBrowserDialog();
-            var strLastSelectedPath = WinFormContext.UserLoveSettings.Get("LastSelectedPath", "").Value;
+            #region 取消使用自带的FolderBrowserDialog
+            //var dialog = new FolderBrowserDialog();
+            //var strLastSelectedPath = WinFormContext.UserLoveSettings.Get("LastSelectedPath", "").Value;
 
+            //if (!string.IsNullOrEmpty(strLastSelectedPath))
+            //{
+            //    dialog.SelectedPath = strLastSelectedPath;
+            //}
+            //dialog.Description = "请选择文件路径";
+            //if (dialog.ShowDialog() == DialogResult.OK)
+            //{
+            //    txbSelectPath.Text = dialog.SelectedPath;
+            //    //保存用户偏好值
+            //    WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DirString_LastSelectedPath, dialog.SelectedPath, "【目录字符生成】最后选择的目录");
+            //    WinFormContext.UserLoveSettings.Save();
+            //} 
+            #endregion
+
+            //这里不使用自带的FolderBrowserDialog，那样选择目录很不方便。这个第3方库Ookii Dialogs，显示的界面更好用！！
+            VistaFolderBrowserDialog folderBrowserDialog = new VistaFolderBrowserDialog();
+            folderBrowserDialog.Description = "请选择一个目录";
             if (!string.IsNullOrEmpty(strLastSelectedPath))
             {
-                dialog.SelectedPath = strLastSelectedPath;
+                folderBrowserDialog.SelectedPath = strLastSelectedPath;
             }
-            dialog.Description = "请选择文件路径";
-            if (dialog.ShowDialog() == DialogResult.OK)
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                txbSelectPath.Text = dialog.SelectedPath;
+                txbSelectPath.Text = folderBrowserDialog.SelectedPath;
                 //保存用户偏好值
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DirString_LastSelectedPath, dialog.SelectedPath, "【目录字符生成】最后选择的目录");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DirString_LastSelectedPath, folderBrowserDialog.SelectedPath, "【目录字符生成】最后选择的目录");
                 WinFormContext.UserLoveSettings.Save();
             }
         } 

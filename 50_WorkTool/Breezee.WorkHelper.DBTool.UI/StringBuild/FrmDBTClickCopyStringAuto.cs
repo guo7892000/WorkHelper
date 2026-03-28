@@ -462,7 +462,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
         }
 
         /// <summary>
-        /// 选择路径按钮事件
+        /// 选择配置文件按钮事件
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -476,7 +476,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                 txbXmlPath.Text = dia.FileName;
                 ReloadFile(); //重新加载文件
                 //保存用户偏好值
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ClickCopy_Path, txbXmlPath.Text, "【点击复制】选择路径");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.ClickCopy_Path, txbXmlPath.Text, "【点击复制】选择配置文件");
                 WinFormContext.UserLoveSettings.Save();
             }
         }

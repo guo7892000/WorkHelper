@@ -1,24 +1,25 @@
-﻿using Breezee.WorkHelper.DBTool.IBLL;
+﻿using Breezee.AutoSQLExecutor.Core;
+using Breezee.Core.Interface;
+using Breezee.Core.IOC;
+using Breezee.Core.Tool;
+using Breezee.Core.WinFormUI;
+using Breezee.WorkHelper.DBTool.Entity;
+using Breezee.WorkHelper.DBTool.IBLL;
+using Ookii.Dialogs.WinForms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using Breezee.WorkHelper.DBTool.Entity;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
-using System.Web;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
+using System.Windows.Forms;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
-using Breezee.Core.WinFormUI;
-using Breezee.AutoSQLExecutor.Core;
-using Breezee.Core.IOC;
-using Breezee.Core.Interface;
-using Breezee.Core.Tool;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -715,12 +716,25 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private void btnSavePath_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog dialog = new FolderBrowserDialog();
-            if (dialog.ShowDialog() == DialogResult.OK)
+            #region 取消自带的FolderBrowserDialog
+            //FolderBrowserDialog dialog = new FolderBrowserDialog();
+            //if (dialog.ShowDialog() == DialogResult.OK)
+            //{
+            //    txbSavePath.Text = dialog.SelectedPath;
+            //    //保存用户偏好值
+            //    WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.AutoCode_Path, txbSavePath.Text, "【代码生成】保存路径");
+            //    WinFormContext.UserLoveSettings.Save();
+            //} 
+            #endregion
+
+            //这里不使用自带的FolderBrowserDialog，那样选择目录很不方便。这个第3方库Ookii Dialogs，显示的界面更好用！！
+            VistaFolderBrowserDialog folderBrowserDialog = new VistaFolderBrowserDialog();
+            folderBrowserDialog.Description = "请选择一个目录";
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                txbSavePath.Text = dialog.SelectedPath;
+                txbSavePath.Text = folderBrowserDialog.SelectedPath;
                 //保存用户偏好值
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.AutoCode_Path, txbSavePath.Text, "【代码生成】保存路径");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.AutoCode_Path, folderBrowserDialog.SelectedPath, "【代码生成】保存路径");
                 WinFormContext.UserLoveSettings.Save();
             }
         }

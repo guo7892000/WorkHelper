@@ -1,19 +1,20 @@
-﻿using Breezee.Core.WinFormUI;
+﻿using Breezee.Core.Interface;
 using Breezee.Core.Tool;
-using System.Text;
-using AppSet = Breezee.WorkHelper.DBTool.UI.Properties.Settings;
-using Breezee.Core.Interface;
-using System.IO;
-using System;
-using System.Windows.Forms;
-using Breezee.WorkHelper.DBTool.Entity;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
 using Breezee.Core.Tool.Helper;
+using Breezee.Core.WinFormUI;
+using Breezee.WorkHelper.DBTool.Entity;
 using LibGit2Sharp;
+using Ookii.Dialogs.WinForms;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
+using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using AppSet = Breezee.WorkHelper.DBTool.UI.Properties.Settings;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -103,19 +104,37 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 读取路径按钮事件
         private void btnReadPath_Click(object sender, EventArgs e)
         {
-            var dialog = new FolderBrowserDialog();
-            var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_ReadPath, "").Value;
+            #region 取消自带的FolderBrowserDialog
+            //var dialog = new FolderBrowserDialog();
+            //var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_ReadPath, "").Value;
 
+            //if (!string.IsNullOrEmpty(strLastSelectedPath))
+            //{
+            //    dialog.SelectedPath = strLastSelectedPath;
+            //}
+            //dialog.Description = "请选择文件路径";
+            //if (dialog.ShowDialog() == DialogResult.OK)
+            //{
+            //    txbReadPath.Text = dialog.SelectedPath;
+            //    //保存用户偏好值
+            //    WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_ReadPath, dialog.SelectedPath, "【获取修改过的文件】最后选择的读取目录");
+            //    WinFormContext.UserLoveSettings.Save();
+            //} 
+            #endregion
+
+            var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_ReadPath, "").Value;
+            //这里不使用自带的FolderBrowserDialog，那样选择目录很不方便。这个第3方库Ookii Dialogs，显示的界面更好用！！
+            VistaFolderBrowserDialog folderBrowserDialog = new VistaFolderBrowserDialog();
+            folderBrowserDialog.Description = "请选择一个目录";
             if (!string.IsNullOrEmpty(strLastSelectedPath))
             {
-                dialog.SelectedPath = strLastSelectedPath;
+                folderBrowserDialog.SelectedPath = strLastSelectedPath;
             }
-            dialog.Description = "请选择文件路径";
-            if (dialog.ShowDialog() == DialogResult.OK)
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                txbReadPath.Text = dialog.SelectedPath;
+                txbReadPath.Text = folderBrowserDialog.SelectedPath;
                 //保存用户偏好值
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_ReadPath, dialog.SelectedPath, "【获取修改过的文件】最后选择的读取目录");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_ReadPath, folderBrowserDialog.SelectedPath, "【获取修改过的文件】最后选择的读取目录");
                 WinFormContext.UserLoveSettings.Save();
             }
         }
@@ -124,19 +143,37 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 目标路径按钮事件
         private void btnTargetPath_Click(object sender, EventArgs e)
         {
-            var dialog = new FolderBrowserDialog();
-            var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_TargetPath, "").Value;
+            #region 取消自带的FolderBrowserDialog
+            //var dialog = new FolderBrowserDialog();
+            //var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_TargetPath, "").Value;
 
+            //if (!string.IsNullOrEmpty(strLastSelectedPath))
+            //{
+            //    dialog.SelectedPath = strLastSelectedPath;
+            //}
+            //dialog.Description = "请选择文件路径";
+            //if (dialog.ShowDialog() == DialogResult.OK)
+            //{
+            //    txbTargetPath.Text = dialog.SelectedPath;
+            //    //保存用户偏好值
+            //    WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_TargetPath, dialog.SelectedPath, "【获取修改过的文件】最后选择的生成目录");
+            //    WinFormContext.UserLoveSettings.Save();
+            //} 
+            #endregion
+
+            var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.GetFile_TargetPath, "").Value;
+            //这里不使用自带的FolderBrowserDialog，那样选择目录很不方便。这个第3方库Ookii Dialogs，显示的界面更好用！！
+            VistaFolderBrowserDialog folderBrowserDialog = new VistaFolderBrowserDialog();
+            folderBrowserDialog.Description = "请选择一个目录";
             if (!string.IsNullOrEmpty(strLastSelectedPath))
             {
-                dialog.SelectedPath = strLastSelectedPath;
+                folderBrowserDialog.SelectedPath = strLastSelectedPath;
             }
-            dialog.Description = "请选择文件路径";
-            if (dialog.ShowDialog() == DialogResult.OK)
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                txbTargetPath.Text = dialog.SelectedPath;
+                txbTargetPath.Text = folderBrowserDialog.SelectedPath;
                 //保存用户偏好值
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_TargetPath, dialog.SelectedPath, "【获取修改过的文件】最后选择的生成目录");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.GetFile_TargetPath, folderBrowserDialog.SelectedPath, "【获取修改过的文件】最后选择的生成目录");
                 WinFormContext.UserLoveSettings.Save();
             }
         }

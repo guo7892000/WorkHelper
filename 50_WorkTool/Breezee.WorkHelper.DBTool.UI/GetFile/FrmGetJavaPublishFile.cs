@@ -7,6 +7,7 @@ using Breezee.WorkHelper.DBTool.Entity;
 using Breezee.WorkHelper.DBTool.Entity.ExcelTableSQL;
 using FluentFTP;
 using LibGit2Sharp;
+using Ookii.Dialogs.WinForms;
 using org.breezee.MyPeachNet;
 using System;
 using System.Collections.Generic;
@@ -1055,11 +1056,21 @@ namespace Breezee.WorkHelper.DBTool.UI
         #region 路径按钮事件
         private void SelectFilePath(TextBox tb)
         {
-            var dialog = new FolderBrowserDialog();
-            dialog.Description = "请选择文件路径";
-            if (dialog.ShowDialog() == DialogResult.OK)
+            #region 取消使用自带的FolderBrowserDialog
+            //var dialog = new FolderBrowserDialog();
+            //dialog.Description = "请选择文件路径";
+            //if (dialog.ShowDialog() == DialogResult.OK)
+            //{
+            //    tb.Text = dialog.SelectedPath;
+            //} 
+            #endregion
+
+            //这里不使用自带的FolderBrowserDialog，那样选择目录很不方便。这个第3方库Ookii Dialogs，显示的界面更好用！！
+            VistaFolderBrowserDialog folderBrowserDialog = new VistaFolderBrowserDialog();
+            folderBrowserDialog.Description = "请选择一个目录";
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                tb.Text = dialog.SelectedPath;
+                tb.Text = folderBrowserDialog.SelectedPath;
             }
         }
 
