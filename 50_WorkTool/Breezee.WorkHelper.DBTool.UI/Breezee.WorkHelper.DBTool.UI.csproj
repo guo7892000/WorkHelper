@@ -239,12 +239,12 @@
     <Compile Include="Common\UC_FtpDownUpload.Designer.cs">
       <DependentUpon>UC_FtpDownUpload.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConnectString\CopyDataStringTemplate.cs" />
-    <Compile Include="ConnectString\FrmDBTCopyData.cs">
+    <Compile Include="ConnectString\Entity\CopyDataStringTemplate.cs" />
+    <Compile Include="ConnectString\FrmDBTCopyConnectData.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConnectString\FrmDBTCopyData.Designer.cs">
-      <DependentUpon>FrmDBTCopyData.cs</DependentUpon>
+    <Compile Include="ConnectString\FrmDBTCopyConnectData.Designer.cs">
+      <DependentUpon>FrmDBTCopyConnectData.cs</DependentUpon>
     </Compile>
     <Compile Include="ConnectString\FrmDBTExcelCol2Row.cs">
       <SubType>Form</SubType>
@@ -270,11 +270,11 @@
     <Compile Include="ConnectString\FrmDBTInList.Designer.cs">
       <DependentUpon>FrmDBTInList.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConnectString\FrmDBTMergeData.cs">
+    <Compile Include="ConnectString\FrmDBTMergeExcelData.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConnectString\FrmDBTMergeData.Designer.cs">
-      <DependentUpon>FrmDBTMergeData.cs</DependentUpon>
+    <Compile Include="ConnectString\FrmDBTMergeExcelData.Designer.cs">
+      <DependentUpon>FrmDBTMergeExcelData.cs</DependentUpon>
     </Compile>
     <Compile Include="ConnectString\FrmDBTReadDataBaseString.cs">
       <SubType>Form</SubType>
@@ -300,7 +300,7 @@
     <Compile Include="ConnectString\FrmDBTTableColumnString.Designer.cs">
       <DependentUpon>FrmDBTTableColumnString.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConnectString\TableColumnDicTemplate.cs" />
+    <Compile Include="ConnectString\Entity\TableColumnDicTemplate.cs" />
     <Compile Include="DataSql\FrmDBTExcelImportData.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -421,7 +421,7 @@
     <Compile Include="StringBuild\ScriptMerge\ScriptMergeEntity.cs" />
     <Compile Include="StringBuild\ScriptMerge\ScriptMergeString.cs" />
     <Compile Include="StringBuild\SplitStringTemplate.cs" />
-    <Compile Include="TableSql\DBSqlEntity.cs" />
+    <Compile Include="TableSql\Entity\DBSqlEntity.cs" />
     <Compile Include="TableSql\FrmDBTGenerateTableSQL.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -446,19 +446,19 @@
     <Compile Include="TableSql\FrmSqlStringConvert.Designer.cs">
       <DependentUpon>FrmSqlStringConvert.cs</DependentUpon>
     </Compile>
-    <Compile Include="TableSql\NewOldColumnXmlConfig.cs" />
-    <Compile Include="TableSql\SqlReplaceColumnEntity.cs" />
-    <Compile Include="TableSql\SqlTableEntity.cs" />
-    <Compile Include="TableSql\StandardColumnClassXmlConfig.cs" />
+    <Compile Include="TableSql\Entity\NewOldColumnXmlConfig.cs" />
+    <Compile Include="TableSql\Entity\SqlReplaceColumnEntity.cs" />
+    <Compile Include="TableSql\Entity\SqlTableEntity.cs" />
+    <Compile Include="TableSql\Entity\StandardColumnClassXmlConfig.cs" />
     <Compile Include="TableSql\SQLBuilder\MySQLBuilder.cs" />
     <Compile Include="TableSql\SQLBuilder\OracleBuilder.cs" />
     <Compile Include="TableSql\SQLBuilder\PostgreSQLBuilder.cs" />
     <Compile Include="TableSql\SQLBuilder\SQLBuilder.cs" />
     <Compile Include="TableSql\SQLBuilder\SQLiteBuilder.cs" />
     <Compile Include="TableSql\SQLBuilder\SQLServerBuilder.cs" />
-    <Compile Include="TableSql\TableStructGenerator.cs" />
-    <Compile Include="TableSql\TableStructGeneratorParamEntity.cs" />
-    <Compile Include="TableSql\WordUpperType.cs" />
+    <Compile Include="TableSql\Entity\TableStructGenerator.cs" />
+    <Compile Include="TableSql\Entity\TableStructGeneratorParamEntity.cs" />
+    <Compile Include="TableSql\Entity\WordUpperType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -879,6 +879,12 @@
     <None Include="Doc\SQL\MySql\0010_表\表列.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\SQL\Oracle\0032_函数\分析函数\分析函数2.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\Oracle\0032_函数\分析函数\分析函数.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\SQL\Oracle\0001_基础\字符分隔.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -915,6 +921,9 @@
     <None Include="Doc\SQL\Oracle\0030_存储过程\实例-物品入出库统计.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\SQL\Oracle\0032_函数\分析函数\分析函数示例.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\SQL\Oracle\0032_函数\管道函数.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -946,6 +955,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\SQL\Oracle\1000_PLSQL语言\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\Oracle\9800_连接工具\在线工具.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\SQL\PostgreSQL\0010_表\表列.md">
@@ -1016,8 +1028,8 @@
     <EmbeddedResource Include="Common\UC_FtpDownUpload.resx">
       <DependentUpon>UC_FtpDownUpload.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ConnectString\FrmDBTCopyData.resx">
-      <DependentUpon>FrmDBTCopyData.cs</DependentUpon>
+    <EmbeddedResource Include="ConnectString\FrmDBTCopyConnectData.resx">
+      <DependentUpon>FrmDBTCopyConnectData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConnectString\FrmDBTExcelCol2Row.resx">
       <DependentUpon>FrmDBTExcelCol2Row.cs</DependentUpon>
@@ -1031,8 +1043,8 @@
     <EmbeddedResource Include="ConnectString\FrmDBTInList.resx">
       <DependentUpon>FrmDBTInList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ConnectString\FrmDBTMergeData.resx">
-      <DependentUpon>FrmDBTMergeData.cs</DependentUpon>
+    <EmbeddedResource Include="ConnectString\FrmDBTMergeExcelData.resx">
+      <DependentUpon>FrmDBTMergeExcelData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConnectString\FrmDBTReadDataBaseString.resx">
       <DependentUpon>FrmDBTReadDataBaseString.cs</DependentUpon>
@@ -1551,10 +1563,25 @@
     <Content Include="Help\Html\DBTool\DB\Images\DataSqlExcelImport.004.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Help\Html\DBTool\DB\Images\DataStandardSet_01.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\Html\DBTool\DB\Images\DataStringDBQuery.001.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\DB\Images\DataStringIn.001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\DB\Images\DataStringIn.002.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\DB\Images\DataStringIn.003.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\DB\Images\DataStringIn.004.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\DB\Images\DataStringIn.005.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\DB\Images\DBColumnDictionary.001.jpg">
@@ -1753,6 +1780,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\String\Images\GetJavaPublishFile.003.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\String\Images\GetJavaPublishFile.004.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\String\Images\NotStuctExcelFileRead01.jpg">

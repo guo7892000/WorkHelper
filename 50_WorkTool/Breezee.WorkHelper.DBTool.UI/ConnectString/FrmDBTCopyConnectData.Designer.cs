@@ -2,7 +2,7 @@
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
-    partial class FrmDBTCopyData
+    partial class FrmDBTCopyConnectData
     {
         /// <summary>
         /// Required designer variable.
@@ -31,7 +31,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDBTCopyData));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDBTCopyConnectData));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbAutoSQL = new System.Windows.Forms.ToolStripButton();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();

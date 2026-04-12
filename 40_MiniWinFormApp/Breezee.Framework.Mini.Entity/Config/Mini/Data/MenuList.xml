@@ -64,9 +64,9 @@
   
   <Model Guid="F0BB1849488147B0970762238A77E620" Name="字符处理" Code="" DLLName="" FormName="" ShortCutKey="C">
     <Class Guid="7908BFA7-5A14-4AA7-B7AC-53FA2A4F7C79" Name="Excel字符" Code="" DLLName="" FormName="" ShortCutKey="">
-      <Menu Guid="3252D790-C9AD-47F2-8B56-F690D0F6BBE1" Name="复制数据拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTCopyData"  HelpPath="/Help/Html/DBTool/String/ExcelCopyConn.html"/>
+      <Menu Guid="3252D790-C9AD-47F2-8B56-F690D0F6BBE1" Name="复制数据拼接" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTCopyConnectData"  HelpPath="/Help/Html/DBTool/String/ExcelCopyConn.html"/>
       <Menu Guid="3F455E07-ABF6-4B4E-BA18-900C4CCF78DA" Name="Excel列转行" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTExcelCol2Row" ShortCutKey=""  HelpPath="/Help/Html/DBTool/String/ExcelColumn2Row.html"/>
-	  <Menu Guid="751BE4A5-A3B8-4521-8C80-B7A18AC4382C" Name="两个Excel合并" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTMergeData" ShortCutKey=""  HelpPath="/Help/Html/DBTool/String/TowExcelMerge.html"/>
+	  <Menu Guid="751BE4A5-A3B8-4521-8C80-B7A18AC4382C" Name="两个Excel合并" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTMergeExcelData" ShortCutKey=""  HelpPath="/Help/Html/DBTool/String/TowExcelMerge.html"/>
 	  <Menu Guid="08613126-473B-49D6-90DC-B856DE546D7C" Name="筛选重复行" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDBTFiltSameRow"  HelpPath="/Help/Html/DBTool/String/FilterRepeatRowData.html"/>
 	</Class>
     <Class Guid="9D1E9003-C19A-4137-B191-28358AB9B459" Name="字符拼接" Code="" DLLName="" FormName="" ShortCutKey="">

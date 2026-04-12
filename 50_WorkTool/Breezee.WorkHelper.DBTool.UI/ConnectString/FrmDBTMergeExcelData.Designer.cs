@@ -1,6 +1,6 @@
 ﻿namespace Breezee.WorkHelper.DBTool.UI
 {
-    partial class FrmDBTMergeData
+    partial class FrmDBTMergeExcelData
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDBTMergeData));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDBTMergeExcelData));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbAutoSQL = new System.Windows.Forms.ToolStripButton();
             this.tsbExport = new System.Windows.Forms.ToolStripButton();

@@ -20,7 +20,7 @@ namespace Breezee.WorkHelper.DBTool.UI
     /// 复制数据生成拼接字符
     /// 测试结果：通过
     /// </summary>
-    public partial class FrmDBTCopyData : BaseForm
+    public partial class FrmDBTCopyConnectData : BaseForm
     {
         #region 变量
         private readonly string _strTableName = "变更表清单";
@@ -29,7 +29,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         #endregion
 
         #region 构造函数
-        public FrmDBTCopyData()
+        public FrmDBTCopyConnectData()
         {
             InitializeComponent();
         } 

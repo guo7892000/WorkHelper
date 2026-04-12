@@ -30,7 +30,7 @@ namespace Breezee.WorkHelper.DBTool.UI
     /// @history:
     ///   2023-10-05 huangguohui 去掉SQL方式，增加异集，即两个集合不同的部分。    
     /// </summary>
-    public partial class FrmDBTMergeData : BaseForm
+    public partial class FrmDBTMergeExcelData : BaseForm
     {
         #region 变量
         string sRowNo1 = "ROWNUM_0";
@@ -43,7 +43,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         #endregion
 
         #region 构造函数
-        public FrmDBTMergeData()
+        public FrmDBTMergeExcelData()
         {
             InitializeComponent();
         }
