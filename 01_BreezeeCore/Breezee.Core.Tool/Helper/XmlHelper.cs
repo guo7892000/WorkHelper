@@ -52,6 +52,7 @@ namespace Breezee.Core.Tool
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
                 return null;
                 //throw ex; //这里可以定义你自己的异常处理
             }
@@ -75,6 +76,7 @@ namespace Breezee.Core.Tool
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
                 return null;
                 //throw ex; //这里可以定义你自己的异常处理
             }

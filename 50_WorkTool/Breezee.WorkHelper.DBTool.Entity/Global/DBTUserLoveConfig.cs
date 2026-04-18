@@ -40,6 +40,10 @@ namespace Breezee.WorkHelper.DBTool.Entity
         // 点击复制
         public static readonly string ClickCopy_Path = "ClickCopy_Path";
         public static readonly string DirString_LastSelectedPath = "DirString_LastSelectedPath";
+        public static readonly string DirString_MulDir = "DirString_MulDir"; //多目录
+        public static readonly string DirString_ExcludeDir = "DirString_ExcludeDir"; //排除目录
+        public static readonly string DirString_ExcludeFile = "DirString_ExcludeFile"; //排除文件
+        public static readonly string DirString_ExcludeExt = "DirString_ExcludeExt"; //排除后缀
         // 获取SQL
         public static readonly string DbGetSql_ParamType = "DbGetSql_ParamType";
         public static readonly string DbGetSql_FirstWordType = "DbGetSql_FirstWordType";

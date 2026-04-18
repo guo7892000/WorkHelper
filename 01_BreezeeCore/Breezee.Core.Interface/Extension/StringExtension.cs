@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Data;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 
 
 /************************************************************************************
@@ -789,6 +790,28 @@ namespace Breezee.Core.Interface
         public static string GetLinuxPath(this string str)
         {
             return str.Trim().Replace("\\", "/").Trim('/');
+        }
+
+        /// <summary>
+        /// 替换字符
+        /// </summary>
+        /// <param name="text">当前字符</param>
+        /// <param name="find">查找的字符</param>
+        /// <param name="replacement">替换的字符</param>
+        /// <param name="caseSensitive">是否大小写敏感</param>
+        /// <returns></returns>
+        public static string ReplaceText(this string text, string find, string replacement, bool caseSensitive = false)
+        {
+            try
+            {
+                Regex regex = new Regex(Regex.Escape(find),
+                    caseSensitive ? RegexOptions.None : RegexOptions.IgnoreCase);
+                return regex.Replace(text, replacement);
+            }
+            catch
+            {
+                return text;
+            }
         }
     }
 }

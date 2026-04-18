@@ -1,7 +1,7 @@
 {
-  "version": "1.4.4.0",
+  "version": "1.4.5.0",
   "date": "2026-4-12",
-  "publishRemark": "1.所有功能：帮助文档更新。\r\n",
+  "publishRemark": "1.点击复制字符：复制的文本支持使用内置参数（目前只支持当天日期字符），如备份目录名为点击当天。\r\n 2.目录字符生成：支持多目录选择，增加排除后缀、排除文件、排除目录选项。\r\n 3.所有功能：帮助文档更新。\r\n",
   "appName": "WorkHelper",
   "zipFormats": "zip|rar|7z",
   "downUrlPublishLatest": "https://gitee.com/breezee2000/WorkHelper/releases/download/Latest/#appName##version#",

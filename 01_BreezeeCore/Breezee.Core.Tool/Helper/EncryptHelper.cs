@@ -214,7 +214,7 @@ namespace Breezee.Core.Tool
             }
             catch (Exception e)
             {
-
+                Console.WriteLine(e.ToString());
             }
             return result;
         }

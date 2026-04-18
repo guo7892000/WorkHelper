@@ -29,8 +29,8 @@ namespace Breezee.Core.WinFormUI
         #region 变量
         private static string Current_DLR_ID;
         private static string Parent_DLR_ID;
-        private static DataTable mCurrentDLRData;
-        private static DataTable mFirstDLRData;
+        //private static DataTable mCurrentDLRData;
+        //private static DataTable mFirstDLRData;
         public static LoginUserInfo _LoginUser = WinFormContext.Instance.LoginUser;  //当前登录用户
         #endregion
 

@@ -20,6 +20,12 @@ namespace Breezee.WorkHelper.DBTool.UI
     {
         #region 变量
         string strLastSelectedPath;
+        //分隔的字符数组
+        char[] splitCharArr = new char[] { ',', '，', '：', ';', '；', '|' };
+        string[] sExcludeFullDir; //得到排除的相对目录
+        string[] sExcludeFullFile; //得到排除的相对文件
+        string[] sExcludeExt; //得到排除的后缀
+        string sCurRelateDir; //当前相对目录名
         #endregion
 
         #region 构造函数
@@ -35,6 +41,10 @@ namespace Breezee.WorkHelper.DBTool.UI
         {
             //加载用户偏好值
             strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DirString_LastSelectedPath, "").Value;
+            ckbMulDir.Checked = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DirString_MulDir, "0").Value == "1" ? true : false;
+            rtbExcludeRelateDir.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DirString_ExcludeDir, "").Value; //排除目录
+            rtbExcludeRelateFile.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DirString_ExcludeFile, "").Value; //排除文件
+            txbExcludeEndprx.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.DirString_ExcludeExt, "").Value; //排除后缀
 
             _dicString.Add("1", "仅文件");
             _dicString.Add("2", "仅目录");
@@ -81,15 +91,38 @@ namespace Breezee.WorkHelper.DBTool.UI
             //这里不使用自带的FolderBrowserDialog，那样选择目录很不方便。这个第3方库Ookii Dialogs，显示的界面更好用！！
             VistaFolderBrowserDialog folderBrowserDialog = new VistaFolderBrowserDialog();
             folderBrowserDialog.Description = "请选择一个目录";
+            folderBrowserDialog.ShowNewFolderButton = true;
             if (!string.IsNullOrEmpty(strLastSelectedPath))
             {
                 folderBrowserDialog.SelectedPath = strLastSelectedPath;
             }
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                txbSelectPath.Text = folderBrowserDialog.SelectedPath;
+                if (!ckbMulDir.Checked)
+                {
+                    //单目录
+                    txbSelectPath.Text = folderBrowserDialog.SelectedPath; 
+                }
+                else
+                {
+                    //多目录
+                    string sPath = txbSelectPath.Text.Trim();
+                    if (string.IsNullOrEmpty(sPath))
+                    {
+                        txbSelectPath.Text = folderBrowserDialog.SelectedPath + ";";
+                    }
+                    else
+                    {
+                        if (!sPath.EndsWith(";"))
+                        {
+                            sPath = sPath + ";";
+                        }
+                        txbSelectPath.Text = sPath + folderBrowserDialog.SelectedPath + ";";
+                    }
+                }
                 //保存用户偏好值
                 WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DirString_LastSelectedPath, folderBrowserDialog.SelectedPath, "【目录字符生成】最后选择的目录");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DirString_MulDir, ckbMulDir.Checked ? "1" : "0", "【目录字符生成】是否多目录");
                 WinFormContext.UserLoveSettings.Save();
             }
         } 
@@ -108,11 +141,33 @@ namespace Breezee.WorkHelper.DBTool.UI
             var strPathType = cbbPathType.SelectedValue.ToString();
             var isSearchChild = ckbSetDirectoryDept.Checked;
             int iDept = int.Parse(nudDept.Value.ToString());
+
+            sExcludeFullDir = rtbExcludeRelateDir.Text.Trim().GetLinuxPath().ToLower().Split(splitCharArr, StringSplitOptions.RemoveEmptyEntries); //得到排除的相对目录
+            sExcludeFullFile = rtbExcludeRelateFile.Text.Trim().GetLinuxPath().ToLower().Split(splitCharArr, StringSplitOptions.RemoveEmptyEntries); //得到排除的相对文件
+            sExcludeExt = txbExcludeEndprx.Text.Trim().ToLower().Split(splitCharArr, StringSplitOptions.RemoveEmptyEntries); //得到排除后缀
+
             StringBuilder sb = new StringBuilder();
-            DirectoryInfo rootDirectory = new DirectoryInfo(sPath);
-            //
-            GetDirectoryFile(sb, rootDirectory, strOutType, strPathType, isSearchChild, iDept);
+            string[] dirs = sPath.Split(';');
+            int iDirCount = 0;
+            foreach (string dir in dirs)
+            {
+                if (string.IsNullOrEmpty(dir)) 
+                {  
+                    continue; 
+                }
+                sCurRelateDir = dir;
+                DirectoryInfo rootDirectory = new DirectoryInfo(dir);
+                GetDirectoryFile(sb, rootDirectory, strOutType, strPathType, isSearchChild, iDept);
+                iDirCount++;
+            }
             rtbString.AppendText(sb.ToString());
+            //保存用户偏好值
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DirString_LastSelectedPath, sPath, "【目录字符生成】最后选择的目录");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DirString_MulDir, iDirCount > 1 ? "1" : "0", "【目录字符生成】是否多目录");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DirString_ExcludeDir, rtbExcludeRelateDir.Text.Trim(), "【目录字符生成】排除目录");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DirString_ExcludeFile, rtbExcludeRelateFile.Text.Trim(), "【目录字符生成】排除文件");
+            WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.DirString_ExcludeExt, txbExcludeEndprx.Text.Trim(), "【目录字符生成】排除后缀");
+            WinFormContext.UserLoveSettings.Save();
         } 
         #endregion
 
@@ -147,9 +202,6 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
             }
 
-            string sSelectPath = txbSelectPath.Text.Trim();
-            string sRelatePath = sSelectPath.EndsWith("\\") ? sSelectPath : sSelectPath + "\\";
-
             if (sOutType == "1" || sOutType == "3")//仅文件、目录和文件 
             {
                 foreach (var file in rootDirectory.GetFiles()) //文件的处理
@@ -158,6 +210,57 @@ namespace Breezee.WorkHelper.DBTool.UI
                     {
                         continue;
                     }
+                    bool isContinue = false;
+
+                    //跳过忽略的相对目录
+                    foreach (string sDir in sExcludeFullDir)
+                    {
+                        string sDirNew = sDir.Replace("\\", "").Replace("/", "");
+                        if (file.FullName.StartsWith(sDirNew, StringComparison.OrdinalIgnoreCase))
+                        {
+                            isContinue = true;
+                            break;
+                        }
+                        if (file.FullName.Contains("/" + sDirNew + "/") || file.FullName.Contains("\\" + sDirNew + "\\"))
+                        {
+                            isContinue = true;
+                            break;
+                        }
+                    }
+                    if (isContinue)
+                    {
+                        continue;
+                    }
+
+                    //跳过忽略的后缀
+                    foreach (string sExt in sExcludeExt)
+                    {
+                        string sExtNew = sExt.StartsWith(".") ? sExt : "." + sExt;
+                        if (file.Extension.Equals(sExtNew, StringComparison.OrdinalIgnoreCase))
+                        {
+                            isContinue = true;
+                            break;
+                        }
+                    }
+                    if (isContinue)
+                    {
+                        continue;
+                    }
+
+                    //跳过忽略的相对文件名
+                    foreach (string sFile in sExcludeFullFile)
+                    {
+                        if (file.Name.Equals(sFile, StringComparison.OrdinalIgnoreCase))
+                        {
+                            isContinue = true;
+                            break;
+                        }
+                    }
+                    if (isContinue)
+                    {
+                        continue;
+                    }
+
                     string sDirFileName;
                     if (sPathType == "1")//全路径
                     {
@@ -171,7 +274,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     else//相对路径
                     {
                         sDirFileName = ckbShowFileDir.Checked ? file.DirectoryName + "\\" : file.FullName;//【仅显示文件目录】复选框
-                        sb.Append(DealString(sDirFileName.Replace(sRelatePath, "")) + "\n");
+                        sb.Append(DealString(sDirFileName.Replace(sCurRelateDir, "")) + "\n");
                     }
                 }
             }
@@ -180,17 +283,37 @@ namespace Breezee.WorkHelper.DBTool.UI
             {
                 foreach (var path in rootDirectory.GetDirectories())//目录的处理
                 {
+                    bool isContinue = false;
+                    //跳过忽略的相对目录
+                    foreach (string sDir in sExcludeFullDir)
+                    {
+                        string sDirNew = sDir.Replace("\\", "").Replace("/", "");
+                        if (path.FullName.StartsWith(sDirNew, StringComparison.OrdinalIgnoreCase))
+                        {
+                            isContinue = true;
+                            break;
+                        }
+                        if (path.FullName.Contains("/"+ sDirNew + "/") || path.FullName.Contains("\\" + sDirNew + "\\"))
+                        {
+                            isContinue = true;
+                            break;
+                        }
+                    }
+                    if (isContinue)
+                    {
+                        continue;
+                    }
                     if (sPathType == "1")//全路径
                     {
                         sb.Append(DealString(path.FullName) + "\n");
                     }
                     else if (sPathType == "2")//仅文件名
                     {
-                        sb.Append(path.FullName.Replace(sRelatePath, "") + "\n");
+                        sb.Append(path.FullName.Replace(sCurRelateDir, "") + "\n");
                     }
                     else//相对路径
                     {
-                        sb.Append(path.FullName.Replace(sRelatePath, "") + "\n");
+                        sb.Append(path.FullName.Replace(sCurRelateDir, "") + "\n");
                     }
                 }
             }

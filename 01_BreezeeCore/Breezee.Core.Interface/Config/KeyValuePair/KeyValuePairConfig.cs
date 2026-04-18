@@ -29,7 +29,7 @@ namespace Breezee.Core.Interface
     /// </summary>
     public class KeyValuePairConfig : IXmlConfigPair
     {
-        private XDocument Doc;
+        //private XDocument Doc;
 
         private MiniXmlConfig MiniXmlConfig { get; }
         public List<KeyValuePairEntity> ListEntity { get; }

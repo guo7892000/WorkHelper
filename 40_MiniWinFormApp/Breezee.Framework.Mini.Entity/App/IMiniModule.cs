@@ -15,7 +15,7 @@ namespace Breezee.Framework.Mini.Entity
     /// </summary>
     public class IMiniModule : Module
     {
-        private IApp _curApp;
+        //private IApp _curApp;
         private IDictionary<string, IModule> _OutModules = new Dictionary<string, IModule>();
         private IDictionary<string, DbServerInfo> _DbServers = new Dictionary<string, DbServerInfo>();
         public virtual string Id => "61B3130F-5DFA-4A3F-BE0A-B4C697D8E545";

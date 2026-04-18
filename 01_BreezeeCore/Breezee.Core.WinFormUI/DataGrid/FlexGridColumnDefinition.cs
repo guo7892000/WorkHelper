@@ -29,7 +29,7 @@ namespace Breezee.Core.WinFormUI
  
         private int mFrozenCols = 0;
         private int mFrozenRows = 0;
-        private int mFixedCols = 0;
+        //private int mFixedCols = 0;
         #endregion
 
         #region 属性

@@ -704,6 +704,7 @@ namespace org.breezee.MyPeachNet
             }
             catch(Exception e)
             {
+                Console.WriteLine(e.Message);
                 return "";
             }
         }

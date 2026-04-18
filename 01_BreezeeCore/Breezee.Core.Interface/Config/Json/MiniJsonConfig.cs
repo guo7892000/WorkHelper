@@ -22,7 +22,7 @@ namespace Breezee.Core.Interface
         private string _sFileName; //文件名
         private string _sFullFileName; //文件全路径
 
-        private XmlConfigSaveType _saveType;
+        private XmlConfigSaveType _saveType = XmlConfigSaveType.Attribute;
         private IList<string> _lstCol;
         private string _sPK;
         private DataTable _dtData;

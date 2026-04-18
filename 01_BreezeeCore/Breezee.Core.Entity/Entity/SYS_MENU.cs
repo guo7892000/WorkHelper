@@ -51,9 +51,9 @@ namespace Breezee.Core.Entity
 
         public string MenuTypeString { get; set; }
 
-        public string MenuCode { get; set; }
+        //public string MenuCode { get; set; }
 
-        public string MenuName { get; set; }
+        //public string MenuName { get; set; }
 
         public string ParentMenuId { get; set; }
 
@@ -157,8 +157,8 @@ namespace Breezee.Core.Entity
                     break;
             }
             
-            menu.MenuName = menu.MenuName;
-            menu.MenuCode = menu.MenuCode;
+            //menu.MenuName = menu.MenuName;
+            //menu.MenuCode = menu.MenuCode;
             //menu.ShortCutKey = ShortCutKey;
             menu.DLLName = menu.DllName;
             menu.FormName = menu.MenuFullPath;

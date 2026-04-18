@@ -382,15 +382,33 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
 
         void bt_Click(object sender, EventArgs e)
         {
-            CopyString cs = (sender as Button).Tag as CopyString;
-            string sText = (cs.tbb as TextBoxBase).Text;
-            Clipboard.SetText(sText);
-            if (cs.Type.EqualsIgnorEmptyCase("path") && ckbOpenPath.Checked)
+            try
             {
-                if (Directory.Exists(sText))
+                CopyString cs = (sender as Button).Tag as CopyString;
+                string sText = (cs.tbb as TextBoxBase).Text;
+                if ("1".Equals(cs.ParamRep))
                 {
-                    System.Diagnostics.Process.Start("explorer.exe", sText);
+                    // 针对动态替换，将时间格式替换为当前日期
+                    sText = sText.ReplaceText("#yyyyMMdd#", DateTime.Now.ToString("yyyyMMdd"))
+                        .ReplaceText("#yyyy-MM-dd#", DateTime.Now.ToString("yyyy-MM-dd"))
+                        .ReplaceText("#yyyy-MM#", DateTime.Now.ToString("yyyy-MM"))
+                        .ReplaceText("#yyyyMM#", DateTime.Now.ToString("yyyyMM"))
+                        .ReplaceText("#yyyy#", DateTime.Now.ToString("yyyy"))
+                        .ReplaceText("#yyyyMMddHHmi#", DateTime.Now.ToString("yyyyMMddHHmm"))
+                        .ReplaceText("#yyyyMMddHHmiss#", DateTime.Now.ToString("yyyyMMddHHmmss"));
                 }
+                Clipboard.SetText(sText);
+                if (cs.Type.EqualsIgnorEmptyCase("path") && ckbOpenPath.Checked)
+                {
+                    if (Directory.Exists(sText))
+                    {
+                        System.Diagnostics.Process.Start("explorer.exe", sText);
+                    }
+                }
+            }
+            catch (Exception ex) 
+            {
+                Console.WriteLine(ex.ToString());
             }
         }
 
@@ -456,6 +474,10 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                 if (xn.TryGetAttrValue(CopyStringPropertyName.StringMethod, out sText))
                 {
                     cs.Method = sText;
+                }
+                if (xn.TryGetAttrValue(CopyStringPropertyName.ParamReplace, out sText))
+                {
+                    cs.ParamRep = sText;
                 }
             }
             return cs;
@@ -546,6 +568,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
         public static string StringPathAbs = "pathAbs";
         public static string StringPathRel = "pathRel";
         public static string StringMethod = "method";
+        public static string ParamReplace = "paramRep";
     }
 
     class CopyString
@@ -559,6 +582,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
         public string PathAbs;
         public string PathRel;
         public string Method;
+        public string ParamRep;
         public TextBoxBase tbb;
     }
 
