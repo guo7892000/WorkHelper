@@ -20,6 +20,9 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
     {
         private List<GroupBox> listGroupBox = new List<GroupBox>();
         private List<FlowLayoutPanel> listFlowLayoutPanel = new List<FlowLayoutPanel>();
+        private Color _fileTextAreaColor = Color.OldLace;//读取文件的文本框背景色
+        private Color _pathDirColor = Color.OldLace; //目录的按钮背景色
+        private Color _fileNotExistsTextAreaColor = Color.Yellow;//读取文件不存在时的文本框背景色
 
         public FrmDBTClickCopyStringAuto()
         {
@@ -48,14 +51,13 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
 
             ckbOpenPath.Checked = true;
             gbGlobal.Parent = null;
-            string sText = "";
             int iDefaultMax = 5;
 
             XmlDocument doc = new XmlDocument();
             doc.Load(sXmlPath); 
 
             XmlNode root = doc.SelectSingleNode("strings");
-            iDefaultMax = int.Parse(root.GetOrDefaultAttrValue(CopyStringPropertyName.GroupMax, iDefaultMax.ToString()));
+            iDefaultMax = int.Parse(root.GetOrDefaultAttrValue(GroupPropertyName.Max, iDefaultMax.ToString())); //最外层strings根节点的max属性
             XmlNodeList groups = doc.SelectNodes("strings/group");
 
             int iNewRow = 4;
@@ -64,18 +66,26 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             for (int i = groups.Count - 1; i >= 0; i--)
             {
                 XmlNode gpNode = groups[i];
-                if (gpNode.ChildNodes.Count == 0) continue;
-                XmlNodeList itemList = gpNode.SelectNodes("string");
-                if (itemList.Count == 0) continue;
-
-                gb = new GroupBox();
-                if (gpNode.TryGetAttrValue(CopyStringPropertyName.GroupText, out sText))
+                if (gpNode.ChildNodes.Count == 0)
                 {
-                    gb.Text = sText;
-                    gb.ForeColor = Color.Red;
+                    continue;
+                }
+                XmlNodeList itemList = gpNode.SelectNodes("string");
+                if (itemList.Count == 0)
+                {
+                    continue;
                 }
 
-                iNewRow = int.Parse(gpNode.GetOrDefaultAttrValue(CopyStringPropertyName.GroupMax, iDefaultMax.ToString()));
+                gb = new GroupBox();
+                //获取组项
+                GroupEntity groupEntity = getGroupEntity(gpNode);
+                gb.Text = groupEntity.Text;
+                gb.ForeColor = groupEntity.FontColor;
+                iNewRow = iDefaultMax;
+                if (groupEntity.Max > 0)
+                {
+                    iNewRow = groupEntity.Max;
+                }
 
                 TableLayoutPanel tlp = new TableLayoutPanel();
                 double d = itemList.Count < iNewRow ? 1.0 : itemList.Count * 1.0 / iNewRow;
@@ -96,10 +106,20 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                     lb = new Label();
                     tb = new TextBox();
                     bt = new Button();
+                    //获取复制项
+                    CopyItemEntity cs = getCopyItemEntity(item);
+                    //标签颜色配置
+                    Color colorLable = cs.FontColor.SafeParseColor();
+                    if (colorLable == Color.Empty)
+                    {
+                        colorLable = groupEntity.ItemFontColor; //当前配置项没有颜色，取组的配置颜色
+                    }
+                    if (colorLable == Color.Empty)
+                    {
+                        colorLable = Color.Black;  //当前配置项没有颜色，取黑色
+                    }
+                    lb.ForeColor = colorLable;
 
-                    lb.ForeColor = Color.Black;
-
-                    CopyString cs = getCopyString(item);
                     if (cs == null) continue;
                     if (cs.Ctrol.EqualsIgnorEmptyCase("RichTextBox"))
                     {
@@ -108,7 +128,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                         {
                             if (!string.IsNullOrWhiteSpace(cs.PathRel))
                             {
-                                if(cs.PathRel.StartsWith(@"\") || cs.PathRel.StartsWith(@"/"))
+                                if (cs.PathRel.StartsWith(@"\") || cs.PathRel.StartsWith(@"/"))
                                 {
                                     cs.PathRel = cs.PathRel.Substring(1); //去掉前面的斜杆，让后面的Path.Combine能正常合并路径；否则得到的路径是错的
                                 }
@@ -118,6 +138,12 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                                     //相对配置文件所在目录
                                     tb.AppendText(File.ReadAllText(sPath));
                                     cs.Tip = string.Format("文本框是相对路径【{0}】文件的内容", cs.PathRel);
+                                    tb.BackColor = _fileTextAreaColor;
+                                }
+                                else
+                                {
+                                    tb.BackColor = _fileNotExistsTextAreaColor;
+                                    tb.AppendText("文件不存在！");
                                 }
                             }
                             if (!string.IsNullOrWhiteSpace(cs.PathAbs))
@@ -127,6 +153,12 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                                 {
                                     tb.AppendText(File.ReadAllText(cs.PathAbs));
                                     cs.Tip = string.Format("文本框是绝对路径【{0}】文件的内容", cs.PathAbs);
+                                    tb.BackColor = _fileTextAreaColor;
+                                }
+                                else
+                                {
+                                    tb.BackColor = _fileNotExistsTextAreaColor;
+                                    tb.AppendText("文件不存在！");
                                 }
                             }
                         }
@@ -156,11 +188,16 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                     tb.Width = 120;
                     tb.Height = 20;
                     tb.Anchor = AnchorStyles.Left;
+                    tb.ReadOnly = true;
                     bt.Width = 20;
                     bt.Height = 23;
                     bt.Anchor = AnchorStyles.Left;
                     bt.Tag = cs;
                     bt.Text = ".";
+                    if (cs.Type.EqualsIgnorEmptyCase("path"))
+                    {
+                        bt.BackColor = _pathDirColor; //针对目录，按钮显示为黄色
+                    }
 
                     if (!string.IsNullOrEmpty(cs.Method))
                     {
@@ -228,40 +265,38 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             doc.Load(sXmlPath);
 
             XmlNode root = doc.SelectSingleNode("strings");
-            iDefaultMax = int.Parse(root.GetOrDefaultAttrValue(CopyStringPropertyName.GroupMax, iDefaultMax.ToString()));
+            iDefaultMax = int.Parse(root.GetOrDefaultAttrValue(GroupPropertyName.Max, iDefaultMax.ToString()));
             XmlNodeList groups = doc.SelectNodes("strings/group");
 
             int iNewRow = 4;
             int iGroup = 0;
-            //GroupBox gb;
             FlowLayoutPanel gbPanl = new FlowLayoutPanel();
             for (int i = 0; i < groups.Count; i++)
             {
+                //单个Group
                 XmlNode gpNode = groups[i];
                 if (gpNode.ChildNodes.Count == 0) continue;
                 XmlNodeList itemList = gpNode.SelectNodes("string");
                 if (itemList.Count == 0) continue;
 
-                //gb = new GroupBox();
                 FlowLayoutPanel gbChildPanl = new FlowLayoutPanel();
                 gbChildPanl.FlowDirection = FlowDirection.LeftToRight;
                 gbChildPanl.BorderStyle = BorderStyle.FixedSingle;
-                //gbChildPanl.AutoScroll = true;
-
-                if (gpNode.TryGetAttrValue(CopyStringPropertyName.GroupText, out sText))
+                //获取组项
+                GroupEntity groupEntity = getGroupEntity(gpNode);
+                toolTip1.SetToolTip(gbChildPanl, groupEntity.Text);
+                iNewRow = iDefaultMax;
+                if (groupEntity.Max > 0)
                 {
-                    //gb.Text = sText;
-                    //gb.ForeColor = Color.Red;
-                    toolTip1.SetToolTip(gbChildPanl, sText);
+                    iNewRow = groupEntity.Max;
                 }
-
-                iNewRow = int.Parse(gpNode.GetOrDefaultAttrValue(CopyStringPropertyName.GroupMax, iDefaultMax.ToString()));
 
                 foreach (XmlNode item in itemList)
                 {
+                    //Group中的子项
                     Panel tlpPanl = new Panel();
                     TableLayoutPanel tlp = new TableLayoutPanel();
-                    //double d = itemList.Count < iNewRow ? 1.0 : itemList.Count * 1.0 / iNewRow;
+
                     tlp.RowCount = 2;
                     tlp.ColumnCount = 4;
                     tlp.RowStyles.Add(new RowStyle(System.Windows.Forms.SizeType.AutoSize, 20f));
@@ -271,10 +306,9 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                     Label lb = new Label();
                     TextBoxBase tb = new TextBox();
                     Button bt = new Button();
-
-                    lb.ForeColor = Color.Black;
-
-                    CopyString cs = getCopyString(item);
+                    //获取复制项
+                    CopyItemEntity cs = getCopyItemEntity(item);
+                    
                     if (cs == null) continue;
                     if (cs.Ctrol.EqualsIgnorEmptyCase("RichTextBox"))
                     {
@@ -293,6 +327,12 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                                     //相对配置文件所在目录
                                     tb.AppendText(File.ReadAllText(sPath));
                                     cs.Tip = string.Format("文本框是相对路径【{0}】文件的内容", cs.PathRel);
+                                    tb.BackColor = _fileTextAreaColor;
+                                }
+                                else
+                                {
+                                    tb.BackColor = _fileNotExistsTextAreaColor;
+                                    tb.AppendText("文件不存在！");
                                 }
                             }
                             if (!string.IsNullOrWhiteSpace(cs.PathAbs))
@@ -302,6 +342,12 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                                 {
                                     tb.AppendText(File.ReadAllText(cs.PathAbs));
                                     cs.Tip = string.Format("文本框是绝对路径【{0}】文件的内容", cs.PathAbs);
+                                    tb.BackColor = _fileTextAreaColor;
+                                }
+                                else
+                                {
+                                    tb.BackColor = _fileNotExistsTextAreaColor;
+                                    tb.AppendText("文件不存在！");
                                 }
                             }
                         }
@@ -322,6 +368,17 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
 
                     cs.tbb = tb;
                     lb.Text = cs.Lable;
+                    //标签颜色配置
+                    Color colorLable = cs.FontColor.SafeParseColor();
+                    if (colorLable == Color.Empty)
+                    {
+                        colorLable = groupEntity.ItemFontColor; //当前配置项没有颜色，取组的配置颜色
+                    }
+                    if (colorLable == Color.Empty)
+                    {
+                        colorLable = Color.Black;  //当前配置项没有颜色，取黑色
+                    }
+                    lb.ForeColor = colorLable;
                     if (!string.IsNullOrWhiteSpace(cs.Tip))
                     {
                         toolTip1.SetToolTip(bt, cs.Tip);
@@ -332,12 +389,16 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                     tb.Width = 120;
                     tb.Height = 20;
                     tb.Anchor = AnchorStyles.Left;
+                    tb.ReadOnly = true;
                     bt.Width = 20;
                     bt.Height = 23;
                     bt.Anchor = AnchorStyles.Left;
                     bt.Tag = cs;
                     bt.Text = ".";
-
+                    if (cs.Type.EqualsIgnorEmptyCase("path"))
+                    {
+                        bt.BackColor = _pathDirColor; //针对目录，按钮显示为黄色
+                    }
                     if (!string.IsNullOrEmpty(cs.Method))
                     {
                         var click = bt.GetType().GetEvents().FirstOrDefault(ei => ei.Name.ToLower() == "click");
@@ -356,14 +417,10 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                     tlp.Controls.Add(tb, 1, 0);
                     tlp.Controls.Add(bt, 2, 0);
 
-                    //tlp.Width = lb.Width + tb.Width + bt.Width + 10;
                     tlp.AutoSize = true;
                     tlpPanl.Controls.Add(tlp);
-                    //tlpPanl.Height = tlp.Height+2;
                     tlpPanl.AutoSize = true;
-
                     gbChildPanl.Controls.Add(tlpPanl);
-
                 }
                 gbPanl.Controls.Add(gbChildPanl);
                 gbChildPanl.Dock = DockStyle.Fill;
@@ -384,7 +441,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
         {
             try
             {
-                CopyString cs = (sender as Button).Tag as CopyString;
+                CopyItemEntity cs = (sender as Button).Tag as CopyItemEntity;
                 string sText = (cs.tbb as TextBoxBase).Text;
                 if ("1".Equals(cs.ParamRep))
                 {
@@ -419,7 +476,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
         /// <param name="e"></param>
         void GetMillisecond_Click(object sender, EventArgs e)
         {
-            CopyString cs = (sender as Button).Tag as CopyString;
+            CopyItemEntity cs = (sender as Button).Tag as CopyItemEntity;
             TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             string sText = Convert.ToInt64(ts.TotalMilliseconds).ToString();
             (cs.tbb as TextBoxBase).Text = sText;
@@ -431,57 +488,97 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             DBToolUIHelper.DownloadFile(DBTGlobalValue.StringBuild.Xml_CopyString, "点击拷贝字符模板", true);
         }
 
-        private CopyString getCopyString(XmlNode xn)
+        /// <summary>
+        /// 获取复制项实体
+        /// </summary>
+        /// <param name="xn"></param>
+        /// <returns></returns>
+        private CopyItemEntity getCopyItemEntity(XmlNode xn)
         {
-            CopyString cs = null;
+            CopyItemEntity cs = null;
             string sText = "";
-            if(xn.TryGetAttrValue(CopyStringPropertyName.StringType,out sText))
+            if(xn.TryGetAttrValue(CopyItemPropertyName.Type,out sText))
             {
-                cs = new CopyString();
+                //能正常获取type属性
+                cs = new CopyItemEntity();
                 cs.Type = sText;
-                if(xn.TryGetAttrValue(CopyStringPropertyName.StringCtrol,out sText))
+                if(xn.TryGetAttrValue(CopyItemPropertyName.CtrolType,out sText))
                 {
-                    cs.Ctrol = sText;
+                    cs.Ctrol = sText; //控件类型
                 }
                 else
                 {
                     return null;
                 }
-                if (xn.TryGetAttrValue(CopyStringPropertyName.StringLable, out sText))
+                if (xn.TryGetAttrValue(CopyItemPropertyName.Lable, out sText))
                 {
                     cs.Lable = sText;
                 }
-                if (xn.TryGetAttrValue(CopyStringPropertyName.StringPathAbs, out sText))
+                if (xn.TryGetAttrValue(CopyItemPropertyName.PathAbs, out sText))
                 {
                     cs.PathAbs = sText;
                 }
-                if (xn.TryGetAttrValue(CopyStringPropertyName.StringPathRel, out sText))
+                if (xn.TryGetAttrValue(CopyItemPropertyName.PathRel, out sText))
                 {
                     cs.PathRel = sText;
                 }
-                if (xn.TryGetAttrValue(CopyStringPropertyName.StringPwdchar, out sText))
+                if (xn.TryGetAttrValue(CopyItemPropertyName.Pwdchar, out sText))
                 {
                     cs.Pwdchar = sText;
                 }
-                if (xn.TryGetAttrValue(CopyStringPropertyName.StringText, out sText))
+                if (xn.TryGetAttrValue(CopyItemPropertyName.Text, out sText))
                 {
                     cs.Text = sText;
                 }
-                if (xn.TryGetAttrValue(CopyStringPropertyName.StringTip, out sText))
+                if (xn.TryGetAttrValue(CopyItemPropertyName.Tip, out sText))
                 {
                     cs.Tip = sText;
                 }
-                if (xn.TryGetAttrValue(CopyStringPropertyName.StringMethod, out sText))
+                if (xn.TryGetAttrValue(CopyItemPropertyName.Method, out sText))
                 {
                     cs.Method = sText;
                 }
-                if (xn.TryGetAttrValue(CopyStringPropertyName.ParamReplace, out sText))
+                if (xn.TryGetAttrValue(CopyItemPropertyName.ParamReplace, out sText))
                 {
                     cs.ParamRep = sText;
+                }
+                if (xn.TryGetAttrValue(CopyItemPropertyName.FontColor, out sText))
+                {
+                    cs.FontColor = sText;
                 }
             }
             return cs;
         }
+
+        /// <summary>
+        /// 获取组实体
+        /// </summary>
+        /// <param name="xn"></param>
+        /// <returns></returns>
+        private GroupEntity getGroupEntity(XmlNode xn)
+        {
+            GroupEntity cs = new GroupEntity();
+            string sText = "";
+            cs = new GroupEntity();
+            if (xn.TryGetAttrValue(GroupPropertyName.Text, out sText))
+            {
+                cs.Text = sText;
+            }
+            if (xn.TryGetAttrValue(GroupPropertyName.Max, out sText))
+            {
+                cs.Max = int.Parse(sText);
+            }
+            if (xn.TryGetAttrValue(GroupPropertyName.FontColor, out sText))
+            {
+                cs.FontColor = sText.SafeParseColor();
+            }
+            if (xn.TryGetAttrValue(GroupPropertyName.ItemFontColor, out sText))
+            {
+                cs.ItemFontColor = sText.SafeParseColor();
+            }
+            return cs;
+        }
+
 
         /// <summary>
         /// 选择配置文件按钮事件
@@ -555,23 +652,38 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
 
     }
 
-    class CopyStringPropertyName
+    class GroupPropertyName
     {
-        public static string GroupText="text";
-        public static string GroupMax = "max";
-        public static string StringType = "type";
-        public static string StringCtrol = "ctrol";
-        public static string StringLable = "label";
-        public static string StringTip = "tip";
-        public static string StringText = "text";
-        public static string StringPwdchar = "pwdchar";
-        public static string StringPathAbs = "pathAbs";
-        public static string StringPathRel = "pathRel";
-        public static string StringMethod = "method";
-        public static string ParamReplace = "paramRep";
+        public static string Text = "text";
+        public static string Max = "max";
+        public static string FontColor = "fontColor";
+        public static string ItemFontColor = "itemFontColor";
     }
 
-    class CopyString
+    class CopyItemPropertyName
+    {
+        public static string Type = "type";
+        public static string CtrolType = "ctrol";
+        public static string Lable = "label";
+        public static string Tip = "tip";
+        public static string Text = "text";
+        public static string Pwdchar = "pwdchar";
+        public static string PathAbs = "pathAbs";
+        public static string PathRel = "pathRel";
+        public static string Method = "method";
+        public static string ParamReplace = "paramRep";
+        public static string FontColor = "fontColor";
+    }
+
+    class GroupEntity
+    {
+        public string Text;
+        public int Max;
+        public Color FontColor;
+        public Color ItemFontColor;
+    }
+
+    class CopyItemEntity
     {
         public string Type;
         public string Ctrol;
@@ -584,6 +696,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
         public string Method;
         public string ParamRep;
         public TextBoxBase tbb;
+        public string FontColor;
     }
 
 }

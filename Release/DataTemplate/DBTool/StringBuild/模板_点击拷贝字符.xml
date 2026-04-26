@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--点击复制常用字符配置-->
 <!--根节点（strings）：max属性为group的默认每行项目数；
-二级节点（group）：分组。可以设置max属性，确定本分组的每行项目数，当不指定时则取根节点配置的max属性。-->
+二级节点（group）：分组。
+    text：组名。没选中【流式布局】时，才显示。
+	fontColor：组名的颜色。没选中【流式布局】时，才显示。
+    max：确定本分组的每行项目数，当不指定时则取根节点配置的max属性。
+	itemFontColor：组内子项显示的标签颜色。
+-->
 <strings max="5">
-  <group text="示例_分组1" max="5">
-    <!--每个字符项的属性说明：
-    type：text文本，用于复制字符的；path路径，可复制或打开；file是文件，可读取文件内容来复制。
+  <group text="示例_分组1" max="5" fontColor="255,87,51" itemFontColor="dark">
+    <!--每个复制项的属性说明：
+    type：text文本，用于复制字符的；path路径，可复制或打开；file是文件，可读取文件内容来复制，当文件不存在时会显示黄色。
     ctrol：TextBox是一般文本框；RichTextBox是富文件框，针对type为file的配置。
     pwdchar：设置密码掩码字符，如复制的是密码，请设置其值为*。
     tip：按钮的提示信息。
@@ -14,18 +19,19 @@
     pathRel：读取文本文件的相对当前选择的配置文件所在目录的路径，针对type为file的配置。
 	paramRep：参数替换：1-是，0-否。只有该值为1时，才会将类似#yyyyMMdd#替换为例如20260417。
 	支持内置参数（以##包裹中间的键名，不区分大小写）：目前只有支持yyyyMMdd、yyyy-MM-dd、yyyy-MM、yyyyMMddHHmiss、yyyyMMddHHmi。
+	fontColor：标签的颜色，支持颜色名称、16进制、RPG三种表示方式。
 	-->
-    <string type="text" ctrol="TextBox" label="文本示例" text="文本2021" tip="这是文本示例" pwdchar=""></string>
-    <string type="text" ctrol="TextBox" label="密码示例" text="1122" tip="" pwdchar="*"></string>
-    <string type="path" ctrol="TextBox" label="路径示例" text="C:\Windows" tip="" pwdchar=""></string>
+    <string type="text" ctrol="TextBox" label="文本示例" text="文本2021" tip="这是文本示例" pwdchar="" fontColor="255,87,51"></string>
+    <string type="text" ctrol="TextBox" label="密码示例" text="1122" tip="" pwdchar="*" fontColor="blue"></string>
+    <string type="path" ctrol="TextBox" label="路径示例" text="C:\Windows" tip="" pwdchar="" fontColor="#27C53"></string>
     <string type="path" ctrol="TextBox" label="目录示例" text="D:\" tip="" pwdchar=""></string>
     <string type="text" ctrol="TextBox" label="版权" text="@2021" tip="" pwdchar=""></string>
     <string type="text" ctrol="TextBox" label="注释" text="这是注释" tip="" pwdchar=""></string>
-	<string type="path" ctrol="TextBox" label="当天备份目录" text="C:\appWeb\test\bak\#YYYYMMdd#" tip="" pwdchar="" paramRep="1"></string>
-	<string type="path" ctrol="TextBox" label="当天时分秒备份目录" text="C:\appWeb\test\bak\#YYYYMMddhhmiSS#" tip="" pwdchar="" paramRep="1"></string>
-	<string type="path" ctrol="TextBox" label="当天时分备份目录" text="C:\appWeb\test\bak\#YYYYMMddhhmi#" tip="" pwdchar="" paramRep="1"></string>
+	<string type="text" ctrol="TextBox" label="当天备份目录" text="C:\appWeb\test\bak\#YYYYMMdd#" tip="" pwdchar="" paramRep="1"></string>
+	<string type="text" ctrol="TextBox" label="当天时分秒备份目录" text="C:\appWeb\test\bak\#YYYYMMddhhmiSS#" tip="" pwdchar="" paramRep="1"></string>
+	<string type="text" ctrol="TextBox" label="当天时分备份目录" text="C:\appWeb\test\bak\#YYYYMMddhhmi#" tip="" pwdchar="" paramRep="1"></string>
   </group>
-  <group text="示例_分组2">
+  <group text="示例_分组2" fontColor="green"  itemFontColor="blue">
     <!--自动加载文件内容示例：绝对路径、相对路径-->
     <string type="file" ctrol="RichTextBox" label="绝对路径富文件" pathAbs="C:\Windows\System32\drivers\etc\protocol" tip="" pwdchar=""></string>
     <string type="file" ctrol="RichTextBox" label="相对路径富文件" pathRel="DataTemplate\DBTool\AutoFile\I.txt" tip="" pwdchar=""></string>

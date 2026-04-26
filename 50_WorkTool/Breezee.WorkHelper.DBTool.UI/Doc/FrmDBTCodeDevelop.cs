@@ -2,12 +2,14 @@
 using Breezee.Core.Tool;
 using Breezee.Core.WinFormUI;
 using Breezee.WorkHelper.DBTool.Entity;
+using mshtml;
 using System;
 using System.Data;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace Breezee.WorkHelper.DBTool.UI
 {
@@ -173,14 +175,18 @@ namespace Breezee.WorkHelper.DBTool.UI
                 var mdContent = File.ReadAllText(trSelect.Name, BaseFileEncoding.GetEncodingByKey(sEncode));
                 if ("1".Equals(cbbShowType.SelectedValue.ToString()))
                 {
+                    // MD格式
                     richTextBox1.Visible = false;
                     webBrowser1.Visible = true;
                     webBrowser1.Dock = DockStyle.Fill;
                     var html = CommonMark.CommonMarkConverter.Convert(mdContent);
                     webBrowser1.DocumentText = html;
+                    // 启用自动换行
+                    SetAutoWrap(true);
                 }
                 else
                 {
+                    // 文本格式
                     webBrowser1.Visible = false;
                     richTextBox1.Visible = true;
                     richTextBox1.Dock = DockStyle.Fill;
@@ -191,6 +197,27 @@ namespace Breezee.WorkHelper.DBTool.UI
             else
             {
                 webBrowser1.DocumentText = "";
+            }
+        }
+
+        /// <summary>
+        /// 设置 WebBrowser 内容是否自动换行
+        /// </summary>
+        /// <param name="value">true 表示启用自动换行，false 表示禁用</param>
+        public void SetAutoWrap(bool value)
+        {
+            // 获取 WebBrowser 控件的 DOM 文档
+            HTMLDocument doc = webBrowser1.Document.DomDocument as HTMLDocument;
+            if (doc != null)
+            {
+                // 获取文档的 body 元素
+                HTMLBody body = doc.body as HTMLBody;
+                if (body != null)
+                {
+                    // 设置 noWrap 属性。注意：noWrap = !value
+                    // 即：启用自动换行(value=true) -> noWrap=false
+                    body.noWrap = !value;
+                }
             }
         }
 

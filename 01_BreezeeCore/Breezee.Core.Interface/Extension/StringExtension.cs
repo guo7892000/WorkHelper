@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -812,6 +813,61 @@ namespace Breezee.Core.Interface
             {
                 return text;
             }
+        }
+
+        /// <summary>
+        /// 安全转换颜色
+        /// </summary>
+        /// <param name="colorString"></param>
+        /// <returns></returns>
+        public static Color SafeParseColor(this string colorString)
+        {
+            if (string.IsNullOrWhiteSpace(colorString))
+                return Color.Empty;
+
+            colorString = colorString.Trim();
+
+            // 尝试解析为已知颜色名称
+            Color color = Color.FromName(colorString);
+            if (color.IsKnownColor)
+            {
+                return color;
+            }
+                
+            // 尝试解析为十六进制颜色
+            if (colorString.StartsWith("#"))
+            {
+                try
+                {
+                    return ColorTranslator.FromHtml(colorString);
+                }
+                catch
+                {
+                    return Color.Empty;
+                }
+            }
+
+            // 尝试解析为RGB格式
+            if (colorString.Contains(","))
+            {
+                try
+                {
+                    string[] parts = colorString.Split(',');
+                    if (parts.Length == 3)
+                    {
+                        return Color.FromArgb(
+                            int.Parse(parts[0].Trim()),
+                            int.Parse(parts[1].Trim()),
+                            int.Parse(parts[2].Trim()));
+                    }
+                }
+                catch
+                {
+                    return Color.Empty;
+                }
+            }
+
+            return Color.Empty;
         }
     }
 }
