@@ -1,7 +1,7 @@
 {
-  "version": "1.4.6.0",
-  "date": "2026-4-26",
-  "publishRemark": "1.点击复制字符：增加标签颜色配置。\r\n",
+  "version": "1.4.7.0",
+  "date": "2026-5-24",
+  "publishRemark": "1.点击复制字符：增加配置文件下拉框，及列表保存；增加页签配置，可以对单个配置文件显示多标签，分类展示更多内容。\r\n",
   "appName": "WorkHelper",
   "zipFormats": "zip|rar|7z",
   "downUrlPublishLatest": "https://gitee.com/breezee2000/WorkHelper/releases/download/Latest/#appName##version#",

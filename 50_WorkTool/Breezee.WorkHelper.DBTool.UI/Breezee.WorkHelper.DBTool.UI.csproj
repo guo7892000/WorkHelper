@@ -382,6 +382,13 @@
     <Compile Include="SqlExecute\FrmDBTSqlExecutor.Designer.cs">
       <DependentUpon>FrmDBTSqlExecutor.cs</DependentUpon>
     </Compile>
+    <Compile Include="StringBuild\Entity\ClickCopy\TapEntity.cs" />
+    <Compile Include="StringBuild\Entity\ClickCopy\ParamEntity.cs" />
+    <Compile Include="StringBuild\Entity\ClickCopy\ClickCopyCfgEntity.cs" />
+    <Compile Include="StringBuild\Entity\ClickCopy\GroupEntity.cs" />
+    <Compile Include="StringBuild\Entity\ClickCopy\CopyItemPropertyName.cs" />
+    <Compile Include="StringBuild\Entity\ClickCopy\CopyItemEntity.cs" />
+    <Compile Include="StringBuild\Entity\ClickCopy\GroupPropertyName.cs" />
     <Compile Include="StringBuild\FrmDBTClickCopyStringAuto.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -421,6 +428,7 @@
     <Compile Include="StringBuild\ScriptMerge\ScriptMergeEntity.cs" />
     <Compile Include="StringBuild\ScriptMerge\ScriptMergeString.cs" />
     <Compile Include="StringBuild\SplitStringTemplate.cs" />
+    <Compile Include="StringBuild\Entity\ClickCopy\ClickCopyConfigFile.cs" />
     <Compile Include="TableSql\Entity\DBSqlEntity.cs" />
     <Compile Include="TableSql\FrmDBTGenerateTableSQL.cs">
       <SubType>Form</SubType>
@@ -880,6 +888,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\SQL\MySql\0010_表\表列.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\Oracle\0002_游标\示例.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\SQL\Oracle\0010_表\临时表.md">

@@ -1,47 +1,63 @@
-﻿using Breezee.Core.WinFormUI;
-using System.Xml;
-using Breezee.Core.Interface;
-using Breezee.WorkHelper.DBTool.Entity;
-using Setting = Breezee.WorkHelper.DBTool.UI.Properties.Settings;
+﻿using Breezee.Core.Interface;
 using Breezee.Core.Tool;
+using Breezee.Core.WinFormUI;
+using Breezee.WorkHelper.DBTool.Entity;
 using System;
-using System.IO;
-using System.Windows.Forms;
-using System.Drawing;
-using System.Linq;
 using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
+using System.Windows.Forms;
+using System.Xml;
+using Setting = Breezee.WorkHelper.DBTool.UI.Properties.Settings;
 
 namespace Breezee.WorkHelper.DBTool.UI.StringBuild
 {
     /// <summary>
-    /// 点击复制字符或打开目录
+    /// 点击复制字符
     /// </summary>
     public partial class FrmDBTClickCopyStringAuto : BaseForm
     {
         private List<GroupBox> listGroupBox = new List<GroupBox>();
         private List<FlowLayoutPanel> listFlowLayoutPanel = new List<FlowLayoutPanel>();
-        private Color _fileTextAreaColor = Color.OldLace;//读取文件的文本框背景色
+        private System.Drawing.Color _fileTextAreaColor = Color.OldLace;//读取文件的文本框背景色
         private Color _pathDirColor = Color.OldLace; //目录的按钮背景色
         private Color _fileNotExistsTextAreaColor = Color.Yellow;//读取文件不存在时的文本框背景色
+        ClickCopyConfigFile dataCfg; //点击复制配置文件
+        DataTable dtConfigFile;
+        Panel pnlAll; //面板
+        TabPage TabPageMain; //针对旧格式的放这个页签
+        bool IsRemeMainTap = false;
 
         public FrmDBTClickCopyStringAuto()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// 窗体加载事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FrmDBTClickCopyStringAuto_Load(object sender, EventArgs e)
         {
+            dataCfg = new ClickCopyConfigFile();
+            dtConfigFile = dataCfg.XmlConfig.Load();
+            cbbCfgFile.BindDropDownList(dtConfigFile, ClickCopyConfigFileStr.Id, ClickCopyConfigFileStr.Name, true,true);//绑定下拉框
+
             //加载用户偏好值
             txbXmlPath.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ClickCopy_Path, Path.Combine(DBTGlobalValue.AppPath, DBTGlobalValue.StringBuild.Xml_CopyString)).Value;
             ckbFlowDesign.Checked = true;
             toolTip1.SetToolTip(ckbFlowDesign, "选中时是自动生成组件布局；不选中时是根据配置中指定的每行几项来布局！");
-            GeneratePanelControls();
+            GenerateControls();
         }
 
         /// <summary>
-        /// 生成分局布局控件
+        /// 生成控件
         /// </summary>
-        private void GenerateGroupControls()
+        private void GenerateControls()
         {
             string sXmlPath = txbXmlPath.Text.Trim();
             if (!File.Exists(sXmlPath))
@@ -50,16 +66,93 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             }
 
             ckbOpenPath.Checked = true;
-            gbGlobal.Parent = null;
+            //gbGlobal.Parent = null;
             int iDefaultMax = 5;
-
+            //读取配置文件
             XmlDocument doc = new XmlDocument();
-            doc.Load(sXmlPath); 
+            doc.Load(sXmlPath);
 
             XmlNode root = doc.SelectSingleNode("strings");
             iDefaultMax = int.Parse(root.GetOrDefaultAttrValue(GroupPropertyName.Max, iDefaultMax.ToString())); //最外层strings根节点的max属性
+            //旧版本配置文件，没有加Tap的，作为Main主页签
             XmlNodeList groups = doc.SelectNodes("strings/group");
 
+            TabPage tabPage;
+            foreach (TabPage tp in tapAll.TabPages)
+            {
+                if (tp.Text == "Main")
+                {
+                    TabPageMain = tp;
+                }
+                else
+                {
+                    tapAll.TabPages.Remove(tp);
+                }
+            }
+            if(groups.Count > 0 && !tapAll.TabPages.Contains(TabPageMain))
+            {
+                tapAll.TabPages.Add(TabPageMain);
+            }
+            //旧版本配置文件处理
+            if (groups.Count > 0)
+            {
+                IsRemeMainTap = false;
+                pnlAll = new Panel();
+                foreach (Control grp in TabPageMain.Controls)
+                {
+                    TabPageMain.Controls.Remove(grp);
+                }
+                TabPageMain.Controls.Add(pnlAll);
+                pnlAll.Dock = DockStyle.Fill;
+                if (ckbFlowDesign.Checked)
+                {
+                    AddFlowTapControl(sXmlPath, iDefaultMax, groups); //增加Tab页控件
+                }
+                else
+                {
+                    AddGroupTapControl(sXmlPath, iDefaultMax, groups); //增加Tab页控件
+                }
+            }
+            else
+            {
+                IsRemeMainTap = true;
+            }
+
+            //针对组的页签配置处理
+            XmlNodeList taps = doc.SelectNodes("strings/tap");
+            for (int i = 0; i < taps.Count; i++)
+            {
+                TapEntity tapEntity = getTapEnity(taps[i]);
+                tabPage = new TabPage(tapEntity.Name);
+                pnlAll = new Panel();
+                tabPage.Controls.Add(pnlAll);
+                tapAll.Controls.Add(tabPage);
+                pnlAll.Dock = DockStyle.Fill;
+                groups = taps[i].SelectNodes("group");
+                if (ckbFlowDesign.Checked)
+                {
+                    AddFlowTapControl(sXmlPath, iDefaultMax, groups); //增加Tab页控件
+                }
+                else
+                {
+                    AddGroupTapControl(sXmlPath, iDefaultMax, groups); //增加Tab页控件
+                }
+            }
+            if (IsRemeMainTap)
+            {
+                tapAll.TabPages.Remove(TabPageMain); 
+            }
+            
+        }
+
+        /// <summary>
+        /// 针对组布局的页签处理
+        /// </summary>
+        /// <param name="sXmlPath"></param>
+        /// <param name="iDefaultMax"></param>
+        /// <param name="groups"></param>
+        private void AddGroupTapControl(string sXmlPath, int iDefaultMax, XmlNodeList groups)
+        {
             int iNewRow = 4;
             int iGroup = 0;
             GroupBox gb;
@@ -240,34 +333,16 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                 listGroupBox.Add(gb);//增加到集合中
                 iGroup++;
             }
-            pnlAll.Controls.Add(gbGlobal);
-            pnlAll.AutoScroll = true;
-            gbGlobal.Dock = DockStyle.Top;
         }
 
         /// <summary>
-        /// 生成流式布局控件
+        /// 针对流式布局的页签处理
         /// </summary>
-        private void GeneratePanelControls()
+        /// <param name="sXmlPath"></param>
+        /// <param name="iDefaultMax"></param>
+        /// <param name="groups"></param>
+        private void AddFlowTapControl(string sXmlPath, int iDefaultMax, XmlNodeList groups)
         {
-            string sXmlPath = txbXmlPath.Text.Trim();
-            if (!File.Exists(sXmlPath))
-            {
-                return;
-            }
-
-            ckbOpenPath.Checked = true;
-            gbGlobal.Parent = null;
-            string sText = "";
-            int iDefaultMax = 5;
-
-            XmlDocument doc = new XmlDocument();
-            doc.Load(sXmlPath);
-
-            XmlNode root = doc.SelectSingleNode("strings");
-            iDefaultMax = int.Parse(root.GetOrDefaultAttrValue(GroupPropertyName.Max, iDefaultMax.ToString()));
-            XmlNodeList groups = doc.SelectNodes("strings/group");
-
             int iNewRow = 4;
             int iGroup = 0;
             FlowLayoutPanel gbPanl = new FlowLayoutPanel();
@@ -308,7 +383,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                     Button bt = new Button();
                     //获取复制项
                     CopyItemEntity cs = getCopyItemEntity(item);
-                    
+
                     if (cs == null) continue;
                     if (cs.Ctrol.EqualsIgnorEmptyCase("RichTextBox"))
                     {
@@ -427,14 +502,11 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                 gbChildPanl.AutoSize = true;
                 gbPanl.Dock = DockStyle.Top;
                 gbPanl.AutoSize = true;
-                
+
                 pnlAll.Controls.Add(gbPanl);
                 listFlowLayoutPanel.Add(gbPanl);//增加到集合中
                 iGroup++;
             }
-            pnlAll.Controls.Add(gbGlobal);
-            pnlAll.AutoScroll = true;
-            gbGlobal.Dock = DockStyle.Top;
         }
 
         void bt_Click(object sender, EventArgs e)
@@ -579,6 +651,23 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             return cs;
         }
 
+        /// <summary>
+        /// 获取Tap页签实体
+        /// </summary>
+        /// <param name="xn"></param>
+        /// <returns></returns>
+        public TapEntity getTapEnity(XmlNode xn)
+        {
+            TapEntity cs = new TapEntity();
+            string sText = "";
+            cs = new TapEntity();
+            if (xn.TryGetAttrValue(ClickCopyConfigFileStr.Name, out sText))
+            {
+                cs.Name = sText;
+            }
+            return cs;
+        }
+
 
         /// <summary>
         /// 选择配置文件按钮事件
@@ -616,6 +705,11 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
         private void ReloadFile()
         {
             string sXmlPath = txbXmlPath.Text.Trim();
+            if (string.IsNullOrEmpty(sXmlPath))
+            {
+                return;
+            }
+
             if (!File.Exists(sXmlPath))
             {
                 ShowErr("文件：" + sXmlPath + "不存在！");
@@ -629,74 +723,152 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             {
                 pnlAll.Controls.Remove(gb);
             }
-            if(ckbFlowDesign.Checked)
-            {
-                GeneratePanelControls();
-            }
-            else
-            {
-                GenerateGroupControls();
-            }
+            GenerateControls();
             ShowInfo("文件加载成功！");
         }
 
+        /// <summary>
+        /// 退出按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TsbExit_Click(object sender, EventArgs e)
         {
             Close();
         }
 
+        /// <summary>
+        /// 流式布局复选框选中事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ckbFlowDesign_CheckedChanged(object sender, EventArgs e)
         {
             ReloadFile();
         }
 
-    }
+        /// <summary>
+        /// 保存配置按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            string sCfgName = txbCfgName.Text.Trim();
+            string sCfgPaht = txbXmlPath.Text.Trim();
+            if (string.IsNullOrEmpty(sCfgName))
+            {
+                ShowErr("请输入配置文件名称！");
+                return;
+            }
+            if (string.IsNullOrEmpty(sCfgPaht))
+            {
+                ShowErr("请输入配置文件路径！");
+                return;
+            }
 
-    class GroupPropertyName
-    {
-        public static string Text = "text";
-        public static string Max = "max";
-        public static string FontColor = "fontColor";
-        public static string ItemFontColor = "itemFontColor";
-    }
+            if (MsgHelper.ShowYesNo("确定要保存？") != DialogResult.Yes)
+            {
+                return;
+            }
 
-    class CopyItemPropertyName
-    {
-        public static string Type = "type";
-        public static string CtrolType = "ctrol";
-        public static string Lable = "label";
-        public static string Tip = "tip";
-        public static string Text = "text";
-        public static string Pwdchar = "pwdchar";
-        public static string PathAbs = "pathAbs";
-        public static string PathRel = "pathRel";
-        public static string Method = "method";
-        public static string ParamReplace = "paramRep";
-        public static string FontColor = "fontColor";
-    }
+            string sKeyIdNew;
+            bool isAdd = string.IsNullOrEmpty(cbbCfgFile.Text.Trim()) ? true : false;
+            DataRow dr;
+            if (isAdd)
+            {
+                //新增
+                sKeyIdNew = Guid.NewGuid().ToString();
+                dr = dtConfigFile.NewRow();
+                dr[ClickCopyConfigFileStr.Id] = sKeyIdNew;
+                dtConfigFile.Rows.Add(dr);
+            }
+            else
+            {
+                //修改
+                sKeyIdNew = cbbCfgFile.SelectedValue.ToString();
+                DataRow[] drArrKey = dtConfigFile.Select(ClickCopyConfigFileStr.Id + "='" + sKeyIdNew + "'");
+                if (drArrKey.Length == 0)
+                {
+                    //新增
+                    sKeyIdNew = Guid.NewGuid().ToString();
+                    dr = dtConfigFile.NewRow();
+                    dr[ClickCopyConfigFileStr.Id] = sKeyIdNew;
+                    dtConfigFile.Rows.Add(dr);
+                }
+                else
+                {
+                    dr = drArrKey[0];
+                }
 
-    class GroupEntity
-    {
-        public string Text;
-        public int Max;
-        public Color FontColor;
-        public Color ItemFontColor;
-    }
+            }
 
-    class CopyItemEntity
-    {
-        public string Type;
-        public string Ctrol;
-        public string Lable;
-        public string Tip;
-        public string Text;
-        public string Pwdchar;
-        public string PathAbs;
-        public string PathRel;
-        public string Method;
-        public string ParamRep;
-        public TextBoxBase tbb;
-        public string FontColor;
-    }
+            dr[ClickCopyConfigFileStr.Name] = sCfgName;
+            dr[ClickCopyConfigFileStr.FilePath] = sCfgPaht;
+            dr[ClickCopyConfigFileStr.IsOpenDir] = ckbOpenPath.Checked ? "1" : "0";
+            dr[ClickCopyConfigFileStr.IsFlowShow] = ckbFlowDesign.Checked ? "1" : "0";
+            dataCfg.XmlConfig.Save(dtConfigFile);
+            //重新绑定下拉框
+            cbbCfgFile.BindDropDownList(dtConfigFile, ClickCopyConfigFileStr.Id, ClickCopyConfigFileStr.Name, true, true);//绑定下拉框
+            ShowInfo("保存成功！");
+        }
 
+        /// <summary>
+        /// 删除配置按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (cbbCfgFile.SelectedValue == null)
+            {
+                ShowInfo("请选择一个配置！");
+                return;
+            }
+            string sKeyIDValue = cbbCfgFile.SelectedValue.ToString();
+            if (string.IsNullOrEmpty(sKeyIDValue))
+            {
+                ShowInfo("请选择一个配置！");
+                return;
+            }
+
+            if (ShowOkCancel("确定要删除该配置？") == DialogResult.Cancel) return;
+
+            DataRow[] drArrKey = dtConfigFile.Select(ClickCopyConfigFileStr.Id + "='" + sKeyIDValue + "'");
+            if (drArrKey.Length > 0)
+            {
+                foreach (DataRow dr in drArrKey)
+                {
+                    dtConfigFile.Rows.Remove(dr);
+                }
+                dtConfigFile.AcceptChanges();
+            }
+            dataCfg.XmlConfig.Save();
+            //重新绑定下拉框
+            cbbCfgFile.BindDropDownList(dtConfigFile, ClickCopyConfigFileStr.Id, ClickCopyConfigFileStr.Name, true, true);//绑定下拉框
+            ShowInfo("删除配置成功！");
+        }
+
+        /// <summary>
+        /// 配置文件选择变化事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cbbCfgFile_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbbCfgFile.SelectedValue == null) return;
+            string sCfgId = cbbCfgFile.SelectedValue.ToString();
+            DataRow[] drArrKey = dtConfigFile.Select(ClickCopyConfigFileStr.Id + "='" + sCfgId + "'");
+            if (drArrKey.Length == 0)
+            {
+                return;
+            }
+
+            txbCfgName.Text = drArrKey[0][ClickCopyConfigFileStr.Name].ToString();
+            txbXmlPath.Text = drArrKey[0][ClickCopyConfigFileStr.FilePath].ToString();
+            ckbOpenPath.Checked = "1".Equals(drArrKey[0][ClickCopyConfigFileStr.IsOpenDir].ToString()) ? true : false;
+            ckbFlowDesign.Checked = "1".Equals(drArrKey[0][ClickCopyConfigFileStr.IsFlowShow].ToString()) ? true : false;
+            btnReloadFile.PerformClick(); //重新加载文件
+        }
+    }
 }

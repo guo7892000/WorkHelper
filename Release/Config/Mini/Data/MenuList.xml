@@ -76,7 +76,7 @@
     </Class>
     <Class Guid="8CEE1701-C80A-46C1-871D-8AF519F75239" Name="字符工具" Code="" DLLName="" FormName="" ShortCutKey="">
       <Menu Guid="D8993FE6FF1244A990EC37206A87C694" Name="点击复制字符" Code="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.StringBuild.FrmDBTClickCopyStringAuto" ShortCutKey=""  HelpPath="/Help/Html/DBTool/String/CommonCopyString.html"/>
-      <Menu Guid="FGC49904-07F5-41C7-AE6A-86915CEFD282" Name="目录字符生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDirectoryFileString"  HelpPath="/Help/Html/DBTool/String/StringConnDirectory.html"/>
+	  <Menu Guid="FGC49904-07F5-41C7-AE6A-86915CEFD282" Name="目录字符生成" Code="" ShortCutKey="" DLLName="Breezee.WorkHelper.DBTool.UI.dll" FormName="Breezee.WorkHelper.DBTool.UI.FrmDirectoryFileString"  HelpPath="/Help/Html/DBTool/String/StringConnDirectory.html"/>
     </Class>
   </Model>
 </xml>
