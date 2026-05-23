@@ -103,6 +103,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                     TabPageMain.Controls.Remove(grp);
                 }
                 TabPageMain.Controls.Add(pnlAll);
+                pnlAll.AutoScroll = true;
                 pnlAll.Dock = DockStyle.Fill;
                 if (ckbFlowDesign.Checked)
                 {
@@ -127,6 +128,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                 pnlAll = new Panel();
                 tabPage.Controls.Add(pnlAll);
                 tapAll.Controls.Add(tabPage);
+                pnlAll.AutoScroll = true;
                 pnlAll.Dock = DockStyle.Fill;
                 groups = taps[i].SelectNodes("group");
                 if (ckbFlowDesign.Checked)
@@ -357,6 +359,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                 FlowLayoutPanel gbChildPanl = new FlowLayoutPanel();
                 gbChildPanl.FlowDirection = FlowDirection.LeftToRight;
                 gbChildPanl.BorderStyle = BorderStyle.FixedSingle;
+                gbChildPanl.Dock = DockStyle.Fill;
                 //获取组项
                 GroupEntity groupEntity = getGroupEntity(gpNode);
                 toolTip1.SetToolTip(gbChildPanl, groupEntity.Text);
