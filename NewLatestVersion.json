@@ -1,5 +1,5 @@
 {
-  "version": "1.4.7.0",
+  "version": "1.4.8.0",
   "date": "2026-5-24",
   "publishRemark": "1.点击复制字符：增加配置文件下拉框，及列表保存；增加页签配置，可以对单个配置文件显示多标签，分类展示更多内容。\r\n",
   "appName": "WorkHelper",
@@ -7,8 +7,8 @@
   "downUrlPublishLatest": "https://gitee.com/breezee2000/WorkHelper/releases/download/Latest/#appName##version#",
   "downUrlPublishGitee": "https://gitee.com/breezee2000/WorkHelper/releases/download/#version#/#appName##version#",
   "downUrlPublishGithub": "https://github.com/guo7892000/WorkHelper/releases/download/#version#/#appName##version#",
-  "stableVersion": "1.4.4.0",
-  "stableDate": "2026-4-12",
-  "stableRemark": "1.所有功能：帮助文档更新。\r\n",
+  "stableVersion": "1.4.8.0",
+  "stableDate": "2026-5-24",
+  "stableRemark": "1.点击复制字符：增加配置文件下拉框，及列表保存；增加页签配置，可以对单个配置文件显示多标签，分类展示更多内容。\r\n",
   "stableDownUrlPublish": "https://gitee.com/breezee2000/WorkHelper/releases/download/StableRealse/#appName##version#"
 }

@@ -48,6 +48,8 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tapAll = new System.Windows.Forms.TabControl();
             this.tpMain = new System.Windows.Forms.TabPage();
+            this.pnlGlobalFlow = new System.Windows.Forms.FlowLayoutPanel();
+            this.pnlGlobal = new System.Windows.Forms.Panel();
             this.toolStrip1.SuspendLayout();
             this.gbGlobal.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -147,7 +149,7 @@
             this.txbXmlPath.Location = new System.Drawing.Point(97, 36);
             this.txbXmlPath.Multiline = true;
             this.txbXmlPath.Name = "txbXmlPath";
-            this.txbXmlPath.Size = new System.Drawing.Size(641, 31);
+            this.txbXmlPath.Size = new System.Drawing.Size(666, 31);
             this.txbXmlPath.TabIndex = 4;
             // 
             // btnSelectPath
@@ -188,7 +190,7 @@
             this.ckbFlowDesign.AutoSize = true;
             this.ckbFlowDesign.Checked = true;
             this.ckbFlowDesign.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbFlowDesign.Location = new System.Drawing.Point(603, 8);
+            this.ckbFlowDesign.Location = new System.Drawing.Point(628, 8);
             this.ckbFlowDesign.Name = "ckbFlowDesign";
             this.ckbFlowDesign.Size = new System.Drawing.Size(72, 16);
             this.ckbFlowDesign.TabIndex = 7;
@@ -200,7 +202,7 @@
             // 
             this.ckbOpenPath.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ckbOpenPath.AutoSize = true;
-            this.ckbOpenPath.Location = new System.Drawing.Point(502, 8);
+            this.ckbOpenPath.Location = new System.Drawing.Point(527, 8);
             this.ckbOpenPath.Margin = new System.Windows.Forms.Padding(2);
             this.ckbOpenPath.Name = "ckbOpenPath";
             this.ckbOpenPath.Size = new System.Drawing.Size(96, 16);
@@ -210,7 +212,7 @@
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(450, 3);
+            this.btnDelete.Location = new System.Drawing.Point(475, 3);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(47, 27);
             this.btnDelete.TabIndex = 9;
@@ -223,13 +225,14 @@
             this.txbCfgName.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.txbCfgName.Location = new System.Drawing.Point(248, 6);
             this.txbCfgName.Name = "txbCfgName";
-            this.txbCfgName.Size = new System.Drawing.Size(143, 21);
+            this.txbCfgName.Size = new System.Drawing.Size(168, 21);
             this.txbCfgName.TabIndex = 10;
+            this.toolTip1.SetToolTip(this.txbCfgName, "下拉框中显示的配置文件名称");
             // 
             // btnSave
             // 
             this.btnSave.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.btnSave.Location = new System.Drawing.Point(397, 3);
+            this.btnSave.Location = new System.Drawing.Point(422, 3);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(47, 27);
             this.btnSave.TabIndex = 9;
@@ -241,10 +244,10 @@
             // 
             this.tapAll.Controls.Add(this.tpMain);
             this.tapAll.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tapAll.Location = new System.Drawing.Point(0, 116);
+            this.tapAll.Location = new System.Drawing.Point(0, 179);
             this.tapAll.Name = "tapAll";
             this.tapAll.SelectedIndex = 0;
-            this.tapAll.Size = new System.Drawing.Size(832, 368);
+            this.tapAll.Size = new System.Drawing.Size(832, 305);
             this.tapAll.TabIndex = 26;
             // 
             // tpMain
@@ -253,10 +256,26 @@
             this.tpMain.Location = new System.Drawing.Point(4, 22);
             this.tpMain.Name = "tpMain";
             this.tpMain.Padding = new System.Windows.Forms.Padding(3);
-            this.tpMain.Size = new System.Drawing.Size(824, 342);
+            this.tpMain.Size = new System.Drawing.Size(824, 279);
             this.tpMain.TabIndex = 0;
             this.tpMain.Text = "Main";
             this.tpMain.UseVisualStyleBackColor = true;
+            // 
+            // pnlGlobalFlow
+            // 
+            this.pnlGlobalFlow.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlGlobalFlow.Location = new System.Drawing.Point(0, 116);
+            this.pnlGlobalFlow.Name = "pnlGlobalFlow";
+            this.pnlGlobalFlow.Size = new System.Drawing.Size(832, 35);
+            this.pnlGlobalFlow.TabIndex = 28;
+            // 
+            // pnlGlobal
+            // 
+            this.pnlGlobal.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlGlobal.Location = new System.Drawing.Point(0, 151);
+            this.pnlGlobal.Name = "pnlGlobal";
+            this.pnlGlobal.Size = new System.Drawing.Size(832, 28);
+            this.pnlGlobal.TabIndex = 29;
             // 
             // FrmDBTClickCopyStringAuto
             // 
@@ -264,6 +283,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(832, 484);
             this.Controls.Add(this.tapAll);
+            this.Controls.Add(this.pnlGlobal);
+            this.Controls.Add(this.pnlGlobalFlow);
             this.Controls.Add(this.gbGlobal);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
@@ -302,5 +323,7 @@
         private System.Windows.Forms.TabControl tapAll;
         private System.Windows.Forms.TabPage tpMain;
         private System.Windows.Forms.TextBox txbCfgName;
+        private System.Windows.Forms.FlowLayoutPanel pnlGlobalFlow;
+        private System.Windows.Forms.Panel pnlGlobal;
     }
 }

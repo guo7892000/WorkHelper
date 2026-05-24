@@ -11,8 +11,8 @@
         <h1>点击复制字符</h1>
         <div>
             <h2>一、功能概述</h2>
-            在工作中，我们经常需要输入一些服务器地址、用户名和密码等，或者经常打开一些工作目录。该功能就是为了快速复制字符或打开目录使用。
-            注：为了安全起见，重要的密码不建议在此设置！！
+            在工作中，我们经常需要输入一些服务器地址、用户名和密码等，或者经常打开一些工作目录。该功能就是为了快速复制字符或打开目录使用。<br>
+            注：为了安全起见，重要的密码请配置为加密，加载文件过程中会自动加密保存，即明文的密码会变为加密后的字符，但不影响复制！！
         </div>
         <div>
             <h2>二、界面截图</h2>
@@ -20,33 +20,61 @@
             <img src="Images\CommonClickCopy.001.jpg" alt=""><br>
             模板：<br>
             <img src="Images\CommonClickCopy.002.jpg" alt=""><br>
+            模板说明：<br>
+            <img src="Images\CommonClickCopy.003.jpg" alt=""><br>
         </div>
 
         <div>
             <h2>三、操作步骤</h2>
             <b>1、【模板下载】：</b>下载后维护相关信息。<br>
-            <b>strings</b>：根节点，其下可包含group子项。属性包括：max（全局的每行子项数）。<br>
-            <b>group</b>：分组，二级节点，其下可包含string子项。属性包括：text（分组名称）、max（每行子项数），<br>
-            <b>string</b>：字符，三级节点。包括的属性：<br>
-            type：类型，包括text文本，用于复制字符的；path路径，可复制或打开；file是文件，可读取文件内容来复制。<br>
-            ctrol：控件类型，TextBox是一般文本框；RichTextBox是富文件框，针对type为file的配置。<br>
-            label：显示的标签名。<br>
-            text：实际拷贝的内容或需要打开的全路径。<br>
-            tip：提示信息。<br>
-            pwdchar：设置密码掩码字符，如复制的是密码，请设置其值为*。<br>
-            pathAbs：读取文本文件的绝对路径，针对type为file的配置。<br>
-            pathRel：读取文本文件的相对当前选择的配置文件所在目录的路径，针对type为file的配置。<br>
+            <b>strings</b>：根节点；属性包括：max：group的默认每行项目数；子节点包括：params、global、tap。<br>
+            <b>tap</b>：页签，为2级节点；属性包括：name：页签名称。子节点包括：group。<br>
+            <b>params</b>：全局参数集合，为2级节点，无属性；子节点包括：param。 <br>
+            <b>param</b>：参数，为3级节点；属性包括：key：键（不区分大小写）、value：值、remark：备注。用于string节点中text属性引用（格式：#key#）。<br>
+            <b>global</b>：全局组，为2级节点，无属性，子节点包括：group。建议最多配置1至2个group子节点。<br>
+            <b>group</b>：分组，为3级节点，子节点包括：string。属性包括：<br>
+            &nbsp;&nbsp;text：组名。没选中【流式布局】时，才显示。<br>
+            &nbsp;&nbsp;fontColor：组名的颜色，默认黑色。没选中【流式布局】时，才显示。<br>
+            &nbsp;&nbsp;max：确定本分组的每行项目数，当不指定时则取根节点配置的max属性。<br>
+            &nbsp;&nbsp;itemFontColor：组内子项显示的标签颜色，默认黑色。<br><br>
+            <b>string</b>：复制项，为4级节点。无子节点；其属性包括：<br>
+            &nbsp;&nbsp;type：text文本，用于复制字符的；path路径，可复制或打开；file是文件，可读取文件内容来复制，当文件不存在时会显示黄色。<br>
+            &nbsp;&nbsp;ctrol：TextBox是一般文本框；RichTextBox是富文件框，针对type为file的配置。<br>
+            &nbsp;&nbsp;label：标签，显示的复制项名称。<br>
+            &nbsp;&nbsp;text：实际拷贝的内容。支持全局配置参数、内置参数的字符替换，如【#yyyyMMdd#】表示替换为当前日期字符，适用场景如当天备份目录名。如果要输出实际的#，请使用{{@JH@}}代替。<br>
+            &nbsp;&nbsp;needEncrypt：是否需要加密：0-否，1-是<br>
+            &nbsp;&nbsp;hadEncrypt：是否已加密：0-否，1-是。当需要加密时，这里改为0，并且【text】属性要改为明文，在加载XML文件时，会自动加密并保存文件。<br>
+            &nbsp;&nbsp;pwdchar：设置密码掩码字符，如复制的是密码，请设置其值为*。<br>
+            &nbsp;&nbsp;tip：按钮的提示信息。<br>
+            &nbsp;&nbsp;pathAbs：读取文本文件的绝对路径，针对type为file的配置。<br>
+            &nbsp;&nbsp;pathRel：读取文本文件的相对当前选择的配置文件所在目录的路径，针对type为file的配置。<br>
+            &nbsp;&nbsp;fontColor：标签的颜色，默认黑色，支持颜色名称、16进制、RPG三种表示方式。<br>
 
             <b>4、输入或选择相关信息：</b><br>
-            【配置文件】：必填，选择填好的模板文件。选择后就会自动生成可复制或打开的界面元素。<br>
-            【点击打开目录】：可选，当选中时，针对目录，在点击时就会打开目录。<br>
+            首次打开功能，我们需要选择填好的模板文件，选择后就会自动生成可复制或打开的界面元素。<br>
+            【配置文件】：下拉框，我们可以在选择填好的模板文件后，输入【模板名】，点击【保存】，下次即可以下拉框中快速选择加载。<br>
+            【删除】：如我们希望之前保存过的配置文件不出现下拉框中时，可以选择该项后，点击【删除】，即可从下拉框中移除该项。<br>
             【流式布局】：当选中时，每行显示的项将尽可能的多。<br>
             【重新加载】：重新根据配置文件加载内容：这在我们修改文件内容后，可以在不重新打开页面的情况下，重新加载内容。<br>
         </div>        
         <div>
             <h2>四、逻辑与业务规则</h2>
-            <div><b>【strings】的【max】配置：</b><br>
+            <div>
+                <b>加密配置：</b><br>
+                string节点增加属性配置：needEncrypt="1" hadEncrypt="0"，即可触发加密。<br>
+                如string节点的needEncrypt="1" hadEncrypt="1"，表示该节点已加密，不会再次触发加密。<br>
+            </div>
+            <div>
+                <b>内置参数</b><br>
+                目前只有内置日期参数（不区分大小写），包括：yyyyMMdd、yyyy-MM-dd、yyyy-MM、yyyyMM、yyyyMMddHHmiss、yyyyMMddHHmi、yyyy。<br>
+            </div>
+            <div>
+                <b>【strings】的【max】配置：</b><br>
                 当group中没有指定max属性值时，会使用【strings】的【max】全局配置。<br>
+            </div>
+            <div>
+                <b>XML的字符转义：</b><br>
+                <img src="Images\CommonClickCopy.004.jpg" alt=""><br>
             </div>
         </div>
     </div>

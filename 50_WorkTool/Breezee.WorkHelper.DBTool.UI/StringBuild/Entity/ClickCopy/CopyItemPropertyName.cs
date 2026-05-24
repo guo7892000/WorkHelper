@@ -17,7 +17,8 @@ namespace Breezee.WorkHelper.DBTool.UI
         public static string PathAbs = "pathAbs";
         public static string PathRel = "pathRel";
         public static string Method = "method";
-        public static string ParamReplace = "paramRep";
         public static string FontColor = "fontColor";
+        public static string NeedEncrypt = "needEncrypt";
+        public static string HadEncrypt = "hadEncrypt";
     }
 }

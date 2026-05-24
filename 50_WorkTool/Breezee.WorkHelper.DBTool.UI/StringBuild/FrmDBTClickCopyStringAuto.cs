@@ -2,6 +2,7 @@
 using Breezee.Core.Tool;
 using Breezee.Core.WinFormUI;
 using Breezee.WorkHelper.DBTool.Entity;
+using org.breezee.MyPeachNet;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,6 +10,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
 using Setting = Breezee.WorkHelper.DBTool.UI.Properties.Settings;
@@ -25,12 +27,15 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
         private System.Drawing.Color _fileTextAreaColor = Color.OldLace;//读取文件的文本框背景色
         private Color _pathDirColor = Color.OldLace; //目录的按钮背景色
         private Color _fileNotExistsTextAreaColor = Color.Yellow;//读取文件不存在时的文本框背景色
-        ClickCopyConfigFile dataCfg; //点击复制配置文件
-        DataTable dtConfigFile;
-        Panel pnlAll; //面板
-        TabPage TabPageMain; //针对旧格式的放这个页签
-        bool IsRemeMainTap = false;
-
+        ClickCopyConfigFile _dataCfg; //点击复制配置文件
+        DataTable _dtConfigFile;
+        Panel _pnlAll; //面板
+        TabPage _TabPageMain; //针对旧格式的放这个页签
+        bool _IsRemeMainTap = false;
+        IDictionary<string, string> _dicGlobalParam = new Dictionary<string, string>(); //全局参数
+        string _sJHChar = "{{@JH@}}"; //为防止跟参数#冲突，string子节点中的#需要写为：{{@JH@}}，以在最后替换为#。
+        bool _isNeedSaveXml = false; //是否需要保存Xml
+        Panel _globalPnl; //全局局面板
         public FrmDBTClickCopyStringAuto()
         {
             InitializeComponent();
@@ -43,14 +48,15 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
         /// <param name="e"></param>
         private void FrmDBTClickCopyStringAuto_Load(object sender, EventArgs e)
         {
-            dataCfg = new ClickCopyConfigFile();
-            dtConfigFile = dataCfg.XmlConfig.Load();
-            cbbCfgFile.BindDropDownList(dtConfigFile, ClickCopyConfigFileStr.Id, ClickCopyConfigFileStr.Name, true,true);//绑定下拉框
+            _dataCfg = new ClickCopyConfigFile();
+            _dtConfigFile = _dataCfg.XmlConfig.Load();
+            cbbCfgFile.BindDropDownList(_dtConfigFile, ClickCopyConfigFileStr.Id, ClickCopyConfigFileStr.Name, true,true);//绑定下拉框
 
             //加载用户偏好值
             txbXmlPath.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.ClickCopy_Path, Path.Combine(DBTGlobalValue.AppPath, DBTGlobalValue.StringBuild.Xml_CopyString)).Value;
             ckbFlowDesign.Checked = true;
             toolTip1.SetToolTip(ckbFlowDesign, "选中时是自动生成组件布局；不选中时是根据配置中指定的每行几项来布局！");
+            //调用生成控件
             GenerateControls();
         }
 
@@ -59,6 +65,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
         /// </summary>
         private void GenerateControls()
         {
+            _isNeedSaveXml = false;
             string sXmlPath = txbXmlPath.Text.Trim();
             if (!File.Exists(sXmlPath))
             {
@@ -74,77 +81,126 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
 
             XmlNode root = doc.SelectSingleNode("strings");
             iDefaultMax = int.Parse(root.GetOrDefaultAttrValue(GroupPropertyName.Max, iDefaultMax.ToString())); //最外层strings根节点的max属性
+            //公共时间参数：全部转换为大写
+            _dicGlobalParam["YYYYMMDD"] = DateTime.Now.ToString("yyyyMMdd");
+            _dicGlobalParam["YYYY-MM-DD"] = DateTime.Now.ToString("yyyy-MM-dd");
+            _dicGlobalParam["YYYY-MM"] = DateTime.Now.ToString("yyyy-MM");
+            _dicGlobalParam["YYYYMM"] = DateTime.Now.ToString("yyyyMM");
+            _dicGlobalParam["YYYY"] = DateTime.Now.ToString("yyyy");
+            _dicGlobalParam["YYYYMMDDHHMI"] = DateTime.Now.ToString("yyyyMMddHHmm");
+            _dicGlobalParam["YYYYMMDDHHMISS"] = DateTime.Now.ToString("yyyyMMddHHmmss");
+            //全局参数配置
+            XmlNodeList para = doc.SelectNodes("strings/params/param");
+            foreach (XmlNode paraNode in para)
+            {
+                ParamEntity paramEntity = ClickCopyEntityConvert.getParamEnity(paraNode);
+                if (!string.IsNullOrEmpty(paramEntity.Key))
+                {
+                    _dicGlobalParam[paramEntity.Key] = paramEntity.Value;
+                }
+            }
+            //全局组的处理
+            XmlNodeList globalGroups = doc.SelectNodes("strings/global/group");
+            if(globalGroups.Count > 0)
+            {
+                if (ckbFlowDesign.Checked)
+                {
+                    pnlGlobal.Visible = false;
+                    pnlGlobalFlow.Visible = true;
+                    pnlGlobalFlow.AutoSize = true;
+                    pnlGlobalFlow.Controls.Clear();
+                    _globalPnl = pnlGlobalFlow; //针对流式布局，使用流式的Panel
+                    AddFlowTapControl(sXmlPath, iDefaultMax, globalGroups, _globalPnl); //增加Tab页控件
+                }
+                else
+                {
+                    pnlGlobalFlow.Visible = false;
+                    pnlGlobal.Visible = true;
+                    pnlGlobal.AutoSize = true;
+                    pnlGlobal.Controls.Clear();
+                    _globalPnl = pnlGlobal; //针对一般的组布局，使用一般的Panel
+                    AddGroupTapControl(sXmlPath, iDefaultMax, globalGroups, _globalPnl); //增加Tab页控件
+                }
+            }
+            else
+            {
+                pnlGlobalFlow.Visible = false;
+                pnlGlobal.Visible = false;
+            }
+
             //旧版本配置文件，没有加Tap的，作为Main主页签
             XmlNodeList groups = doc.SelectNodes("strings/group");
-
             TabPage tabPage;
             foreach (TabPage tp in tapAll.TabPages)
             {
                 if (tp.Text == "Main")
                 {
-                    TabPageMain = tp;
+                    _TabPageMain = tp;
                 }
                 else
                 {
                     tapAll.TabPages.Remove(tp);
                 }
             }
-            if(groups.Count > 0 && !tapAll.TabPages.Contains(TabPageMain))
+            if(groups.Count > 0 && !tapAll.TabPages.Contains(_TabPageMain))
             {
-                tapAll.TabPages.Add(TabPageMain);
+                tapAll.TabPages.Add(_TabPageMain);
             }
             //旧版本配置文件处理
             if (groups.Count > 0)
             {
-                IsRemeMainTap = false;
-                pnlAll = new Panel();
-                foreach (Control grp in TabPageMain.Controls)
+                _IsRemeMainTap = false;
+                _pnlAll = new Panel();
+                foreach (Control grp in _TabPageMain.Controls)
                 {
-                    TabPageMain.Controls.Remove(grp);
+                    _TabPageMain.Controls.Remove(grp);
                 }
-                TabPageMain.Controls.Add(pnlAll);
-                pnlAll.AutoScroll = true;
-                pnlAll.Dock = DockStyle.Fill;
+                _TabPageMain.Controls.Add(_pnlAll);
+                _pnlAll.AutoScroll = true;
+                _pnlAll.Dock = DockStyle.Fill;
                 if (ckbFlowDesign.Checked)
                 {
-                    AddFlowTapControl(sXmlPath, iDefaultMax, groups); //增加Tab页控件
+                    AddFlowTapControl(sXmlPath, iDefaultMax, groups, _pnlAll); //增加Tab页控件
                 }
                 else
                 {
-                    AddGroupTapControl(sXmlPath, iDefaultMax, groups); //增加Tab页控件
+                    AddGroupTapControl(sXmlPath, iDefaultMax, groups, _pnlAll); //增加Tab页控件
                 }
             }
             else
             {
-                IsRemeMainTap = true;
+                _IsRemeMainTap = true;
             }
 
             //针对组的页签配置处理
             XmlNodeList taps = doc.SelectNodes("strings/tap");
             for (int i = 0; i < taps.Count; i++)
             {
-                TapEntity tapEntity = getTapEnity(taps[i]);
+                TapEntity tapEntity = ClickCopyEntityConvert.getTapEnity(taps[i]);
                 tabPage = new TabPage(tapEntity.Name);
-                pnlAll = new Panel();
-                tabPage.Controls.Add(pnlAll);
+                _pnlAll = new Panel();
+                tabPage.Controls.Add(_pnlAll);
                 tapAll.Controls.Add(tabPage);
-                pnlAll.AutoScroll = true;
-                pnlAll.Dock = DockStyle.Fill;
+                _pnlAll.AutoScroll = true;
+                _pnlAll.Dock = DockStyle.Fill;
                 groups = taps[i].SelectNodes("group");
                 if (ckbFlowDesign.Checked)
                 {
-                    AddFlowTapControl(sXmlPath, iDefaultMax, groups); //增加Tab页控件
+                    AddFlowTapControl(sXmlPath, iDefaultMax, groups, _pnlAll); //增加Tab页控件
                 }
                 else
                 {
-                    AddGroupTapControl(sXmlPath, iDefaultMax, groups); //增加Tab页控件
+                    AddGroupTapControl(sXmlPath, iDefaultMax, groups, _pnlAll); //增加Tab页控件
                 }
             }
-            if (IsRemeMainTap)
+            if (_IsRemeMainTap)
             {
-                tapAll.TabPages.Remove(TabPageMain); 
+                tapAll.TabPages.Remove(_TabPageMain); 
             }
-            
+            if (_isNeedSaveXml)
+            {
+                doc.Save(sXmlPath);
+            }
         }
 
         /// <summary>
@@ -153,7 +209,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
         /// <param name="sXmlPath"></param>
         /// <param name="iDefaultMax"></param>
         /// <param name="groups"></param>
-        private void AddGroupTapControl(string sXmlPath, int iDefaultMax, XmlNodeList groups)
+        private void AddGroupTapControl(string sXmlPath, int iDefaultMax, XmlNodeList groups, Panel panel)
         {
             int iNewRow = 4;
             int iGroup = 0;
@@ -173,7 +229,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
 
                 gb = new GroupBox();
                 //获取组项
-                GroupEntity groupEntity = getGroupEntity(gpNode);
+                GroupEntity groupEntity = ClickCopyEntityConvert.getGroupEntity(gpNode);
                 gb.Text = groupEntity.Text;
                 gb.ForeColor = groupEntity.FontColor;
                 iNewRow = iDefaultMax;
@@ -196,13 +252,18 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                 Label lb;
                 TextBoxBase tb;
                 Button bt;
+                //循环点击复制项
                 foreach (XmlNode item in itemList)
                 {
                     lb = new Label();
                     tb = new TextBox();
                     bt = new Button();
                     //获取复制项
-                    CopyItemEntity cs = getCopyItemEntity(item);
+                    CopyItemEntity cs = ClickCopyEntityConvert.getCopyItemEntity(item);
+                    if (cs.IsChange)
+                    {
+                        _isNeedSaveXml = true;
+                    }
                     //标签颜色配置
                     Color colorLable = cs.FontColor.SafeParseColor();
                     if (colorLable == Color.Empty)
@@ -331,7 +392,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                 gb.Dock = DockStyle.Top;
                 gb.AutoSize = true;
                 tlp.Dock = DockStyle.Top;
-                pnlAll.Controls.Add(gb);
+                panel.Controls.Add(gb);
                 listGroupBox.Add(gb);//增加到集合中
                 iGroup++;
             }
@@ -343,7 +404,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
         /// <param name="sXmlPath"></param>
         /// <param name="iDefaultMax"></param>
         /// <param name="groups"></param>
-        private void AddFlowTapControl(string sXmlPath, int iDefaultMax, XmlNodeList groups)
+        private void AddFlowTapControl(string sXmlPath, int iDefaultMax, XmlNodeList groups, Panel panel)
         {
             int iNewRow = 4;
             int iGroup = 0;
@@ -361,7 +422,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                 gbChildPanl.BorderStyle = BorderStyle.FixedSingle;
                 gbChildPanl.Dock = DockStyle.Fill;
                 //获取组项
-                GroupEntity groupEntity = getGroupEntity(gpNode);
+                GroupEntity groupEntity = ClickCopyEntityConvert.getGroupEntity(gpNode);
                 toolTip1.SetToolTip(gbChildPanl, groupEntity.Text);
                 iNewRow = iDefaultMax;
                 if (groupEntity.Max > 0)
@@ -385,7 +446,11 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                     TextBoxBase tb = new TextBox();
                     Button bt = new Button();
                     //获取复制项
-                    CopyItemEntity cs = getCopyItemEntity(item);
+                    CopyItemEntity cs = ClickCopyEntityConvert.getCopyItemEntity(item);
+                    if (cs.IsChange)
+                    {
+                        _isNeedSaveXml= true;
+                    }
 
                     if (cs == null) continue;
                     if (cs.Ctrol.EqualsIgnorEmptyCase("RichTextBox"))
@@ -506,29 +571,39 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                 gbPanl.Dock = DockStyle.Top;
                 gbPanl.AutoSize = true;
 
-                pnlAll.Controls.Add(gbPanl);
+                panel.Controls.Add(gbPanl);
                 listFlowLayoutPanel.Add(gbPanl);//增加到集合中
                 iGroup++;
             }
         }
 
+        /// <summary>
+        /// 点击复制按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void bt_Click(object sender, EventArgs e)
         {
             try
             {
                 CopyItemEntity cs = (sender as Button).Tag as CopyItemEntity;
                 string sText = (cs.tbb as TextBoxBase).Text;
-                if ("1".Equals(cs.ParamRep))
+                if(cs.NeedEncrypt && cs.HadEncrypt)
                 {
-                    // 针对动态替换，将时间格式替换为当前日期
-                    sText = sText.ReplaceText("#yyyyMMdd#", DateTime.Now.ToString("yyyyMMdd"))
-                        .ReplaceText("#yyyy-MM-dd#", DateTime.Now.ToString("yyyy-MM-dd"))
-                        .ReplaceText("#yyyy-MM#", DateTime.Now.ToString("yyyy-MM"))
-                        .ReplaceText("#yyyyMM#", DateTime.Now.ToString("yyyyMM"))
-                        .ReplaceText("#yyyy#", DateTime.Now.ToString("yyyy"))
-                        .ReplaceText("#yyyyMMddHHmi#", DateTime.Now.ToString("yyyyMMddHHmm"))
-                        .ReplaceText("#yyyyMMddHHmiss#", DateTime.Now.ToString("yyyyMMddHHmmss"));
+                    sText = cs.TextFact;//取明文
                 }
+                // 参数动态替换
+                Regex regex = new Regex(@"#\w+#", RegexOptions.IgnoreCase);
+                MatchCollection mc = regex.Matches(sText);
+                foreach (Match m in mc)
+                {
+                    string sKey = m.Value.Replace("#", "").ToUpper();
+                    if (_dicGlobalParam.ContainsKey(sKey))
+                    {
+                        sText = sText.Replace(m.Value, _dicGlobalParam[sKey]);
+                    }
+                }
+                sText = sText.Replace(_sJHChar, "#"); //将特殊的#替换回来
                 Clipboard.SetText(sText);
                 if (cs.Type.EqualsIgnorEmptyCase("path") && ckbOpenPath.Checked)
                 {
@@ -564,115 +639,6 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
         }
 
         /// <summary>
-        /// 获取复制项实体
-        /// </summary>
-        /// <param name="xn"></param>
-        /// <returns></returns>
-        private CopyItemEntity getCopyItemEntity(XmlNode xn)
-        {
-            CopyItemEntity cs = null;
-            string sText = "";
-            if(xn.TryGetAttrValue(CopyItemPropertyName.Type,out sText))
-            {
-                //能正常获取type属性
-                cs = new CopyItemEntity();
-                cs.Type = sText;
-                if(xn.TryGetAttrValue(CopyItemPropertyName.CtrolType,out sText))
-                {
-                    cs.Ctrol = sText; //控件类型
-                }
-                else
-                {
-                    return null;
-                }
-                if (xn.TryGetAttrValue(CopyItemPropertyName.Lable, out sText))
-                {
-                    cs.Lable = sText;
-                }
-                if (xn.TryGetAttrValue(CopyItemPropertyName.PathAbs, out sText))
-                {
-                    cs.PathAbs = sText;
-                }
-                if (xn.TryGetAttrValue(CopyItemPropertyName.PathRel, out sText))
-                {
-                    cs.PathRel = sText;
-                }
-                if (xn.TryGetAttrValue(CopyItemPropertyName.Pwdchar, out sText))
-                {
-                    cs.Pwdchar = sText;
-                }
-                if (xn.TryGetAttrValue(CopyItemPropertyName.Text, out sText))
-                {
-                    cs.Text = sText;
-                }
-                if (xn.TryGetAttrValue(CopyItemPropertyName.Tip, out sText))
-                {
-                    cs.Tip = sText;
-                }
-                if (xn.TryGetAttrValue(CopyItemPropertyName.Method, out sText))
-                {
-                    cs.Method = sText;
-                }
-                if (xn.TryGetAttrValue(CopyItemPropertyName.ParamReplace, out sText))
-                {
-                    cs.ParamRep = sText;
-                }
-                if (xn.TryGetAttrValue(CopyItemPropertyName.FontColor, out sText))
-                {
-                    cs.FontColor = sText;
-                }
-            }
-            return cs;
-        }
-
-        /// <summary>
-        /// 获取组实体
-        /// </summary>
-        /// <param name="xn"></param>
-        /// <returns></returns>
-        private GroupEntity getGroupEntity(XmlNode xn)
-        {
-            GroupEntity cs = new GroupEntity();
-            string sText = "";
-            cs = new GroupEntity();
-            if (xn.TryGetAttrValue(GroupPropertyName.Text, out sText))
-            {
-                cs.Text = sText;
-            }
-            if (xn.TryGetAttrValue(GroupPropertyName.Max, out sText))
-            {
-                cs.Max = int.Parse(sText);
-            }
-            if (xn.TryGetAttrValue(GroupPropertyName.FontColor, out sText))
-            {
-                cs.FontColor = sText.SafeParseColor();
-            }
-            if (xn.TryGetAttrValue(GroupPropertyName.ItemFontColor, out sText))
-            {
-                cs.ItemFontColor = sText.SafeParseColor();
-            }
-            return cs;
-        }
-
-        /// <summary>
-        /// 获取Tap页签实体
-        /// </summary>
-        /// <param name="xn"></param>
-        /// <returns></returns>
-        public TapEntity getTapEnity(XmlNode xn)
-        {
-            TapEntity cs = new TapEntity();
-            string sText = "";
-            cs = new TapEntity();
-            if (xn.TryGetAttrValue(ClickCopyConfigFileStr.Name, out sText))
-            {
-                cs.Name = sText;
-            }
-            return cs;
-        }
-
-
-        /// <summary>
         /// 选择配置文件按钮事件
         /// </summary>
         /// <param name="sender"></param>
@@ -705,6 +671,9 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             WinFormContext.UserLoveSettings.Save();
         }
 
+        /// <summary>
+        /// 重新加载文件
+        /// </summary>
         private void ReloadFile()
         {
             string sXmlPath = txbXmlPath.Text.Trim();
@@ -720,11 +689,11 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             }
             foreach (GroupBox gb in listGroupBox)
             {
-                pnlAll.Controls.Remove(gb);
+                _pnlAll.Controls.Remove(gb);
             }
             foreach (FlowLayoutPanel gb in listFlowLayoutPanel)
             {
-                pnlAll.Controls.Remove(gb);
+                _pnlAll.Controls.Remove(gb);
             }
             GenerateControls();
             ShowInfo("文件加载成功！");
@@ -782,22 +751,22 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             {
                 //新增
                 sKeyIdNew = Guid.NewGuid().ToString();
-                dr = dtConfigFile.NewRow();
+                dr = _dtConfigFile.NewRow();
                 dr[ClickCopyConfigFileStr.Id] = sKeyIdNew;
-                dtConfigFile.Rows.Add(dr);
+                _dtConfigFile.Rows.Add(dr);
             }
             else
             {
                 //修改
                 sKeyIdNew = cbbCfgFile.SelectedValue.ToString();
-                DataRow[] drArrKey = dtConfigFile.Select(ClickCopyConfigFileStr.Id + "='" + sKeyIdNew + "'");
+                DataRow[] drArrKey = _dtConfigFile.Select(ClickCopyConfigFileStr.Id + "='" + sKeyIdNew + "'");
                 if (drArrKey.Length == 0)
                 {
                     //新增
                     sKeyIdNew = Guid.NewGuid().ToString();
-                    dr = dtConfigFile.NewRow();
+                    dr = _dtConfigFile.NewRow();
                     dr[ClickCopyConfigFileStr.Id] = sKeyIdNew;
-                    dtConfigFile.Rows.Add(dr);
+                    _dtConfigFile.Rows.Add(dr);
                 }
                 else
                 {
@@ -810,9 +779,9 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
             dr[ClickCopyConfigFileStr.FilePath] = sCfgPaht;
             dr[ClickCopyConfigFileStr.IsOpenDir] = ckbOpenPath.Checked ? "1" : "0";
             dr[ClickCopyConfigFileStr.IsFlowShow] = ckbFlowDesign.Checked ? "1" : "0";
-            dataCfg.XmlConfig.Save(dtConfigFile);
+            _dataCfg.XmlConfig.Save(_dtConfigFile);
             //重新绑定下拉框
-            cbbCfgFile.BindDropDownList(dtConfigFile, ClickCopyConfigFileStr.Id, ClickCopyConfigFileStr.Name, true, true);//绑定下拉框
+            cbbCfgFile.BindDropDownList(_dtConfigFile, ClickCopyConfigFileStr.Id, ClickCopyConfigFileStr.Name, true, true);//绑定下拉框
             ShowInfo("保存成功！");
         }
 
@@ -837,18 +806,18 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
 
             if (ShowOkCancel("确定要删除该配置？") == DialogResult.Cancel) return;
 
-            DataRow[] drArrKey = dtConfigFile.Select(ClickCopyConfigFileStr.Id + "='" + sKeyIDValue + "'");
+            DataRow[] drArrKey = _dtConfigFile.Select(ClickCopyConfigFileStr.Id + "='" + sKeyIDValue + "'");
             if (drArrKey.Length > 0)
             {
                 foreach (DataRow dr in drArrKey)
                 {
-                    dtConfigFile.Rows.Remove(dr);
+                    _dtConfigFile.Rows.Remove(dr);
                 }
-                dtConfigFile.AcceptChanges();
+                _dtConfigFile.AcceptChanges();
             }
-            dataCfg.XmlConfig.Save();
+            _dataCfg.XmlConfig.Save();
             //重新绑定下拉框
-            cbbCfgFile.BindDropDownList(dtConfigFile, ClickCopyConfigFileStr.Id, ClickCopyConfigFileStr.Name, true, true);//绑定下拉框
+            cbbCfgFile.BindDropDownList(_dtConfigFile, ClickCopyConfigFileStr.Id, ClickCopyConfigFileStr.Name, true, true);//绑定下拉框
             ShowInfo("删除配置成功！");
         }
 
@@ -861,7 +830,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
         {
             if (cbbCfgFile.SelectedValue == null) return;
             string sCfgId = cbbCfgFile.SelectedValue.ToString();
-            DataRow[] drArrKey = dtConfigFile.Select(ClickCopyConfigFileStr.Id + "='" + sCfgId + "'");
+            DataRow[] drArrKey = _dtConfigFile.Select(ClickCopyConfigFileStr.Id + "='" + sCfgId + "'");
             if (drArrKey.Length == 0)
             {
                 return;

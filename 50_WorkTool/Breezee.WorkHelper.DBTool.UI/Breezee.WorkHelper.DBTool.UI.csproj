@@ -382,6 +382,7 @@
     <Compile Include="SqlExecute\FrmDBTSqlExecutor.Designer.cs">
       <DependentUpon>FrmDBTSqlExecutor.cs</DependentUpon>
     </Compile>
+    <Compile Include="StringBuild\Entity\ClickCopy\ClickCopyEntityConvert.cs" />
     <Compile Include="StringBuild\Entity\ClickCopy\TapEntity.cs" />
     <Compile Include="StringBuild\Entity\ClickCopy\ParamEntity.cs" />
     <Compile Include="StringBuild\Entity\ClickCopy\ClickCopyCfgEntity.cs" />
@@ -1782,6 +1783,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\String\Images\CommonClickCopy.003.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Html\DBTool\String\Images\CommonClickCopy.004.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Html\DBTool\String\Images\ExcelCol2Row.001.jpg">
