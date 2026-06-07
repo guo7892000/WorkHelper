@@ -430,12 +430,38 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                     iNewRow = groupEntity.Max;
                 }
 
+                int iItmeIdx = 0;
                 foreach (XmlNode item in itemList)
                 {
                     //Group中的子项
-                    Panel tlpPanl = new Panel();
+                    FlowLayoutPanel tlpPanl = new FlowLayoutPanel();
+                    tlpPanl.FlowDirection = FlowDirection.LeftToRight;
+                    tlpPanl.BorderStyle = BorderStyle.FixedSingle;
+                    tlpPanl.Dock = DockStyle.Fill;
+                    
+                    if (iItmeIdx == 0)
+                    {
+                        //增加一个按钮显示分类
+                        TableLayoutPanel tlpTip = new TableLayoutPanel();
+                        tlpTip.RowCount = 1;
+                        tlpTip.ColumnCount = 1;
+                        tlpTip.RowStyles.Add(new RowStyle(System.Windows.Forms.SizeType.AutoSize, 20f));
+                        tlpTip.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+                        tlpTip.Height = 20;
+                        tlpTip.AutoSize = true;
+                        //按钮处理
+                        Button btTip = new Button();
+                        btTip.Width = 20;
+                        btTip.Height = 25;
+                        btTip.Anchor = AnchorStyles.Left;
+                        string sPaht = GetSystemFullPath(@"Image\fei.png");
+                        btTip.BackgroundImage = Image.FromFile(sPaht);
+                        btTip.BackgroundImageLayout = ImageLayout.Stretch;
+                        toolTip1.SetToolTip(btTip, groupEntity.Text);
+                        tlpTip.Controls.Add(btTip, 0, 0);
+                        tlpPanl.Controls.Add(tlpTip);
+                    }
                     TableLayoutPanel tlp = new TableLayoutPanel();
-
                     tlp.RowCount = 2;
                     tlp.ColumnCount = 4;
                     tlp.RowStyles.Add(new RowStyle(System.Windows.Forms.SizeType.AutoSize, 20f));
@@ -449,7 +475,7 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                     CopyItemEntity cs = ClickCopyEntityConvert.getCopyItemEntity(item);
                     if (cs.IsChange)
                     {
-                        _isNeedSaveXml= true;
+                        _isNeedSaveXml = true;
                     }
 
                     if (cs == null) continue;
@@ -561,9 +587,11 @@ namespace Breezee.WorkHelper.DBTool.UI.StringBuild
                     tlp.Controls.Add(bt, 2, 0);
 
                     tlp.AutoSize = true;
+
                     tlpPanl.Controls.Add(tlp);
                     tlpPanl.AutoSize = true;
                     gbChildPanl.Controls.Add(tlpPanl);
+                    iItmeIdx++;
                 }
                 gbPanl.Controls.Add(gbChildPanl);
                 gbChildPanl.Dock = DockStyle.Fill;
