@@ -82,7 +82,7 @@ namespace Breezee.Core.Tool
                         string sPrex = "file://";
                         sFileNAme = sFileNAme.Substring(sPrex.Length, sFileNAme.Length - sPrex.Length);
 
-                        XmlDataDocument dmsXml = new XmlDataDocument();
+                        XmlDocument dmsXml = new XmlDocument();
                         try
                         {
                             dmsXml.Load(sConfigPath + "Config\\" + sFileNAme);
@@ -133,7 +133,7 @@ namespace Breezee.Core.Tool
                 if (dicAllConfig == null)
                 {
                     dicAllConfig = new Dictionary<string, string>();
-                    XmlDataDocument dmsXml = new XmlDataDocument();
+                    XmlDocument dmsXml = new XmlDocument();
                     if(string.IsNullOrEmpty(sConfigPath))
                     {
                         InitConfigPath();

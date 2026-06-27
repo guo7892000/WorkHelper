@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Reflection;
 using System.Xml;
-using System.Collections;
-using System.Text.RegularExpressions;
-using System.Diagnostics;
 
 /***********************************************************
  * 对象名称：Sql配置类
@@ -29,7 +24,7 @@ namespace Breezee.AutoSQLExecutor.Core
         public static string SqlMainConfigPath = @"Config/sql.main.config";
         //包括的文件清单配置
         public static readonly string MainCofig_IncludeFile_Node = "include";
-        public static readonly string MainCofig_IncludeFile_Node_Attribute = "uri";        
+        public static readonly string MainCofig_IncludeFile_Node_Attribute = "uri";
         /// <summary>
         /// 所有配置文件信息字典集合
         /// </summary>
@@ -80,14 +75,14 @@ namespace Breezee.AutoSQLExecutor.Core
                 // 对于xml文件中的文件的二次递归遍历
                 for (int i = 0; i < xn.Attributes.Count; i++)
                 {
-                    if (xn.Name.Trim().Equals(MainCofig_IncludeFile_Node, StringComparison.OrdinalIgnoreCase) 
-                        && xn.Attributes[i].Name.Trim().Equals(MainCofig_IncludeFile_Node_Attribute, StringComparison.OrdinalIgnoreCase) )
+                    if (xn.Name.Trim().Equals(MainCofig_IncludeFile_Node, StringComparison.OrdinalIgnoreCase)
+                        && xn.Attributes[i].Name.Trim().Equals(MainCofig_IncludeFile_Node_Attribute, StringComparison.OrdinalIgnoreCase))
                     {
                         string sFileNAme = xn.Attributes[i].Value;
                         string sPrex = "file://";
                         sFileNAme = sFileNAme.Substring(sPrex.Length, sFileNAme.Length - sPrex.Length);
 
-                        XmlDataDocument dmsXml = new XmlDataDocument();
+                        XmlDocument dmsXml = new XmlDocument();
                         try
                         {
                             dmsXml.Load(sConfigPath + "Config\\" + sFileNAme);
@@ -143,8 +138,8 @@ namespace Breezee.AutoSQLExecutor.Core
                 if (dicAllConfig == null)
                 {
                     dicAllConfig = new Dictionary<string, string>();
-                    XmlDataDocument dmsXml = new XmlDataDocument();
-                    if(string.IsNullOrEmpty(sConfigPath))
+                    XmlDocument dmsXml = new XmlDocument();
+                    if (string.IsNullOrEmpty(sConfigPath))
                     {
                         InitConfigPath();
                     }

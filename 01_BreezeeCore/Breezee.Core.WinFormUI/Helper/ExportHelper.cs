@@ -401,7 +401,8 @@ namespace Breezee.Core.WinFormUI
                 IFont fontHeader = workbook.CreateFont();
                 fontHeader.FontHeightInPoints = 10;
                 fontHeader.FontName = "微软雅黑";
-                fontHeader.Boldweight = (short)NPOI.SS.UserModel.FontBoldWeight.Bold;
+                //fontHeader.Boldweight = (short)NPOI.SS.UserModel.FontBoldWeight.Bold;
+                fontHeader.IsBold = true;
 
                 ICellStyle headerStyle = workbook.CreateCellStyle();
                 headerStyle.Alignment = NPOI.SS.UserModel.HorizontalAlignment.Center;
