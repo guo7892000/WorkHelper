@@ -82,7 +82,7 @@ namespace Breezee.AutoSQLExecutor.Oracle
              * 2、//localhost:1521/orcl：使用IP、端口号及TNS名称
              * 3、(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=127.0.0.1)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ORCL)))：TNS配置名称，这里是使用配置内容。注意需要写在一行中，不能换行。
              * 连接字符串示例：Data Source = HUI; User ID = test01; Password = test01;*/
-            _ConnectionString = server.UseConnString ? server.ConnString : string.Format("Data Source={0};User ID={1};Password={2};Pooling=true;Min Pool Size=5;Max Pool Size=50;Incr Pool Size=5;", server.ServerName, server.UserName, server.Password);
+            _ConnectionString = server.UseConnString ? server.ConnString : string.Format("Data Source={0};User ID={1};Password={2};Pooling=true;Min Pool Size=5;Max Pool Size=50;Incr Pool Size=5;{3}", server.ServerName, server.UserName, server.Password, server.OtherString);
         }
         #endregion
 

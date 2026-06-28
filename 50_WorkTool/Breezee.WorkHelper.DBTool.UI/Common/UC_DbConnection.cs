@@ -73,7 +73,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             cbbDatabaseType.SelectedIndex = 0;
             //增加右键折叠功能，同时父容器也要折叠
             groupBox1.AddFoldRightMenu(true); 
-
+            toolTip1.SetToolTip(txbExtParam, "连接字符串中其他参数配置信息。");
         }
         #endregion
 
@@ -107,7 +107,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     }
                 }
                 txbPassword.Text = dr["USER_PASSWORD"].ToString();
-                
+                txbExtParam.Text = dr["TYPE_DESC"].ToString();
             }
             //调用代理
             if (DBConnName_SelectedIndexChanged != null)
@@ -216,6 +216,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 UseConnString = ckbUseConString.Checked,
                 ConnString = txbDBConString.Text.Trim(),
                 DbConnConfigName = cbbDbConnName.Text.Trim(),
+                OtherString = txbExtParam.Text.Trim()
             };
             DbServerInfo.ResetConnKey(DbServer);
 

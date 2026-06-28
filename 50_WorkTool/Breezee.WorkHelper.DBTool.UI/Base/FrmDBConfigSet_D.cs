@@ -68,6 +68,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             toolTip1.SetToolTip(txbSortNum, sSortIdInfo);
             toolTip1.SetToolTip(lblSortId, sSortIdInfo);
             toolTip1.SetToolTip(cbbIsEnable, "禁用的连接不会出现连接名下拉框中。");
+            toolTip1.SetToolTip(txbExtParam, "连接字符串中其他参数配置信息。");
             //设置控件关系
             SetControlColumnRelation();
 
@@ -114,6 +115,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.REMARK, txbRemark));
             _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.IS_ENABLED, cbbIsEnable)); //是否可用
             _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.SORT_ID, txbSortNum)); //排序号
+            _listSupply.Add(new DBColumnControlRelation(DT_DBT_BD_DB_CONFIG.SqlString.TYPE_DESC, txbExtParam)); //附加连接符：作为额外增加的连接参数信息
         }
         #endregion
 
@@ -283,6 +285,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                     UserName = txbUserName.Text.Trim(),
                     UseConnString = false,
                     ConnString = "",
+                    OtherString = txbExtParam.Text.Trim()
                 };
                 DbServerInfo.ResetConnKey(DbServer);
 
@@ -358,6 +361,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 IDataAccess _dataAccess = AutoSQLExecutors.Connect(DbServer);
                 DataTable UserTableList = _dataAccess.GetSchemaTables();
                 MsgBox.Show("连接成功！");
+                //MsgBox.Show("连接成功！最终连接字符串为：" + _dataAccess.ConnectionString);
             }
             catch(Exception ex)
             {

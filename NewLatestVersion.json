@@ -1,7 +1,7 @@
 {
-  "version": "1.4.9.0",
-  "date": "2026-6-6",
-  "publishRemark": "1.增加组名按钮显示。\r\n",
+  "version": "1.4.10.0",
+  "date": "2026-06-28",
+  "publishRemark": "1.修复连接PG失败问题。\r\n",
   "appName": "WorkHelper",
   "zipFormats": "zip|rar|7z",
   "downUrlPublishLatest": "https://gitee.com/breezee2000/WorkHelper/releases/download/Latest/#appName##version#",

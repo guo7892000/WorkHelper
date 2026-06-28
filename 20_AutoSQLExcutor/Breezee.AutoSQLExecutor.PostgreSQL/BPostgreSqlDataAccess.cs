@@ -76,7 +76,7 @@ namespace Breezee.AutoSQLExecutor.PostgreSQL
         public override void ModifyConnectString(DbServerInfo server)
         {
             //连接字符串示例：User ID=postgres;Password=sa;Host=localhost;Port=5432;Database=AprilSpring;Pooling=true
-            _ConnectionString = server.UseConnString ? server.ConnString : string.Format("Host={0};Port={1};User ID={2};Password={3};Database={4};Pooling=true", server.ServerName, server.PortNo, server.UserName, server.Password, server.Database);
+            _ConnectionString = server.UseConnString ? server.ConnString : string.Format("Host={0};Port={1};User ID={2};Password={3};Database={4};Pooling=true;{5}", server.ServerName, server.PortNo, server.UserName, server.Password, server.Database, server.OtherString);
         }
         #endregion
 

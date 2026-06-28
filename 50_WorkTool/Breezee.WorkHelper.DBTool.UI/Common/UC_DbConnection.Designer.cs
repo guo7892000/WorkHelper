@@ -30,6 +30,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.cbbDatabaseType = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txbServerIP = new System.Windows.Forms.TextBox();
@@ -50,7 +51,10 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.label2 = new System.Windows.Forms.Label();
             this.txbSchemaName = new System.Windows.Forms.TextBox();
             this.txbDBConString = new System.Windows.Forms.TextBox();
+            this.txbExtParam = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -148,6 +152,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tableLayoutPanel1.Controls.Add(this.label2, 7, 1);
             this.tableLayoutPanel1.Controls.Add(this.txbSchemaName, 8, 1);
             this.tableLayoutPanel1.Controls.Add(this.txbDBConString, 10, 0);
+            this.tableLayoutPanel1.Controls.Add(this.txbExtParam, 10, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label3, 9, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 19);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -155,7 +161,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1045, 63);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1067, 63);
             this.tableLayoutPanel1.TabIndex = 9;
             // 
             // cbbDbConnName
@@ -252,9 +258,9 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.ckbUseConString.Location = new System.Drawing.Point(849, 5);
             this.ckbUseConString.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ckbUseConString.Name = "ckbUseConString";
-            this.ckbUseConString.Size = new System.Drawing.Size(75, 21);
+            this.ckbUseConString.Size = new System.Drawing.Size(87, 21);
             this.ckbUseConString.TabIndex = 10;
-            this.ckbUseConString.Text = "连接字符";
+            this.ckbUseConString.Text = "修改连接符";
             this.ckbUseConString.UseVisualStyleBackColor = true;
             this.ckbUseConString.Visible = false;
             this.ckbUseConString.CheckedChanged += new System.EventHandler(this.ckbUseConString_CheckedChanged);
@@ -281,11 +287,29 @@ namespace Breezee.WorkHelper.DBTool.UI
             // 
             this.txbDBConString.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txbDBConString.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txbDBConString.Location = new System.Drawing.Point(930, 5);
+            this.txbDBConString.Location = new System.Drawing.Point(947, 5);
             this.txbDBConString.Name = "txbDBConString";
             this.txbDBConString.Size = new System.Drawing.Size(112, 21);
             this.txbDBConString.TabIndex = 6;
             this.txbDBConString.Visible = false;
+            // 
+            // txbExtParam
+            // 
+            this.txbExtParam.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbExtParam.Location = new System.Drawing.Point(947, 34);
+            this.txbExtParam.Name = "txbExtParam";
+            this.txbExtParam.Size = new System.Drawing.Size(112, 23);
+            this.txbExtParam.TabIndex = 6;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(849, 37);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(92, 17);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "额外连接参数：";
             // 
             // groupBox1
             // 
@@ -295,7 +319,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.groupBox1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1051, 82);
+            this.groupBox1.Size = new System.Drawing.Size(1073, 93);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "数据库连接";
@@ -306,7 +330,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox1);
             this.Name = "UC_DbConnection";
-            this.Size = new System.Drawing.Size(1051, 82);
+            this.Size = new System.Drawing.Size(1073, 93);
             this.Load += new System.EventHandler(this.UC_DbConnection_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
@@ -339,5 +363,8 @@ namespace Breezee.WorkHelper.DBTool.UI
         private System.Windows.Forms.Button btnSelectDbFile;
         private CheckBox ckbUseConString;
         private TextBox txbDBConString;
+        private TextBox txbExtParam;
+        private Label label3;
+        private ToolTip toolTip1;
     }
 }

@@ -71,7 +71,7 @@ namespace Breezee.AutoSQLExecutor.SQLite
         public override void ModifyConnectString(DbServerInfo server)
         {
             /*连接字符串示例：Data Source=WorkHelper.db;Version=3;Pooling=True;Max Pool Size=100;Password=myPassword; */
-            _ConnectionString = server.UseConnString ? server.ConnString : string.Format("Data Source={0};Version=3;Pooling=True;Max Pool Size=100", server.ServerName);
+            _ConnectionString = server.UseConnString ? server.ConnString : string.Format("Data Source={0};Version=3;Pooling=True;Max Pool Size=100;{1}", server.ServerName, server.OtherString);
             if (!server.UseConnString && !string.IsNullOrEmpty(server.Password))
             {
                 _ConnectionString += string.Format(";Password={0}", server.Password);//加密后能打开连接，但查询不了数据

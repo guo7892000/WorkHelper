@@ -113,7 +113,7 @@ namespace Breezee.AutoSQLExecutor.SqlServer
              * SqlServer好像不需要指定端口，即使后台修改了默认的1433端口，也可以连接成功
              * 针对【provider：SSL Provider，error：0 - 证书链是由不受信任的颁发机构颁发的】报错，要在连接中加上：Encrypt=True;TrustServerCertificate=True;
              */
-            _ConnectionString = server.UseConnString ? server.ConnString : string.Format("data source={0};user id={1};password={2};Encrypt=True;TrustServerCertificate=True;", server.ServerName, server.UserName, server.Password);
+            _ConnectionString = server.UseConnString ? server.ConnString : string.Format("data source={0};user id={1};password={2};Encrypt=True;TrustServerCertificate=True;{3}", server.ServerName, server.UserName, server.Password, server.OtherString);
             //if (!string.IsNullOrEmpty(server.PortNo))
             //{
             //    _ConnectionString = server.UseConnString ? server.ConnString : string.Format("data source={0};user id={1};password={2}", server.ServerName + "," + server.PortNo, server.UserName, server.Password);

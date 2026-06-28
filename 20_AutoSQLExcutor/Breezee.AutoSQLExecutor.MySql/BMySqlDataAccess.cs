@@ -75,7 +75,7 @@ namespace Breezee.AutoSQLExecutor.MySql
         public override void ModifyConnectString(DbServerInfo server)
         {
             DbServer = server;
-            _ConnectionString = server.UseConnString ? server.ConnString : string.Format("Server={0};;Port={1};Database={2};Uid={3};Pwd={4};Charset=utf8;AllowUserVariables=true;", server.ServerName, server.PortNo, server.Database, server.UserName, server.Password);
+            _ConnectionString = server.UseConnString ? server.ConnString : string.Format("Server={0};;Port={1};Database={2};Uid={3};Pwd={4};Charset=utf8;AllowUserVariables=true;{5}", server.ServerName, server.PortNo, server.Database, server.UserName, server.Password, server.OtherString);
         }
         #endregion
 
