@@ -869,5 +869,289 @@ namespace Breezee.Core.Interface
 
             return Color.Empty;
         }
+
+        #region 多行字符替换
+        /// <summary>
+        /// 执行文本替换（支持多空格、制表符等空白字符的灵活匹配）
+        /// </summary>
+        /// <param name="content">原始内容</param>
+        /// <param name="drReplace">替换规则</param>
+        /// <returns>替换后的内容</returns>
+        public static string MultiLineReplace(this string content, DataRow[] drReplace)
+        {
+            if (string.IsNullOrEmpty(content) || drReplace == null || drReplace.Length == 0)
+            {
+                return content;
+            }
+            string sOldCol = "OLD";
+            string sNewCol = "NEW";
+            if (!drReplace[0].ContainsColumn(sOldCol) || !drReplace[0].ContainsColumn(sNewCol))
+            {
+                throw new Exception("入参【替换字符的数据行数组】必须包括两列：OLD、NEW。");
+            }
+
+            string result = content;
+
+            // 按替换规则的顺序依次执行替换
+            foreach (DataRow dr in drReplace)
+            {
+                string oldText = dr[sOldCol]?.ToString() ?? "";
+                string newText = dr[sNewCol]?.ToString() ?? "";
+
+                // 跳过空字符串的替换规则
+                if (string.IsNullOrEmpty(oldText))
+                {
+                    continue;
+                }
+
+                // 执行替换（支持灵活空白字符匹配）
+                result = ReplaceWithFlexibleWhitespace(result, oldText, newText);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 灵活的空白字符替换：将替换规则中的空白字符（空格、制表符等）转换为正则表达式
+        /// </summary>
+        /// <param name="input">输入文本</param>
+        /// <param name="oldValue">要查找的文本</param>
+        /// <param name="newValue">替换后的文本</param>
+        /// <returns>替换后的文本</returns>
+        public static string ReplaceWithFlexibleWhitespace(this string input, string oldValue, string newValue)
+        {
+            if (string.IsNullOrEmpty(input) || string.IsNullOrEmpty(oldValue))
+            {
+                return input;
+            }
+
+            // 首先尝试精确匹配
+            if (input.Contains(oldValue))
+            {
+                return input.Replace(oldValue, newValue);
+            }
+
+            // 如果精确匹配失败，使用正则表达式进行灵活匹配
+            try
+            {
+                // 将替换规则转换为正则表达式模式
+                string pattern = BuildFlexiblePattern(oldValue);
+
+                if (string.IsNullOrEmpty(pattern))
+                {
+                    return input;
+                }
+
+                // 使用正则表达式进行替换
+                return Regex.Replace(input, pattern, newValue, RegexOptions.Multiline);
+            }
+            catch (Exception)
+            {
+                // 如果正则表达式出错，返回原文本
+                return input;
+            }
+        }
+
+        /// <summary>
+        /// 构建灵活匹配的正则表达式模式
+        /// </summary>
+        /// <param name="searchText">搜索文本</param>
+        /// <returns>正则表达式模式</returns>
+        private static string BuildFlexiblePattern(string searchText)
+        {
+            if (string.IsNullOrEmpty(searchText))
+            {
+                return string.Empty;
+            }
+
+            StringBuilder pattern = new StringBuilder();
+
+            // 按行分割
+            string[] lines = searchText.Split(new[] { "\r\n", "\n", "\r" }, StringSplitOptions.None);
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (i > 0)
+                {
+                    // 添加换行符匹配
+                    pattern.Append(@"\r?\n\s*");
+                }
+
+                // 处理每一行，将连续空白字符转换为灵活匹配
+                string line = lines[i];
+
+                // 将连续的空格或制表符转换为 \s+
+                string processedLine = Regex.Replace(line, @"[ \t]+", @"\s+");
+
+                // 转义特殊字符（除了我们已经添加的正则表达式元字符）
+                processedLine = Regex.Escape(processedLine);
+
+                // 恢复我们的灵活空白字符匹配
+                processedLine = processedLine.Replace(@"\\s\+", @"\s+");
+
+                // 处理行首和行尾的空格
+                processedLine = processedLine.TrimStart();
+
+                pattern.Append(processedLine);
+            }
+
+            return pattern.ToString();
+        }
+
+        /// <summary>
+        /// 执行文本替换（支持多种匹配模式）
+        /// </summary>
+        /// <param name="content">原始内容</param>
+        /// <param name="drReplace">替换规则</param>
+        /// <param name="matchMode">匹配模式：Exact-精确匹配，Flexible-灵活空白字符匹配，Regex-正则表达式</param>
+        /// <returns>替换后的内容</returns>
+        public static string PerformReplacementsWithMode(this string content, DataRow[] drReplace, string matchMode = "Flexible")
+        {
+            if (string.IsNullOrEmpty(content) || drReplace == null || drReplace.Length == 0)
+            {
+                return content;
+            }
+
+            string sOldCol = "OLD";
+            string sNewCol = "NEW";
+            if (!drReplace[0].ContainsColumn(sOldCol) || !drReplace[0].ContainsColumn(sNewCol))
+            {
+                throw new Exception("入参【替换字符的数据行数组】必须包括两列：OLD、NEW。");
+            }
+
+            string result = content;
+
+            foreach (DataRow dr in drReplace)
+            {
+                string oldText = dr[sOldCol]?.ToString() ?? "";
+                string newText = dr[sNewCol]?.ToString() ?? "";
+
+                if (string.IsNullOrEmpty(oldText))
+                {
+                    continue;
+                }
+
+                switch (matchMode.ToLower())
+                {
+                    case "exact":
+                        // 精确匹配
+                        result = result.Replace(oldText, newText);
+                        break;
+
+                    case "flexible":
+                        // 灵活空白字符匹配
+                        result = ReplaceWithFlexibleWhitespace(result, oldText, newText);
+                        break;
+
+                    case "regex":
+                        // 正则表达式匹配
+                        result = Regex.Replace(result, oldText, newText, RegexOptions.Multiline);
+                        break;
+
+                    default:
+                        result = ReplaceWithFlexibleWhitespace(result, oldText, newText);
+                        break;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 更强大的灵活替换：支持任意数量空白字符
+        /// </summary>
+        /// <param name="input">输入文本</param>
+        /// <param name="oldValue">要查找的文本</param>
+        /// <param name="newValue">替换后的文本</param>
+        /// <returns>替换后的文本</returns>
+        public static string ReplaceWithAnyWhitespace(this string input, string oldValue, string newValue)
+        {
+            if (string.IsNullOrEmpty(input) || string.IsNullOrEmpty(oldValue))
+            {
+                return input;
+            }
+
+            // 首先尝试精确匹配
+            if (input.Contains(oldValue))
+            {
+                return input.Replace(oldValue, newValue);
+            }
+
+            // 构建正则表达式模式：将所有空白字符（包括换行）转换为 \s+
+            string pattern = Regex.Escape(oldValue);
+
+            // 替换空白字符为灵活匹配
+            pattern = Regex.Replace(pattern, @"\\s", @"\\s");
+            pattern = pattern.Replace(" ", @"\s+");
+            pattern = pattern.Replace("\t", @"\s+");
+            pattern = pattern.Replace("\r\n", @"\s+");
+            pattern = pattern.Replace("\n", @"\s+");
+            pattern = pattern.Replace("\r", @"\s+");
+
+            try
+            {
+                return Regex.Replace(input, pattern, newValue, RegexOptions.Multiline);
+            }
+            catch
+            {
+                return input;
+            }
+        }
+
+        /// <summary>
+        /// 读取替换并写入
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="drReplace"></param>
+        /// <param name="encoding"></param>
+        /// <exception cref="Exception"></exception>
+        public static void ReadReplaceAndWrite(this string file, DataRow[] drReplace, Encoding encoding)
+        {
+            if (!File.Exists(file))
+            {
+                throw new Exception(file + "：文件不存在！");
+            }
+            var content = File.ReadAllText(file, encoding);
+
+            if (drReplace==null || drReplace.Length==0)
+            {
+                throw new Exception("入参【替换字符的数据行数组】至少有一行数据！");
+            }
+
+            string sOldCol = "OLD";
+            string sNewCol = "NEW";
+            if (!drReplace[0].ContainsColumn(sOldCol) || !drReplace[0].ContainsColumn(sNewCol))
+            {
+                throw new Exception("入参【替换字符的数据行数组】必须包括两列：OLD、NEW。");
+            }
+            
+            // 使用灵活空白字符匹配进行替换
+            string newContent = content.MultiLineReplace(drReplace);
+
+            // 如果灵活匹配没有效果，尝试更强大的任意空白字符匹配
+            if (newContent == content)
+            {
+                // 手动执行替换，使用更灵活的模式
+                foreach (DataRow dr in drReplace)
+                {
+                    string oldText = dr[sOldCol]?.ToString() ?? "";
+                    string newText = dr[sNewCol]?.ToString() ?? "";
+
+                    if (string.IsNullOrEmpty(oldText))
+                    {
+                        continue;
+                    }
+                    //调用任意多个空白字符替换方法
+                    newContent = newContent.ReplaceWithAnyWhitespace(oldText, newText);
+                }
+            }
+
+            // 只有当内容发生变化时才写回文件
+            if (content != newContent)
+            {
+                File.WriteAllText(file, newContent, encoding);
+            }
+        }
+        #endregion
     }
 }

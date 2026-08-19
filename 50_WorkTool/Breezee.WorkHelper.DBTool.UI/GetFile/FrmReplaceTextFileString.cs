@@ -23,6 +23,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -70,7 +71,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             toolTip1.SetToolTip(btnReplaceString, "直接使用【最终生成路径】中的文件，进行文本替换！");
             toolTip1.SetToolTip(btnCopyFileReplace, "复制【待复制的本地源目录或源文件】到【最终生成路径】中，并对【最终生成路径】中所有文件，进行文本替换！");
             toolTip1.SetToolTip(txbFtpDownloadLocalPath, "【本地保存路径】会包含【读取目录】名称。");
-            toolTip1.SetToolTip(btnFinalResultCopy, "【复制】时，会先删除原目录，再创建目录并增加文件。"); 
+            toolTip1.SetToolTip(btnFinalResultCopy, "【复制】时，会先删除原目录，再创建目录并增加文件。");
+            toolTip1.SetToolTip(ckbSaveTrimYinHao, "当从Excel复制的某个新或旧字符包含换行符时，粘贴会自动增加前后双引号，选中后【保存模板】时，会去掉前后双引号保存。");
 
             lblInfo2.Text = "可在Excel中复制数据后，点击网格后按ctrl + v粘贴即可。注：所有行都为数据！";
             lblReplaceInfo.Text = "可在Excel中复制数据后，点击网格后按ctrl + v粘贴即可。注：所有行都为数据！";
@@ -277,58 +279,50 @@ namespace Breezee.WorkHelper.DBTool.UI
 
         private async Task ReplaceFileTextAsync(string sSavePath, DataRow[] drReplace, ReplaceTesfFileFormControleValue fromValue, DataTable dtResult)
         {
+            var sOld = string.Empty;
+            var sNew = string.Empty;
+            string sRelateDir, sRelateDirRealFile;
+            int iIdx = 1;
+            Encoding encoding = GetEncoding(false, fromValue);//字符集
+
             if (ckbLoadFinalSaveDirFile.Checked)
             {
+                //选中【加载最终生成目录文件】
                 DataTable dtSource = dgvFileListWaitFor.GetBindingTable();
                 DataRow[] drWillArr = dtSource.Select(_sGridColumnSelect + "= '1'");
-                int iIdx = 1;
+
                 //得到文件清单
                 var files = drWillArr.AsEnumerable().Select(t => t["FILE_PATH"].ToString()).ToList();
-                Encoding encoding = GetEncoding(false, fromValue);//字符集
+                
                 foreach (string file in files)
                 {
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append(File.ReadAllText(file, encoding));
-                    foreach (DataRow dr in drReplace)
-                    {
-                        sb.Replace(dr["OLD"].ToString().Trim(), dr["NEW"].ToString().Trim());
-                    }
-                    // 处理每个文件
-                    File.WriteAllText(file, sb.ToString(), encoding);
-                    string sRelateDirFile = file.Replace(sSavePath, "");
-                    string sRelateDir = sRelateDirFile.Substring(0, sRelateDirFile.LastIndexOf(@"\"));
-                    string sRelateDirRealFile = sRelateDirFile.Substring(sRelateDirFile.LastIndexOf(@"\")).Replace("\\", "");
-                    //结果添加文件
-                    dtResult.Rows.Add(iIdx, "1", file, sRelateDir, sRelateDirRealFile);
-                    iIdx++;
+                    ReplaceAndWrite(file, encoding);
                 }
             }
             else
             {
+                //未选中【加载最终生成目录文件】
                 FileInfo[] arrFiles = new DirectoryInfo(sSavePath).GetFiles("*.*", SearchOption.AllDirectories);
-                int iIdx = 1;
-                //字符集
-                Encoding encoding = GetEncoding(false, fromValue);
-
                 foreach (FileInfo file in arrFiles)
                 {
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append(File.ReadAllText(file.FullName, encoding));
-                    foreach (DataRow dr in drReplace)
-                    {
-                        sb.Replace(dr["OLD"].ToString().Trim(), dr["NEW"].ToString().Trim());
-                    }
-                    // 处理每个文件
-                    File.WriteAllText(file.FullName, sb.ToString(), encoding);
-                    string sRelateDirFile = file.FullName.Replace(sSavePath, "");
-                    string sRelateDir = sRelateDirFile.Substring(0, sRelateDirFile.LastIndexOf(@"\"));
-                    string sRelateDirRealFile = sRelateDirFile.Substring(sRelateDirFile.LastIndexOf(@"\")).Replace("\\", "");
-                    //结果添加文件
-                    dtResult.Rows.Add(iIdx, "1", file.FullName, sRelateDir, sRelateDirRealFile);
-                    iIdx++;
+                    ReplaceAndWrite(file.FullName, encoding);
                 }
             }
+
+            void ReplaceAndWrite(string file, Encoding encode)
+            {
+                //读取文件并替换，最后写入
+                file.ReadReplaceAndWrite(drReplace, encode);
+                //输出替换的文件清单
+                string sRelateDirFile = file.Replace(sSavePath, "");
+                sRelateDir = sRelateDirFile.Substring(0, sRelateDirFile.LastIndexOf(@"\"));
+                sRelateDirRealFile = sRelateDirFile.Substring(sRelateDirFile.LastIndexOf(@"\")).Replace("\\", "");
+                //结果添加文件
+                dtResult.Rows.Add(iIdx, "1", file, sRelateDir, sRelateDirRealFile);
+                iIdx++;
+            }
         }
+
 
         /// <summary>
         /// 
@@ -1690,21 +1684,37 @@ namespace Breezee.WorkHelper.DBTool.UI
         /// <param name="e"></param>
         private void tsmiAddDir_Click(object sender, EventArgs e)
         {
-            var dialog = new FolderBrowserDialog();
-            var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_RightAddDir, "").Value;
+            #region 已取消
+            //var dialog = new FolderBrowserDialog();
+            //var strLastSelectedPath = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.TextFileReplace_RightAddDir, "").Value;
 
-            if (!string.IsNullOrEmpty(strLastSelectedPath))
+            //if (!string.IsNullOrEmpty(strLastSelectedPath))
+            //{
+            //    dialog.SelectedPath = strLastSelectedPath;
+            //}
+            //dialog.Description = "请选择文件路径";
+            //if (dialog.ShowDialog() == DialogResult.OK)
+            //{
+            //    DataTable dt = dgvFileListWaitFor.GetBindingTable();
+            //    dt.Rows.Add(1, "1","目录", dialog.SelectedPath,""); //添加到待处理网格中
+            //    dgvFileListWaitFor.ShowRowNum(true);
+            //    //保存用户偏好值
+            //    WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_RightAddDir, dialog.SelectedPath, "【文本文件字符替换】最后添加的目录");
+            //    WinFormContext.UserLoveSettings.Save();
+            //} 
+            #endregion
+
+            //这里不使用自带的FolderBrowserDialog，那样选择目录很不方便。这个第3方库Ookii Dialogs，显示的界面更好用！！
+            VistaFolderBrowserDialog folderBrowserDialog = new VistaFolderBrowserDialog();
+            folderBrowserDialog.Description = "请选择一个目录";
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                dialog.SelectedPath = strLastSelectedPath;
-            }
-            dialog.Description = "请选择文件路径";
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
+                //tb.Text = folderBrowserDialog.SelectedPath;
                 DataTable dt = dgvFileListWaitFor.GetBindingTable();
-                dt.Rows.Add(1, "1","目录", dialog.SelectedPath,""); //添加到待处理网格中
+                dt.Rows.Add(1, "1", "目录", folderBrowserDialog.SelectedPath, ""); //添加到待处理网格中
                 dgvFileListWaitFor.ShowRowNum(true);
                 //保存用户偏好值
-                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_RightAddDir, dialog.SelectedPath, "【文本文件字符替换】最后添加的目录");
+                WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.TextFileReplace_RightAddDir, folderBrowserDialog.SelectedPath, "【文本文件字符替换】最后添加的目录");
                 WinFormContext.UserLoveSettings.Save();
             }
         }
@@ -2511,6 +2521,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                         return;
                     }
 
+                    //为了保证粘贴数据列数正确（本场景为两列），在粘贴字符前增加两列内容
+                    pasteText = "替换前字符\t替换后字符\r\n" + pasteText;
+
                     int iRow = 0;
                     int iColumn = 0;
                     Object[,] data = StringHelper.GetStringArray(ref pasteText, ref iRow, ref iColumn);
@@ -2524,9 +2537,13 @@ namespace Breezee.WorkHelper.DBTool.UI
                     //获取获取当前选中单元格所在的行序号
                     for (int j = 0; j < iRow; j++)
                     {
+                        if (j == 0)
+                        {
+                            continue; //跳过自动增加的行
+                        }
                         string strData = data[j, 0].ToString().Trim();
                         string strData2 = data[j, 1].ToString().Trim();
-                        if (string.IsNullOrEmpty(strData) || string.IsNullOrEmpty(strData2))
+                        if (string.IsNullOrEmpty(strData) && string.IsNullOrEmpty(strData2))
                         {
                             continue;
                         }
@@ -2643,8 +2660,17 @@ namespace Breezee.WorkHelper.DBTool.UI
                 drNew[sValId] = Guid.NewGuid().ToString();
                 drNew[sKeyId] = sKeyIdNew;
                 drNew[ReplaceStringXmlConfig.ValueString.IsSelected] = dr[ReplaceStringXmlConfig.ValueString.IsSelected].ToString();
-                drNew[ReplaceStringXmlConfig.ValueString.OldString] = dr[ReplaceStringXmlConfig.ValueString.OldString].ToString();
-                drNew[ReplaceStringXmlConfig.ValueString.NewString] = dr[ReplaceStringXmlConfig.ValueString.NewString].ToString();
+                if (ckbSaveTrimYinHao.Checked)
+                {
+                    //选中【保存时去掉前后双引号】
+                    drNew[ReplaceStringXmlConfig.ValueString.OldString] = dr[ReplaceStringXmlConfig.ValueString.OldString].ToString().Trim('"');
+                    drNew[ReplaceStringXmlConfig.ValueString.NewString] = dr[ReplaceStringXmlConfig.ValueString.NewString].ToString().Trim('"');
+                }
+                else
+                {
+                    drNew[ReplaceStringXmlConfig.ValueString.OldString] = dr[ReplaceStringXmlConfig.ValueString.OldString].ToString();
+                    drNew[ReplaceStringXmlConfig.ValueString.NewString] = dr[ReplaceStringXmlConfig.ValueString.NewString].ToString();
+                }                
                 dtValConfig.Rows.Add(drNew);
             }
             replaceStringData.MoreXmlConfig.Save();
@@ -2698,5 +2724,6 @@ namespace Breezee.WorkHelper.DBTool.UI
             cbbTemplateType.BindDropDownList(replaceStringData.MoreXmlConfig.KeyData, sKeyId, ReplaceStringXmlConfig.KeyString.Name, true, true);
             ShowInfo("模板删除成功！");
         }
+
     }
 }

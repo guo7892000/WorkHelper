@@ -61,6 +61,8 @@ namespace Breezee.WorkHelper.DBTool.UI
             string sPatterT = @"\s*==>\s*Parameters:\s*";
             Regex regexTimeT = new Regex(sPatterT, RegexOptions.IgnoreCase);
             MatchCollection mcCollTimeT;
+            StringBuilder sbFullValue = new StringBuilder();
+
             if ("1".Equals(splitType))
             {
                 // 同时转换
@@ -87,13 +89,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                     sRealSql = sSqlAndParam.Substring(0, m.Index);
                     string sParam  = sSqlAndParam.Substring(m.Index + sMatchValue.Length);
                     string[] arrParam = sParam.Split(',');
-                    //if (arrParam.Contains("null"))
-                    //{
-                    //    ShowErr("存在null参数，无法转换！");
-                    //    return;
-                    //}
                     int i = 0;
-                    foreach(string strParam in arrParam)
+                   
+                    foreach (string strParam in arrParam)
                     {
                         string sValueAndType = strParam.Trim();
                         if (sValueAndType.Equals("null"))
@@ -102,6 +100,23 @@ namespace Breezee.WorkHelper.DBTool.UI
                             i++;
                             continue;
                         }
+
+                        //值中可能存在逗号分隔的多个值，所以要取最后一个括号前的内容作为值，括号内的内容作为类型
+                        if(sValueAndType.LastIndexOf("(") < 0 || sValueAndType.LastIndexOf(")") < 0){
+                            // 没有括号，说明值是逗号分隔的多个值，类型是String，需要拼接成一个完整的值
+                            sbFullValue.Append(sValueAndType+",");
+                            continue;
+                        }
+                        else
+                        {
+                            if(sbFullValue.Length > 0)
+                            {
+                                sbFullValue.Append(sValueAndType);
+                                sValueAndType = sbFullValue.ToString();
+                                sbFullValue = new StringBuilder();
+                            }
+                        }
+
                         string sValue = sValueAndType.Substring(0,sValueAndType.LastIndexOf("("));
                         if (ckbValueRemoveEmpty.Checked)
                         {
@@ -134,11 +149,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                         ShowErr("没有类似【212(String), H2901(String)】的参数字符，请重新输入！");
                         return;
                     }
-                    //if (arrParam.Contains("null"))
-                    //{
-                    //    ShowErr("存在null参数，无法转换！");
-                    //    return;
-                    //}
+
                     int i = 0;
                     foreach (string strParam in arrParam)
                     {
@@ -149,6 +160,24 @@ namespace Breezee.WorkHelper.DBTool.UI
                             i++;
                             continue;
                         }
+
+                        //值中可能存在逗号分隔的多个值，所以要取最后一个括号前的内容作为值，括号内的内容作为类型
+                        if (sValueAndType.LastIndexOf("(") < 0 || sValueAndType.LastIndexOf(")") < 0)
+                        {
+                            // 没有括号，说明值是逗号分隔的多个值，类型是String，需要拼接成一个完整的值
+                            sbFullValue.Append(sValueAndType + ",");
+                            continue;
+                        }
+                        else
+                        {
+                            if (sbFullValue.Length > 0)
+                            {
+                                sbFullValue.Append(sValueAndType);
+                                sValueAndType = sbFullValue.ToString();
+                                sbFullValue = new StringBuilder();
+                            }
+                        }
+
                         string sValue = sValueAndType.Substring(0, sValueAndType.LastIndexOf("("));
                         if (ckbValueRemoveEmpty.Checked)
                         {
@@ -223,15 +252,22 @@ namespace Breezee.WorkHelper.DBTool.UI
             foreach (Match m in mcCollTimeT)
             {
                 sbSql.Append(sRealSql.Substring(iStart, m.Index- iStart));
-                if ("String".Equals(listParam[0].DataType))
+                if (listParam.Count > 0)
                 {
-                    sbSql.Append("'"+listParam[0].DataValue+"'");
+                    if ("String".Equals(listParam[0].DataType))
+                    {
+                        sbSql.Append("'" + listParam[0].DataValue + "'");
+                    }
+                    else
+                    {
+                        sbSql.Append(listParam[0].DataValue);
+                    }
+                    listParam.RemoveAt(0);
                 }
                 else
                 {
-                    sbSql.Append(listParam[0].DataValue);
+                    sbSql.Append('?');
                 }
-                listParam.RemoveAt(0);
                 iStart = m.Index + m.Length;
             }
             if(iStart < sRealSql.Length)

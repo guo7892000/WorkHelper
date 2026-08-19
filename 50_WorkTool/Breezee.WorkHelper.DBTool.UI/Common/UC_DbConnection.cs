@@ -333,7 +333,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             if (isQueryTableColumnRealTime)
             {
                 //所有用户表：GetSqlSchemaTables 和 GetSqlSchemaTables
-                userTableDic[DbServer.DbConnKey] = _dataAccess.GetSqlSchemaTables();
+                userTableDic[DbServer.DbConnKey] = _dataAccess.GetSqlSchemaTables(string.Empty, DbServer.SchemaName);
                 //所有用户表的所有列
                 userColumnDic[DbServer.DbConnKey] = _dataAccess.GetSqlSchemaTableColumns(string.Empty, DbServer.SchemaName);
             }
@@ -342,7 +342,7 @@ namespace Breezee.WorkHelper.DBTool.UI
                 if (!isSameServer || userTableDic.ContainsKey(DbServer.DbConnKey) || userTableDic[DbServer.DbConnKey].Rows.Count == 0)
                 {
                     //所有用户表：GetSqlSchemaTables 和 GetSqlSchemaTables
-                    userTableDic[DbServer.DbConnKey] = _dataAccess.GetSqlSchemaTables();
+                    userTableDic[DbServer.DbConnKey] = _dataAccess.GetSqlSchemaTables(string.Empty, DbServer.SchemaName);
                 }
                 if (!isSameServer || userColumnDic.ContainsKey(DbServer.DbConnKey) || userColumnDic[DbServer.DbConnKey].Rows.Count == 0)
                 {

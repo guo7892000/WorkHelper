@@ -76,7 +76,8 @@ namespace Breezee.AutoSQLExecutor.PostgreSQL
         public override void ModifyConnectString(DbServerInfo server)
         {
             //连接字符串示例：User ID=postgres;Password=sa;Host=localhost;Port=5432;Database=AprilSpring;Pooling=true
-            _ConnectionString = server.UseConnString ? server.ConnString : string.Format("Host={0};Port={1};User ID={2};Password={3};Database={4};Pooling=true;{5}", server.ServerName, server.PortNo, server.UserName, server.Password, server.Database, server.OtherString);
+            _ConnectionString = server.UseConnString ? server.ConnString : string.Format("Host={0};Port={1};User ID={2};Password={3};Database={4};Search Path={5};Pooling=true;{6}", 
+                server.ServerName, server.PortNo, server.UserName, server.Password, server.Database, server.SchemaName, server.OtherString);
         }
         #endregion
 
@@ -108,7 +109,10 @@ namespace Breezee.AutoSQLExecutor.PostgreSQL
                 {
                     server.Password = item.Value;
                 }
-                
+                else if (item.Key.Equals("search path"))
+                {
+                    server.SchemaName = item.Value;
+                }
                 else
                 {
 
@@ -876,6 +880,10 @@ SELECT A.VIEWNAME AS TABLE_NAME,A.SCHEMANAME AS TABLE_SCHEMA,A.VIEWOWNER AS TABL
         {
             //移除所有表名为空的
             listTableName.RemoveAll(t => string.IsNullOrEmpty(t));
+            if(string.IsNullOrEmpty(sSchema))
+            {
+                sSchema = "public";
+            }
             //PostgreSql的字段名区分大小写
             string sSql = @"SELECT A.TABLE_NAME,
 				A.TABLE_SCHEMA,
@@ -908,7 +916,7 @@ SELECT A.VIEWNAME AS TABLE_NAME,A.SCHEMANAME AS TABLE_SCHEMA,A.VIEWOWNER AS TABL
 		               concat_ws('',t.typname,SUBSTRING(format_type(a.atttypid,a.atttypmod) from '\(.*\)')) as COLUMN_TYPE 
 	            from pg_class c,pg_attribute a,pg_type t,pg_description d
 	            where a.attnum>0 and a.attrelid=c.oid and a.atttypid=t.oid and d.objoid=a.attrelid and d.objsubid=a.attnum
-	            and c.relname in (select tablename from pg_tables where schemaname='public' and position('_2' in tablename)=0) 
+	            and c.relname in (select tablename from pg_tables where upper(schemaname)= upper('#TABLE_SCHEMA#') and position('_2' in tablename)=0) 
              ) B ON A.TABLE_NAME = B.relname AND A.COLUMN_NAME = B.attname
 			 LEFT JOIN (
 			 	SELECT A.TABLENAME AS TABLE_NAME,A.SCHEMANAME AS TABLE_SCHEMA,A.TABLEOWNER AS TABLE_OWNER,
@@ -921,14 +929,14 @@ SELECT A.VIEWNAME AS TABLE_NAME,A.SCHEMANAME AS TABLE_SCHEMA,A.VIEWOWNER AS TABL
                 WHERE 1=1
 			 ) C ON A.TABLE_NAME = C.TABLE_NAME AND A.TABLE_SCHEMA = C.TABLE_SCHEMA
             WHERE 1=1 
-                AND upper(A.TABLE_SCHEMA)='PUBLIC'  
+                AND upper(A.TABLE_SCHEMA) = upper('#TABLE_SCHEMA#')
                 AND A.TABLE_NAME = '#TABLE_NAME#'
                 AND A.TABLE_NAME IN (#TABLE_NAME_LIST:LS#)
             ORDER BY A.TABLE_NAME,A.ORDINAL_POSITION
             ";
 
             IDictionary<string, object> dic = new Dictionary<string, object>();
-
+            dic["TABLE_SCHEMA"] = sSchema;
             if (listTableName.Count == 0)
             {
                 return GetColumnTable(sSql, dic);

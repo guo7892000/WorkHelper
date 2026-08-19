@@ -1,14 +1,14 @@
 {
-  "version": "1.4.10.0",
-  "date": "2026-06-28",
-  "publishRemark": "1.修复连接PG失败问题。\r\n",
+  "version": "1.5.0.0",
+  "date": "2026-08-20",
+  "publishRemark": "1.文件文本替换、文件文本替换UC：选择目录使用更好用的第三方控件；支持从Excel中复制单个新或旧字符包含换行符，保存模板时去掉前后双引号，并且支持包含换行符新旧字符替换。\r\n2.合并脚本：修正指定子项时，只取子项合并脚本，并且支持多个目录的文件追加到同一个文件下。\r\n3.PostgreSQL：加载表清单增加模式条件，方便连接指定模式。\r\n",
   "appName": "WorkHelper",
   "zipFormats": "zip|rar|7z",
   "downUrlPublishLatest": "https://gitee.com/breezee2000/WorkHelper/releases/download/Latest/#appName##version#",
   "downUrlPublishGitee": "https://gitee.com/breezee2000/WorkHelper/releases/download/#version#/#appName##version#",
   "downUrlPublishGithub": "https://github.com/guo7892000/WorkHelper/releases/download/#version#/#appName##version#",
-  "stableVersion": "1.4.8.0",
-  "stableDate": "2026-5-24",
+  "stableVersion": "1.5.0.0",
+  "stableDate": "2026-8-20",
   "stableRemark": "1.点击复制字符：增加配置文件下拉框，及列表保存；增加页签配置，可以对单个配置文件显示多标签，分类展示更多内容。\r\n",
   "stableDownUrlPublish": "https://gitee.com/breezee2000/WorkHelper/releases/download/StableRealse/#appName##version#"
 }

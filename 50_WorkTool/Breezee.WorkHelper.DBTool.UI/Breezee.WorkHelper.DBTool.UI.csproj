@@ -537,6 +537,9 @@
     <None Include="Doc\Develop\JavaScript\JQuery\LigerUI\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\Develop\JavaScript\请求.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\Develop\Java\Web\JBoss\基础.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -886,6 +889,45 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\Develop\设计模式\原则.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\GaussDB\0001_基础\Oracle兼容.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\GaussDB\0001_基础\游标.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\GaussDB\0001_基础\调试.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\GaussDB\0001_基础\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\GaussDB\0002_游标\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\GaussDB\0020_查询\行转列.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\GaussDB\0020_查询\递归查询.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\GaussDB\0030_存储过程\存储过程.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\GaussDB\0032_函数\基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\GaussDB\0033_包\包基础.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\GaussDB\0033_包\包示例.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\GaussDB\0090_用户权限\系统对象.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\GaussDB\9800_连接工具\DBeaver\DBeaver.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\SQL\MySql\0010_表\表列.md">
@@ -1925,6 +1967,26 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Doc\Develop\C#\NetCore\" />
+    <Folder Include="Doc\SQL\GaussDB\0010_表\" />
+    <Folder Include="Doc\SQL\GaussDB\0022_更新\" />
+    <Folder Include="Doc\SQL\GaussDB\0050_索引\" />
+    <Folder Include="Doc\SQL\GaussDB\0060_视图\" />
+    <Folder Include="Doc\SQL\GaussDB\0085_脚本\" />
+    <Folder Include="Doc\SQL\GaussDB\9000_性能优化\" />
+    <Folder Include="Doc\SQL\KingbaseES\0001_基础\" />
+    <Folder Include="Doc\SQL\KingbaseES\0002_游标\" />
+    <Folder Include="Doc\SQL\KingbaseES\0010_表\" />
+    <Folder Include="Doc\SQL\KingbaseES\0020_查询\" />
+    <Folder Include="Doc\SQL\KingbaseES\0022_更新\" />
+    <Folder Include="Doc\SQL\KingbaseES\0030_存储过程\" />
+    <Folder Include="Doc\SQL\KingbaseES\0032_函数\" />
+    <Folder Include="Doc\SQL\KingbaseES\0033_包\" />
+    <Folder Include="Doc\SQL\KingbaseES\0050_索引\" />
+    <Folder Include="Doc\SQL\KingbaseES\0060_视图\" />
+    <Folder Include="Doc\SQL\KingbaseES\0085_脚本\" />
+    <Folder Include="Doc\SQL\KingbaseES\0090_用户权限\" />
+    <Folder Include="Doc\SQL\KingbaseES\9000_性能优化\" />
+    <Folder Include="Doc\SQL\KingbaseES\9800_连接工具\" />
     <Folder Include="Doc\SQL\MySql\0070_Job\" />
     <Folder Include="Doc\SQL\MySql\0075_触发器\" />
     <Folder Include="Doc\SQL\MySql\0080_其他对象\" />

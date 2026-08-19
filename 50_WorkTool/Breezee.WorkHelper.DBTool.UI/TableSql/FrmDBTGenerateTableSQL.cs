@@ -160,6 +160,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             toolTip1.SetToolTip(ckbLYTemplate, "当选中时，生成的文档会以LY模板方式呈现，然后我们可以复制出来，\n并粘贴到数据库变更文档中做数据库变更申请！");
             toolTip1.SetToolTip(ckbFullTypeDoc, "当选中时，生成的文档中，列类型包括类型、长度或精度信息！");
             toolTip1.SetToolTip(cbbCreateType, "生成的SQL类型，如新增表、修改表、删除表等！");
+            lblTableColumnPKInfo.Text = "建议使用与业务无关的单列（如UUID）作为主键，不要使用多主键（以唯一索引代替）。目前数据库中表有多个主键时，加载出来列主键信息不正确，可在生成脚本前后进行调整。"; 
             tsbFitStandardCheck.ToolTipText = "只针对在标准范围内（跟标准列编码一致或以其结尾）的列做检查，没在标准范围内的都算符合！";
             //加载通用列数据
             LoadCommonColumnData();

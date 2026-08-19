@@ -37,7 +37,7 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void FrmDBTScriptMerge_Load(object sender, EventArgs e)
         {
             ckbAutoOpen.Checked = true;
-            lblMergeInfo.Text= "源目录会优先从配置文件中读取，如果目录不存在，会找该配置文件所在的目录！";
+            lblMergeInfo.Text= "源目录会优先从配置文件中读取，如果目录不存在，会找该配置文件所在的目录！另外，请生成前先删除之前生成的文件，因为生成会在原文件中追加！";
 
             DataTable dtEncode = BaseFileEncoding.GetEncodingTable(false);
             cbbCharSetEncode.BindTypeValueDropDownList(dtEncode, false, true);
@@ -114,6 +114,7 @@ namespace Breezee.WorkHelper.DBTool.UI
             else
             {
                 sDirTarget = Path.Combine(sDirTarget, "900_FinalScript");
+                
             }
 
             //获取所有分类
@@ -196,8 +197,14 @@ namespace Breezee.WorkHelper.DBTool.UI
                     string sFilePath = ch.InnerText.Trim();//2021-11-04文件名不区分大小写
                     if (string.IsNullOrEmpty(sFilePath)) continue;
                     IEnumerable<string> exist = sqlFiles.ToList().Where(t => t.Equals(sFilePath, StringComparison.OrdinalIgnoreCase));
-                    if (exist.Count() == 0) continue;
-                    fileList.Add(exist.First());
+                    if (exist.Count() > 0) continue;
+
+                    string sFileFullPath = Path.Combine(sDirSource, sSourcePathRel, sFilePath);
+                    if (!string.IsNullOrEmpty(sSourcePathAbs))
+                    {
+                        sFileFullPath = Path.Combine(sSourcePathAbs, sFilePath);
+                    }
+                    fileList.Add(sFileFullPath);
                     isHasChildItem = true;
                 }
                 //如配置有文件扩展名，那么根据扩展名查找文件，找到的文件加入清单
@@ -226,7 +233,9 @@ namespace Breezee.WorkHelper.DBTool.UI
                 }
 
                 if (fileList.Count == 0) continue;
-                using (StreamWriter writer = new StreamWriter(sFinalPath, false, useEnc))
+
+                // 这里如果文件存在，那么后面的文件会追加到这个文件中，所以如果你希望每次运行时都覆盖旧的文件，可以在写入前删除旧文件
+                using (StreamWriter writer = new StreamWriter(sFinalPath, true, useEnc))
                 {
                     foreach (string filePath in fileList)
                     {
