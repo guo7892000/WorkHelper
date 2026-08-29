@@ -554,8 +554,27 @@ namespace Breezee.Framework.Mini.StartUp
 
             //克隆一个新的菜单对象
             MenuEntity dMenu = dOpenMenu.Clone();
-            //反射得到窗体
-            Assembly dll = Assembly.LoadFile(Path.Combine(_strAppPath, dMenu.DLLName));
+
+            //反射得到窗体：在Net 10中，启动文件的后缀为dll，而net framework 4.8中启动工程的后缀为exe，这两种方式都要考虑到。
+            Assembly dll;
+            try
+            {
+                dll = Assembly.LoadFile(Path.Combine(_strAppPath, dMenu.DLLName)); // 默认方式
+            }
+            catch
+            {
+                string sDll;
+                if (dMenu.DLLName.EndsWith(".exe"))
+                {
+                    sDll = dMenu.DLLName.Replace(".exe", ".dll"); //net 10中启动工程的后缀为dll
+                }
+                else
+                {
+                    sDll = dMenu.DLLName.Replace(".dll", ".exe"); //net framework 4.8中启动工程的后缀为exe
+                }
+                dll = Assembly.LoadFile(Path.Combine(_strAppPath, sDll)); //使用LoadFile方法加载dll文件
+            }
+
             object form = dll.CreateInstance(dMenu.FormName);
             if (form is Form)
             {

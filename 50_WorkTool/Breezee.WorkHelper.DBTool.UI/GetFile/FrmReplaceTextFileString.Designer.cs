@@ -99,10 +99,10 @@
             this.ckbLoadFinalSaveDirFile = new System.Windows.Forms.CheckBox();
             this.btnCopyExclude = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.lblReplaceInfo = new System.Windows.Forms.Label();
             this.dgvOldNewChar = new System.Windows.Forms.DataGridView();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblReplaceInfo = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.cbbTemplateType = new System.Windows.Forms.ComboBox();
             this.label21 = new System.Windows.Forms.Label();
@@ -815,35 +815,35 @@
             // tsmiAddDir
             // 
             this.tsmiAddDir.Name = "tsmiAddDir";
-            this.tsmiAddDir.Size = new System.Drawing.Size(160, 22);
+            this.tsmiAddDir.Size = new System.Drawing.Size(124, 22);
             this.tsmiAddDir.Text = "添加目录";
             this.tsmiAddDir.Click += new System.EventHandler(this.tsmiAddDir_Click);
             // 
             // tsmiAddFile
             // 
             this.tsmiAddFile.Name = "tsmiAddFile";
-            this.tsmiAddFile.Size = new System.Drawing.Size(160, 22);
+            this.tsmiAddFile.Size = new System.Drawing.Size(124, 22);
             this.tsmiAddFile.Text = "添加文件";
             this.tsmiAddFile.Click += new System.EventHandler(this.tsmiAddFile_Click);
             // 
             // tsmiDelete
             // 
             this.tsmiDelete.Name = "tsmiDelete";
-            this.tsmiDelete.Size = new System.Drawing.Size(160, 22);
+            this.tsmiDelete.Size = new System.Drawing.Size(124, 22);
             this.tsmiDelete.Text = "删除";
             this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
             // 
             // tsmiClear
             // 
             this.tsmiClear.Name = "tsmiClear";
-            this.tsmiClear.Size = new System.Drawing.Size(160, 22);
+            this.tsmiClear.Size = new System.Drawing.Size(124, 22);
             this.tsmiClear.Text = "清空";
             this.tsmiClear.Click += new System.EventHandler(this.tsmiClear_Click);
             // 
             // tsmiRowNoReset
             // 
             this.tsmiRowNoReset.Name = "tsmiRowNoReset";
-            this.tsmiRowNoReset.Size = new System.Drawing.Size(160, 22);
+            this.tsmiRowNoReset.Size = new System.Drawing.Size(124, 22);
             this.tsmiRowNoReset.Text = "序号重置";
             this.tsmiRowNoReset.Click += new System.EventHandler(this.tsmiRowNoReset_Click);
             // 
@@ -986,6 +986,16 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "替换的新旧字符";
             // 
+            // lblReplaceInfo
+            // 
+            this.lblReplaceInfo.AutoSize = true;
+            this.lblReplaceInfo.ForeColor = System.Drawing.Color.Red;
+            this.lblReplaceInfo.Location = new System.Drawing.Point(104, 2);
+            this.lblReplaceInfo.Name = "lblReplaceInfo";
+            this.lblReplaceInfo.Size = new System.Drawing.Size(29, 12);
+            this.lblReplaceInfo.TabIndex = 3;
+            this.lblReplaceInfo.Text = "提示";
+            // 
             // dgvOldNewChar
             // 
             this.dgvOldNewChar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -1039,16 +1049,6 @@
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 14F));
             this.tableLayoutPanel7.Size = new System.Drawing.Size(394, 86);
             this.tableLayoutPanel7.TabIndex = 6;
-            // 
-            // lblReplaceInfo
-            // 
-            this.lblReplaceInfo.AutoSize = true;
-            this.lblReplaceInfo.ForeColor = System.Drawing.Color.Red;
-            this.lblReplaceInfo.Location = new System.Drawing.Point(104, 2);
-            this.lblReplaceInfo.Name = "lblReplaceInfo";
-            this.lblReplaceInfo.Size = new System.Drawing.Size(29, 12);
-            this.lblReplaceInfo.TabIndex = 3;
-            this.lblReplaceInfo.Text = "提示";
             // 
             // label14
             // 

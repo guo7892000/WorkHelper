@@ -24,6 +24,7 @@ namespace Breezee.WorkHelper.DBTool.UI
     public partial class FrmDBTScriptMerge : BaseForm
     {
         private string sConfigPath;
+        string sTarLastDir = "900_FinalScript";
         public FrmDBTScriptMerge()
         {
             InitializeComponent();
@@ -37,13 +38,14 @@ namespace Breezee.WorkHelper.DBTool.UI
         private void FrmDBTScriptMerge_Load(object sender, EventArgs e)
         {
             ckbAutoOpen.Checked = true;
-            lblMergeInfo.Text= "源目录会优先从配置文件中读取，如果目录不存在，会找该配置文件所在的目录！另外，请生成前先删除之前生成的文件，因为生成会在原文件中追加！";
+            lblMergeInfo.Text= "源目录会优先从配置文件中读取，如果目录不存在，会找该配置文件所在的目录！另外，为防止误删除文件，生成目录如不是以" + sTarLastDir + "结尾，会自动创建该子目录用于存放生成文件！";
 
             DataTable dtEncode = BaseFileEncoding.GetEncodingTable(false);
             cbbCharSetEncode.BindTypeValueDropDownList(dtEncode, false, true);
             toolTip1.SetToolTip(cbbCharSetEncode, "生成文件的字符集！");
             //加载用户偏好值
             txbSelectPath.Text = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.MergeScript_Path, Path.Combine(DBTGlobalValue.AppPath, DBTGlobalValue.StringBuild.Xml_MergeScript)).Value;
+            ckbDelDirBfGen.Checked = true;
         }
         
         /// <summary>
@@ -101,19 +103,32 @@ namespace Breezee.WorkHelper.DBTool.UI
                 sDirSource = sSourcePath;
             }
             lblRealReadDir.Text = "实际读取的目录:" + sDirSource;
+            
             //获取生成目录
             string sTargetPath = rootList[0].GetAttributeValue(ScriptMergeString.RootProp.TargetPath);
             if (!string.IsNullOrEmpty(sTargetPath))
             {
                 sDirTarget = sTargetPath;
-                if (!Directory.Exists(sTargetPath))
+                if(!sDirTarget.EndsWith(sTarLastDir))
+                {
+                    sDirTarget = Path.Combine(sDirTarget, sTarLastDir);
+                }
+                if (!Directory.Exists(sDirTarget))
                 {
                     Directory.CreateDirectory(sDirTarget);
+                }
+                else
+                {
+                    if (ckbDelDirBfGen.Checked)
+                    {
+                        Directory.Delete(sDirTarget, true);
+                        Directory.CreateDirectory(sDirTarget);
+                    }
                 }
             }
             else
             {
-                sDirTarget = Path.Combine(sDirTarget, "900_FinalScript");
+                sDirTarget = Path.Combine(sDirTarget, sTarLastDir);
                 
             }
 

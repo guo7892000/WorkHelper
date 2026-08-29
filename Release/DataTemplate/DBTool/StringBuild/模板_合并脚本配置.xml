@@ -33,6 +33,10 @@
     <item>V_COM_PROVICE_CITY.sql</item>
     <item>V_ORG_INFO.sql</item>
     <item>V_SYS_AND_MENU.sql</item>
+  </class>
+
+  <!--创建视图-->
+  <class finalName="03_view_all.sql" sourcePathRel="05_View" fileExt="" remark="创建视图">
     <item>V_SYS_MENU_FULL_PATH.sql</item>
     <item>V_SYS_RECEIVER_GROUP_USER_EMP.sql</item>
     <item>V_SYS_MENU_BUTTON.sql</item>

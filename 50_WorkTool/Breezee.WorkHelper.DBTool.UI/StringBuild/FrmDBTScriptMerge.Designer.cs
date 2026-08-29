@@ -47,6 +47,7 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.lblRealReadDir = new System.Windows.Forms.Label();
             this.rtbString = new System.Windows.Forms.RichTextBox();
+            this.ckbDelDirBfGen = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -124,6 +125,7 @@
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.cbbCharSetEncode, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.ckbAutoOpen, 3, 1);
+            this.tableLayoutPanel1.Controls.Add(this.ckbDelDirBfGen, 5, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -201,7 +203,7 @@
             // 
             this.lblMergeInfo.AutoSize = true;
             this.lblMergeInfo.ForeColor = System.Drawing.Color.Red;
-            this.lblMergeInfo.Location = new System.Drawing.Point(164, 2);
+            this.lblMergeInfo.Location = new System.Drawing.Point(46, 0);
             this.lblMergeInfo.Name = "lblMergeInfo";
             this.lblMergeInfo.Size = new System.Drawing.Size(29, 12);
             this.lblMergeInfo.TabIndex = 0;
@@ -238,6 +240,17 @@
             this.rtbString.TabIndex = 0;
             this.rtbString.Text = "";
             // 
+            // ckbDelDirBfGen
+            // 
+            this.ckbDelDirBfGen.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbDelDirBfGen.AutoSize = true;
+            this.ckbDelDirBfGen.Location = new System.Drawing.Point(363, 34);
+            this.ckbDelDirBfGen.Name = "ckbDelDirBfGen";
+            this.ckbDelDirBfGen.Size = new System.Drawing.Size(222, 16);
+            this.ckbDelDirBfGen.TabIndex = 5;
+            this.ckbDelDirBfGen.Text = "生成前清空【900_FinalScript】目录";
+            this.ckbDelDirBfGen.UseVisualStyleBackColor = true;
+            // 
             // FrmDBTScriptMerge
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -247,7 +260,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FrmDBTScriptMerge";
             this.Text = "脚本合并";
             this.Load += new System.EventHandler(this.FrmDBTScriptMerge_Load);
@@ -283,5 +296,6 @@
         private System.Windows.Forms.CheckBox ckbAutoOpen;
         private System.Windows.Forms.Label lblMergeInfo;
         private System.Windows.Forms.Label lblRealReadDir;
+        private System.Windows.Forms.CheckBox ckbDelDirBfGen;
     }
 }
