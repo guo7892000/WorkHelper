@@ -1,16 +1,17 @@
-﻿using System;
+﻿using Breezee.Core.Entity;
+using Breezee.Core.Tool;
+using NPOI.POIFS.Crypt.Dsig;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.IO;
-using System.Diagnostics;
-
-using Breezee.Core.Tool;
-using Breezee.Core.Entity;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 using Timer = System.Windows.Forms.Timer;
 
 /***************************************
@@ -345,7 +346,9 @@ namespace Breezee.Core.WinFormUI
             btnMore.Click += btnMore_Click;
 
             panelErrorInfo.Visible = false;
-            //设置对话框高度：NET 4.8中设置为125，NET 6以上中设置为172
+
+            // 设置对话框高度：NET 4.8中设置为125，NET 6以上中设置为172
+            // 在Breezee.Framework.Mini.Entity\Config\Mini\Data\NetVersion.xml为对应配置值
             this.Height = "4".Equals(WinFormContext.Instance.NetVersion) ? 125 : 172;
 
             #region 设置效果

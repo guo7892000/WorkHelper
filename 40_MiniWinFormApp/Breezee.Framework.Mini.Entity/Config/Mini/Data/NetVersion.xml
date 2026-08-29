@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <config>
-  <!--使用的net版本。为了区分NetFramework4.8和NetCore6，这里value为4，表示4.8；6表示NetCore6-->
+  <!--当前设置值主要给【Breezee.Core.WinFormUI\Common\MsgBox.cs】使用，设置错误会导致MsgBox显示有问题。-->
+  <!--使用的net版本：NetFramework4.8中的工程请设置值为4，Net10中的工程请设置值为10。-->
   <data key="netVersion" value ="4"/>
 </config>  

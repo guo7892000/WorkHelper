@@ -82,7 +82,7 @@ namespace Breezee.Core.WinFormUI
         /// </summary>
         public string CurrentClientVersion = "";
         /// <summary>
-        /// Net版本信息
+        /// Net版本信息，在Breezee.Framework.Mini.Entity\Config\Mini\Data\NetVersion.xml为对应配置值
         /// </summary>
         public string NetVersion = "4";
         /// <summary>
@@ -745,7 +745,7 @@ namespace Breezee.Core.WinFormUI
             appConfig.Save();
             winConfig.Save();
 
-            //读取Net Version
+            //读取Net Version：在Breezee.Framework.Mini.Entity\Config\Mini\Data\NetVersion.xml为对应配置值
             AppConfigPair versionConfig = new AppConfigPair(GlobalContext.RunPathMiniData(), GlobalFile.NetVersion, XmlConfigSaveType.Attribute);
             Instance.NetVersion = versionConfig.Get("netVersion", "4");
         }
