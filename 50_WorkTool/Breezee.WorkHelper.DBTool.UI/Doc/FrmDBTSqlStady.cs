@@ -25,6 +25,11 @@ namespace Breezee.WorkHelper.DBTool.UI
             InitializeComponent();
         }
 
+        /// <summary>
+        /// 窗体加载事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FrmDBTExchangeStringPlace_Load(object sender, EventArgs e)
         {
             //SQL学习文本根路径

@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<config>
-  <!--当前设置值主要给【Breezee.Core.WinFormUI\Common\MsgBox.cs】使用，设置错误会导致MsgBox显示有问题。-->
-  <!--使用的net版本：NetFramework4.8中的工程请设置值为4，Net10中的工程请设置值为10。-->
-  <data key="netVersion" value ="4"/>
-</config>  

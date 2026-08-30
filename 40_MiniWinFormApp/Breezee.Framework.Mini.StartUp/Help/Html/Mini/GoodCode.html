@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>代码示例</title>
+</head>
+<body>
+    <div>
+        <h1>代码示例</h1>
+        <div>
+            <h2>一、概述</h2>
+            使用本框架的一些好的或特殊代码段。
+        </div>
+        <div>
+            <h2>二、代码段清单</h2>
+            <b>*针对不同net版本的代码处理</b>
+            <pre><code>
+    #if NETCOREAPP || NET5_0_OR_GREATER || NET6_0_OR_GREATER
+    this.Height = 350; //net 6及更高版本
+    #else
+    this.Height = 250; //NET 4.8
+    #endif
+</code></pre>
+            <b>*读取和保存喜好配置</b>
+            <pre><code>
+    //加载配置
+    cbbCharSetEncode.SelectedValue = WinFormContext.UserLoveSettings.Get(DBTUserLoveConfig.SQLStudy_FileCharsetEncoding, BaseFileEncoding.FileEncodingString.GB2312).Value;
+    //保存配置
+    WinFormContext.UserLoveSettings.Set(DBTUserLoveConfig.SQLStudy_FileCharsetEncoding, cbbCharSetEncode.SelectedValue.ToString(), "【SQL总结】文件的字符集类型");
+    WinFormContext.UserLoveSettings.Save();
+</code></pre>
+        </div>
+    </div>
+</body>
+</html>

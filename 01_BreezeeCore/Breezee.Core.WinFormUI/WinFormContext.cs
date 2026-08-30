@@ -746,8 +746,13 @@ namespace Breezee.Core.WinFormUI
             winConfig.Save();
 
             //读取Net Version：在Breezee.Framework.Mini.Entity\Config\Mini\Data\NetVersion.xml为对应配置值
-            AppConfigPair versionConfig = new AppConfigPair(GlobalContext.RunPathMiniData(), GlobalFile.NetVersion, XmlConfigSaveType.Attribute);
-            Instance.NetVersion = versionConfig.Get("netVersion", "4");
+            //AppConfigPair versionConfig = new AppConfigPair(GlobalContext.RunPathMiniData(), GlobalFile.NetVersion, XmlConfigSaveType.Attribute);
+            //Instance.NetVersion = versionConfig.Get("netVersion", "4");
+#if NETCOREAPP || NET5_0_OR_GREATER || NET6_0_OR_GREATER
+            Instance.NetVersion = "10";  //net 6或更高版本
+#else
+            Instance.NetVersion = "4"; //NET 4.8
+#endif
         }
 
         #region 记录系统日志

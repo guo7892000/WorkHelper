@@ -32,6 +32,8 @@
             this.panelTop = new System.Windows.Forms.Panel();
             this.lblTitle = new System.Windows.Forms.Label();
             this.lblMessage = new System.Windows.Forms.Label();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.panelMain = new System.Windows.Forms.Panel();
             this.btnMore = new System.Windows.Forms.Button();
             this.labTimer = new System.Windows.Forms.Label();
@@ -47,14 +49,12 @@
             this.btnAbort = new System.Windows.Forms.Button();
             this.panelErrorInfo = new System.Windows.Forms.Panel();
             this.Txt_ErrorInfo = new System.Windows.Forms.TextBox();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tsmiCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.panelTop.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.panelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picIcon)).BeginInit();
             this.panelBottom.SuspendLayout();
             this.panelErrorInfo.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelTop
@@ -92,6 +92,20 @@
             this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblMessage.MouseEnter += new System.EventHandler(this.lblMessage_MouseEnter);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiCopy});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(101, 26);
+            // 
+            // tsmiCopy
+            // 
+            this.tsmiCopy.Name = "tsmiCopy";
+            this.tsmiCopy.Size = new System.Drawing.Size(100, 22);
+            this.tsmiCopy.Text = "复制";
+            this.tsmiCopy.Click += new System.EventHandler(this.tsmiCopy_Click);
+            // 
             // panelMain
             // 
             this.panelMain.Controls.Add(this.btnMore);
@@ -123,7 +137,7 @@
             this.labTimer.ForeColor = System.Drawing.Color.Red;
             this.labTimer.Location = new System.Drawing.Point(358, 32);
             this.labTimer.Name = "labTimer";
-            this.labTimer.Size = new System.Drawing.Size(30, 16);
+            this.labTimer.Size = new System.Drawing.Size(29, 16);
             this.labTimer.TabIndex = 7;
             this.labTimer.Text = "0秒";
             this.labTimer.Visible = false;
@@ -261,20 +275,6 @@
             this.Txt_ErrorInfo.Size = new System.Drawing.Size(320, 123);
             this.Txt_ErrorInfo.TabIndex = 8;
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiCopy});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(101, 26);
-            // 
-            // tsmiCopy
-            // 
-            this.tsmiCopy.Name = "tsmiCopy";
-            this.tsmiCopy.Size = new System.Drawing.Size(152, 22);
-            this.tsmiCopy.Text = "复制";
-            this.tsmiCopy.Click += new System.EventHandler(this.tsmiCopy_Click);
-            // 
             // MsgBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -293,13 +293,13 @@
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MDS_FrmMsgBox_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MDS_FrmMsgBox_MouseMove);
             this.panelTop.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.panelMain.ResumeLayout(false);
             this.panelMain.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picIcon)).EndInit();
             this.panelBottom.ResumeLayout(false);
             this.panelErrorInfo.ResumeLayout(false);
             this.panelErrorInfo.PerformLayout();
-            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
