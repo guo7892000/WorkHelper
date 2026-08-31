@@ -1,5 +1,72 @@
-### 递归
-所谓递归,简单点来说,就是一个函数直接或间接调用自身的一种方法,它通常把一个大型复杂的问题层层转化为一个与原问题相似的规模较小的问题来求解。
+### Oracle递归
+所谓递归,简单点来说,就是一个函数直接或间接调用自身的一种方法,它通常把一个大型复杂的问题层层转化为一个与原问题相似的规模较小的问题来求解。  
+这里介绍Oracle数据库中专用的递归语法。
+#### Oracle专用递归说明
+函数/伪列	        说明  
+LEVEL	            层级深度，从1开始  
+CONNECT_BY_ROOT	    获取根节点（起始节点）的值  
+CONNECT_BY_ISLEAF	判断是否为叶子节点（1是，0否）  
+SYS_CONNECT_BY_PATH	显示完整路径  
+PRIOR	            指定递归关系方向  
+CONNECT BY PRIOR A.ITEM_PID = A.ITEM_CID	向上追溯（父→子方向），即查找所有父级结构  
+CONNECT BY PRIOR A.ITEM_CID = A.ITEM_PID	向下查找（子→父方向），即查找所有子级结构  
+
+```
+-- 向上追溯（查找所有父级结构）
+SELECT A.ITEM_CID,
+       A.ITEM_PID,
+       P.QD_FACTORY_FLAG,
+       LEVEL AS HIERARCHY_LEVEL,
+       CONNECT_BY_ROOT A.ITEM_CID AS START_ITEM,
+       -- 显示完整追溯路径（从顶层到底层）
+       SYS_CONNECT_BY_PATH(A.ITEM_CID, ' -> ') AS FULL_PATH,
+       -- 判断是否根节点
+       CASE WHEN LEVEL = 1 THEN 'BOTTOM' 
+            WHEN CONNECT_BY_ISLEAF = 1 THEN 'TOP' 
+            ELSE 'MIDDLE' 
+       END AS NODE_TYPE
+FROM ebom_t_engstru A
+LEFT JOIN MBOM_T_QDITMPROP P 
+    ON A.ITEM_CID = P.ITEM_ID
+WHERE A.DATE_END = '99999999'
+START WITH A.CNC_BGN = 'QD_0000709904_01'
+CONNECT BY PRIOR A.ITEM_PID = A.ITEM_CID
+    AND A.DATE_END = '99999999'
+ORDER BY LEVEL DESC, A.ITEM_CID;
+
+-- 从顶层父级向下查找所有子件
+SELECT A.ITEM_CID,
+       A.ITEM_PID,
+       P.QD_FACTORY_FLAG,
+       LEVEL AS HIERARCHY_LEVEL,
+       CONNECT_BY_ROOT A.ITEM_PID AS ROOT_ITEM,
+       SYS_CONNECT_BY_PATH(A.ITEM_CID, ' -> ') AS FULL_PATH
+FROM ebom_t_engstru A
+LEFT JOIN MBOM_T_QDITMPROP P 
+    ON A.ITEM_CID = P.ITEM_ID
+WHERE A.DATE_END = '99999999'
+START WITH A.CNC_BGN = 'QD_0000709904_01'  -- 从顶层父级开始
+CONNECT BY PRIOR A.ITEM_CID = A.ITEM_PID    -- 向下查找子件
+    AND A.DATE_END = '99999999'
+ORDER BY LEVEL, A.ITEM_CID;
+
+-- 仅返回最顶层的父级记录
+SELECT A.ITEM_CID,
+       A.ITEM_PID,
+       P.QD_FACTORY_FLAG,
+       LEVEL AS HIERARCHY_LEVEL,
+       CONNECT_BY_ROOT A.ITEM_CID AS START_ITEM
+FROM ebom_t_engstru A
+LEFT JOIN MBOM_T_QDITMPROP P 
+    ON A.ITEM_CID = P.ITEM_ID
+WHERE A.DATE_END = '99999999'
+  AND CONNECT_BY_ISLEAF = 1                     -- 叶子节点即最顶层父级
+START WITH A.CNC_BGN = 'QD_0000709904_01'
+CONNECT BY PRIOR A.ITEM_PID = A.ITEM_CID
+    AND A.DATE_END = '99999999'
+ORDER BY LEVEL DESC;
+
+```
 #### 递归查询
 ```
 /*递归查询所有子级结构*/
@@ -117,3 +184,5 @@ select sys_connect_by_path(ename,'/') tree,level from emp start with ename='King
 
 
 ```
+
+
