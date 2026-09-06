@@ -94,7 +94,10 @@ namespace Breezee.Framework.Mini.StartUp
             WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp("/Help/Html/Mini/ChangeHistory.html", _FrameworkHelpName + " > 变更历史", _FrameworkHelpName));
             WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp("/Help/Html/Mini/PracticalFunction.html", _FrameworkHelpName + " > 推荐功能", _FrameworkHelpName));
             WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp("/Help/Html/Mini/DevelopHelper.html", _FrameworkHelpName + " > 开发说明", _FrameworkHelpName));
+            WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp("/Help/Html/Mini/OuterComponents.html", _FrameworkHelpName + " > 重要外部组件", _FrameworkHelpName));
             WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp("/Help/Html/Mini/GoodCode.html", _FrameworkHelpName + " > 重要代码段", _FrameworkHelpName));
+            WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp("/Help/Html/Mini/MenuCode.html", _FrameworkHelpName + " > 菜单代码", _FrameworkHelpName));
+            WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp("/Help/Html/Mini/SystemUpgrade.html", _FrameworkHelpName + " > 系统升级代码", _FrameworkHelpName));
             //加载菜单
             LoadMenu();
             //增加快捷菜单

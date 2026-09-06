@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>系统升级</title>
+</head>
+<body>
+    <div>
+        <h1>系统升级</h1>
+        <div>
+            <h2>一、功能概述</h2>
+            本框架的系统升级相关代码。
+        </div>
+        <div>
+            <h2>二、应用程序的主入口点代码</h2>
+            <pre><code>
+[STAThread]
+static void Main()
+{
+    Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
+
+    Application.EnableVisualStyles();
+    Application.SetCompatibleTextRenderingDefault(false);
+    //IoC容器的DLL注册类
+    IoCDllRegister.Reg(new string[]
+    {
+        "Breezee.Core.Adapter.BLL",
+        "Breezee.AutoSQLExecutor.Common",
+        "Breezee.Framework.Mini.BLL",
+        "Breezee.Framework.Mini.DAL",
+        "Breezee.Framework.Mini.DAL.SQLite",
+        "Breezee.WorkHelper.DBTool.BLL",
+        "Breezee.WorkHelper.DBTool.DAL",
+        "Breezee.WorkHelper.DBTool.DAL.SQLite"
+    });
+    //加载应用配置
+    WinFormContext.Instance.LoadAppConfig();
+    //打开登录界面
+    FrmMiniLogin frmLogin = new FrmMiniLogin();
+    if (frmLogin.ShowDialog() != DialogResult.OK) return;
+    //删除旧版本文件
+    DeleteOldVersionFile();
+    //SQL日志配置取值
+    LoadSqlLogConfig();
+    //创建主窗体
+    FrmMiniMainMDI frmMain = new FrmMiniMainMDI();
+    WinFormContext.Instance.SetMdiParent(frmMain);
+    //全局应用类
+    FormApp app = new MiniApp();
+    app.SetMain();
+    app.LoginForm = frmLogin;
+    app.MainForm = frmMain;
+    app.Init();
+    //运行应用
+    Application.Run(frmMain);
+}   
+
+//删除旧版本文件
+private static void DeleteOldVersionFile()
+{
+    //删除旧版本逻辑：有上次更新路径，且是要删除旧版本
+    WinFormConfig winConfig = WinFormContext.Instance.WinFormConfig;
+    string sPrePath = string.Empty;
+    try
+    {
+        sPrePath = winConfig.Get(GlobalKey.Upgrade_PreVersionPath, "");
+        string sExePath = Path.GetFullPath(GlobalContext.AppEntryAssemblyPath);
+        if (!string.IsNullOrEmpty(sPrePath) && "1".Equals(winConfig.Get(GlobalKey.Upgrade_IsDeleteOldVersion, "1")))
+        {
+            string sPreVersionPath = Path.GetFullPath(sPrePath);
+            bool isSaveDir = sExePath.Equals(sPreVersionPath, StringComparison.OrdinalIgnoreCase);
+
+            if ("1".Equals(winConfig.Get(GlobalKey.Upgrade_IsDeleteOldVersionNeedConfirm, "1")))
+            {
+                if (Directory.Exists(sPrePath) && !isSaveDir)
+                {
+                    if (MsgHelper.ShowOkCancel("旧版本路径：" + sPrePath + "，确认删除？") == DialogResult.OK)
+                    {
+                        Directory.Delete(sPrePath, true);
+                        winConfig.Set(GlobalKey.Upgrade_PreVersionPathBak, sPrePath, "备份上个版本文件夹用于下次登录再次删除：上次正常删除");
+                        winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "清空上个版本文件夹：正常删除");
+                        winConfig.Save();
+                    }
+                    else
+                    {
+                        winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "清空上个版本文件夹：用户确认不删除");
+                        winConfig.Save();
+                    }
+                }
+            }
+            else
+            {
+                if (Directory.Exists(sPrePath) && !isSaveDir)
+                {
+                    Directory.Delete(sPrePath, true);
+                    winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "清空上个版本文件夹：不用确认直接删除");
+                    winConfig.Save();
+                }
+            }
+        }
+        //再次删除上版本目录：因为第一次删除不能删除根目录，可能是重新登录还是占用了原目录
+        string sPrePathBak = winConfig.Get(GlobalKey.Upgrade_PreVersionPathBak, "");
+        if (!string.IsNullOrEmpty(sPrePathBak))
+        {
+            if (!Directory.Exists(sPrePathBak))
+            {
+                winConfig.Set(GlobalKey.Upgrade_PreVersionPathBak, "", "清空再次删除上个版本文件夹的配置：目录已不存在");
+                winConfig.Save();
+                return;
+            }
+            try
+            {
+                Directory.Delete(sPrePathBak, true);
+                winConfig.Set(GlobalKey.Upgrade_PreVersionPathBak, "", "清空再次删除上个版本文件夹的配置：已再次删除");
+                winConfig.Save();
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine(e.Message);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        System.Console.WriteLine(ex.Message);
+        winConfig.Set(GlobalKey.Upgrade_PreVersionPathBak, sPrePath, "备份上个版本文件夹用于下次登录再次删除：上次删除出错");
+        winConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "清空上个版本文件夹：出错了");
+        winConfig.Save();
+    }
+}
+</code></pre>
+        </div>
+
+        <div>
+            <h2>三、MDI主窗体代码</h2>
+            <pre><code>
+//加载事件
+private void FrmMainMDI_Load(object sender, EventArgs e)
+{
+    //自动检测是否有新版本
+    UpgradeSuccessReloadAppDeleagte += UpgradeReloadApp;
+    if ("1".Equals(_WinFormConfig.Get(GlobalKey.Upgrade_IsAutoCheckVersion, "1")))
+    {
+        Task.Run(() => UpgradeSystem(false));
+    }
+}
+
+#region 升级后重启应用代理方法
+private void UpgradeReloadApp()
+{
+    if (WinFormContext.Instance.MdiForm.InvokeRequired)
+    {
+        UpgradeSuccessReloadApp reloadApp = new UpgradeSuccessReloadApp(ReloadApp);
+        WinFormContext.Instance.MdiForm.Invoke(reloadApp); //跨线程调用时，要使用委托执行关闭应用
+    }
+    else
+    {
+        ReloadApp();
+    }
+}
+
+private void ReloadApp()
+{
+    WinFormContext.Instance.MdiForm.Close();
+} 
+#endregion
+
+//升级系统
+private async void UpgradeSystem(bool isHandUpdate)
+{
+    try
+    {
+        /**
+         * 读取服务器的版本(blob为默认点开的网页形式)：https://gitee.com/breezee2000/WorkHelper/blob/master/LatestVersion.json
+         * 读取服务器的版本(raw为原始数据形式)：https://gitee.com/breezee2000/WorkHelper/raw/master/LatestVersion.json
+         * 使用有优先级的多个下载路径：
+         * 1、发布路径-Gitee：包含版本号的压缩包
+         * 2、发布路径-Github：包含版本号的压缩包
+         * 3、发布路径-Gitlab：包含版本号的压缩包
+         */
+        string sServerVersionJson = AppUpgradeTool.ReadWebText().Trim();
+        LatestVerionConfig ver = _IADPJson.Deserialize<LatestVerionConfig>(sServerVersionJson);
+        upgradeInfo = new UpgradeInfo(ver);
+        // string sServerVersion = ver.version;
+        //本地版本：注这里必须以启动项目的版本号来判断才合理，因为可能本地可能会保留多个版本的目录
+        string sNowVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(); 
+
+        string[] sNowArr = sNowVersion.Split(new char[] { '.' });
+        string[] sServerArr = ver.version.Split(new char[] { '.' });
+        for (int i = 0; i < sServerArr.Length; i++)
+        {
+            if (sNowArr.Length > i)
+            {
+                if(int.Parse(sServerArr[i]) > int.Parse(sNowArr[i]))
+                {
+                    //服务器版本大于本地版本
+                    upgradeInfo.Client.IsNeedUpgrade = true;
+                    break;
+                }
+                else if (int.Parse(sServerArr[i]) < int.Parse(sNowArr[i]))
+                {
+                    upgradeInfo.Client.IsNeedUpgrade = false;
+                    break;//服务器版本小于本地版本
+                }
+            }
+        }
+        if (upgradeInfo.Client.IsNeedUpgrade)
+        {
+            if (WinFormContext.Instance.IsUpgradeRunning)
+            {
+                if (isHandUpdate)
+                {
+                    MsgHelper.ShowInfo("目前正在升级下载中。。。");
+                }
+                return;
+            }
+
+            string sMsg = "存在新版本：" + ver.version + "，确定要升级？" + System.Environment.NewLine + "升级过程在后台运行，不影响正常使用，完成后会提示。";
+            if (!string.IsNullOrEmpty(ver.publishRemark.Trim()))
+            {
+                sMsg += "本次修改内容：" + Environment.NewLine + ver.publishRemark;
+            }
+
+            if (MsgHelper.ShowOkCancel(sMsg) == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            _sDestopLastMsg = ver.version + "版本压缩包正在后台下载中，请稍等...";
+            ShowGlobalMsg_Click(this, new ShowGlobalMsgEventArgs(_sDestopLastMsg));
+            //版本升级
+            WinFormContext.Instance.IsUpgradeRunning = true;
+            //异步获取文件
+            DirectoryInfo sPrePath = new DirectoryInfo(GlobalContext.AppEntryAssemblyPath);
+            upgradeInfo.Client.ParentDir = _WinFormConfig.Get(GlobalKey.Upgrade_TempPath, sPrePath.Parent.FullName);//默认为当前运行程序的父目录
+            bool isDeleteNewVerZipFile = _WinFormConfig.Get(GlobalKey.Upgrade_IsDeleteNewVerZipFile, "1").Equals("1") ? true : false;
+            upgradeInfo.Client.IsDeleteNewVerZipFile = isDeleteNewVerZipFile;
+            //取消原来的写死下载路径，改为从配置文件上获取，下载优化先级：downUrlPublishLatest => downUrlPublishGitee => downUrlPublishGithub
+            //string sServerZipUrl = string.Format("https://gitee.com/breezee2000/WorkHelper/releases/download/{0}/WorkHelper{1}.rar", sServerVersion, sServerVersion);
+            string sServerZipUrl = ver.downUrlPublishLatest.Replace("#version#", ver.version).Replace("#appName#", ver.appName);
+            upgradeInfo.Server.TempDownloadUrl = sServerZipUrl;
+            bool isHaveZipNewVersion = CheckWebFileExists(upgradeInfo);
+            int iMaxDownCount = 20;
+            int iDownCount = 1; //总共下载十次
+
+            while(iDownCount <= iMaxDownCount)
+            {
+                try
+                {
+                    if (isHaveZipNewVersion)
+                    {
+                        try
+                        {
+                            //通用最新版本存在版本压缩包时，异步获取压缩包文件
+                            // await Task.Run(() => AppUpgradeTool.DownloadWebZipAndUnZipAsync(upgradeInfo));
+                            await AppUpgradeTool.DownloadWebZipAndUnZipAsync(upgradeInfo);
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                    }
+                    //通用最新版本不存在版本压缩包时，取Gitee上的压缩包
+                    sServerZipUrl = ver.downUrlPublishGitee.Replace("#version#", ver.version).Replace("#appName#", ver.appName);
+                    upgradeInfo.Server.TempDownloadUrl = sServerZipUrl;
+                    isHaveZipNewVersion = CheckWebFileExists(upgradeInfo);
+                    if (isHaveZipNewVersion)
+                    {
+                        try
+                        {
+                            //Gitee存在版本压缩包时，异步获取压缩包文件
+                            await Task.Run(() => AppUpgradeTool.DownloadWebZipAndUnZipAsync(upgradeInfo));
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                    }
+
+                    //Gitee不存在时使用Github
+                    sServerZipUrl = ver.downUrlPublishGithub.Replace("#version#", ver.version).Replace("#appName#", ver.appName);
+                    upgradeInfo.Server.TempDownloadUrl = sServerZipUrl;
+                    isHaveZipNewVersion = CheckWebFileExists(upgradeInfo);
+                    if (isHaveZipNewVersion)
+                    {
+                        try
+                        {
+                            //Github存在版本压缩包时，异步获取压缩包文件
+                            await Task.Run(() => AppUpgradeTool.DownloadWebZipAndUnZipAsync(upgradeInfo));
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                finally
+                {
+                    iDownCount++;
+                }
+            }
+
+            //试了最大次数还不成功，那么提示信息
+            if (iDownCount >= iMaxDownCount)
+            {
+                MsgHelper.ShowInfo(string.Format("升级失败，最新版本{0}发布包未找到，请联系作者！", ver.version));
+                return;
+            }
+
+            WinFormContext.Instance.IsUpgradeRunning = false;                   
+            if("release".Equals(sPrePath.Name,StringComparison.OrdinalIgnoreCase) || "bin".Equals(sPrePath.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                _WinFormConfig.Set(GlobalKey.Upgrade_PreVersionPath, "", "当前版本所在的目录，为升级完后删除旧版本使用！"); //开发环境，不记录原版本
+            }
+            else
+            {
+                //正式运行环境：记录原版本路径，还备份SQLite数据库文件
+                _WinFormConfig.Set(GlobalKey.Upgrade_PreVersionPath, sPrePath.FullName, "当前版本所在的目录，为升级完后删除旧版本使用！");
+            }
+
+            //File.Delete(Path.Combine(sLocalDir,string.Format("WorkHelper{0}.rar", sServerVersion))); //删除新版本的压缩包：已取消，杀毒软件会误报为病毒
+            //升级后重新登录提示：已取消，在关闭窗体时会有确认
+            //if (MsgHelper.ShowOkCancel("升级成功！是否打开新版本？")== DialogResult.Cancel) 
+            //{ 
+            //    return; 
+            //}
+            //设置新应用路径
+            string sNewRoot = Path.Combine(upgradeInfo.Client.ParentDir, "WorkHelper" + ver.version);
+            _WinFormConfig.Set(GlobalKey.Upgrade_LatestVersionRootDir, sNewRoot, "新版本的根目录");
+            _WinFormConfig.Set(GlobalKey.Upgrade_CurrentVersionNo, ver.version, "当前版本号");
+            sUpgradeNewAppFullPath = Path.Combine(sNewRoot, MiniGlobalValue.AppStartUpExeName);
+            _WinFormConfig.Save();//保存配置
+
+            if(_WinFormConfig.Get(GlobalKey.Upgrade_IsAutoCorrectDesktopQuickLink, "1").Equals("1"))
+            {
+                //覆盖桌面快捷方式：杀毒软件也有可能会误报为病毒（本人电脑装了360，亲测会误报病毒）
+                StartUpHelper.ReplaceDesktopQuickLink(sNewRoot);
+            }
+            
+            IsUpgradeColseOldApp = true;
+            _sDestopLastMsg = "WorkHelper" + ver.version + "版本已成功下载并解压！";
+            ShowGlobalMsg_Click(this, new ShowGlobalMsgEventArgs(_sDestopLastMsg));
+            if (UpgradeSuccessReloadAppDeleagte != null)
+            {
+                UpgradeSuccessReloadAppDeleagte(); //升级成功，重启应用
+            }
+        }
+        else
+        {
+            if (isHandUpdate)
+            {
+                MsgHelper.ShowInfo("已经是最新版本，不需要升级！");
+            }
+        }
+    }
+    catch(Exception ex) 
+    {
+        if (isHandUpdate)
+        {
+            DialogResult dialogResult = MsgHelper.ShowYesNo("升级出错，是否打开网页下载？\r\n本次报错信息：" + ex.Message);
+            if (dialogResult == DialogResult.Yes)
+            {
+                System.Diagnostics.Process.Start("https://gitee.com/breezee2000/WorkHelper/releases/tag/Latest");
+            }
+        }
+        else
+        {
+            WinFormContext.Instance.LogErr(ex.Message, "升级出错", false);
+        }
+        WinFormContext.Instance.IsUpgradeRunning = false;
+    }
+
+}
+            </code></pre>
+        </div>
+        <div>
+            <h2>四、应用升级工具代码</h2>
+            <div>
+                <pre><code>
+public class AppUpgradeTool
+{
+    public static UpgradeFinishData data;
+    /// <summary>
+    /// 升级配置文件地址
+    /// 注：新的使用NewLatestVersion.json；旧的LatestVersion.json不再使用，但仍保留一段时间
+    /// </summary>
+    public static string UpgradeConfigUrl = "https://gitee.com/breezee2000/WorkHelper/raw/master/NewLatestVersion.json";
+
+    /// <summary>
+    /// 设置升级配置文件地址
+    /// </summary>
+    /// <param name="sUrl"></param>
+    public static void SetUpgradeConfigUrl(string sUrl)
+    {
+        UpgradeConfigUrl = sUrl;
+    }
+
+    /// <summary>
+    /// 下载Web压缩包并解压
+    /// </summary>
+    /// <param name="upgradeInfo">升级信息</param>
+    /// <returns></returns>
+    public static async Task DownloadWebZipAndUnZipAsync(UpgradeInfo upgradeInfo)
+    {
+        //下载地址：https://gitee.com/breezee2000/WorkHelper/releases/download/1.2.24/WorkHelper1.2.24.rar
+        //string sFileName = mc[0].Value.Substring(1);
+        //string sDirName = mc[0].Value.Substring(1, sFileName.LastIndexOf("."));
+        string sFullZipPath = Path.Combine(upgradeInfo.Client.ParentDir, upgradeInfo.Server.ZipFileName);
+        //如已存在，修改压缩包名称：如删除文件，杀毒软件会误报为病毒
+        if (File.Exists(sFullZipPath))
+        {
+            if (upgradeInfo.Client.IsDeleteNewVerZipFile)
+            {
+                try
+                {
+                    File.Delete(sFullZipPath); // 删除压缩包
+                }
+                catch (Exception ex)
+                {
+                    System.Console.WriteLine(ex.Message); //复制文件出错，只在控制台输入错误信息
+                }
+            }
+            else
+            {
+                // 不需要删除已有压缩包
+                // 找出版本号
+                Regex regex = new Regex(@"(\d+.)+", RegexOptions.IgnoreCase);
+                MatchCollection mc = regex.Matches(upgradeInfo.Server.ZipFileName);
+                if (mc.Count > 0)
+                {
+                    //有版本号：一般是有版本号的
+                    string sVersion = mc[0].Value.Substring(0, mc[0].Value.Length - 1);
+                    string sSetupName = upgradeInfo.Server.ZipFileName.Substring(0, mc[0].Index);
+                    string sExtName = upgradeInfo.Server.ZipFileName.Substring(mc[0].Index + mc[0].Length);
+                    int iNewFile = 1;//从所有父目录查找同名文件还有没有
+                    while (File.Exists(Path.Combine(upgradeInfo.Client.ParentDir, sSetupName + sVersion + "(" + iNewFile + ")." + sExtName)))
+                    {
+                        iNewFile++;
+                    }
+                    string sFileName = sSetupName + sVersion + "(" + iNewFile + ")." + sExtName;
+                    sFullZipPath = Path.Combine(upgradeInfo.Client.ParentDir, sFileName);
+                }
+                else
+                {
+                    //无版本号，直接取压缩包后缀：这种情况很少
+                    regex = new Regex(@".(rar|zip|7z)$", RegexOptions.IgnoreCase);
+                    mc = regex.Matches(upgradeInfo.Server.ZipFileName);
+                    if (mc.Count > 0)
+                    {
+                        string sSetupName = upgradeInfo.Server.ZipFileName.Substring(0, mc[0].Index);
+                        int iNewFile = 1;
+                        while (File.Exists(Path.Combine(upgradeInfo.Client.ParentDir, sSetupName + "(" + iNewFile + ")" + mc[0].Value)))
+                        {
+                            iNewFile++;
+                        }
+                        string sFileName = sSetupName + "(" + iNewFile + ")" + mc[0].Value;
+                        sFullZipPath = Path.Combine(upgradeInfo.Client.ParentDir, sFileName);
+                    }
+                }
+            }
+        }
+        //下载到临时文件
+        var tmpZipName = sFullZipPath + ".tmp";
+        using (var web = new WebClient())
+        {
+            /* 只有访问网站提供的发布目录才正常，如访问工程其他文件夹（master或dev分支的），是需要登录的，那样就下载不了发布包了。
+             * 所以为了解决这个问题，只能在多个代码托管服务器发布，从其中任一个下载即可。
+             * 注：gitee上发布包占用的空间是有限的。如果超了，发布包发布不上去的，删除之前的一些发布包，再重新发布即可。
+             */
+            await web.DownloadFileTaskAsync(upgradeInfo.Server.DownloadUrl, tmpZipName);
+        }
+        // 解压文件
+        UpgradeFinishData data = new UpgradeFinishData(upgradeInfo.Client.ParentDir, upgradeInfo.Server.AppVersion, sFullZipPath, tmpZipName, upgradeInfo.Client.IsDeleteNewVerZipFile);
+        DownFileFinished(data);
+    }
+
+    private static void DownFileFinished(UpgradeFinishData data)
+    {
+        //重命名文件
+        File.Move(data.TempZipName, data.FullZipPath);
+        // 使用SharpCompress，支持zip、rar、7z
+        bool isExtractOk = FileDirHelper.ExtractArchive(data.FullZipPath, data.LocalDirPath);
+
+        if (isExtractOk)
+        {
+            try
+            {
+                File.Delete(data.FullZipPath);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex.Message); //复制文件出错，只在控制台输入错误信息
+            }
+            return;
+        }
+
+        //备份数据库文件
+        try
+        {
+            //SQLite的数据库文件也复制一份到目标目录：如表结构有变更
+            DirectoryInfo dirNow = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
+            string dbFile = Path.Combine(dirNow.FullName, "SQLite_DBTool.db");
+            string sNewDir = Path.Combine(data.LocalDirPath, data.DirName);
+            if (File.Exists(dbFile))
+            {
+                FileDirHelper.CopyFilesToDirKeepSrcDirName(dbFile, sNewDir);
+            }
+            dbFile = Path.Combine(dirNow.FullName, "SQLite_Mini.db");
+            if (File.Exists(dbFile))
+            {
+                FileDirHelper.CopyFilesToDirKeepSrcDirName(dbFile, sNewDir);
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Console.WriteLine(ex.Message); //复制文件出错，只在控制台输入错误信息
+        }
+
+        //删除新版本压缩包
+        if (data.IsDeleteNewVersionZipFile)
+        {
+            try
+            {
+                File.Delete(data.FullZipPath);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex.Message); //复制文件出错，只在控制台输入错误信息
+            }
+        }
+    }
+
+    public static string ReadWebText()
+    {
+        using (var web = new WebClient())
+        {
+            Stream myStream = web.OpenRead(new Uri(UpgradeConfigUrl));
+            StreamReader sr = new StreamReader(myStream);
+            string sReturn = sr.ReadToEnd();
+            myStream.Close();// Close the stream. 
+            return sReturn;
+        }
+    }
+
+    public class UpgradeFinishData
+    {
+        public string LocalDirPath { get; set; }
+
+        public UpgradeFinishData(string localDirPath, string dirName, string fullZipPath, string tempZipName, bool isDeleteNewVersionZipFile)
+        {
+            LocalDirPath = localDirPath;
+            DirName = dirName;
+            FullZipPath = fullZipPath;
+            TempZipName = tempZipName;
+            IsDeleteNewVersionZipFile = isDeleteNewVersionZipFile;
+        }
+        public string DirName { get; set; }
+        public string FullZipPath { get; set; }
+        public string TempZipName { get; set; }
+
+        public bool IsDeleteNewVersionZipFile { get; set; }
+    }
+
+}
+                </code></pre>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

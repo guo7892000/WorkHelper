@@ -1,7 +1,7 @@
-### Oracle递归
+## Oracle专用递归
 所谓递归,简单点来说,就是一个函数直接或间接调用自身的一种方法,它通常把一个大型复杂的问题层层转化为一个与原问题相似的规模较小的问题来求解。  
 这里介绍Oracle数据库中专用的递归语法。
-#### Oracle专用递归说明
+### Oracle专用递归中的关键字
 函数/伪列	        说明  
 LEVEL	            层级深度，从1开始  
 CONNECT_BY_ROOT	    获取根节点（起始节点）的值  
@@ -65,9 +65,31 @@ START WITH A.CNC_BGN = 'QD_0000709904_01'
 CONNECT BY PRIOR A.ITEM_PID = A.ITEM_CID
     AND A.DATE_END = '99999999'
 ORDER BY LEVEL DESC;
-
 ```
-#### 递归查询
+
+### 简单查询父子件
+```
+--查找所有父件
+Select w.ID,w.ITEM_PID As ITEM_ID
+From (Select AA.ITEM_CID, AA.ITEM_PID
+       From ebom_t_engstru AA
+      Where AA.date_end = '99999999') W
+Start With w.item_pid = '280903-56S001' --需要传入的参数
+Connect By w.item_cid = Prior w.item_pid
+Group By w.ITEM_CID
+;
+
+--查找所有子件
+Select w.ID,ITEM_CID,ITEM_PID,level
+From (Select AA.ID,AA.ITEM_CID, AA.ITEM_PID
+       From ebom_t_engstru AA
+      Where AA.date_end = '99999999') W
+Start With w.item_pid = 'CA1046P34K45L2E6A1[8S4D]' --需要传入的参数
+Connect By w.item_pid = Prior w.item_cid
+;
+```
+
+### 递归查询
 ```
 /*递归查询所有子级结构*/
 SELECT EMPLOYEE_ID, NAME, MANAGER_ID, LEVEL
@@ -134,7 +156,7 @@ INNER JOIN employee_cte ec ON e.manager_id = ec.employee_id -- 连接条件
 )
 SELECT * FROM employee_cte;  
 ```
-#### sys_connect_by_path函数
+### sys_connect_by_path函数
 sys_connect_by_path(字段名, 连接符)：是oracle9i新提出来的，用来显示分层查询的路径，从跟节点到子节点的路径。 注意：sys_connect_by_path()函数必须和connect by 关键字一起使用。
 ```
 /*示例1*/

@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>菜单实现</title>
+</head>
+<body>
+    <div>
+        <h1>菜单实现</h1>
+        <div>
+            <h2>一、功能概述</h2>
+            本工具菜单（包括主菜单、左侧树菜单、快捷菜单）的实现代码段。
+        </div>
+        <div>
+            <h2>二、主窗体代码</h2>
+            <pre><code>
+    #region 加载事件
+    private void FrmMainMDI_Load(object sender, EventArgs e)
+    {
+        _IADPJson = ContainerContext.Container.Resolve<IADPJson>();
+
+        _WinFormConfig = WinFormContext.Instance.WinFormConfig;
+        iStartMenu = menuStrip.Items.IndexOfKey(tsbStartMenu.Name);
+        tcMenu.Dock = DockStyle.Top;
+        _xmlMenu = new XmlMenu(MenuXmlFilePath);
+
+        _showInToolConfig = new ShowInToolStripXmlConfig(MiniGlobalValue.ShowInToolStripXmlConfigFileName);
+
+        this.SetFormBackGroupStyle(_WinFormConfig.Get(GlobalKey.MainSkinType, BaseForm.ChildFormStyleType), _WinFormConfig.Get(GlobalKey.MainSkinValue, BaseForm.ChildFormStyleValue));//设置主窗体样式
+        WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp(_FrameworkHelpPath, _FrameworkHelpName + " > 概述", _FrameworkHelpName));
+        WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp("/Help/Html/Mini/ChangeHistory.html", _FrameworkHelpName + " > 变更历史", _FrameworkHelpName));
+        WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp("/Help/Html/Mini/PracticalFunction.html", _FrameworkHelpName + " > 推荐功能", _FrameworkHelpName));
+        WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp("/Help/Html/Mini/DevelopHelper.html", _FrameworkHelpName + " > 开发说明", _FrameworkHelpName));
+        WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp("/Help/Html/Mini/GoodCode.html", _FrameworkHelpName + " > 重要代码段", _FrameworkHelpName));
+        WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp("/Help/Html/Mini/OuterComponents.html", _FrameworkHelpName + " > 重要外部组件", _FrameworkHelpName));
+        WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp("/Help/Html/Mini/MenuCode.html", _FrameworkHelpName + " > 菜单代码", _FrameworkHelpName)); 
+        //加载菜单
+        LoadMenu();
+        //增加快捷菜单
+        LoadShortCutMenu();
+        //加载用户偏好设定
+        LoadUserLoveSettings();
+        //默认桌面布满
+        pnlDesktop.Dock = DockStyle.Fill;
+        txbMenuPath.BackColor = txbMenuPath.Parent.BackColor;
+        txbGlobalMsg.BackColor = txbMenuPath.Parent.BackColor;
+        //设置菜单查找数据源
+        tstbMenuSearch.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+        tstbMenuSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            
+        tvLeftMenu.ExpandAll();
+        tsslUserInfo.Text = WinFormContext.Instance.LoginUser.USER_CODE;
+        //绑定事件
+        tsbRestartMenu.Click += tsbRestartMenu_Click;
+        tsmiLock.Click += tsmiLock_Click;
+        tsmiChangePassword.Click += tsmiChangePassword_Click;
+        //自动检测是否有新版本
+        UpgradeSuccessReloadAppDeleagte += UpgradeReloadApp;
+        if ("1".Equals(_WinFormConfig.Get(GlobalKey.Upgrade_IsAutoCheckVersion, "1")))
+        {
+            Task.Run(() => UpgradeSystem(false));
+        }
+        // 设置样式
+        FormBackGroupStyleEntity styleEntity = this.SetFormBackGroupStyle(_WinFormConfig.Get(GlobalKey.MainSkinType, BaseForm.ChildFormStyleType), _WinFormConfig.Get(GlobalKey.MainSkinValue, BaseForm.ChildFormStyleValue));//设置主窗体样式
+        if (!styleEntity.IsUseImage)
+        {
+            txbMenuPath.BackColor = styleEntity.BackGroupColor;
+            txbGlobalMsg.BackColor = styleEntity.BackGroupColor;
+        }
+        tableLayoutPanel1.BackgroundImage = null;
+    }
+    #endregion
+
+    //加载菜单方法
+    private void LoadMenu()
+    {
+        //加载菜单
+        tvLeftMenu.Nodes.Clear();
+        //XML中的菜单处理
+        _MenuDic = _xmlMenu.GetAllMenu();
+            
+        foreach (MenuEntity dMenu in _MenuDic.Values)
+        {
+            if (dMenu.MenuType != MenuType.Modul)
+            {
+                continue;
+            }
+            //菜单项
+            ToolStripMenuItem tmiNew = new ToolStripMenuItem();
+            tmiNew.Name = dMenu.Guid;
+            tmiNew.Text = string.IsNullOrEmpty(dMenu.ShortCutKey)? dMenu.MenuName: string.Format("{0}(&{1})", dMenu.MenuName, dMenu.ShortCutKey);
+            tmiNew.Tag = dMenu;
+            dMenu.FullPath = dMenu.MenuName;
+            menuStrip.Items.Insert(iStartMenu + 1, tmiNew);
+
+            //左边树
+            TreeNode tnNew = new TreeNode();
+            tnNew.Name = dMenu.Guid;
+            tnNew.Text = dMenu.MenuName;
+            tnNew.Tag = dMenu;
+            tvLeftMenu.Nodes.Add(tnNew);
+
+            foreach (MenuEntity childMenu in dMenu.Childs.Values)
+            {
+                if (childMenu.MenuType == MenuType.Class)
+                {
+                    AddMenuClassItem(tmiNew,new ToolStripMenuItem(), childMenu);
+                    AddMenuClassNode(tnNew,new TreeNode(), childMenu);
+                }
+                else
+                {
+                    AddMenuItem(tmiNew, new ToolStripMenuItem(), childMenu);
+                    AddMenuNode(tnNew,new TreeNode(), childMenu);
+                }
+            }
+
+            iStartMenu++;
+        }
+    }
+
+    #region 增加菜单分类
+    private void AddMenuClassItem(ToolStripMenuItem tmiParent, ToolStripMenuItem tmiNew, MenuEntity dParentMenu)
+    {
+        AddMenuItem(tmiParent, tmiNew, dParentMenu);
+        foreach (MenuEntity childMenu in dParentMenu.Childs.Values)
+        {
+            if (childMenu.MenuType == MenuType.Class)
+            {
+                AddMenuClassItem(tmiNew, new ToolStripMenuItem(), childMenu);
+            }
+            else
+            {
+                var childMenuItem = new ToolStripMenuItem();
+                AddMenuItem(tmiNew, childMenuItem, childMenu);
+                if (!string.IsNullOrEmpty(childMenu.HelpPath))
+                {
+                    WinFormContext.Instance.MenuHelpList.Add(new EntMenuHelp(childMenu.HelpPath, childMenu.FullPath, childMenu.MenuName));
+                }
+
+                //判断菜单ID的工具栏显示配置是否为1是
+                var menShowInTool = _showInToolConfig.MoreXmlConfig.ListEntity.Where(x => x.Key.Equals(childMenu.Guid, StringComparison.OrdinalIgnoreCase) && "1".Equals(x.Value));
+                if (menShowInTool.Count() > 0)
+                {
+                    childMenu.IsShowInToolStrip = true;
+                    AddMainToolStrip(childMenuItem, childMenu);//增加工具栏按钮
+                }
+            }
+        }
+    }
+
+    private void AddMenuClassNode(TreeNode tnParent, TreeNode tnNew, MenuEntity dParentMenu)
+    {
+        AddMenuNode(tnParent, tnNew, dParentMenu);
+        foreach (MenuEntity childMenu in dParentMenu.Childs.Values)
+        {
+            if (childMenu.MenuType == MenuType.Class)
+            {
+                AddMenuClassNode(tnNew, new TreeNode(), childMenu);
+            }
+            else
+            {
+                AddMenuNode(tnNew, new TreeNode(), childMenu);
+            }
+        }
+    } 
+    #endregion
+
+    #region 增加菜单
+    private void AddMenuItem(ToolStripMenuItem tmiParent, ToolStripMenuItem tmiNew, MenuEntity dMenu)
+    {
+        tmiNew.Text = string.IsNullOrEmpty(dMenu.ShortCutKey) ? dMenu.MenuName : string.Format("{0}(&{1})", dMenu.MenuName, dMenu.ShortCutKey);
+        tmiNew.Name = dMenu.Guid;
+        tmiNew.Tag = dMenu;
+        tmiNew.Click += MenuItem_Click;
+           
+        //菜单查找自动完成数据源
+        tstbMenuSearch.AutoCompleteCustomSource.Add(dMenu.MenuName);
+        tmiParent.DropDownItems.Add(tmiNew);
+    }
+
+    private void AddMenuNode(TreeNode tnParent, TreeNode tnNew, MenuEntity dMenu)
+    {
+        tnNew.Text = dMenu.MenuName;
+        tnNew.Tag = dMenu;
+        tnParent.Nodes.Add(tnNew);
+    } 
+    #endregion
+
+    //加载快捷菜单
+    private void LoadShortCutMenu()
+    {
+        string sPathConfig = GlobalContext.PathConfig();
+        if (!Directory.Exists(sPathConfig))
+        {
+            Directory.CreateDirectory(sPathConfig); 
+        }
+        string strShortCutFilePath = Path.Combine(sPathConfig, MiniStaticString.ShortCutMenuFileName);
+        if (!File.Exists(strShortCutFilePath))
+        {
+            XmlDocument xmlShortCut = new XmlDocument();
+            XmlElement xmRoot = xmlShortCut.CreateElement("xml");
+            xmlShortCut.AppendChild(xmRoot);
+            xmlShortCut.Save(strShortCutFilePath);
+            //
+            _ShortCutMenuList = new ShortCutList();
+            _ShortCutMenuList.AddShortCutItem += AddShortCutMenuItem;//新增快捷菜单事件
+            _ShortCutMenuList.Dock = DockStyle.Fill;
+            pnlDesktop.Controls.Add(_ShortCutMenuList);
+        }
+        else
+        {
+            XmlDocument xmlMenu = new XmlDocument();
+            xmlMenu.Load(strShortCutFilePath);
+            XmlNodeList xmlList = xmlMenu.SelectNodes("xml/Menu");
+            _ShortCutMenuList = new ShortCutList();
+            _ShortCutMenuList.AddShortCutItem += AddShortCutMenuItem;//新增快捷菜单事件
+
+            foreach (XmlNode xnModel in xmlList)
+            {
+                if (xnModel.NodeType == XmlNodeType.Comment)
+                {
+                    continue;
+                }
+                string strGuid = xnModel.GetAttributeValue("Guid");
+                if (_MenuDic.ContainsKey(strGuid))
+                {
+                    ShortCutItem scItem = new ShortCutItem(_MenuDic[strGuid]);
+                    scItem.ShortCutItemClick += ShortCutMenuItem_Click;//点击快捷菜单事件
+                    scItem.ShortCutItemCancel += CancelShortCutMenuItem_Click;//取消快捷菜单事件
+                    scItem.ShortCutItemoMoveFirst += MoveFirstShortCutMenuItem_Click;
+                    scItem.ShortCutItemoMoveLast += MoveLastShortCutMenuItem_Click;
+                    scItem.ShortCutItemoMoveBefore += MoveBeforShortCutMenuItem_Click;
+                    scItem.ShortCutItemoMoveBack += MoveNextShortCutMenuItem_Click;
+                    _ShortCutMenuList.AddItem(scItem);
+                }
+            }
+            //
+            _ShortCutMenuList.Dock = DockStyle.Fill;
+            pnlDesktop.Controls.Add(_ShortCutMenuList);
+
+        }
+    }
+
+    //主界面菜单树节点开始拖动事件
+    private void tvLeftMenu_ItemDrag(object sender, ItemDragEventArgs e)
+    {
+        // 开始进行拖放操作，并将拖放的效果设置成移动。
+        this.DoDragDrop(e.Item, DragDropEffects.Move);
+    }
+    //快捷菜单项点击事件
+    private void ShortCutMenuItem_Click(object sender, ShortCutItemClickEventArgs e)
+    {
+        OpenMenu(e.Menu, true);
+    }
+    //取消快捷菜单项点击事件
+    private void CancelShortCutMenuItem_Click(object sender, ShortCutItemClickEventArgs e)
+    {
+        SaveShortCutMenuConfig(e.Menu, ShortMenuEventEnum.Cancel);
+    }
+    //增加快捷菜单项点击事件
+    private void AddShortCutMenuItem(object sender, ShortCutItemClickEventArgs e)
+    {
+        SaveShortCutMenuConfig(e.Menu, ShortMenuEventEnum.New);
+    }
+    //移快捷菜单到首位
+    private void MoveFirstShortCutMenuItem_Click(object sender, ShortCutItemClickEventArgs e)
+    {
+        SaveShortCutMenuConfig(e.Menu, ShortMenuEventEnum.MoveFirst);
+    }
+    //移快捷菜单到最后
+    private void MoveLastShortCutMenuItem_Click(object sender, ShortCutItemClickEventArgs e)
+    {
+        SaveShortCutMenuConfig(e.Menu, ShortMenuEventEnum.MoveLast);
+    }
+    // 快捷菜单前移一位
+    private void MoveBeforShortCutMenuItem_Click(object sender, ShortCutItemClickEventArgs e)
+    {
+        SaveShortCutMenuConfig(e.Menu, ShortMenuEventEnum.MoveBefore);
+    }
+    // 快捷菜单后移一位
+    private void MoveNextShortCutMenuItem_Click(object sender, ShortCutItemClickEventArgs e)
+    {
+        SaveShortCutMenuConfig(e.Menu, ShortMenuEventEnum.MoveNext);
+    }
+
+    #region 打开窗体方法
+    private void OpenMenu(MenuEntity dOpenMenu, bool IsExpandTreeNode)
+    {
+        if (dOpenMenu == null || dOpenMenu.MenuType != MenuType.Menu)
+        {
+            return;
+        }
+
+        //判断窗体是否已经打开
+        foreach (Form frm in MdiChildren)
+        {
+            MenuEntity dMenuFrm = frm.Tag as MenuEntity;
+            //使用同菜单不同窗体GUID
+            if (dMenuFrm.SameMenuNewFormGuid.Equals(dOpenMenu.SameMenuNewFormGuid))
+            {
+                MenuEntity selectMenu = tcMenu.SelectedTab.Tag as MenuEntity;
+                //选中页签
+                if (tcMenu.SelectedTab == tpgDesktop || selectMenu.SameMenuNewFormGuid != dMenuFrm.SameMenuNewFormGuid)
+                {
+                    tcMenu.SelectedTab = tcMenu.TabPages[dMenuFrm.SameMenuNewFormGuid];
+                }
+                txbMenuPath.Text = dOpenMenu.FullPath;
+                pnlDesktop.Hide();
+                frm.Activate();
+                WinFormContext.Instance.CurrentForm = frm;
+                //全局提示信息显示为当前菜单的提示信息
+                if(frm is BaseForm)
+                {
+                    txbGlobalMsg.Text = ((BaseForm)frm).LastestTipMsg;
+                }
+                return;
+            }
+        }
+
+        if (this.GetChildCount() > WinFormContext.Instance.MaxOpenFormNum - 1)
+        {
+            MessageBox.Show(string.Format("您打开的窗口超过了最大配置数{0}，不能再打开更多窗体。你可以在【开始】->【环境设置】中修改！",WinFormContext.Instance.MaxOpenFormNum), "温馨提示");
+            return;
+        }
+
+        if (IsExpandTreeNode)
+        {
+            OpenTreeNodeMenu(dOpenMenu.MenuName);
+        }
+
+        //克隆一个新的菜单对象
+        MenuEntity dMenu = dOpenMenu.Clone();
+
+        //反射得到窗体：在Net 10中，启动文件的后缀为dll，而net framework 4.8中启动工程的后缀为exe，这两种方式都要考虑到。
+        Assembly dll;
+        try
+        {
+            dll = Assembly.LoadFile(Path.Combine(_strAppPath, dMenu.DLLName)); // 默认方式
+        }
+        catch
+        {
+            string sDll;
+            if (dMenu.DLLName.EndsWith(".exe"))
+            {
+                sDll = dMenu.DLLName.Replace(".exe", ".dll"); //net 10中启动工程的后缀为dll
+            }
+            else
+            {
+                sDll = dMenu.DLLName.Replace(".dll", ".exe"); //net framework 4.8中启动工程的后缀为exe
+            }
+            dll = Assembly.LoadFile(Path.Combine(_strAppPath, sDll)); //使用LoadFile方法加载dll文件
+        }
+
+        object form = dll.CreateInstance(dMenu.FormName);
+        if (form is Form)
+        {
+            Form newForm = form as Form;
+            newForm.Tag = dMenu;
+            newForm.MdiParent = this;
+            newForm.WindowState = FormWindowState.Maximized;
+            newForm.Activated += ChildForm_Active;
+            newForm.FormClosed += MdiChild_Close;
+            //增加页签：使用同菜单不同窗体GUID
+            tcMenu.TabPages.Add(dMenu.SameMenuNewFormGuid, dMenu.MenuName);
+            tcMenu.TabPages[dMenu.SameMenuNewFormGuid].Tag = dMenu;
+            tcMenu.SelectedTab = tcMenu.TabPages[dMenu.SameMenuNewFormGuid];
+            txbMenuPath.Text = dMenu.FullPath;
+        
+            newForm.Show();
+            WinFormContext.Instance.CurrentForm = newForm;
+            txbMenuPath.BackColor = txbMenuPath.Parent.BackColor;
+            //给窗体加上统一显示提示信息事件委托
+            if (newForm is BaseForm)
+            {
+                BaseForm fr = newForm as BaseForm;
+                fr.MainFormMode = MainFormModelEnum.Mini;
+                fr.MenuName = dMenu.MenuName;
+                fr.ShowGlobalMsg += ShowGlobalMsg_Click;//显示全局提示信息
+            }
+        }
+        else
+        {
+            MsgHelper.ShowErr("配置错误，【" + dMenu.MenuName + "】菜单不是窗体类型！");
+        }
+    } 
+    #endregion
+
+    //保存快捷菜单配置
+    private void SaveShortCutMenuConfig(MenuEntity dMenu, ShortMenuEventEnum menuEventEnum)
+    {
+        string strShortCutFilePath = Path.Combine(GlobalContext.PathConfig(), MiniStaticString.ShortCutMenuFileName);
+        XmlDocument xmlMenu = new XmlDocument();
+        xmlMenu.Load(strShortCutFilePath);
+        XmlNodeList xmlList = xmlMenu.SelectNodes("xml/Menu");
+        XmlNode xnRemove = xmlMenu.SelectSingleNode("xml/Menu[@Guid='" + dMenu.Guid + "']");
+        if (xnRemove != null)
+        {
+            if (menuEventEnum == ShortMenuEventEnum.Cancel)
+            {
+                xnRemove.ParentNode.RemoveChild(xnRemove);
+                //从快捷菜单中移除
+                if (_ShortCutMenuList.ItemList.ContainsKey(dMenu.Guid))
+                {
+                    _ShortCutMenuList.MenuListPanl.Controls.Remove(_ShortCutMenuList.ItemList[dMenu.Guid]);
+                    _ShortCutMenuList.ItemList.Remove(dMenu.Guid);
+
+                }
+            }
+        }
+        else
+        {
+            if (menuEventEnum== ShortMenuEventEnum.New)
+            {
+                XmlElement xnNew = xmlMenu.CreateElement("Menu");
+                xnNew.SetAttribute("Guid", dMenu.Guid);
+                xnNew.SetAttribute("Name", dMenu.MenuName);
+                xmlMenu.DocumentElement.AppendChild(xnNew);
+
+                if (!_ShortCutMenuList.ItemList.ContainsKey(dMenu.Guid))
+                {
+                    ShortCutItem scItem = new ShortCutItem(dMenu);
+                    scItem.ShortCutItemClick += ShortCutMenuItem_Click;//点击快捷菜单事件
+                    scItem.ShortCutItemCancel += CancelShortCutMenuItem_Click;//取消快捷菜单事件
+                    scItem.ShortCutItemoMoveFirst += MoveFirstShortCutMenuItem_Click;
+                    scItem.ShortCutItemoMoveLast += MoveLastShortCutMenuItem_Click;
+                    scItem.ShortCutItemoMoveBefore += MoveBeforShortCutMenuItem_Click;
+                    scItem.ShortCutItemoMoveBack += MoveNextShortCutMenuItem_Click;
+                    _ShortCutMenuList.AddItem(scItem);
+                }
+            }
+        }
+
+        //快捷方式的位置调整
+        if (!(menuEventEnum == ShortMenuEventEnum.New || menuEventEnum == ShortMenuEventEnum.Cancel))
+        {
+            int iIndex = 0;
+            Control control = null;
+            bool canSet = false;
+            if (menuEventEnum == ShortMenuEventEnum.MoveFirst)
+            {
+                // 设置当前控件索引=0
+                _ShortCutMenuList.MenuListPanl.Controls.SetChildIndex(_ShortCutMenuList.ItemList[dMenu.Guid], 0);                  
+
+                foreach (Control item in _ShortCutMenuList.MenuListPanl.Controls)
+                {
+                    ShortCutItem curShortCutItem = (ShortCutItem)item;
+                    if (curShortCutItem.Menu.Guid.Equals(dMenu.Guid))
+                    {
+                        // 调整XML配置文件中内容位置
+                        xmlMenu.DocumentElement.InsertBefore(xnRemove, xnRemove.ParentNode.FirstChild);
+                        continue;
+                    }
+                    // 所有控件索引+1
+                    _ShortCutMenuList.MenuListPanl.Controls.SetChildIndex(item, _ShortCutMenuList.MenuListPanl.Controls.GetChildIndex(item) + 1);
+                }
+            }
+            else if (menuEventEnum == ShortMenuEventEnum.MoveLast)
+            {
+
+                foreach (Control item in _ShortCutMenuList.MenuListPanl.Controls)
+                {
+                    iIndex = _ShortCutMenuList.MenuListPanl.Controls.GetChildIndex(item);
+                }
+                // 设置当前控件索引=最后控件的索引+1
+                _ShortCutMenuList.MenuListPanl.Controls.SetChildIndex(_ShortCutMenuList.ItemList[dMenu.Guid], iIndex + 1);
+                xmlMenu.DocumentElement.InsertAfter(xnRemove, xnRemove.ParentNode.LastChild); // 调整XML配置文件中内容位置
+            }
+            else if (menuEventEnum == ShortMenuEventEnum.MoveBefore)
+            {
+                foreach (Control item in _ShortCutMenuList.MenuListPanl.Controls)
+                {
+                    ShortCutItem curShortCutItem = (ShortCutItem)item;
+                    if (curShortCutItem.Menu.Guid.Equals(dMenu.Guid))
+                    {
+                        // 交换索引值
+                        _ShortCutMenuList.MenuListPanl.Controls.SetChildIndex(control, _ShortCutMenuList.MenuListPanl.Controls.GetChildIndex(item));
+                        _ShortCutMenuList.MenuListPanl.Controls.SetChildIndex(item, iIndex);
+                        xmlMenu.DocumentElement.InsertBefore(xnRemove, xnRemove.PreviousSibling); // 调整XML配置文件中内容位置
+                        break;
+                    }
+                    // 得到上次循环控件索引值
+                    iIndex = _ShortCutMenuList.MenuListPanl.Controls.GetChildIndex(item);
+                    control = item;
+                }
+            }
+            else if (menuEventEnum == ShortMenuEventEnum.MoveNext)
+            {
+                foreach (Control item in _ShortCutMenuList.MenuListPanl.Controls)
+                {
+                    if (canSet)
+                    {
+                        // 交换索引值
+                        int iIndexNew = _ShortCutMenuList.MenuListPanl.Controls.GetChildIndex(item);
+                        _ShortCutMenuList.MenuListPanl.Controls.SetChildIndex(item, iIndex);
+                        _ShortCutMenuList.MenuListPanl.Controls.SetChildIndex(control, iIndexNew);
+                        xmlMenu.DocumentElement.InsertAfter(xnRemove, xnRemove.NextSibling); // 调整XML配置文件中内容位置
+                        break;
+                    }
+
+                    ShortCutItem curShortCutItem = (ShortCutItem)item;
+                    if (curShortCutItem.Menu.Guid.Equals(dMenu.Guid))
+                    {
+                        canSet = true;
+                        // 得到上次循环控件索引值
+                        iIndex = _ShortCutMenuList.MenuListPanl.Controls.GetChildIndex(item);
+                        control = item;
+                    }
+                }
+            }
+        } 
+        xmlMenu.Save(strShortCutFilePath);
+    }
+                </code></pre>
+        </div>
+
+        <div>
+            <h2>三、快捷菜单组件</h2>
+            <pre><code>
+ //快捷菜单组件
+ public partial class ShortCutList : UserControl
+ {
+     Dictionary<string, ShortCutItem> _ItemList = new Dictionary<string, ShortCutItem>();
+
+     public Dictionary<string, ShortCutItem> ItemList
+     {
+         get { return _ItemList; }
+     }
+
+     public FlowLayoutPanel MenuListPanl
+     {
+         get { return flpMenuList; }
+     }
+
+     public EventHandler<ShortCutItemClickEventArgs> AddShortCutItem;
+
+     public ShortCutList()
+     {
+         InitializeComponent();
+     }
+
+     public void AddItem(ShortCutItem sci)
+     {
+         this.flpMenuList.Controls.Add(sci);
+         _ItemList.Add(sci.Menu.Guid, sci);
+     }
+
+     private void ShortCutList_Load(object sender, EventArgs e)
+     {
+         flpMenuList.AllowDrop = true;
+         flpMenuList.Dock = DockStyle.Fill;
+     }
+
+     private void flpMenuList_DragEnter(object sender, DragEventArgs e)
+     {
+         e.Effect = DragDropEffects.Move;
+     }
+
+     private void flpMenuList_DragDrop(object sender, DragEventArgs e)
+     {
+         if (e.Data.GetDataPresent("System.Windows.Forms.TreeNode", false))
+         {
+             // 获取被拖动的节点
+             TreeNode treeNode = (TreeNode)e.Data.GetData("System.Windows.Forms.TreeNode");
+             MenuEntity dMenu = treeNode.Tag as MenuEntity;
+             if (!_ItemList.ContainsKey(dMenu.Guid))
+             {
+                 //触发快捷菜单保存
+                 ShortCutItemClickEventArgs arg = new ShortCutItemClickEventArgs();
+                 arg.Menu = dMenu;
+                 AddShortCutItem(this, arg);
+             }
+         }
+     }
+}
+
+public enum ShortMenuEventEnum
+{
+    New,
+    Cancel,
+    MoveFirst,
+    MoveLast,
+    MoveBefore,
+    MoveNext,
+}
+                </code></pre>
+        </div>
+        <div>
+            <h2>四、快捷菜单项组件</h2>
+            <div>
+                <pre><code>
+    //快捷菜单项组件
+    public partial class ShortCutItem : UserControl
+    {
+        public EventHandler<ShortCutItemClickEventArgs> ShortCutItemClick;
+        public EventHandler<ShortCutItemClickEventArgs> ShortCutItemCancel;
+        public EventHandler<ShortCutItemClickEventArgs> ShortCutItemoMoveFirst;
+        public EventHandler<ShortCutItemClickEventArgs> ShortCutItemoMoveLast;
+        public EventHandler<ShortCutItemClickEventArgs> ShortCutItemoMoveBefore;
+        public EventHandler<ShortCutItemClickEventArgs> ShortCutItemoMoveBack;
+
+        string strRootPath = AppDomain.CurrentDomain.BaseDirectory;
+        string strInFilePah;
+        string strOutFilePah;
+        MenuEntity _Menu;
+
+        public MenuEntity Menu
+        {
+            get { return _Menu; }
+        }
+
+        public ShortCutItem(MenuEntity dMenu)
+        {
+            InitializeComponent();
+            _Menu = dMenu;
+
+            lblMenuName.Text = dMenu.MenuName;
+        }
+
+        private void ShortCutItem_Load(object sender, EventArgs e)
+        {
+            strInFilePah = Path.Combine(strRootPath, "Image", "ShortCut_In.png");
+            strOutFilePah = Path.Combine(strRootPath, "Image", "ShortCut_Out.png");
+            this.BackgroundImage = Image.FromFile(strOutFilePah);
+            this.BackgroundImageLayout = ImageLayout.Zoom;
+            this.BackColor = Color.Transparent;
+
+            this.Click += Item_Click;
+            lblMenuName.Click += Item_Click;
+        }
+
+        private void Item_Click(object sender, EventArgs e)
+        {
+            if (_Menu != null && ShortCutItemClick!=null)
+            {
+                ShortCutItemClickEventArgs arg = new ShortCutItemClickEventArgs();
+                arg.Menu = _Menu;
+                ShortCutItemClick(this,arg);
+            }
+        }
+
+        private void ShortCutItem_MouseEnter(object sender, EventArgs e)
+        {
+            this.BackgroundImage = Image.FromFile(strInFilePah);
+            this.Cursor = Cursors.Hand;
+        }
+
+        private void ShortCutItem_MouseLeave(object sender, EventArgs e)
+        {
+            this.BackgroundImage = Image.FromFile(strOutFilePah);
+        }
+
+        private void tsmiCancelShortCutMenu_Click(object sender, EventArgs e)
+        {
+            if (_Menu != null && ShortCutItemCancel!=null)
+            {
+                ShortCutItemClickEventArgs arg = new ShortCutItemClickEventArgs();
+                arg.Menu = _Menu;
+                ShortCutItemCancel(this, arg);
+            }
+        }
+
+        private void tsmiMoveFirst_Click(object sender, EventArgs e)
+        {
+            if (_Menu != null && ShortCutItemoMoveFirst != null)
+            {
+                ShortCutItemClickEventArgs arg = new ShortCutItemClickEventArgs();
+                arg.Menu = _Menu;
+                ShortCutItemoMoveFirst(this, arg);
+            }
+        }
+
+        private void tsmiMoveLast_Click(object sender, EventArgs e)
+        {
+            if (_Menu != null && ShortCutItemoMoveLast != null)
+            {
+                ShortCutItemClickEventArgs arg = new ShortCutItemClickEventArgs();
+                arg.Menu = _Menu;
+                ShortCutItemoMoveLast(this, arg);
+            }
+        }
+
+        private void tsmiMoveBefore_Click(object sender, EventArgs e)
+        {
+            if (_Menu != null && ShortCutItemoMoveBefore != null)
+            {
+                ShortCutItemClickEventArgs arg = new ShortCutItemClickEventArgs();
+                arg.Menu = _Menu;
+                ShortCutItemoMoveBefore(this, arg);
+            }
+        }
+
+        private void tsmiMoveBack_Click(object sender, EventArgs e)
+        {
+            if (_Menu != null && ShortCutItemoMoveBack != null)
+            {
+                ShortCutItemClickEventArgs arg = new ShortCutItemClickEventArgs();
+                arg.Menu = _Menu;
+                ShortCutItemoMoveBack(this, arg);
+            }
+        }
+    }
+
+    public class ShortCutItemClickEventArgs : EventArgs
+    {
+        public MenuEntity Menu;
+    }
+</code></pre>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

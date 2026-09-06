@@ -936,6 +936,9 @@
     <None Include="Doc\SQL\KingbaseES\0010_表\Oracle表迁移.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Doc\SQL\KingbaseES\0020_查询\分组.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Doc\SQL\KingbaseES\0033_包\Oracel包迁移.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -961,6 +964,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\SQL\Oracle\0010_表\临时表.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Doc\SQL\Oracle\0020_查询\Oracle专用递归.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\SQL\Oracle\0032_函数\分析函数\分析函数2.md">
@@ -996,7 +1002,7 @@
     <None Include="Doc\SQL\Oracle\0020_查询\分组.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Doc\SQL\Oracle\0020_查询\递归查询.md">
+    <None Include="Doc\SQL\Oracle\0020_查询\通用递归查询.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Doc\SQL\Oracle\0001_基础\变量.md">
@@ -2007,7 +2013,6 @@
     <Folder Include="Doc\SQL\GaussDB\0085_脚本\" />
     <Folder Include="Doc\SQL\GaussDB\9000_性能优化\" />
     <Folder Include="Doc\SQL\KingbaseES\0002_游标\" />
-    <Folder Include="Doc\SQL\KingbaseES\0020_查询\" />
     <Folder Include="Doc\SQL\KingbaseES\0022_更新\" />
     <Folder Include="Doc\SQL\KingbaseES\0030_存储过程\" />
     <Folder Include="Doc\SQL\KingbaseES\0032_函数\" />
